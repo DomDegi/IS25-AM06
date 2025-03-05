@@ -1,11 +1,11 @@
-*IS25-AM06*
-Project: Galaxy Trucker
+#IS25-AM06
+##Project: Galaxy Trucker
 
-Group Member:
+##Group Member:
   - Federico Ernesto Bulfari
   - Domenico De Giorgio
   - Ennio Cristianelli
   - Soheil Akharraze
 
-Currently Uploaded:
+##Currently Uploaded:
   - GameModelUML
