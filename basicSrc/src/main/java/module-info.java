@@ -1,6 +1,10 @@
 module it.polimi.ingsw.galaxytruckerproject {
     requires javafx.controls;
     requires javafx.fxml;
+    requires org.jetbrains.annotations;
+    requires com.fasterxml.jackson.databind;
+    requires java.sql;
+    requires java.smartcardio;
 
 
     opens it.polimi.ingsw.galaxytruckerproject to javafx.fxml;

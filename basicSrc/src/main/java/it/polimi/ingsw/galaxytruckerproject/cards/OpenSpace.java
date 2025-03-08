@@ -1,12 +1,19 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 
 public class OpenSpace extends Card {
 
-    public OpenSpace() {
-        super(level, requiredDays);
+
+    //the subclass OpenSpace needs the same parameters as the superclass
+    public OpenSpace(int level) {
+        super(level, 0);
     }
 
-    public void executeCard(ArrayList<Player> listOfPlayers) {}
+    //makes so that the player gain as many days as their engineStrenght
+    @Override
+    public void executeCard(FlightBoard flightBoard) {
+        Arrays.stream(flightBoard.getRanking()).
+                forEach(player -> flightBoard.moveForward(player, player.getEnginePower()));
+    }
 }

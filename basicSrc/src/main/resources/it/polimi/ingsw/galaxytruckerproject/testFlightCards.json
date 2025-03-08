@@ -1,0 +1,117 @@
+{
+  "testDeck": [
+    {
+      "type": "Smugglers",
+      "level": 1,
+      "requiredDays": 1,
+      "cannonStrength": 4,
+      "lostGoods": 3,
+      "rewardGoods": [
+        {
+          "color" : "YELLOW"
+        },
+        {
+          "color" : "GREEN"
+        },
+        {
+          "color" : "BLUE"
+        }
+      ]
+    },
+    {
+      "type": "StarDust",
+      "level": 1
+    },
+    {
+      "type": "OpenSpace",
+      "level": 1
+    },
+    {
+      "type": "MeteorSwarm",
+      "level": 1,
+      "listOfMeteors": [
+        {
+          "direction": "NORTH",
+          "size": "LARGE"
+        },
+        {
+          "direction": "WEST",
+          "size": "NORMAL"
+        },
+        {
+          "direction": "EAST",
+          "size": "NORMAL"
+        }
+      ]
+    },
+    {
+      "type": "Planets",
+      "level": 1,
+      "requiredDays": 2,
+      "listOfPlanets": [
+        {
+          "listOfGoods": [
+            { "color": "RED"},
+            { "color": "RED"}
+          ]
+        },
+        {
+          "listOfGoods": [
+            { "color": "RED"},
+            { "color": "BLUE"},
+            { "color": "BLUE"}
+          ]
+        },
+        {
+          "listOfGoods": [
+            { "color": "YELLOW"}
+          ]
+        }
+      ]
+    },
+    {
+      "type": "CombatZone",
+      "level": 1,
+      "listOfChallenges": {
+        "MINIMUM_CREW_NUMBER": {
+          "type": "FlightDaysPenalty",
+          "numberOfLostDays": 3
+        },
+        "MINIMUM_ENGINE_POWER": {
+          "type": "CrewPenalty",
+          "amount": 2
+        },
+        "MINIMUM_CANNON_STRENGTH": {
+          "type": "CannonPenalty",
+          "listOfShots": [
+            {
+              "direction": "SOUTH",
+              "size": "NORMAL"
+            },
+            {
+              "direction": "SOUTH",
+              "size": "LARGE"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "AbandonedShip",
+      "level": "1",
+      "requiredDays": "1",
+      "crewNumberRequired": "3",
+      "possibleCreditGains": "4"
+    },
+    {
+      "type": "AbandonedStation",
+      "level": "1",
+      "requiredDays": "1",
+      "crewNumberRequired": "5",
+      "possibleGoodsGain": [
+        { "color": "YELLOW"},
+        { "color": "GREEN"}
+      ]
+    }
+  ]
+}
