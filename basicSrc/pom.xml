@@ -57,6 +57,9 @@
             <version>5.2.0</version>
             <scope>test</scope>
         </dependency>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     </dependencies>
 
