@@ -1,7 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
 
 public enum GoodsColor {
-    Red(4), Yellow(3), Green(2), Blue(1);
+    RED(4), YELLOW(3), GREEN(2), BLUE(1);
 
     private int value;
 

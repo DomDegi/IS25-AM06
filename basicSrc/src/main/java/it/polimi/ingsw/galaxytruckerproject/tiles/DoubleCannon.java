@@ -6,7 +6,7 @@ public class DoubleCannon extends Cannon{
         super();
     }
 
-    public getStat(){
+    public void getStat(){
         //Check shipboard
     }
 

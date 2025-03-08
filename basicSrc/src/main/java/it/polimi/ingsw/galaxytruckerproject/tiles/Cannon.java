@@ -5,10 +5,10 @@ public abstract class Cannon extends Tile {
 
     public Cannon() {
         super();
-        this.direction = Direction.Nord;
+        this.direction = Direction.NORTH;
 
     }
-    public getStat(){
+    public void getStat(){
         //I need to access shipboard
     }
     public boolean isCorrect(){

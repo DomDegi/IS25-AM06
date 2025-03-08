@@ -1,10 +1,10 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
 
 public class Shields extends Tile{
-    Covarage coveredArea;
+    Coverage coveredArea;
     public Shields() {
         super();
-        this.coveredArea = Covarage.NordEast;
+        this.coveredArea = Coverage.NORTH_EAST;
     }
     public void getStat() {
         //We need to implement Dashboard first

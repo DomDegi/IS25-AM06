@@ -13,8 +13,7 @@ public abstract class Engine extends Tile{
 
     @Override
     public boolean isCorrect() {
-        if(this.direction!=Direction.Nord)
-            return false;
+        if(this.direction!= Direction.SOUTH) return false;
         return super.isCorrect();
     }
     public void getStat(){
