@@ -13,7 +13,18 @@ public abstract class Engine extends Tile{
 
     @Override
     public boolean isCorrect() {
-        if(this.direction!= Direction.SOUTH) return false;
+        Tile other=null;
+        Tile[][] tileTable = shipBoard.getTilesTable();
+        if(this.direction!= Direction.SOUTH ) return false;
+
+        //check south tile
+        else if(this.coordinates.getX()!=4){
+            other = tileTable[this.coordinates.getX()+1][this.coordinates.getY()];
+            if(other!=null && !(other instanceof VoidTile)){
+                return false;
+            }
+        }
+
         return super.isCorrect();
     }
 }

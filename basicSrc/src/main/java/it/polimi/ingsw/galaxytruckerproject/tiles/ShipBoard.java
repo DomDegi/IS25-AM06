@@ -1,5 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
 public class ShipBoard {
@@ -68,6 +71,7 @@ public class ShipBoard {
         return numExposedConnectors;
     }
     public ArrayList<Coverage> getCoverageShields(){return shields;}
+    public Tile[][] getTilesTable(){return tilesTable;}
 
     //METODO INIZIALIZZAZIONE
     public void addBreakSingleCannonPower(float num){
@@ -144,7 +148,7 @@ public class ShipBoard {
         // Inizializza le caselle riempibili a null
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 7; j++) {
-                if (tilesTable[i][j] == null) {
+                if (!(tilesTable[i][j] instanceof VoidTile)) {
                     tilesTable[i][j] = null;
                 }
             }
@@ -156,6 +160,61 @@ public class ShipBoard {
         if(coordinates.x == 0 && coordinates.y == 0){ System.out.println("Can't destroy ");}
         tilesTable[coordinates.x][coordinates.y].destroy();
         tilesTable[coordinates.getX()][coordinates.getY()] = null;
+        ArrayList<Set<Coordinates>> sets = new ArrayList<>();
+        //southSet
+        int x=coordinates.getX();
+        int y=coordinates.getY();
+
+        //south
+        if(tilesTable[x+1][y]!= null  &&  !(tilesTable[x+1][y] instanceof VoidTile)){
+            sets.add( brokenGraph(new Coordinates(x+1,y)));
+        }
+
+        //rinomina i set2,3,4 in modo da usare l'arraylist di set, anche nelle condizioni degli if
+        //east
+        if(tilesTable[x][y+1]!= null  &&  !(tilesTable[x][y+1] instanceof VoidTile) && !set1.contains(tilesTable[x][y+1])){
+            set2 = brokenGraph(new Coordinates(x,y+1));
+        }
+        //north
+        if(tilesTable[x-1][y]!= null  &&  !(tilesTable[x-1][y] instanceof VoidTile) && !set1.contains(tilesTable[x-1][y]) && !set2.contains(tilesTable[x-1][y])){
+            set3 = brokenGraph(new Coordinates(x-1,y));
+        }
+        //west
+        if(tilesTable[x][y-1]!= null  &&  !(tilesTable[x][y-1] instanceof VoidTile) && !set1.contains(tilesTable[x][y-1]) && !set2.contains(tilesTable[x][y-1]) && !set3.contains(tilesTable[x][y-1])){
+           set4 = brokenGraph(new Coordinates(x,y-1));
+        }
+
+
+    }
+    //RETURN THE SET OF TILES LINKED WITH THE STARTING ONE
+    //i assume that the correctness of the links has already been verified
+    //in the case of construction errors this method will be played for each error
+
+    public Set<Coordinates> brokenGraph (Coordinates start){
+        Set<Coordinates> set = new HashSet<Coordinates>();
+        return brokenGraph2(start, set);
+    }
+    public Set<Coordinates> brokenGraph2 (Coordinates start, Set<Coordinates> set ){
+        int x = start.x;
+        int y = start.y;
+        set.add(new Coordinates(x,y));
+        //south
+        if(tilesTable[x][y].south.getConnectorsType()!= Connectors.SMOOTH && tilesTable[x+1][y]!= null  &&  !(tilesTable[x+1][y] instanceof VoidTile) && !set.contains(tilesTable[x+1][y])){
+            brokenGraph2(new Coordinates(x+1,y), set);
+        }
+        //east
+        if(tilesTable[x][y].east.getConnectorsType()!= Connectors.SMOOTH && tilesTable[x][y+1]!= null  &&  !(tilesTable[x][y+1] instanceof VoidTile) && !set.contains(tilesTable[x][y+1])){
+            brokenGraph2(new Coordinates(x,y+1), set);
+        }
+        //north
+        if(tilesTable[x][y].nord.getConnectorsType()!= Connectors.SMOOTH && tilesTable[x-1][y]!= null  &&  !(tilesTable[x-1][y] instanceof VoidTile) && !set.contains(tilesTable[x-1][y])){
+            brokenGraph2(new Coordinates(x-1,y), set);
+        }
+        //west
+        if(tilesTable[x][y].west.getConnectorsType()!= Connectors.SMOOTH && tilesTable[x][y-1]!= null  &&  !(tilesTable[x][y-1] instanceof VoidTile) && !set.contains(tilesTable[x][y-1])){
+            brokenGraph2(new Coordinates(x,y-1), set);
+        }
+        return set;
     }
 
     public void checkBorderTile(int i, int j){
