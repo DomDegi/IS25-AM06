@@ -28,8 +28,4 @@ public abstract class Cannon extends Tile {
         }
         this.direction = Direction.values()[i];
     }
-
-
-
-
 }

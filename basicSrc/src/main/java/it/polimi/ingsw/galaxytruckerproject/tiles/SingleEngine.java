@@ -4,10 +4,12 @@ public class SingleEngine extends Engine{
     SingleEngine(){
         super();
     }
-    public void getStat()
-    {
-        //We need to implement Dashboard first
+
+    public void getStat(){
+        shipBoard.addBreakSingleEngine(true);
     }
-
-
+    public void destroy(){
+        shipBoard.addBreakSingleEngine(false);
+        super.destroy();
+    }
 }

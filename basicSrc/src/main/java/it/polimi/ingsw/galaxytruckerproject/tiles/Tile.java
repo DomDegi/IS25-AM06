@@ -5,8 +5,29 @@ public abstract class Tile {
     private Link east;
     private Link south;
     private Link west;
+    private boolean destroyed = false;
     private Coordinates coordinates;
-    private ShipBoard shipBoard;
+    protected ShipBoard shipBoard;
+
+    public Tile(){
+        this.nord=nord;
+        this.east=east;
+        this.south=south;
+        this.west=west;
+    }
+    //GETTER METHODS LINKS
+    public Link getNord(){
+        return nord;
+    }
+    public Link getEast(){
+        return east;
+    }
+    public Link getSouth(){
+        return south;
+    }
+    public Link getWest(){
+        return west;
+    }
 
     public boolean isCorrect(){
         //  We need to remember the LinkCheck
@@ -20,15 +41,14 @@ public abstract class Tile {
         west=south;
         south=east;
     }
-    public Tile(){
-        this.nord=nord;
-        this.east=east;
-        this.south=south;
-        this.west=west;
-    }
 
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
     }
+    public void destroy(){
+        destroyed = true;
+    }
+
+
 
 }

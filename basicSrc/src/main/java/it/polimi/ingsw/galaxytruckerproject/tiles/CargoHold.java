@@ -30,4 +30,11 @@ public abstract class CargoHold extends Tile{
         else
             cargo.remove(good);
     }
+
+    public void destroy(){
+        //I could have only used the Destroyed flag set in the superclass, but for clarity,
+        //I also emptied the goods array contained within it.
+        cargo.clear();
+        super.destroy();
+    }
 }

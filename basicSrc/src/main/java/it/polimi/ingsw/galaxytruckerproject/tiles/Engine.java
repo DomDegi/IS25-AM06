@@ -16,7 +16,4 @@ public abstract class Engine extends Tile{
         if(this.direction!= Direction.SOUTH) return false;
         return super.isCorrect();
     }
-    public void getStat(){
-        //We need to implement Dashboard first
-    }
 }

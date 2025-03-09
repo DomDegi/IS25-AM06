@@ -6,13 +6,23 @@ public class DoubleCannon extends Cannon{
         super();
     }
 
-    public void getStat(){
-        //Check shipboard
-    }
 
-    public boolean chooseToUse()
-    {
+    public boolean chooseToUse(){
         System.out.println("DoubleCannon");
         return true;
+    }
+
+    public void getStat(){
+        if(direction == Direction.NORTH)
+            shipBoard.addBreakStraightDoubleCannon(true);
+        else
+            shipBoard.addBreakSidewaysDoubleCannon(true);
+    }
+    public void destroy(){
+        if(direction == Direction.NORTH)
+            shipBoard.addBreakStraightDoubleCannon(false);
+        else
+            shipBoard.addBreakSidewaysDoubleCannon(false);
+        super.destroy();
     }
 }

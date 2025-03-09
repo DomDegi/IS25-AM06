@@ -6,13 +6,18 @@ public class BatteryComponents extends Tile{
         super();
         this.batteryCells = batteryCells;
     }
-    public void getStat(){
-        // We need to implement Dashboard first
-    }
     public int getNumBatteries(){
         return this.batteryCells;
     }
     public void consumeNumBatteries(){
         this.batteryCells--;
+    }
+
+    public void getStat(){
+        shipBoard.addBreakBatteries(batteryCells);
+    }
+    public void destroy(){
+        shipBoard.addBreakBatteries(-batteryCells);
+        super.destroy();
     }
 }

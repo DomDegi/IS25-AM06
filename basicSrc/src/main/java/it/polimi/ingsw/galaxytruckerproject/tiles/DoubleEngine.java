@@ -5,11 +5,14 @@ public class DoubleEngine extends Engine{
     public DoubleEngine(){
         super();
     }
-    public void getStat(){
-        //
-    }
+
     public boolean ChoosetoUse(){
         return true;
     }
 
+    public void getStat(){shipBoard.addBreakDoubleEngine(true);}
+    public void destroy(){
+        shipBoard.addBreakDoubleEngine(false);
+        super.destroy();
+    }
 }

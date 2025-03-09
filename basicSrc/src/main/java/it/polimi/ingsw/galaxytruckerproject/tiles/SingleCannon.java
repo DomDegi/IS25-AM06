@@ -5,19 +5,21 @@ public class SingleCannon extends Cannon {
 
     public SingleCannon() {
         super();
-        if(direction == Direction.Nord) {
+        if(direction == Direction.NORTH) {
             this.fireStrength = 1;
         }
         else {
-            this.fireStrength = 0,5;
+            this.fireStrength=0.5f;
         }
     }
 
-    public getStat(){
-        //Check shipboard
+    public void getStat(){
+        shipBoard.addBreakSingleCannonPower(fireStrength);
     }
-
-
+    public void destroy(){
+        shipBoard.addBreakSingleCannonPower(-fireStrength);
+        super.destroy();
+    }
 }
 
 
