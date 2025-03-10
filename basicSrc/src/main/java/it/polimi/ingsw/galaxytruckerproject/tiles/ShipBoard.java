@@ -73,6 +73,51 @@ public class ShipBoard {
     }
     public ArrayList<Coverage> getCoverageShields(){return shields;}
     public Tile[][] getTilesTable(){return tilesTable;}
+    public float getCannonStrenght(){
+        float fireStrenght=singleCannonPower;
+        System.out.println("you have "+numStraightDoubleCannon+" straight double cannons, how many of them will be fired?");
+        Scanner scanner = new Scanner(System.in);
+        int i=scanner.nextInt();
+        if(i<=numStraightDoubleCannon)
+        {
+            fireStrenght+= 2*i;
+            chooseBatteryUse(-i);
+        }
+        else System.out.println("error: too many uses");
+        System.out.println("you have "+numSidewaysDoubleCannon+" straight double cannons, how many of them will be fired?");
+        i=scanner.nextInt();
+        if(i<=numSidewaysDoubleCannon)
+        {
+            fireStrenght+= i;
+            chooseBatteryUse(-i);
+        }
+        else System.out.println("error: too many uses");
+        if (fireStrenght>0)
+        {
+            fireStrenght += 2*numPurpleAliens;
+        }
+        return fireStrenght;
+
+    }
+    public int getEngineStrenght(){
+        int engineStrenght=numSingleEngine;
+        System.out.println("you have "+numDoubleEngine+" straight double cannons, how many of them will be fired?");
+        Scanner scanner = new Scanner(System.in);
+        int i=scanner.nextInt();
+        if(i<=numDoubleEngine)
+        {
+            engineStrenght+= 2*i;
+            chooseBatteryUse(-i);
+        }
+        else System.out.println("error: too many uses");
+        if (engineStrenght>0)
+        {
+            engineStrenght += 2*numBrownAliens;
+        }
+        return engineStrenght;
+
+    }
+
 
     //METODO INIZIALIZZAZIONE
     public void addBreakSingleCannonPower(float num){
@@ -110,6 +155,24 @@ public class ShipBoard {
     public void addBreakBatteries(int num){
         numBatteries += num;
         //if (num<0) -> Decide which Battery to use
+    }
+    public void addBookedTile (Tile tile){
+        if(bookedTiles.size()==2){
+            System.out.println("can't add booked tile");
+            return;
+        }
+        bookedTiles.add(tile);
+        return;
+    }
+    public Tile removeBookedTile (int num){
+        if(num>1||num<0)
+        {
+            System.out.println("the tile do not exist");
+            return null;
+        }
+        Tile tile = bookedTiles.get(num);
+        bookedTiles.remove(num);
+        return tile;
     }
 
     //inizializzazione shipboard volo di prova e primo livello
@@ -156,8 +219,7 @@ public class ShipBoard {
         }
     }
 
-    //I am not sure about this method
-
+    //destroy algorithm with choice
     public void destroyTile(Coordinates coordinates){
         if(coordinates.x == 0 && coordinates.y == 0){ System.out.println("Can't destroy ");}
         tilesTable[coordinates.x][coordinates.y].destroy();
@@ -230,10 +292,10 @@ public class ShipBoard {
 
 
     }
+
     //RETURN THE SET OF TILES LINKED WITH THE STARTING ONE
     //i assume that the correctness of the links has already been verified
     //in the case of construction errors this method will be played for each error
-
     public Set<Coordinates> brokenGraph (Coordinates start){
         Set<Coordinates> set = new HashSet<Coordinates>();
         return brokenGraph2(start, set);
@@ -260,6 +322,10 @@ public class ShipBoard {
         }
         return set;
     }
+
+
+
+
 
     public void checkBorderTile(int i, int j){
 
@@ -299,7 +365,7 @@ public class ShipBoard {
     // uno solo cremate da due caselle
     public void chooseCrewtoRemove(Coordinates coordinatesCrew, int crewtoRemove){
         if(tilesTable[coordinatesCrew.x][coordinatesCrew.y] instanceof Cabin){
-            //
+
         }
         //collegamento tra tiles e numCrew (how to do it?)
     }

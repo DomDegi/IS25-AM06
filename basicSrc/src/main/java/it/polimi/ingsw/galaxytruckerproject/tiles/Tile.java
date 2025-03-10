@@ -78,7 +78,7 @@ public abstract class Tile {
         this.coordinates = coordinates;
     }
     public void destroy(){
-        destroyed = true;
+        return;
     }
 
 
