@@ -13,4 +13,7 @@ public class Coordinates {
     public int getY(){
         return y;
     }
+    public void print(){
+        System.out.print(" {"+x+";"+y+"} ");
+    }
 }

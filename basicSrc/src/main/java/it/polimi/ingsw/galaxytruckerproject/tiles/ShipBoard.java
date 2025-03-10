@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Scanner;
 import java.util.Set;
 
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
@@ -156,21 +157,23 @@ public class ShipBoard {
     }
 
     //I am not sure about this method
+
     public void destroyTile(Coordinates coordinates){
         if(coordinates.x == 0 && coordinates.y == 0){ System.out.println("Can't destroy ");}
         tilesTable[coordinates.x][coordinates.y].destroy();
         tilesTable[coordinates.getX()][coordinates.getY()] = null;
-        ArrayList<Set<Coordinates>> sets = new ArrayList<>();
+        Set<Coordinates> set1 = null;
+        Set<Coordinates> set2 = null;
+        Set<Coordinates> set3 = null;
+        Set<Coordinates> set4 = null;
         //southSet
         int x=coordinates.getX();
         int y=coordinates.getY();
 
         //south
         if(tilesTable[x+1][y]!= null  &&  !(tilesTable[x+1][y] instanceof VoidTile)){
-            sets.add( brokenGraph(new Coordinates(x+1,y)));
+            set1=( brokenGraph(new Coordinates(x+1,y)));
         }
-
-        //rinomina i set2,3,4 in modo da usare l'arraylist di set, anche nelle condizioni degli if
         //east
         if(tilesTable[x][y+1]!= null  &&  !(tilesTable[x][y+1] instanceof VoidTile) && !set1.contains(tilesTable[x][y+1])){
             set2 = brokenGraph(new Coordinates(x,y+1));
@@ -182,6 +185,47 @@ public class ShipBoard {
         //west
         if(tilesTable[x][y-1]!= null  &&  !(tilesTable[x][y-1] instanceof VoidTile) && !set1.contains(tilesTable[x][y-1]) && !set2.contains(tilesTable[x][y-1]) && !set3.contains(tilesTable[x][y-1])){
            set4 = brokenGraph(new Coordinates(x,y-1));
+        }
+        ArrayList<Set<Coordinates>> array = new ArrayList<>();
+        System.out.println("choose a tile set:");
+        if(set1!=null){
+            array.add(set1);
+            System.out.println ("set"+array.size() );
+            for(Coordinates c : set1) c.print();
+            System.out.print("\n");
+        }
+        if(set2!=null){
+            array.add(set2);
+            System.out.println ("set"+array.size());
+            for(Coordinates c : set2) c.print();
+            System.out.print("\n");
+        }
+        if(set3!=null){
+            array.add(set3);
+            System.out.println ("set"+array.size());
+            for(Coordinates c : set3) c.print();
+            System.out.print("\n");
+        }
+        if(set4!=null){
+            array.add(set4);
+            System.out.println ("set"+array.size());
+            for(Coordinates c : set4) c.print();
+            System.out.print("\n");
+        }
+        System.out.println("which number do you choose?");
+        System.out.print("set");
+        Scanner scanner = new Scanner(System.in);
+        int i=scanner.nextInt();
+        i--;
+        for(int j = 0; j < array.size(); j++){
+            if(j!=i)
+            {
+                for(Coordinates c : array.get(j)){
+                    tilesTable[c.getX()][c.getY()].destroy();
+                    tilesTable[c.getX()][c.getY()] = null;
+
+                }
+            }
         }
 
 
