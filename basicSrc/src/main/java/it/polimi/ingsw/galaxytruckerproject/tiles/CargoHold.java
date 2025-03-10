@@ -6,7 +6,7 @@ public abstract class CargoHold extends Tile{
     final int totSpaces;
     ArrayList<Goods> cargo;
 
-    public CargoHold(int totSpaces, Link nord, Link east, Link west, Link south) {
+    public CargoHold(int totSpaces) {
         super();
         this.totSpaces = totSpaces;
         this.cargo = new ArrayList<Goods>();
