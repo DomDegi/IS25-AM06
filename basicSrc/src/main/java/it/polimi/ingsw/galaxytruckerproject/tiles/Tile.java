@@ -47,7 +47,7 @@ public abstract class Tile {
                 return false;
             }
         }
-        /*//Check south
+        //Check south
         if(this.coordinates.getX()!=4) {
             other = tileTable[this.coordinates.getX()+1][this.coordinates.getY()];
             if(other!=null && !(other instanceof VoidTile) && !south.isConnected(other.getNord())) {
@@ -61,7 +61,7 @@ public abstract class Tile {
             if(other!=null && !(other instanceof VoidTile) && !west.isConnected(other.getEast())) {
                 return false;
             }
-        }*/
+        }
         //Checked
         return true;
     }

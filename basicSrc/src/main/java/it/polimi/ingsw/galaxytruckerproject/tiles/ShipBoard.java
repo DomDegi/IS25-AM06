@@ -360,6 +360,31 @@ public class ShipBoard {
             }
     }
 
+    public void verifyCorretness(){
+        Scanner scanner = new Scanner(System.in);
+        int x =300;
+        int y =300;
+        ArrayList<Coordinates> array = new ArrayList();
+        for(int i=0; i<5; i++)
+            for(int j=0; j<7; j++){
+                if(!tilesTable[i][j].isCorrect())
+                    array.add(new Coordinates(i,j));
+            }
+        if(array.size()==0)
+        {
+            System.out.println("the shipboard is correct");
+            return;
+        }
+        System.out.println("the wrong tiles are:");
+        for(Coordinates c : array){
+            System.out.println("x: "+c.x+" y: "+c.y);
+        }
+        System.out.println("choose to destroy");
+        x=scanner.nextInt();
+        y=scanner.nextInt();
+
+    }
+
     //Il metodo riceve in ingresso le coordinate della casella, e il numero di crewmate che vuole eliminare da
     //quela casella. Il giocatore infatti, nel caso in cui debba eliminarne due, ha la possibilità di rimuovere
     // uno solo cremate da due caselle
@@ -369,5 +394,7 @@ public class ShipBoard {
         }
         //collegamento tra tiles e numCrew (how to do it?)
     }
+
+
 
 }
