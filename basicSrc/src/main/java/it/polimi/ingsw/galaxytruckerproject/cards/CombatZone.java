@@ -3,6 +3,8 @@ package it.polimi.ingsw.galaxytruckerproject.cards;
 import it.polimi.ingsw.galaxytruckerproject.cards.penalties.Penalty;
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.Player;
+
+import javax.lang.model.type.NullType;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -10,9 +12,9 @@ import java.util.LinkedHashMap;
 import static it.polimi.ingsw.galaxytruckerproject.cards.ChallengeType.*;
 
 public class CombatZone extends Card{
-    private final LinkedHashMap<Challengetype, Penalty> listOfChallenges;
+    private final LinkedHashMap<ChallengeType, Penalty> listOfChallenges;
 
-    public CombatZone(int level, LinkedHashMap<Challengetype, Penalty> listOfPenalties){
+    public CombatZone(int level, LinkedHashMap<ChallengeType, Penalty> listOfPenalties){
         super(level, 0);
         this.listOfChallenges = listOfPenalties;
     }
@@ -21,22 +23,40 @@ public class CombatZone extends Card{
     public void executeCard(FlightBoard flightBoard) {
         Player[] listOfPlayer = flightBoard.getRanking();
 
-        for (Challengetype challenge: listOfChallenges.keySet()){
-            Player losingPlayer;
+        for (ChallengeType challenge: listOfChallenges.keySet()){
+            Player losingPlayer = null;
             Penalty penaltyToApply;
             switch (challenge) {
                 case MINIMUM_CANNON_STRENGTH:
-                    losingPlayer = Arrays.stream(listOfPlayer).min(Comparator.comparingInt(Player::getCannonStrength));
+                    for (Player player : listOfPlayer){
+                        if(losingPlayer==null){
+                            losingPlayer = player;
+                        } else if(player.getCannonStrength() < losingPlayer.getCannonStrength()){
+                            losingPlayer = player;
+                        }
+                    }
                     penaltyToApply = listOfChallenges.get(challenge);
                     penaltyToApply.applyPenalty(losingPlayer, flightBoard);
                     break;
                 case MINIMUM_ENGINE_POWER:
-                    losingPlayer = Arrays.stream(listOfPlayer).min(Comparator.comparingInt(Player::getEnginePower));
+                    for (Player player : listOfPlayer){
+                        if(losingPlayer==null){
+                            losingPlayer = player;
+                        } else if(player.getEnginePower() < losingPlayer.getEnginePower()){
+                            losingPlayer = player;
+                        }
+                    }
                     penaltyToApply = listOfChallenges.get(challenge);
                     penaltyToApply.applyPenalty(losingPlayer, flightBoard);
                     break;
                 case MINIMUM_CREW_NUMBER:
-                    losingPlayer = Arrays.stream(listOfPlayer).min(Comparator.comparingInt(Player::getCrewNumber));
+                    for (Player player : listOfPlayer){
+                        if(losingPlayer==null){
+                            losingPlayer = player;
+                        } else if(player.getCrewNumber() < losingPlayer.getCrewNumber()){
+                            losingPlayer = player;
+                        }
+                    }
                     penaltyToApply = listOfChallenges.get(challenge);
                     penaltyToApply.applyPenalty(losingPlayer, flightBoard);
                     break;

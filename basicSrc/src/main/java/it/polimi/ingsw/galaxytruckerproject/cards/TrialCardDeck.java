@@ -6,15 +6,15 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class TestCardDeck {
-    private ArrayList<Card> testDeck;
+public class TrialCardDeck {
+    private ArrayList<Card> trialDeck;
 
-    public TestCardDeck(String filename) {
-        this.testDeck = new ArrayList<>();
-        loadTestCards(filename);
+    public TrialCardDeck(String filename) {
+        this.trialDeck = new ArrayList<>();
+        loadTrialCards(filename);
     }
 
-    public void loadTestCards(String filename){
+    public void loadTrialCards(String filename){
         try{
             ObjectMapper objectMapper = new ObjectMapper();
 
@@ -26,8 +26,8 @@ public class TestCardDeck {
             }
             CardCollection cardCollection = objectMapper.readValue(inputStream, CardCollection.class);
 
-            testDeck = cardCollection.getCards();
-            Collections.shuffle(testDeck);
+            trialDeck = cardCollection.getCards();
+            Collections.shuffle(trialDeck);
         }
         catch(IOException e){
             System.out.println("Errore durante il caricamento del file JSON");
@@ -35,11 +35,11 @@ public class TestCardDeck {
         }
     }
 
-    public ArrayList<Card> getTestDeck() {
-        return testDeck;
+    public ArrayList<Card> getTrialDeck() {
+        return trialDeck;
     }
 
     public Card drawCard(){
-        return testDeck.removeFirst();
+        return trialDeck.removeFirst();
     }
 }

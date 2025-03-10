@@ -5,6 +5,7 @@ module it.polimi.ingsw.galaxytruckerproject {
     requires com.fasterxml.jackson.databind;
     requires java.sql;
     requires java.smartcardio;
+    requires java.compiler;
 
 
     opens it.polimi.ingsw.galaxytruckerproject to javafx.fxml;

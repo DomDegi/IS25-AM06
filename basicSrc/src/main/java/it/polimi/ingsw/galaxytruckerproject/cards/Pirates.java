@@ -15,7 +15,6 @@ public class Pirates extends Enemies {
         this.rewardCredits = rewardCredits;
         this.listOfShots = listOfShots;
     }
-
     @Override
     public void executeCard(FlightBoard flightBoard){
 
