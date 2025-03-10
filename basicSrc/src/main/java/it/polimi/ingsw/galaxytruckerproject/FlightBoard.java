@@ -2,7 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject;
 
 public class FlightBoard {
     private final Player[] posList = new Player[4];
-
+    private int freePodiumPosition = 4;
     public FlightBoard() {
         //insert initial positioning algorithm
         posList[0].setPlayerPosition(9);
@@ -23,7 +23,12 @@ public class FlightBoard {
     }
 
     public void earlyLanding(int player) {
-
+        posList[player].setPodium(freePodiumPosition);
+        posList[player].setPlayerRanking(freePodiumPosition);
+        Player tempPlayer = posList[player];
+        posList[player]=posList[freePodiumPosition-1];
+        posList[freePodiumPosition-1] = tempPlayer;
+        freePodiumPosition--;
     }
 
     public void moveForward(int player, int movement) {
@@ -40,7 +45,7 @@ public class FlightBoard {
             }
         }
         if (posList[player].getPlayerRanking() == 1) {
-            for (int i = 3; i >= 0 ; i--) {
+            for (int i = freePodiumPosition-1; i >= 0 ; i--) {
                 if ( posList[player].getPlayerPosition() >= posList[i].getPlayerPosition()+18) {
                     earlyLanding(i);
                 }
