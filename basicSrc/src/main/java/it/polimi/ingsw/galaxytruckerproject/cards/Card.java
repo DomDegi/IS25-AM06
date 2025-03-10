@@ -1,6 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
-import java.util.ArrayList;
+import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 
 public abstract class Card {
     protected final int level;

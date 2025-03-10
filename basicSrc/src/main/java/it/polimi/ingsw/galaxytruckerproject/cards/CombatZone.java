@@ -1,7 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.cards.penalties.Penalty;
-
+import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
+import it.polimi.ingsw.galaxytruckerproject.Player;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedHashMap;

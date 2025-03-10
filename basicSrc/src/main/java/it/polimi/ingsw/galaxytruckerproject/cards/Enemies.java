@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
+import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
+
 public abstract class Enemies extends Card {
     protected final int cannonStrenght;
 

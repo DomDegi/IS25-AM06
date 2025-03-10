@@ -1,7 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.CannonShot;
-
+import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
+import it.polimi.ingsw.galaxytruckerproject.Player;
 import java.util.ArrayList;
 
 public class Pirates extends Enemies {
@@ -15,10 +16,10 @@ public class Pirates extends Enemies {
     }
 
     @Override
-    public void executeCard(FlightBoard FlightBoard){
+    public void executeCard(FlightBoard flightBoard){
 
         //iterates on the player array until the condition isn't false
-        for(Player player: FlightBoard.getRanking()){
+        for(Player player: flightBoard.getRanking()){
 
             //if player is weaker, gets hit by cannonShots
             if (player.getCannonStrength() < cannonStrength) {

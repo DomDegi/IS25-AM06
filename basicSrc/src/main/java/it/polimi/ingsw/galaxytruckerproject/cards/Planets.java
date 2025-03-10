@@ -1,6 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import java.util.ArrayList;
+import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
+import it.polimi.ingsw.galaxytruckerproject.Player;
 import it.polimi.ingsw.galaxytruckerproject.Goods;
 
 public class Planets extends Card{

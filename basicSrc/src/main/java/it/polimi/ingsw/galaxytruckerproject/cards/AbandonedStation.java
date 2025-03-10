@@ -1,7 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.Goods;
-
+import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
+import it.polimi.ingsw.galaxytruckerproject.Player;
 import java.util.ArrayList;
 
 public class AbandonedStation extends Card {

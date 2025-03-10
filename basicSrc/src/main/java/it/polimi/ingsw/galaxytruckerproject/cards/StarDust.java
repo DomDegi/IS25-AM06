@@ -1,5 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
+import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import java.util.Arrays;
 
 public class StarDust extends Card {

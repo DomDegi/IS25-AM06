@@ -1,5 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
+import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
+import it.polimi.ingsw.galaxytruckerproject.Player;
+
 public class Slavers extends Enemies{
     private final int rewardCredits;
     private final int lostCrew;
