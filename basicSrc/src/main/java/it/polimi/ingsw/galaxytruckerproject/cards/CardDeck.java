@@ -1,14 +1,11 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
-import it.polimi.ingsw.galaxytruckerproject.Player;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 public class CardDeck {
     private ArrayList<Card> deckLvl1;

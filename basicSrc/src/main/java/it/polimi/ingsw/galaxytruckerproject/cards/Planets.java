@@ -1,6 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import java.util.ArrayList;
+import java.util.Scanner;
+
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.Player;
 import it.polimi.ingsw.galaxytruckerproject.Goods;
@@ -37,11 +39,12 @@ public class Planets extends Card{
         for (Player player: flightBoard.getRanking()){
             System.out.printf("input from 1 to %d to pick which to land on, input 0 to ignore", numberOfPlanets);
             printListOfPlanets();
+            Scanner scanner = new Scanner(System.in);
             int choice = scanner.nextInt();
             if (choice > 0 && !listOfPlanets.get(choice - 1).getOccupationStatus()){
                 player.gainGoods(listOfPlanets.get(choice - 1).getListOfGoods());
                 listOfPlanets.get(choice - 1).setOccupationStatus();
-                flightBoard.moveBackward(player, requiredDays);
+                flightBoard.moveBackward(player.getPlayerRanking()-1, requiredDays);
             }
             else if (listOfPlanets.get(choice - 1).getOccupationStatus()){
                 System.out.printf("Error, planet %d is already taken", choice);

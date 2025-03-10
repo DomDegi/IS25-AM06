@@ -4,6 +4,7 @@ import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.CannonShot;
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.Player;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Pirates extends Enemies {
     private final int rewardCredits;
@@ -33,10 +34,11 @@ public class Pirates extends Enemies {
                 System.out.printf("You defeated the pirates,\n press 1 to accept %d and lose %d days of flight or 0 to refuse\n", rewardCredits, requiredDays);
 
                 //reads player input
+                Scanner scanner = new Scanner(System.in);
                 int choice = scanner.nextInt();
                 if (choice == 1) {
                     player.gainCredit(rewardCredits);
-                    flightBoard.moveBackward(player, requiredDays);
+                    flightBoard.moveBackward(player.getPlayerRanking()-1, requiredDays);
                 }
                 //stops the outer for loop
                 break;

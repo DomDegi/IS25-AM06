@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
 
+import it.polimi.ingsw.galaxytruckerproject.Player;
+
 public class CannonShot extends Projectile {
     private final Size size;
 
@@ -27,6 +29,6 @@ public class CannonShot extends Projectile {
 
         diceRoll = rollTheDices();
         //Calls defendFromProjectile on the player that lost in CombatZone or against Pirates
-        player.defendFromProjectile(this);
+        penalizedPlayer.defendFromProjectile(this);
     }
 }

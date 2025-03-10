@@ -4,6 +4,7 @@ import it.polimi.ingsw.galaxytruckerproject.Goods;
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.Player;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Smugglers extends Enemies{
     private final int lostGoods;
@@ -19,7 +20,7 @@ public class Smugglers extends Enemies{
     public void executeCard(FlightBoard flightBoard) {
 
         //iterates on the player array until the condition isn't false
-        for(Player player: FlightBoard.getRanking()){
+        for(Player player: flightBoard.getRanking()){
 
             //if player is weaker, loses goods
             if (player.getCannonStrength() < cannonStrength) {
@@ -35,10 +36,11 @@ public class Smugglers extends Enemies{
                 });
 
                 //reads player input
+                Scanner scanner = new Scanner(System.in);
                 int choice = scanner.nextInt();
                 if (choice == 1) {
                     player.gainGoods(rewardGoods);
-                    flightBoard.moveBackward(player, requiredDays);
+                    flightBoard.moveBackward(player.getPlayerRanking(), requiredDays);
                 }
                 //stops the outer for loop
                 break;

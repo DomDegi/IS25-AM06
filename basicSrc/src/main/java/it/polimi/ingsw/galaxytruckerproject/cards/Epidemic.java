@@ -12,6 +12,6 @@ public class Epidemic extends Card {
     @Override
     public void executeCard(FlightBoard flightBoard) {
         Arrays.stream(flightBoard.getRanking()).
-                forEach(player -> player.adjacentCabins()); //could be called epidemic()
+                forEach(player -> player.adiacentCabins()); //could be called epidemic()
     }
 }

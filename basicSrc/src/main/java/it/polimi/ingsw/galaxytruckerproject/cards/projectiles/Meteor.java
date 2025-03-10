@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
 
 import java.util.Arrays;
+import it.polimi.ingsw.galaxytruckerproject.Player;
 
 public class Meteor extends Projectile {
 

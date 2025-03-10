@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.Player;
+import java.util.Scanner;
 
 public class AbandonedShip extends Card{
     private final int crewNumberRequired;
@@ -25,9 +26,10 @@ public class AbandonedShip extends Card{
                         requiredDays, crewNumberRequired, possibleCreditGains);
                 System.out.println("Input 1 to accept or 0 to refuse\n");
                 //reads player input
+                Scanner scanner = new Scanner(System.in);
                 int choice = scanner.nextInt();
                 if (choice == 1) {
-                    flightBoard.moveBackward(player, requiredDays);
+                    flightBoard.moveBackward(player.getPlayerRanking()-1, requiredDays);
                     player.loseCrew(crewNumberRequired);
                     player.gainCredit(possibleCreditGains);
                     //exit for loop: the station has been claimed

@@ -3,15 +3,15 @@ package it.polimi.ingsw.galaxytruckerproject.cards;
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 
 public abstract class Enemies extends Card {
-    protected final int cannonStrenght;
+    protected final int cannonStrength;
 
-    public Enemies(int level, int requiredDays, int cannonStrenght) {
+    public Enemies(int level, int requiredDays, int cannonStrength) {
         super(level, requiredDays);
-        this.cannonStrenght = cannonStrenght;
+        this.cannonStrength = cannonStrength;
     }
 
-    public int getCannonStrenght(){
-        return cannonStrenght;
+    public int getCannonStrength(){
+        return cannonStrength;
     }
 
     public abstract void executeCard(FlightBoard flightBoard);

@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
 
 import java.util.Random;
 
+
 public abstract class Projectile {
     protected final Direction direction;
     protected int diceRoll;

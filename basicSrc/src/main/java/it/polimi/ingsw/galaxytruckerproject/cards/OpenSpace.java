@@ -15,6 +15,6 @@ public class OpenSpace extends Card {
     @Override
     public void executeCard(FlightBoard flightBoard) {
         Arrays.stream(flightBoard.getRanking()).
-                forEach(player -> flightBoard.moveForward(player, player.getEnginePower()));
+                forEach(player -> flightBoard.moveForward(player.getPlayerRanking()-1, player.getEnginePower()));
     }
 }
