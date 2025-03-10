@@ -17,7 +17,6 @@ public class CardDeck {
         loadCards(filename);
     }
 
-
     public void loadCards(String filename) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
