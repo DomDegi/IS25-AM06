@@ -12,6 +12,6 @@ public class FlightDaysPenalty extends Penalty{
 
     @Override
     public void applyPenalty(Player player, FlightBoard flightBoard) {
-        flightBoard.moveBackward(player.getPlayerRanking()-1, numberOfLostDays);
+        flightBoard.moveBackward(player.getPlayerRanking(), numberOfLostDays);
     }
 }

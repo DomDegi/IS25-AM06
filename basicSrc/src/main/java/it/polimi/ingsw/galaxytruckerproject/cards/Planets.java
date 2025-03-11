@@ -44,7 +44,7 @@ public class Planets extends Card{
             if (choice > 0 && !listOfPlanets.get(choice - 1).getOccupationStatus()){
                 player.gainGoods(listOfPlanets.get(choice - 1).getListOfGoods());
                 listOfPlanets.get(choice - 1).setOccupationStatus();
-                flightBoard.moveBackward(player.getPlayerRanking()-1, requiredDays);
+                flightBoard.moveBackward(player.getPlayerRanking(), requiredDays);
             }
             else if (listOfPlanets.get(choice - 1).getOccupationStatus()){
                 System.out.printf("Error, planet %d is already taken", choice);

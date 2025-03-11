@@ -35,7 +35,7 @@ public class AbandonedStation extends Card {
                 Scanner scanner = new Scanner(System.in);
                 int choice = scanner.nextInt();
                 if (choice == 1) {
-                    flightBoard.moveBackward(player.getPlayerRanking()-1, requiredDays);
+                    flightBoard.moveBackward(player.getPlayerRanking(), requiredDays);
                     player.gainGoods(possibleGoodsGain);
                     //exit for loop: the station has been claimed
                     break;

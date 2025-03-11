@@ -36,7 +36,7 @@ public class Slavers extends Enemies{
                 int choice = scanner.nextInt();
                 if (choice == 1) {
                     player.gainCredit(rewardCredits);
-                    flightBoard.moveBackward(player.getPlayerRanking()-1, requiredDays);
+                    flightBoard.moveBackward(player.getPlayerRanking(), requiredDays);
                 }
 
                 //stops the outer for loop

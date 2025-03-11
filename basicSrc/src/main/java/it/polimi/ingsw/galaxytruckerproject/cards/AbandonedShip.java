@@ -29,7 +29,7 @@ public class AbandonedShip extends Card{
                 Scanner scanner = new Scanner(System.in);
                 int choice = scanner.nextInt();
                 if (choice == 1) {
-                    flightBoard.moveBackward(player.getPlayerRanking()-1, requiredDays);
+                    flightBoard.moveBackward(player.getPlayerRanking(), requiredDays);
                     player.loseCrew(crewNumberRequired);
                     player.gainCredit(possibleCreditGains);
                     //exit for loop: the station has been claimed
