@@ -9,8 +9,8 @@ public class Slavers extends Enemies{
     private final int rewardCredits;
     private final int lostCrew;
 
-    public Slavers(int level, int requiredDays, int cannonStrenth, int rewardCredits, int lostCrew) {
-        super(level, requiredDays, cannonStrenth);
+    public Slavers(int level, int requiredDays, int cannonStrength, int rewardCredits, int lostCrew) {
+        super(level, requiredDays, cannonStrength);
         this.rewardCredits = rewardCredits;
         this.lostCrew = lostCrew;
     }
@@ -23,7 +23,7 @@ public class Slavers extends Enemies{
 
             //if player is weaker, loses crew members
             if (player.getCannonStrength() < cannonStrength) {
-                System.out.printf("The slavers defeated you thanks to their superior cannon strenght of %d,\n hang tight\n", cannonStrength);
+                System.out.printf("The slavers defeated you thanks to their superior cannon strength of %d,\n hang tight\n", cannonStrength);
                 player.loseCrew(lostCrew);
             }
 

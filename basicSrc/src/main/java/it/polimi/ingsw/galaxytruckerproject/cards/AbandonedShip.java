@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.Player;
+
 import java.util.Scanner;
 
 public class AbandonedShip extends Card{

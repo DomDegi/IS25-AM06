@@ -1,7 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
-import java.util.Arrays;
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
+
+import java.util.Arrays;
 
 public class Epidemic extends Card {
 

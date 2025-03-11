@@ -1,7 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
-import java.util.Arrays;
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
+
+import java.util.Arrays;
 
 public class OpenSpace extends Card {
 
@@ -11,7 +12,7 @@ public class OpenSpace extends Card {
         super(level, 0);
     }
 
-    //makes so that the player gain as many days as their engineStrenght
+    //makes so that the player gain as many days as their engineStrength
     @Override
     public void executeCard(FlightBoard flightBoard) {
         Arrays.stream(flightBoard.getRanking()).

@@ -1,8 +1,9 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
-import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.CannonShot;
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.Player;
+import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.CannonShot;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -24,9 +25,7 @@ public class Pirates extends Enemies {
             //if player is weaker, gets hit by cannonShots
             if (player.getCannonStrength() < cannonStrength) {
                 System.out.printf("The pirates defeated you thanks to their superior cannon strength of %d,\n hang tight!\n", cannonStrength);
-                listOfShots.forEach((cannonShot) -> {
-                    cannonShot.throwCannonShot(player);
-                });
+                listOfShots.forEach((cannonShot) -> cannonShot.throwCannonShot(player));
             }
             //if player is stronger, they can choose if they want to spend days to get the rewards
             else if (player.getCannonStrength() > cannonStrength) {

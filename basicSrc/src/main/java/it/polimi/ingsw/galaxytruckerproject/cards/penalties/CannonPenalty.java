@@ -1,8 +1,9 @@
 package it.polimi.ingsw.galaxytruckerproject.cards.penalties;
 
-import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.CannonShot;
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.Player;
+import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.CannonShot;
+
 import java.util.ArrayList;
 
 public class CannonPenalty extends Penalty {
