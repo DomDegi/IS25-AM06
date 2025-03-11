@@ -18,10 +18,12 @@ public class ShipBoard {
     private int numSingleEngine;
     private int numDoubleEngine;
     private ArrayList<Coverage> shields;
+    private ArrayList<Coordinates> batteryCoordinates;
     private int numBrownAliens;
     private int numPurpleAliens;
     private int numExposedConnectors ;
     private int numCrew;
+
 
 
     public ShipBoard(Player player){
@@ -71,6 +73,7 @@ public class ShipBoard {
     public int getNumExposedConnectors() {
         return numExposedConnectors;
     }
+    public ArrayList<Coordinates> getBatteryCoordinates() {return batteryCoordinates;}
     public ArrayList<Coverage> getCoverageShields(){return shields;}
     public Tile[][] getTilesTable(){return tilesTable;}
     public float getCannonStrenght(){
@@ -117,6 +120,7 @@ public class ShipBoard {
         return engineStrenght;
 
     }
+
 
 
     //METODO INIZIALIZZAZIONE
@@ -326,9 +330,7 @@ public class ShipBoard {
 
 
 
-
     public void checkBorderTile(int i, int j){
-
         //if the tile at its LEFT is either out of bounds, a VoidTile, or empty,
         //then our Tile iss a borderTile and I have to check if it is Exsposed
         if(i-1<0 || tilesTable[i-1][j] instanceof VoidTile || tilesTable[i+1][j].equals(null))
@@ -353,6 +355,7 @@ public class ShipBoard {
             if(!tilesTable[i][j].getNord().getConnectorsType().equals(Connectors.SMOOTH))
                 penaltyTiles++;
     }
+
     public void countExsposedConnectors(){
         for(int i=0; i<5; i++)
             for(int j=0; j<7; j++){
@@ -395,6 +398,31 @@ public class ShipBoard {
         //collegamento tra tiles e numCrew (how to do it?)
     }
 
+
+
+    public void chooseBatteryUse(int batteryConsum){
+        for(Coordinates coordinates : batteryCoordinates)
+            System.out.println(coordinates);
+
+        for(int i=0; i<batteryConsum; i++) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Insert coordinate X: ");
+            int x = scanner.nextInt();
+            System.out.println("Insert coordinate Y: ");
+            int y = scanner.nextInt();
+            if(!(tilesTable[x][y] instanceof BatteryComponents)){
+                System.out.println("THE TILE IS NOT A BATTERYCOMPONENT");
+                i--;
+            }
+            else if(((BatteryComponents) tilesTable[x][y]).getNumBatteries() == 0){
+                System.out.println("THE TILE IS NOT A BATTERYCOMPONENT");
+                i--;
+            }
+            else{
+                ((BatteryComponents) tilesTable[x][y]).consumeNumBatteries();
+            }
+        }
+    }
 
 
 }

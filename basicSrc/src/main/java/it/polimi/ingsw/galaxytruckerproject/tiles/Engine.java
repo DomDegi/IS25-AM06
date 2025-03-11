@@ -3,6 +3,11 @@ package it.polimi.ingsw.galaxytruckerproject.tiles;
 public abstract class Engine extends Tile{
     Direction direction;
 
+    public Engine(Link nord, Link east, Link south, Link west) {
+        super(nord, east, south, west);
+        nord.connectorsType = Connectors.SMOOTH;
+
+    }
     public void rotate(){
         super.rotate();
         int i = this.direction.ordinal()+1;

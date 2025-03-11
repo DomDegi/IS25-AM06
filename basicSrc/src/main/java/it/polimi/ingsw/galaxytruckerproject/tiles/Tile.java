@@ -9,7 +9,7 @@ public abstract class Tile {
     protected Coordinates coordinates;
     protected ShipBoard shipBoard;
 
-    public Tile(){
+    public Tile(Link nord, Link east, Link south, Link west){
         this.nord=nord;
         this.east=east;
         this.south=south;
@@ -80,7 +80,5 @@ public abstract class Tile {
     public void destroy(){
         return;
     }
-
-
 
 }
