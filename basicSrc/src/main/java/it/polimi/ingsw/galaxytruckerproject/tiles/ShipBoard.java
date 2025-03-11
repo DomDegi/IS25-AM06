@@ -317,7 +317,7 @@ public class ShipBoard {
             brokenGraph2(new Coordinates(x,y+1), set);
         }
         //north
-        if(tilesTable[x][y].nord.getConnectorsType()!= Connectors.SMOOTH && tilesTable[x-1][y]!= null  &&  !(tilesTable[x-1][y] instanceof VoidTile) && !set.contains(tilesTable[x-1][y])){
+        if(tilesTable[x][y].north.getConnectorsType()!= Connectors.SMOOTH && tilesTable[x-1][y]!= null  &&  !(tilesTable[x-1][y] instanceof VoidTile) && !set.contains(tilesTable[x-1][y])){
             brokenGraph2(new Coordinates(x-1,y), set);
         }
         //west
@@ -352,7 +352,7 @@ public class ShipBoard {
         //if the tile OVER is either out of bounds, a VoidTile, or empty,
         // then our Tile iss a borderTile and I have to check if it is Exsposed
         if(j-1<0 || tilesTable[i][j-1] instanceof VoidTile || tilesTable[i][j+1].equals(null))
-            if(!tilesTable[i][j].getNord().getConnectorsType().equals(Connectors.SMOOTH))
+            if(!tilesTable[i][j].getNorth().getConnectorsType().equals(Connectors.SMOOTH))
                 penaltyTiles++;
     }
 
@@ -363,29 +363,34 @@ public class ShipBoard {
             }
     }
 
-    public void verifyCorretness(){
+    public void verifyCorretness() {
         Scanner scanner = new Scanner(System.in);
-        int x =300;
-        int y =300;
+        Coordinates coordinates = new Coordinates(300, 300);
         ArrayList<Coordinates> array = new ArrayList();
-        for(int i=0; i<5; i++)
-            for(int j=0; j<7; j++){
-                if(!tilesTable[i][j].isCorrect())
-                    array.add(new Coordinates(i,j));
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 7; j++) {
+                if (!tilesTable[i][j].isCorrect())
+                    array.add(new Coordinates(i, j));
             }
-        if(array.size()==0)
-        {
+        if (array.size() == 0) {
             System.out.println("the shipboard is correct");
             return;
         }
         System.out.println("the wrong tiles are:");
-        for(Coordinates c : array){
-            System.out.println("x: "+c.x+" y: "+c.y);
+        for (Coordinates c : array) {
+            System.out.println("x: " + c.x + " y: " + c.y);
         }
         System.out.println("choose to destroy");
-        x=scanner.nextInt();
-        y=scanner.nextInt();
-
+        while (!array.contains(coordinates)) {
+            coordinates.x = scanner.nextInt();
+            coordinates.y = scanner.nextInt();
+            if (!array.contains(coordinates)) {
+                System.out.println("wrong tile");
+            }
+        }
+        destroyTile(coordinates);
+        verifyCorretness();
+        return;
     }
 
     //Il metodo riceve in ingresso le coordinate della casella, e il numero di crewmate che vuole eliminare da
