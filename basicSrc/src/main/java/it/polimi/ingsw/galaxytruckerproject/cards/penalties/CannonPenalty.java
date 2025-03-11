@@ -20,6 +20,6 @@ public class CannonPenalty extends Penalty {
 
     @Override
     public void applyPenalty(Player player, FlightBoard flightBoard){
-        listOfShots.forEach(cannonShot->{cannonShot.throwCannonShot(player);});
+        listOfShots.forEach(cannonShot->cannonShot.throwCannonShot(player));
     }
 }
