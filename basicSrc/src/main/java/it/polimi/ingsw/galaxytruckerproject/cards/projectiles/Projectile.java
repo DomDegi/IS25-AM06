@@ -1,7 +1,15 @@
 package it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.util.Random;
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Meteor.class, name = "Meteor"),
+        @JsonSubTypes.Type(value = CannonShot.class, name = "CannonShot")
+})
 
 public abstract class Projectile {
     protected final Direction direction;

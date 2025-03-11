@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class CardDeck {
-    private ArrayList<Card> deckLvl1;
-    private ArrayList<Card> deckLvl2;
+    private final ArrayList<Card> deckLvl1;
+    private final ArrayList<Card> deckLvl2;
 
     public CardDeck(String filename) {
         this.deckLvl1 = new ArrayList<>();
@@ -38,7 +38,7 @@ public class CardDeck {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Errore durante il caricamento del file JSON");
+            System.out.println("Error during the loading of " + filename);
             e.printStackTrace();
         }
     }
@@ -69,4 +69,3 @@ public class CardDeck {
         return tier2FlightCards;
     }
 }
-

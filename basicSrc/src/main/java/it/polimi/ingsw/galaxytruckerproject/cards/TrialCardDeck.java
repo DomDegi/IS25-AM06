@@ -22,7 +22,7 @@ public class TrialCardDeck {
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filename);
 
             if (inputStream == null){
-                System.out.println("Errore: file " + filename + " not found");
+                System.out.println("Error: file " + filename + " not found");
                 return;
             }
             CardCollection cardCollection = objectMapper.readValue(inputStream, CardCollection.class);
@@ -31,7 +31,7 @@ public class TrialCardDeck {
             Collections.shuffle(trialDeck);
         }
         catch(IOException e){
-            System.out.println("Errore durante il caricamento del file JSON");
+            System.out.println("Error loading JSON file");
             e.printStackTrace();
         }
     }
