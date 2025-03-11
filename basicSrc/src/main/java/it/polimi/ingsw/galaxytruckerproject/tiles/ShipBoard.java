@@ -19,6 +19,7 @@ public class ShipBoard {
     private int numDoubleEngine;
     private ArrayList<Coverage> shields;
     private ArrayList<Coordinates> batteryCoordinates;
+    private ArrayList<Coordinates> crewCoordinates;
     private int numBrownAliens;
     private int numPurpleAliens;
     private int numExposedConnectors ;
@@ -289,12 +290,9 @@ public class ShipBoard {
                 for(Coordinates c : array.get(j)){
                     tilesTable[c.getX()][c.getY()].destroy();
                     tilesTable[c.getX()][c.getY()] = null;
-
                 }
             }
         }
-
-
     }
 
     //RETURN THE SET OF TILES LINKED WITH THE STARTING ONE
@@ -317,7 +315,7 @@ public class ShipBoard {
             brokenGraph2(new Coordinates(x,y+1), set);
         }
         //north
-        if(tilesTable[x][y].nord.getConnectorsType()!= Connectors.SMOOTH && tilesTable[x-1][y]!= null  &&  !(tilesTable[x-1][y] instanceof VoidTile) && !set.contains(tilesTable[x-1][y])){
+        if(tilesTable[x][y].north.getConnectorsType()!= Connectors.SMOOTH && tilesTable[x-1][y]!= null  &&  !(tilesTable[x-1][y] instanceof VoidTile) && !set.contains(tilesTable[x-1][y])){
             brokenGraph2(new Coordinates(x-1,y), set);
         }
         //west
@@ -352,10 +350,9 @@ public class ShipBoard {
         //if the tile OVER is either out of bounds, a VoidTile, or empty,
         // then our Tile iss a borderTile and I have to check if it is Exsposed
         if(j-1<0 || tilesTable[i][j-1] instanceof VoidTile || tilesTable[i][j+1].equals(null))
-            if(!tilesTable[i][j].getNord().getConnectorsType().equals(Connectors.SMOOTH))
+            if(!tilesTable[i][j].getNorth().getConnectorsType().equals(Connectors.SMOOTH))
                 penaltyTiles++;
     }
-
     public void countExsposedConnectors(){
         for(int i=0; i<5; i++)
             for(int j=0; j<7; j++){
@@ -391,14 +388,30 @@ public class ShipBoard {
     //Il metodo riceve in ingresso le coordinate della casella, e il numero di crewmate che vuole eliminare da
     //quela casella. Il giocatore infatti, nel caso in cui debba eliminarne due, ha la possibilità di rimuovere
     // uno solo cremate da due caselle
-    public void chooseCrewtoRemove(Coordinates coordinatesCrew, int crewtoRemove){
-        if(tilesTable[coordinatesCrew.x][coordinatesCrew.y] instanceof Cabin){
-
+    public void chooseCrewtoRemove(int crewtoRemove){
+        for(Coordinates coordinates: crewCoordinates)
+            System.out.println(coordinates);
+        for(int i=0; i<crewtoRemove; i++){
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Insert coordinate X: ");
+            int x = scanner.nextInt();
+            System.out.println("Insert coordinate Y: ");
+            int y = scanner.nextInt();
+            if(!(tilesTable[x][y] instanceof Cabin)){
+                System.out.println("THE TILE IS NOT A CABIN");
+                i--;
+            }
+            else if(((BatteryComponents) tilesTable[x][y]).getNumBatteries() == 0){
+                System.out.println("THE TILE IS NOT A BATTERYCOMPONENT");
+                i--;
+            }
+            else{
+                ((EquipCabin) tilesTable[x][y]).removeCrew();
+            }
         }
+
         //collegamento tra tiles e numCrew (how to do it?)
     }
-
-
 
     public void chooseBatteryUse(int batteryConsum){
         for(Coordinates coordinates : batteryCoordinates)

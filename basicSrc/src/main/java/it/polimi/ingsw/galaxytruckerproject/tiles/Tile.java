@@ -1,7 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
 
 public abstract class Tile {
-    protected Link nord;
+    protected Link north;
     protected Link east;
     protected Link south;
     protected Link west;
@@ -10,14 +10,14 @@ public abstract class Tile {
     protected ShipBoard shipBoard;
 
     public Tile(Link nord, Link east, Link south, Link west){
-        this.nord=nord;
+        this.north =nord;
         this.east=east;
         this.south=south;
         this.west=west;
     }
     //GETTER METHODS LINKS
-    public Link getNord(){
-        return nord;
+    public Link getNorth(){
+        return north;
     }
     public Link getEast(){
         return east;
@@ -36,7 +36,7 @@ public abstract class Tile {
         //Check north
         if(this.coordinates.getX()!=0) {
             other = tileTable[this.coordinates.getX()-1][this.coordinates.getY()];
-            if(other!=null && !(other instanceof VoidTile) && !nord.isConnected(other.getSouth()) ) {
+            if(other!=null && !(other instanceof VoidTile) && !north.isConnected(other.getSouth()) ) {
                 return false;
             }
         }
@@ -50,7 +50,7 @@ public abstract class Tile {
         //Check south
         if(this.coordinates.getX()!=4) {
             other = tileTable[this.coordinates.getX()+1][this.coordinates.getY()];
-            if(other!=null && !(other instanceof VoidTile) && !south.isConnected(other.getNord())) {
+            if(other!=null && !(other instanceof VoidTile) && !south.isConnected(other.getNorth())) {
                 return false;
             }
         }
@@ -66,8 +66,8 @@ public abstract class Tile {
         return true;
     }
     public void rotate(){
-        Link tmp=nord;
-        nord=west;
+        Link tmp= north;
+        north =west;
         Link tmp2=east;
         east=tmp;
         west=south;

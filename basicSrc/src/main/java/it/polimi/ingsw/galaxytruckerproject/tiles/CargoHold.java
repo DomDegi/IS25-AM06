@@ -6,8 +6,8 @@ public abstract class CargoHold extends Tile{
     final int totSpaces;
     ArrayList<Goods> cargo;
 
-    public CargoHold(int totSpaces) {
-        super();
+    public CargoHold(int totSpaces, Link nord, Link east, Link south, Link west) {
+        super(nord, east, south, west);
         this.totSpaces = totSpaces;
         this.cargo = new ArrayList<Goods>();
         // It makes more sense to use an ArrayList since they are much easier to manage in Java.
