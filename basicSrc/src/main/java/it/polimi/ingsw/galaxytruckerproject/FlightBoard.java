@@ -2,32 +2,30 @@ package it.polimi.ingsw.galaxytruckerproject;
 
 public class FlightBoard {
     private final Player[] posList = new Player[4];
-    private int pos = 0;
+    private int numPlayer = 0;
     private int freePodiumPosition = 4;
 
-    public FlightBoard() {
-        posList[0].setPlayerPosition(9);
-        posList[0].setPlayerRanking(1);
-
-        posList[1].setPlayerPosition(5);
-        posList[1].setPlayerRanking(2);
-
-        posList[2].setPlayerPosition(2);
-        posList[2].setPlayerRanking(3);
-
-        posList[3].setPlayerPosition(0);
-        posList[3].setPlayerRanking(4);
-    }
     public void addToFlightBoard(Player newPlayer) {
-        if (pos <= 3) {
-            posList[pos]=newPlayer;
-            pos++;
-        } else{
-            for(int i=newPlayer.getPlayerRanking(); i<=2; i++){
-                posList[i].setPlayerRanking(i);
-                posList[i]=posList[i+1];
-                posList[i+1]=newPlayer;
-            }
+        posList[numPlayer] = newPlayer;
+        switch (numPlayer) {
+            case 1:
+                posList[numPlayer].setPlayerPosition(9);
+            case 2:
+                posList[numPlayer].setPlayerPosition(5);
+            case 3:
+                posList[numPlayer].setPlayerPosition(2);
+            case 4:
+                posList[numPlayer].setPlayerPosition(0);
+        }
+        posList[numPlayer].setPlayerRanking(numPlayer);
+        numPlayer++;
+    }
+    public void setPlayerToLast(Player player) {
+        for(int i=player.getPlayerRanking(); i<=numPlayer-1; i++){
+            player.setPlayerRanking(numPlayer);
+            posList[i].setPlayerRanking(i);
+            posList[i-1]=posList[i];
+            posList[i]=player;
         }
     }
     public Player[] getRanking() {
