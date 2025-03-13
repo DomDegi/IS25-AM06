@@ -2,8 +2,8 @@ package it.polimi.ingsw.galaxytruckerproject.tiles;
 
 public class DoubleCannon extends Cannon{
 
-    public DoubleCannon(){
-        super();
+    public DoubleCannon(Link north, Link east, Link south, Link west) {
+        super(north, east, south, west);
     }
 
 
@@ -18,11 +18,11 @@ public class DoubleCannon extends Cannon{
         else
             shipBoard.addBreakSidewaysDoubleCannon(true);
     }
+
     public void destroy(){
         if(direction == Direction.NORTH)
             shipBoard.addBreakStraightDoubleCannon(false);
         else
             shipBoard.addBreakSidewaysDoubleCannon(false);
-        super.destroy();
     }
 }

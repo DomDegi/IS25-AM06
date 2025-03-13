@@ -2,8 +2,8 @@ package it.polimi.ingsw.galaxytruckerproject.tiles;
 
 public class DoubleEngine extends Engine{
 
-    public DoubleEngine(){
-        super();
+    public DoubleEngine(Link north,Link south,Link east,Link west){
+        super(north,south,east,west);
     }
 
     public boolean ChoosetoUse(){
@@ -13,6 +13,5 @@ public class DoubleEngine extends Engine{
     public void getStat(){shipBoard.addBreakDoubleEngine(true);}
     public void destroy(){
         shipBoard.addBreakDoubleEngine(false);
-        super.destroy();
     }
 }

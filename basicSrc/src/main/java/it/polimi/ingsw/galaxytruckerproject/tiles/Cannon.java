@@ -3,13 +3,13 @@ package it.polimi.ingsw.galaxytruckerproject.tiles;
 public abstract class Cannon extends Tile {
     protected Direction direction;
 
-    public Cannon(Link nord, Link east, Link south, Link west) {
-        super(nord, east, south, west);
+    public Cannon(Link north, Link east, Link south, Link west) {
+        super(north, east, south, west);
         this.direction = Direction.NORTH;
 
     }
     public void getStat(){
-        //In subclasses
+        //OVVERIDE IN THE SUBCLASSES
     }
     public boolean isCorrect(){
         Tile other = null;

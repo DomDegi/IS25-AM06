@@ -1,9 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
 
 public class SingleEngine extends Engine{
-    public SingleEngine(Link nord, Link east, Link south, Link west) {
-        super();
-
+    public SingleEngine(Link north, Link east, Link south, Link west) {
+        super(north, east, south, west);
     }
 
     public void getStat(){
@@ -11,6 +10,5 @@ public class SingleEngine extends Engine{
     }
     public void destroy(){
         shipBoard.addBreakSingleEngine(false);
-        super.destroy();
     }
 }

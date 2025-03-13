@@ -15,7 +15,7 @@ public class Shields extends Tile{
         this.coveredArea = coveredArea.values()[i];
     }
 
-    //we don't need a NumberofCovarageShields to uploade beacuase we can get it from the size of the ArrayList
+    //we don't need a NumberofCovarageShields in ShipBoard to update beacuase we can get it from the size of the ArrayList
     public void getStat() {shipBoard.getCoverageShields().add(this.coveredArea);}
     public void destroy(){
         for(Coverage cov : shipBoard.getCoverageShields()){
@@ -24,6 +24,5 @@ public class Shields extends Tile{
                 break;
             }
         }
-        super.destroy();
     }
 }

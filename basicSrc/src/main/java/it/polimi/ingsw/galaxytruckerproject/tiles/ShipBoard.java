@@ -123,7 +123,6 @@ public class ShipBoard {
     }
 
 
-
     //METODO INIZIALIZZAZIONE
     public void addBreakSingleCannonPower(float num){
         this.singleCannonPower += num;
@@ -327,7 +326,13 @@ public class ShipBoard {
 
 
 
-
+    public void countExsposedConnectors(){
+        for(int i=0; i<5; i++)
+            for(int j=0; j<7; j++){
+                checkBorderTile(i,j);
+            }
+    }
+    //ADDITONARY METHOD THAT GETS IMPLEMENTED IN COUNT EXSPOSEDCONNECTORS
     public void checkBorderTile(int i, int j){
         //if the tile at its LEFT is either out of bounds, a VoidTile, or empty,
         //then our Tile iss a borderTile and I have to check if it is Exsposed
@@ -352,12 +357,6 @@ public class ShipBoard {
         if(j-1<0 || tilesTable[i][j-1] instanceof VoidTile || tilesTable[i][j+1].equals(null))
             if(!tilesTable[i][j].getNorth().getConnectorsType().equals(Connectors.SMOOTH))
                 penaltyTiles++;
-    }
-    public void countExsposedConnectors(){
-        for(int i=0; i<5; i++)
-            for(int j=0; j<7; j++){
-                checkBorderTile(i,j);
-            }
     }
 
     public void verifyCorretness(){
@@ -385,9 +384,18 @@ public class ShipBoard {
 
     }
 
-    //Il metodo riceve in ingresso le coordinate della casella, e il numero di crewmate che vuole eliminare da
-    //quela casella. Il giocatore infatti, nel caso in cui debba eliminarne due, ha la possibilità di rimuovere
-    // uno solo cremate da due caselle
+
+    public void chooseHowToFillCabins(){
+        for(Coordinates coordinates: crewCoordinates){
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Insert crewType: ");
+            String user = scanner.nextLine();
+            CrewType crewType = CrewType.valueOf(user.toUpperCase());
+            tilesTable[coordinates.getX()][coordinates.getY()].setCrewType(crewType);
+        }
+    }
+
+    //TRY TO DON'T USE THE INSTANCE OF (I NEED TO RETHINK THE CICLE)
     public void chooseCrewtoRemove(int crewtoRemove){
         for(Coordinates coordinates: crewCoordinates)
             System.out.println(coordinates);
@@ -417,25 +425,27 @@ public class ShipBoard {
         for(Coordinates coordinates : batteryCoordinates)
             System.out.println(coordinates);
 
-        for(int i=0; i<batteryConsum; i++) {
+        for(int i=0; i<batteryConsum; i++){
             Scanner scanner = new Scanner(System.in);
             System.out.println("Insert coordinate X: ");
             int x = scanner.nextInt();
             System.out.println("Insert coordinate Y: ");
             int y = scanner.nextInt();
-            if(!(tilesTable[x][y] instanceof BatteryComponents)){
-                System.out.println("THE TILE IS NOT A BATTERYCOMPONENT");
-                i--;
-            }
-            else if(((BatteryComponents) tilesTable[x][y]).getNumBatteries() == 0){
-                System.out.println("THE TILE IS NOT A BATTERYCOMPONENT");
-                i--;
-            }
-            else{
-                ((BatteryComponents) tilesTable[x][y]).consumeNumBatteries();
-            }
+            tilesTable[x][y].consumeBattery();
         }
     }
 
-
+    public void epidemic(){
+        HashSet<Coordinates> InfectedCabin = new HashSet<>();
+        for(Coordinates coordinates : crewCoordinates){
+            for(Coordinates coordinates2 : crewCoordinates){
+                if((Math.abs(coordinates.getX() - coordinates2.getX())==1 || Math.abs(coordinates.getY() - coordinates2.getY())==1)&& !coordinates.equals(coordinates2)){
+                    InfectedCabin.add(coordinates2);
+                }
+            }
+        }
+        for(Coordinates coordinates : InfectedCabin){
+            tilesTable[coordinates.getX()][coordinates.getY()].removeCrew();
+        }
+    }
 }

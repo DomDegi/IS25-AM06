@@ -9,8 +9,8 @@ public abstract class Tile {
     protected Coordinates coordinates;
     protected ShipBoard shipBoard;
 
-    public Tile(Link nord, Link east, Link south, Link west){
-        this.north =nord;
+    public Tile(Link north, Link east, Link south, Link west){
+        this.north =north;
         this.east=east;
         this.south=south;
         this.west=west;
@@ -30,7 +30,6 @@ public abstract class Tile {
     }
 
     public boolean isCorrect(){
-
         Tile other;
         Tile[][] tileTable= shipBoard.getTilesTable();
         //Check north
@@ -77,8 +76,10 @@ public abstract class Tile {
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
     }
-    public void destroy(){
-        return;
-    }
+    public void destroy(){}
 
+    //METHOD THAT GETS OVERRIDE ONLY BY THE SPECIFIC CLASSES
+    public void setCrewType(CrewType crewType) {System.out.println("THIS TILE IS NOT A CABIN"); }
+    public void consumeBattery(){System.out.println("THIS TILE IS NOT A BATTERYCOMPONENT"); }
+    public void removeCrew(){};
 }

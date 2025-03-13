@@ -3,8 +3,8 @@ package it.polimi.ingsw.galaxytruckerproject.tiles;
 public class SingleCannon extends Cannon {
     private float fireStrength;
 
-    public SingleCannon() {
-        super();
+    public SingleCannon(Link north, Link east, Link south, Link west) {
+        super(north, east, south, west);
         if(direction == Direction.NORTH) {
             this.fireStrength = 1;
         }
@@ -18,7 +18,7 @@ public class SingleCannon extends Cannon {
     }
     public void destroy(){
         shipBoard.addBreakSingleCannonPower(-fireStrength);
-        super.destroy();
+        fireStrength=0;
     }
 }
 
