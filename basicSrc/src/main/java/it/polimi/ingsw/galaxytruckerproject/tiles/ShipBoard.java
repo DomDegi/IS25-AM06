@@ -361,27 +361,32 @@ public class ShipBoard {
 
     public void verifyCorretness(){
         Scanner scanner = new Scanner(System.in);
-        int x =300;
-        int y =300;
+        Coordinates coordinates = new Coordinates(300, 300);
         ArrayList<Coordinates> array = new ArrayList();
-        for(int i=0; i<5; i++)
-            for(int j=0; j<7; j++){
-                if(!tilesTable[i][j].isCorrect())
-                    array.add(new Coordinates(i,j));
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 7; j++) {
+                if (!tilesTable[i][j].isCorrect())
+                    array.add(new Coordinates(i, j));
             }
-        if(array.size()==0)
-        {
+        if (array.size() == 0) {
             System.out.println("the shipboard is correct");
             return;
         }
         System.out.println("the wrong tiles are:");
-        for(Coordinates c : array){
-            System.out.println("x: "+c.x+" y: "+c.y);
+        for (Coordinates c : array) {
+            System.out.println("x: " + c.x + " y: " + c.y);
         }
         System.out.println("choose to destroy");
-        x=scanner.nextInt();
-        y=scanner.nextInt();
-
+        while (!array.contains(coordinates)) {
+            coordinates.x = scanner.nextInt();
+            coordinates.y = scanner.nextInt();
+            if (!array.contains(coordinates)) {
+                System.out.println("wrong tile");
+            }
+        }
+        destroyTile(coordinates);
+        verifyCorretness();
+        return;
     }
 
 

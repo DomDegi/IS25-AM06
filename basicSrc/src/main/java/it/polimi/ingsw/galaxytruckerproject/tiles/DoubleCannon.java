@@ -12,6 +12,11 @@ public class DoubleCannon extends Cannon{
         return true;
     }
 
+    @Override
+    public String toString() {
+        return"DoubleCannon " +super.toString();
+    }
+
     public void getStat(){
         if(direction == Direction.NORTH)
             shipBoard.addBreakStraightDoubleCannon(true);

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public abstract class CargoHold extends Tile{
     final int totSpaces;
@@ -14,6 +15,16 @@ public abstract class CargoHold extends Tile{
         // Instead of dealing with null values, we can simply use an ArrayList,
         // and to check if there are goods and how many, we just get the size of the ArrayList and compare it with totSpaces.
     }
+
+    @Override
+    public String toString() {
+        for(Goods g : cargo)
+            g.toString();
+        return cargo.stream()
+                .map(i->i.toString())
+                .collect(Collectors.joining()) +" "+super.toString();
+    }
+
     public void addGood(Goods good){
         if(cargo.size() == totSpaces){
             System.out.println("CargoHold is full");

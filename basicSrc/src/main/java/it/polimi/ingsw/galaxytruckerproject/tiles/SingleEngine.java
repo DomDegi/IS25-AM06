@@ -5,6 +5,11 @@ public class SingleEngine extends Engine{
         super(north, east, south, west);
     }
 
+    @Override
+    public String toString() {
+        return "SingleEngine:"+ super.toString();
+    }
+
     public void getStat(){
         shipBoard.addBreakSingleEngine(true);
     }

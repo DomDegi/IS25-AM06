@@ -6,6 +6,11 @@ public class DoubleEngine extends Engine{
         super(north,south,east,west);
     }
 
+    @Override
+    public String toString() {
+        return "DoubleEngine"+ super.toString();
+    }
+
     public boolean ChoosetoUse(){
         return true;
     }

@@ -8,6 +8,15 @@ public enum GoodsColor {
     GoodsColor(int value) {
         this.value = value;
     }
+    public String toString() {
+        if(this == RED)
+            return "Red ";
+        if(this == YELLOW)
+            return "Yellow ";
+        if (this == GREEN)
+            return "Green ";
+        return "Blue ";
+    }
 
     public int getValue() {
         return value;

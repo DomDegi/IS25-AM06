@@ -8,6 +8,12 @@ public abstract class Engine extends Tile{
         nord.connectorsType = Connectors.SMOOTH;
 
     }
+
+    @Override
+    public String toString() {
+        return "direction:"+direction.toString()+" " + super.toString();
+    }
+
     public void rotate(){
         super.rotate();
         int i = this.direction.ordinal()+1;

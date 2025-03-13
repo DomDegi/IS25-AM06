@@ -6,4 +6,6 @@ public abstract class Cabin extends Tile {
         super(nord, east, south, west);
     }
 
+
+
 }
