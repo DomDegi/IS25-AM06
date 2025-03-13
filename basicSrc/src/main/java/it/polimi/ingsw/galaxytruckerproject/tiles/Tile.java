@@ -5,7 +5,6 @@ public abstract class Tile {
     protected Link east;
     protected Link south;
     protected Link west;
-    protected boolean destroyed = false;
     protected Coordinates coordinates;
     protected ShipBoard shipBoard;
 
@@ -14,7 +13,15 @@ public abstract class Tile {
         this.east=east;
         this.south=south;
         this.west=west;
+
     }
+
+    @Override
+    public String toString() {
+        return "Tile north"+north.toString() + " east:" + east.toString() + " south" + south.toString() + " west" + west.toString()+"\n"
+                +"coordinates: "+coordinates.getX()+coordinates.getY();
+    }
+
     //GETTER METHODS LINKS
     public Link getNorth(){
         return north;

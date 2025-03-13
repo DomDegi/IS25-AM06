@@ -7,4 +7,10 @@ public class CargoRed extends CargoHold{
         super(totSpaces, nord, east, west, south);
         hazard = true;
     }
+
+    @Override
+    public String toString() {
+
+        return "Cargo Red" +super.toString();
+    }
 }

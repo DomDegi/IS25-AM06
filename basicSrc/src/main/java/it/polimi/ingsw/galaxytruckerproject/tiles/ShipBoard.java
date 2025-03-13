@@ -403,8 +403,6 @@ public class ShipBoard {
         //collegamento tra tiles e numCrew (how to do it?)
     }
 
-
-
     public void chooseBatteryUse(int batteryConsum){
         for(Coordinates coordinates : batteryCoordinates)
             System.out.println(coordinates);
@@ -428,6 +426,5 @@ public class ShipBoard {
             }
         }
     }
-
 
 }

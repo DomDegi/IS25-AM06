@@ -6,6 +6,11 @@ public class SingleEngine extends Engine{
 
     }
 
+    @Override
+    public String toString() {
+        return "SingleEngine:"+ super.toString();
+    }
+
     public void getStat(){
         shipBoard.addBreakSingleEngine(true);
     }

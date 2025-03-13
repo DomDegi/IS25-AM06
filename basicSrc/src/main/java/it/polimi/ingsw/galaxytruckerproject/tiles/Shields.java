@@ -15,6 +15,11 @@ public class Shields extends Tile{
         this.coveredArea = coveredArea.values()[i];
     }
 
+    @Override
+    public String toString() {
+        return "Shield coverage:"+ coveredArea.toString() +super.toString();
+    }
+
     //we don't need a NumberofCovarageShields to uploade beacuase we can get it from the size of the ArrayList
     public void getStat() {shipBoard.getCoverageShields().add(this.coveredArea);}
     public void destroy(){

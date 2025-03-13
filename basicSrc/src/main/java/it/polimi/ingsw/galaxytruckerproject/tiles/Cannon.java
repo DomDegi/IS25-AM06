@@ -6,8 +6,13 @@ public abstract class Cannon extends Tile {
     public Cannon(Link nord, Link east, Link south, Link west) {
         super(nord, east, south, west);
         this.direction = Direction.NORTH;
-
     }
+
+    @Override
+    public String toString() {
+        return "direzione: "+direction.toString() +super.toString();
+    }
+
     public void getStat(){
         //In subclasses
     }

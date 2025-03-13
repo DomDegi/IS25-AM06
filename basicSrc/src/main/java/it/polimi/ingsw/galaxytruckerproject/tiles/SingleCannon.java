@@ -13,6 +13,11 @@ public class SingleCannon extends Cannon {
         }
     }
 
+    @Override
+    public String toString() {
+        return "SingleCannon "+ super.toString();
+    }
+
     public void getStat(){
         shipBoard.addBreakSingleCannonPower(fireStrength);
     }

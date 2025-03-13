@@ -7,4 +7,8 @@ public class CargoBlue extends CargoHold {
         super(totSpaces, nord, east, west, south);
         hazard = false;
     }
+    public String toString() {
+
+        return "Cargo Blue" +super.toString();
+    }
 }
