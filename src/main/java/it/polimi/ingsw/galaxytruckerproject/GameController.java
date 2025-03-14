@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject;
 
+import it.polimi.ingsw.galaxytruckerproject.tiles.Tile;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
