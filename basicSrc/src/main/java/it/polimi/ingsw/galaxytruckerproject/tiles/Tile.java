@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
 
+import java.util.ArrayList;
+
 public abstract class Tile {
     protected Link north;
     protected Link east;
@@ -88,7 +90,9 @@ public abstract class Tile {
     //METHOD THAT GETS OVERRIDE ONLY BY THE SPECIFIC CLASSES
     public void setCrewType(CrewType crewType) {System.out.println("THIS TILE IS NOT A CABIN"); }
     public void consumeBattery(){System.out.println("THIS TILE IS NOT A BATTERYCOMPONENT"); }
-    public void removeCrew(){};
+    public void removeCrew(){
+        System.out.println("THIS TILE IS NOT A CABIN");
+    };
     public Coverage getCoveredArea(){System.out.println("THIS TILE IS NOT A SHIELD"); return Coverage.NONE;}
-
+    public ArrayList<Goods> getCargo(){System.out.println("THIS TILE IS NOT A CARGOHOLD"); return null;}
 }

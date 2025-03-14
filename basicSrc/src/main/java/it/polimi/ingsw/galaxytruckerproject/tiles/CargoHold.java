@@ -25,6 +25,9 @@ public abstract class CargoHold extends Tile{
                 .collect(Collectors.joining()) +" "+super.toString();
     }
 
+    public void getStat(){
+        shipBoard.getCargoHoldCoordinates().add(this.coordinates);
+    }
     public void addGood(Goods good){
         if(cargo.size() == totSpaces){
             System.out.println("CargoHold is full");
@@ -46,6 +49,9 @@ public abstract class CargoHold extends Tile{
         //I could have only used the Destroyed flag set in the superclass, but for clarity,
         //I also emptied the goods array contained within it.
         cargo.clear();
-        super.destroy();
+    }
+
+    public ArrayList<Goods> getCargo() {
+        return cargo;
     }
 }

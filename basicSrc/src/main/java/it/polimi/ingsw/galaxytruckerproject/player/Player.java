@@ -7,11 +7,11 @@ import it.polimi.ingsw.galaxytruckerproject.tiles.ShipBoard;
 import java.util.ArrayList;
 
 public class Player {
-    String playerName;
-    int playerPosition;
-    PlayersColor playerColor;
-    int credit;
-    ShipBoard playerShip;
+    private String playerName;
+    private int playerPosition;
+    private PlayersColor playerColor;
+    private int credit;
+    private ShipBoard playerShip;
 
     public Player(String playerName, PlayersColor playerColor) {
         this.playerName = playerName;
@@ -37,7 +37,24 @@ public class Player {
     public ArrayList<Coverage> getShipCoverage(){
         return playerShip.getCoverageShields();
     }
-    public
+
+    public void loseCrew(Coordinates coordinates) {
+        playerShip.chooseCrewtoRemove2(coordinates);
+    }
+
+    public void gainCredit(int credit) {
+        this.credit += credit;
+    }
+
+    public Coverage useShield(Coordinates coordinates) {
+        return playerShip.chooseShields(coordinates);
+    }
+
+
+
+
+
+
 
 
 

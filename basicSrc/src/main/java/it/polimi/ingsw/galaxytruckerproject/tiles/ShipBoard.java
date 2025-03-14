@@ -20,6 +20,7 @@ public class ShipBoard {
     private ArrayList<Coverage> shields;
     private ArrayList<Coordinates> batteryCoordinates;
     private ArrayList<Coordinates> crewCoordinates;
+    private ArrayList<Coordinates> cargoHoldCoordinates;
     private int numBrownAliens;
     private int numPurpleAliens;
     private int numExposedConnectors ;
@@ -74,8 +75,12 @@ public class ShipBoard {
     public int getNumExposedConnectors() {
         return numExposedConnectors;
     }
+
+    //Getter methods for managing the COORDINATES of tile groups of type SHIELD, EQUIP CABIN, and CARGO HOLD.
     public ArrayList<Coordinates> getBatteryCoordinates() {return batteryCoordinates;}
     public ArrayList<Coverage> getCoverageShields(){return shields;}
+    public ArrayList<Coordinates> getCargoHoldCoordinates(){return cargoHoldCoordinates;}
+
     public Tile[][] getTilesTable(){return tilesTable;}
     public float getCannonStrenght(){
         float fireStrenght=singleCannonPower;
@@ -183,14 +188,14 @@ public class ShipBoard {
     //inizializzazione shipboard volo di prova e primo livello
     public void inizializeLevel2 (){
         tilesTable = new Tile[5][7];
-        tilesTable[0][0] = new VoidTile();
-        tilesTable[0][1] = new VoidTile();
-        tilesTable[1][0] = new VoidTile();
-        tilesTable[4][3] = new VoidTile();
-        tilesTable[0][3] = new VoidTile();
-        tilesTable[0][5] = new VoidTile();
-        tilesTable[0][6] = new VoidTile();
-        tilesTable[1][6] = new VoidTile();
+        tilesTable[0][0] = new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH));
+        tilesTable[0][1] = new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH));
+        tilesTable[1][0] = new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH));
+        tilesTable[4][3] = new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH));
+        tilesTable[0][3] = new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH));
+        tilesTable[0][5] = new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH));
+        tilesTable[0][6] = new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH));
+        tilesTable[1][6] = new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH));
 
         for(int i = 1; i < 5; i++){
             for(int j = 0; j < 7; j++){
@@ -211,7 +216,7 @@ public class ShipBoard {
 
         // Inizializza le VoidTile
         for (int[] pos : voidPositions) {
-            tilesTable[pos[0]][pos[1]] = new VoidTile();
+            tilesTable[pos[0]][pos[1]] = new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH));
         }
 
         // Inizializza le caselle riempibili a null
@@ -432,6 +437,15 @@ public class ShipBoard {
         //collegamento tra tiles e numCrew (how to do it?)
     }
 
+    //New ChooseCrew METHOD
+    public void chooseCrewtoRemove2(Coordinates coordinates){
+        if(crewCoordinates.contains(coordinates)){
+            tilesTable[coordinates.getX()][coordinates.getY()].removeCrew();
+        }
+        else
+            System.out.println("THIS TILE IS NOT A CABIN");
+    }
+
     public void chooseBatteryUse(int batteryConsum){
         for(Coordinates coordinates : batteryCoordinates)
             System.out.println(coordinates);
@@ -444,6 +458,16 @@ public class ShipBoard {
             int y = scanner.nextInt();
             tilesTable[x][y].consumeBattery();
         }
+    }
+
+    public void chooseBatteryUse2(Coordinates coordinates){
+        if(batteryCoordinates.contains(coordinates)){
+            tilesTable[coordinates.getX()][coordinates.getY()].consumeBattery();
+        }
+        else
+            System.out.println("THIS TILE IS NOT A BATTERY");
+        //forse non serve il batteryCoordinates perché tanto se non è una batteryTile stampo il fatto che non lo è
+
     }
 
 
@@ -461,27 +485,37 @@ public class ShipBoard {
         }
     }
 
-    //
-    public void chooseShield(Coordinates coordinates){
-        if(tilesTable[coordinates.getX()][coordinates.getY()].getCoveredArea()!= Coverage.NONE){
-        }
-    }
+
 
     //It returns the Covarage of the Shields Choosen by the Player. If it
     public Coverage chooseShields(Coordinates coordinates){
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Insert coordinate X: ");
-        int x = scanner.nextInt();
-        System.out.println("Insert coordinate Y: ");
-        int y = scanner.nextInt();
-        if(!(tilesTable[x][y].getCoveredArea() == Coverage.NONE)){
+        if(!(tilesTable[coordinates.getX()][coordinates.getY()].getCoveredArea() == Coverage.NONE)){
             chooseBatteryUse(1);
         }
         else{
             System.out.println("THE TILE IS NOT A SHIELD");
         }
-        return tilesTable[x][y].getCoveredArea();
+        return tilesTable[coordinates.getX()][coordinates.getY()].getCoveredArea();
     }
+
+    public void chooseCargoStocktoEmpty(Coordinates coordinates){
+
+    }
+
+    //It
+    public ArrayList<Coordinates> cargoHoldwithGodd(Goods good){
+        ArrayList<Coordinates> cargoHoldwithGood = new ArrayList<>();
+        for(Coordinates coordinates : cargoHoldCoordinates){
+            if(tilesTable[coordinates.getX()][coordinates.getY()].getCargo().contains(good)){
+                cargoHoldwithGood.add(coordinates);
+            }
+        }
+        return cargoHoldwithGood;
+    }
+
+
+
+
 
 
 
