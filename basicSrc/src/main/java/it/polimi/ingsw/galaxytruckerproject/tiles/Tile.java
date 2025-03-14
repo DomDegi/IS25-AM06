@@ -84,6 +84,10 @@ public abstract class Tile {
         this.coordinates = coordinates;
     }
     public void destroy(){}
+    public Coordinates getCoordinates() {
+        return this.coordinates;
+    }
+
 
     //METHOD THAT GETS OVERRIDE ONLY BY THE SPECIFIC CLASSES
     public void setCrewType(CrewType crewType) {System.out.println("THIS TILE IS NOT A CABIN"); }
