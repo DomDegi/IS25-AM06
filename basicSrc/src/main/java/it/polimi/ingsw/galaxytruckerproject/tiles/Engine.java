@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
 
+import java.util.Optional;
+
 public abstract class Engine extends Tile{
     Direction direction;
 
@@ -24,14 +26,14 @@ public abstract class Engine extends Tile{
 
     @Override
     public boolean isCorrect() {
-        Tile other=null;
-        Tile[][] tileTable = shipBoard.getTilesTable();
+        Optional<Tile> other=null;
+        Optional<Tile>[][] tileTable = shipBoard.getTilesTable();
         if(this.direction!= Direction.SOUTH ) return false;
 
         //check south tile
         else if(this.coordinates.getX()!=4){
             other = tileTable[this.coordinates.getX()+1][this.coordinates.getY()];
-            if(other!=null && !(other instanceof VoidTile)){
+            if(!other.isEmpty() && !(other.get() instanceof VoidTile)){
                 return false;
             }
         }

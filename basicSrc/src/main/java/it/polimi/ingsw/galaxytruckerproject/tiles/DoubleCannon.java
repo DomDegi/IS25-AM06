@@ -18,16 +18,17 @@ public class DoubleCannon extends Cannon{
     }
 
     public void getStat(){
-        if(direction == Direction.NORTH)
-            shipBoard.addBreakStraightDoubleCannon(true);
-        else
-            shipBoard.addBreakSidewaysDoubleCannon(true);
+        shipBoard.addBreakDoubleCannon(true,this.coordinates);
     }
 
     public void destroy(){
+        shipBoard.addBreakDoubleCannon(false,this.coordinates);
+    }
+
+    @Override
+    public int getStrength() {
         if(direction == Direction.NORTH)
-            shipBoard.addBreakStraightDoubleCannon(false);
-        else
-            shipBoard.addBreakSidewaysDoubleCannon(false);
+            return 2;
+        return 1;
     }
 }
