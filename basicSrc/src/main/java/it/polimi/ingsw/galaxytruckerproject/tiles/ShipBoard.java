@@ -176,6 +176,11 @@ public class ShipBoard {
         return tile;
     }
 
+    public void positionTile (Optional<Tile> tile, Coordinates coordinates){
+        tilesTable[coordinates.getX()][coordinates.getY()] = tile;
+
+    }
+
     //inizializzazione shipboard volo di prova e primo livello
     public void inizializeLevel2 (){
         tilesTable = new Optional[5][7];
