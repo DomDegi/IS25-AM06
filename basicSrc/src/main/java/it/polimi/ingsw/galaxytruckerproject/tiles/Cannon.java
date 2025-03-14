@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
 
+import java.util.Optional;
+
 public abstract class Cannon extends Tile {
     protected Direction direction;
 
@@ -17,8 +19,8 @@ public abstract class Cannon extends Tile {
         //OVVERIDE IN THE SUBCLASSES
     }
     public boolean isCorrect(){
-        Tile other = null;
-        Tile[][] tileTable= shipBoard.getTilesTable();
+        Optional<Tile> other= Optional.empty();
+        Optional<Tile>[][] tileTable= shipBoard.getTilesTable();
         //checking the tile in the cannon direction
         if(this.direction == Direction.NORTH && this.coordinates.getX()!=0){
             other = tileTable[this.coordinates.getX()- 1][this.coordinates.getY()];
@@ -32,7 +34,7 @@ public abstract class Cannon extends Tile {
         else if(this.direction == Direction.WEST && this.coordinates.getY()!=0){
             other = tileTable[this.coordinates.getX()][this.coordinates.getY()-1];
         }
-        if(other!=null && !(other instanceof VoidTile)){
+        if(!other.isEmpty() && !(other.get() instanceof VoidTile)){
             return false;
         }
         return super.isCorrect();

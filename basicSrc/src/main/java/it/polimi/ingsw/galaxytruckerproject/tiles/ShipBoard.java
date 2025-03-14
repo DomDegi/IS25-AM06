@@ -10,10 +10,9 @@ public class ShipBoard {
     private ArrayList<Tile> bookedTiles;
     private int numBatteries;
     private float singleCannonPower;
-    private int numStraightDoubleCannon;
-    private int numSidewaysDoubleCannon;
+    private ArrayList<Coordinates> DoubleCannon;
     private int numSingleEngine;
-    private int numDoubleEngine;
+    private ArrayList<Coordinates> DoubleEngine;
     private ArrayList<Coverage> shields;
     private ArrayList<Coordinates> batteryCoordinates;
     private ArrayList<Coordinates> crewCoordinates;
@@ -30,10 +29,9 @@ public class ShipBoard {
         bookedTiles = new ArrayList<Tile>();
         numBatteries = 0;
         singleCannonPower = 0;
-        numStraightDoubleCannon = 0;
-        numSidewaysDoubleCannon = 0;
+        DoubleCannon= new ArrayList<Coordinates>();
         numSingleEngine = 0;
-        numDoubleEngine = 0;
+        DoubleEngine = new ArrayList<Coordinates>();
         shields = new ArrayList<Coverage>();
         numBrownAliens = 0;
         numPurpleAliens = 0;
@@ -50,17 +48,14 @@ public class ShipBoard {
     public float getSingleCannonPower() {
         return singleCannonPower;
     }
-    public int getNumStraightDoubleCannon() {
-        return numStraightDoubleCannon;
-    }
-    public int getNumSidewaysDoubleCannon() {
-        return numSidewaysDoubleCannon;
+    public ArrayList<Coordinates> getDoubleCannon() {
+        return DoubleCannon;
     }
     public int getNumSingleEngine() {
         return numSingleEngine;
     }
-    public int getNumDoubleEngine() {
-        return numDoubleEngine;
+    public ArrayList<Coordinates> getDoubleEngine() {
+        return DoubleEngine;
     }
     public int getNumBrownAliens() {
         return numBrownAliens;
@@ -74,51 +69,6 @@ public class ShipBoard {
     public ArrayList<Coordinates> getBatteryCoordinates() {return batteryCoordinates;}
     public ArrayList<Coverage> getCoverageShields(){return shields;}
     public Optional<Tile>[][] getTilesTable(){return  tilesTable;}
-    public float getCannonStrenght(){
-        float fireStrenght=singleCannonPower;
-        System.out.println("you have "+numStraightDoubleCannon+" straight double cannons, how many of them will be fired?");
-        Scanner scanner = new Scanner(System.in);
-        int i=scanner.nextInt();
-        if(i<=numStraightDoubleCannon)
-        {
-            fireStrenght+= 2*i;
-            chooseBatteryUse(-i);
-        }
-        else System.out.println("error: too many uses");
-        System.out.println("you have "+numSidewaysDoubleCannon+" straight double cannons, how many of them will be fired?");
-        i=scanner.nextInt();
-        if(i<=numSidewaysDoubleCannon)
-        {
-            fireStrenght+= i;
-            chooseBatteryUse(-i);
-        }
-        else System.out.println("error: too many uses");
-        if (fireStrenght>0)
-        {
-            fireStrenght += 2*numPurpleAliens;
-        }
-        return fireStrenght;
-
-    }
-    public int getEngineStrenght(){
-        int engineStrenght=numSingleEngine;
-        System.out.println("you have "+numDoubleEngine+" straight double cannons, how many of them will be fired?");
-        Scanner scanner = new Scanner(System.in);
-        int i=scanner.nextInt();
-        if(i<=numDoubleEngine)
-        {
-            engineStrenght+= 2*i;
-            chooseBatteryUse(-i);
-        }
-        else System.out.println("error: too many uses");
-        if (engineStrenght>0)
-        {
-            engineStrenght += 2*numBrownAliens;
-        }
-        return engineStrenght;
-
-    }
-
 
     //METODO INIZIALIZZAZIONE
     public void addBreakSingleCannonPower(float num){
@@ -128,18 +78,16 @@ public class ShipBoard {
         if (ab) numSingleEngine++;
         else numSingleEngine--;
     }
-    public void addBreakDoubleEngine(boolean ab){
-        if (ab) numDoubleEngine++;
-        else numDoubleEngine--;
-
+    public void addBreakDoubleEngine(boolean ab,Coordinates coordinates){
+        if (ab) DoubleEngine.add(coordinates);
+        DoubleEngine.remove(coordinates);
     }
-    public void addBreakStraightDoubleCannon(boolean ab){
-        if (ab) numStraightDoubleCannon++;
-        else numStraightDoubleCannon--;
-    }
-    public void addBreakSidewaysDoubleCannon(boolean ab){
-        if (ab) numSidewaysDoubleCannon++;
-        else numSidewaysDoubleCannon--;
+    public void addBreakDoubleCannon(boolean ab, Coordinates coordinates){
+        if(ab)
+        {
+            DoubleCannon.add(coordinates);
+        }
+        else DoubleCannon.remove(coordinates);
     }
     public void addBreakBrownAliens(boolean ab){
         if (ab) numBrownAliens++;
@@ -157,13 +105,13 @@ public class ShipBoard {
         numBatteries += num;
         //if (num<0) -> Decide which Battery to use
     }
-    public void addBookedTile (Tile tile){
+    public boolean addBookedTile (Tile tile){
         if(bookedTiles.size()==2){
             System.out.println("can't add booked tile");
-            return;
+            return false;
         }
         bookedTiles.add(tile);
-        return;
+        return true;
     }
     public Tile removeBookedTile (int num){
         if(num>1||num<0)
@@ -175,12 +123,19 @@ public class ShipBoard {
         bookedTiles.remove(num);
         return tile;
     }
-
-    public void positionTile (Optional<Tile> tile, Coordinates coordinates){
-        tilesTable[coordinates.getX()][coordinates.getY()] = tile;
-
+    //true: tile added correctly
+    //false: tile occupied
+    public boolean positionTile (Optional<Tile> tile, Coordinates coordinates){
+        if(tilesTable[coordinates.getX()][coordinates.getY()].isEmpty()){
+            tilesTable[coordinates.getX()][coordinates.getY()] = tile;
+            return true;
+        }
+        return false;
     }
-
+/*
+    private ThreadLocal<Object> tilesTable() {
+    }
+*/
     //inizializzazione shipboard volo di prova e primo livello
     public void inizializeLevel2 (){
         tilesTable = new Optional[5][7];
@@ -362,41 +317,20 @@ public class ShipBoard {
                 penaltyTiles++;
     }
 
-    public void verifyCorretness(){
-        Scanner scanner = new Scanner(System.in);
-        Coordinates coordinates = new Coordinates(300, 300);
-        ArrayList<Coordinates> array = new ArrayList();
+    public boolean verifyCorrectness(){
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 7; j++) {
                 if (!tilesTable[i][j].isEmpty() && !tilesTable[i][j].get().isCorrect())
-                    array.add(new Coordinates(i, j));
+                   return false;
             }
-        if (array.size() == 0) {
-            System.out.println("the shipboard is correct");
-            return;
-        }
-        System.out.println("the wrong tiles are:");
-        for (Coordinates c : array) {
-            System.out.println("x: " + c.x + " y: " + c.y);
-        }
-        System.out.println("choose to destroy");
-        while (!array.contains(coordinates)) {
-            coordinates.x = scanner.nextInt();
-            coordinates.y = scanner.nextInt();
-            if (!array.contains(coordinates)) {
-                System.out.println("wrong tile");
-            }
-        }
-        destroyTile(coordinates);
-        verifyCorretness();
-        return;
+        return true;
     }
 
 
     public void chooseHowToFillCabins(){
         for(Coordinates coordinates: crewCoordinates){
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Insert crewType: ");
+            System.out.println("Isert crewType: ");
             String user = scanner.nextLine();
             CrewType crewType = CrewType.valueOf(user.toUpperCase());
             tilesTable[coordinates.getX()][coordinates.getY()].get().setCrewType(crewType);
