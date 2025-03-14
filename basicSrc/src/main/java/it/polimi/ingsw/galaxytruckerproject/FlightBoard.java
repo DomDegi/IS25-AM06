@@ -20,6 +20,9 @@ public class FlightBoard {
         posList[numPlayer].setPlayerRanking(numPlayer);
         numPlayer++;
     }
+    public int getNumPlayer() {
+        return numPlayer;
+    }
     public void setPlayerToLast(Player player) {
         for(int i=player.getPlayerRanking(); i<=numPlayer-1; i++){
             player.setPlayerRanking(numPlayer);
@@ -29,6 +32,7 @@ public class FlightBoard {
         }
     }
     public Player[] getRanking() {
+        rearrange();
         return posList;
     }
     public void earlyLanding(int player) {
@@ -39,43 +43,35 @@ public class FlightBoard {
         posList[freePodiumPosition-1] = tempPlayer;
         freePodiumPosition--;
     }
+
     public void moveForward(int playerRank, int movement) {
-        playerRank--;
+        playerRank = playerRank - 1;
         posList[playerRank].setPlayerPosition(posList[playerRank].getPlayerPosition() + movement);
-        if (posList[playerRank].getPlayerRanking() != 1) {
-            for (int i = playerRank - 1; i >= 0 && (posList[playerRank].getPlayerPosition() >= posList[i].getPlayerPosition()); i--) {
-                posList[playerRank].setPlayerPosition(posList[playerRank].getPlayerPosition() + 1);
-                Player tempPlayer = posList[playerRank];
-                posList[playerRank].setPlayerRanking(posList[i].getPlayerRanking());
-                posList[i].setPlayerRanking(tempPlayer.getPlayerRanking());
-                posList[playerRank]=posList[i];
-                posList[i]=tempPlayer;
-                playerRank = i;
-            }
-        }
-        if (posList[playerRank].getPlayerRanking() == 1) {
-            for (int i = freePodiumPosition-1; i >= 0 ; i--) {
-                if ( posList[playerRank].getPlayerPosition() >= posList[i].getPlayerPosition()+18) {
-                    earlyLanding(i);
-                }
+        for (int i = playerRank-1; i>=0 ; i--) {
+            if (posList[playerRank].getPlayerPosition() == posList[i].getPlayerPosition()) {
+                posList[playerRank].setPlayerPosition(posList[i].getPlayerPosition() + 1);
             }
         }
     }
     public void moveBackward(int playerRank, int movement) {
-        playerRank--;
+        playerRank = playerRank - 1;
         posList[playerRank].setPlayerPosition(posList[playerRank].getPlayerPosition() - movement);
-        if (posList[playerRank].getPlayerRanking() != 4) {
-            for (int i = playerRank + 1; i <= 3 && (posList[playerRank].getPlayerPosition() <= posList[i].getPlayerPosition()); i++) {
-                posList[playerRank].setPlayerPosition(posList[playerRank].getPlayerPosition() - 1);
-                Player tempPlayer = posList[playerRank];
-                posList[playerRank].setPlayerRanking(posList[i].getPlayerRanking());
-                posList[i].setPlayerRanking(tempPlayer.getPlayerRanking());
-                posList[playerRank]=posList[i];
-                posList[i]=tempPlayer;
-                playerRank = i;
+        for (int i = playerRank+1; i<numPlayer ; i++) {
+            if (posList[playerRank].getPlayerPosition() == posList[i].getPlayerPosition()) {
+                posList[playerRank].setPlayerPosition(posList[i].getPlayerPosition() - 1);
             }
-            if ( posList[0].getPlayerPosition() >= posList[playerRank].getPlayerPosition()+18) {
-                earlyLanding(playerRank);
+        }
+    }
+    public void rearrange(){
+        for(int i=0;i<numPlayer;i++){
+            for(int j=0;j<numPlayer;j++){
+                if (posList[i].getPlayerPosition()>posList[j].getPlayerPosition()){
+                    Player tempPlayer = posList[i];
+                    posList[i]=posList[j];
+                    posList[j]= tempPlayer;
+                    posList[i].setPlayerRanking(i+1);
+                    posList[j].setPlayerRanking(j+1);
+                }
             }
         }
     }
