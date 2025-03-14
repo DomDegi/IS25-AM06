@@ -1,6 +1,5 @@
 package it.polimi.ingsw.galaxytruckerproject;
 
-
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
 public class FlightBoard {
@@ -8,19 +7,19 @@ public class FlightBoard {
     private int numPlayer = 0;
     private int freePodiumPosition = 4;
 
-    public void addToFlightBoard(Player newPlayer) {
-        posList[numPlayer] = newPlayer;
-        switch (numPlayer) {
+    public void addToFlightBoard(Player newPlayer,int pos) {
+        posList[pos] = newPlayer;
+        switch (pos) {
             case 1:
-                posList[numPlayer].setPlayerPosition(9);
+                posList[pos].setPlayerPosition(9);
             case 2:
-                posList[numPlayer].setPlayerPosition(5);
+                posList[pos].setPlayerPosition(5);
             case 3:
-                posList[numPlayer].setPlayerPosition(2);
+                posList[pos].setPlayerPosition(2);
             case 4:
-                posList[numPlayer].setPlayerPosition(0);
+                posList[pos].setPlayerPosition(0);
         }
-        posList[numPlayer].setPlayerRanking(numPlayer);
+        posList[pos].setPlayerRanking(pos);
         numPlayer++;
     }
     public int getNumPlayer() {

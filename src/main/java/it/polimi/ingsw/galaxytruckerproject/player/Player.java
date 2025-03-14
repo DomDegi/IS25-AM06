@@ -3,12 +3,12 @@ package it.polimi.ingsw.galaxytruckerproject.player;
 import it.polimi.ingsw.galaxytruckerproject.tiles.ShipBoard;
 
 public class Player {
-    int playerRanking;
-    String playerName;
-    int playerPosition;
-    PlayersColor playerColor;
-    int credit;
-    ShipBoard playerShip;
+    private int playerRanking;
+    private final String playerName;
+    private int playerPosition;
+    private final PlayersColor playerColor;
+    private int credit;
+    private final ShipBoard playerShip;
 
     public Player(String playerName, PlayersColor playerColor) {
         this.playerName = playerName;
