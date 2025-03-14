@@ -2,7 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.Goods;
-import it.polimi.ingsw.galaxytruckerproject.Player;
+import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
 import java.util.ArrayList;
 import java.util.Scanner;

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
+
+
 import it.polimi.ingsw.galaxytruckerproject.Goods;
 
 import java.util.ArrayList;

@@ -1,5 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject;
 
+
+import it.polimi.ingsw.galaxytruckerproject.player.Player;
+
 public class FlightBoard {
     private final Player[] posList = new Player[4];
     private int numPlayer = 0;
@@ -36,7 +39,7 @@ public class FlightBoard {
         return posList;
     }
     public void earlyLanding(int player) {
-        posList[player].setPodium(freePodiumPosition);
+        posList[player].setPlayerRanking(freePodiumPosition);
         posList[player].setPlayerRanking(freePodiumPosition);
         Player tempPlayer = posList[player];
         posList[player]=posList[freePodiumPosition-1];

@@ -1,10 +1,10 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
+import it.polimi.ingsw.galaxytruckerproject.player.Player;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
-
-import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
 public class ShipBoard {
     protected final Player player; //protected because it need to be called in StartingCabin (Tiles)

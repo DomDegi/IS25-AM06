@@ -3,7 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.cards.penalties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
-import it.polimi.ingsw.galaxytruckerproject.Player;
+import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
