@@ -44,6 +44,7 @@ public class ShipBoard {
         numCrew = 0;
     }
     //GETTER METHODS
+    public ArrayList<Tile> getBookedTiles() { return bookedTiles; }
     public int getNumPenaltyTiles (){
         return penaltyTiles;
     }
@@ -160,13 +161,13 @@ public class ShipBoard {
         numBatteries += num;
         //if (num<0) -> Decide which Battery to use
     }
-    public void addBookedTile (Tile tile){
+    public boolean addBookedTile (Tile tile){
         if(bookedTiles.size()==2){
             System.out.println("can't add booked tile");
-            return;
+            return false;
         }
         bookedTiles.add(tile);
-        return;
+        return true;
     }
     public Tile removeBookedTile (int num){
         if(num>1||num<0)
