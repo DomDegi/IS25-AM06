@@ -32,6 +32,7 @@ public class FlightBoard {
         }
     }
     public Player[] getRanking() {
+        rearrange();
         return posList;
     }
     public void earlyLanding(int player) {
@@ -46,7 +47,7 @@ public class FlightBoard {
     public void moveForward(int playerRank, int movement) {
         playerRank = playerRank - 1;
         posList[playerRank].setPlayerPosition(posList[playerRank].getPlayerPosition() + movement);
-        for (int i = posList[playerRank].getPlayerRanking(); i>=0 ; i--) {
+        for (int i = playerRank-1; i>=0 ; i--) {
             if (posList[playerRank].getPlayerPosition() == posList[i].getPlayerPosition()) {
                 posList[playerRank].setPlayerPosition(posList[i].getPlayerPosition() + 1);
             }
@@ -55,15 +56,15 @@ public class FlightBoard {
     public void moveBackward(int playerRank, int movement) {
         playerRank = playerRank - 1;
         posList[playerRank].setPlayerPosition(posList[playerRank].getPlayerPosition() - movement);
-        for (int i = posList[playerRank].getPlayerRanking(); i<numPlayer ; i++) {
+        for (int i = playerRank+1; i<numPlayer ; i++) {
             if (posList[playerRank].getPlayerPosition() == posList[i].getPlayerPosition()) {
                 posList[playerRank].setPlayerPosition(posList[i].getPlayerPosition() - 1);
             }
         }
     }
     public void rearrange(){
-        for(int i=0;i<=numPlayer;i++){
-            for(int j=0;j<=numPlayer;j++){
+        for(int i=0;i<numPlayer;i++){
+            for(int j=0;j<numPlayer;j++){
                 if (posList[i].getPlayerPosition()>posList[j].getPlayerPosition()){
                     Player tempPlayer = posList[i];
                     posList[i]=posList[j];
