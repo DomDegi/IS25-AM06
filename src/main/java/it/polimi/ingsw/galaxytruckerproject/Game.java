@@ -11,6 +11,8 @@ import it.polimi.ingsw.galaxytruckerproject.tiles.Tile;
 
 import java.util.ArrayList;
 import java.util.Stack;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -18,10 +20,10 @@ import java.util.concurrent.TimeUnit;
 import static it.polimi.ingsw.galaxytruckerproject.GameState.*;
 
 public class Game {
+    private GameMode mode = GameMode.LEVEL2;
     private GameState gameState;
     private final ArrayList<GameObserver> observerList = new ArrayList<>();
     private final ArrayList<Player> listOfPlayers;
-    private int hourglassTurns;
     private CardDeck cardDeck;
     private ArrayList<Card> inGameCards;
     private TilesDeck tileDeck;
@@ -29,8 +31,8 @@ public class Game {
     private ArrayList<Tile> turnedTiles;
     private FlightBoard flightBoard;
     private Card drawnCard;
-    private ScheduledExecutorService hourglass = Executors.newScheduledThreadPool(1);
-
+    private int hourglassTurns;
+    private boolean hourglassON;
 
     //instances a new game starting in the state START_GAME
     public Game() {
@@ -43,6 +45,7 @@ public class Game {
         this.tileStack = tileDeck.getStack();
         this.cardDeck = new CardDeck("cards.json");
         this.inGameCards = cardDeck.getTier2FlightCards();
+        this.hourglassON = false;
     }
 
     //add a new observer type to the game
@@ -162,7 +165,7 @@ public class Game {
 
     public boolean playerSetTile (String playerName, Coordinates coordinates) {
         Player player = IdentifyPlayerByName(playerName);
-        return player.getShipBoard.positionTile(player.getDrawnTile, coordinates);
+        return player.getShipBoard().positionTile(player.getDrawnTile(), coordinates);
     }
 
     public boolean playerBookTile (String playerName) {
@@ -177,6 +180,11 @@ public class Game {
 
     //GETTER METHODS
 
+    //This flag is needed from some game functions
+    public GameMode getMode() {
+        return mode;
+    }
+
     //input a string and if it's the same as a player name returns the player
     public Player IdentifyPlayerByName (String playerName) {
         for (Player player: listOfPlayers) {
@@ -184,7 +192,7 @@ public class Game {
                 return player;
             }
         }
-        System.out.println("There is no player with that name");
+        System.out.println("There is no player with that name\n");
         return null;
     }
 
@@ -219,9 +227,29 @@ public class Game {
         return hourglassTurns;
     }
 
+    public boolean getHourglassState() {
+        return hourglassON;
+    }
+
     public void StartTimer() {
-        hourglass.schedule(() -> {
-            60, TimeUnit.SECONDS;
-        })
+        Timer hourglass = new Timer();
+        this.hourglassTurns++;
+        hourglass.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                hourglassON = false;
+                System.out.println("hourglass is exhausted\n");
+                hourglass.cancel();
+                if (hourglassTurns == 3) {
+                    endShipCreation();
+                    System.out.println("The time is up, ship creation is over\n");
+                }
+            }
+        }, 60000); //60 seconds
+    }
+
+    public void endShipCreation() {
+        this.gameState = VERIFY_SHIP_CORRECTNESS;
+        notifyObservers(gameState);
     }
 }

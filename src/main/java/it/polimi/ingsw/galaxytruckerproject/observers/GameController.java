@@ -25,7 +25,7 @@ public class GameController implements GameObserver {
     @Override
     public void notifyChanges(GameState newState) {
         if (newState == GameState.SHIPS_CREATION){
-            StartTimer();
+            game.StartTimer();
         }
     }
 
@@ -56,7 +56,8 @@ public class GameController implements GameObserver {
     public synchronized void StartGame(String playerName, String input) {
 
         String[] words = input.split(" ");
-        if (game.getNumberOfPlayers() >= 2 && words[0].equalsIgnoreCase("start")){
+        //player that types start has to already be in the game
+        if (game.getNumberOfPlayers() >= 2 && words[0].equalsIgnoreCase("start") && game.IdentifyPlayerByName(playerName) != null) {
             System.out.println(playerName + " starts the timer: GO!");
             game.StartGame();
             return;
@@ -268,14 +269,36 @@ public class GameController implements GameObserver {
         System.out.println(shipBoardToCheck.toString());
     }
 
+    //now no input except hourglass and checkShipboard work and checks if the other player have completed
+    //if yes ends shipboard creation phase
     public void Completed (String playerName) {
         if (Objects.equals(playerInputs.get(playerName), "draw")) {
             RefuseTile(playerName);
         }
         playerInputs.put(playerName, "completed");
+        for (Map.Entry<String, String> entry : playerInputs.entrySet()) {
+            if (!entry.getKey().equals("completed")) {;
+                return;
+            }
+        }
+        game.endShipCreation();
+        System.out.println("All the players have completed the ship creation");
     }
 
+    //Turns hourglass isn't on and adds 1 to the turn count,
+    // if it's already been turned twice, player that turns it needs to have completed his ship
     public void TurnHourglass (String playerName) {
-        if
+        if (!game.getHourglassState()) {
+            System.out.println("hourglass is already going");
+            return;
+        }
+        if (game.getHourglassTurns() == 2) {
+            if (playerInputs.get(playerName).equals("completed")) {
+                game.StartTimer();
+            }
+            else {
+                System.out.println("can't make the last hourglass turn when your shipboard isn't complete");
+            }
+        }
     }
 }
