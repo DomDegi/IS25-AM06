@@ -13,5 +13,6 @@ public enum Connectors {
             return "DOUBLE";
         if(this == UNIVERSAL)
             return "UNIVERSAL";
+        return "";
     }
 }

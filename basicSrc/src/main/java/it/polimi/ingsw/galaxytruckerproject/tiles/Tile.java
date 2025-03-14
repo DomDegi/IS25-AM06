@@ -89,4 +89,6 @@ public abstract class Tile {
     public void setCrewType(CrewType crewType) {System.out.println("THIS TILE IS NOT A CABIN"); }
     public void consumeBattery(){System.out.println("THIS TILE IS NOT A BATTERYCOMPONENT"); }
     public void removeCrew(){};
+    public Coverage getCoveredArea(){System.out.println("THIS TILE IS NOT A SHIELD"); return Coverage.NONE;}
+
 }

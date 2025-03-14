@@ -179,6 +179,7 @@ public class ShipBoard {
         return tile;
     }
 
+
     //inizializzazione shipboard volo di prova e primo livello
     public void inizializeLevel2 (){
         tilesTable = new Tile[5][7];
@@ -222,6 +223,8 @@ public class ShipBoard {
             }
         }
     }
+
+
 
     //destroy algorithm with choice
     public void destroyTile(Coordinates coordinates){
@@ -294,6 +297,7 @@ public class ShipBoard {
         }
     }
 
+
     //RETURN THE SET OF TILES LINKED WITH THE STARTING ONE
     //i assume that the correctness of the links has already been verified
     //in the case of construction errors this method will be played for each error
@@ -359,6 +363,7 @@ public class ShipBoard {
                 penaltyTiles++;
     }
 
+
     public void verifyCorretness(){
         Scanner scanner = new Scanner(System.in);
         Coordinates coordinates = new Coordinates(300, 300);
@@ -400,6 +405,7 @@ public class ShipBoard {
         }
     }
 
+
     //TRY TO DON'T USE THE INSTANCE OF (I NEED TO RETHINK THE CICLE)
     public void chooseCrewtoRemove(int crewtoRemove){
         for(Coordinates coordinates: crewCoordinates)
@@ -414,8 +420,8 @@ public class ShipBoard {
                 System.out.println("THE TILE IS NOT A CABIN");
                 i--;
             }
-            else if(((BatteryComponents) tilesTable[x][y]).getNumBatteries() == 0){
-                System.out.println("THE TILE IS NOT A BATTERYCOMPONENT");
+            else if(((Cabin) tilesTable[x][y]).getCrew() == 0){
+                System.out.println("THE CABIN IS EMPTY");
                 i--;
             }
             else{
@@ -440,6 +446,7 @@ public class ShipBoard {
         }
     }
 
+
     public void epidemic(){
         HashSet<Coordinates> InfectedCabin = new HashSet<>();
         for(Coordinates coordinates : crewCoordinates){
@@ -453,4 +460,36 @@ public class ShipBoard {
             tilesTable[coordinates.getX()][coordinates.getY()].removeCrew();
         }
     }
+
+    //
+    public void chooseShield(Coordinates coordinates){
+        if(tilesTable[coordinates.getX()][coordinates.getY()].getCoveredArea()!= Coverage.NONE){
+        }
+    }
+
+    //It returns the Covarage of the Shields Choosen by the Player. If it
+    public Coverage chooseShields(Coordinates coordinates){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Insert coordinate X: ");
+        int x = scanner.nextInt();
+        System.out.println("Insert coordinate Y: ");
+        int y = scanner.nextInt();
+        if(!(tilesTable[x][y].getCoveredArea() == Coverage.NONE)){
+            chooseBatteryUse(1);
+        }
+        else{
+            System.out.println("THE TILE IS NOT A SHIELD");
+        }
+        return tilesTable[x][y].getCoveredArea();
+    }
+
+
+
+
+
+
+
+
+
+
 }
