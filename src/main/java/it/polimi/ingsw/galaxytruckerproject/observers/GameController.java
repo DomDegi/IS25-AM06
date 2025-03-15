@@ -2,15 +2,13 @@ package it.polimi.ingsw.galaxytruckerproject.observers;
 
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.GameState;
+import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.tiles.*;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 
 public class GameController implements GameObserver {
@@ -197,11 +195,20 @@ public class GameController implements GameObserver {
         }
     }
 
+    public synchronized void VerifyShipCorrectness() {
+        boolean check=true;
+        for(Player player: game.getListOfPlayers()){
+            if(!player.getShipBoard().verifyCorrectness().isEmpty()){
+            }
+        }
+        if
+    }
     public void RefuseTile(String playerName) {
         if (Objects.equals(playerInputs.get(playerName), "draw")) {
             game.RefuseTile(playerName);
         }
     }
+
 
 
     public void LookGameCards(String playerName, String[] input) {

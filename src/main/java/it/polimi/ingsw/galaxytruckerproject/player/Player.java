@@ -8,6 +8,7 @@ public class Player {
     private int playerPosition;
     private final PlayersColor playerColor;
     private int credit;
+    private boolean landed=false;
     private final ShipBoard playerShip;
 
     public Player(String playerName, PlayersColor playerColor) {
@@ -27,7 +28,9 @@ public class Player {
     public void setPlayerPosition(int playerPosition) {this.playerPosition = playerPosition;}
     public PlayersColor getPlayerColor() {return playerColor;}
     public int getCredit() {return credit;}
-
+    public ShipBoard getShipBoard() {return playerShip;}
+    public boolean isLanded() {return landed;}
+    public void setLanded(boolean landed) {this.landed = landed;}
 
 
 }

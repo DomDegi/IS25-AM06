@@ -15,6 +15,6 @@ public class StarDust extends Card {
     @Override
     public void executeCard(FlightBoard flightBoard) {
         Arrays.stream(flightBoard.getRanking()).
-                forEach(player -> flightBoard.moveBackward(player.getPlayerRanking(), player.getPlayerShip().countExposedConnectors()));
+                forEach(player -> flightBoard.moveBackward(player.getPlayerRanking(), player.getShipBoard().countExposedConnectors()));
     }
 }
