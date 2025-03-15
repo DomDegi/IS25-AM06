@@ -325,13 +325,11 @@ public class ShipBoard {
                 penaltyTiles++;
     }
 
-    public ArrayList<Coordinates> verifyCorrectness(){
-        ArrayList<Coordinates> array = new ArrayList();
+    public boolean verifyCorrectness(){
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 7; j++) {
                 if (tilesTable[i][j].isPresent() && !tilesTable[i][j].get().isCorrect()) {
-                    array.add(new Coordinates(i, j));
-                    return array;
+                    return false;
                 }
             }
         return true;
