@@ -138,9 +138,9 @@ public class Game {
     public void printBookedTiles(String playerName) {
         Player player = IdentifyPlayerByName(playerName);
         ArrayList<Tile> bookedTiles = player.getShipBoard().getBookedTiles();
-        int size = bookedTiles.size();
+        int i = 0;
         for (Tile bookedTile : bookedTiles) {
-            System.out.println(bookedTile.toString() + " ");
+            System.out.printf("%s (%d), ", bookedTile.toString(), i);
         }
         System.out.println("\n");
     }
@@ -285,5 +285,13 @@ public class Game {
 
     public FlightBoard getFlightBoard() {
         return flightBoard;
+    }
+
+    public int getCardsLeft() {
+        return inGameCards.size();
+    }
+
+    public Card getDrawnCard() {
+        return drawnCard;
     }
 }

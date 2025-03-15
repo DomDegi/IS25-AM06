@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.cards;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
+import it.polimi.ingsw.galaxytruckerproject.Game;
 
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
@@ -27,7 +28,7 @@ public abstract class Card {
         this.requiredDays = requiredDays;
     }
 
-    public abstract void executeCard(FlightBoard flightBoard);
+    public abstract void executeCard(Game game, String[] input);
 
     public int getLevel() {
         return level;

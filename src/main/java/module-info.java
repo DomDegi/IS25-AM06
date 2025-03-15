@@ -13,5 +13,6 @@ module it.polimi.ingsw.galaxytruckerproject {
     exports it.polimi.ingsw.galaxytruckerproject.player;
     exports it.polimi.ingsw.galaxytruckerproject.observers;
     exports it.polimi.ingsw.galaxytruckerproject.tiles;
+    exports it.polimi.ingsw.galaxytruckerproject.cards;
     opens it.polimi.ingsw.galaxytruckerproject.observers to javafx.fxml;
 }

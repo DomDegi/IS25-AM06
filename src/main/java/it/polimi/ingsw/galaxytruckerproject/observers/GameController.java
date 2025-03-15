@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.observers;
 
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.GameState;
+import it.polimi.ingsw.galaxytruckerproject.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.tiles.*;
 
@@ -327,7 +328,7 @@ public class GameController implements GameObserver {
     //Every player can do an early landing
     //When cards are over go to CONCLUDE_GAME state
     public void DrawCard (String playerName, String input){
-        if (game.cardsLeft == 0) {
+        if (game.getCardsLeft() == 0) {
             game.endCardPhase();
         }
 
@@ -351,5 +352,13 @@ public class GameController implements GameObserver {
                 break;
             default: break;
         }
+    }
+
+    //Gets the drawnCard from main and sends the input to each Card, depending on return value gives errors
+    public void CardEvent(String playerName, String input) {
+
+        String[] words =  input.split(" ");
+        Card drawnCard = game.getDrawnCard();
+        drawnCard.executeCard(game, words);
     }
 }
