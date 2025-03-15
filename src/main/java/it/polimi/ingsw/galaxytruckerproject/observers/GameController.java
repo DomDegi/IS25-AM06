@@ -6,6 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.tiles.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -136,7 +137,7 @@ public class GameController implements GameObserver {
     }
 
     public synchronized void DrawTile(String playerName, String[] input) {
-        //Could add that if we are looking at cards we can't call draw, but we can also makes so that the input of look is hidden when calling other methods
+        //Could add that if we are looking at cards we can't call draw, but we can also make so that the input of look is hidden when calling other methods
         if (Objects.equals(playerInputs.get(playerName), "draw") || Objects.equals(playerInputs.get(playerName), "completed")) {
             return;
         }
@@ -157,7 +158,7 @@ public class GameController implements GameObserver {
                     System.out.println("too few inputs: index turned tiles to pick is needed");
                     return;
                 }
-                //If the third word can't be parsed to a int, do nothing
+                //If the third word can't be parsed to an int, do nothing
                 try {
                     int index = Integer.parseInt(input[2]);
                     Tile drawnTile = game.DrawTurnedTile(playerName, index);
@@ -195,20 +196,45 @@ public class GameController implements GameObserver {
         }
     }
 
-    public synchronized void VerifyShipCorrectness() {
-        boolean check=true;
-        for(Player player: game.getListOfPlayers()){
-            if(!player.getShipBoard().verifyCorrectness().isEmpty()){
+    public synchronized void VerifyShipCorrectness(String playerName) {
+        String[] words = input.split(" ");
+        Player player = null;
+
+        for (Player p : game.getListOfPlayers()) { // Assume game.getPlayers() returns a list of players
+            if (p.getPlayerName().equals(playerName)) {
+                player = p;
+                break;
             }
         }
-        if
+
+        if (player == null) {
+            System.out.println("Player not found.");
+            return;
+        }
+        ArrayList<Coordinates> errors = player.getShipBoard().verifyCorrectness();
+        if (errors.isEmpty()){
+            System.out.println("Ship construction is correct for player: " + playerName);
+        } else {
+            System.out.println("Ship construction has errors for player: " + playerName+"Input tiles coordinates to destroy");
+            checkLoop(player,input);
+        }
     }
+    public synchronized void checkLoop(Player player, String input){
+        String[] words = input.split(" ");
+        Coordinates coordinatesToDestroy = new Coordinates(Integer.parseInt(words[0]), Integer.parseInt(words[1]));
+        player.getShipBoard().destroyTile(coordinatesToDestroy);
+        ArrayList<Coordinates> errors = player.getShipBoard().verifyCorrectness();
+        if(errors.isEmpty())
+            return;
+        System.out.println("Ship construction has errors for player: " + player.getPlayerName() +"Input tiles coordinates to destroy");
+        checkLoop(player,input);
+    }
+
     public void RefuseTile(String playerName) {
         if (Objects.equals(playerInputs.get(playerName), "draw")) {
             game.RefuseTile(playerName);
         }
     }
-
 
 
     public void LookGameCards(String playerName, String[] input) {
