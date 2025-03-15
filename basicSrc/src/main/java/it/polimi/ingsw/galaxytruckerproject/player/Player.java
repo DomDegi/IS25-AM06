@@ -39,15 +39,15 @@ public class Player {
     }
 
     public void loseCrew(Coordinates coordinates) {
-        playerShip.chooseCrewtoRemove2(coordinates);
+        playerShip.chooseCrewtoRemove(coordinates);
     }
 
     public void gainCredit(int credit) {
         this.credit += credit;
     }
 
-    public Coverage useShield(Coordinates coordinates) {
-        return playerShip.chooseShields(coordinates);
+    public Coverage useShield(Coordinates shieldCoordinates, Coordinates batteryCoordinates) {
+        return playerShip.chooseShields(shieldCoordinates,batteryCoordinates);
     }
 
 

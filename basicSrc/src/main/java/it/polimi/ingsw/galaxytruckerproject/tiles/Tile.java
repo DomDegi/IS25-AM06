@@ -103,7 +103,8 @@ public abstract class Tile {
     };
     public Coverage getCoveredArea(){System.out.println("THIS TILE IS NOT A SHIELD"); return Coverage.NONE;}
     public ArrayList<Goods> getCargo(){System.out.println("THIS TILE IS NOT A CARGOHOLD"); return null;}
-    public void removeCrew(){};
+    public void removeGood(Goods good){System.out.println("THIS TILE IS NOT A GOOD");}
+
     public int getStrength(){
         System.out.println("THIS TILE IS NOT A DOUBLE CANNON");
         return 0;
