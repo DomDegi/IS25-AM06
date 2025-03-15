@@ -2,11 +2,12 @@ package it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
 
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
-public class CannonShot extends Projectile {
+import java.util.Arrays;
 
-
-    public CannonShot(Direction direction){
+public class LargeMeteor extends Meteor {
+    public LargeMeteor(Direction direction) {
         super(direction);
     }
+
 
 }

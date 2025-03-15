@@ -1,5 +1,5 @@
 package it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
-
+import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -12,13 +12,14 @@ import java.util.Random;
 })
 
 public abstract class Projectile {
-    protected final Direction direction;
+    protected Direction direction;
+    protected final Game game;
     protected int diceRoll;
+
 
     public Projectile(Direction direction) {
         this.direction = direction;
     }
-
     public Direction getDirection() {
         return direction;
     }
@@ -27,5 +28,8 @@ public abstract class Projectile {
     public int rollTheDices(){
         diceRoll = new Random().nextInt(11) + 2;
         return diceRoll;
+    }
+    public Defense throwProjectile() {
+        return Defense.PROTECTED;
     }
 }

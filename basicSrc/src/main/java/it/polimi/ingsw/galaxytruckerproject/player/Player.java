@@ -26,7 +26,7 @@ public class Player {
     public int getPlayerPosition() {return playerPosition;}
     public PlayersColor getPlayerColor() {return playerColor;}
     public int getCredit() {return credit;}
-
+    public ShipBoard getPlayerShip() {return playerShip;}
 
     public float getCannonStrenght(){
         return playerShip.getCannonStrenght();

@@ -2,6 +2,9 @@ package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.Meteor;
+import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.SmallMeteor;
+import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.LargeMeteor;
+import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.Projectile;
 
 import java.util.ArrayList;
 
@@ -15,6 +18,6 @@ public class MeteorSwarm extends Card {
 
     @Override
     public void executeCard(FlightBoard flightBoard) {
-        listOfMeteors.forEach((meteor) -> meteor.throwMeteor(flightBoard.getRanking()));
+        listOfMeteors.forEach((meteor) -> meteor.throwProjectile());
     }
 }
