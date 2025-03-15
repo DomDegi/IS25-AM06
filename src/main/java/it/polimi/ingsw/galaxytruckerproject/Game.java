@@ -211,6 +211,19 @@ public class Game {
     //VERIFY_SHIP_CORRECTNESS METHODS
 
     //DRAW_CARD METHODS
+    public void DrawCard() {
+        this.drawnCard = inGameCards.removeFirst();
+        this.gameState = CARD_EVENT;
+        notifyObservers(gameState);
+    }
+
+    public void endCardPhase() {
+        this.gameState = CONCLUDE_GAME;
+        notifyObservers(gameState);
+    }
+
+    //CARD_EVENT METHODS
+
 
 
     //GETTER METHODS
@@ -268,5 +281,9 @@ public class Game {
 
     public boolean getHourglassState() {
         return hourglassON;
+    }
+
+    public FlightBoard getFlightBoard() {
+        return flightBoard;
     }
 }

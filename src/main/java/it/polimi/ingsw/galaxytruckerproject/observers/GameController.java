@@ -321,4 +321,35 @@ public class GameController implements GameObserver {
                 throw new IllegalStateException("Unexpected value: " + game.getHourglassTurns());
         }
     }
+
+    //Number 1 player can draw
+    //Every player can check others shipboard
+    //Every player can do an early landing
+    //When cards are over go to CONCLUDE_GAME state
+    public void DrawCard (String playerName, String input){
+        if (game.cardsLeft == 0) {
+            game.endCardPhase();
+        }
+
+        String[] words =  input.split(" ");
+
+        switch(words[0].toLowerCase()) {
+            case "draw":
+                if (game.IdentifyPlayerByName(playerName).equals(game.getListOfPlayers().getFirst())){
+                game.DrawCard();
+                }
+                else {
+                    System.out.println("The first ranked player has to draw\n");
+                }
+                break;
+            case "shipboard":
+                CheckShipBoard(playerName, words);
+                break;
+            case "land":
+                game.getFlightBoard().earlyLanding(game.IdentifyPlayerByName(playerName).getPlayerRanking());
+                System.out.println(playerName + " made an early landing\n");
+                break;
+            default: break;
+        }
+    }
 }
