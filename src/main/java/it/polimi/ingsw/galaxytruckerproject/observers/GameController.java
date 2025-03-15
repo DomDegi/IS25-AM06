@@ -6,6 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.tiles.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -217,7 +218,7 @@ public class GameController implements GameObserver {
         }
         return check;
     }
-    
+
     public synchronized Map<Player,Boolean> shipErrorManagement(Player player, String input){
         String[] words = input.split(" ");
         Map<Player,Boolean> check=new HashMap<>();
