@@ -37,7 +37,7 @@ public class GameController implements GameObserver {
                 ShipsCreation(playerName, input);
             }
             case VERIFY_SHIP_CORRECTNESS: {
-                VerifyShipCorrectness(playerName, input);
+                VerifyShipCorrectness(playerName);
             }
             case DRAW_CARD: {
                 DrawCard(playerName, input);
@@ -196,38 +196,41 @@ public class GameController implements GameObserver {
         }
     }
 
-    public synchronized void VerifyShipCorrectness(String playerName) {
-        String[] words = input.split(" ");
-        Player player = null;
-
-        for (Player p : game.getListOfPlayers()) { // Assume game.getPlayers() returns a list of players
-            if (p.getPlayerName().equals(playerName)) {
-                player = p;
-                break;
-            }
-        }
-
+    public synchronized Map<Player,Boolean> VerifyShipCorrectness(String playerName) {
+        Player player = game.getListOfPlayers().stream()
+                .filter(p -> p.getPlayerName().equals(playerName))
+                .findFirst()
+                .orElse(null);
+        Map<Player,Boolean> check=new HashMap<>();
         if (player == null) {
             System.out.println("Player not found.");
-            return;
+            check.put(player,true);
+            return check;
         }
-        ArrayList<Coordinates> errors = player.getShipBoard().verifyCorrectness();
-        if (errors.isEmpty()){
+        boolean correctness = player.getShipBoard().verifyCorrectness();
+        if (correctness){
             System.out.println("Ship construction is correct for player: " + playerName);
+            check.put(player,true);
+            return check;
         } else {
             System.out.println("Ship construction has errors for player: " + playerName+"Input tiles coordinates to destroy");
-            checkLoop(player,input);
+            check.put(player,false);
         }
+        return check;
     }
-    public synchronized void checkLoop(Player player, String input){
+    
+    public synchronized Map<Player,Boolean> checkShipLoop(Player player, String input){
         String[] words = input.split(" ");
+        Map<Player,Boolean> check=new HashMap<>();
         Coordinates coordinatesToDestroy = new Coordinates(Integer.parseInt(words[0]), Integer.parseInt(words[1]));
         player.getShipBoard().destroyTile(coordinatesToDestroy);
-        ArrayList<Coordinates> errors = player.getShipBoard().verifyCorrectness();
-        if(errors.isEmpty())
-            return;
+        boolean correctness = player.getShipBoard().verifyCorrectness();
+        if (correctness) {
+            check.put(player, true);
+            return check;
+        }
         System.out.println("Ship construction has errors for player: " + player.getPlayerName() +"Input tiles coordinates to destroy");
-        checkLoop(player,input);
+        return checkShipLoop(player, input);
     }
 
     public void RefuseTile(String playerName) {

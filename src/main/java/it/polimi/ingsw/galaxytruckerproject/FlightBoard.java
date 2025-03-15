@@ -75,8 +75,6 @@ public class FlightBoard {
         for (int i = playerRank-1; i>=0 ; i--) {
             if (posList[playerRank].getPlayerPosition() >= posList[i].getPlayerPosition()) {
                 posList[playerRank].setPlayerPosition(posList[playerRank].getPlayerPosition() + 1);
-                posList[playerRank].setPlayerRanking(i+1);
-                posList[i].setPlayerRanking(playerRank+1);
             }
         }
     }
@@ -89,11 +87,8 @@ public class FlightBoard {
         for (int i = playerRank+1; i<numPlayer ; i++) {
             if (posList[playerRank].getPlayerPosition() <= posList[i].getPlayerPosition()) {
                 posList[playerRank].setPlayerPosition(posList[playerRank].getPlayerPosition() - 1);
-                posList[playerRank].setPlayerRanking(i+1);
-                posList[i].setPlayerRanking(playerRank+1);
             }
         }
-        checkEarlyLanding();
     }
     public void rearrange(){
         for(int i=0;i<numPlayer;i++){
@@ -102,12 +97,14 @@ public class FlightBoard {
                     Player tempPlayer = posList[i];
                     posList[i]=posList[j];
                     posList[j]= tempPlayer;
+                    posList[i].setPlayerRanking(i+1);
+                    posList[j].setPlayerRanking(j+1);
                 }
             }
         }
     }
 
-    public void checkEarlyLanding() {
+    public void concludeMovement() {
         Player firstPlayer = null;
         if (posList.length < numPlayer) {
             System.err.println("Error: posList is either null or does not have enough players0");
@@ -131,5 +128,6 @@ public class FlightBoard {
                 }
             }
         }
+        rearrange();
     }
 }
