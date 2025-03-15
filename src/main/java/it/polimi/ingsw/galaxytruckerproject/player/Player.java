@@ -39,6 +39,6 @@ public class Player {
     }
 
     public void hasDrawnTile(Tile drawnTile) {
-
+        this.drawnTile = drawnTile;
     }
 }

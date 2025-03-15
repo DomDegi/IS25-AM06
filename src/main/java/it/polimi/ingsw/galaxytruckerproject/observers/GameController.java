@@ -15,7 +15,7 @@ import java.util.concurrent.Executors;
 
 public class GameController implements GameObserver {
     private final Game game;
-    private Map<String, String> playerInputs;
+    private final Map<String, String> playerInputs;
 
     public GameController(Game game) {
         this.game = game;
@@ -24,15 +24,12 @@ public class GameController implements GameObserver {
 
     @Override
     public void notifyChanges(GameState newState) {
-        if (newState == GameState.SHIPS_CREATION){
-            game.StartTimer();
-        }
     }
 
     public void processPlayerInput(String playerName, String input) {
         switch (game.getGameState()) {
             case START_GAME: {
-                StartGame(playerName, input);
+                PlayerSelection(playerName, input);
             }
             case SHIPS_CREATION: {
                 ShipsCreation(playerName, input);
@@ -52,33 +49,44 @@ public class GameController implements GameObserver {
         }
     }
 
-    //Adds player to the game and starts if the first added player types START or the player are 4
-    public synchronized void StartGame(String playerName, String input) {
-
+    //first player that enters the game inputs number of players to start the game with (2 to 4)
+    //every player inputs a color as they enter (input ex: playersColor int (only if first)
+    public synchronized void PlayerSelection(String playerName, String input) {
         String[] words = input.split(" ");
-        //player that types start has to already be in the game
-        if (game.getNumberOfPlayers() >= 2 && words[0].equalsIgnoreCase("start") && game.IdentifyPlayerByName(playerName) != null) {
-            System.out.println(playerName + " starts the timer: GO!");
-            game.StartGame();
-            return;
+        if (game.getPlayerCount() == 0 && words.length >= 2) {
+            try {
+                int playerCount =  Integer.parseInt(words[1]);
+                game.setPlayerCount(playerCount);
+            }
+            catch (NumberFormatException e) {
+                System.out.println("First player to input didn't pass an int to specify player count for the game");
+            }
         }
-        String color = words[0];
         try {
-            PlayersColor.valueOf(color);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Invalid color");
-            return;
+            PlayersColor color = PlayersColor.valueOf(words[0]);
+            game.AddPlayer(playerName, color);
+
+            //first one is the number of player in the list, the other is the number of player to start the game with
+            if (game.getNumberOfPlayers() == game.getPlayerCount()) {
+                game.StartGame();
+            }
         }
-        //Adds a player whatever they type, input is not important
-        if (game.getNumberOfPlayers() < 4) {
-            game.AddPlayer(playerName, PlayersColor.valueOf(color));
-        } else {
-            System.out.println("can't have more than 4 players, waiting on Start input");
+        catch (IllegalArgumentException e) {
+            System.out.println("Not a valid color for the game");
         }
     }
 
     public synchronized void ShipsCreation(String playerName, String input) {
+
         String[] words = input.split(" ");
+
+        if (game.getHourglassTurns() == 0 && !words[0].equals("hourglass")) {
+            System.out.println("To begin ship creation flip the hourglass\n");
+            return;
+        }
+        else if (words[0].equals("hourglass")) {
+            TurnHourglass(playerName);
+        }
         switch (words[0].toLowerCase()) {
 
             //draws either from stack or from turned depending on words[1], if turned words[3] is the index of turnedTiles
@@ -282,23 +290,35 @@ public class GameController implements GameObserver {
             }
         }
         game.endShipCreation();
-        System.out.println("All the players have completed the ship creation");
+        System.out.println("All the players have completed the ship creation\n");
     }
 
-    //Turns hourglass isn't on and adds 1 to the turn count,
+    //Turns hourglass if it isn't on and adds 1 to the turn count,
     // if it's already been turned twice, player that turns it needs to have completed his ship
     public void TurnHourglass (String playerName) {
         if (!game.getHourglassState()) {
-            System.out.println("hourglass is already going");
+            System.out.println("hourglass is already going\n");
             return;
         }
-        if (game.getHourglassTurns() == 2) {
-            if (playerInputs.get(playerName).equals("completed")) {
+        switch (game.getHourglassTurns()) {
+            case 0:
+                System.out.println(playerName + " starts the game: GO!\n");
                 game.StartTimer();
-            }
-            else {
-                System.out.println("can't make the last hourglass turn when your shipboard isn't complete");
-            }
+                break;
+            case 1:
+                System.out.println(playerName + " has flipped the hourglass\n");
+                game.StartTimer();
+                break;
+            case 2:
+                if (playerInputs.get(playerName).equals("completed")) {
+                    game.StartTimer();
+                }
+                else {
+                    System.out.println("can't make the last hourglass turn when your shipboard isn't complete\n");
+                }
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + game.getHourglassTurns());
         }
     }
 }
