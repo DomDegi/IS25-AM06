@@ -31,6 +31,7 @@ public class Player {
     public ShipBoard getShipBoard() {return playerShip;}
     public boolean isLanded() {return landed;}
     public void setLanded(boolean landed) {this.landed = landed;}
-
+    public void addCredit(int credit) {this.credit += credit;}
+    public void removeCredit(int credit) {this.credit -= credit;}
 
 }

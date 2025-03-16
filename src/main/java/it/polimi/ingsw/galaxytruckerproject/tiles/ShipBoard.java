@@ -6,7 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.player.Player;
 public class ShipBoard {
     protected final Player player; //protected because it need to be called in StartingCabin (Tiles)
     private Optional<Tile>[][] tilesTable;
-    private int penaltyTiles ;
+    private int penaltyTiles;
     private ArrayList<Tile> bookedTiles;
     private int numBatteries;
     private float singleCannonPower;
@@ -72,7 +72,7 @@ public class ShipBoard {
     public ArrayList<Coordinates> getBatteryCoordinates() {return batteryCoordinates;}
     public ArrayList<Coverage> getCoverageShields(){return shields;}
     public ArrayList<Coordinates> getCargoHoldCoordinates(){return cargoHoldCoordinates;}
-
+    
     public Optional<Tile>[][] getTilesTable(){return  tilesTable;}
 
     //METODO INIZIALIZZAZIONE
@@ -292,37 +292,39 @@ public class ShipBoard {
 
 
 
-    public void countExsposedConnectors(){
+    public int countExposedConnectors(){
+        numExposedConnectors =0;
         for(int i=0; i<5; i++)
             for(int j=0; j<7; j++){
                 checkBorderTile(i,j);
             }
+        return numExposedConnectors;
     }
-    //ADDITONARY METHOD THAT GETS IMPLEMENTED IN COUNT EXSPOSEDCONNECTORS
+    //ADDITIONAL METHOD THAT GETS IMPLEMENTED IN COUNT EXPOSED_CONNECTORS
     public void checkBorderTile(int i, int j){
         //if the tile at its LEFT is either out of bounds, a VoidTile, or empty,
-        //then our Tile iss a borderTile and I have to check if it is Exsposed
+        //then our Tile iss a borderTile and I have to check if it is Exposed
         if(i-1<0 || tilesTable[i-1][j].get() instanceof VoidTile || tilesTable[i+1][j].isEmpty())
             if(!tilesTable[i][j].get().getWest().getConnectorsType().equals(Connectors.SMOOTH))
-                penaltyTiles++;
+                numExposedConnectors++;
 
         //if the tile at its RIGHT is either out of bounds, a VoidTile, or empty,
-        //then our Tile iss a borderTile and I have to check if it is Exsposed
+        //then our Tile iss a borderTile and I have to check if it is Exposed
         if(i+1>6 || tilesTable[i+1][j].get() instanceof VoidTile || tilesTable[i+1][j].isEmpty())
             if(!tilesTable[i][j].get().getEast().getConnectorsType().equals(Connectors.SMOOTH))
-                penaltyTiles++;
+                numExposedConnectors++;
 
         //if the tile UNDER is either out of bounds, a VoidTile, or empty,
-        // then our Tile iss a borderTile and I have to check if it is Exsposed
+        // then our Tile iss a borderTile and I have to check if it is Exposed
         if(j+1>4 || tilesTable[i][j+1].get() instanceof VoidTile || tilesTable[i][j+1].isEmpty())
             if(!tilesTable[i][j].get().getSouth().getConnectorsType().equals(Connectors.SMOOTH))
-                penaltyTiles++;
+                numExposedConnectors++;
 
         //if the tile OVER is either out of bounds, a VoidTile, or empty,
-        // then our Tile iss a borderTile and I have to check if it is Exsposed
+        // then our Tile iss a borderTile and I have to check if it is Exposed
         if(j-1<0 || tilesTable[i][j-1].get() instanceof VoidTile || tilesTable[i][j+1].isEmpty())
             if(!tilesTable[i][j].get().getNorth().getConnectorsType().equals(Connectors.SMOOTH))
-                penaltyTiles++;
+                numExposedConnectors++;
     }
 
     public boolean verifyCorrectness(){

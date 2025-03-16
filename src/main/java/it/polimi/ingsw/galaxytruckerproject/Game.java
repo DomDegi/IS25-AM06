@@ -252,4 +252,8 @@ public class Game {
         this.gameState = VERIFY_SHIP_CORRECTNESS;
         notifyObservers(gameState);
     }
+
+    public FlightBoard getFlightBoard() {
+        return flightBoard;
+    }
 }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.observers;
 
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.GameState;
+import it.polimi.ingsw.galaxytruckerproject.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.tiles.*;
@@ -31,28 +32,28 @@ public class GameController implements GameObserver {
     public void processPlayerInput(String playerName, String input) {
         switch (game.getGameState()) {
             case START_GAME: {
-                StartGame(playerName, input);
+                startGame(playerName, input);
             }
             case SHIPS_CREATION: {
-                ShipsCreation(playerName, input);
+                shipsCreation(playerName, input);
             }
             case VERIFY_SHIP_CORRECTNESS: {
-                VerifyShipCorrectness(playerName);
+                verifyShipCorrectness(playerName);
             }
             case DRAW_CARD: {
-                DrawCard(playerName, input);
+                drawCard(playerName, input);
             }
             case CARD_EVENT: {
-                CardEvent(playerName, input);
+                cardEvent(playerName, input);
             }
             case CONCLUDE_GAME: {
-                ConcludeGame(playerName, input);
+                concludeGame(playerName);
             }
         }
     }
 
     //Adds player to the game and starts if the first added player types START or the player are 4
-    public synchronized void StartGame(String playerName, String input) {
+    public synchronized void startGame(String playerName, String input) {
 
         String[] words = input.split(" ");
         //player that types start has to already be in the game
@@ -76,13 +77,13 @@ public class GameController implements GameObserver {
         }
     }
 
-    public synchronized void ShipsCreation(String playerName, String input) {
+    public synchronized void shipsCreation(String playerName, String input) {
         String[] words = input.split(" ");
         switch (words[0].toLowerCase()) {
 
             //draws either from stack or from turned depending on words[1], if turned words[3] is the index of turnedTiles
             case "draw":
-                DrawTile(playerName, words);
+                drawTile(playerName, words);
                 break;
 
             //prints the turned tiles ArrayList
@@ -97,7 +98,7 @@ public class GameController implements GameObserver {
 
             //player refuses currently drawnTile
             case "refuse":
-                RefuseTile(playerName);
+                refuseTile(playerName);
                 break;
 
             //player sets currently drawnTile at coordinates passed with input
@@ -107,27 +108,27 @@ public class GameController implements GameObserver {
 
             //player books currently drawnTile
             case "book":
-                BookTile(playerName);
+                bookTile(playerName);
                 break;
 
             //shows deck of 3 cards 1, 2, 3. Can only be called when no card is drawn.
             case "look":
-                LookGameCards(playerName, words);
+                lookGameCards(playerName, words);
                 break;
 
             //turns the hourglass, if hourglass at last possible turn, the player last input has to be completed
             case "hourglass":
-                TurnHourglass(playerName);
+                turnHourglass(playerName);
                 break;
 
-            //all other player inputs get refused afterward except for TurnHourglass
+            //all other player inputs get refused afterward except for turnHourglass
             case "completed":
-                Completed(playerName);
+                completed(playerName);
                 break;
 
             //looks at other player ship, if no second word, looks at yours
             case "shipboard":
-                CheckShipBoard(playerName, words);
+                checkShipBoard(playerName, words);
                 break;
 
             //if no case is met, ignore
@@ -136,7 +137,7 @@ public class GameController implements GameObserver {
         }
     }
 
-    public synchronized void DrawTile(String playerName, String[] input) {
+    public synchronized void drawTile(String playerName, String[] input) {
         //Could add that if we are looking at cards we can't call draw, but we can also make so that the input of look is hidden when calling other methods
         if (Objects.equals(playerInputs.get(playerName), "draw") || Objects.equals(playerInputs.get(playerName), "completed")) {
             return;
@@ -196,7 +197,7 @@ public class GameController implements GameObserver {
         }
     }
 
-    public synchronized Map<Player,Boolean> VerifyShipCorrectness(String playerName) {
+    public synchronized Map<Player,Boolean> verifyShipCorrectness(String playerName) {
         Player player = game.getListOfPlayers().stream()
                 .filter(p -> p.getPlayerName().equals(playerName))
                 .findFirst()
@@ -219,7 +220,7 @@ public class GameController implements GameObserver {
         return check;
     }
 
-    public synchronized Map<Player,Boolean> shipErrorManagement(Player player, String input){
+    public Map<Player,Boolean> shipErrorManagement(Player player, String input){
         String[] words = input.split(" ");
         Map<Player,Boolean> check=new HashMap<>();
         Coordinates coordinatesToDestroy = new Coordinates(Integer.parseInt(words[0]), Integer.parseInt(words[1]));
@@ -234,14 +235,13 @@ public class GameController implements GameObserver {
         return check;
     }
 
-    public void RefuseTile(String playerName) {
+    public void refuseTile(String playerName) {
         if (Objects.equals(playerInputs.get(playerName), "draw")) {
             game.RefuseTile(playerName);
         }
     }
 
-
-    public void LookGameCards(String playerName, String[] input) {
+    public void lookGameCards(String playerName, String[] input) {
         if (Objects.equals(playerInputs.get(playerName), "draw") && Objects.equals(playerInputs.get(playerName), "concluded")) {
             System.out.println("Can't look at cards while you have drawn a tile or your ship is concluded");
             return;
@@ -288,7 +288,7 @@ public class GameController implements GameObserver {
     }
 
     //set currently drawn tile as booked for the player
-    public void BookTile(String playerName) {
+    public void bookTile(String playerName) {
         if (Objects.equals(playerInputs.get(playerName), "draw")) {
             if (!game.playerBookTile (playerName)) {
                 System.out.println("booked tile spaces are full\n");
@@ -297,7 +297,7 @@ public class GameController implements GameObserver {
         }
     }
 
-    public void CheckShipBoard(String playerName, String[] input) {
+    public void checkShipBoard(String playerName, String[] input) {
         ShipBoard shipBoardToCheck = game.getPlayerShipBoard(input[1]);
         if (shipBoardToCheck == null) {
             System.out.println("no player with that name to check");
@@ -308,9 +308,9 @@ public class GameController implements GameObserver {
 
     //now no input except hourglass and checkShipboard work and checks if the other player have completed
     //if yes ends shipboard creation phase
-    public void Completed (String playerName) {
+    public void completed(String playerName) {
         if (Objects.equals(playerInputs.get(playerName), "draw")) {
-            RefuseTile(playerName);
+            refuseTile(playerName);
         }
         playerInputs.put(playerName, "completed");
         for (Map.Entry<String, String> entry : playerInputs.entrySet()) {
@@ -324,7 +324,7 @@ public class GameController implements GameObserver {
 
     //Turns hourglass isn't on and adds 1 to the turn count,
     // if it's already been turned twice, player that turns it needs to have completed his ship
-    public void TurnHourglass (String playerName) {
+    public void turnHourglass(String playerName) {
         if (!game.getHourglassState()) {
             System.out.println("hourglass is already going");
             return;
@@ -336,6 +336,50 @@ public class GameController implements GameObserver {
             else {
                 System.out.println("can't make the last hourglass turn when your shipboard isn't complete");
             }
+        }
+    }
+
+    public synchronized void concludeGame(String playerName) {
+        for (Player player : game.getFlightBoard().getRanking()) {
+            if (player != null) {
+                game.getFlightBoard().earlyLanding(player.getPlayerRanking());
+                switch (player.getPlayerRanking()){
+                    case 1:
+                        player.addCredit(8);
+                        break;
+                    case 2:
+                        player.addCredit(6);
+                        break;
+                    case 3:
+                        player.addCredit(4);
+                        break;
+                    case 4:
+                        player.addCredit(2);
+                        break;
+                }
+            }
+        }
+        ArrayList<Player> coolestPlayers = new ArrayList<>();
+        coolestPlayers.add(game.getFlightBoard().getRanking()[0]);
+        for(Player player : game.getFlightBoard().getRanking()){
+            if (player.getShipBoard().countExposedConnectors()<coolestPlayers.getFirst().getShipBoard().countExposedConnectors()){
+                coolestPlayers.clear();
+                coolestPlayers.add(player);
+            }
+            if (player.getShipBoard().countExposedConnectors()==coolestPlayers.getFirst().getShipBoard().countExposedConnectors()){
+                coolestPlayers.add(player);
+            }
+        }
+        for (Player player : coolestPlayers) {
+            player.addCredit(4);
+        }
+        for (Player player : game.getFlightBoard().getRanking()) {
+            for(GoodsColor goodValue: player.getShipBoard().getGoods()){
+                player.addCredit(goodValue.getValue());
+            }
+        }
+        for (Player player : game.getFlightBoard().getRanking()) {
+            player.removeCredit(player.getShipBoard().getDestroiedTieles());
         }
     }
 }
