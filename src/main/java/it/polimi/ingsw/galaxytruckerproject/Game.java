@@ -200,7 +200,7 @@ public class Game {
                     System.out.println("The time is up, ship creation is over\n");
                 }
             }
-        }, 60000); //60 seconds
+        }, 95000); //95 seconds
     }
 
     public void endShipCreation() {
@@ -213,6 +213,7 @@ public class Game {
     //DRAW_CARD METHODS
     public void DrawCard() {
         this.drawnCard = inGameCards.removeFirst();
+        drawnCard.initializeCard(this);
         this.gameState = CARD_EVENT;
         notifyObservers(gameState);
     }

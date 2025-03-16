@@ -9,9 +9,6 @@ import it.polimi.ingsw.galaxytruckerproject.tiles.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 
 public class GameController implements GameObserver {
@@ -122,7 +119,7 @@ public class GameController implements GameObserver {
 
             //shows deck of 3 cards 1, 2, 3. Can only be called when no card is drawn.
             case "look":
-                LookGameCards(playerName, words);
+                LookInGameCards(playerName, words);
                 break;
 
             //turns the hourglass, if hourglass at last possible turn, the player last input has to be completed
@@ -213,7 +210,7 @@ public class GameController implements GameObserver {
     }
 
 
-    public void LookGameCards(String playerName, String[] input) {
+    public void LookInGameCards(String playerName, String[] input) {
         if (Objects.equals(playerInputs.get(playerName), "draw") && Objects.equals(playerInputs.get(playerName), "concluded")) {
             System.out.println("Can't look at cards while you have drawn a tile or your ship is concluded");
             return;
@@ -319,7 +316,7 @@ public class GameController implements GameObserver {
                 }
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + game.getHourglassTurns());
+                throw new IllegalStateException("Unexpected value: " + game.getHourglassTurns() + "\n");
         }
     }
 
@@ -356,9 +353,10 @@ public class GameController implements GameObserver {
 
     //Gets the drawnCard from main and sends the input to each Card, depending on return value gives errors
     public void CardEvent(String playerName, String input) {
-
         String[] words =  input.split(" ");
         Card drawnCard = game.getDrawnCard();
-        drawnCard.executeCard(game, words);
+        drawnCard.executeCard(game, playerName,words);
     }
+
+
 }

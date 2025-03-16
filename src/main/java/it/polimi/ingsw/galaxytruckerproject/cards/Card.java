@@ -28,7 +28,9 @@ public abstract class Card {
         this.requiredDays = requiredDays;
     }
 
-    public abstract void executeCard(Game game, String[] input);
+    public abstract void initializeCard(Game game);
+
+    public abstract void executeCard(Game game, String playerName, String[] input);
 
     public int getLevel() {
         return level;

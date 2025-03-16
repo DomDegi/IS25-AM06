@@ -24,8 +24,8 @@ public class Epidemic extends Card {
         }
 
         for (Player player : players) {
-            if (player.getShipBoard().checkEarlyLanding){
-                game.getFlightBoard().earlyLanding(player);
+            if (player.getShipBoard().checkEarlyLanding()){
+                game.getFlightBoard().earlyLanding(player.getPlayerRanking());
             }
         }
     }

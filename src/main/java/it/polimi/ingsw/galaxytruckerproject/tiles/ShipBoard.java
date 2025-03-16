@@ -327,40 +327,42 @@ public class ShipBoard {
 
 
 
-    public void countExsposedConnectors(){
+    public int countExposedConnectors(){
+        numExposedConnectors =0;
         for(int i=0; i<5; i++)
             for(int j=0; j<7; j++){
                 checkBorderTile(i,j);
             }
+        return numExposedConnectors;
     }
-    //ADDITONARY METHOD THAT GETS IMPLEMENTED IN COUNT EXSPOSEDCONNECTORS
+    //ADDITIONAL METHOD THAT GETS IMPLEMENTED IN COUNT EXPOSED CONNECTORS
     public void checkBorderTile(int i, int j){
         //if the tile at its LEFT is either out of bounds, a VoidTile, or empty,
-        //then our Tile iss a borderTile and I have to check if it is Exsposed
-        if(i-1<0 || tilesTable[i-1][j] instanceof VoidTile || tilesTable[i+1][j].equals(null))
-            if(!tilesTable[i][j].getWest().getConnectorsType().equals(Connectors.SMOOTH))
-                penaltyTiles++;
+        //then our Tile iss a borderTile and I have to check if it is Exposed
+        if(i-1<0 || tilesTable[i-1][j].get() instanceof VoidTile || tilesTable[i+1][j].isEmpty())
+            if(!tilesTable[i][j].get().getWest().getConnectorsType().equals(Connectors.SMOOTH))
+                numExposedConnectors++;
 
         //if the tile at its RIGHT is either out of bounds, a VoidTile, or empty,
-        //then our Tile iss a borderTile and I have to check if it is Exsposed
-        if(i+1>6 || tilesTable[i+1][j] instanceof VoidTile || tilesTable[i+1][j].equals(null))
-            if(!tilesTable[i][j].getEast().getConnectorsType().equals(Connectors.SMOOTH))
-                penaltyTiles++;
+        //then our Tile iss a borderTile and I have to check if it is Exposed
+        if(i+1>6 || tilesTable[i+1][j].get() instanceof VoidTile || tilesTable[i+1][j].isEmpty())
+            if(!tilesTable[i][j].get().getEast().getConnectorsType().equals(Connectors.SMOOTH))
+                numExposedConnectors++;
 
         //if the tile UNDER is either out of bounds, a VoidTile, or empty,
-        // then our Tile iss a borderTile and I have to check if it is Exsposed
-        if(j+1>4 || tilesTable[i][j+1] instanceof VoidTile || tilesTable[i][j+1].equals(null))
-            if(!tilesTable[i][j].getSouth().getConnectorsType().equals(Connectors.SMOOTH))
-                penaltyTiles++;
+        // then our Tile iss a borderTile and I have to check if it is Exposed
+        if(j+1>4 || tilesTable[i][j+1].get() instanceof VoidTile || tilesTable[i][j+1].isEmpty())
+            if(!tilesTable[i][j].get().getSouth().getConnectorsType().equals(Connectors.SMOOTH))
+                numExposedConnectors++;
 
         //if the tile OVER is either out of bounds, a VoidTile, or empty,
-        // then our Tile iss a borderTile and I have to check if it is Exsposed
-        if(j-1<0 || tilesTable[i][j-1] instanceof VoidTile || tilesTable[i][j+1].equals(null))
-            if(!tilesTable[i][j].getNorth().getConnectorsType().equals(Connectors.SMOOTH))
-                penaltyTiles++;
-    }
+        // then our Tile iss a borderTile and I have to check if it is Exposed
+        if(j-1<0 || tilesTable[i][j-1].get() instanceof VoidTile || tilesTable[i][j+1].isEmpty())
+            if(!tilesTable[i][j].get().getNorth().getConnectorsType().equals(Connectors.SMOOTH))
+                numExposedConnectors++;
+}
 
-    public void verifyCorretness(){
+    public void verifyCorrectness(){
         Scanner scanner = new Scanner(System.in);
         Coordinates coordinates = new Coordinates(300, 300);
         ArrayList<Coordinates> array = new ArrayList();
