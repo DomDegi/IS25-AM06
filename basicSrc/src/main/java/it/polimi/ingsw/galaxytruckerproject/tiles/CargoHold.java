@@ -28,13 +28,15 @@ public abstract class CargoHold extends Tile{
     public void getStat(){
         shipBoard.getCargoHoldCoordinates().add(this.coordinates);
     }
-    public void addGood(Goods good){
+    public boolean addGood(Goods good){
         if(cargo.size() == totSpaces){
             System.out.println("CargoHold is full");
+            return false;
         }
-        else
-         cargo.add(good);
-
+        else {
+            cargo.add(good);
+            return true;
+        }
     }
 
     public void removeGood(Goods good){

@@ -43,7 +43,7 @@ public class EquipCabin extends Cabin {
     public void getStat(){
         switch (crewType) {
             case Human:
-                shipBoard.addBreakCrew(+2);
+                shipBoard.addBreakHumanCrew(+2);
                 break;
             case Purple:
                 shipBoard.addBreakPurpleAliens(true);
@@ -58,10 +58,9 @@ public class EquipCabin extends Cabin {
     public void removeCrew(){
         if (this.crew>0) {
             crew--;
-            shipBoard.addBreakCrew(-crew);
             switch (crewType) {
                 case Human:
-                    shipBoard.addBreakCrew(-1);
+                    shipBoard.addBreakHumanCrew(-1);
                     break;
                 case Purple:
                     shipBoard.addBreakPurpleAliens(false);
@@ -76,7 +75,19 @@ public class EquipCabin extends Cabin {
         }
     }
     public void destroy(){
-        shipBoard.addBreakCrew(-crew);
-        crew=0;
+        if (this.crew>0) {
+            switch (crewType) {
+                case Human:
+                    shipBoard.addBreakHumanCrew(-1);
+                    break;
+                case Purple:
+                    shipBoard.addBreakPurpleAliens(false);
+                    break;
+                case Brown:
+                    shipBoard.addBreakBrownAliens(false);
+                    break;
+            }
+            crew=0;
+        }
     }
 }
