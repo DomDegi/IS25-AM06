@@ -107,12 +107,15 @@ public abstract class Tile {
     public Coverage getCoveredArea(){System.out.println("THIS TILE IS NOT A SHIELD"); return Coverage.NONE;}
     public ArrayList<Goods> getCargo(){System.out.println("THIS TILE IS NOT A CARGOHOLD"); return null;}
     public boolean Pleaceble(){return true;};
-
+    public int getNumBAtteries() {
+        System.out.println("THIS TILE IS NOT A BATTERYCOMPONENT");
+        return 0;
+    }
     public int getStrength(){
         System.out.println("THIS TILE IS NOT A DOUBLE CANNON");
         return 0;
     }
-    public boolean displaceable(){
+    public boolean fillable(){
         return true;
     }
 }

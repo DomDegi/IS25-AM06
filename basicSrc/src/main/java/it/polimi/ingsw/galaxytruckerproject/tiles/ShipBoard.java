@@ -69,6 +69,13 @@ public class ShipBoard {
     public int getNumExposedConnectors() {
         return numExposedConnectors;
     }
+    public int getDoubleCannonPower(Coordinates coordinates) {
+        if(DoubleCannon.contains(coordinates)){
+            return tilesTable[coordinates.getX()][coordinates.getY()].get().getStrength();
+
+        }
+        return 0;
+    }
 
 
 
@@ -192,6 +199,7 @@ public class ShipBoard {
             for (int j = 0; j < 7; j++) {
                 if (!(tilesTable[i][j].get() instanceof VoidTile)) {
                     tilesTable[i][j] = Optional.empty();
+
                 }
             }
         }
@@ -213,19 +221,19 @@ public class ShipBoard {
         int y=coordinates.getY();
 
         //south
-        if(!tilesTable[x+1][y].isEmpty() &&  tilesTable[x+1][y].get().displaceable()){
+        if(!tilesTable[x+1][y].isEmpty() &&  tilesTable[x+1][y].get().fillable()){
             set1=( brokenGraph(new Coordinates(x+1,y)));
         }
         //east
-        if(!tilesTable[x][y+1].isEmpty()  &&  tilesTable[x][y+1].get().displaceable() && (set1==null || !set1.contains(tilesTable[x][y+1].get().getCoordinates()))){
+        if(!tilesTable[x][y+1].isEmpty()  &&  tilesTable[x][y+1].get().fillable() && (set1==null || !set1.contains(tilesTable[x][y+1].get().getCoordinates()))){
             set2 = brokenGraph(new Coordinates(x,y+1));
         }
         //north
-        if(!tilesTable[x-1][y].isEmpty()  &&  tilesTable[x-1][y].get().displaceable() && (set1==null||  !set1.contains(tilesTable[x-1][y].get().getCoordinates())) && (set2==null || !set2.contains(tilesTable[x-1][y].get().getCoordinates()))){
+        if(!tilesTable[x-1][y].isEmpty()  &&  tilesTable[x-1][y].get().fillable() && (set1==null||  !set1.contains(tilesTable[x-1][y].get().getCoordinates())) && (set2==null || !set2.contains(tilesTable[x-1][y].get().getCoordinates()))){
             set3 = brokenGraph(new Coordinates(x-1,y));
         }
         //west
-        if(!tilesTable[x][y-1].isEmpty()  &&  tilesTable[x][y-1].get().displaceable() && (set1==null || !set1.contains(tilesTable[x][y-1].get().getCoordinates())) && (set2==null || !set2.contains(tilesTable[x][y-1].get().getCoordinates())) && (set3==null || !set3.contains(tilesTable[x][y-1].get().getCoordinates()))){
+        if(!tilesTable[x][y-1].isEmpty()  &&  tilesTable[x][y-1].get().fillable() && (set1==null || !set1.contains(tilesTable[x][y-1].get().getCoordinates())) && (set2==null || !set2.contains(tilesTable[x][y-1].get().getCoordinates())) && (set3==null || !set3.contains(tilesTable[x][y-1].get().getCoordinates()))){
            set4 = brokenGraph(new Coordinates(x,y-1));
         }
         ArrayList<Set<Coordinates>> array = new ArrayList<>();
@@ -248,7 +256,7 @@ public class ShipBoard {
         Coordinates c = new Coordinates(0,0);
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 7; j++) {
-                if (!tilesTable[i][j].isEmpty() && tilesTable[i][j].get().displaceable()) {
+                if (!tilesTable[i][j].isEmpty() && tilesTable[i][j].get().fillable()) {
                     c.set(i, j);
                     if(!set.contains(c)){
                         tilesTable[i][j].get().destroy();

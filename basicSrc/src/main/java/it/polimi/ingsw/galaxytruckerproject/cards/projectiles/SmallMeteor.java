@@ -1,54 +1,35 @@
 package it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
 
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.tiles.ShipBoard;
-import it.polimi.ingsw.galaxytruckerproject.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.tiles.VoidTile;
+import it.polimi.ingsw.galaxytruckerproject.tiles.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Optional;
 
-public class SmallMeteor extends Meteor {
+public class SmallMeteor extends Projectile {
     public SmallMeteor(Direction direction) {
         super(direction);
     }
+
     public  Defense throwProjectile(Player player, int diceRoll) {
-        ShipBoard ship= player.getPlayerShip();
-        Optional<Tile> Temp = Optional.empty();
-        Optional<Tile>[][] tileTable= ship.getTilesTable();
-        int i;// num of iteration
-        if(direction==Direction.SOUTH){
-            if(diceRoll<4 ||diceRoll>10){
-                return Defense.PROTECTED;
-            }
-            i=5;
-            while(Temp.isEmpty() || !Temp.get().displaceable())
-            {
-                Temp= tileTable[5][diceRoll];
-            }
+        Optional<Coordinates> c=Throw(player, diceRoll);
+        if(c.isEmpty()){
+            return Defense.PROTECTED;
         }
-        if(direction==Direction.NORTH){
-            if(diceRoll<4 ||diceRoll>10){
-                return Defense.PROTECTED;
-            }
+        if(this.direction==Direction.NORTH){
+           if
+        }
+        else if(this.direction==Direction.SOUTH){
 
         }
-        if(direction==Direction.EAST){
-            if(diceRoll<5 ||diceRoll>9){
-                return Defense.PROTECTED;
-            }
+        else if(this.direction==Direction.EAST){
 
         }
-        if(direction==Direction.WEST){
-            if(diceRoll<5 ||diceRoll>9){
-                return Defense.PROTECTED;
-            }
+        else if(this.direction==Direction.WEST){
+
         }
-
-
-
     }
+
+
 
 
 }
