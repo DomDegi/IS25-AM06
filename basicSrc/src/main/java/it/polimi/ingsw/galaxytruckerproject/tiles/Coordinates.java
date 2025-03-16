@@ -13,6 +13,10 @@ public class Coordinates {
     public int getY(){
         return y;
     }
+    public void set(int x, int y){
+        this.x=x;
+        this.y=y;
+    }
     public void print(){
         System.out.print(" {"+x+";"+y+"} ");
     }

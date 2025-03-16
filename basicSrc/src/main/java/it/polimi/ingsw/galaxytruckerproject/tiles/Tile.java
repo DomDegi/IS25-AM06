@@ -89,7 +89,9 @@ public abstract class Tile {
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
     }
-    public void destroy(){}
+    public void destroy(){
+        shipBoard.addPenalty();
+    }
     public Coordinates getCoordinates() {
         return this.coordinates;
     }
@@ -107,5 +109,8 @@ public abstract class Tile {
     public int getStrength(){
         System.out.println("THIS TILE IS NOT A DOUBLE CANNON");
         return 0;
+    }
+    public boolean displaceable(){
+        return true;
     }
 }
