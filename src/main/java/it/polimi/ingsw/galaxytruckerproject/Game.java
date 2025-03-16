@@ -256,4 +256,11 @@ public class Game {
     public FlightBoard getFlightBoard() {
         return flightBoard;
     }
+
+    public void setPodium() {
+        ArrayList<Player> podium = new ArrayList<>(listOfPlayers);
+        podium.sort((p1, p2) -> Integer.compare(p2.getCredit(), p1.getCredit())); // Sort by credit descending
+        listOfPlayers.clear();
+        listOfPlayers.addAll(podium);
+    }
 }

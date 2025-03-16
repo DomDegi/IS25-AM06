@@ -381,5 +381,12 @@ public class GameController implements GameObserver {
         for (Player player : game.getFlightBoard().getRanking()) {
             player.removeCredit(player.getShipBoard().getDestroiedTieles());
         }
+        // Sort players based on their credits in descending order
+        game.setPodium();
+        System.out.println("Podium:");
+        for (int i = 0; i < game.getListOfPlayers().size(); i++) {
+            Player player = game.getListOfPlayers().get(i);
+            System.out.println((i + 1) + ". " + player.getPlayerName() + " - Credits: " + player.getCredit());
+        }
     }
 }
