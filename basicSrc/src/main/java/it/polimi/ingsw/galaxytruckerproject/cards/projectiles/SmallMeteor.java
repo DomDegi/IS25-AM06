@@ -22,7 +22,11 @@ public class SmallMeteor extends Meteor {
             if(diceRoll<4 ||diceRoll>10){
                 return Defense.PROTECTED;
             }
-            while(Temp.isEmpty() || (Temp.get() instanceof VoidTile))
+            i=5;
+            while(Temp.isEmpty() || !Temp.get().displaceable())
+            {
+                Temp= tileTable[5][diceRoll];
+            }
         }
         if(direction==Direction.NORTH){
             if(diceRoll<4 ||diceRoll>10){

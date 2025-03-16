@@ -17,6 +17,7 @@ public class Coordinates {
         this.x=x;
         this.y=y;
     }
+
     public void print(){
         System.out.print(" {"+x+";"+y+"} ");
     }
