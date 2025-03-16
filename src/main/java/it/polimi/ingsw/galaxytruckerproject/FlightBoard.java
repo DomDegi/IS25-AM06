@@ -9,6 +9,7 @@ public class FlightBoard {
     private final ArrayList<Player> posList;
     private int numPlayer;
     private int freePodiumPosition;
+    //needed to check if pos in posList is free or not
     private final ArrayList<Integer> occupiedPos = new ArrayList<>();
 
     public FlightBoard(GameMode gameMode) {
@@ -17,9 +18,50 @@ public class FlightBoard {
         this.numPlayer=0;
         this.freePodiumPosition=1;
     }
-
+    //getter
+    public ArrayList<Player> getRanking() {
+        rearrange();
+        return posList;
+    }
+    public int getNumPlayer() {
+        return numPlayer;
+    }
+    //FlightBoard management
     public void initialAddToFlightBoard(Player player) {
         posList.add(player);
+    }
+    public boolean addToTrialFlightBoard(Player newPlayer) {
+        if(!posList.contains(newPlayer)){
+            System.out.println("Player not found");
+            return false;
+        }
+        if(occupiedPos.isEmpty()){
+            int pos=0;
+            occupiedPos.add(pos);
+        }
+        posList.remove(newPlayer);
+        posList.add(occupiedPos.getFirst(),newPlayer);
+        switch (occupiedPos.getFirst()) {
+            case 0:
+                posList.get(occupiedPos.getFirst()).setPlayerPosition(4);
+                break;
+            case 1:
+                posList.get(occupiedPos.getFirst()).setPlayerPosition(2);
+                break;
+            case 2:
+                posList.get(occupiedPos.getFirst()).setPlayerPosition(1);
+                break;
+            case 3:
+                posList.get(occupiedPos.getFirst()).setPlayerPosition(0);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid position: " + occupiedPos.getFirst());
+        }
+        posList.get(occupiedPos.getFirst()).setPlayerRanking(occupiedPos.getFirst()+1);
+        numPlayer++;
+        occupiedPos.set(0,occupiedPos.getFirst()+1);
+        freePodiumPosition++;
+        return true;
     }
     public boolean addToFlightBoard(Player newPlayer,int pos) {
         pos = pos - 1;
@@ -63,15 +105,12 @@ public class FlightBoard {
         return true;
     }
     public void removeFromFlightBoard(Player player) {
-        int playerRank = player.getPlayerRanking() - 1;
-        if (playerRank < 0 || playerRank >= numPlayer) {
-            throw new IllegalArgumentException("Invalid player ranking: " + playerRank);
+        if (!posList.contains(player)) {
+            throw new IllegalArgumentException("Invalid Player:" + player);
         }
+        int playerRank = player.getPlayerRanking() - 1;
         occupiedPos.remove(playerRank);
         posList.remove(playerRank);
-    }
-    public int getNumPlayer() {
-        return numPlayer;
     }
     public void setPlayerToLast(Player player) {
         int playerRank = player.getPlayerRanking() - 1; // Ranking is 1-based
@@ -81,10 +120,6 @@ public class FlightBoard {
         posList.remove(playerRank);
         posList.add(player);
         player.setPlayerRanking(numPlayer); // Update their rank
-    }
-    public ArrayList<Player> getRanking() {
-        rearrange();
-        return posList;
     }
     public void earlyLanding(Player player) {
         int playerRank=player.getPlayerRanking()-1;
@@ -102,7 +137,7 @@ public class FlightBoard {
         freePodiumPosition--;
         rearrange();
     }
-
+    //moving methods
     public void moveForward(Player player, int movement) {
         int playerRank=player.getPlayerRanking()-1;
         if (playerRank< 0 || playerRank>= numPlayer) {
@@ -131,7 +166,7 @@ public class FlightBoard {
             }
         }
     }
-
+    //Array-structure changing method
     public void rearrange() {
         posList.sort((player1, player2) -> {
             if (player1.isLanded() && !player2.isLanded()) {
@@ -146,7 +181,6 @@ public class FlightBoard {
             posList.get(i).setPlayerRanking(i + 1);
         }
     }
-
     public void concludeMovement() {
         Player firstPlayer = null;
         if (posList.size() < numPlayer) {

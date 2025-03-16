@@ -12,4 +12,5 @@ module it.polimi.ingsw.galaxytruckerproject {
     exports it.polimi.ingsw.galaxytruckerproject;
     exports it.polimi.ingsw.galaxytruckerproject.player;
     exports it.polimi.ingsw.galaxytruckerproject.tiles;
+    exports it.polimi.ingsw.galaxytruckerproject.observers;
 }

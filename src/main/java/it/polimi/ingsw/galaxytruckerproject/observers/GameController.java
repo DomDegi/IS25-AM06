@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.observers;
 
 import it.polimi.ingsw.galaxytruckerproject.Game;
+import it.polimi.ingsw.galaxytruckerproject.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.GameState;
 import it.polimi.ingsw.galaxytruckerproject.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
@@ -16,10 +17,12 @@ import java.util.Objects;
 public class GameController implements GameObserver {
     private final Game game;
     private Map<String, String> playerInputs;
+    private final ArrayList<String> playersWithErrors;
 
     public GameController(Game game) {
         this.game = game;
         playerInputs = new HashMap<>();
+        this.playersWithErrors = new ArrayList<>();
     }
 
     @Override
@@ -35,10 +38,17 @@ public class GameController implements GameObserver {
                 startGame(playerName, input);
             }
             case SHIPS_CREATION: {
-                shipsCreation(playerName, input);
+                if (Objects.equals(playerInputs.get(playerName), "completed")){
+                    addToFlightBoardProcess(playerName,input);
+                }else{
+                    shipsCreation(playerName, input);
+                }
             }
             case VERIFY_SHIP_CORRECTNESS: {
-                verifyShipCorrectness(playerName);
+                if(playersWithErrors.isEmpty()){
+                    verifyShipCorrectness();
+                }
+                shipErrorManagement(playerName, input);
             }
             case DRAW_CARD: {
                 drawCard(playerName, input);
@@ -47,7 +57,7 @@ public class GameController implements GameObserver {
                 cardEvent(playerName, input);
             }
             case CONCLUDE_GAME: {
-                concludeGame(playerName);
+                concludeGame();
             }
         }
     }
@@ -197,42 +207,37 @@ public class GameController implements GameObserver {
         }
     }
 
-    public synchronized Map<Player,Boolean> verifyShipCorrectness(String playerName) {
-        Player player = game.getListOfPlayers().stream()
-                .filter(p -> p.getPlayerName().equals(playerName))
-                .findFirst()
-                .orElse(null);
-        Map<Player,Boolean> check=new HashMap<>();
-        if (player == null) {
-            System.out.println("Player not found.");
-            check.put(player,true);
-            return check;
+    //errors check and management
+    public synchronized void verifyShipCorrectness() {
+        for (Player player : game.getListOfPlayers()) {
+            boolean correctness = player.getShipBoard().verifyCorrectness();
+            if (correctness){
+                System.out.println("Ship construction is correct for player: " + player.getPlayerName());
+            } else {
+                System.out.println("Ship construction has errors for player: " + player.getPlayerName()+"Input tiles coordinates to destroy");
+                playersWithErrors.add(player.getPlayerName());
+            }
         }
-        boolean correctness = player.getShipBoard().verifyCorrectness();
-        if (correctness){
-            System.out.println("Ship construction is correct for player: " + playerName);
-            check.put(player,true);
-            return check;
-        } else {
-            System.out.println("Ship construction has errors for player: " + playerName+"Input tiles coordinates to destroy");
-            check.put(player,false);
-        }
-        return check;
     }
-
-    public Map<Player,Boolean> shipErrorManagement(Player player, String input){
+    public void shipErrorManagement(String playerName, String input){
+        Player player = game.IdentifyPlayerByName(playerName);
+        if(player==null){
+            return;
+        }
+        if(!playersWithErrors.contains(playerName)){
+            System.out.println("Input refused for player: " + player.getPlayerName());
+            return;
+        }
         String[] words = input.split(" ");
         Map<Player,Boolean> check=new HashMap<>();
         Coordinates coordinatesToDestroy = new Coordinates(Integer.parseInt(words[0]), Integer.parseInt(words[1]));
         player.getShipBoard().destroyTile(coordinatesToDestroy);
         boolean correctness = player.getShipBoard().verifyCorrectness();
         if (correctness) {
-            check.put(player, true);
-            return check;
+            playersWithErrors.remove(playerName);
+            return;
         }
         System.out.println("Ship construction has errors for player: " + player.getPlayerName() +"Input tiles coordinates to destroy");
-        check.put(player, false);
-        return check;
     }
 
     public void refuseTile(String playerName) {
@@ -308,7 +313,7 @@ public class GameController implements GameObserver {
 
     //now no input except hourglass and checkShipboard work and checks if the other player have completed
     //if yes ends shipboard creation phase
-    public void completed(String playerName) {
+    public void completed (String playerName) {
         if (Objects.equals(playerInputs.get(playerName), "draw")) {
             refuseTile(playerName);
         }
@@ -318,10 +323,35 @@ public class GameController implements GameObserver {
                 return;
             }
         }
+        if(game.getMode()== GameMode.TRIAL) {
+            for (Player player : game.getFlightBoard().getRanking()) {
+                if (player.getPlayerName().equals(playerName)) {
+                    game.getFlightBoard().addToTrialFlightBoard(player);
+                    break;
+                }
+            }
+        }else{
+            for (Player player : game.getFlightBoard().getRanking()) {
+                if (player.getPlayerName().equals(playerName)) {
+                    addToFlightBoardProcess(player.getPlayerName(),"completed");
+                    break;
+                }
+            } 
+        }
         game.endShipCreation();
-        System.out.println("All the players have completed the ship creation");
+        System.out.println("All the players have completed the ship creation\n");
     }
-
+    
+    public void addToFlightBoardProcess(String playerName,String input){
+        if(Objects.equals(playerInputs.get(playerName), "completed"))
+            return;
+        try {
+            int parsedInput = Integer.parseInt(input);
+            game.getFlightBoard().addToFlightBoard(game.IdentifyPlayerByName(playerName), parsedInput);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Unable to parse to an integer.");
+        }
+    }
     //Turns hourglass isn't on and adds 1 to the turn count,
     // if it's already been turned twice, player that turns it needs to have completed his ship
     public void turnHourglass(String playerName) {
@@ -338,8 +368,8 @@ public class GameController implements GameObserver {
             }
         }
     }
-
-    public synchronized void concludeGame(String playerName) {
+    //PlayerPoint calculation
+    public synchronized void concludeGame() {
         for (Player player : game.getFlightBoard().getRanking()) {
             if (player != null) {
                 game.getFlightBoard().earlyLanding(player);

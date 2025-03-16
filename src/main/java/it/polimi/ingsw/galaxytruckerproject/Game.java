@@ -13,22 +13,18 @@ import java.util.ArrayList;
 import java.util.Stack;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 import static it.polimi.ingsw.galaxytruckerproject.GameState.*;
 
 public class Game {
-    private GameMode mode = GameMode.LEVEL2;
+    private final GameMode mode = GameMode.LEVEL2;
     private GameState gameState;
     private final ArrayList<GameObserver> observerList = new ArrayList<>();
     private CardDeck cardDeck;
-    private ArrayList<Card> inGameCards;
+    private final ArrayList<Card> inGameCards;
     private TilesDeck tileDeck;
-    private Stack<Tile> tileStack;
-    private ArrayList<Tile> turnedTiles;
-    private FlightBoard flightBoard;
+    private final Stack<Tile> tileStack;
+    private final ArrayList<Tile> turnedTiles;
+    private final FlightBoard flightBoard;
     private Card drawnCard;
     private int hourglassTurns;
     private boolean hourglassON;
