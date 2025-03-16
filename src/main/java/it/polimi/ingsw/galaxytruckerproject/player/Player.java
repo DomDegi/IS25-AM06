@@ -8,7 +8,7 @@ public class Player {
     private int playerPosition;
     private final PlayersColor playerColor;
     private int credit;
-    private boolean landed=false;
+    private boolean landed;
     private final ShipBoard playerShip;
 
     public Player(String playerName, PlayersColor playerColor) {
@@ -17,6 +17,7 @@ public class Player {
         this.playerRanking = 0;
         this.playerPosition = 0;
         this.credit = 0;
+        this.landed = false;
         this.playerShip = new ShipBoard(this);
     }
 

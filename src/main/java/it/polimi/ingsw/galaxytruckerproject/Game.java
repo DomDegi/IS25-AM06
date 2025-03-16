@@ -23,7 +23,6 @@ public class Game {
     private GameMode mode = GameMode.LEVEL2;
     private GameState gameState;
     private final ArrayList<GameObserver> observerList = new ArrayList<>();
-    private final ArrayList<Player> listOfPlayers;
     private CardDeck cardDeck;
     private ArrayList<Card> inGameCards;
     private TilesDeck tileDeck;
@@ -37,9 +36,8 @@ public class Game {
     //instances a new game starting in the state START_GAME
     public Game() {
         this.gameState = GameState.START_GAME;
-        this.listOfPlayers = new ArrayList<>();
         this.turnedTiles = new ArrayList<>();
-        this.flightBoard = new FlightBoard();
+        this.flightBoard = new FlightBoard(mode);
         this.hourglassTurns = 0;
         this.tileDeck = new TileDeck("tiles.json");
         this.tileStack = tileDeck.getStack();
@@ -62,13 +60,13 @@ public class Game {
 
     //adds player to game with the input string as name
     public void AddPlayer(String playerName, PlayersColor color) {
-        for (Player player: listOfPlayers){
+        for (Player player: flightBoard.getRanking()){
             if (color.equals(player.getPlayerColor())){
                 System.out.println(color + "has already been chosen");
             }
         }
         Player player = new Player(playerName, color);
-        this.listOfPlayers.add(player);
+        flightBoard.initialAddToFlightBoard(player);
     }
 
     //changes game state to SHIPS_CREATION and notifies observers of it (GUI, TUI, Log)
@@ -187,7 +185,7 @@ public class Game {
 
     //input a string and if it's the same as a player name returns the player
     public Player IdentifyPlayerByName (String playerName) {
-        for (Player player: listOfPlayers) {
+        for (Player player: getListOfPlayers()) {
             if (playerName.equals(player.getPlayerName())) {
                 return player;
             }
@@ -197,12 +195,12 @@ public class Game {
     }
 
     public ArrayList<Player> getListOfPlayers() {
-        return listOfPlayers;
+        return flightBoard.getRanking();
     }
 
     //returns the number of player in the game
     public int getNumberOfPlayers() {
-        return listOfPlayers.size();
+        return getListOfPlayers().size();
     }
 
     //returns the current GameState
@@ -212,7 +210,7 @@ public class Game {
 
     //returns the player's name at playerIndex (0 to 3) as a string
     public String getPlayerName(int playerIndex) {
-        return listOfPlayers.get(playerIndex).getPlayerName();
+        return getListOfPlayers().get(playerIndex).getPlayerName();
     }
 
     public ShipBoard getPlayerShipBoard (String playerName) {
@@ -258,9 +256,6 @@ public class Game {
     }
 
     public void setPodium() {
-        ArrayList<Player> podium = new ArrayList<>(listOfPlayers);
-        podium.sort((p1, p2) -> Integer.compare(p2.getCredit(), p1.getCredit())); // Sort by credit descending
-        listOfPlayers.clear();
-        listOfPlayers.addAll(podium);
+        getListOfPlayers().sort((p1, p2) -> Integer.compare(p2.getCredit(), p1.getCredit())); // Sort by credit descending
     }
 }

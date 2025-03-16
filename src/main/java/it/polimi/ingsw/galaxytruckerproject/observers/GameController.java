@@ -342,7 +342,7 @@ public class GameController implements GameObserver {
     public synchronized void concludeGame(String playerName) {
         for (Player player : game.getFlightBoard().getRanking()) {
             if (player != null) {
-                game.getFlightBoard().earlyLanding(player.getPlayerRanking());
+                game.getFlightBoard().earlyLanding(player);
                 switch (player.getPlayerRanking()){
                     case 1:
                         player.addCredit(8);
@@ -360,7 +360,7 @@ public class GameController implements GameObserver {
             }
         }
         ArrayList<Player> coolestPlayers = new ArrayList<>();
-        coolestPlayers.add(game.getFlightBoard().getRanking()[0]);
+        coolestPlayers.add(game.getFlightBoard().getRanking().getFirst());
         for(Player player : game.getFlightBoard().getRanking()){
             if (player.getShipBoard().countExposedConnectors()<coolestPlayers.getFirst().getShipBoard().countExposedConnectors()){
                 coolestPlayers.clear();
