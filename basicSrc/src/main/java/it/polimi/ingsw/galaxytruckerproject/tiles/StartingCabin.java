@@ -12,15 +12,15 @@ public class StartingCabin extends Cabin {
         playerColor = shipBoard.player.getPlayerColor();
     }
 
-    public void getStat(){shipBoard.addBreakCrew(+2);}
+    public void getStat(){shipBoard.addBreakHumanCrew(+2);}
     public void removeCrew(){
         crew--;
-        shipBoard.addBreakCrew(-1);
+        shipBoard.addBreakHumanCrew(-1);
     }
 
 
     public void destroy(){
-        shipBoard.addBreakCrew(-crew);
+        shipBoard.addBreakHumanCrew(-crew);
         crew=0;
     }
 

@@ -9,5 +9,6 @@ public class VoidTile extends Tile {
     public boolean isCorrect() {
         return true;
     }
+    public boolean Placeble(){return false;}
 }
 
