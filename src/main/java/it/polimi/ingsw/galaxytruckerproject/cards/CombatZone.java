@@ -1,62 +1,40 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
-import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
-import it.polimi.ingsw.galaxytruckerproject.Player;
+import it.polimi.ingsw.galaxytruckerproject.Game;
+import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.cards.penalties.Penalty;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
-public class CombatZone extends Card{
+public class CombatZone extends Card {
     private final LinkedHashMap<ChallengeType, Penalty> listOfChallenges;
+    private int playerIndex;
+    private Player playerToPlay;
+    private Map<Player, Integer> savedValues;
 
-    public CombatZone(int level, LinkedHashMap<ChallengeType, Penalty> listOfPenalties){
+    public CombatZone(int level, LinkedHashMap<ChallengeType, Penalty> listOfPenalties) {
         super(level, 0);
         this.listOfChallenges = listOfPenalties;
     }
 
     @Override
-    public void executeCard(FlightBoard flightBoard) {
-        Player[] listOfPlayer = flightBoard.getRanking();
+    public void initializeCard(Game game) {
+        if (listOfChallenges.isEmpty()) {
 
-        for (ChallengeType challenge: listOfChallenges.keySet()){
-            Player losingPlayer = null;
-            Penalty penaltyToApply;
-            switch (challenge) {
-                case MINIMUM_CANNON_STRENGTH:
-                    for (Player player : listOfPlayer){
-                        if(losingPlayer==null){
-                            losingPlayer = player;
-                        } else if(player.getCannonStrength() < losingPlayer.getCannonStrength()){
-                            losingPlayer = player;
-                        }
-                    }
-                    penaltyToApply = listOfChallenges.get(challenge);
-                    penaltyToApply.applyPenalty(losingPlayer, flightBoard);
-                    break;
-                case MINIMUM_ENGINE_POWER:
-                    for (Player player : listOfPlayer){
-                        if(losingPlayer==null){
-                            losingPlayer = player;
-                        } else if(player.getEnginePower() < losingPlayer.getEnginePower()){
-                            losingPlayer = player;
-                        }
-                    }
-                    penaltyToApply = listOfChallenges.get(challenge);
-                    penaltyToApply.applyPenalty(losingPlayer, flightBoard);
-                    break;
-                case MINIMUM_CREW_NUMBER:
-                    for (Player player : listOfPlayer){
-                        if(losingPlayer==null){
-                            losingPlayer = player;
-                        } else if(player.getCrewNumber() < losingPlayer.getCrewNumber()){
-                            losingPlayer = player;
-                        }
-                    }
-                    penaltyToApply = listOfChallenges.get(challenge);
-                    penaltyToApply.applyPenalty(losingPlayer, flightBoard);
-                    break;
+        }
+
+        playerToPlay = game.getListOfPlayers().get(playerIndex);
+
+    }
+
+    @Override
+    public void executeCard(Game game, String playerName, String[] input) {
+        switch (listOfChallenges.keySet().iterator().next()) {
+            case ChallengeType.MINIMUM_ENGINE_POWER -> {
+
             }
         }
     }
 }
-

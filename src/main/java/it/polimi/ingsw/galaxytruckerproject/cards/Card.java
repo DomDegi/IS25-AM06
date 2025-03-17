@@ -4,6 +4,11 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.Game;
+import it.polimi.ingsw.galaxytruckerproject.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
+import org.w3c.dom.ls.LSOutput;
+
+import java.util.ArrayList;
 
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
@@ -38,5 +43,19 @@ public abstract class Card {
 
     public int getRequiredDays() {
         return requiredDays;
+    }
+
+    public ArrayList<Coordinates> parseCoordinates(String[] input) {
+        ArrayList<Coordinates> coordinates = new ArrayList<>();
+        if (input.length % 2 == 0) {
+            try {
+                for (int i = 0; i < input.length; i++) {
+                    coordinates.add(new Coordinates(Integer.parseInt(input[i]), Integer.parseInt(input[i + 1])));
+                }
+                return coordinates;
+            } catch(NumberFormatException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 }
