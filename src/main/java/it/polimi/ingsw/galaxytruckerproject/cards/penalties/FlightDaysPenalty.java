@@ -1,6 +1,5 @@
 package it.polimi.ingsw.galaxytruckerproject.cards.penalties;
 
-import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 

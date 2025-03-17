@@ -1,8 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.Game;
-import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.cards.penalties.Penalty;
+import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
 
 import java.util.*;

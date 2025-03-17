@@ -14,7 +14,6 @@ import java.util.Stack;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
 import static it.polimi.ingsw.galaxytruckerproject.GameState.*;
 
 public class Game {

@@ -1,8 +1,9 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
-import java.util.*;
 
 import it.polimi.ingsw.galaxytruckerproject.Goods;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
+
+import java.util.*;
 
 public class ShipBoard {
     protected final Player player; //protected because it need to be called in StartingCabin (Tiles)
