@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
 import java.util.*;
 
+import it.polimi.ingsw.galaxytruckerproject.Goods;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
 public class ShipBoard {
@@ -450,18 +451,4 @@ public class ShipBoard {
         }
         return cargoHoldwithGood;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

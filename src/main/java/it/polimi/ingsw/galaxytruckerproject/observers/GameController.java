@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static it.polimi.ingsw.galaxytruckerproject.GameState.VERIFY_SHIP_CORRECTNESS;
+
 
 public class GameController implements GameObserver {
     private final Game game;
@@ -38,17 +40,18 @@ public class GameController implements GameObserver {
                 startGame(playerName, input);
             }
             case SHIPS_CREATION: {
-                if (Objects.equals(playerInputs.get(playerName), "completed")){
-                    addToFlightBoardProcess(playerName,input);
-                }else{
-                    shipsCreation(playerName, input);
-                }
+                shipsCreation(playerName, input);
             }
             case VERIFY_SHIP_CORRECTNESS: {
+                if (input.equalsIgnoreCase("shipboard")) {
+                    checkShipBoard(playerName, input.toLowerCase().split(" "));
+                } else {
+                    shipErrorManagement(playerName, input);
+                }
                 if(playersWithErrors.isEmpty()){
                     verifyShipCorrectness();
                 }
-                shipErrorManagement(playerName, input);
+                
             }
             case DRAW_CARD: {
                 drawCard(playerName, input);
@@ -143,6 +146,9 @@ public class GameController implements GameObserver {
 
             //if no case is met, ignore
             default:
+                if (Objects.equals(playerInputs.get(playerName), "completed")){
+                    addToFlightBoardProcess(playerName,input);
+                }
                 break;
         }
     }
@@ -229,11 +235,20 @@ public class GameController implements GameObserver {
             return;
         }
         String[] words = input.split(" ");
-        Map<Player,Boolean> check=new HashMap<>();
-        Coordinates coordinatesToDestroy = new Coordinates(Integer.parseInt(words[0]), Integer.parseInt(words[1]));
-        player.getShipBoard().destroyTile(coordinatesToDestroy);
+        try {
+            int x = Integer.parseInt(words[0]);
+            int y = Integer.parseInt(words[1]);
+            Coordinates coordinatesToDestroy = new Coordinates(x, y);
+            player.getShipBoard().destroyTile(coordinatesToDestroy);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please input valid numerical coordinates.");
+            return;
+        }
         boolean correctness = player.getShipBoard().verifyCorrectness();
         if (correctness) {
+            if(game.getMode()== GameMode.TRIAL) {
+                game.getFlightBoard().setPlayerToLast(player);
+            }
             playersWithErrors.remove(playerName);
             return;
         }
@@ -392,7 +407,7 @@ public class GameController implements GameObserver {
         ArrayList<Player> coolestPlayers = new ArrayList<>();
         coolestPlayers.add(game.getFlightBoard().getRanking().getFirst());
         for(Player player : game.getFlightBoard().getRanking()){
-            if (player.getShipBoard().countExposedConnectors()<coolestPlayers.getFirst().getShipBoard().countExposedConnectors()){
+            if (player.getShipBoard().countExposedConnectors()>coolestPlayers.getFirst().getShipBoard().countExposedConnectors()){
                 coolestPlayers.clear();
                 coolestPlayers.add(player);
             }
