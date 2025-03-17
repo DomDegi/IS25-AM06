@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.player;
 
 import it.polimi.ingsw.galaxytruckerproject.tiles.ShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.tiles.Tile;
 
 public class Player {
     private int playerRanking;
@@ -10,6 +11,7 @@ public class Player {
     private int credit;
     private boolean landed;
     private final ShipBoard playerShip;
+    private Tile drawnTile;
 
     public Player(String playerName, PlayersColor playerColor) {
         this.playerName = playerName;
@@ -19,6 +21,7 @@ public class Player {
         this.credit = 0;
         this.landed = false;
         this.playerShip = new ShipBoard(this);
+        this.drawnTile = null;
     }
 
     //GETTER METHODS
@@ -30,9 +33,23 @@ public class Player {
     public PlayersColor getPlayerColor() {return playerColor;}
     public int getCredit() {return credit;}
     public ShipBoard getShipBoard() {return playerShip;}
+    public Tile getDrawnTile() { return drawnTile; }
     public boolean isLanded() {return landed;}
     public void setLanded(boolean landed) {this.landed = landed;}
     public void addCredit(int credit) {this.credit += credit;}
     public void removeCredit(int credit) {this.credit -= credit;}
 
+    //SETTER METHODS
+    public Tile removeDrawnTile() {
+        if (drawnTile != null) {
+            Tile removed = drawnTile;
+            drawnTile = null;
+            return removed;
+        }
+        return null;
+    }
+
+    public void hasDrawnTile(Tile drawnTile) {
+        this.drawnTile = drawnTile;
+    }
 }

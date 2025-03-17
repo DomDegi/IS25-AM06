@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.observers;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.GameState;
+import it.polimi.ingsw.galaxytruckerproject.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
@@ -16,8 +17,8 @@ import java.util.Objects;
 
 public class GameController implements GameObserver {
     private final Game game;
-    private Map<String, String> playerInputs;
     private final ArrayList<String> playersWithErrors;
+    private final Map<String, String> playerInputs;
 
     public GameController(Game game) {
         this.game = game;
@@ -27,15 +28,12 @@ public class GameController implements GameObserver {
 
     @Override
     public void notifyChanges(GameState newState) {
-        if (newState == GameState.SHIPS_CREATION){
-            game.StartTimer();
-        }
     }
 
     public void processPlayerInput(String playerName, String input) {
         switch (game.getGameState()) {
             case START_GAME: {
-                startGame(playerName, input);
+                PlayerSelection(playerName, input);
             }
             case SHIPS_CREATION: {
                 shipsCreation(playerName, input);
@@ -49,7 +47,7 @@ public class GameController implements GameObserver {
                 if(playersWithErrors.isEmpty()){
                     verifyShipCorrectness();
                 }
-                
+
             }
             case DRAW_CARD: {
                 drawCard(playerName, input);
@@ -63,28 +61,43 @@ public class GameController implements GameObserver {
         }
     }
 
-    //Adds player to the game and starts if the first added player types START or the player are 4
-    public synchronized void startGame(String playerName, String input) {
+    //first player that enters the game inputs number of players to start the game with (2 to 4)
+    //every player inputs a color as they enter (input ex: playersColor int (only if first)
+    public synchronized void PlayerSelection(String playerName, String input) {
+        String[] words = input.split(" ");
+        if (game.getPlayerCount() == 0 && words.length >= 2) {
+            try {
+                int playerCount =  Integer.parseInt(words[1]);
+                game.setPlayerCount(playerCount);
+            }
+            catch (NumberFormatException e) {
+                System.out.println("First player to input didn't pass an int to specify player count for the game");
+            }
+        }
+        try {
+            PlayersColor color = PlayersColor.valueOf(words[0]);
+            game.AddPlayer(playerName, color);
+
+            //first one is the number of player in the list, the other is the number of player to start the game with
+            if (game.getNumberOfPlayers() == game.getPlayerCount()) {
+                game.StartGame();
+            }
+        }
+        catch (IllegalArgumentException e) {
+            System.out.println("Not a valid color for the game");
+        }
+    }
+
+    public synchronized void ShipsCreation(String playerName, String input) {
 
         String[] words = input.split(" ");
-        //player that types start has to already be in the game
-        if (game.getNumberOfPlayers() >= 2 && words[0].equalsIgnoreCase("start") && game.IdentifyPlayerByName(playerName) != null) {
-            System.out.println(playerName + " starts the timer: GO!");
-            game.StartGame();
+
+        if (game.getHourglassTurns() == 0 && !words[0].equals("hourglass")) {
+            System.out.println("To begin ship creation flip the hourglass\n");
             return;
         }
-        String color = words[0];
-        try {
-            PlayersColor.valueOf(color);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Invalid color");
-            return;
-        }
-        //Adds a player whatever they type, input is not important
-        if (game.getNumberOfPlayers() < 4) {
-            game.AddPlayer(playerName, PlayersColor.valueOf(color));
-        } else {
-            System.out.println("can't have more than 4 players, waiting on Start input");
+        else if (words[0].equals("hourglass")) {
+            TurnHourglass(playerName);
         }
     }
 
@@ -349,12 +362,12 @@ public class GameController implements GameObserver {
                     addToFlightBoardProcess(player.getPlayerName(),"completed");
                     break;
                 }
-            } 
+            }
         }
         game.endShipCreation();
         System.out.println("All the players have completed the ship creation\n");
     }
-    
+
     public void addToFlightBoardProcess(String playerName,String input){
         if(Objects.equals(playerInputs.get(playerName), "completed"))
             return;
@@ -369,18 +382,70 @@ public class GameController implements GameObserver {
     // if it's already been turned twice, player that turns it needs to have completed his ship
     public void turnHourglass(String playerName) {
         if (!game.getHourglassState()) {
-            System.out.println("hourglass is already going");
+            System.out.println("hourglass is already going\n");
             return;
         }
-        if (game.getHourglassTurns() == 2) {
-            if (playerInputs.get(playerName).equals("completed")) {
+        switch (game.getHourglassTurns()) {
+            case 0:
+                System.out.println(playerName + " starts the game: GO!\n");
                 game.StartTimer();
-            }
-            else {
-                System.out.println("can't make the last hourglass turn when your shipboard isn't complete");
-            }
+                break;
+            case 1:
+                System.out.println(playerName + " has flipped the hourglass\n");
+                game.StartTimer();
+                break;
+            case 2:
+                if (playerInputs.get(playerName).equals("completed")) {
+                    game.StartTimer();
+                }
+                else {
+                    System.out.println("can't make the last hourglass turn when your shipboard isn't complete\n");
+                }
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + game.getHourglassTurns() + "\n");
         }
     }
+
+    //Number 1 player can draw
+    //Every player can check others shipboard
+    //Every player can do an early landing
+    //When cards are over go to CONCLUDE_GAME state
+    public void drawCard (String playerName, String input){
+        if (game.getCardsLeft() == 0) {
+            game.endCardPhase();
+        }
+
+        String[] words =  input.split(" ");
+
+        switch(words[0].toLowerCase()) {
+            case "draw":
+                if (game.IdentifyPlayerByName(playerName).equals(game.getListOfPlayers().getFirst())){
+                game.DrawCard();
+                }
+                else {
+                    System.out.println("The first ranked player has to draw\n");
+                }
+                break;
+            case "shipboard":
+                checkShipBoard(playerName, words);
+                break;
+            case "land":
+                game.getFlightBoard().earlyLanding(game.IdentifyPlayerByName(playerName).getPlayerRanking());
+                System.out.println(playerName + " made an early landing\n");
+                break;
+            default: break;
+        }
+    }
+
+    //Gets the drawnCard from main and sends the input to each Card, depending on return value gives errors
+    public void cardEvent(String playerName, String input) {
+        String[] words =  input.split(" ");
+        Card drawnCard = game.getDrawnCard();
+        drawnCard.executeCard(game, playerName,words);
+    }
+
+
     //PlayerPoint calculation
     public synchronized void concludeGame() {
         for (Player player : game.getFlightBoard().getAllPlayers()) {

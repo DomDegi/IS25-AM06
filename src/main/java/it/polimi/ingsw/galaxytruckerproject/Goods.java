@@ -1,4 +1,4 @@
-package it.polimi.ingsw.galaxytruckerproject;
+package it.polimi.ingsw.galaxytruckerproject.tiles;
 
 public class Goods {
     private final GoodsColor color;

@@ -13,12 +13,15 @@ import java.util.ArrayList;
 import java.util.Stack;
 import java.util.Timer;
 import java.util.TimerTask;
+
+
 import static it.polimi.ingsw.galaxytruckerproject.GameState.*;
 
 public class Game {
     private final GameMode mode = GameMode.LEVEL2;
     private GameState gameState;
     private final ArrayList<GameObserver> observerList = new ArrayList<>();
+    private int playerCount;
     private CardDeck cardDeck;
     private final ArrayList<Card> inGameCards;
     private TilesDeck tileDeck;
@@ -40,6 +43,7 @@ public class Game {
         this.cardDeck = new CardDeck("cards.json");
         this.inGameCards = cardDeck.getTier2FlightCards();
         this.hourglassON = false;
+        this.playerCount = 0;
     }
 
     //add a new observer type to the game
@@ -54,11 +58,20 @@ public class Game {
         }
     }
 
+    //set player count for the game
+    public void setPlayerCount(int playerCount) {
+        this.playerCount = playerCount;
+    }
+
     //adds player to game with the input string as name
     public void AddPlayer(String playerName, PlayersColor color) {
-        for (Player player: flightBoard.getInGamePlayers()){
+        for (Player player: flightBoard.getAllPlayers()){
+            if (IdentifyPlayerByName(playerName) != null) {
+                System.out.println("player with this name is already registered\n");
+                return;
+            }
             if (color.equals(player.getPlayerColor())){
-                System.out.println(color + "has already been chosen");
+                System.out.println(color + "has already been chosen\n");
             }
         }
         Player player = new Player(playerName, color);
@@ -80,7 +93,7 @@ public class Game {
         try {
             tileStack.pop();
         } catch (Exception e) {
-            System.out.println("Tile stack empty");
+            System.out.println("Tile stack empty\n");
             return null;
         }
         player.hasDrawnTile(drawnTile);
@@ -123,16 +136,16 @@ public class Game {
     public void printBookedTiles(String playerName) {
         Player player = IdentifyPlayerByName(playerName);
         ArrayList<Tile> bookedTiles = player.getShipBoard().getBookedTiles();
-        int size = bookedTiles.size();
+        int i = 0;
         for (Tile bookedTile : bookedTiles) {
-            System.out.println(bookedTile.toString() + " ");
+            System.out.printf("%s (%d), ", bookedTile.toString(), i);
         }
         System.out.println("\n");
     }
 
     public synchronized void lookInGameCards1 (String playerName) {
         Player player = IdentifyPlayerByName(playerName);
-        System.out.println(player.getPlayerName() + " here are the 3 cards contained in flightBoard deck 1: ");
+        System.out.println(player.getPlayerName() + " here are the 3 cards contained in flightBoard deck 1: \n");
         for (int i = 0; i < 3; i++) {
             System.out.println(inGameCards.get(i).toString());
         }
@@ -141,7 +154,7 @@ public class Game {
 
     public synchronized void lookInGameCards2 (String playerName) {
         Player player = IdentifyPlayerByName(playerName);
-        System.out.println(player.getPlayerName() + " here are the 3 cards contained in flightBoard deck 2: ");
+        System.out.println(player.getPlayerName() + " here are the 3 cards contained in flightBoard deck 2: \n");
         for (int i = 3; i < 6; i++) {
             System.out.println(inGameCards.get(i).toString());
         }
@@ -150,7 +163,7 @@ public class Game {
 
     public synchronized void lookInGameCards3 (String playerName) {
         Player player = IdentifyPlayerByName(playerName);
-        System.out.println(player.getPlayerName() + " here are the 3 cards contained in flightBoard deck 3: ");
+        System.out.println(player.getPlayerName() + " here are the 3 cards contained in flightBoard deck 3: \n");
         for (int i = 6; i < 9; i++) {
             System.out.println(inGameCards.get(i).toString());
         }
@@ -171,12 +184,56 @@ public class Game {
         return true;
     }
 
+    public void StartTimer() {
+        Timer hourglass = new Timer();
+        this.hourglassTurns++;
+        hourglass.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                hourglassON = false;
+                System.out.println("hourglass is exhausted\n");
+                hourglass.cancel();
+                if (hourglassTurns == 3) {
+                    endShipCreation();
+                    System.out.println("The time is up, ship creation is over\n");
+                }
+            }
+        }, 95000); //95 seconds
+    }
+
+    public void endShipCreation() {
+        this.gameState = VERIFY_SHIP_CORRECTNESS;
+        notifyObservers(gameState);
+    }
+
+    //VERIFY_SHIP_CORRECTNESS METHODS
+
+    //DRAW_CARD METHODS
+    public void DrawCard() {
+        this.drawnCard = inGameCards.removeFirst();
+        drawnCard.initializeCard(this);
+        this.gameState = CARD_EVENT;
+        notifyObservers(gameState);
+    }
+
+    public void endCardPhase() {
+        this.gameState = CONCLUDE_GAME;
+        notifyObservers(gameState);
+    }
+
+    //CARD_EVENT METHODS
+
+
 
     //GETTER METHODS
 
     //This flag is needed from some game functions
     public GameMode getMode() {
         return mode;
+    }
+
+    public int getPlayerCount() {
+        return playerCount;
     }
 
     //input a string and if it's the same as a player name returns the player
@@ -229,33 +286,18 @@ public class Game {
         return hourglassON;
     }
 
-    public void StartTimer() {
-        Timer hourglass = new Timer();
-        this.hourglassTurns++;
-        hourglass.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                hourglassON = false;
-                System.out.println("hourglass is exhausted\n");
-                hourglass.cancel();
-                if (hourglassTurns == 3) {
-                    endShipCreation();
-                    System.out.println("The time is up, ship creation is over\n");
-                }
-            }
-        }, 60000); //60 seconds
-    }
-
-    public void endShipCreation() {
-        this.gameState = VERIFY_SHIP_CORRECTNESS;
-        notifyObservers(gameState);
-    }
-
     public FlightBoard getFlightBoard() {
         return flightBoard;
     }
 
     public void setPodium() {
         getListOfAllPlayer().sort((p1, p2) -> Integer.compare(p2.getCredit(), p1.getCredit())); // Sort by credit descending
+    }
+    public int getCardsLeft() {
+        return inGameCards.size();
+    }
+
+    public Card getDrawnCard() {
+        return drawnCard;
     }
 }

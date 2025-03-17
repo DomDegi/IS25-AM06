@@ -19,4 +19,9 @@ public class GoodsPenalty extends Penalty {
     public void applyPenalty(Player player, FlightBoard flightBoard){
         player.loseGoods(numberOfLostGoods);
     }
+
+    @Override
+    public String toString() {
+        return "GoodsPenalty";
+    }
 }

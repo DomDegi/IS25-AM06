@@ -2,7 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.cards.penalties;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
+import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
@@ -14,5 +14,9 @@ import it.polimi.ingsw.galaxytruckerproject.player.Player;
 })
 
 public abstract class Penalty {
-    public abstract void applyPenalty(Player player, FlightBoard flightBoard);
+
+    public abstract int applyPenalty(Game game, Player player, String[] input);
+
+    @Override
+    public abstract String toString();
 }
