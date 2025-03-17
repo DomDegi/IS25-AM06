@@ -11,22 +11,52 @@ public class SmallMeteor extends Projectile {
     }
 
     public  Defense throwProjectile(Player player, int diceRoll) {
-        Optional<Coordinates> c=Throw(player, diceRoll);
-        if(c.isEmpty()){
+        Throw(player, diceRoll);
+        ShipBoard ship = player.getPlayerShip();
+        Optional<Tile> Temp = Optional.empty();
+        Optional<Tile>[][] tileTable= ship.getTilesTable();
+        if(coordinatesToDestroy.isEmpty()){
             return Defense.PROTECTED;
         }
         if(this.direction==Direction.NORTH){
-           if
+           if(tileTable[coordinatesToDestroy.get().getY()][coordinatesToDestroy.get().getX()].get().getNorth().getConnectorsType()==Connectors.SMOOTH){
+               return Defense.PROTECTED;
+           }
+           if(ship.getCoverageShields().contains(Coverage.NORTH_EAST)||ship.getCoverageShields().contains(Coverage.NORTH_WEST)){
+               return Defense.CHOOSETOUSEBATTERY;
+           }
+           return Defense.HIT;
         }
         else if(this.direction==Direction.SOUTH){
+            if(tileTable[coordinatesToDestroy.get().getY()][coordinatesToDestroy.get().getX()].get().getSouth().getConnectorsType()==Connectors.SMOOTH){
+                return Defense.PROTECTED;
+            }
+            if(ship.getCoverageShields().contains(Coverage.SOUTH_EAST)||ship.getCoverageShields().contains(Coverage.SOUTH_WEST)){
+                return Defense.CHOOSETOUSEBATTERY;
+            }
+            return Defense.HIT;
 
         }
         else if(this.direction==Direction.EAST){
-
+            if(tileTable[coordinatesToDestroy.get().getY()][coordinatesToDestroy.get().getX()].get().getEast().getConnectorsType()==Connectors.SMOOTH){
+                return Defense.PROTECTED;
+            }
+            if(ship.getCoverageShields().contains(Coverage.SOUTH_EAST)||ship.getCoverageShields().contains(Coverage.SOUTH_WEST)){
+                return Defense.CHOOSETOUSEBATTERY;
+            }
+            return Defense.HIT;
         }
         else if(this.direction==Direction.WEST){
+            if(tileTable[coordinatesToDestroy.get().getY()][coordinatesToDestroy.get().getX()].get().getWest().getConnectorsType()==Connectors.SMOOTH){
 
+                return Defense.PROTECTED;
+            }
+            if(ship.getCoverageShields().contains(Coverage.SOUTH_EAST)||ship.getCoverageShields().contains(Coverage.SOUTH_WEST)){
+                return Defense.CHOOSETOUSEBATTERY;
+            }
+            return Defense.HIT;
         }
+        return Defense.PROTECTED;
     }
 
 
