@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 
 
+
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = MeteorSwarm.class, name = "meteorSwarm"),
@@ -26,6 +27,9 @@ public abstract class Card {
         this.level = level;
         this.requiredDays = requiredDays;
     }
+
+    public abstract void initializeCard(Game game, String[] input);
+    public abstract void executeCard(Game game);
 
     public abstract void executeCard(FlightBoard flightBoard);
 

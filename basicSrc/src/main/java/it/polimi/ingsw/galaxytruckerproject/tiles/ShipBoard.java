@@ -12,6 +12,11 @@ public class ShipBoard {
     private int numBatteries;
     private float singleCannonPower;
     private ArrayList<Coordinates> DoubleCannon;
+
+    //TO ENNIO: IF THERE'S A REASON TO NOT USE THIS SET UP, FEEL FREE TO RESET EVERYTHING AS IT WAS
+    private ArrayList<Coordinates>DoubleStraightCannon;
+    private ArrayList<Coordinates>DoubleSideCannon;
+
     private int numSingleEngine;
     private ArrayList<Coordinates> DoubleEngine;
     private ArrayList<Coverage> shields;
@@ -21,7 +26,6 @@ public class ShipBoard {
     private int numBrownAliens;
     private int numPurpleAliens;
     private int numHumanCrew;
-
 
 
 
@@ -38,7 +42,6 @@ public class ShipBoard {
         shields = new ArrayList<Coverage>();
         numBrownAliens = 0;
         numPurpleAliens = 0;
-        numExposedConnectors = 0;
         numHumanCrew = 0;
     }
     //GETTER METHODS
@@ -98,6 +101,7 @@ public class ShipBoard {
         }
         else DoubleCannon.remove(coordinates);
     }
+
 
     public void addBreakBrownAliens(boolean ab){
         if (ab) numBrownAliens++;
@@ -213,19 +217,19 @@ public class ShipBoard {
         int y=coordinates.getY();
 
         //south
-        if(!tilesTable[x+1][y].isEmpty() &&  tilesTable[x+1][y].get().displaceable()){
+        if(!tilesTable[x+1][y].isEmpty() &&  tilesTable[x+1][y].get().fillable()){
             set1=( brokenGraph(new Coordinates(x+1,y)));
         }
         //east
-        if(!tilesTable[x][y+1].isEmpty()  &&  tilesTable[x][y+1].get().displaceable() && (set1==null || !set1.contains(tilesTable[x][y+1].get().getCoordinates()))){
+        if(!tilesTable[x][y+1].isEmpty()  &&  tilesTable[x][y+1].get().fillable() && (set1==null || !set1.contains(tilesTable[x][y+1].get().getCoordinates()))){
             set2 = brokenGraph(new Coordinates(x,y+1));
         }
         //north
-        if(!tilesTable[x-1][y].isEmpty()  &&  tilesTable[x-1][y].get().displaceable() && (set1==null||  !set1.contains(tilesTable[x-1][y].get().getCoordinates())) && (set2==null || !set2.contains(tilesTable[x-1][y].get().getCoordinates()))){
+        if(!tilesTable[x-1][y].isEmpty()  &&  tilesTable[x-1][y].get().fillable() && (set1==null||  !set1.contains(tilesTable[x-1][y].get().getCoordinates())) && (set2==null || !set2.contains(tilesTable[x-1][y].get().getCoordinates()))){
             set3 = brokenGraph(new Coordinates(x-1,y));
         }
         //west
-        if(!tilesTable[x][y-1].isEmpty()  &&  tilesTable[x][y-1].get().displaceable() && (set1==null || !set1.contains(tilesTable[x][y-1].get().getCoordinates())) && (set2==null || !set2.contains(tilesTable[x][y-1].get().getCoordinates())) && (set3==null || !set3.contains(tilesTable[x][y-1].get().getCoordinates()))){
+        if(!tilesTable[x][y-1].isEmpty()  &&  tilesTable[x][y-1].get().fillable() && (set1==null || !set1.contains(tilesTable[x][y-1].get().getCoordinates())) && (set2==null || !set2.contains(tilesTable[x][y-1].get().getCoordinates())) && (set3==null || !set3.contains(tilesTable[x][y-1].get().getCoordinates()))){
            set4 = brokenGraph(new Coordinates(x,y-1));
         }
         ArrayList<Set<Coordinates>> array = new ArrayList<>();
@@ -248,7 +252,7 @@ public class ShipBoard {
         Coordinates c = new Coordinates(0,0);
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 7; j++) {
-                if (!tilesTable[i][j].isEmpty() && tilesTable[i][j].get().displaceable()) {
+                if (!tilesTable[i][j].isEmpty() && tilesTable[i][j].get().fillable()) {
                     c.set(i, j);
                     if(!set.contains(c)){
                         tilesTable[i][j].get().destroy();
@@ -271,19 +275,19 @@ public class ShipBoard {
         int y = start.y;
         set.add(new Coordinates(x,y));
         //south
-        if(tilesTable[x][y].get().south.getConnectorsType()!= Connectors.SMOOTH && !tilesTable[x+1][y].isEmpty()  &&  !(tilesTable[x+1][y].get() instanceof VoidTile) && !set.contains(tilesTable[x+1][y].get().getCoordinates())){
+        if(tilesTable[x][y].get().south.getConnectorsType()!= Connectors.SMOOTH && !tilesTable[x+1][y].isEmpty()  && tilesTable[x+1][y].get().fillable() && !set.contains(tilesTable[x+1][y].get().getCoordinates())){
             brokenGraph2(new Coordinates(x+1,y), set);
         }
         //east
-        if(tilesTable[x][y].get().east.getConnectorsType()!= Connectors.SMOOTH && !tilesTable[x][y+1].isEmpty()  &&  !(tilesTable[x][y+1].get() instanceof VoidTile) && !set.contains(tilesTable[x][y+1].get().getCoordinates())){
+        if(tilesTable[x][y].get().east.getConnectorsType()!= Connectors.SMOOTH && !tilesTable[x][y+1].isEmpty()  &&  tilesTable[x][y+1].get().fillable() && !set.contains(tilesTable[x][y+1].get().getCoordinates())){
             brokenGraph2(new Coordinates(x,y+1), set);
         }
         //north
-        if(tilesTable[x][y].get().north.getConnectorsType()!= Connectors.SMOOTH && !tilesTable[x-1][y].isEmpty()  &&  !(tilesTable[x-1][y].get() instanceof VoidTile) && !set.contains(tilesTable[x-1][y].get().getCoordinates())){
+        if(tilesTable[x][y].get().north.getConnectorsType()!= Connectors.SMOOTH && !tilesTable[x-1][y].isEmpty()  && tilesTable[x-1][y].get().fillable() && !set.contains(tilesTable[x-1][y].get().getCoordinates())){
             brokenGraph2(new Coordinates(x-1,y), set);
         }
         //west
-        if(tilesTable[x][y].get().west.getConnectorsType()!= Connectors.SMOOTH && !tilesTable[x][y-1].isEmpty()  &&  !(tilesTable[x][y-1].get() instanceof VoidTile) && !set.contains(tilesTable[x][y-1].get().getCoordinates())){
+        if(tilesTable[x][y].get().west.getConnectorsType()!= Connectors.SMOOTH && !tilesTable[x][y-1].isEmpty()  &&  tilesTable[x][y-1].get().fillable() && !set.contains(tilesTable[x][y-1].get().getCoordinates())){
             brokenGraph2(new Coordinates(x,y-1), set);
         }
         return set;
@@ -296,37 +300,40 @@ public class ShipBoard {
         return false;
     }
 
-    public void countExsposedConnectors(){
-        for(int i=0; i<5; i++)
-            for(int j=0; j<7; j++){
-                checkBorderTile(i,j);
-            }
-    }
+
     //ADDITONARY METHOD THAT GETS IMPLEMENTED IN COUNT EXSPOSEDCONNECTORS
     public void checkBorderTile(int i, int j){
+        numExposedConnectors = 0;
         //if the tile at its LEFT is either out of bounds, a VoidTile, or empty,
         //then our Tile iss a borderTile and I have to check if it is Exsposed
-        if(i-1<0 || tilesTable[i-1][j].get() instanceof VoidTile || tilesTable[i+1][j].isEmpty())
+        if(i-1<0 || !tilesTable[i-1][j].get().Pleaceble() || tilesTable[i+1][j].isEmpty())
             if(!tilesTable[i][j].get().getWest().getConnectorsType().equals(Connectors.SMOOTH))
                 numExposedConnectors++;
 
         //if the tile at its RIGHT is either out of bounds, a VoidTile, or empty,
         //then our Tile iss a borderTile and I have to check if it is Exsposed
-        if(i+1>6 || tilesTable[i+1][j].get() instanceof VoidTile || tilesTable[i+1][j].isEmpty())
+        if(i+1>6 || !tilesTable[i+1][j].get().Pleaceble() || tilesTable[i+1][j].isEmpty())
             if(!tilesTable[i][j].get().getEast().getConnectorsType().equals(Connectors.SMOOTH))
                 numExposedConnectors++;
 
         //if the tile UNDER is either out of bounds, a VoidTile, or empty,
         // then our Tile iss a borderTile and I have to check if it is Exsposed
-        if(j+1>4 || tilesTable[i][j+1].get() instanceof VoidTile || tilesTable[i][j+1].isEmpty())
+        if(j+1>4 || tilesTable[i][j+1].get().Pleaceble() || tilesTable[i][j+1].isEmpty())
             if(!tilesTable[i][j].get().getSouth().getConnectorsType().equals(Connectors.SMOOTH))
                 numExposedConnectors++;
 
         //if the tile OVER is either out of bounds, a VoidTile, or empty,
         // then our Tile iss a borderTile and I have to check if it is Exsposed
-        if(j-1<0 || tilesTable[i][j-1].get() instanceof VoidTile || tilesTable[i][j+1].isEmpty())
+        if(j-1<0 || tilesTable[i][j-1].get().Pleaceble() || tilesTable[i][j+1].isEmpty())
             if(!tilesTable[i][j].get().getNorth().getConnectorsType().equals(Connectors.SMOOTH))
                 numExposedConnectors++;
+    }
+    public int countExsposedConnectors(){
+        for(int i=0; i<5; i++)
+            for(int j=0; j<7; j++){
+                checkBorderTile(i,j);
+            }
+        return numExposedConnectors;
     }
 
     public boolean verifyCorrectness(){
@@ -415,13 +422,16 @@ public class ShipBoard {
 
     }
 
-    //IT RETURNS ALL THE CARGOHOLD THAT CONTAINS A TYPE OF GOOD (RED, YELLOW, GREEN, BLU)
+    //IT RETURNS THE COORDINATES OF EVERY CARGOHOLD THAT CONTAINS A TYPE OF GOOD (RED, YELLOW, GREEN, BLU). IF
+    //A CARGOHOLD CONTAINS MORE THAN ONE GOOD WITH THE SAME COLOR IT'S GOING TO BE ADD TWICE.
     public ArrayList<Coordinates> cargoHoldContainsGood(Goods goodColor){
         ArrayList<Coordinates> cargoHoldContainsGood = new ArrayList<>();
         for(Coordinates coordinates : cargoHoldCoordinates){
-            if(tilesTable[coordinates.getX()][coordinates.getY()].get().getCargo().contains(goodColor)){
-                System.out.println(coordinates.getX()+" "+coordinates.getY());
-                cargoHoldContainsGood.add(coordinates);
+            for(int i=0; i<tilesTable[coordinates.getX()][coordinates.getY()].get().getCargo().size(); i++){
+                if(tilesTable[coordinates.getX()][coordinates.getY()].get().getCargo().contains(goodColor)){
+                    System.out.println(coordinates.getX()+" "+coordinates.getY());
+                    cargoHoldContainsGood.add(coordinates);
+                }
             }
         }
         return cargoHoldContainsGood;
@@ -495,8 +505,7 @@ public class ShipBoard {
         tilesTable[coordinates.getX()][coordinates.getY()].get().removeGood(good);
     }
 
-
-    public void SwapGoods(Coordinates coordinatesFrom,Coordinates coordinatesTo, Goods goodToSwap ){
+    public void swapGoods(Coordinates coordinatesFrom,Coordinates coordinatesTo, Goods goodToSwap ){
         //Check if the coordinates are of a CargoHolder
         if(cargoHoldCoordinates.contains(coordinatesFrom) && cargoHoldCoordinates.contains(coordinatesTo)){
             if(cargoHoldCoordinates.contains(goodToSwap)){
@@ -513,6 +522,19 @@ public class ShipBoard {
         }
 
 
+    }
+
+    public int convertGoodsToCredit(){
+        Goods good = new Goods(GoodsColor.RED);
+        int credit = 0;
+        credit = cargoHoldContainsGood(good).size();
+        good = new Goods(GoodsColor.YELLOW);
+        credit += cargoHoldContainsGood(good).size();
+        good = new Goods(GoodsColor.GREEN);
+        credit += cargoHoldContainsGood(good).size();
+        good = new Goods(GoodsColor.BLUE);
+        credit += cargoHoldContainsGood(good).size();
+        return credit;
     }
 
 
@@ -536,20 +558,6 @@ public class ShipBoard {
 
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -21,12 +21,14 @@ public class AbandonedShip extends Card{
         Player[] listOfPlayers = flightBoard.getRanking();
 
         for (Player player: listOfPlayers){
-            if (player.getCrewNumber() >= crewNumberRequired){
+            if (player.getCrewNumber() >= crewNumberRequired) {
 
                 System.out.printf("Do you want to lose %d flight days and %d crew members to gain %d cosmic credits?\n",
                         requiredDays, crewNumberRequired, possibleCreditGains);
                 System.out.println("Input 1 to accept or 0 to refuse\n");
                 //reads player input
+            }
+
                 Scanner scanner = new Scanner(System.in);
                 int choice = scanner.nextInt();
                 if (choice == 1) {

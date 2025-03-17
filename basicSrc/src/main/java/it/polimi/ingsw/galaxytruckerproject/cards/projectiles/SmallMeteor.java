@@ -3,10 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.tiles.VoidTile;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Optional;
 
 public class SmallMeteor extends Meteor {
@@ -23,7 +20,7 @@ public class SmallMeteor extends Meteor {
                 return Defense.PROTECTED;
             }
             i=5;
-            while(Temp.isEmpty() || !Temp.get().displaceable())
+            while(Temp.isEmpty() || !Temp.get().fillable())
             {
                 Temp= tileTable[5][diceRoll];
             }
