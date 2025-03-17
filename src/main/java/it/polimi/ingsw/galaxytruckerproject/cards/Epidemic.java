@@ -15,7 +15,6 @@ public class Epidemic extends Card {
 
     @Override
     public void initializeCard(Game game) {
-
     }
 
     @Override

@@ -5,15 +5,13 @@ import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import java.util.ArrayList;
 
 public class FlightBoard {
-    private final GameMode gameMode;
     private final ArrayList<Player> inGamePlayers;
     private final ArrayList<Player> podium;
     private int freePodiumPosition;
     //needed to check if pos in inGamePlayers is free or not
     private final ArrayList<Integer> occupiedPos = new ArrayList<>();
 
-    public FlightBoard(GameMode gameMode) {
-        this.gameMode = gameMode;
+    public FlightBoard() {
         this.inGamePlayers = new ArrayList<>();
         this.podium = new ArrayList<>();
         this.freePodiumPosition=1;

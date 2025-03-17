@@ -190,8 +190,12 @@ public class Game {
         return null;
     }
 
-    public ArrayList<Player> getListOfPlayers() {
+    public ArrayList<Player> getListOfAllPlayer(){
         return flightBoard.getAllPlayers();
+    }
+
+    public ArrayList<Player> getListOfPlayers() {
+        return flightBoard.getInGamePlayers();
     }
 
     //returns the number of player in the game
@@ -252,6 +256,6 @@ public class Game {
     }
 
     public void setPodium() {
-        getListOfPlayers().sort((p1, p2) -> Integer.compare(p2.getCredit(), p1.getCredit())); // Sort by credit descending
+        getListOfAllPlayer().sort((p1, p2) -> Integer.compare(p2.getCredit(), p1.getCredit())); // Sort by credit descending
     }
 }

@@ -383,7 +383,7 @@ public class GameController implements GameObserver {
     }
     //PlayerPoint calculation
     public synchronized void concludeGame() {
-        for (Player player : game.getFlightBoard().getInGamePlayers()) {
+        for (Player player : game.getFlightBoard().getAllPlayers()) {
             if (player != null) {
                 game.getFlightBoard().earlyLanding(player);
                 switch (player.getPlayerRanking()){
@@ -403,8 +403,8 @@ public class GameController implements GameObserver {
             }
         }
         ArrayList<Player> coolestPlayers = new ArrayList<>();
-        coolestPlayers.add(game.getFlightBoard().getInGamePlayers().getFirst());
-        for(Player player : game.getFlightBoard().getInGamePlayers()){
+        coolestPlayers.add(game.getFlightBoard().getAllPlayers().getFirst());
+        for(Player player : game.getFlightBoard().getAllPlayers()){
             if (player.getShipBoard().countExposedConnectors()>coolestPlayers.getFirst().getShipBoard().countExposedConnectors()){
                 coolestPlayers.clear();
                 coolestPlayers.add(player);
@@ -416,19 +416,17 @@ public class GameController implements GameObserver {
         for (Player player : coolestPlayers) {
             player.addCredit(4);
         }
-        for (Player player : game.getFlightBoard().getInGamePlayers()) {
-            for(GoodsColor goodValue: player.getShipBoard().getGoods()){
-                player.addCredit(goodValue.getValue());
-            }
+        for (Player player : game.getFlightBoard().getAllPlayers()) {
+                player.addCredit(player.getShipBoard().convertGoodsToCredit);
         }
-        for (Player player : game.getFlightBoard().getInGamePlayers()) {
-            player.removeCredit(player.getShipBoard().getDestroiedTieles());
+        for (Player player : game.getFlightBoard().getAllPlayers()) {
+            player.removeCredit(player.getShipBoard().getPenalty());
         }
         // Sort players based on their credits in descending order
         game.setPodium();
         System.out.println("Podium:");
-        for (int i = 0; i < game.getListOfPlayers().size(); i++) {
-            Player player = game.getListOfPlayers().get(i);
+        for (int i = 0; i < game.getListOfAllPlayer().size(); i++) {
+            Player player = game.getListOfAllPlayer().get(i);
             System.out.println((i + 1) + ". " + player.getPlayerName() + " - Credits: " + player.getCredit());
         }
     }
