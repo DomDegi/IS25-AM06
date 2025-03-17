@@ -37,5 +37,10 @@ public class StarDust extends Card {
             }
         }
     }
+
+    @Override
+    public String toString(){
+        return "StarDust";
+    }
 }
 

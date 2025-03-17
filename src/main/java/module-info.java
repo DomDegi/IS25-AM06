@@ -14,5 +14,7 @@ module it.polimi.ingsw.galaxytruckerproject {
     exports it.polimi.ingsw.galaxytruckerproject.observers;
     exports it.polimi.ingsw.galaxytruckerproject.tiles;
     exports it.polimi.ingsw.galaxytruckerproject.cards;
+    exports it.polimi.ingsw.galaxytruckerproject.cards.penalties;
+    exports it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
     opens it.polimi.ingsw.galaxytruckerproject.observers to javafx.fxml;
 }

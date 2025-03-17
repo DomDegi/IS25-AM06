@@ -32,8 +32,8 @@ public class OpenSpace extends Card {
         chosenDoubleEngines = new ArrayList<>();
         chosenBatteryComponents = new ArrayList<>();
 
-        playerToPlay.printCurrentInfoEngines();
-        playerToPlay.printCurrentInfoBatteries();
+        playerToPlay.get().printCurrentInfoEngines();
+        playerToPlay.get().printCurrentInfoBatteries();
     }
 
     //makes so that the player gain as many days as their engineStrength
@@ -47,12 +47,17 @@ public class OpenSpace extends Card {
                 return;
             }
             ArrayList<Coordinates> temp = new ArrayList<>();
-            temp = parseCoordinates(input);
+            temp = new ArrayList<>(parseCoordinates(input));
+            if (temp.isEmpty()) {
+                System.out.println("Invalid input\n");
+                return;
+            }
             if (chosenDoubleEngines.isEmpty()) {
-                chosenDoubleEngines = temp;
+                chosenDoubleEngines = new ArrayList<>(temp);
             }
             else {
-                int engineStrength = playerToPlay.calculateEngineStrength(chosenDoubleEngines, chosenBatteryComponents);
+                chosenBatteryComponents = new ArrayList<>(temp);
+                int engineStrength = playerToPlay.get().calculateEngineStrength(chosenDoubleEngines, chosenBatteryComponents);
                 if (engineStrength == -1) {
                     System.out.println("Engine Strength inputs are wrong: " +
                             "input again chosen double engines and battery components\n");
@@ -60,10 +65,14 @@ public class OpenSpace extends Card {
                     chosenDoubleEngines = new ArrayList<>();
                     return;
                 }
-                game.getFlightBoard().moveForward(playerToPlay, engineStrength);
+                game.getFlightBoard().moveForward(playerToPlay.get(), engineStrength);
                 playerIndex++;
                 initializeCard(game);
             }
         }
+    }
+
+    public String toString() {
+        return "OpenSpace";
     }
 }

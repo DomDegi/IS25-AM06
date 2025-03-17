@@ -1,7 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.cards.penalties;
 
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
-import it.polimi.ingsw.galaxytruckerproject.Player;
+import it.polimi.ingsw.galaxytruckerproject.Game;
+import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
 public class CrewPenalty extends Penalty {
 
@@ -16,7 +17,13 @@ public class CrewPenalty extends Penalty {
     }
 
     @Override
-    public void applyPenalty(Player player, FlightBoard flightBoard) {
-        player.loseCrew(numberOfLostCrew);
+    public int applyPenalty(Game game, Player player, String[] input) {
+        
+        player.getShipBoard().chooseCrewtoRemove();
+    }
+
+    @Override
+    public String toString() {
+        return "CrewPenalty";
     }
 }
