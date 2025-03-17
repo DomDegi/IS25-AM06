@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
 
+import it.polimi.ingsw.galaxytruckerproject.Goods;
+
 import java.util.Optional;
 
 import java.util.ArrayList;
@@ -115,4 +117,5 @@ public abstract class Tile {
     public boolean fillable(){
         return true;
     }
+
 }

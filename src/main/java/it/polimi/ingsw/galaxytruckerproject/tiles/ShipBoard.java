@@ -2,7 +2,9 @@ package it.polimi.ingsw.galaxytruckerproject.tiles;
 import java.util.*;
 
 import it.polimi.ingsw.galaxytruckerproject.Goods;
+import it.polimi.ingsw.galaxytruckerproject.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
+
 
 public class ShipBoard {
     protected final Player player; //protected because it need to be called in StartingCabin (Tiles)
@@ -558,7 +560,7 @@ public class ShipBoard {
     public ArrayList<Coordinates> cargoHoldwithGodd(Goods good){
         ArrayList<Coordinates> cargoHoldwithGood = new ArrayList<>();
         for(Coordinates coordinates : cargoHoldCoordinates){
-            if(tilesTable[coordinates.getX()][coordinates.getY()].getCargo().contains(good)){
+            if(tilesTable[coordinates.getX()][coordinates.getY()].get().getCargo().contains(good)){
                 cargoHoldwithGood.add(coordinates);
             }
         }
