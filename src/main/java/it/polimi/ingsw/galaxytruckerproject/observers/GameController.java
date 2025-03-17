@@ -468,11 +468,11 @@ public class GameController implements GameObserver {
         ArrayList<Player> coolestPlayers = new ArrayList<>();
         coolestPlayers.add(game.getFlightBoard().getAllPlayers().getFirst());
         for(Player player : game.getFlightBoard().getAllPlayers()){
-            if (player.getShipBoard().countExposedConnectors()>coolestPlayers.getFirst().getShipBoard().countExposedConnectors()){
+            if (player.getShipBoard().countExposedConnectors() > coolestPlayers.getFirst().getShipBoard().countExposedConnectors()){
                 coolestPlayers.clear();
                 coolestPlayers.add(player);
             }
-            if (player.getShipBoard().countExposedConnectors()==coolestPlayers.getFirst().getShipBoard().countExposedConnectors()){
+            if (player.getShipBoard().countExposedConnectors() == coolestPlayers.getFirst().getShipBoard().countExposedConnectors()){
                 coolestPlayers.add(player);
             }
         }
@@ -480,7 +480,7 @@ public class GameController implements GameObserver {
             player.addCredit(4);
         }
         for (Player player : game.getFlightBoard().getAllPlayers()) {
-                player.addCredit(player.getShipBoard().convertGoodsToCredit);
+                player.addCredit(player.getShipBoard().convertGoodsToCredit());
         }
         for (Player player : game.getFlightBoard().getAllPlayers()) {
             player.removeCredit(player.getShipBoard().getPenalty());

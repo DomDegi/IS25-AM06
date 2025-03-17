@@ -33,6 +33,7 @@ public class CombatZone extends Card {
             //this means the losing player still has to get chosen
             playerToPlay = Optional.of(Collections.min(savedValues.entrySet(), Comparator.comparingInt(Map.Entry::getValue)).getKey());
             losingPlayerDecided = true;
+            listOfChallenges.get(currentChallenge.get()).printInfo(playerToPlay.get());
         }
 
         if (currentChallenge.isEmpty()) {
@@ -64,7 +65,6 @@ public class CombatZone extends Card {
     @Override
     public void executeCard(Game game, String playerName, String[] input) {
         if (losingPlayerDecided && playerToPlay.isPresent() && playerName.equalsIgnoreCase(playerToPlay.get().getPlayerName())) {
-
             int penaltyReturn = listOfChallenges.get(currentChallenge.get()).applyPenalty(game, playerToPlay.get(), input);
             if (penaltyReturn == 1) {
                 System.out.println("Penalty has been applied to " + playerToPlay.get().getPlayerName() + "\n");

@@ -55,7 +55,7 @@ public class EquipCabin extends Cabin {
     }
 
 
-    public void removeCrew(){
+    public boolean removeCrew(){
         if (this.crew>0) {
             crew--;
             switch (crewType) {
@@ -72,13 +72,20 @@ public class EquipCabin extends Cabin {
         }
         else{
             System.out.println("THIS CABIN IS EMPTY");
+            return false;
         }
+        if (this.crew == 0) {
+            shipBoard.getCabinsCoordinates().remove(this.coordinates);
+        }
+        return true;
     }
+
     public void destroy(){
+        super.destroy();
         if (this.crew>0) {
             switch (crewType) {
                 case Human:
-                    shipBoard.addBreakHumanCrew(-1);
+                    shipBoard.addBreakHumanCrew(-this.crew);
                     break;
                 case Purple:
                     shipBoard.addBreakPurpleAliens(false);
@@ -89,5 +96,13 @@ public class EquipCabin extends Cabin {
             }
             crew=0;
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getCoordinates().getX()).append(" ").append(getCoordinates().getY()).
+                                    append(" ").append(this.crew).append(" ").append(this.crewType);
+        return sb.toString();
     }
 }

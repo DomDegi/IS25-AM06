@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.player;
 
+import it.polimi.ingsw.galaxytruckerproject.Goods;
+import it.polimi.ingsw.galaxytruckerproject.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coverage;
 import it.polimi.ingsw.galaxytruckerproject.tiles.ShipBoard;
@@ -46,22 +48,25 @@ public class Player {
     public ShipBoard getPlayerShip() {return playerShip;}
 
     //
-    public float getCannonStrenght(){
-        return playerShip.getCannonStrenght();
-    }
     public int getNumSingleEngine(){return playerShip.getNumSingleEngine();}
     public ArrayList<Coordinates> getDoubleEngine(){return playerShip.getDoubleEngine();}
     public ArrayList<Coverage> getShipCoverage(){return playerShip.getCoverageShields();}
     public int getNumCrew() {return numCrew;}
 
 
-    //IT REMOVES A CREW MEMBER FROM THE EQUIP CABIN OF THE COORDINATES GIVEN TO THE METHOD
-    public void loseCrew(Coordinates coordinates) {
-        playerShip.chooseCrewtoRemove(coordinates);
+    public boolean removeGoods(ArrayList<Coordinates> coordinates) {
+        for (Coordinates coord : coordinates) {
+            if (!playerShip.cargoHoldContainsGood(new Goods(GoodsColor.RED)).isEmpty()) {
+                if (playerShip.cargoHoldContainsGood(new Goods(GoodsColor.RED)).contains(coord)) {
+                    playerShip.removeGood(new Goods(GoodsColor.RED), coord);
+                } else return false;
+            }
+
+        }
     }
 
     //REMOVES FROM SHIPBOARD THE BATTERIES PRESENT IN THE ARRAYLIST. IF IT'S NEEDED TO ELIMINATE MORE BATTERIES FROM
-    //THE SAME TILE, THE COORDINATE HAS TO BE REPETEAD. (IF YOU WANT TO ELIMINATE TWO BATTERIES FROM A COORDINATE[x][y]
+    //THE SAME TILE, THE COORDINATE HAS TO BE REPEATED. (IF YOU WANT TO ELIMINATE TWO BATTERIES FROM A COORDINATE[x][y]
     //YOU HAVE TO PASS THAT COORDINATE TWO TIMES)
     public void chooseBatteriesUse(ArrayList<Coordinates> BatteriesToConsume){
         for(Coordinates coordinate : BatteriesToConsume){
@@ -134,8 +139,8 @@ public class Player {
         return doubleCannonPower;
     }
 
-    public int calculateDoubleCannonPower(ArrayList<Coordinates> DoubleCannonToUse, ArrayList<Coordinates> BatteriesToConsume){
-        int cannonPower=0;
+    public float calculateDoubleCannonPower(ArrayList<Coordinates> DoubleCannonToUse, ArrayList<Coordinates> BatteriesToConsume){
+        float cannonPower=0;
         cannonPower = chooseDoubleCannon(DoubleCannonToUse,BatteriesToConsume);
         if(cannonPower!=-1){
             cannonPower += playerShip.getSingleCannonPower();
@@ -177,6 +182,27 @@ public class Player {
         }
     }
 
+    public void printCurrentInfoCabins() {
+        for (Coordinates coordinate : playerShip.getCabinsCoordinates()) {
+            System.out.println(playerShip.getTilesTable()[coordinate.getX()][ coordinate.getY()].get().toString() + "\n");
+        }
+    }
+
+    public void printCurrentInfoCargoHolds() {
+        System.out.println("RED goods are at: ");
+        playerShip.cargoHoldContainsGood(new Goods(GoodsColor.RED));
+        System.out.println("\n");
+        System.out.println("YELLOW goods are at: ");
+        playerShip.cargoHoldContainsGood(new Goods(GoodsColor.YELLOW));
+        System.out.println("\n");
+        System.out.println("GREEN goods are at: ");
+        playerShip.cargoHoldContainsGood(new Goods(GoodsColor.GREEN));
+        System.out.println("\n");
+        System.out.println("BLUE goods are at: ");
+        playerShip.cargoHoldContainsGood(new Goods(GoodsColor.BLUE));
+        System.out.println("\n");
+    }
+
 
     //IT ADDS CREDIT
     public void gainCredit(int credit) {
@@ -188,18 +214,6 @@ public class Player {
     public Coverage useShield(Coordinates shieldCoordinates, Coordinates batteryCoordinates) {
         return playerShip.chooseShields(shieldCoordinates,batteryCoordinates);
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

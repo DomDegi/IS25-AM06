@@ -13,9 +13,10 @@ public class StartingCabin extends Cabin {
     }
 
     public void getStat(){shipBoard.addBreakHumanCrew(+2);}
-    public void removeCrew(){
+    public boolean removeCrew(){
         crew--;
         shipBoard.addBreakHumanCrew(-1);
+        return true;
     }
 
 
@@ -24,5 +25,11 @@ public class StartingCabin extends Cabin {
         crew=0;
     }
 
+    public String toString(){
+        StringBuilder s = new StringBuilder();
+        s.append(getCoordinates().getX()).append(" ").append(getCoordinates().getY()).append(" ")
+                .append(this.crew).append(" ").append("Human");
+        return s.toString();
+    }
 
 }

@@ -9,10 +9,7 @@ import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Tile;
 
-import java.util.ArrayList;
-import java.util.Stack;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 
 import static it.polimi.ingsw.galaxytruckerproject.GameState.*;
@@ -22,9 +19,7 @@ public class Game {
     private GameState gameState;
     private final ArrayList<GameObserver> observerList = new ArrayList<>();
     private int playerCount;
-    private CardDeck cardDeck;
     private final ArrayList<Card> inGameCards;
-    private TilesDeck tileDeck;
     private final Stack<Tile> tileStack;
     private final ArrayList<Tile> turnedTiles;
     private final FlightBoard flightBoard;
@@ -38,9 +33,9 @@ public class Game {
         this.turnedTiles = new ArrayList<>();
         this.flightBoard = new FlightBoard();
         this.hourglassTurns = 0;
-        this.tileDeck = new TileDeck("tiles.json");
+        TilesDeck tileDeck = new TileDeck("tiles.json");
         this.tileStack = tileDeck.getStack();
-        this.cardDeck = new CardDeck("cards.json");
+        CardDeck cardDeck = new CardDeck("cards.json");
         this.inGameCards = cardDeck.getTier2FlightCards();
         this.hourglassON = false;
         this.playerCount = 0;
@@ -172,7 +167,7 @@ public class Game {
 
     public boolean playerSetTile (String playerName, Coordinates coordinates) {
         Player player = IdentifyPlayerByName(playerName);
-        return player.getShipBoard().positionTile(player.getDrawnTile(), coordinates);
+        return player.getShipBoard().positionTile(Optional.ofNullable(player.getDrawnTile()), coordinates);
     }
 
     public boolean playerBookTile (String playerName) {
@@ -180,8 +175,12 @@ public class Game {
         if (player.getDrawnTile() == null) {
             return false;
         }
-        player.getShipBoard().addBookedTile(player.removeDrawnTile());
-        return true;
+        if (player.getShipBoard().addBookedTile(player.removeDrawnTile()))
+            return true;
+        else {
+            System.out.println("Booked tiles are full\n");
+            return false;
+        }
     }
 
     public void StartTimer() {

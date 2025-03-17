@@ -19,4 +19,6 @@ public abstract class Penalty {
 
     @Override
     public abstract String toString();
+
+    public abstract void printInfo(Player player);
 }

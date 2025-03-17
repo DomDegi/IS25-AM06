@@ -22,4 +22,6 @@ public class FlightDaysPenalty extends Penalty{
     public String toString() {
         return "FlightDaysPenalty";
     }
+
+    public void printInfo(Player player) {}
 }
