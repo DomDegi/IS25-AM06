@@ -15,8 +15,8 @@ public class DoubleEngine extends Engine{
         return true;
     }
 
-    public void getStat(){shipBoard.addBreakDoubleEngine(true);}
+    public void getStat(){shipBoard.addBreakDoubleEngine(true,this.coordinates);}
     public void destroy(){
-        shipBoard.addBreakDoubleEngine(false);
+        shipBoard.addBreakDoubleEngine(false,this.coordinates);
     }
 }

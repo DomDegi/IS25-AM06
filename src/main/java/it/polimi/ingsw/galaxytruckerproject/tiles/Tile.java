@@ -1,5 +1,9 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
 
+import java.util.Optional;
+
+import java.util.ArrayList;
+
 public abstract class Tile {
     protected Link north;
     protected Link east;
@@ -37,37 +41,39 @@ public abstract class Tile {
     }
 
     public boolean isCorrect(){
-        Tile other;
-        Tile[][] tileTable= shipBoard.getTilesTable();
+        Optional<Tile> other;
+        Optional<Tile>[][] tileTable= shipBoard.getTilesTable();
         //Check north
+        /*
         if(this.coordinates.getX()!=0) {
             other = tileTable[this.coordinates.getX()-1][this.coordinates.getY()];
-            if(other!=null && !(other instanceof VoidTile) && !north.isConnected(other.getSouth()) ) {
+            if(!other.isEmpty() && !(other.get() instanceof VoidTile) && !north.isConnected(other.get().getSouth()) ) {
                 return false;
             }
-        }
+        } */
         //Check east
         if(this.coordinates.getY()!=6) {
             other = tileTable[this.coordinates.getX()][this.coordinates.getY()+1];
-            if(other!=null && !(other instanceof VoidTile) && !east.isConnected(other.getWest())) {
+            if(!other.isEmpty() && !(other.get() instanceof VoidTile) && !east.isConnected(other.get().getWest())) {
                 return false;
             }
         }
+
         //Check south
         if(this.coordinates.getX()!=4) {
             other = tileTable[this.coordinates.getX()+1][this.coordinates.getY()];
-            if(other!=null && !(other instanceof VoidTile) && !south.isConnected(other.getNorth())) {
+            if(!other.isEmpty() && !(other.get() instanceof VoidTile) && !south.isConnected(other.get().getNorth())) {
                 return false;
             }
-        }
+        }/*
         //Check west
 
         if(this.coordinates.getY()!=0) {
             other = tileTable[this.coordinates.getX()][this.coordinates.getY()-1];
-            if(other!=null && !(other instanceof VoidTile) && !west.isConnected(other.getEast())) {
+            if(!other.isEmpty() && !(other.get() instanceof VoidTile) && !west.isConnected(other.get().getEast())) {
                 return false;
             }
-        }
+        }*/
         //Checked
         return true;
     }
@@ -83,10 +89,30 @@ public abstract class Tile {
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
     }
-    public void destroy(){}
+    public void destroy(){
+        shipBoard.addPenalty();
+    }
+    public Coordinates getCoordinates() {
+        return this.coordinates;
+    }
+
 
     //METHOD THAT GETS OVERRIDE ONLY BY THE SPECIFIC CLASSES
     public void setCrewType(CrewType crewType) {System.out.println("THIS TILE IS NOT A CABIN"); }
     public void consumeBattery(){System.out.println("THIS TILE IS NOT A BATTERYCOMPONENT"); }
-    public void removeCrew(){};
+    public void removeCrew(){
+        System.out.println("THIS TILE IS NOT A CABIN");
+    };
+    public void removeGood(Goods good){System.out.println("THIS TILE IS NOT A GOOD");}
+    public Coverage getCoveredArea(){System.out.println("THIS TILE IS NOT A SHIELD"); return Coverage.NONE;}
+    public ArrayList<Goods> getCargo(){System.out.println("THIS TILE IS NOT A CARGOHOLD"); return null;}
+    public boolean Pleaceble(){return true;};
+
+    public int getStrength(){
+        System.out.println("THIS TILE IS NOT A DOUBLE CANNON");
+        return 0;
+    }
+    public boolean fillable(){
+        return true;
+    }
 }

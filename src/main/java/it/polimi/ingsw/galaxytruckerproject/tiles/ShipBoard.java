@@ -7,11 +7,17 @@ import it.polimi.ingsw.galaxytruckerproject.player.Player;
 public class ShipBoard {
     protected final Player player; //protected because it need to be called in StartingCabin (Tiles)
     private Optional<Tile>[][] tilesTable;
-    private int penaltyTiles;
+    private int numExposedConnectors;
+    private int penalty;
     private ArrayList<Tile> bookedTiles;
     private int numBatteries;
     private float singleCannonPower;
     private ArrayList<Coordinates> DoubleCannon;
+
+    //TO ENNIO: IF THERE'S A REASON TO NOT USE THIS SET UP, FEEL FREE TO RESET EVERYTHING AS IT WAS
+    private ArrayList<Coordinates>DoubleStraightCannon;
+    private ArrayList<Coordinates>DoubleSideCannon;
+
     private int numSingleEngine;
     private ArrayList<Coordinates> DoubleEngine;
     private ArrayList<Coverage> shields;
@@ -20,14 +26,14 @@ public class ShipBoard {
     private ArrayList<Coordinates> cargoHoldCoordinates;
     private int numBrownAliens;
     private int numPurpleAliens;
-    private int numExposedConnectors ;
-    private int numCrew;
+    private int numHumanCrew;
 
 
 
     public ShipBoard(Player player){
         this.player = player;
-        penaltyTiles = 0;
+        numExposedConnectors = 0;
+        penalty = 0;
         bookedTiles = new ArrayList<Tile>();
         numBatteries = 0;
         singleCannonPower = 0;
@@ -37,12 +43,11 @@ public class ShipBoard {
         shields = new ArrayList<Coverage>();
         numBrownAliens = 0;
         numPurpleAliens = 0;
-        numExposedConnectors = 0;
-        numCrew = 0;
+        numHumanCrew = 0;
     }
     //GETTER METHODS
     public int getNumPenaltyTiles (){
-        return penaltyTiles;
+        return penalty;
     }
     public int getNumBatteries() {
         return numBatteries;
@@ -103,13 +108,16 @@ public class ShipBoard {
         if (ab) numPurpleAliens++;
         else numPurpleAliens--;
     }
-    public void addBreakCrew(int num){
-        numCrew += num;
+    public void addBreakHumanCrew(int num){
+        numHumanCrew += num;
         //Decide which crewmate to eliminate
     }
     public void addBreakBatteries(int num){
         numBatteries += num;
         //if (num<0) -> Decide which Battery to use
+    }
+    public void addPenalty(){
+        penalty++;
     }
     public boolean addBookedTile (Tile tile){
         if(bookedTiles.size()==2){
@@ -144,16 +152,19 @@ public class ShipBoard {
 */
     //inizializzazione shipboard volo di prova e primo livello
     public void inizializeLevel2 (){
-        tilesTable = new Tile[5][7];
-        tilesTable[0][0] = Optional.of(new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH)));
-        tilesTable[0][1] = Optional.of(new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH)));
-        tilesTable[1][0] = new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH));
-        tilesTable[4][3] = new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH));
-        tilesTable[0][3] = new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH));
-        tilesTable[0][5] = new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH));
-        tilesTable[0][6] = new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH));
-        tilesTable[1][6] = new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH));
+        Optional<Tile>[][] tilesTable = new Optional [5][7];
 
+        int [][] voidPositions = {
+                {0,0}, {0,1}, {1,0}, {4,3}, {0,3}, {0,5},
+                {0,6}, {1,6},
+        };
+
+        // Initialize VoidTile
+        for (int[] pos : voidPositions) {
+            tilesTable[pos[0]][pos[1]] = Optional.of(new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH)));
+        }
+
+        //Set empty the normal Tile
         for(int i = 1; i < 5; i++){
             for(int j = 0; j < 7; j++){
                 if(!(tilesTable[i][j].get() instanceof VoidTile)){
@@ -164,7 +175,7 @@ public class ShipBoard {
     }
     public void inizializeTestFlight(){
         tilesTable = new Optional[5][7];
-        // Coordinate delle VoidTile
+        // Coordinates of VoidTile
         int[][] voidPositions = {
                 {0,0}, {0,1}, {0,2}, {0,4}, {0,5}, {0,6},
                 {1,0}, {1,1}, {1,5}, {1,6},
@@ -172,7 +183,7 @@ public class ShipBoard {
                 {4,0}, {4,3}, {4,6}
         };
 
-        // Inizializza le VoidTile
+        // Initialize VoidTile
         for (int[] pos : voidPositions) {
             tilesTable[pos[0]][pos[1]] = Optional.of(new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH)));
         }
@@ -189,8 +200,8 @@ public class ShipBoard {
 
 
 
-    //destroy algorithm with choice
-    public void destroyTile(Coordinates coordinates){
+    //destroy tile+ return set of new possible shipboard coordinates
+    public ArrayList<Set<Coordinates>> destroyTile(Coordinates coordinates){
         if(coordinates.x == 0 && coordinates.y == 0){ System.out.println("Can't destroy ");}
         tilesTable[coordinates.x][coordinates.y].get().destroy();
         tilesTable[coordinates.getX()][coordinates.getY()] = Optional.empty();
@@ -203,63 +214,51 @@ public class ShipBoard {
         int y=coordinates.getY();
 
         //south
-        if(!tilesTable[x+1][y].isEmpty() &&  !(tilesTable[x+1][y].get() instanceof VoidTile)){
+        if(!tilesTable[x+1][y].isEmpty() &&  tilesTable[x+1][y].get().fillable()){
             set1=( brokenGraph(new Coordinates(x+1,y)));
         }
         //east
-        if(!tilesTable[x][y+1].isEmpty()  &&  !(tilesTable[x][y+1].get() instanceof VoidTile) && (set1==null || !set1.contains(tilesTable[x][y+1].get().getCoordinates()))){
+        if(!tilesTable[x][y+1].isEmpty()  &&  tilesTable[x][y+1].get().fillable() && (set1==null || !set1.contains(tilesTable[x][y+1].get().getCoordinates()))){
             set2 = brokenGraph(new Coordinates(x,y+1));
         }
         //north
-        if(!tilesTable[x-1][y].isEmpty()  &&  !(tilesTable[x-1][y].get() instanceof VoidTile) && (set1==null||  !set1.contains(tilesTable[x-1][y].get().getCoordinates())) && (set2==null || !set2.contains(tilesTable[x-1][y].get().getCoordinates()))){
+        if(!tilesTable[x-1][y].isEmpty()  &&  tilesTable[x-1][y].get().fillable() && (set1==null||  !set1.contains(tilesTable[x-1][y].get().getCoordinates())) && (set2==null || !set2.contains(tilesTable[x-1][y].get().getCoordinates()))){
             set3 = brokenGraph(new Coordinates(x-1,y));
         }
         //west
-        if(!tilesTable[x][y-1].isEmpty()  &&  !(tilesTable[x][y-1].get() instanceof VoidTile) && (set1==null || !set1.contains(tilesTable[x][y-1].get().getCoordinates())) && (set2==null || !set2.contains(tilesTable[x][y-1].get().getCoordinates())) && (set3==null || !set3.contains(tilesTable[x][y-1].get().getCoordinates()))){
+        if(!tilesTable[x][y-1].isEmpty()  &&  tilesTable[x][y-1].get().fillable() && (set1==null || !set1.contains(tilesTable[x][y-1].get().getCoordinates())) && (set2==null || !set2.contains(tilesTable[x][y-1].get().getCoordinates())) && (set3==null || !set3.contains(tilesTable[x][y-1].get().getCoordinates()))){
            set4 = brokenGraph(new Coordinates(x,y-1));
         }
         ArrayList<Set<Coordinates>> array = new ArrayList<>();
-        System.out.println("choose a tile set:");
         if(set1!=null){
             array.add(set1);
-            System.out.println ("set"+array.size() );
-            for(Coordinates c : set1) c.print();
-            System.out.print("\n");
         }
         if(set2!=null){
             array.add(set2);
-            System.out.println ("set"+array.size());
-            for(Coordinates c : set2) c.print();
-            System.out.print("\n");
         }
         if(set3!=null){
             array.add(set3);
-            System.out.println ("set"+array.size());
-            for(Coordinates c : set3) c.print();
-            System.out.print("\n");
         }
         if(set4!=null){
             array.add(set4);
-            System.out.println ("set"+array.size());
-            for(Coordinates c : set4) c.print();
-            System.out.print("\n");
         }
-        System.out.println("which number do you choose?");
-        System.out.print("set");
-        Scanner scanner = new Scanner(System.in);
-        int i=scanner.nextInt();
-        i--;
-        for(int j = 0; j < array.size(); j++){
-            if(j!=i)
-            {
-                for(Coordinates c : array.get(j)){
-                    tilesTable[c.getX()][c.getY()].get().destroy();
-                    tilesTable[c.getX()][c.getY()]=Optional.empty();
+        return array;
+    }
+
+    public void SetNewShip (Set<Coordinates> set){
+        Coordinates c = new Coordinates(0,0);
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 7; j++) {
+                if (!tilesTable[i][j].isEmpty() && tilesTable[i][j].get().fillable()) {
+                    c.set(i, j);
+                    if(!set.contains(c)){
+                        tilesTable[i][j].get().destroy();
+                        tilesTable[i][j] = Optional.empty();
+                    }
                 }
             }
         }
     }
-
 
     //RETURN THE SET OF TILES LINKED WITH THE STARTING ONE
     //i assume that the correctness of the links has already been verified
@@ -273,67 +272,72 @@ public class ShipBoard {
         int y = start.y;
         set.add(new Coordinates(x,y));
         //south
-        if(tilesTable[x][y].get().south.getConnectorsType()!= Connectors.SMOOTH && !tilesTable[x+1][y].isEmpty()  &&  !(tilesTable[x+1][y].get() instanceof VoidTile) && !set.contains(tilesTable[x+1][y].get().getCoordinates())){
+        if(tilesTable[x][y].get().south.getConnectorsType()!= Connectors.SMOOTH && !tilesTable[x+1][y].isEmpty()  && tilesTable[x+1][y].get().fillable() && !set.contains(tilesTable[x+1][y].get().getCoordinates())){
             brokenGraph2(new Coordinates(x+1,y), set);
         }
         //east
-        if(tilesTable[x][y].get().east.getConnectorsType()!= Connectors.SMOOTH && !tilesTable[x][y+1].isEmpty()  &&  !(tilesTable[x][y+1].get() instanceof VoidTile) && !set.contains(tilesTable[x][y+1].get().getCoordinates())){
+        if(tilesTable[x][y].get().east.getConnectorsType()!= Connectors.SMOOTH && !tilesTable[x][y+1].isEmpty()  &&  tilesTable[x][y+1].get().fillable() && !set.contains(tilesTable[x][y+1].get().getCoordinates())){
             brokenGraph2(new Coordinates(x,y+1), set);
         }
         //north
-        if(tilesTable[x][y].get().north.getConnectorsType()!= Connectors.SMOOTH && !tilesTable[x-1][y].isEmpty()  &&  !(tilesTable[x-1][y].get() instanceof VoidTile) && !set.contains(tilesTable[x-1][y].get().getCoordinates())){
+        if(tilesTable[x][y].get().north.getConnectorsType()!= Connectors.SMOOTH && !tilesTable[x-1][y].isEmpty()  && tilesTable[x-1][y].get().fillable() && !set.contains(tilesTable[x-1][y].get().getCoordinates())){
             brokenGraph2(new Coordinates(x-1,y), set);
         }
         //west
-        if(tilesTable[x][y].get().west.getConnectorsType()!= Connectors.SMOOTH && !tilesTable[x][y-1].isEmpty()  &&  !(tilesTable[x][y-1].get() instanceof VoidTile) && !set.contains(tilesTable[x][y-1].get().getCoordinates())){
+        if(tilesTable[x][y].get().west.getConnectorsType()!= Connectors.SMOOTH && !tilesTable[x][y-1].isEmpty()  &&  tilesTable[x][y-1].get().fillable() && !set.contains(tilesTable[x][y-1].get().getCoordinates())){
             brokenGraph2(new Coordinates(x,y-1), set);
         }
         return set;
     }
 
+    public boolean checkEarlyLanding(){
+        if(numHumanCrew == 0){
+            return true;
+        }
+        return false;
+    }
 
 
-    public int countExposedConnectors(){
-        numExposedConnectors =0;
+    //ADDITONARY METHOD THAT GETS IMPLEMENTED IN COUNT EXSPOSEDCONNECTORS
+    public void checkBorderTile(int i, int j){
+        numExposedConnectors = 0;
+        //if the tile at its LEFT is either out of bounds, a VoidTile, or empty,
+        //then our Tile iss a borderTile and I have to check if it is Exsposed
+        if(i-1<0 || !tilesTable[i-1][j].get().Pleaceble() || tilesTable[i+1][j].isEmpty())
+            if(!tilesTable[i][j].get().getWest().getConnectorsType().equals(Connectors.SMOOTH))
+                numExposedConnectors++;
+
+        //if the tile at its RIGHT is either out of bounds, a VoidTile, or empty,
+        //then our Tile iss a borderTile and I have to check if it is Exsposed
+        if(i+1>6 || !tilesTable[i+1][j].get().Pleaceble() || tilesTable[i+1][j].isEmpty())
+            if(!tilesTable[i][j].get().getEast().getConnectorsType().equals(Connectors.SMOOTH))
+                numExposedConnectors++;
+
+        //if the tile UNDER is either out of bounds, a VoidTile, or empty,
+        // then our Tile iss a borderTile and I have to check if it is Exsposed
+        if(j+1>4 || tilesTable[i][j+1].get().Pleaceble() || tilesTable[i][j+1].isEmpty())
+            if(!tilesTable[i][j].get().getSouth().getConnectorsType().equals(Connectors.SMOOTH))
+                numExposedConnectors++;
+
+        //if the tile OVER is either out of bounds, a VoidTile, or empty,
+        // then our Tile iss a borderTile and I have to check if it is Exsposed
+        if(j-1<0 || tilesTable[i][j-1].get().Pleaceble() || tilesTable[i][j+1].isEmpty())
+            if(!tilesTable[i][j].get().getNorth().getConnectorsType().equals(Connectors.SMOOTH))
+                numExposedConnectors++;
+    }
+    public int countExsposedConnectors(){
         for(int i=0; i<5; i++)
             for(int j=0; j<7; j++){
                 checkBorderTile(i,j);
             }
         return numExposedConnectors;
     }
-    //ADDITIONAL METHOD THAT GETS IMPLEMENTED IN COUNT EXPOSED_CONNECTORS
-    public void checkBorderTile(int i, int j){
-        //if the tile at its LEFT is either out of bounds, a VoidTile, or empty,
-        //then our Tile iss a borderTile and I have to check if it is Exposed
-        if(i-1<0 || tilesTable[i-1][j].get() instanceof VoidTile || tilesTable[i+1][j].isEmpty())
-            if(!tilesTable[i][j].get().getWest().getConnectorsType().equals(Connectors.SMOOTH))
-                numExposedConnectors++;
-
-        //if the tile at its RIGHT is either out of bounds, a VoidTile, or empty,
-        //then our Tile iss a borderTile and I have to check if it is Exposed
-        if(i+1>6 || tilesTable[i+1][j].get() instanceof VoidTile || tilesTable[i+1][j].isEmpty())
-            if(!tilesTable[i][j].get().getEast().getConnectorsType().equals(Connectors.SMOOTH))
-                numExposedConnectors++;
-
-        //if the tile UNDER is either out of bounds, a VoidTile, or empty,
-        // then our Tile iss a borderTile and I have to check if it is Exposed
-        if(j+1>4 || tilesTable[i][j+1].get() instanceof VoidTile || tilesTable[i][j+1].isEmpty())
-            if(!tilesTable[i][j].get().getSouth().getConnectorsType().equals(Connectors.SMOOTH))
-                numExposedConnectors++;
-
-        //if the tile OVER is either out of bounds, a VoidTile, or empty,
-        // then our Tile iss a borderTile and I have to check if it is Exposed
-        if(j-1<0 || tilesTable[i][j-1].get() instanceof VoidTile || tilesTable[i][j+1].isEmpty())
-            if(!tilesTable[i][j].get().getNorth().getConnectorsType().equals(Connectors.SMOOTH))
-                numExposedConnectors++;
-    }
 
     public boolean verifyCorrectness(){
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 7; j++) {
-                if (tilesTable[i][j].isPresent() && !tilesTable[i][j].get().isCorrect()) {
-                    return false;
-                }
+                if (!tilesTable[i][j].isEmpty() && !tilesTable[i][j].get().isCorrect())
+                   return false;
             }
         return true;
     }
@@ -348,68 +352,14 @@ public class ShipBoard {
             tilesTable[coordinates.getX()][coordinates.getY()].get().setCrewType(crewType);
         }
     }
-
-
-    //TRY TO DON'T USE THE INSTANCE OF (I NEED TO RETHINK THE CICLE)
-    public void chooseCrewtoRemove(int crewtoRemove){
-        for(Coordinates coordinates: crewCoordinates)
-            System.out.println(coordinates);
-        for(int i=0; i<crewtoRemove; i++){
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Insert coordinate X: ");
-            int x = scanner.nextInt();
-            System.out.println("Insert coordinate Y: ");
-            int y = scanner.nextInt();
-            if(!(tilesTable[x][y].get() instanceof Cabin)){
-                System.out.println("THE TILE IS NOT A CABIN");
-                i--;
-            }
-            else if(((Cabin) tilesTable[x][y]).get().getCrew() == 0){
-                System.out.println("THE CABIN IS EMPTY");
-                i--;
-            }
-            else{
-                ((EquipCabin) tilesTable[x][y].get()).removeCrew();
-            }
-        }
-
-        //collegamento tra tiles e numCrew (how to do it?)
-    }
-
     //New ChooseCrew METHOD
-    public void chooseCrewtoRemove2(Coordinates coordinates){
+    public void chooseCrewtoRemove(Coordinates coordinates){
         if(crewCoordinates.contains(coordinates)){
-            tilesTable[coordinates.getX()][coordinates.getY()].removeCrew();
+            tilesTable[coordinates.getX()][coordinates.getY()].get().removeCrew();
         }
         else
             System.out.println("THIS TILE IS NOT A CABIN");
     }
-
-    public void chooseBatteryUse(int batteryConsum){
-        for(Coordinates coordinates : batteryCoordinates)
-            System.out.println(coordinates);
-
-        for(int i=0; i<batteryConsum; i++){
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Insert coordinate X: ");
-            int x = scanner.nextInt();
-            System.out.println("Insert coordinate Y: ");
-            int y = scanner.nextInt();
-            tilesTable[x][y].get().consumeBattery();
-        }
-    }
-
-    public void chooseBatteryUse2(Coordinates coordinates){
-        if(batteryCoordinates.contains(coordinates)){
-            tilesTable[coordinates.getX()][coordinates.getY()].consumeBattery();
-        }
-        else
-            System.out.println("THIS TILE IS NOT A BATTERY");
-        //forse non serve il batteryCoordinates perché tanto se non è una batteryTile stampo il fatto che non lo è
-
-    }
-
-
     public void epidemic(){
         HashSet<Coordinates> InfectedCabin = new HashSet<>();
         for(Coordinates coordinates : crewCoordinates){
@@ -426,21 +376,184 @@ public class ShipBoard {
 
 
 
-    //It returns the Covarage of the Shields Choosen by the Player. If it
-    public Coverage chooseShields(Coordinates coordinates){
-        if(!(tilesTable[coordinates.getX()][coordinates.getY()].getCoveredArea() == Coverage.NONE)){
-            chooseBatteryUse(1);
+    //BATTERY METHODS
+    public void chooseBatteryUse(Coordinates coordinates){
+        if(batteryCoordinates.contains(coordinates)){
+            tilesTable[coordinates.getX()][coordinates.getY()].get().consumeBattery();
+        }
+        else
+            System.out.println("THIS TILE IS NOT A BATTERY");
+        //forse non serve il batteryCoordinates perché tanto se non è una batteryTile stampo il fatto che non lo è
+
+    }
+
+
+
+    //SHIELD METHODS
+
+    //This method takes as input the coordinates of the Shield to be used and the coordinates of the BatteryComponents
+    // from which it wants to consume the battery to activate the Shield.
+    public Coverage chooseShields(Coordinates shieldCoordinates, Coordinates batteryCoordinates){
+        if(!(tilesTable[shieldCoordinates.getX()][shieldCoordinates.getY()].get().getCoveredArea() == Coverage.NONE)){
+            chooseBatteryUse(batteryCoordinates);
         }
         else{
             System.out.println("THE TILE IS NOT A SHIELD");
         }
-        return tilesTable[coordinates.getX()][coordinates.getY()].getCoveredArea();
+        return tilesTable[shieldCoordinates.getX()][shieldCoordinates.getY()].get().getCoveredArea();
+    }
+
+
+
+    //GOODS METHODS
+
+    //Returns true if the adding of the Good is sucessfull, false otherwise ()
+    public boolean gainGoods(Goods goods, Coordinates coordinates){
+        if(cargoHoldCoordinates.contains(coordinates)){
+            return tilesTable[coordinates.getX()][coordinates.getY()].get().getCargo().add(goods);
+        }else{
+            System.out.println("THIS TILE IS NOT A CARGOHOLDER");
+            return false;
+        }
+
+    }
+
+    //IT RETURNS THE COORDINATES OF EVERY CARGOHOLD THAT CONTAINS A TYPE OF GOOD (RED, YELLOW, GREEN, BLU). IF
+    //A CARGOHOLD CONTAINS MORE THAN ONE GOOD WITH THE SAME COLOR IT'S GOING TO BE ADD TWICE.
+    public ArrayList<Coordinates> cargoHoldContainsGood(Goods goodColor){
+        ArrayList<Coordinates> cargoHoldContainsGood = new ArrayList<>();
+        for(Coordinates coordinates : cargoHoldCoordinates){
+            for(int i=0; i<tilesTable[coordinates.getX()][coordinates.getY()].get().getCargo().size(); i++){
+                if(tilesTable[coordinates.getX()][coordinates.getY()].get().getCargo().contains(goodColor)){
+                    System.out.println(coordinates.getX()+" "+coordinates.getY());
+                    cargoHoldContainsGood.add(coordinates);
+                }
+            }
+        }
+        return cargoHoldContainsGood;
     }
 
     public void chooseCargoStocktoEmpty(Coordinates coordinates){
 
+        Goods colorGoodToCheck = new Goods(GoodsColor.RED);
+        switch(colorGoodToCheck.getColor()){
+            case RED:
+                if(!cargoHoldContainsGood(colorGoodToCheck).isEmpty()){
+                    if(cargoHoldContainsGood(colorGoodToCheck).contains(coordinates)){
+                        tilesTable[coordinates.getX()][coordinates.getY()].get().removeGood(colorGoodToCheck);
+                    }
+                    else {
+                        System.out.println("YOU HAVE TO REMOVE A RED GOOD");
+                        chooseCargoStocktoEmpty(coordinates); //THE METHOD GETS INVOKED UNTIL THE COORDINATES CONTAINS
+                        //A RED GOOD (MIMMO)
+                    }
+                    break;
+                }
+                colorGoodToCheck = new Goods(GoodsColor.YELLOW);
+
+            case YELLOW:
+                if(!cargoHoldContainsGood(colorGoodToCheck).isEmpty()){
+                    if(cargoHoldContainsGood(colorGoodToCheck).contains(coordinates)){
+                        tilesTable[coordinates.getX()][coordinates.getY()].get().removeGood(colorGoodToCheck);
+                    }
+                    else {
+                        System.out.println("YOU HAVE TO REMOVE A YELLOW GOOD");
+                        chooseCargoStocktoEmpty(coordinates);//THE METHOD GETS INVOKED UNTIL THE COORDINATES CONTAINS
+                        //A YELLOW GOOD
+                    }
+                    break;
+                }
+                colorGoodToCheck = new Goods(GoodsColor.GREEN);
+
+            case GREEN:
+                if(!cargoHoldContainsGood(colorGoodToCheck).isEmpty()){
+                    if(cargoHoldContainsGood(colorGoodToCheck).contains(coordinates)){
+                        tilesTable[coordinates.getX()][coordinates.getY()].get().removeGood(colorGoodToCheck);
+                    }
+                    else{
+                        System.out.println("YOU HAVE TO REMOVE A GREEN GOOD");
+                        chooseCargoStocktoEmpty(coordinates);//THE METHOD GETS INVOKED UNTIL THE COORDINATES CONTAINS
+                        //A GREEN GOOD
+                    }
+                    break;
+                }
+            case BLUE:
+                if(!cargoHoldContainsGood(colorGoodToCheck).isEmpty()){
+                    if(cargoHoldContainsGood(colorGoodToCheck).contains(coordinates)){
+                        tilesTable[coordinates.getX()][coordinates.getY()].get().removeGood(colorGoodToCheck);
+                    }
+                    else{
+                        System.out.println("YOU HAVE TO REMOVE A BLUE GOOD");
+                        chooseCargoStocktoEmpty(coordinates);//THE METHOD GETS INVOKED UNITL THE COORDINATES CONTAINS
+                        //A BLUE GOOD
+                    }
+                    break;
+                }
+            //THE CASE OF CHECKING IF THERE IS ANY GOOD, CAN BE DONE BY CALLING THIS METHOD BY ADDING A DEFAULT CASE,
+            // BUT I DON'T IT MAKE SENSE SINCE THIS METHOD NEED TO RECEIVE A COORDINATES.
+            //THE CHECK IT'S GOING TO BE DONE BY THE GAME (WHERE IT GETS CHECKED IF THE NUMBER OF GOODS THAT NEED TO BE
+            //REMOVED ARE EQUAL TO THE ONE THE PLAYER HAS. IN THAT CASE THEY ARE JUST GOING TO DELETE ALL THE GOODS.
+        }
+
     }
 
+    public void removeGood(Goods good, Coordinates coordinates){
+        tilesTable[coordinates.getX()][coordinates.getY()].get().removeGood(good);
+    }
+
+    public void swapGoods(Coordinates coordinatesFrom,Coordinates coordinatesTo, Goods goodToSwap ){
+        //Check if the coordinates are of a CargoHolder
+        if(cargoHoldCoordinates.contains(coordinatesFrom) && cargoHoldCoordinates.contains(coordinatesTo)){
+            if(cargoHoldCoordinates.contains(goodToSwap)){
+               if(gainGoods(goodToSwap, coordinatesTo))
+                    removeGood(goodToSwap, coordinatesFrom);
+            }
+            else{
+                System.out.println("This Good is not present in the CargoHold you selected");
+            }
+            tilesTable[coordinatesFrom.getX()][coordinatesFrom.getY()].get().getCargo().contains(goodToSwap);
+        }
+        else{
+            System.out.println("ONE OR BOTH THE TWO TILES ARE NOT A CARGOHOLDER");
+        }
+
+
+    }
+
+    public int convertGoodsToCredit(){
+        Goods good = new Goods(GoodsColor.RED);
+        int credit = 0;
+        credit = cargoHoldContainsGood(good).size();
+        good = new Goods(GoodsColor.YELLOW);
+        credit += cargoHoldContainsGood(good).size();
+        good = new Goods(GoodsColor.GREEN);
+        credit += cargoHoldContainsGood(good).size();
+        good = new Goods(GoodsColor.BLUE);
+        credit += cargoHoldContainsGood(good).size();
+        return credit;
+    }
+
+
+    //EXAMPLE OF WHAT IT NEEDS TO BE IMPLEMENTED, MAYBE I NEED TO GIVE TO PLAYER THE NUMBER OF RED,YELLOW, GREEN, BLU GOODS
+    public void checkBeforeAsking(int goodsToRemove){
+        int numberOfGoods=0;
+        //Check if the goods that need to be deleted are more/equal/or less than the goods contained in the Ship
+        for(Coordinates coordinates : cargoHoldCoordinates){
+            numberOfGoods += tilesTable[coordinates.getX()][coordinates.getY()].get().getCargo().size();
+        }
+        //CASE NumberOfGoods equals goods that need to be removed
+        if(goodsToRemove == numberOfGoods){
+            for(Coordinates coordinates : cargoHoldCoordinates){
+                tilesTable[coordinates.getX()][coordinates.getY()].get().getCargo().clear();
+            }
+        }
+        else if(goodsToRemove > numberOfGoods){
+            ;
+
+        }
+
+
+    }
     //It
     public ArrayList<Coordinates> cargoHoldwithGodd(Goods good){
         ArrayList<Coordinates> cargoHoldwithGood = new ArrayList<>();

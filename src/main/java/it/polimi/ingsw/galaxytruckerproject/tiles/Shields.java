@@ -23,6 +23,8 @@ public class Shields extends Tile{
 
     //we don't need a NumberofCovarageShields to uploade beacuase we can get it from the size of the ArrayList
     public void getStat() {shipBoard.getCoverageShields().add(this.coveredArea);}
+
+    public Coverage getCoveredArea() {return this.coveredArea;}
     public void destroy(){
         for(Coverage cov : shipBoard.getCoverageShields()){
             if(cov == coveredArea){
