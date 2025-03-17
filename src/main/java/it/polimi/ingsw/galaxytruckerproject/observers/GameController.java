@@ -4,7 +4,6 @@ import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.GameState;
 import it.polimi.ingsw.galaxytruckerproject.cards.Card;
-import it.polimi.ingsw.galaxytruckerproject.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.tiles.*;
@@ -94,10 +93,9 @@ public class GameController implements GameObserver {
 
         if (game.getHourglassTurns() == 0 && !words[0].equals("hourglass")) {
             System.out.println("To begin ship creation flip the hourglass\n");
-            return;
         }
         else if (words[0].equals("hourglass")) {
-            TurnHourglass(playerName);
+            turnHourglass(playerName);
         }
     }
 
@@ -345,7 +343,7 @@ public class GameController implements GameObserver {
         }
         playerInputs.put(playerName, "completed");
         for (Map.Entry<String, String> entry : playerInputs.entrySet()) {
-            if (!entry.getKey().equals("completed")) {;
+            if (!entry.getKey().equals("completed")) {
                 return;
             }
         }
@@ -431,7 +429,7 @@ public class GameController implements GameObserver {
                 checkShipBoard(playerName, words);
                 break;
             case "land":
-                game.getFlightBoard().earlyLanding(game.IdentifyPlayerByName(playerName).getPlayerRanking());
+                game.getFlightBoard().earlyLanding(game.IdentifyPlayerByName(playerName));
                 System.out.println(playerName + " made an early landing\n");
                 break;
             default: break;

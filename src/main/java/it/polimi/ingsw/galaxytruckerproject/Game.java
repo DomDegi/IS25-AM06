@@ -36,7 +36,7 @@ public class Game {
     public Game() {
         this.gameState = GameState.START_GAME;
         this.turnedTiles = new ArrayList<>();
-        this.flightBoard = new FlightBoard(mode);
+        this.flightBoard = new FlightBoard();
         this.hourglassTurns = 0;
         this.tileDeck = new TileDeck("tiles.json");
         this.tileStack = tileDeck.getStack();
