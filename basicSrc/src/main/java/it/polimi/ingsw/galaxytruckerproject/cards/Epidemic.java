@@ -3,8 +3,6 @@ package it.polimi.ingsw.galaxytruckerproject.cards;
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
-import java.util.Arrays;
-
 public class Epidemic extends Card {
 
     public Epidemic(int level) {

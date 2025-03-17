@@ -100,8 +100,9 @@ public abstract class Tile {
     //METHOD THAT GETS OVERRIDE ONLY BY THE SPECIFIC CLASSES
     public void setCrewType(CrewType crewType) {System.out.println("THIS TILE IS NOT A CABIN"); }
     public void consumeBattery(){System.out.println("THIS TILE IS NOT A BATTERYCOMPONENT"); }
-    public void removeCrew(){
+    public boolean removeCrew(){
         System.out.println("THIS TILE IS NOT A CABIN");
+        return false;
     };
     public void removeGood(Goods good){System.out.println("THIS TILE IS NOT A GOOD");}
     public Coverage getCoveredArea(){System.out.println("THIS TILE IS NOT A SHIELD"); return Coverage.NONE;}

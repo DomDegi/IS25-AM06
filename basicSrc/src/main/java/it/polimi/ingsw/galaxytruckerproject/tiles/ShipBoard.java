@@ -83,6 +83,9 @@ public class ShipBoard {
     public ArrayList<Coordinates> getBatteryCoordinates() {return batteryCoordinates;}
     public ArrayList<Coverage> getCoverageShields(){return shields;}
     public ArrayList<Coordinates> getCargoHoldCoordinates(){return cargoHoldCoordinates;}
+    public int getPenalty() {
+        return penalty;
+    }
 
     public Optional<Tile>[][] getTilesTable(){return  tilesTable;}
 
@@ -358,12 +361,13 @@ public class ShipBoard {
         }
     }
     //New ChooseCrew METHOD
-    public void chooseCrewtoRemove(Coordinates coordinates){
+    public boolean chooseCrewtoRemove(Coordinates coordinates){
         if(crewCoordinates.contains(coordinates)){
-            tilesTable[coordinates.getX()][coordinates.getY()].get().removeCrew();
+            return tilesTable[coordinates.getX()][coordinates.getY()].get().removeCrew();
+
         }
         else
-            System.out.println("THIS TILE IS NOT A CABIN");
+            false;
     }
     public void epidemic(){
         HashSet<Coordinates> InfectedCabin = new HashSet<>();

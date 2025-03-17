@@ -15,4 +15,8 @@ public class Link {
         }
         return this.connectorsType == Connectors.UNIVERSAL && (other.connectorsType == Connectors.DOUBLE || other.connectorsType == Connectors.SINGLE);
     }
+    public void setConnectorType(Connectors connectorType) {
+        this.connectorType = connectorType;
+    }
+
 }

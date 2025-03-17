@@ -1,22 +1,22 @@
 package it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.galaxytruckerproject.tiles.*;
-
 import java.util.Optional;
 import java.util.Random;
-
+/*
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Meteor.class, name = "Meteor"),
         @JsonSubTypes.Type(value = CannonShot.class, name = "CannonShot")
 })
-
+*/
 public abstract class Projectile {
     protected Direction direction;
     protected final Game game;
     protected int diceRoll;
+    protected Optional<Coordinates> coordinatesToDestroy;
 
 
     public Projectile(Direction direction) {
@@ -34,16 +34,19 @@ public abstract class Projectile {
     public Defense throwProjectile() {
         return Defense.PROTECTED;
     }
-
+    public Coordinates getCoordinatesToDestroy() {
+        return coordinatesToDestroy.get();
+    }
     //torna le coordinate della tile che VERREBBE colpita
-    public Optional<Coordinates> Throw(Player player, int diceRoll){
+    protected void Throw(Player player, int diceRoll){
         ShipBoard ship = player.getPlayerShip();
         Optional<Tile> Temp = Optional.empty();
         Optional<Tile>[][] tileTable= ship.getTilesTable();
         int i;// num of iteration
         if(direction==Direction.SOUTH){
             if(diceRoll<4 ||diceRoll>10){
-                return Optional.empty();
+                coordinatesToDestroy=Optional.empty();
+                return;
             }
             diceRoll = diceRoll-4;
             i=5;
@@ -51,15 +54,19 @@ public abstract class Projectile {
             while(Temp.isEmpty() || !Temp.get().fillable())
             {
                 i--;
-                if(i<0)
-                    return Optional.empty();
+                if(i<0) {
+                    coordinatesToDestroy=Optional.empty();
+                    return;
+                }
                 Temp= tileTable[i][diceRoll];
             }
-            return Optional.of(Temp.get().getCoordinates());
+            coordinatesToDestroy= Optional.of(Temp.get().getCoordinates());
+            return;
         }
         if(direction==Direction.NORTH){
             if(diceRoll<4 ||diceRoll>10){
-                return Optional.empty();
+                coordinatesToDestroy=Optional.empty();
+                return;
             }
             diceRoll = diceRoll-4;
             i=0;
@@ -67,16 +74,20 @@ public abstract class Projectile {
             while(Temp.isEmpty() || !Temp.get().fillable())
             {
                 i++;
-                if(i>5)
-                    return Optional.empty();
+                if(i>5) {
+                    coordinatesToDestroy=Optional.empty();
+                    return;
+                }
                 Temp= tileTable[i][diceRoll];
             }
-            return Optional.of(Temp.get().getCoordinates());
+            coordinatesToDestroy= Optional.of(Temp.get().getCoordinates());
+            return;
         }
 
         if(direction==Direction.EAST){
             if(diceRoll<5 ||diceRoll>9){
-                return Optional.empty();
+                coordinatesToDestroy=Optional.empty();
+                return;
             }
             diceRoll = diceRoll-5;
             i=6;
@@ -84,15 +95,19 @@ public abstract class Projectile {
             while(Temp.isEmpty() || !Temp.get().fillable())
             {
                 i--;
-                if(i<0)
-                    return Optional.empty();
+                if(i<0) {
+                    coordinatesToDestroy=Optional.empty();
+                    return;
+                }
                 Temp= tileTable[diceRoll][i];
             }
-            return Optional.of(Temp.get().getCoordinates());
+            coordinatesToDestroy= Optional.of(Temp.get().getCoordinates());
+            return;
         }
         if(direction==Direction.WEST){
             if(diceRoll<5 ||diceRoll>9){
-                return Optional.empty();
+                coordinatesToDestroy=Optional.empty();
+                return ;
             }
             diceRoll = diceRoll-5;
             i=0;
@@ -100,16 +115,20 @@ public abstract class Projectile {
             while(Temp.isEmpty() || !Temp.get().fillable())
             {
                 i++;
-                if(i>6)
-                    return Optional.empty();
+                if(i>6) {
+                    coordinatesToDestroy = Optional.empty();
+                    return;
+                }
                 Temp= tileTable[diceRoll][i];
             }
-            return Optional.of(Temp.get().getCoordinates());
+            coordinatesToDestroy= Optional.of(Temp.get().getCoordinates());
+            return;
         }
-        return Optional.empty();
+        coordinatesToDestroy= Optional.empty();
+        return;
 
 
 
     }
 }
-}
+

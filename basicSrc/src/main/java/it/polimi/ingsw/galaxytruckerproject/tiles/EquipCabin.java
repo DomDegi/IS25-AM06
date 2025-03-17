@@ -13,13 +13,13 @@ public class EquipCabin extends Cabin {
     //SELECT THE CREWTYPE ACCORDING TO ITS ALIENOPTIONS
     public void setCrewType(CrewType crewType) {
         switch (crewType) {
-            case Human:
-                this.crewType = CrewType.Human;
+            case HUMAN:
+                this.crewType = CrewType.HUMAN;
                 this.crew = 2;
             break;
-            case Purple:
+            case PURPLE:
                 if (this.alienabilty == AlienOptions.BOTH || this.alienabilty == AlienOptions.PURPLE){
-                    this.crewType = CrewType.Purple;
+                    this.crewType = CrewType.PURPLE;
                     this.crew = 1;
                     break;
                 }
@@ -27,9 +27,9 @@ public class EquipCabin extends Cabin {
                     System.out.println("CAN'T FILL THIS CABIN WITH A PURPLE ALIEN");
                     break;
                 }
-            case Brown:
+            case BROWN:
                 if(this.alienabilty == AlienOptions.BOTH || this.alienabilty == AlienOptions.BROWN){
-                    this.crewType = CrewType.Brown;
+                    this.crewType = CrewType.BROWN;
                     this.crew = 1;
                     break;
                 }
@@ -42,48 +42,50 @@ public class EquipCabin extends Cabin {
 
     public void getStat(){
         switch (crewType) {
-            case Human:
+            case HUMAN:
                 shipBoard.addBreakHumanCrew(+2);
                 break;
-            case Purple:
+            case PURPLE:
                 shipBoard.addBreakPurpleAliens(true);
                 break;
-            case Brown:
+            case BROWN:
                 shipBoard.addBreakBrownAliens(true);
                 break;
         }
     }
 
 
-    public void removeCrew(){
+    public boolean removeCrew(){
         if (this.crew>0) {
             crew--;
             switch (crewType) {
-                case Human:
+                case HUMAN:
                     shipBoard.addBreakHumanCrew(-1);
                     break;
-                case Purple:
+                case PURPLE:
                     shipBoard.addBreakPurpleAliens(false);
                     break;
-                case Brown:
+                case BROWN:
                     shipBoard.addBreakBrownAliens(false);
                     break;
             }
+            return true;
         }
         else{
-            System.out.println("THIS CABIN IS EMPTY");
+            return false;
+
         }
     }
     public void destroy(){
         if (this.crew>0) {
             switch (crewType) {
-                case Human:
+                case HUMAN:
                     shipBoard.addBreakHumanCrew(-1);
                     break;
-                case Purple:
+                case PURPLE:
                     shipBoard.addBreakPurpleAliens(false);
                     break;
-                case Brown:
+                case BROWN:
                     shipBoard.addBreakBrownAliens(false);
                     break;
             }
