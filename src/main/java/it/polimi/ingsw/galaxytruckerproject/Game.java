@@ -8,6 +8,7 @@ import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.tiles.TileFactory;
 
 import java.util.*;
 
@@ -20,7 +21,7 @@ public class Game {
     private final ArrayList<GameObserver> observerList = new ArrayList<>();
     private int playerCount;
     private final ArrayList<Card> inGameCards;
-    private final Stack<Tile> tileStack;
+    private final ArrayDeque<Tile> tileStack;
     private final ArrayList<Tile> turnedTiles;
     private final FlightBoard flightBoard;
     private Card drawnCard;
@@ -33,8 +34,7 @@ public class Game {
         this.turnedTiles = new ArrayList<>();
         this.flightBoard = new FlightBoard();
         this.hourglassTurns = 0;
-        TilesDeck tileDeck = new TileDeck("tiles.json");
-        this.tileStack = tileDeck.getStack();
+        this.tileStack = new TileFactory().getStack(TileFactory.loadTilesFromJson("Tiles.json"));
         CardDeck cardDeck = new CardDeck("cards.json");
         this.inGameCards = cardDeck.getTier2FlightCards();
         this.hourglassON = false;

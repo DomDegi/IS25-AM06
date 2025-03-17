@@ -2,7 +2,9 @@ package it.polimi.ingsw.galaxytruckerproject.tiles;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TileFactory {
@@ -47,7 +49,7 @@ public class TileFactory {
                         break;
                     }
                     case "EquipCabin":{
-                        tile=new Pipe(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest());
+                        tile=new EquipCabin(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest());
                         break;
                     }
                     case "BatteryComponents":{
@@ -81,6 +83,15 @@ public class TileFactory {
         }
 
         return tiles;
+    }
+
+    public ArrayDeque<Tile> getStack(ArrayList<Tile> tiles) {
+        Collections.shuffle(tiles);
+        ArrayDeque<Tile> stack = new ArrayDeque<>();
+        for (Tile tile : tiles) {
+            stack.push(tile);
+        }
+        return stack;
     }
 
     // Classe JSON per mappare i dati dal file JSON
