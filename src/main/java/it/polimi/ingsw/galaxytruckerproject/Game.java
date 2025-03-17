@@ -56,13 +56,13 @@ public class Game {
 
     //adds player to game with the input string as name
     public void AddPlayer(String playerName, PlayersColor color) {
-        for (Player player: flightBoard.getRanking()){
+        for (Player player: flightBoard.getInGamePlayers()){
             if (color.equals(player.getPlayerColor())){
                 System.out.println(color + "has already been chosen");
             }
         }
         Player player = new Player(playerName, color);
-        flightBoard.initialAddToFlightBoard(player);
+        flightBoard.addPlayerToGame(player);
     }
 
     //changes game state to SHIPS_CREATION and notifies observers of it (GUI, TUI, Log)
@@ -191,7 +191,7 @@ public class Game {
     }
 
     public ArrayList<Player> getListOfPlayers() {
-        return flightBoard.getRanking();
+        return flightBoard.getAllPlayers();
     }
 
     //returns the number of player in the game

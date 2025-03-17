@@ -18,7 +18,7 @@ public class AbandonedShip extends Card{
     //asks players in order of ranking if they want to exchange crew for credits
     @Override
     public void executeCard(FlightBoard flightBoard) {
-        Player[] listOfPlayers = flightBoard.getRanking();
+        Player[] listOfPlayers = flightBoard.getInGamePlayers();
 
         for (Player player: listOfPlayers){
             if (player.getCrewNumber() >= crewNumberRequired){

@@ -14,7 +14,7 @@ public class StarDust extends Card {
     //makes so that the player loses as many days as their exposedConnectors
     @Override
     public void executeCard(FlightBoard flightBoard) {
-        Arrays.stream(flightBoard.getRanking()).
+        Arrays.stream(flightBoard.getInGamePlayers()).
                 forEach(player -> flightBoard.moveBackward(player.getPlayerRanking(), player.getShipBoard().countExposedConnectors()));
     }
 }

@@ -21,7 +21,7 @@ public class AbandonedStation extends Card {
     //asks every player in order of ranking that meets the requirements if they want to spend days to gain the goods
     @Override
     public void executeCard(FlightBoard flightBoard) {
-        Player[] listOfPlayers = flightBoard.getRanking();
+        Player[] listOfPlayers = flightBoard.getInGamePlayers();
 
         for (Player player: listOfPlayers){
             if (player.getCrewNumber() >= crewNumberRequired){

@@ -16,7 +16,7 @@ public class CombatZone extends Card{
 
     @Override
     public void executeCard(FlightBoard flightBoard) {
-        Player[] listOfPlayer = flightBoard.getRanking();
+        Player[] listOfPlayer = flightBoard.getInGamePlayers();
 
         for (ChallengeType challenge: listOfChallenges.keySet()){
             Player losingPlayer = null;

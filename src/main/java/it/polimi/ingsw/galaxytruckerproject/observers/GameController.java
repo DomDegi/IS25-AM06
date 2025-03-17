@@ -13,8 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static it.polimi.ingsw.galaxytruckerproject.GameState.VERIFY_SHIP_CORRECTNESS;
-
 
 public class GameController implements GameObserver {
     private final Game game;
@@ -339,14 +337,14 @@ public class GameController implements GameObserver {
             }
         }
         if(game.getMode()== GameMode.TRIAL) {
-            for (Player player : game.getFlightBoard().getRanking()) {
+            for (Player player : game.getFlightBoard().getInGamePlayers()) {
                 if (player.getPlayerName().equals(playerName)) {
                     game.getFlightBoard().addToTrialFlightBoard(player);
                     break;
                 }
             }
         }else{
-            for (Player player : game.getFlightBoard().getRanking()) {
+            for (Player player : game.getFlightBoard().getInGamePlayers()) {
                 if (player.getPlayerName().equals(playerName)) {
                     addToFlightBoardProcess(player.getPlayerName(),"completed");
                     break;
@@ -385,7 +383,7 @@ public class GameController implements GameObserver {
     }
     //PlayerPoint calculation
     public synchronized void concludeGame() {
-        for (Player player : game.getFlightBoard().getRanking()) {
+        for (Player player : game.getFlightBoard().getInGamePlayers()) {
             if (player != null) {
                 game.getFlightBoard().earlyLanding(player);
                 switch (player.getPlayerRanking()){
@@ -405,8 +403,8 @@ public class GameController implements GameObserver {
             }
         }
         ArrayList<Player> coolestPlayers = new ArrayList<>();
-        coolestPlayers.add(game.getFlightBoard().getRanking().getFirst());
-        for(Player player : game.getFlightBoard().getRanking()){
+        coolestPlayers.add(game.getFlightBoard().getInGamePlayers().getFirst());
+        for(Player player : game.getFlightBoard().getInGamePlayers()){
             if (player.getShipBoard().countExposedConnectors()>coolestPlayers.getFirst().getShipBoard().countExposedConnectors()){
                 coolestPlayers.clear();
                 coolestPlayers.add(player);
@@ -418,12 +416,12 @@ public class GameController implements GameObserver {
         for (Player player : coolestPlayers) {
             player.addCredit(4);
         }
-        for (Player player : game.getFlightBoard().getRanking()) {
+        for (Player player : game.getFlightBoard().getInGamePlayers()) {
             for(GoodsColor goodValue: player.getShipBoard().getGoods()){
                 player.addCredit(goodValue.getValue());
             }
         }
-        for (Player player : game.getFlightBoard().getRanking()) {
+        for (Player player : game.getFlightBoard().getInGamePlayers()) {
             player.removeCredit(player.getShipBoard().getDestroiedTieles());
         }
         // Sort players based on their credits in descending order

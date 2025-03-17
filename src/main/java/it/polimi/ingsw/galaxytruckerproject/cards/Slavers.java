@@ -18,7 +18,7 @@ public class Slavers extends Enemies{
     public void executeCard(FlightBoard flightBoard){
 
         //iterates on the player array until the condition isn't false
-        for(Player player: flightBoard.getRanking()){
+        for(Player player: flightBoard.getInGamePlayers()){
 
             //if player is weaker, loses crew members
             if (player.getCannonStrength() < cannonStrength) {

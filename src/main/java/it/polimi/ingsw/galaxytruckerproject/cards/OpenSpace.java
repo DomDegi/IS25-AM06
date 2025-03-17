@@ -15,7 +15,7 @@ public class OpenSpace extends Card {
     //makes so that the player gain as many days as their engineStrength
     @Override
     public void executeCard(FlightBoard flightBoard) {
-        Arrays.stream(flightBoard.getRanking()).
+        Arrays.stream(flightBoard.getInGamePlayers()).
                 forEach(player -> flightBoard.moveForward(player.getPlayerRanking(), player.getEnginePower()));
     }
 }

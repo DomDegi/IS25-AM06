@@ -36,7 +36,7 @@ public class Planets extends Card{
     @Override
     public void executeCard(FlightBoard flightBoard){
 
-        for (Player player: flightBoard.getRanking()){
+        for (Player player: flightBoard.getInGamePlayers()){
             System.out.printf("input from 1 to %d to pick which to land on, input 0 to ignore", numberOfPlanets);
             printListOfPlanets();
             Scanner scanner = new Scanner(System.in);

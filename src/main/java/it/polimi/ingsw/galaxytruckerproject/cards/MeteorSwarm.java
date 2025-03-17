@@ -15,6 +15,6 @@ public class MeteorSwarm extends Card {
 
     @Override
     public void executeCard(FlightBoard flightBoard) {
-        listOfMeteors.forEach((meteor) -> meteor.throwMeteor(flightBoard.getRanking()));
+        listOfMeteors.forEach((meteor) -> meteor.throwMeteor(flightBoard.getInGamePlayers()));
     }
 }
