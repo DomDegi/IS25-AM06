@@ -6,6 +6,7 @@ module it.polimi.ingsw.galaxytruckerproject {
     requires java.sql;
     requires java.smartcardio;
     requires java.compiler;
+    requires java.desktop;
 
 
     opens it.polimi.ingsw.galaxytruckerproject to javafx.fxml;

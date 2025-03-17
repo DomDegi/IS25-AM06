@@ -44,6 +44,7 @@ public class ShipBoard {
         shields = new ArrayList<Coverage>();
         numBrownAliens = 0;
         numPurpleAliens = 0;
+        numExposedConnectors = 0;
         numHumanCrew = 0;
     }
 
@@ -83,6 +84,15 @@ public class ShipBoard {
     public int getNumExposedConnectors() {
         return numExposedConnectors;
     }
+    public int getDoubleCannonPower(Coordinates coordinates) {
+        if(DoubleCannon.contains(coordinates)){
+            return tilesTable[coordinates.getX()][coordinates.getY()].get().getStrength();
+
+        }
+        return 0;
+    }
+
+
 
     //Getter methods for managing the COORDINATES of tile groups of type SHIELD, EQUIP CABIN, and CARGO HOLD.
     public ArrayList<Coordinates> getBatteryCoordinates() {
@@ -234,6 +244,7 @@ public class ShipBoard {
             }
         }
     }
+
 
 
     //destroy tile+ return set of new possible shipboard coordinates
@@ -595,5 +606,50 @@ public class ShipBoard {
             ;
 
         }
+
+
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

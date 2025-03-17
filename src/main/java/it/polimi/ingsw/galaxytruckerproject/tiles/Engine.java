@@ -7,8 +7,8 @@ public abstract class Engine extends Tile{
 
     public Engine(Link nord, Link east, Link south, Link west) {
         super(nord, east, south, west);
-        nord.connectorsType = Connectors.SMOOTH;
-
+        south.connectorsType = Connectors.SMOOTH;
+        direction = Direction.SOUTH;
     }
 
     @Override
