@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
+import it.polimi.ingsw.galaxytruckerproject.Game;
 
 public abstract class Enemies extends Card {
     protected final int cannonStrength;
@@ -10,9 +11,12 @@ public abstract class Enemies extends Card {
         this.cannonStrength = cannonStrength;
     }
 
-    public int getCannonStrength(){
-        return cannonStrength;
-    }
+    @Override
+    public abstract String toString();
 
-    public abstract void executeCard(FlightBoard flightBoard);
+    @Override
+    public abstract void initializeCard(Game game);
+
+    @Override
+    public abstract void executeCard(Game game, String playerName, String[] input);
 }

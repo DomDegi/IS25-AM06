@@ -5,6 +5,8 @@ import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
 
+import java.util.ArrayList;
+
 public class GoodsPenalty extends Penalty {
 
     private int numberOfLostGoods;
@@ -20,17 +22,14 @@ public class GoodsPenalty extends Penalty {
     @Override
     public int applyPenalty(Game game, Player player, String[] input){
         System.out.printf("You have %d more goods to remove", numberOfLostGoods);
-        try {
-            int x = Integer.parseInt(input[0]);
-            int y = Integer.parseInt(input[1]);
-            boolean returnValue = player.getShipBoard().chooseCargoStockToEmpty(new Coordinates(x, y));
-            if (returnValue){
-                numberOfLostGoods--;
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("you have not entered a number");
+        ArrayList<Coordinates> coordinates = player.parseCoordinates(input);
+        if (coordinates.isEmpty()) {
             return 0;
         }
+        while (coordinates.size() > numberOfLostGoods) {
+            coordinates.removeLast();
+        }
+        numberOfLostGoods -= player.removeGoods(coordinates);
         if (numberOfLostGoods == 0){
             return 1;
         }
@@ -44,6 +43,13 @@ public class GoodsPenalty extends Penalty {
     }
 
     public void printInfo(Player player) {
+        if (player.getShipBoard().isCargoEmpty()) {
+            if (player.getShipBoard().getNumBatteries() == 0) {
+                numberOfLostGoods = 0;
+            }
+            else
+                player.printCurrentInfoBatteries();
+        }
         player.printCurrentInfoCargoHolds();
     }
 }

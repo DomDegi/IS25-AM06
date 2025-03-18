@@ -81,6 +81,8 @@ public class ShipBoard {
         return numPurpleAliens;
     }
 
+    public int getNumHumanCrew() { return  numHumanCrew; }
+
     public int getNumExposedConnectors() {
         return numExposedConnectors;
     }
@@ -432,16 +434,15 @@ public class ShipBoard {
 
 
     //BATTERY METHODS
-    public void chooseBatteryUse(Coordinates coordinates){
+    public boolean chooseBatteryUse(Coordinates coordinates){
         if(batteryCoordinates.contains(coordinates)){
             tilesTable[coordinates.getX()][coordinates.getY()].get().consumeBattery();
+            return true;
         }
         else
-            System.out.println("THIS TILE IS NOT A BATTERY");
+            return false;
         //forse non serve il batteryCoordinates perché tanto se non è una batteryTile stampo il fatto che non lo è
-
     }
-
 
 
     //SHIELD METHODS
@@ -586,6 +587,15 @@ public class ShipBoard {
         good = new Goods(GoodsColor.BLUE);
         credit += cargoHoldContainsGood(good).size();
         return credit;
+    }
+
+    //if this methods finds no goods in cargo holds, returns false
+    public boolean isCargoEmpty() {
+        for (Coordinates coordinates : cargoHoldCoordinates) {
+            if (!tilesTable[coordinates.x][coordinates.getY()].get().getCargo().isEmpty())
+                return false;
+        }
+        return true;
     }
 
 

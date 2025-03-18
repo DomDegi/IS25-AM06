@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards.penalties;
 
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
+import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.CannonShot;
 
@@ -19,7 +20,15 @@ public class CannonPenalty extends Penalty {
     }
 
     @Override
-    public void applyPenalty(Player player, FlightBoard flightBoard){
-        listOfShots.forEach(cannonShot->cannonShot.throwCannonShot(player));
+    public void applyPenalty(Game game, Player player, String[] input){
+    }
+
+    @Override
+    public String toString() {
+        return "CannonPenalty";
+    }
+
+    @Override
+    public void printInfo(Player player){
     }
 }

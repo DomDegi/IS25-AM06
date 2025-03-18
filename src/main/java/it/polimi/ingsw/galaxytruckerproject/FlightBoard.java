@@ -133,6 +133,7 @@ public class FlightBoard {
         player.setLanded(true);
         inGamePlayers.remove(player);
         podium.remove(player);
+        podium.add(freePodiumPosition -1,player);
         inGamePlayers.add(freePodiumPosition-1, player);
         freePodiumPosition--;
         rearrange();
@@ -182,6 +183,11 @@ public class FlightBoard {
         }
     }
     public void concludeMovement() {
+        for (Player player:  inGamePlayers) {
+            if (player.getShipBoard().getNumHumanCrew() == 0)
+                earlyLanding(player);
+        }
+
         Player firstPlayer = null;
         if (inGamePlayers.size() < 2) {
             System.err.println("Error: inGamePlayers is either null or does not have enough players0");

@@ -47,47 +47,6 @@ public abstract class Card {
         return requiredDays;
     }
 
-    public ArrayList<Coordinates> parseCoordinates(String[] input) {
-        ArrayList<Coordinates> coordinates = new ArrayList<>();
-        if (input.length % 2 == 0 && input.length > 0) {
-            try {
-                for (int i = 0; i < input.length; i++) {
-                    coordinates.add(new Coordinates(Integer.parseInt(input[i]), Integer.parseInt(input[i + 1])));
-                }
-                return coordinates;
-            } catch(NumberFormatException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        System.out.println("Invalid input\n");
-        //returns empty list
-        return coordinates;
-    }
-
-    public int useDoubleEngines(ArrayList<Coordinates> chosenCoordinates) {
-
-        //this conditions returns the value of single engine power + brown aliens
-        if (chosenCoordinates.isEmpty()) {
-            return calculateEngineStrength(chosenCoordinates, chosenCoordinates);
-        }
-
-        //this condition inputs the chosen engines to use and awaits for another input to choose the batteries
-        if (firstCoordinatesChoice.isEmpty()) {
-            firstCoordinatesChoice = new ArrayList<>(chosenCoordinates);
-            return -2;
-        }
-        //this condition calculate if the inputs were correct, uses the batteries and returns the total value
-        else {
-            int engineStrength = calculateEngineStregth(firstCoordinatesChoice, chosenCoordinates);
-            if  (engineStrength == -1) {
-                System.out.println("Invalid input\n");
-                firstCoordinatesChoice = new ArrayList<>();
-                return -1;
-            }
-            return engineStrength;
-        }
-    }
-
     @Override
     public abstract String toString();
 }

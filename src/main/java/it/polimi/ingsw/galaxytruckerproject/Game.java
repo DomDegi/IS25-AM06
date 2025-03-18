@@ -28,6 +28,7 @@ public class Game {
     private int hourglassTurns;
     private boolean hourglassON;
 
+
     //instances a new game starting in the state START_GAME
     public Game() {
         this.gameState = GameState.START_GAME;
@@ -221,7 +222,6 @@ public class Game {
     }
 
     //CARD_EVENT METHODS
-
 
 
     //GETTER METHODS

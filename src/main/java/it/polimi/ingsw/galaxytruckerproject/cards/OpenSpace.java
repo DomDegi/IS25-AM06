@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public class OpenSpace extends Card {
-    private Optional<Player> playerToPlay = Optional.empty();
+    private Player currentPlayer = null;
     private int playerIndex = 0;
-    private ArrayList<Coordinates> chosenDoubleEngines;
-    private ArrayList<Coordinates> chosenBatteryComponents;
+    ArrayList<Player> playersToEarlyLand = new ArrayList<>();
+    
 
     //the subclass OpenSpace needs the same parameters as the superclass
     public OpenSpace(int level) {
@@ -28,48 +28,52 @@ public class OpenSpace extends Card {
             game.DrawCard();
         }
 
-        playerToPlay = Optional.of(game.getListOfPlayers().get(playerIndex));
-        chosenDoubleEngines = new ArrayList<>();
-        chosenBatteryComponents = new ArrayList<>();
-
-        playerToPlay.get().printCurrentInfoEngines();
-        playerToPlay.get().printCurrentInfoBatteries();
+        currentPlayer = game.getListOfPlayers().get(playerIndex);
+        currentPlayer.printCurrentInfoEngines();
+        currentPlayer.printCurrentInfoBatteries();
     }
 
     //makes so that the player gain as many days as their engineStrength
     @Override
     public void executeCard(Game game, String playerName, String[] input) {
-        //playerName has to be the same as
-        if (playerToPlay.isPresent() && playerToPlay.get().getPlayerName().equals(playerName)) {
-            if (input[0].equalsIgnoreCase("no")) {
-                playerIndex++;
-                initializeCard(game);
-                return;
-            }
-            ArrayList<Coordinates> temp = new ArrayList<>();
-            temp = new ArrayList<>(parseCoordinates(input));
-            if (temp.isEmpty()) {
-                System.out.println("Invalid input\n");
-                return;
-            }
-            if (chosenDoubleEngines.isEmpty()) {
-                chosenDoubleEngines = new ArrayList<>(temp);
+        //playerName has to be the same as the current one to face the card's adventure
+        if (currentPlayer != null && currentPlayer.getPlayerName().equalsIgnoreCase(playerName)) {
+
+            //decides against using double engines
+            if (input[0].equals("no")) {
+                int engineStrength = currentPlayer.useDoubleEngines(new ArrayList<Coordinates>());
+                MoveOrEarlyLand(game, engineStrength);
             }
             else {
-                chosenBatteryComponents = new ArrayList<>(temp);
-                int engineStrength = playerToPlay.get().calculateEngineStrength(chosenDoubleEngines, chosenBatteryComponents);
-                if (engineStrength == -1) {
-                    System.out.println("Engine Strength inputs are wrong: " +
-                            "input again chosen double engines and battery components\n");
-                    chosenBatteryComponents = new ArrayList<>();
-                    chosenDoubleEngines = new ArrayList<>();
+                ArrayList<Coordinates> coordinates =  new ArrayList<>(currentPlayer.parseCoordinates(input));
+                if (coordinates.isEmpty()) {
                     return;
                 }
-                game.getFlightBoard().moveForward(playerToPlay.get(), engineStrength);
-                playerIndex++;
-                initializeCard(game);
+                int engineStrength = currentPlayer.useDoubleEngines(coordinates);
+                //one more input for batteries
+                if (engineStrength == -2) {
+                    return;
+                }
+                //both inputs were wrong
+                if (engineStrength == -1) {
+                    return;
+                }
+                MoveOrEarlyLand(game, engineStrength);
             }
         }
+    }
+
+    //moves player forward; early lands if engineStrength == 0
+    private void MoveOrEarlyLand(Game game, int engineStrength) {
+        if (engineStrength == 0) {
+            playersToEarlyLand.add(currentPlayer);
+            playerIndex++;
+            initializeCard(game);
+            return;
+        }
+        game.getFlightBoard().moveForward(currentPlayer, engineStrength);
+        playerIndex++;
+        initializeCard(game);
     }
 
     public String toString() {

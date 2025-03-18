@@ -57,7 +57,7 @@ public class TileFactory {
                         break;
                     }
                     case "AlienLifeSupportsSystem": {
-                        tile=new AlienLifeSupportsSystem(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(), jsonTile.alienType());
+                        tile=new AlienLifeSupportsSystem(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(), jsonTile.getAlienType());
                         break;
                     }
                     case"CargoBlue":{
