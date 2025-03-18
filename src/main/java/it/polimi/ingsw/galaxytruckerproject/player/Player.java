@@ -1,5 +1,4 @@
 package it.polimi.ingsw.galaxytruckerproject.player;
-
 import it.polimi.ingsw.galaxytruckerproject.Goods;
 import it.polimi.ingsw.galaxytruckerproject.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;

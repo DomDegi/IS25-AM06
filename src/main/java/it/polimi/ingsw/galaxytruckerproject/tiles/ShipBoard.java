@@ -187,11 +187,17 @@ public class ShipBoard {
     //true: tile added correctly
     //false: tile occupied
     public boolean positionTile(Optional<Tile> tile, Coordinates coordinates) {
-        if (tilesTable[coordinates.getX()][coordinates.getY()].isEmpty()) {
+        if (tile.isPresent() && tilesTable[coordinates.getX()][coordinates.getY()].isEmpty()) {
             tilesTable[coordinates.getX()][coordinates.getY()] = tile;
+            tile.get().setCoordinates(coordinates);
+            tile.get().setShipBoard(this);
             return true;
         }
         return false;
+    }
+
+    public Tile getTile(int x, int y) {
+        return tilesTable[x][y].get();
     }
 
     /*
@@ -200,8 +206,14 @@ public class ShipBoard {
     */
     //inizializzazione shipboard volo di prova e primo livello
     public void initializeLevel2() {
-        Optional<Tile>[][] tilesTable = new Optional[5][7];
+        this.tilesTable = new Optional[5][7];
+        //Set empty the normal Tile
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 7; j++) {
+                this.tilesTable[i][j] = Optional.empty();
 
+            }
+        }
         int[][] voidPositions = {
                 {0, 0}, {0, 1}, {1, 0}, {4, 3}, {0, 3}, {0, 5},
                 {0, 6}, {1, 6},
@@ -209,16 +221,7 @@ public class ShipBoard {
 
         // Initialize VoidTile
         for (int[] pos : voidPositions) {
-            tilesTable[pos[0]][pos[1]] = Optional.of(new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH)));
-        }
-
-        //Set empty the normal Tile
-        for (int i = 1; i < 5; i++) {
-            for (int j = 0; j < 7; j++) {
-                if (!(tilesTable[i][j].get() instanceof VoidTile)) {
-                    tilesTable[i][j] = Optional.empty();
-                }
-            }
+            this.tilesTable[pos[0]][pos[1]] = Optional.of(new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH)));
         }
     }
 
@@ -245,6 +248,7 @@ public class ShipBoard {
                 }
             }
         }
+        this.tilesTable = tilesTable;
     }
 
 
@@ -389,8 +393,13 @@ public class ShipBoard {
     public boolean verifyCorrectness() {
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 7; j++) {
-                if (!tilesTable[i][j].isEmpty() && !tilesTable[i][j].get().isCorrect())
-                    return false;
+                if (tilesTable[i][j].isPresent())
+                    if(!tilesTable[i][j].get().isCorrect()) return false;
+            }
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 7; j++) {
+                if (tilesTable[i][j].isPresent())
+                    tilesTable[i][j].get().getStat();
             }
         return true;
     }

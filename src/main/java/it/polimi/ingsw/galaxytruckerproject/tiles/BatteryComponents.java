@@ -20,6 +20,7 @@ public class BatteryComponents extends Tile{
         else{System.out.println("Run out of batteries in this Tile");}
     }
 
+
     public void getStat(){
         shipBoard.addBreakBatteries(batteryCells);
         shipBoard.getBatteryCoordinates().add(this.coordinates);

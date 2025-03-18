@@ -1,5 +1,5 @@
-package it.polimi.ingsw.galaxytruckerproject;
 
+package it.polimi.ingsw.galaxytruckerproject;
 public class Goods {
     private final GoodsColor color;
 
