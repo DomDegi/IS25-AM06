@@ -5,7 +5,6 @@ import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class OpenSpace extends Card {
     private Player currentPlayer = null;

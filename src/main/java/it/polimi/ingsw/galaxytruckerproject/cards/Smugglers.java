@@ -48,22 +48,22 @@ public class Smugglers extends Enemies{
     }
 
     @Override
-    public boolean executeCard(Game game, String playerName, String[] input) {
+    public void executeCard(Game game, String playerName, String[] input) {
         if(playerToInteract.isEmpty()){
-            return true;
+            game.endCardEvent();
         }
         if(currentPlayer==null){
             currentPlayer=game.getListOfPlayers().getFirst();
         }
         if (!playerName.equals(currentPlayer.getPlayerName()))
-            return false;
+            return;
         int choice;
         try {
             choice = Integer.parseInt(input[0]);
         } catch (NumberFormatException e) {
             System.out.println("Invalid input format. Please provide integer values.");
             executeCard(game, playerName, input);
-            return false;
+            return;
         }
         if (choice==1){
             System.out.println("Good job galaxy truck driver");
@@ -76,11 +76,10 @@ public class Smugglers extends Enemies{
             executeCard(game, playerName, input);
         }
         playerToInteract.removeFirst();
-        return false;
     }
 
     @Override
     public String toString() {
-        return "";
+        return "Smugglers";
     }
 }

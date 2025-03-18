@@ -12,12 +12,9 @@ module it.polimi.ingsw.galaxytruckerproject {
     opens it.polimi.ingsw.galaxytruckerproject to javafx.fxml;
     exports it.polimi.ingsw.galaxytruckerproject;
     exports it.polimi.ingsw.galaxytruckerproject.player;
-    //exports it.polimi.ingsw.galaxytruckerproject.observers;
+    exports it.polimi.ingsw.galaxytruckerproject.observers;
     exports it.polimi.ingsw.galaxytruckerproject.tiles;
-    //exports it.polimi.ingsw.galaxytruckerproject.cards;
-    //exports it.polimi.ingsw.galaxytruckerproject.cards.penalties;
-    //exports it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
-    //opens it.polimi.ingsw.galaxytruckerproject.observers to javafx.fxml;
-    //exports it.polimi.ingsw.galaxytruckerproject.cose;
-   // opens it.polimi.ingsw.galaxytruckerproject.cose to javafx.fxml;
+    exports it.polimi.ingsw.galaxytruckerproject.cards;
+    exports it.polimi.ingsw.galaxytruckerproject.cards.penalties;
+    exports it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
 }

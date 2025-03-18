@@ -3,9 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.cards;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.galaxytruckerproject.Game;
-import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
 
-import java.util.ArrayList;
 
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
@@ -24,8 +22,7 @@ import java.util.ArrayList;
 public abstract class Card {
     protected final int level;
     protected final int requiredDays;
-    //needed by useDoubleCannon and useDoubleEngine to decide if the coordinates in input are for batteries or not
-    protected ArrayList<Coordinates> firstCoordinatesChoice;
+
 
     public Card(int level, int requiredDays) {
         this.level = level;
@@ -34,14 +31,10 @@ public abstract class Card {
 
     public abstract void initializeCard(Game game);
 
-    public abstract boolean executeCard(Game game, String playerName, String[] input);
+    public abstract void executeCard(Game game, String playerName, String[] input);
 
     public int getLevel() {
         return level;
-    }
-
-    public int getRequiredDays() {
-        return requiredDays;
     }
 
     @Override

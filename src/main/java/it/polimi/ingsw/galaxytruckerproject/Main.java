@@ -1,4 +1,4 @@
-package it.polimi.ingsw.galaxytruckerproject.cose;
+package it.polimi.ingsw.galaxytruckerproject;
 
 import it.polimi.ingsw.galaxytruckerproject.observers.GameController;
 

@@ -44,7 +44,7 @@ public class AbandonedStation extends Card {
     }
 
     @Override
-    public boolean executeCard(Game game, String playerName, String[] input) {
+    public void executeCard(Game game, String playerName, String[] input) {
         if(playerToInteract.isEmpty()){
             return true;
         }

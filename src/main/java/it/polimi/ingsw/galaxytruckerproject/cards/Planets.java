@@ -33,22 +33,22 @@ public class Planets extends Card{
     }
     //for each player asks if they want to spend the required days to occupy the planet they choose
     @Override
-    public boolean executeCard(Game game, String playerName, String[] input) {
+    public void executeCard(Game game, String playerName, String[] input) {
         if(playerToInteract.isEmpty()){
-            return true;
+            game.endCardEvent();
         }
         if(currentPlayer==null){
             currentPlayer=game.getListOfPlayers().getFirst();
         }
         if (!playerName.equals(currentPlayer.getPlayerName()))
-            return false;
+            return;
         int choice;
         try {
             choice = Integer.parseInt(input[0]);
         } catch (NumberFormatException e) {
             System.out.println("Invalid input format. Please provide integer values.");
             executeCard(game, playerName, input);
-            return false;
+            return;
         }
         if (choice > 0 && choice <= listOfPlanets.size() && !listOfPlanets.get(choice - 1).getOccupationStatus()) {
             currentPlayer.gainGoods(listOfPlanets.get(choice - 1).getListOfGoods());
@@ -61,11 +61,11 @@ public class Planets extends Card{
         } else {
             System.out.println("Invalid choice: " + choice);
             executeCard(game, playerName, input);
-            return false;
+            return;
         }
         playerToInteract.removeFirst();
         initializeCard(game);
-        return false;
+        return;
     }
 
     public void printListOfPlanets() {

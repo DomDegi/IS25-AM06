@@ -1,4 +1,4 @@
-package it.polimi.ingsw.galaxytruckerproject.cose;
+package it.polimi.ingsw.galaxytruckerproject;
 
 import it.polimi.ingsw.galaxytruckerproject.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.cards.CardDeck;
@@ -30,7 +30,7 @@ public class Game {
 
     //instances a new game starting in the state START_GAME
     public Game() {
-        this.gameState = GameState.START_GAME;
+        this.gameState = START_GAME;
         this.turnedTiles = new ArrayList<>();
         this.flightBoard = new FlightBoard();
         this.hourglassTurns = 0;

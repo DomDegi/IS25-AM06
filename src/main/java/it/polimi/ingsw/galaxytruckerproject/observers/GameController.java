@@ -412,6 +412,9 @@ public class GameController implements GameObserver {
     //Every player can do an early landing
     //When cards are over go to CONCLUDE_GAME state
     public void drawCard (String playerName, String input){
+        if (input == null) {
+            return;
+        }
         if (game.getCardsLeft() == 0) {
             game.endCardPhase();
         }
@@ -442,11 +445,7 @@ public class GameController implements GameObserver {
     public void cardEvent(String playerName, String input) {
         String[] words =  input.split(" ");
         Card drawnCard = game.getDrawnCard();
-        boolean isFinish=drawnCard.executeCard(game, playerName,words);
-        if(isFinish){
-            game.setGameState(GameState.DRAW_CARD);
-            drawCard(null,null);
-        }
+        drawnCard.executeCard(game, playerName, words);
     }
 
 
@@ -519,7 +518,7 @@ public class GameController implements GameObserver {
             }
         }
         for (Player player : game.getFlightBoard().getAllPlayers()) {
-            player.addCredit(player.getShipBoard().convertGoodsToCredit);
+            player.addCredit(player.getShipBoard().convertGoodsToCredit());
         }
         for (Player player : game.getFlightBoard().getAllPlayers()) {
             player.removeCredit(player.getShipBoard().getPenalty());

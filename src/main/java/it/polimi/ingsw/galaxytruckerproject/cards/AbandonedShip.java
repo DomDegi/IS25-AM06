@@ -1,12 +1,10 @@
-/*package it.polimi.ingsw.galaxytruckerproject.cards;
+package it.polimi.ingsw.galaxytruckerproject.cards;
 
-import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.cards.penalties.CrewPenalty;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
 import java.util.Optional;
-import java.util.Scanner;
 
 public class AbandonedShip extends Card{
     private final int crewNumberRequired;
@@ -67,4 +65,4 @@ public class AbandonedShip extends Card{
             }
         }
     }
-}*/
+}
