@@ -442,7 +442,11 @@ public class GameController implements GameObserver {
     public void cardEvent(String playerName, String input) {
         String[] words =  input.split(" ");
         Card drawnCard = game.getDrawnCard();
-        drawnCard.executeCard(game, playerName,words);
+        boolean isFinish=drawnCard.executeCard(game, playerName,words);
+        if(isFinish){
+            game.setGameState(GameState.DRAW_CARD);
+            drawCard(null,null);
+        }
     }
 
 

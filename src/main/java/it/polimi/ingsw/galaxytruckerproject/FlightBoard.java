@@ -133,7 +133,7 @@ public class FlightBoard {
         player.setLanded(true);
         inGamePlayers.remove(player);
         podium.remove(player);
-        inGamePlayers.add(freePodiumPosition-1, player);
+        podium.add(freePodiumPosition-1, player);
         freePodiumPosition--;
         rearrange();
     }

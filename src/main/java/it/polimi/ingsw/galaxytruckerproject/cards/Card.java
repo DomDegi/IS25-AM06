@@ -34,7 +34,7 @@ public abstract class Card {
 
     public abstract void initializeCard(Game game);
 
-    public abstract void executeCard(Game game, String playerName, String[] input);
+    public abstract boolean executeCard(Game game, String playerName, String[] input);
 
     public int getLevel() {
         return level;

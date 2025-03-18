@@ -14,5 +14,4 @@ public abstract class Enemies extends Card {
         return cannonStrength;
     }
 
-    public abstract void executeCard(FlightBoard flightBoard);
 }

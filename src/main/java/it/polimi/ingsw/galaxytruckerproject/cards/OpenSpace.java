@@ -38,7 +38,7 @@ public class OpenSpace extends Card {
 
     //makes so that the player gain as many days as their engineStrength
     @Override
-    public void executeCard(Game game, String playerName, String[] input) {
+    public boolean executeCard(Game game, String playerName, String[] input) {
         //playerName has to be the same as
         if (playerToPlay.isPresent() && playerToPlay.get().getPlayerName().equals(playerName)) {
             if (input[0].equalsIgnoreCase("no")) {

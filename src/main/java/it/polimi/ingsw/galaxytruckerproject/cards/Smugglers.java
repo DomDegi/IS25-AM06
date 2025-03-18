@@ -1,17 +1,15 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
-import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.Goods;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Smugglers extends Enemies{
     private final int lostGoods;
     private final ArrayList<Goods> rewardGoods;
-    private ArrayList<Player> playerToLand;
+    private ArrayList<Player> playerToInteract;
     private Player currentPlayer;
     private boolean initialized;
 
@@ -21,46 +19,51 @@ public class Smugglers extends Enemies{
         this.rewardGoods = rewardGoods;
         this.initialized=false;
         this.currentPlayer =null;
-        this.playerToLand = new ArrayList<>();
+        this.playerToInteract = new ArrayList<>();
     }
     @Override
     public void initializeCard(Game game) {
         if (!initialized) {
-            playerToLand = new ArrayList<>(game.getListOfPlayers());
+            playerToInteract = new ArrayList<>(game.getListOfPlayers());
             initialized=true;
             System.out.printf("WATCH OUT, SMUGGLERS!! \n If you don't have at least a Cannon Strength of "+cannonStrength+" you will loose "+lostGoods+"\n DESTROY THEM and you will loose"+requiredDays+"to fill your cargo with the following goods:\n");
             rewardGoods.forEach(goods -> System.out.printf("%s good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue()));
         }
-        currentPlayer=playerToLand.removeFirst();
+        currentPlayer= playerToInteract.getFirst();
         if (currentPlayer.getCannonStrength() < cannonStrength){
-            System.out.printf("Sorry"+currentPlayer+"you are too weak(looser)\n", crewNumberRequired);
+            System.out.printf("Sorry"+currentPlayer+"you are too weak(looser)\n");
             if(currentPlayer.getShipBoard().getGoods().size()>=lostGoods){
                 currentPlayer.removeGoods();
             }else {
                 currentPlayer.removeBatteries();
             }
+            playerToInteract.removeFirst();
             initializeCard(game);
-            return;
         }else if (currentPlayer.getCannonStrength() > cannonStrength){
-            System.out.printf("HURRAY!! You are more powerful than the Smugglers, you've defeated them!!\n");
+            System.out.printf("HURRAY!! You are more powerful than the Smugglers, you've defeated them!!\n"+currentPlayer+"input 1 to pillage dose filthy Smugglers(loose %d days), input 0 to ignore",requiredDays);
         }
-
-        System.out.printf(currentPlayer+"input 1 to pillage dose filthy Smugglers(loose %d days), input 0 to ignore",requiredDays);
+        if(playerToInteract.isEmpty()){
+            return;
+        }
     }
 
     @Override
-    public void executeCard(Game game, String playerName, String[] input) {
+    public boolean executeCard(Game game, String playerName, String[] input) {
+        if(playerToInteract.isEmpty()){
+            return true;
+        }
         if(currentPlayer==null){
             currentPlayer=game.getListOfPlayers().getFirst();
         }
         if (!playerName.equals(currentPlayer.getPlayerName()))
-            return;
+            return false;
         int choice;
         try {
             choice = Integer.parseInt(input[0]);
         } catch (NumberFormatException e) {
             System.out.println("Invalid input format. Please provide integer values.");
-            return;
+            executeCard(game, playerName, input);
+            return false;
         }
         if (choice==1){
             System.out.println("Good job galaxy truck driver");
@@ -72,6 +75,8 @@ public class Smugglers extends Enemies{
             System.out.println("Invalid choice: " + choice);
             executeCard(game, playerName, input);
         }
+        playerToInteract.removeFirst();
+        return false;
     }
 
     @Override

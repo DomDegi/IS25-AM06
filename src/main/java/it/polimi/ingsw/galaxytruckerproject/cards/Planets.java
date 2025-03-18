@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Planets extends Card{
     private final ArrayList<Planet> listOfPlanets;
     private final int numberOfPlanets;
-    private ArrayList<Player> playerToLand;
+    private ArrayList<Player> playerToInteract;
     private Player currentPlayer;
     private boolean initialized;
 
@@ -19,32 +19,36 @@ public class Planets extends Card{
         this.numberOfPlanets = listOfPlanets.size();
         this.initialized=false;
         this.currentPlayer =null;
-        this.playerToLand = new ArrayList<>();
+        this.playerToInteract = new ArrayList<>();
     }
     @Override
     public void initializeCard(Game game) {
         if (!initialized) {
-            playerToLand = new ArrayList<>(game.getListOfPlayers());
+            playerToInteract = new ArrayList<>(game.getListOfPlayers());
             initialized=true;
         }
-        currentPlayer=playerToLand.removeFirst();
+        currentPlayer= playerToInteract.getFirst();
         printListOfPlanets();
         System.out.printf(currentPlayer+"input from 1 to %d to pick which to land on, input 0 to ignore", numberOfPlanets);
     }
     //for each player asks if they want to spend the required days to occupy the planet they choose
     @Override
-    public void executeCard(Game game, String playerName, String[] input) {
+    public boolean executeCard(Game game, String playerName, String[] input) {
+        if(playerToInteract.isEmpty()){
+            return true;
+        }
         if(currentPlayer==null){
             currentPlayer=game.getListOfPlayers().getFirst();
         }
         if (!playerName.equals(currentPlayer.getPlayerName()))
-            return;
+            return false;
         int choice;
         try {
             choice = Integer.parseInt(input[0]);
         } catch (NumberFormatException e) {
             System.out.println("Invalid input format. Please provide integer values.");
-            return;
+            executeCard(game, playerName, input);
+            return false;
         }
         if (choice > 0 && choice <= listOfPlanets.size() && !listOfPlanets.get(choice - 1).getOccupationStatus()) {
             currentPlayer.gainGoods(listOfPlanets.get(choice - 1).getListOfGoods());
@@ -57,9 +61,11 @@ public class Planets extends Card{
         } else {
             System.out.println("Invalid choice: " + choice);
             executeCard(game, playerName, input);
-            return;
+            return false;
         }
+        playerToInteract.removeFirst();
         initializeCard(game);
+        return false;
     }
 
     public void printListOfPlanets() {

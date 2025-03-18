@@ -14,7 +14,7 @@ public class Epidemic extends Card {
     }
 
     @Override
-    public void executeCard(Game game, String playerName, String[] input) {
+    public boolean executeCard(Game game, String playerName, String[] input) {
         for(Player player: game.getFlightBoard().getInGamePlayers()){
             player.getShipBoard().epidemic();
         }
