@@ -114,6 +114,10 @@ public abstract class Tile {
         System.out.println("THIS TILE IS NOT A BATTERYCOMPONENT");
         return 0;
     }
+    public void getStat(){
+        return;
+    }
+
     public int getStrength(){
         System.out.println("THIS TILE IS NOT A DOUBLE CANNON");
         return 0;

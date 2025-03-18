@@ -28,7 +28,7 @@ class ShipBoardTest {
         assertTrue(shipBoard.verifyCorrectness());
     }
 
-    @Test-
+    @Test
     void testTwoTilesWrongConnectorsShipboardWithRotation() {
         //create e set tile 1
         Tile tile1=new DoubleCannon(new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL));
@@ -39,6 +39,44 @@ class ShipBoardTest {
         shipBoard.positionTile(Optional.of(tile2), new Coordinates(2,3));
         assertFalse(shipBoard.verifyCorrectness());
     }
+
+    @Test
+    void testOneCannonStrength(){
+        Tile tile1=new SingleCannon(new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL));
+        shipBoard.positionTile(Optional.of(tile1), new Coordinates(3,3));
+
+        assertTrue(shipBoard.getSingleCannonPower()==1);
+    }
+
+    @Test
+    void testAddBreakSingleCannon(){
+        shipBoard.addBreakSingleCannonPower(1);
+        assertTrue(shipBoard.getSingleCannonPower()==1);
+    }
+
+    @Test
+    void testOneBatteryComponent(){
+        Tile tile1=new BatteryComponents(new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL), 2);
+        shipBoard.positionTile(Optional.of(tile1), new Coordinates(3,3));
+        assertTrue(shipBoard.getBatteryCoordinates().size()==1);
+    }
+
+    @Test
+    void testOnePenaltyAdding(){
+        Tile tile=new DoubleEngine(new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH));
+        shipBoard.positionTile(Optional.of(tile), new Coordinates(3,3));
+        tile.destroy();
+        assertTrue(shipBoard.getPenalty()==1);
+    }
+
+    @Test
+    void testOneTileTwoExposedConnectors(){
+        Tile tile=new DoubleEngine(new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH));
+        shipBoard.positionTile(Optional.of(tile), new Coordinates(3,3));
+        shipBoard.countExposedConnectors();
+        assertTrue(shipBoard.getNumExposedConnectors()==2);
+    }
+
 
 }
   

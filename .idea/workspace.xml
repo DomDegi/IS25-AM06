@@ -5,25 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d529aab6-47be-4743-ae1a-21b4cf5627b2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/galaxytruckerproject/tiles/CoverageTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/galaxytruckerproject/tiles/ShipBoardTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/galaxytruckerproject/tiles/TileTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/FlightBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/cose/FlightBoard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/cose/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/GameMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/cose/GameMode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/GameState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/cose/GameState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/Goods.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/Goods.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/GoodsColor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/GoodsColor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/cose/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/cards/AbandonedShip.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/cards/AbandonedShip.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/player/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/player/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/tiles/Link.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/tiles/Link.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/tiles/BatteryComponents.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/tiles/BatteryComponents.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/tiles/ShipBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/tiles/ShipBoard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/tiles/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/tiles/Tile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/tiles/TileFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/galaxytruckerproject/tiles/TileFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/galaxytruckerproject/tiles/ShipBoardTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/galaxytruckerproject/tiles/ShipBoardTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,12 +40,12 @@
     &quot;assignee&quot;: &quot;DomDegi&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/fedebulfari/IS25-AM06.git",
-    "accountId": "e34a713c-dc20-4989-8411-402effeeb507"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/fedebulfari/IS25-AM06.git&quot;,
+    &quot;accountId&quot;: &quot;e34a713c-dc20-4989-8411-402effeeb507&quot;
   }
-}]]></component>
+}</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -82,7 +68,12 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.Main.executor": "Run",
+    "JUnit.ShipBoardTest.testAddBreakSingleCannon.executor": "Run",
+    "JUnit.ShipBoardTest.testOneBatteryComponent.executor": "Run",
+    "JUnit.ShipBoardTest.testOneCannonStrength.executor": "Run",
+    "JUnit.ShipBoardTest.testOnePenaltyAdding.executor": "Run",
     "JUnit.ShipBoardTest.testOneTileCorrectShipboard.executor": "Run",
+    "JUnit.ShipBoardTest.testOneTileTwoExposedConnectors.executor": "Run",
     "JUnit.ShipBoardTest.testShouldAddTileInShipBoard.executor": "Run",
     "JUnit.ShipBoardTest.testTwoTilesWrongConnectorsShipboardWithRotation.executor": "Run",
     "JUnit.TileTest.executor": "Run",
@@ -122,7 +113,7 @@
       <recent name="it.polimi.ingsw.galaxytruckerproject.tiles" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ShipBoardTest.testTwoTilesWrongConnectorsShipboardWithRotation">
+  <component name="RunManager" selected="JUnit.ShipBoardTest.testOneTileTwoExposedConnectors">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="IS25-AM06" />
       <method v="2">
@@ -134,7 +125,7 @@
       <option name="filePath" />
       <method v="2" />
     </configuration>
-    <configuration name="ShipBoardTest.testOneTileCorrectShipboard" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ShipBoardTest.testAddBreakSingleCannon" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="galaxyTruckerProject" />
       <extension name="coverage">
         <pattern>
@@ -144,48 +135,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="it.polimi.ingsw.galaxytruckerproject.tiles" />
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.galaxytruckerproject.tiles.ShipBoardTest" />
-      <option name="METHOD_NAME" value="testOneTileCorrectShipboard" />
+      <option name="METHOD_NAME" value="testAddBreakSingleCannon" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ShipBoardTest.testShouldAddTileInShipBoard" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="galaxyTruckerProject" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="it.polimi.ingsw.galaxytruckerproject.cards.*" />
-          <option name="ENABLED" value="true" />
-          <option name="INCLUDE" value="false" />
-        </pattern>
-        <pattern>
-          <option name="PATTERN" value="it.polimi.ingsw.galaxytruckerproject.observers.*" />
-          <option name="ENABLED" value="true" />
-          <option name="INCLUDE" value="false" />
-        </pattern>
-        <pattern>
-          <option name="PATTERN" value="it.polimi.ingsw.galaxytruckerproject.player.*" />
-          <option name="ENABLED" value="true" />
-          <option name="INCLUDE" value="false" />
-        </pattern>
-        <pattern>
-          <option name="PATTERN" value="it.polimi.ingsw.galaxytruckerproject.tiles.*" />
-          <option name="ENABLED" value="false" />
-        </pattern>
-        <pattern>
-          <option name="PATTERN" value="it.polimi.ingsw.galaxytruckerproject.tiles.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="it.polimi.ingsw.galaxytruckerproject.tiles" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.galaxytruckerproject.tiles.ShipBoardTest" />
-      <option name="METHOD_NAME" value="testShouldAddTileInShipBoard" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ShipBoardTest.testTwoTilesWrongConnectorsShipboardWithRotation" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ShipBoardTest.testOneBatteryComponent" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="galaxyTruckerProject" />
       <extension name="coverage">
         <pattern>
@@ -195,13 +151,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="it.polimi.ingsw.galaxytruckerproject.tiles" />
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.galaxytruckerproject.tiles.ShipBoardTest" />
-      <option name="METHOD_NAME" value="testTwoTilesWrongConnectorsShipboardWithRotation" />
+      <option name="METHOD_NAME" value="testOneBatteryComponent" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TileTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ShipBoardTest.testOneCannonStrength" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="galaxyTruckerProject" />
       <extension name="coverage">
         <pattern>
@@ -210,13 +166,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="it.polimi.ingsw.galaxytruckerproject.tiles" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.galaxytruckerproject.tiles.TileTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.galaxytruckerproject.tiles.ShipBoardTest" />
+      <option name="METHOD_NAME" value="testOneCannonStrength" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TileTest.testMustRotateCorrectly" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ShipBoardTest.testOnePenaltyAdding" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="galaxyTruckerProject" />
       <extension name="coverage">
         <pattern>
@@ -225,8 +182,24 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="it.polimi.ingsw.galaxytruckerproject.tiles" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.galaxytruckerproject.tiles.TileTest" />
-      <option name="METHOD_NAME" value="testMustRotateCorrectly" />
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.galaxytruckerproject.tiles.ShipBoardTest" />
+      <option name="METHOD_NAME" value="testOnePenaltyAdding" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ShipBoardTest.testOneTileTwoExposedConnectors" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="galaxyTruckerProject" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="it.polimi.ingsw.galaxytruckerproject.tiles.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="it.polimi.ingsw.galaxytruckerproject.tiles" />
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.galaxytruckerproject.tiles.ShipBoardTest" />
+      <option name="METHOD_NAME" value="testOneTileTwoExposedConnectors" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -244,19 +217,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="JUnit.ShipBoardTest.testOneTileCorrectShipboard" />
-      <item itemvalue="JUnit.ShipBoardTest.testTwoTilesWrongConnectorsShipboardWithRotation" />
-      <item itemvalue="JUnit.TileTest" />
-      <item itemvalue="JUnit.TileTest.testMustRotateCorrectly" />
-      <item itemvalue="JUnit.ShipBoardTest.testShouldAddTileInShipBoard" />
+      <item itemvalue="JUnit.ShipBoardTest.testAddBreakSingleCannon" />
+      <item itemvalue="JUnit.ShipBoardTest.testOneBatteryComponent" />
+      <item itemvalue="JUnit.ShipBoardTest.testOneCannonStrength" />
+      <item itemvalue="JUnit.ShipBoardTest.testOnePenaltyAdding" />
+      <item itemvalue="JUnit.ShipBoardTest.testOneTileTwoExposedConnectors" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.ShipBoardTest.testTwoTilesWrongConnectorsShipboardWithRotation" />
-        <item itemvalue="JUnit.ShipBoardTest.testOneTileCorrectShipboard" />
-        <item itemvalue="JUnit.TileTest.testMustRotateCorrectly" />
-        <item itemvalue="JUnit.TileTest" />
-        <item itemvalue="JUnit.ShipBoardTest.testShouldAddTileInShipBoard" />
+        <item itemvalue="JUnit.ShipBoardTest.testOneTileTwoExposedConnectors" />
+        <item itemvalue="JUnit.ShipBoardTest.testOnePenaltyAdding" />
+        <item itemvalue="JUnit.ShipBoardTest.testAddBreakSingleCannon" />
+        <item itemvalue="JUnit.ShipBoardTest.testOneBatteryComponent" />
+        <item itemvalue="JUnit.ShipBoardTest.testOneCannonStrength" />
       </list>
     </recent_temporary>
   </component>
@@ -293,7 +266,8 @@
       <workItem from="1742227495937" duration="13969000" />
       <workItem from="1742249960335" duration="1191000" />
       <workItem from="1742251161868" duration="1174000" />
-      <workItem from="1742265390910" duration="7621000" />
+      <workItem from="1742265390910" duration="7939000" />
+      <workItem from="1742274065723" duration="1596000" />
     </task>
     <servers />
   </component>

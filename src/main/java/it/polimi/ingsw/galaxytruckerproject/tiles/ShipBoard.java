@@ -394,6 +394,11 @@ public class ShipBoard {
                 if (tilesTable[i][j].isPresent())
                     if(!tilesTable[i][j].get().isCorrect()) return false;
             }
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 7; j++) {
+                if (tilesTable[i][j].isPresent())
+                    tilesTable[i][j].get().getStat();
+            }
         return true;
     }
 
