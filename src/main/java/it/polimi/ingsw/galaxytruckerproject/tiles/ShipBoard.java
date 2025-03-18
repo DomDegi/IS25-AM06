@@ -620,46 +620,27 @@ public class ShipBoard {
 
     }
 
+    //give back all the player Goods
+    public ArrayList<Goods> getGoods(){
+        ArrayList<Goods> goods = new ArrayList<>();
+        Goods good = new Goods(GoodsColor.RED);
+        int i;
+        for(i=cargoHoldContainsGood(good).size();i==0;i--){
+            goods.add(good);
+        }
+        good = new Goods(GoodsColor.YELLOW);
+        for(i=cargoHoldContainsGood(good).size();i==0;i--){
+            goods.add(good);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        }
+        good = new Goods(GoodsColor.GREEN);
+        for(i=cargoHoldContainsGood(good).size();i==0;i--){
+            goods.add(good);
+        }
+        good = new Goods(GoodsColor.BLUE);
+        for(i=cargoHoldContainsGood(good).size();i==0;i--){
+            goods.add(good);
+        }
+        return goods;
+    }
 }

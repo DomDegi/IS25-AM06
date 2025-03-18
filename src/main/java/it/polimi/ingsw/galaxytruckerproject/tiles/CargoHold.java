@@ -1,7 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
 
-import java.util.ArrayList;
 import it.polimi.ingsw.galaxytruckerproject.Goods;
+
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public abstract class CargoHold extends Tile{

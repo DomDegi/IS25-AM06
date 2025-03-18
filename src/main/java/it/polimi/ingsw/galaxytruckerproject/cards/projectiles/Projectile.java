@@ -39,7 +39,7 @@ public abstract class Projectile {
     }
     //torna le coordinate della tile che VERREBBE colpita
     protected void Throw(Player player, int diceRoll){
-        ShipBoard ship = player.getPlayerShip();
+        ShipBoard ship = player.getShipBoard();
         Optional<Tile> Temp = Optional.empty();
         Optional<Tile>[][] tileTable= ship.getTilesTable();
         int i;// num of iteration
@@ -131,4 +131,3 @@ public abstract class Projectile {
 
     }
 }
-

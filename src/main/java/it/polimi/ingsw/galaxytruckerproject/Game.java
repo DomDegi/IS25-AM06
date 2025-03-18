@@ -12,7 +12,6 @@ import it.polimi.ingsw.galaxytruckerproject.tiles.TileFactory;
 
 import java.util.*;
 
-
 import static it.polimi.ingsw.galaxytruckerproject.GameState.*;
 
 public class Game {
@@ -229,11 +228,16 @@ public class Game {
     }
 
 
+
     //GETTER METHODS
 
     //This flag is needed from some game functions
     public GameMode getMode() {
         return mode;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 
     public int getPlayerCount() {

@@ -6,7 +6,9 @@ import it.polimi.ingsw.galaxytruckerproject.GameState;
 import it.polimi.ingsw.galaxytruckerproject.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
-import it.polimi.ingsw.galaxytruckerproject.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.tiles.ShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.tiles.Tile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -440,7 +442,11 @@ public class GameController implements GameObserver {
     public void cardEvent(String playerName, String input) {
         String[] words =  input.split(" ");
         Card drawnCard = game.getDrawnCard();
-        drawnCard.executeCard(game, playerName,words);
+        boolean isFinish=drawnCard.executeCard(game, playerName,words);
+        if(isFinish){
+            game.setGameState(GameState.DRAW_CARD);
+            drawCard(null,null);
+        }
     }
 
 
@@ -451,16 +457,44 @@ public class GameController implements GameObserver {
                 game.getFlightBoard().earlyLanding(player);
                 switch (player.getPlayerRanking()){
                     case 1:
-                        player.addCredit(8);
+                        switch (game.getMode()) {
+                            case TRIAL:
+                                player.addCredit(4);
+                                break;
+                            case LEVEL2:
+                                player.addCredit(8);
+                                break;
+                        }
                         break;
                     case 2:
-                        player.addCredit(6);
+                        switch (game.getMode()) {
+                            case TRIAL:
+                                player.addCredit(3);
+                                break;
+                            case LEVEL2:
+                                player.addCredit(6);
+                                break;
+                        }
                         break;
                     case 3:
-                        player.addCredit(4);
+                        switch (game.getMode()) {
+                            case TRIAL:
+                                player.addCredit(2);
+                                break;
+                            case LEVEL2:
+                                player.addCredit(4);
+                                break;
+                        }
                         break;
                     case 4:
-                        player.addCredit(2);
+                        switch (game.getMode()) {
+                            case TRIAL:
+                                player.addCredit(1);
+                                break;
+                            case LEVEL2:
+                                player.addCredit(2);
+                                break;
+                        }
                         break;
                 }
             }
@@ -477,10 +511,15 @@ public class GameController implements GameObserver {
             }
         }
         for (Player player : coolestPlayers) {
-            player.addCredit(4);
+            switch (game.getMode()) {
+                case TRIAL:
+                    player.addCredit(2);
+                case LEVEL2:
+                    player.addCredit(4);
+            }
         }
         for (Player player : game.getFlightBoard().getAllPlayers()) {
-                player.addCredit(player.getShipBoard().convertGoodsToCredit());
+            player.addCredit(player.getShipBoard().convertGoodsToCredit);
         }
         for (Player player : game.getFlightBoard().getAllPlayers()) {
             player.removeCredit(player.getShipBoard().getPenalty());

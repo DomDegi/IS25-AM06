@@ -2,11 +2,8 @@ package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.Game;
-import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
-import org.w3c.dom.ls.LSOutput;
 
 import java.util.ArrayList;
 
@@ -37,7 +34,7 @@ public abstract class Card {
 
     public abstract void initializeCard(Game game);
 
-    public abstract void executeCard(Game game, String playerName, String[] input);
+    public abstract boolean executeCard(Game game, String playerName, String[] input);
 
     public int getLevel() {
         return level;

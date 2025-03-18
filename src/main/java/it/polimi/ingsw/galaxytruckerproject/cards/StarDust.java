@@ -1,11 +1,9 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
-import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class StarDust extends Card {
 
@@ -21,7 +19,7 @@ public class StarDust extends Card {
 
     //makes so that the player loses as many days as their exposedConnectors
     @Override
-    public void executeCard(Game game, String playerName, String[] input) {
+    public boolean executeCard(Game game, String playerName, String[] input) {
         ArrayList<Player> players = game.getListOfPlayers();
 
         //when moving backward starts from the last

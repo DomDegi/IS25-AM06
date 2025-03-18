@@ -19,13 +19,13 @@ public class SmallMeteor extends Projectile {
             return Defense.PROTECTED;
         }
         if(this.direction==Direction.NORTH){
-           if(tileTable[coordinatesToDestroy.get().getY()][coordinatesToDestroy.get().getX()].get().getNorth().getConnectorsType()==Connectors.SMOOTH){
-               return Defense.PROTECTED;
-           }
-           if(ship.getCoverageShields().contains(Coverage.NORTH_EAST)||ship.getCoverageShields().contains(Coverage.NORTH_WEST)){
-               return Defense.CHOOSETOUSEBATTERY;
-           }
-           return Defense.HIT;
+            if(tileTable[coordinatesToDestroy.get().getY()][coordinatesToDestroy.get().getX()].get().getNorth().getConnectorsType()==Connectors.SMOOTH){
+                return Defense.PROTECTED;
+            }
+            if(ship.getCoverageShields().contains(Coverage.NORTH_EAST)||ship.getCoverageShields().contains(Coverage.NORTH_WEST)){
+                return Defense.CHOOSETOUSEBATTERY;
+            }
+            return Defense.HIT;
         }
         else if(this.direction==Direction.SOUTH){
             if(tileTable[coordinatesToDestroy.get().getY()][coordinatesToDestroy.get().getX()].get().getSouth().getConnectorsType()==Connectors.SMOOTH){
