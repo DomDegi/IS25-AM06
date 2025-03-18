@@ -1,4 +1,4 @@
-package it.polimi.ingsw.galaxytruckerproject;
+package it.polimi.ingsw.galaxytruckerproject.cose;
 
 import it.polimi.ingsw.galaxytruckerproject.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.cards.CardDeck;
@@ -13,7 +13,7 @@ import it.polimi.ingsw.galaxytruckerproject.tiles.TileFactory;
 import java.util.*;
 
 
-import static it.polimi.ingsw.galaxytruckerproject.GameState.*;
+import static it.polimi.ingsw.galaxytruckerproject.cose.GameState.*;
 
 public class Game {
     private final GameMode mode = GameMode.LEVEL2;

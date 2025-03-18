@@ -56,7 +56,7 @@ public abstract class Tile {
         //Check east
         if(this.coordinates.getY()!=6) {
             other = tileTable[this.coordinates.getX()][this.coordinates.getY()+1];
-            if(!other.isEmpty() && !(other.get() instanceof VoidTile) && !east.isConnected(other.get().getWest())) {
+            if(other.isPresent() && other.get().fillable() && !this.east.isConnected(other.get().getWest())) {
                 return false;
             }
         }
@@ -98,6 +98,9 @@ public abstract class Tile {
         return this.coordinates;
     }
 
+    public void setShipBoard(ShipBoard shipBoard) {
+        this.shipBoard = shipBoard;
+    }
 
     //METHOD THAT GETS OVERRIDE ONLY BY THE SPECIFIC CLASSES
     public void setCrewType(CrewType crewType) {System.out.println("THIS TILE IS NOT A CABIN"); }

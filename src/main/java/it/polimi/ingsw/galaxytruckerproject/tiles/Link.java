@@ -10,13 +10,17 @@ public class Link {
     }
 
     public boolean isConnected(Link other){
-        if(this.connectorsType == other.connectorsType){
+        if(this.connectorsType == other.connectorsType)
             return true;
-        }
-        return this.connectorsType == Connectors.UNIVERSAL && (other.connectorsType == Connectors.DOUBLE || other.connectorsType == Connectors.SINGLE);
+        if(this.connectorsType == Connectors.UNIVERSAL && (other.connectorsType == Connectors.DOUBLE || other.connectorsType == Connectors.SINGLE))
+            return true;
+        if(other.connectorsType == Connectors.UNIVERSAL && (this.connectorsType == Connectors.DOUBLE || this.connectorsType == Connectors.SINGLE))
+            return true;
+
+        return false;
     }
     public void setConnectorType(Connectors connectorType) {
-        this.connectorType = connectorType;
+        this.connectorsType = connectorType;
     }
 
 }

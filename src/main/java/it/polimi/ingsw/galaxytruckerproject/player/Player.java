@@ -1,5 +1,4 @@
 package it.polimi.ingsw.galaxytruckerproject.player;
-
 import it.polimi.ingsw.galaxytruckerproject.Goods;
 import it.polimi.ingsw.galaxytruckerproject.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
@@ -63,6 +62,7 @@ public class Player {
             }
 
         }
+        return true;
     }
 
     //REMOVES FROM SHIPBOARD THE BATTERIES PRESENT IN THE ARRAYLIST. IF IT'S NEEDED TO ELIMINATE MORE BATTERIES FROM

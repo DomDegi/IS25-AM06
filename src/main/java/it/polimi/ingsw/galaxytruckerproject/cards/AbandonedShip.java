@@ -1,4 +1,4 @@
-package it.polimi.ingsw.galaxytruckerproject.cards;
+/*package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
@@ -42,4 +42,4 @@ public class AbandonedShip extends Card{
         }
 
     }
-}
+}*/
