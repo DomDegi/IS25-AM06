@@ -223,6 +223,11 @@ public class Game {
 
     //CARD_EVENT METHODS
 
+    public void endCardEvent() {
+        this.gameState = DRAW_CARD;
+        notifyObservers(gameState);
+    }
+
 
     //GETTER METHODS
 

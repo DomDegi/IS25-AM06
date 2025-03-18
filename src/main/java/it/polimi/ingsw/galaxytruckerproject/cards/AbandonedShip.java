@@ -32,9 +32,9 @@ public class AbandonedShip extends Card{
 
     @Override
     public void initializeCard(Game game) {
-        if (playerIndex > game.getPlayerCount() - 1) {
+        if (playerIndex > game.getNumberOfPlayers() - 1) {
             System.out.println("Everyone refused to fix the abandoned ship\n");
-            game.DrawCard();
+            game.endCardEvent();
             return;
         }
         playerToPlay = Optional.of(game.getListOfPlayers().get(this.playerIndex));

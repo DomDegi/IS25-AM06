@@ -10,9 +10,9 @@ import java.util.*;
 public class CombatZone extends Card {
     private final LinkedHashMap<ChallengeType, Penalty> listOfChallenges ;
     private int playerIndex;
-    private Optional<Player> playerToPlay =  Optional.empty();
-    private LinkedHashMap<Player, Float> savedValues;
-    private Optional<ChallengeType> currentChallenge = Optional.empty();
+    private Player currentPlayer = null;
+    private final LinkedHashMap<Player, Float> savedValues;
+    private ChallengeType currentChallenge = null;
     private boolean losingPlayerDecided = false;
 
 
@@ -25,45 +25,49 @@ public class CombatZone extends Card {
 
     @Override
     public void initializeCard(Game game) {
+        //if there is only one player still flying, combat>one cards get skipped
+        if (game.getNumberOfPlayers() == 1) {
+            game.endCardEvent();
+        }
         if (listOfChallenges.isEmpty()) {
             System.out.println("You have completed all the challenges of the combat zone\n");
-            game.DrawCard();
+            game.endCardEvent();
             return;
         }
 
-        if (playerIndex > game.getPlayerCount() - 1 && !losingPlayerDecided) {
+        if (playerIndex > game.getNumberOfPlayers() - 1 && !losingPlayerDecided) {
             //this means the losing player still has to get chosen
-            playerToPlay = Optional.of(Collections.min(savedValues.entrySet(), Comparator.comparingDouble(Map.Entry::getValue)).getKey());
+            currentPlayer = Collections.min(savedValues.entrySet(), Comparator.comparingDouble(Map.Entry::getValue)).getKey();
             losingPlayerDecided = true;
             savedValues.clear();
-            listOfChallenges.get(currentChallenge.get()).printInfo(playerToPlay.get());
+            listOfChallenges.get(currentChallenge).printInfo(currentPlayer);
         }
 
-        if (currentChallenge.isEmpty()) {
-            currentChallenge = Optional.of(listOfChallenges.entrySet().iterator().next().getKey());
+        if (currentChallenge == null) {
+            currentChallenge = listOfChallenges.entrySet().iterator().next().getKey();
         }
 
-        playerToPlay = Optional.of(game.getListOfPlayers().get(playerIndex));
-        switch(currentChallenge.get()) {
+        currentPlayer = game.getListOfPlayers().get(playerIndex);
+        switch(currentChallenge) {
             case MINIMUM_CANNON_STRENGTH: {
                 System.out.println("You can decide to try the challenge with the single cannon strength or activate the double cannons\n");
-                playerToPlay.get().printCurrentInfoCannons();
-                playerToPlay.get().printCurrentInfoBatteries();
+                currentPlayer.printCurrentInfoCannons();
+                currentPlayer.printCurrentInfoBatteries();
                 break;
             }
 
             //This case is automatically saves the values because it doesn't need inputs
             case MINIMUM_CREW_NUMBER: {
-                System.out.println("You have this many crew members" + playerToPlay.get().getTotalCrew());
-                savedValues.put(playerToPlay.get(), (float) playerToPlay.get().getTotalCrew());
+                System.out.println("You have this many crew members" + currentPlayer.getTotalCrew());
+                savedValues.put(currentPlayer, (float) currentPlayer.getTotalCrew());
                 playerIndex++;
                 initializeCard(game);
                 break;
             }
             case MINIMUM_ENGINE_POWER: {
                 System.out.println("You can decide to try the challenge with the single engine power or activate the double engines\n");
-                playerToPlay.get().printCurrentInfoCannons();
-                playerToPlay.get().printCurrentInfoBatteries();
+                currentPlayer.printCurrentInfoCannons();
+                currentPlayer.printCurrentInfoBatteries();
                 break;
             }
         }
@@ -71,22 +75,22 @@ public class CombatZone extends Card {
 
     @Override
     public void executeCard(Game game, String playerName, String[] input) {
-        if (losingPlayerDecided && playerToPlay.isPresent() && playerName.equalsIgnoreCase(playerToPlay.get().getPlayerName())) {
-            int penaltyReturn = listOfChallenges.get(currentChallenge.get()).applyPenalty(game, playerToPlay.get(), input);
+        if (losingPlayerDecided && currentPlayer != null && playerName.equalsIgnoreCase(currentPlayer.getPlayerName())) {
+            int penaltyReturn = listOfChallenges.get(currentChallenge).applyPenalty(game, currentPlayer, input);
             if (penaltyReturn == 1) {
-                System.out.println("Penalty has been applied to " + playerToPlay.get().getPlayerName() + "\n");
+                System.out.println("Penalty has been applied to " + currentPlayer.getPlayerName() + "\n");
                 losingPlayerDecided = false;
                 playerIndex = 0;
-                listOfChallenges.remove(currentChallenge.get());
+                listOfChallenges.remove(currentChallenge);
                 initializeCard(game);
             }
             else {
                 System.out.println("Penalty needs more input to get completed\n");
             }
-        } else if (playerToPlay.isPresent() && playerName.equalsIgnoreCase(playerToPlay.get().getPlayerName())) {
-            switch (currentChallenge.get()) {
+        } else if (currentPlayer != null && playerName.equalsIgnoreCase(currentPlayer.getPlayerName())) {
+            switch (currentChallenge) {
                 case ChallengeType.MINIMUM_ENGINE_POWER: {
-                    minimumEngineStrength(game, playerToPlay.get(), input);
+                    minimumEngineStrength(game, currentPlayer, input);
                     break;
                 }
                 case ChallengeType.MINIMUM_CREW_NUMBER: {
@@ -94,7 +98,7 @@ public class CombatZone extends Card {
                     break;
                 }
                 case ChallengeType.MINIMUM_CANNON_STRENGTH: {
-                    minimumCannonStrength(game, playerToPlay.get(), input);
+                    minimumCannonStrength(game, currentPlayer, input);
                     break;
                 }
             }
@@ -137,7 +141,7 @@ public class CombatZone extends Card {
 
     public void minimumCannonStrength (Game game, Player playerToPlay, String[] input) {
         if (input[0].equalsIgnoreCase("no")) {
-            float cannonStrength = playerToPlay.useDoubleCannons(new ArrayList<Coordinates>());
+            float cannonStrength = playerToPlay.useDoubleCannons(new ArrayList<>());
             savedValues.put(playerToPlay, cannonStrength);
             playerIndex++;
             initializeCard(game);

@@ -28,9 +28,9 @@ public class Slavers extends Enemies{
 
     @Override
     public void initializeCard(Game game) {
-        if (playerIndex > game.getPlayerCount() - 1){
+        if (playerIndex > game.getNumberOfPlayers() - 1){
             System.out.println("No player beat the slavers\n");
-            game.DrawCard();
+            game.endCardEvent();
             return;
         }
         currentPlayer = game.getListOfAllPlayer().get(playerIndex);

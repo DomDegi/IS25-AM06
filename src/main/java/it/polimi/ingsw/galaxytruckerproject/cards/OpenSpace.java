@@ -22,10 +22,13 @@ public class OpenSpace extends Card {
     @Override
     public void initializeCard(Game game) {
         //if index is higher than the number of player in the game -1, it will go out of bounds
-        if (playerIndex > game.getPlayerCount() - 1) {
+        if (playerIndex > game.getNumberOfPlayers() - 1) {
+            for (Player player: playersToEarlyLand) {
+                game.getFlightBoard().earlyLanding(player);
+            }
             game.getFlightBoard().concludeMovement();
             //draw next card
-            game.DrawCard();
+            game.endCardEvent();
         }
 
         currentPlayer = game.getListOfPlayers().get(playerIndex);
