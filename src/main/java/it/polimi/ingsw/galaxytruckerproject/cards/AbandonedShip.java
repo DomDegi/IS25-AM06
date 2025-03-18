@@ -60,7 +60,7 @@ public class AbandonedShip extends Card{
                 if (penaltyIfAccept.applyPenalty(game, playerToPlay.get(), input) == 1) {
                     playerToPlay.get().gainCredit(possibleCreditGains);
                     game.getFlightBoard().moveBackward(playerToPlay.get(), requiredDays);
-                    game.DrawCard();
+                    game.drawCard();
                 }
             }
         }

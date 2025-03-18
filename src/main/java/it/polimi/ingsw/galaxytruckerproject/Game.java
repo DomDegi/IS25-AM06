@@ -208,7 +208,8 @@ public class Game {
     //VERIFY_SHIP_CORRECTNESS METHODS
 
     //DRAW_CARD METHODS
-    public void DrawCard() {
+
+    public void drawCard() {
         this.drawnCard = inGameCards.removeFirst();
         drawnCard.initializeCard(this);
         this.gameState = CARD_EVENT;

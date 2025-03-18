@@ -424,7 +424,7 @@ public class GameController implements GameObserver {
         switch(words[0].toLowerCase()) {
             case "draw":
                 if (game.IdentifyPlayerByName(playerName).equals(game.getListOfPlayers().getFirst())){
-                game.DrawCard();
+                game.drawCard();
                 }
                 else {
                     System.out.println("The first ranked player has to draw\n");
