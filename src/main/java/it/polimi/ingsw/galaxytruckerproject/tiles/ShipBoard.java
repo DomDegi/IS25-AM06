@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
 
 import it.polimi.ingsw.galaxytruckerproject.Goods;
+import it.polimi.ingsw.galaxytruckerproject.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
 import java.util.*;
@@ -443,7 +444,7 @@ public class ShipBoard {
     }
 
     //It
-    public ArrayList<Coordinates> cargoHoldwithGodd(Goods good){
+    public ArrayList<Coordinates> cargoHoldContainsGood(Goods good){
         ArrayList<Coordinates> cargoHoldwithGood = new ArrayList<>();
         for(Coordinates coordinates : cargoHoldCoordinates){
             if(tilesTable[coordinates.getX()][coordinates.getY()].getCargo().contains(good)){
@@ -451,5 +452,29 @@ public class ShipBoard {
             }
         }
         return cargoHoldwithGood;
+    }
+
+    //give back all the player Goods
+    public ArrayList<Goods> getGoods(){
+        ArrayList<Goods> goods = new ArrayList<>();
+        Goods good = new Goods(GoodsColor.RED);
+        int i;
+        for(i=cargoHoldContainsGood(good).size();i==0;i--){
+            goods.add(good);
+        }
+        good = new Goods(GoodsColor.YELLOW);
+        for(i=cargoHoldContainsGood(good).size();i==0;i--){
+            goods.add(good);
+
+        }
+        good = new Goods(GoodsColor.GREEN);
+        for(i=cargoHoldContainsGood(good).size();i==0;i--){
+            goods.add(good);
+        }
+        good = new Goods(GoodsColor.BLUE);
+        for(i=cargoHoldContainsGood(good).size();i==0;i--){
+            goods.add(good);
+        }
+        return goods;
     }
 }

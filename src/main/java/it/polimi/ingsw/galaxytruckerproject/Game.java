@@ -224,11 +224,16 @@ public class Game {
 
 
 
+
     //GETTER METHODS
 
     //This flag is needed from some game functions
     public GameMode getMode() {
         return mode;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 
     public int getPlayerCount() {

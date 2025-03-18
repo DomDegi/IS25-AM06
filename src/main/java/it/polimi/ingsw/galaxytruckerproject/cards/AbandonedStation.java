@@ -1,46 +1,78 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
-import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
+import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.Goods;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class AbandonedStation extends Card {
     private final int crewNumberRequired;
     private final ArrayList<Goods> possibleGoodsGain;
+    private ArrayList<Player> playerToLand;
+    private Player currentPlayer;
+    private boolean initialized;
 
     public AbandonedStation(int level, int requiredDays, int crewNumberRequired, ArrayList<Goods> possibleGoodsGain) {
         super(level, requiredDays);
         this.crewNumberRequired = crewNumberRequired;
         this.possibleGoodsGain = possibleGoodsGain;
+        this.initialized=false;
+        this.currentPlayer =null;
+        this.playerToLand = new ArrayList<>();
     }
-
     //asks every player in order of ranking that meets the requirements if they want to spend days to gain the goods
     @Override
-    public void executeCard(FlightBoard flightBoard) {
-        Player[] listOfPlayers = flightBoard.getInGamePlayers();
-
-        for (Player player: listOfPlayers){
-            if (player.getCrewNumber() >= crewNumberRequired){
-
-                System.out.printf("Do you want to lose %d flight days to gain the following goods?\n", requiredDays);
-
-                possibleGoodsGain.forEach(goods -> System.out.printf("%s good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue()));
-
-                System.out.println("Input 1 to accept or 0 to refuse\n");
-                //reads player input
-                Scanner scanner = new Scanner(System.in);
-                int choice = scanner.nextInt();
-                if (choice == 1) {
-                    flightBoard.moveBackward(player.getPlayerRanking(), requiredDays);
-                    player.gainGoods(possibleGoodsGain);
-                    //exit for loop: the station has been claimed
-                    break;
-                }
-            }
+    public void initializeCard(Game game) {
+        if (!initialized) {
+            playerToLand = new ArrayList<>(game.getListOfPlayers());
+            initialized=true;
         }
+        System.out.printf("Abandoned station: you will loose %d flight days to gain the following goods:\n", requiredDays);
+        possibleGoodsGain.forEach(goods -> System.out.printf("%s good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue()));
+        currentPlayer=playerToLand.removeFirst();
+        if (currentPlayer.getCrewNumber() >= crewNumberRequired){
+            System.out.printf("Sorry"+currentPlayer+"you can't land on the station, you need at least %d crew members\n", crewNumberRequired);
+            initializeCard(game);
+            return;
+        }
+        System.out.printf(currentPlayer+"input 1 to land on the station, input 0 to ignore, you will loose %d flight and get days\n", requiredDays);
+    }
 
+    @Override
+    public void executeCard(Game game, String playerName, String[] input) {
+        if(currentPlayer==null){
+            currentPlayer=game.getListOfPlayers().getFirst();
+        }
+        if (!playerName.equals(currentPlayer.getPlayerName()))
+            return;
+        int choice;
+        try {
+            choice = Integer.parseInt(input[0]);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input format. Please provide integer values.");
+            return;
+        }
+        if (currentPlayer.getCrewNumber() >= crewNumberRequired){
+            if (choice == 1) {
+                game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
+                currentPlayer.gainGoods(possibleGoodsGain);
+                //exit for loop: the station has been claimed
+            } else if (choice == 0) {
+                System.out.println("No action performed");
+                initializeCard(game);
+            } else {
+                System.out.println("Invalid choice: " + choice);
+                executeCard(game, playerName, input);
+                return;
+            }
+        } else {
+            System.out.printf("Sorry"+currentPlayer+"you can't land on the station, you need at least %d crew members\n", crewNumberRequired);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "";
     }
 }
