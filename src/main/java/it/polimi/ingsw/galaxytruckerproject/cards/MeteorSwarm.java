@@ -3,19 +3,20 @@ package it.polimi.ingsw.galaxytruckerproject.cards;
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.Meteor;
+import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
 
 import java.util.ArrayList;
 
 public class MeteorSwarm extends Card {
-    private final ArrayList<Meteor> listOfMeteors;
+    private final ArrayList<Projectile> listOfMeteors;
     private ArrayList<Player> playerToInteract;
     private Player currentPlayer;
     private boolean initialized;
     private Coordinates coordinates;
 
-    public MeteorSwarm(int level, ArrayList<Meteor> listOfMeteors) {
+    public MeteorSwarm(int level, ArrayList<Projectile> listOfMeteors) {
         super(level, 0);
         this.listOfMeteors = listOfMeteors;
         this.initialized=false;
