@@ -1,8 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
-import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.Game;
-import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.Meteor;
+import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
 
@@ -15,7 +14,7 @@ public class MeteorSwarm extends Card {
     private boolean initialized;
     private Coordinates coordinates;
 
-    public MeteorSwarm(int level, ArrayList<Meteor> listOfMeteors) {
+    public MeteorSwarm(int level, ArrayList<Projectile> listOfMeteors) {
         super(level, 0);
         this.listOfMeteors = listOfMeteors;
         this.initialized=false;
@@ -34,6 +33,7 @@ public class MeteorSwarm extends Card {
         if (listOfMeteors.isEmpty()) {
             return;
         }
+        // i dice li devi rollare tu non la meteora, perchè così li chiami con lo stesso tiro su tutti i player
         int diceRoll = listOfMeteors.getFirst().rollTheDices();
         System.out.println(listOfMeteors.getTipe() + "from" + listOfMeteors.getFirst().getDirection() + "at" + diceRoll);
         currentPlayer = playerToInteract.removeFirst();

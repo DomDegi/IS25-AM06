@@ -21,9 +21,21 @@ public class SingleCannon extends Cannon {
     public void getStat(){
         shipBoard.addBreakSingleCannonPower(fireStrength);
     }
+
     public void destroy(){
         shipBoard.addBreakSingleCannonPower(-fireStrength);
         fireStrength=0;
+    }
+
+    public Direction getDirection(){
+        return direction;
+    }
+
+    //no real meaning used only in large meteor
+    public int getStrength(){
+        if(direction == Direction.NORTH)
+            return -2;
+        return -1;
     }
 }
 

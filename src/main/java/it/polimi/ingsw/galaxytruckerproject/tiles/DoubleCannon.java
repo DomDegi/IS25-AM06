@@ -25,6 +25,9 @@ public class DoubleCannon extends Cannon{
         shipBoard.addBreakDoubleCannon(false,this.coordinates);
     }
 
+    public Direction getDirection(){
+        return direction;
+    }
     @Override
     public int getStrength() {
         if(direction == Direction.NORTH)

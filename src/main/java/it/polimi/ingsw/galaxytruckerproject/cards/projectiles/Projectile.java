@@ -1,7 +1,9 @@
 package it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
+import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.tiles.*;
 import java.util.Optional;
+import it.polimi.ingsw.galaxytruckerproject.tiles.Direction;
 import java.util.Random;
 /*
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -19,25 +21,23 @@ public abstract class Projectile {
     protected Optional<Coordinates> coordinatesToDestroy;
 
 
-    public Projectile(Direction direction) {
+    public Projectile(Game game, Direction direction) {
         this.direction = direction;
+            this.game = game;
     }
     public Direction getDirection() {
         return direction;
     }
 
-    //generates a random number from 2 to 12 (simulates 2 dice roll)
-    public int rollTheDices(){
-        diceRoll = new Random().nextInt(11) + 2;
-        return diceRoll;
-    }
-    public Defense throwProjectile() {
+    public Defense throwProjectile(Player player, int DiceRoll) {
         return Defense.PROTECTED;
     }
+
+    //torna le coordinate della tile che VERREBBE colpita
     public Coordinates getCoordinatesToDestroy() {
         return coordinatesToDestroy.get();
     }
-    //torna le coordinate della tile che VERREBBE colpita
+
     protected void Throw(Player player, int diceRoll){
         ShipBoard ship = player.getShipBoard();
         Optional<Tile> Temp = Optional.empty();

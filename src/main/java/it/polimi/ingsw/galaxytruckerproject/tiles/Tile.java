@@ -117,9 +117,12 @@ public abstract class Tile {
     public void getStat(){
         return;
     }
+    public Direction getDirection(){
+        return null;
+    }
 
     public int getStrength(){
-        System.out.println("THIS TILE IS NOT A DOUBLE CANNON");
+        //System.out.println("THIS TILE IS NOT A DOUBLE CANNON");
         return 0;
     }
     public boolean fillable(){
