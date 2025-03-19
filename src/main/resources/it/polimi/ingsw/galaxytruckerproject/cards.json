@@ -418,12 +418,10 @@
       "level": 2,
       "listOfMeteors": [
         {
-          "direction": "NORTH",
-          "size": "NORMAL"
+          "direction": "NORTH"
         },
         {
-          "direction": "NORTH",
-          "size": "NORMAL"
+          "direction": "NORTH"
         },
         {
           "direction": "EAST",
