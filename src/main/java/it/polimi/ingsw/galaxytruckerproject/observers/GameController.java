@@ -1,7 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.observers;
 
-import it.polimi.ingsw.galaxytruckerproject.Game;
-import it.polimi.ingsw.galaxytruckerproject.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.GameState;
 import it.polimi.ingsw.galaxytruckerproject.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
@@ -15,13 +14,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static it.polimi.ingsw.galaxytruckerproject.GameMode.*;
+
 
 public class GameController implements GameObserver {
-    private final Game game;
+    private final GameInterface game;
     private final ArrayList<String> playersWithErrors;
     private final Map<String, String> playerInputs;
 
-    public GameController(Game game) {
+    public GameController(GameInterface game) {
         this.game = game;
         playerInputs = new HashMap<>();
         this.playersWithErrors = new ArrayList<>();
@@ -77,11 +78,11 @@ public class GameController implements GameObserver {
         }
         try {
             PlayersColor color = PlayersColor.valueOf(words[0]);
-            game.AddPlayer(playerName, color);
+            game.addPlayer(playerName, color);
 
             //first one is the number of player in the list, the other is the number of player to start the game with
             if (game.getNumberOfPlayers() == game.getPlayerCount()) {
-                game.StartGame();
+                game.startGame();
             }
         }
         catch (IllegalArgumentException e) {
@@ -171,7 +172,7 @@ public class GameController implements GameObserver {
         }
         switch (input[1].toLowerCase()) {
             case "stack": {
-                Tile drawnTile = game.DrawTile(playerName);
+                Tile drawnTile = game.drawTile(playerName);
                 if (drawnTile == null) {
                     System.out.println("tile stack empty or playerNotFound");
                     return;
@@ -189,7 +190,7 @@ public class GameController implements GameObserver {
                 //If the third word can't be parsed to an int, do nothing
                 try {
                     int index = Integer.parseInt(input[2]);
-                    Tile drawnTile = game.DrawTurnedTile(playerName, index);
+                    Tile drawnTile = game.drawTurnedTile(playerName, index);
                     if (drawnTile == null) {
                         System.out.println("no turned tiles or the index is  out of bounds");
                         return;
@@ -208,7 +209,7 @@ public class GameController implements GameObserver {
                 }
                 try {
                     int index = Integer.parseInt(input[2]);
-                    Tile drawnTile = game.DrawBookedTile (playerName, index);
+                    Tile drawnTile = game.drawBookedTile (playerName, index);
 
                     //the index has to be either 0 or 1
                     if (drawnTile == null) {
@@ -237,7 +238,7 @@ public class GameController implements GameObserver {
         }
     }
     public void shipErrorManagement(String playerName, String input){
-        Player player = game.IdentifyPlayerByName(playerName);
+        Player player = game.identifyPlayerByName(playerName);
         if(player==null){
             return;
         }
@@ -257,7 +258,7 @@ public class GameController implements GameObserver {
         }
         boolean correctness = player.getShipBoard().verifyCorrectness();
         if (correctness) {
-            if(game.getMode()== GameMode.TRIAL) {
+            if(game.getMode()== TRIAL) {
                 game.getFlightBoard().setPlayerToLast(player);
             }
             playersWithErrors.remove(playerName);
@@ -268,7 +269,7 @@ public class GameController implements GameObserver {
 
     public void refuseTile(String playerName) {
         if (Objects.equals(playerInputs.get(playerName), "draw")) {
-            game.RefuseTile(playerName);
+            game.refuseTile(playerName);
         }
     }
 
@@ -349,7 +350,7 @@ public class GameController implements GameObserver {
                 return;
             }
         }
-        if(game.getMode()== GameMode.TRIAL) {
+        if(game.getMode() == TRIAL) {
             for (Player player : game.getFlightBoard().getInGamePlayers()) {
                 if (player.getPlayerName().equals(playerName)) {
                     game.getFlightBoard().addToTrialFlightBoard(player);
@@ -373,7 +374,7 @@ public class GameController implements GameObserver {
             return;
         try {
             int parsedInput = Integer.parseInt(input);
-            game.getFlightBoard().addToFlightBoard(game.IdentifyPlayerByName(playerName), parsedInput);
+            game.getFlightBoard().addToFlightBoard(game.identifyPlayerByName(playerName), parsedInput);
         } catch (NumberFormatException e) {
             System.out.println("Invalid input. Unable to parse to an integer.");
         }
@@ -388,15 +389,15 @@ public class GameController implements GameObserver {
         switch (game.getHourglassTurns()) {
             case 0:
                 System.out.println(playerName + " starts the game: GO!\n");
-                game.StartTimer();
+                game.startTimer();
                 break;
             case 1:
                 System.out.println(playerName + " has flipped the hourglass\n");
-                game.StartTimer();
+                game.startTimer();
                 break;
             case 2:
                 if (playerInputs.get(playerName).equals("completed")) {
-                    game.StartTimer();
+                    game.startTimer();
                 }
                 else {
                     System.out.println("can't make the last hourglass turn when your shipboard isn't complete\n");
@@ -423,7 +424,7 @@ public class GameController implements GameObserver {
 
         switch(words[0].toLowerCase()) {
             case "draw":
-                if (game.IdentifyPlayerByName(playerName).equals(game.getListOfPlayers().getFirst())){
+                if (game.identifyPlayerByName(playerName).equals(game.getListOfPlayers().getFirst())){
                 game.drawCard();
                 }
                 else {
@@ -434,7 +435,7 @@ public class GameController implements GameObserver {
                 checkShipBoard(playerName, words);
                 break;
             case "land":
-                game.getFlightBoard().earlyLanding(game.IdentifyPlayerByName(playerName));
+                game.getFlightBoard().earlyLanding(game.identifyPlayerByName(playerName));
                 System.out.println(playerName + " made an early landing\n");
                 break;
             default: break;
@@ -444,8 +445,7 @@ public class GameController implements GameObserver {
     //Gets the drawnCard from main and sends the input to each Card, depending on return value gives errors
     public void cardEvent(String playerName, String input) {
         String[] words =  input.split(" ");
-        Card drawnCard = game.getDrawnCard();
-        drawnCard.executeCard(game, playerName, words);
+        game.cardEvent(playerName, words);
     }
 
 

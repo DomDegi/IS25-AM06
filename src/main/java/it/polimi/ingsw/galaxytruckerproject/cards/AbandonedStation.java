@@ -31,7 +31,7 @@ public class AbandonedStation extends Card {
         System.out.printf("Abandoned station: you will loose %d flight days to gain the following goods:\n", requiredDays);
         possibleGoodsGain.forEach(goods -> System.out.printf("%s good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue()));
         currentPlayer= playerToInteract.getFirst();
-        if (currentPlayer.getCrewNumber() >= crewNumberRequired){
+        if (currentPlayer.getTotalCrew() >= crewNumberRequired){
             System.out.printf("Sorry"+currentPlayer+"you can't land on the station, you need at least %d crew members\n", crewNumberRequired);
             playerToInteract.removeFirst();
             initializeCard(game);
@@ -39,20 +39,20 @@ public class AbandonedStation extends Card {
         }
         System.out.printf(currentPlayer+"input 1 to land on the station, input 0 to ignore, you will loose %d flight and get days\n", requiredDays);
         if(playerToInteract.isEmpty()){
-            return;
         }
     }
 
     @Override
     public void executeCard(Game game, String playerName, String[] input) {
-        if(playerToInteract.isEmpty()){
-            return true;
+        if (playerToInteract.isEmpty()) {
+            game.endCardPhase();
+            return;
         }
-        if(currentPlayer==null){
-            currentPlayer=game.getListOfPlayers().getFirst();
+        if (currentPlayer == null) {
+            currentPlayer = game.getListOfPlayers().getFirst();
         }
         if (!playerName.equals(currentPlayer.getPlayerName()))
-            return false;
+            return;
         int choice;
         try {
             choice = Integer.parseInt(input[0]);
@@ -60,12 +60,12 @@ public class AbandonedStation extends Card {
             System.out.println("Invalid input format. Please provide integer values.");
             executeCard(game, playerName, input);
 
-            return false;
+            return;
         }
-        if (currentPlayer.getCrewNumber() >= crewNumberRequired){
+        if (currentPlayer.getTotalCrew() >= crewNumberRequired) {
             if (choice == 1) {
                 game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
-                currentPlayer.gainGoods(possibleGoodsGain);
+                currentPlayer.gainGoods();
                 //exit for loop: the station has been claimed
             } else if (choice == 0) {
                 System.out.println("No action performed");
@@ -76,13 +76,12 @@ public class AbandonedStation extends Card {
                 executeCard(game, playerName, input);
             }
         } else {
-            System.out.printf("Sorry"+currentPlayer+"you can't land on the station, you need at least %d crew members\n", crewNumberRequired);
+            System.out.printf("Sorry" + currentPlayer + "you can't land on the station, you need at least %d crew members\n", crewNumberRequired);
         }
-        return false;
     }
 
     @Override
     public String toString() {
-        return "";
+        return "AbandonedStation";
     }
 }
