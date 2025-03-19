@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.CannonShot;
+import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
 import java.util.ArrayList;
@@ -9,9 +10,9 @@ import java.util.Scanner;
 
 public class Pirates extends Enemies {
     private final int rewardCredits;
-    private final ArrayList<CannonShot> listOfShots;
+    private final ArrayList<Projectile> listOfShots;
 
-    public Pirates(int level, int requiredDays, int cannonStrength, int rewardCredits, ArrayList<CannonShot> listOfShots) {
+    public Pirates(int level, int requiredDays, int cannonStrength, int rewardCredits, ArrayList<Projectile> listOfShots) {
         super(level, requiredDays, cannonStrength);
         this.rewardCredits = rewardCredits;
         this.listOfShots = listOfShots;

@@ -238,6 +238,29 @@ public class Player {
     }
 
     //GOODS METHODS
+    //places goods and returns the goods that got placed. Use the array to remove from the cards the goods already placed
+    //input all the coordinates in card event. WHen removing from the array in card the once that didn't have coordinates
+    //or had wrong coordinates won't get removed
+    public ArrayList<Goods> gainGoods (ArrayList<Coordinates> whereToPlace, ArrayList<Goods> goods){
+
+        ArrayList<Goods> placedCorrectly = new ArrayList<Goods>();
+
+        //if you put more coordinates than the goods in the card event
+        while (whereToPlace.size() > goods.size()){
+            whereToPlace.removeLast();
+        }
+
+        Goods placedGood;
+        while (!whereToPlace.isEmpty()) {
+            placedGood = goods.removeFirst();
+            if (playerShip.gainGoods(placedGood ,whereToPlace.removeFirst())) {
+                placedCorrectly.add(placedGood);
+            }
+        }
+        //goods that got placed
+        return placedCorrectly;
+    }
+
     public int removeGoods(ArrayList<Coordinates> Coordinates) {
         int counter = 0;
 
