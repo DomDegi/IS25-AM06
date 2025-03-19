@@ -85,6 +85,8 @@ public class SmallMeteor extends Projectile {
 
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Small Meteor " + direction;
+    }
 }

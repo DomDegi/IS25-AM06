@@ -63,4 +63,9 @@ public class SmallCannonShot extends Projectile {
         return Defense.HIT;
 
     }
+
+    @Override
+    public String toString() {
+        return "Small CannonShot " + direction;
+    }
 }

@@ -20,7 +20,7 @@ public class CannonPenalty extends Penalty {
 
     @Override
     public int applyPenalty(Game game, Player player, String[] input){
-        return 0;
+
     }
 
     @Override
@@ -29,6 +29,13 @@ public class CannonPenalty extends Penalty {
     }
 
     @Override
-    public void printInfo(Player player){
+    public void printInfo(Player player) {
+        System.out.println(listOfShots.getFirst().toString() + "\n");
+    }
+
+    public void printInfoOnALLProjectiles(){
+        for (Projectile projectile : listOfShots){
+            System.out.println(projectile.toString() + "\n");
+        }
     }
 }

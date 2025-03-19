@@ -229,4 +229,9 @@ public class LargeMeteor extends Projectile {
     public Direction getDirection() {
         return super.getDirection();
     }
+
+    @Override
+    public String toString() {
+        return "Large Meteor " + direction;
+    }
 }

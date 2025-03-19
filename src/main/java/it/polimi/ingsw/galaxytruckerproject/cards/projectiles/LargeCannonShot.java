@@ -16,4 +16,9 @@ public class LargeCannonShot extends Projectile  {
         }
         return Defense.HIT;
     }
+
+    @Override
+    public String toString() {
+        return "Large CannonShot " + direction;
+    }
 }

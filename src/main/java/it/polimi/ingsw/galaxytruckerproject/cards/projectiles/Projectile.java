@@ -124,9 +124,8 @@ public abstract class Projectile {
             return;
         }
         coordinatesToDestroy= Optional.empty();
-        return;
-
-
-
     }
+
+    @Override
+    public abstract String toString();
 }
