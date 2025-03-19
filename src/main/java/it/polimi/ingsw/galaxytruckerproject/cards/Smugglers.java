@@ -23,7 +23,7 @@ public class Smugglers extends Enemies{
         this.playerToInteract = new ArrayList<>();
     }
     @Override
-    public void initializeCard(GameInterface game) {
+    public void initializeCard(Game game) {
         if (!initialized) {
             playerToInteract = new ArrayList<>(game.getListOfPlayers());
             initialized=true;

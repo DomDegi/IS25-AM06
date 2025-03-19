@@ -1,7 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.Game;
-import it.polimi.ingsw.galaxytruckerproject.GameInterface;
 
 public abstract class Enemies extends Card {
     protected final int cannonStrength;
@@ -15,7 +14,7 @@ public abstract class Enemies extends Card {
     public abstract String toString();
 
     @Override
-    public abstract void initializeCard(GameInterface game);
+    public abstract void initializeCard(Game game);
 
     @Override
     public abstract void executeCard(Game game, String playerName, String[] input);

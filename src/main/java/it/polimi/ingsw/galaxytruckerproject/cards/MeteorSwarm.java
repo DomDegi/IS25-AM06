@@ -4,8 +4,6 @@ import it.polimi.ingsw.galaxytruckerproject.Game;
 <<<<<<< Updated upstream
 import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.Meteor;
 =======
-import it.polimi.ingsw.galaxytruckerproject.GameInterface;
-import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.Projectile;
 >>>>>>> Stashed changes
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
@@ -29,7 +27,7 @@ public class MeteorSwarm extends Card {
     }
 
     @Override
-    public void initializeCard(GameInterface game) {
+    public void initializeCard(Game game) {
         if (!initialized) {
             playerToInteract = new ArrayList<>(game.getListOfPlayers());
             initialized = true;

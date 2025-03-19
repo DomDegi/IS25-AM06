@@ -1,7 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.Game;
-import it.polimi.ingsw.galaxytruckerproject.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.cards.penalties.CrewPenalty;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
@@ -30,7 +29,7 @@ public class AbandonedShip extends Card{
     }
 
     @Override
-    public void initializeCard(GameInterface game) {
+    public void initializeCard(Game game) {
         if (playerIndex > game.getNumberOfPlayers() - 1) {
             System.out.println("Everyone refused to fix the abandoned ship\n");
             game.endCardEvent();

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.Game;
-import it.polimi.ingsw.galaxytruckerproject.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.Goods;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
@@ -24,7 +23,7 @@ public class AbandonedStation extends Card {
     }
     //asks every player in order of ranking that meets the requirements if they want to spend days to gain the goods
     @Override
-    public void initializeCard(GameInterface game) {
+    public void initializeCard(Game game) {
         if (!initialized) {
             playerToInteract = new ArrayList<>(game.getListOfPlayers());
             initialized=true;
