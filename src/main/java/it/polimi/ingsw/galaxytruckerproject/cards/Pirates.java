@@ -10,10 +10,10 @@ import java.util.ArrayList;
 
 public class Pirates extends Enemies {
     private final int rewardCredits;
-    private ArrayList<Projectile> listOfShots;
+    private final ArrayList<Projectile> listOfShots;
     private int playerIndex;
     private Player currentPlayer = null;
-    private CannonPenalty penaltyIfLose;
+    private final CannonPenalty penaltyIfLose;
     private int won = 0;
 
     public Pirates(int level, int requiredDays, int cannonStrength, int rewardCredits, ArrayList<Projectile> listOfShots) {
@@ -58,8 +58,7 @@ public class Pirates extends Enemies {
                     }
                     else if (currentPlayer.useDoubleCannons(new ArrayList<Coordinates>()) < cannonStrength){
                         won = - 1;
-                        System.out.println("input the coordinates of the crew members to lose to the pirates\n");
-                        currentPlayer.printCurrentInfoCabins();
+                        penaltyIfLose.printInfoOnAllProjectiles();
                     }
                     else {
                         System.out.println(currentPlayer.getPlayerName() + " tied with the pirates\n");
@@ -109,7 +108,7 @@ public class Pirates extends Enemies {
                 else if (input[0].equalsIgnoreCase("yes")){
                     game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
                     currentPlayer.gainCredit(rewardCredits);
-                    game.drawCard();
+                    game.endCardEvent();
                 }
 
             }

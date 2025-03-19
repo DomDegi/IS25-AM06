@@ -9,10 +9,10 @@ import java.util.Optional;
 
 public class SmallMeteor extends Projectile {
     public SmallMeteor(Game game, Direction direction) {
-        super(game,direction);
+        super(direction);
     }
 
-    public  Defense throwProjectile(Player player, int diceRoll) {
+    public  Defense throwProjectile(Player player, int diceRoll, Game game) {
         Throw(player, diceRoll);
 
         if(coordinatesToDestroy.isEmpty()){

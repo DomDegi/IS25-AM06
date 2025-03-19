@@ -13,10 +13,10 @@ public class SmallCannonShot extends Projectile {
 
 
     public SmallCannonShot(Game game , Direction direction){
-        super(game, direction);
+        super(direction);
     }
 
-    public Defense throwProjectile(Player player, int diceRoll) {
+    public Defense throwProjectile(Player player, int diceRoll, Game game) {
         Throw(player,diceRoll);
         if(coordinatesToDestroy.isEmpty()){
             //miss

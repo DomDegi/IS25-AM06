@@ -130,7 +130,7 @@ public class Player {
         return DoubleEngineToUse.size()*2;
     }
     public int calculateEngineStrength(ArrayList<Coordinates> DoubleEngineToUse, ArrayList<Coordinates> BatteriesToConsume){
-        int engineStrength=0;
+        int engineStrength;
         engineStrength= chooseDoubleEngine(DoubleEngineToUse,BatteriesToConsume);
         if(engineStrength!=-1){
             engineStrength += playerShip.getNumSingleEngine();
@@ -198,7 +198,7 @@ public class Player {
         return doubleCannonPower;
     }
     public float calculateCannonStrength(ArrayList<Coordinates> DoubleCannonToUse, ArrayList<Coordinates> BatteriesToConsume){
-        float cannonStrength=0;
+        float cannonStrength;
         cannonStrength = chooseDoubleCannon(DoubleCannonToUse,BatteriesToConsume);
         if(cannonStrength!=-1){
             cannonStrength += playerShip.getSingleCannonPower();
@@ -243,7 +243,7 @@ public class Player {
     //or had wrong coordinates won't get removed
     public ArrayList<Goods> gainGoods (ArrayList<Coordinates> whereToPlace, ArrayList<Goods> goods){
 
-        ArrayList<Goods> placedCorrectly = new ArrayList<Goods>();
+        ArrayList<Goods> placedCorrectly = new ArrayList<>();
 
         //if you put more coordinates than the goods in the card event
         while (whereToPlace.size() > goods.size()){
@@ -321,7 +321,7 @@ public class Player {
 
     public void printCurrentInfoCabins() {
         for (Coordinates Coordinates : playerShip.getCabinsCoordinates()) {
-            System.out.println(playerShip.getTilesTable()[Coordinates.getX()][ Coordinates.getY()].get().toString() + "\n");
+            System.out.println(playerShip.getTilesTable()[Coordinates.getX()][ Coordinates.getY()].get() + "\n");
         }
     }
 
@@ -330,7 +330,7 @@ public class Player {
         this.credit += credit;
     }
 
-    //THIS METHOD RECEIVES THE Coordinates OF THE SHIELD THAT WANTS TO BE ACTIVED AND THE Coordinates OF THE BATTERYCOMPONENTS
+    //THIS METHOD RECEIVES THE Coordinates OF THE SHIELD THAT WANTS TO BE ACTIVATED AND THE Coordinates OF THE BATTERY COMPONENTS
     //FROM WHICH IT'S GOING TO BE USED THE ONE BATTERY NECESSARY TO POWER THE SHIELD
     public Coverage useShield(Coordinates shieldCoordinates, Coordinates batteryCoordinates) {
         return playerShip.chooseShields(shieldCoordinates,batteryCoordinates);

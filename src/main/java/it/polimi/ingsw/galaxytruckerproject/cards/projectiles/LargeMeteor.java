@@ -3,22 +3,18 @@ package it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.tiles.Connectors;
-import it.polimi.ingsw.galaxytruckerproject.tiles.Coverage;
 import it.polimi.ingsw.galaxytruckerproject.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Direction;
-import java.util.ArrayList;
 import java.util.Optional;
 
 public class LargeMeteor extends Projectile {
     public LargeMeteor(Game game, Direction direction) {
-
-        super(game, direction);
+        super(direction);
     }
 
 
-    public Defense throwProjectile(Player player,int diceRoll) {
+    public Defense throwProjectile(Player player,int diceRoll, Game game) {
         Throw(player,diceRoll);
 
         if(coordinatesToDestroy.isEmpty()){
