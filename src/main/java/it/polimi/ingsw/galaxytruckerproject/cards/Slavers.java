@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.Game;
+import it.polimi.ingsw.galaxytruckerproject.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.cards.penalties.CrewPenalty;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
@@ -27,7 +28,7 @@ public class Slavers extends Enemies{
     }
 
     @Override
-    public void initializeCard(Game game) {
+    public void initializeCard(GameInterface game) {
         if (playerIndex > game.getNumberOfPlayers() - 1){
             System.out.println("No player beat the slavers\n");
             game.endCardEvent();

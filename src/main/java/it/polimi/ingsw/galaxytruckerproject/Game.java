@@ -14,7 +14,7 @@ import java.util.*;
 
 import static it.polimi.ingsw.galaxytruckerproject.GameState.*;
 
-public class Game {
+public class Game implements GameInterface{
     private final GameMode mode = GameMode.LEVEL2;
     private GameState gameState;
     private final ArrayList<GameObserver> observerList = new ArrayList<>();
@@ -59,9 +59,9 @@ public class Game {
     }
 
     //adds player to game with the input string as name
-    public void AddPlayer(String playerName, PlayersColor color) {
+    public void addPlayer(String playerName, PlayersColor color) {
         for (Player player: flightBoard.getAllPlayers()){
-            if (IdentifyPlayerByName(playerName) != null) {
+            if (identifyPlayerByName(playerName) != null) {
                 System.out.println("player with this name is already registered\n");
                 return;
             }
@@ -74,15 +74,15 @@ public class Game {
     }
 
     //changes game state to SHIPS_CREATION and notifies observers of it (GUI, TUI, Log)
-    public void StartGame(){
+    public void startGame(){
         this.gameState = SHIPS_CREATION;
         notifyObservers(gameState);
     }
 
     //SHIPS_CREATION METHODS
 
-    public Tile DrawTile (String playerName) {
-        Player player = IdentifyPlayerByName(playerName);
+    public Tile drawTile (String playerName) {
+        Player player = identifyPlayerByName(playerName);
         if (player == null) { return null;}
         Tile drawnTile = tileStack.pop();
         try {
@@ -95,8 +95,8 @@ public class Game {
         return drawnTile;
     }
 
-    public Tile DrawTurnedTile (String playerName, int index) {
-        Player player = IdentifyPlayerByName(playerName);
+    public Tile drawTurnedTile (String playerName, int index) {
+        Player player = identifyPlayerByName(playerName);
         if (player == null || (index < 0 || index >= turnedTiles.size())) { return null;}
         Tile drawnTile = turnedTiles.remove(index);
         player.hasDrawnTile(drawnTile);
@@ -104,8 +104,8 @@ public class Game {
     }
 
     //sets the booked tile at index 0 or 1 as the drawn tile for player: playerName
-    public Tile DrawBookedTile (String playerName, int index) {
-        Player player = IdentifyPlayerByName(playerName);
+    public Tile drawBookedTile (String playerName, int index) {
+        Player player = identifyPlayerByName(playerName);
         if ((player == null) || ((index != 0) && (index != 1))) { return null;}
         Tile drawnTile = player.getShipBoard().removeBookedTile(index);
         if (drawnTile == null) { return null;}
@@ -113,8 +113,8 @@ public class Game {
         return drawnTile;
     }
 
-    public void RefuseTile(String playerName) {
-        Player player = IdentifyPlayerByName(playerName);
+    public void refuseTile(String playerName) {
+        Player player = identifyPlayerByName(playerName);
         Tile removedTile = player.removeDrawnTile();
         turnedTiles.add(removedTile);
     }
@@ -129,7 +129,7 @@ public class Game {
     }
 
     public void printBookedTiles(String playerName) {
-        Player player = IdentifyPlayerByName(playerName);
+        Player player = identifyPlayerByName(playerName);
         ArrayList<Tile> bookedTiles = player.getShipBoard().getBookedTiles();
         int i = 0;
         for (Tile bookedTile : bookedTiles) {
@@ -139,7 +139,7 @@ public class Game {
     }
 
     public synchronized void lookInGameCards1 (String playerName) {
-        Player player = IdentifyPlayerByName(playerName);
+        Player player = identifyPlayerByName(playerName);
         System.out.println(player.getPlayerName() + " here are the 3 cards contained in flightBoard deck 1: \n");
         for (int i = 0; i < 3; i++) {
             System.out.println(inGameCards.get(i).toString());
@@ -148,7 +148,7 @@ public class Game {
     }
 
     public synchronized void lookInGameCards2 (String playerName) {
-        Player player = IdentifyPlayerByName(playerName);
+        Player player = identifyPlayerByName(playerName);
         System.out.println(player.getPlayerName() + " here are the 3 cards contained in flightBoard deck 2: \n");
         for (int i = 3; i < 6; i++) {
             System.out.println(inGameCards.get(i).toString());
@@ -157,7 +157,7 @@ public class Game {
     }
 
     public synchronized void lookInGameCards3 (String playerName) {
-        Player player = IdentifyPlayerByName(playerName);
+        Player player = identifyPlayerByName(playerName);
         System.out.println(player.getPlayerName() + " here are the 3 cards contained in flightBoard deck 3: \n");
         for (int i = 6; i < 9; i++) {
             System.out.println(inGameCards.get(i).toString());
@@ -166,12 +166,12 @@ public class Game {
     }
 
     public boolean playerSetTile (String playerName, Coordinates coordinates) {
-        Player player = IdentifyPlayerByName(playerName);
+        Player player = identifyPlayerByName(playerName);
         return player.getShipBoard().positionTile(Optional.ofNullable(player.getDrawnTile()), coordinates);
     }
 
     public boolean playerBookTile (String playerName) {
-        Player player = IdentifyPlayerByName(playerName);
+        Player player = identifyPlayerByName(playerName);
         if (player.getDrawnTile() == null) {
             return false;
         }
@@ -183,7 +183,7 @@ public class Game {
         }
     }
 
-    public void StartTimer() {
+    public void startTimer() {
         Timer hourglass = new Timer();
         this.hourglassTurns++;
         hourglass.schedule(new TimerTask() {
@@ -223,6 +223,10 @@ public class Game {
 
     //CARD_EVENT METHODS
 
+    public void cardEvent(String playerName, String[] input) {
+        drawnCard.executeCard(this, playerName, input);
+    }
+
     public void endCardEvent() {
         this.gameState = DRAW_CARD;
         notifyObservers(gameState);
@@ -246,7 +250,7 @@ public class Game {
     }
 
     //input a string and if it's the same as a player name returns the player
-    public Player IdentifyPlayerByName (String playerName) {
+    public Player identifyPlayerByName(String playerName) {
         for (Player player: getListOfPlayers()) {
             if (playerName.equals(player.getPlayerName())) {
                 return player;
@@ -280,7 +284,7 @@ public class Game {
     }
 
     public ShipBoard getPlayerShipBoard (String playerName) {
-        Player player =  IdentifyPlayerByName(playerName);
+        Player player =  identifyPlayerByName(playerName);
         if (player == null) {
             return null;
         }

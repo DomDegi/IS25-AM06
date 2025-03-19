@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.Game;
+import it.polimi.ingsw.galaxytruckerproject.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ public class StarDust extends Card {
     }
 
     //This cards doesn't need any input, so it gets instantly executed when initialized
-    public void initializeCard(Game game) {
+    public void initializeCard(GameInterface game) {
         String[] input = {"any", "input"};
         executeCard(game, game.getListOfPlayers().getFirst().getPlayerName(), input);
     }

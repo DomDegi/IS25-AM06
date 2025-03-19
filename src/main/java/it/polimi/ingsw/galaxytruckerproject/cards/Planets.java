@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.Game;
+import it.polimi.ingsw.galaxytruckerproject.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.Goods;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
@@ -22,7 +23,7 @@ public class Planets extends Card{
         this.playerToInteract = new ArrayList<>();
     }
     @Override
-    public void initializeCard(Game game) {
+    public void initializeCard(GameInterface game) {
         if (!initialized) {
             playerToInteract = new ArrayList<>(game.getListOfPlayers());
             initialized=true;

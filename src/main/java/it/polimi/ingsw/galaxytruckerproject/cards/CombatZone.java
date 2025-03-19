@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.Game;
+import it.polimi.ingsw.galaxytruckerproject.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.cards.penalties.Penalty;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
@@ -24,7 +25,7 @@ public class CombatZone extends Card {
     }
 
     @Override
-    public void initializeCard(Game game) {
+    public void initializeCard(GameInterface game) {
         //if there is only one player still flying, combat>one cards get skipped
         if (game.getNumberOfPlayers() == 1) {
             game.endCardEvent();
