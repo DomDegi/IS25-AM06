@@ -1,8 +1,10 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
-import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.Game;
+<<<<<<< Updated upstream
 import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.Meteor;
+=======
+>>>>>>> Stashed changes
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
 
