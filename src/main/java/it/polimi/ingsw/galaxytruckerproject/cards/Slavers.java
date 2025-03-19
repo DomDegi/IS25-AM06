@@ -102,12 +102,12 @@ public class Slavers extends Enemies{
             }
             else if (won == 1){
                 if (input[0].equalsIgnoreCase("no")){
-                    game.drawCard();
+                    game.endCardEvent();
                 }
                 else if (input[0].equalsIgnoreCase("yes")){
                     game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
                     currentPlayer.gainCredit(rewardCredits);
-                    game.drawCard();
+                    game.endCardEvent();
                 }
 
             }

@@ -11,18 +11,18 @@ public class ShipBoard {
     private Optional<Tile>[][] tilesTable;
     private int numExposedConnectors;
     private int penalty;
-    private ArrayList<Tile> bookedTiles;
+    private final ArrayList<Tile> bookedTiles;
     private int numBatteries;
     private float singleCannonPower;
-    private ArrayList<Coordinates> DoubleCannon;
+    private final ArrayList<Coordinates> DoubleCannon;
 
     //TO ENNIO: IF THERE'S A REASON TO NOT USE THIS SET UP, FEEL FREE TO RESET EVERYTHING AS IT WAS
     private ArrayList<Coordinates> DoubleStraightCannon;
     private ArrayList<Coordinates> DoubleSideCannon;
 
     private int numSingleEngine;
-    private ArrayList<Coordinates> DoubleEngine;
-    private ArrayList<Coverage> shields;
+    private final ArrayList<Coordinates> DoubleEngine;
+    private final ArrayList<Coverage> shields;
     private ArrayList<Coordinates> batteryCoordinates;
     private ArrayList<Coordinates> crewCoordinates;
     private ArrayList<Coordinates> cargoHoldCoordinates;
@@ -33,19 +33,18 @@ public class ShipBoard {
 
     public ShipBoard(Player player) {
         this.player = player;
-        numExposedConnectors = 0;
-        penalty = 0;
-        bookedTiles = new ArrayList<Tile>();
-        numBatteries = 0;
-        singleCannonPower = 0;
-        DoubleCannon = new ArrayList<Coordinates>();
-        numSingleEngine = 0;
-        DoubleEngine = new ArrayList<Coordinates>();
-        shields = new ArrayList<Coverage>();
-        numBrownAliens = 0;
-        numPurpleAliens = 0;
-        numExposedConnectors = 0;
-        numHumanCrew = 0;
+        this.penalty = 0;
+        this.bookedTiles = new ArrayList<>();
+        this.numBatteries = 0;
+        this.singleCannonPower = 0;
+        this.DoubleCannon = new ArrayList<>();
+        this.numSingleEngine = 0;
+        this.DoubleEngine = new ArrayList<>();
+        this.shields = new ArrayList<>();
+        this.numBrownAliens = 0;
+        this.numPurpleAliens = 0;
+        this.numExposedConnectors = 0;
+        this.numHumanCrew = 0;
     }
 
     //GETTER METHODS

@@ -1,10 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.Game;
-<<<<<<< Updated upstream
 import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.Meteor;
-=======
->>>>>>> Stashed changes
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
 
@@ -64,7 +61,7 @@ public class MeteorSwarm extends Card {
         if(playerToInteract.isEmpty()&&listOfMeteors.isEmpty()){
             return;
         }
-        if(playerToInteract.isEmpty(){
+        if(playerToInteract.isEmpty()){
             listOfMeteors.removeFirst();
             initialized=false;
         }

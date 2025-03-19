@@ -130,7 +130,7 @@ public class Player {
         return DoubleEngineToUse.size()*2;
     }
     public int calculateEngineStrength(ArrayList<Coordinates> DoubleEngineToUse, ArrayList<Coordinates> BatteriesToConsume){
-        int engineStrength=0;
+        int engineStrength;
         engineStrength= chooseDoubleEngine(DoubleEngineToUse,BatteriesToConsume);
         if(engineStrength!=-1){
             engineStrength += playerShip.getNumSingleEngine();
@@ -307,7 +307,7 @@ public class Player {
         this.credit += credit;
     }
 
-    //THIS METHOD RECEIVES THE Coordinates OF THE SHIELD THAT WANTS TO BE ACTIVED AND THE Coordinates OF THE BATTERYCOMPONENTS
+    //THIS METHOD RECEIVES THE Coordinates OF THE SHIELD THAT WANTS TO BE ACTIVATED AND THE Coordinates OF THE BATTERY_COMPONENTS
     //FROM WHICH IT'S GOING TO BE USED THE ONE BATTERY NECESSARY TO POWER THE SHIELD
     public Coverage useShield(Coordinates shieldCoordinates, Coordinates batteryCoordinates) {
         return playerShip.chooseShields(shieldCoordinates,batteryCoordinates);
