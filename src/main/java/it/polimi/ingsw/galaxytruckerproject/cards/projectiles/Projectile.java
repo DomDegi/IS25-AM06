@@ -21,7 +21,7 @@ public abstract class Projectile {
     protected Optional<Coordinates> coordinatesToDestroy;
 
 
-    public Projectile(Game game, Direction direction) {
+    public Projectile(Direction direction) {
         this.direction = direction;
             this.game = game;
     }
@@ -29,7 +29,7 @@ public abstract class Projectile {
         return direction;
     }
 
-    public Defense throwProjectile(Player player, int DiceRoll) {
+    public Defense throwProjectile(Game game, Player player, int DiceRoll) {
         return Defense.PROTECTED;
     }
 

@@ -12,13 +12,13 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public class LargeMeteor extends Projectile {
-    public LargeMeteor(Game game, Direction direction) {
+    public LargeMeteor(Direction direction) {
 
         super(game, direction);
     }
 
 
-    public Defense throwProjectile(Player player,int diceRoll) {
+    public Defense throwProjectile(Game game, Player player,int diceRoll) {
         Throw(player,diceRoll);
 
         if(coordinatesToDestroy.isEmpty()){

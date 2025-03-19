@@ -20,11 +20,22 @@ class ShipBoardTest {
         shipBoard.initializeLevel2();
     }
 
-
     @Test
     void testOneTileCorrectShipboard() {
         Tile tile=new DoubleEngine(new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH));
         shipBoard.positionTile(Optional.of(tile), new Coordinates(3,3));
+        assertTrue(shipBoard.verifyCorrectness());
+    }
+
+    @Test
+    void testTwoTilesConnectorsShipboardWithRotation() {
+        //create e set tile 1
+        Tile tile1=new DoubleCannon(new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL));
+        tile1.rotate();
+        shipBoard.positionTile(Optional.of(tile1), new Coordinates(3,3));
+        //create e set tile 2
+        Tile tile2=new Pipe(new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH));
+        shipBoard.positionTile(Optional.of(tile2), new Coordinates(2,3));
         assertTrue(shipBoard.verifyCorrectness());
     }
 
@@ -35,7 +46,7 @@ class ShipBoardTest {
         tile1.rotate();
         shipBoard.positionTile(Optional.of(tile1), new Coordinates(3,3));
         //create e set tile 2
-        Tile tile2=new Pipe(new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH));
+        Tile tile2=new Pipe(new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH));
         shipBoard.positionTile(Optional.of(tile2), new Coordinates(2,3));
         assertFalse(shipBoard.verifyCorrectness());
     }
@@ -44,13 +55,14 @@ class ShipBoardTest {
     void testOneCannonStrength(){
         Tile tile1=new SingleCannon(new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL));
         shipBoard.positionTile(Optional.of(tile1), new Coordinates(3,3));
-
+        shipBoard.verifyCorrectness();
         assertTrue(shipBoard.getSingleCannonPower()==1);
     }
 
     @Test
     void testAddBreakSingleCannon(){
         shipBoard.addBreakSingleCannonPower(1);
+
         assertTrue(shipBoard.getSingleCannonPower()==1);
     }
 
@@ -58,7 +70,8 @@ class ShipBoardTest {
     void testOneBatteryComponent(){
         Tile tile1=new BatteryComponents(new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL), 2);
         shipBoard.positionTile(Optional.of(tile1), new Coordinates(3,3));
-        assertTrue(shipBoard.getBatteryCoordinates().size()==1);
+        shipBoard.verifyCorrectness();
+        assertTrue(shipBoard.getBatteryCoordinates().contains(tile1.getCoordinates()));
     }
 
     @Test
@@ -75,6 +88,7 @@ class ShipBoardTest {
         shipBoard.positionTile(Optional.of(tile), new Coordinates(3,3));
         shipBoard.countExposedConnectors();
         assertTrue(shipBoard.getNumExposedConnectors()==2);
+
     }
 
 

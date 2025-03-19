@@ -17,8 +17,9 @@ public class ShipBoard {
     private ArrayList<Coordinates> DoubleCannon;
 
     //TO ENNIO: IF THERE'S A REASON TO NOT USE THIS SET UP, FEEL FREE TO RESET EVERYTHING AS IT WAS
-    private ArrayList<Coordinates> DoubleStraightCannon;
-    private ArrayList<Coordinates> DoubleSideCannon;
+   // private ArrayList<Coordinates> DoubleStraightCannon;
+   // private ArrayList<Coordinates> DoubleSideCannon;
+    //TO SOHEIL I FEAR RESETTING
 
     private int numSingleEngine;
     private ArrayList<Coordinates> DoubleEngine;
@@ -39,6 +40,9 @@ public class ShipBoard {
         numBatteries = 0;
         singleCannonPower = 0;
         DoubleCannon = new ArrayList<Coordinates>();
+        batteryCoordinates= new ArrayList<Coordinates>();
+        crewCoordinates=  new ArrayList<Coordinates>();
+        cargoHoldCoordinates= new ArrayList<Coordinates>();
         numSingleEngine = 0;
         DoubleEngine = new ArrayList<Coordinates>();
         shields = new ArrayList<Coverage>();
@@ -198,6 +202,9 @@ public class ShipBoard {
 
     public Tile getTile(int x, int y) {
         return tilesTable[x][y].get();
+    }
+    public Tile getTile(Coordinates coordinates){
+        return tilesTable[coordinates.getX()][coordinates.getY()].get();
     }
 
     /*

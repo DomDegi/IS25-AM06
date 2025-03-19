@@ -4,12 +4,12 @@ import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
 public class LargeCannonShot extends Projectile  {
-    public LargeCannonShot(Game game, Direction direction){
+    public LargeCannonShot( Direction direction){
         super(game,direction);
     }
 
     @Override
-    public Defense throwProjectile(Player player, int DiceRoll) {
+    public Defense throwProjectile(Game game,Player player, int DiceRoll) {
         Throw(player, DiceRoll);
         if(coordinatesToDestroy.isEmpty()){
             return Defense.PROTECTED;

@@ -19,7 +19,6 @@ public abstract class Tile {
         this.east=east;
         this.south=south;
         this.west=west;
-
     }
 
     @Override
@@ -85,7 +84,7 @@ public abstract class Tile {
         Link tmp2=east;
         east=tmp;
         west=south;
-        south=east;
+        south=tmp2;
     }
 
     public void setCoordinates(Coordinates coordinates) {

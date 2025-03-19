@@ -1,14 +1,18 @@
+### Build e dipendenze ###
 target/
-!../.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+build/
+!src/main/target/
+!src/test/target/
+!src/main/build/
+!src/test/build/
 
 ### IntelliJ IDEA ###
-../.idea/
-../.idea/modules.xml
-../.idea/jarRepositories.xml
-../.idea/compiler.xml
-../.idea/libraries/
+.idea/
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+.idea/workspace.xml  # Evita conflitti su workspace.xml
 *.iws
 *.iml
 *.ipr
@@ -18,22 +22,23 @@ target/
 .classpath
 .factorypath
 .project
-.settings
+.settings/
 .springBeans
 .sts4-cache
 
 ### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
 
-### VS Code ###
+### Visual Studio Code ###
 .vscode/
 
 ### Mac OS ###
 .DS_Store
+
+### Windows ###
+Thumbs.db
+/.idea/

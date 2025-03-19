@@ -8,11 +8,11 @@ import java.security.PublicKey;
 import java.util.Optional;
 
 public class SmallMeteor extends Projectile {
-    public SmallMeteor(Game game, Direction direction) {
+    public SmallMeteor(Direction direction) {
         super(game,direction);
     }
 
-    public  Defense throwProjectile(Player player, int diceRoll) {
+    public  Defense throwProjectile(Game game, Player player, int diceRoll) {
         Throw(player, diceRoll);
 
         if(coordinatesToDestroy.isEmpty()){
