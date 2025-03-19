@@ -4,16 +4,17 @@ import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.tiles.*;
 import java.util.Optional;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Direction;
-import java.util.Random;
-/*
+
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = Meteor.class, name = "Meteor"),
-        @JsonSubTypes.Type(value = CannonShot.class, name = "CannonShot")
+        @JsonSubTypes.Type(value = SmallMeteor.class, name = "SmallMeteor"),
+        @JsonSubTypes.Type(value = SmallCannonShot.class, name = "SmallCannonShot"),
+        @JsonSubTypes.Type(value = LargeMeteor.class, name = "LargeMeteor"),
+        @JsonSubTypes.Type(value = LargeCannonShot.class, name = "LargeCannonShot")
 })
-*/
+
 public abstract class Projectile {
     protected Direction direction;
     protected final Game game;
