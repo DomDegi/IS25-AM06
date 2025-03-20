@@ -12,7 +12,7 @@ import java.util.Optional;
 public class SmallCannonShot extends Projectile {
 
 
-    public SmallCannonShot(Game game , Direction direction){
+    public SmallCannonShot(Direction direction){
         super(direction);
     }
 

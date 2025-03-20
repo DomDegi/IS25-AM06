@@ -15,7 +15,7 @@ import java.util.*;
 import static it.polimi.ingsw.galaxytruckerproject.GameState.*;
 
 public class Game implements GameInterface{
-    private final GameMode mode = GameMode.LEVEL2;
+    private final GameMode mode;
     private GameState gameState;
     private final ArrayList<GameObserver> observerList = new ArrayList<>();
     private int playerCount;
@@ -29,7 +29,8 @@ public class Game implements GameInterface{
 
 
     //instances a new game starting in the state START_GAME
-    public Game() {
+    public Game(GameMode mode) {
+        this.mode = mode;
         this.gameState = START_GAME;
         this.turnedTiles = new ArrayList<>();
         this.flightBoard = new FlightBoard();
@@ -313,4 +314,6 @@ public class Game implements GameInterface{
     public Card getDrawnCard() {
         return drawnCard;
     }
+
+
 }

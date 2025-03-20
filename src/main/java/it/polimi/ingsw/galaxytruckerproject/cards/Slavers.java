@@ -20,6 +20,7 @@ public class Slavers extends Enemies{
         this.rewardCredits = rewardCredits;
         this.lostCrew = lostCrew;
         this.playerIndex = 0;
+        this.penaltyIfLose = new CrewPenalty(lostCrew);
     }
 
     public String toString() {
@@ -107,9 +108,8 @@ public class Slavers extends Enemies{
                 else if (input[0].equalsIgnoreCase("yes")){
                     game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
                     currentPlayer.gainCredit(rewardCredits);
-                    game.drawCard();
+                    game.endCardEvent();
                 }
-
             }
             else if (won == -1){
                 if (penaltyIfLose.applyPenalty(game, currentPlayer, input) == 1) {

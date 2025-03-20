@@ -8,7 +8,7 @@ import java.security.PublicKey;
 import java.util.Optional;
 
 public class SmallMeteor extends Projectile {
-    public SmallMeteor(Game game, Direction direction) {
+    public SmallMeteor(Direction direction) {
         super(direction);
     }
 

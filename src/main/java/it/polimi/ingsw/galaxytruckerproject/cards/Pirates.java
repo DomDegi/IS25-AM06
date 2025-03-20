@@ -1,7 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.Game;
-import it.polimi.ingsw.galaxytruckerproject.cards.penalties.CannonPenalty;
 import it.polimi.ingsw.galaxytruckerproject.cards.penalties.ProjectilePenalty;
 import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
@@ -15,6 +14,7 @@ public class Pirates extends Enemies {
     private Player currentPlayer = null;
     private final ProjectilePenalty penaltyIfLose;
     private int won = 0;
+
     public Pirates(int level, int requiredDays, int cannonStrength, int rewardCredits, ArrayList<Projectile> listOfShots) {
         super(level, requiredDays, cannonStrength);
         this.rewardCredits = rewardCredits;

@@ -9,7 +9,7 @@ import it.polimi.ingsw.galaxytruckerproject.tiles.Direction;
 import java.util.Optional;
 
 public class LargeMeteor extends Projectile {
-    public LargeMeteor(Game game, Direction direction) {
+    public LargeMeteor(Direction direction) {
         super(direction);
     }
 

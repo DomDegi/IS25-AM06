@@ -4,7 +4,7 @@ import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
 public class LargeCannonShot extends Projectile  {
-    public LargeCannonShot(Game game, Direction direction){
+    public LargeCannonShot(Direction direction){
         super(direction);
     }
 

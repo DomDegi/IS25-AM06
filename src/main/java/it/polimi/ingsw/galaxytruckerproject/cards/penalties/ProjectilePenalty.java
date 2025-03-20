@@ -120,10 +120,6 @@ public class ProjectilePenalty extends Penalty {
         this.diceRoll = diceRoll;
     }
 
-    public void removeDiceRoll () {
-        this.diceRoll = 0;
-    }
-    
     public void addProjectile (Projectile projectile) {
         this.listOfProjectiles.add(projectile);
     }
