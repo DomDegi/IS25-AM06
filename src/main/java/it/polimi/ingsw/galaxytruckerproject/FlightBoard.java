@@ -30,10 +30,10 @@ public class FlightBoard {
         podium.add(player);
         freePodiumPosition++;
     }
-    public boolean addToTrialFlightBoard(Player newPlayer) {
+    public void addToTrialFlightBoard(Player newPlayer) {
         if(!podium.contains(newPlayer)){
             System.out.println("Player not found");
-            return false;
+            return;
         }
         if(occupiedPos.isEmpty()){
             int pos=0;
@@ -59,21 +59,20 @@ public class FlightBoard {
         }
         inGamePlayers.get(occupiedPos.getFirst()).setPlayerRanking(occupiedPos.getFirst()+1);
         occupiedPos.set(0,occupiedPos.getFirst()+1);
-        return true;
     }
-    public boolean addToFlightBoard(Player newPlayer,int pos) {
+    public void addToFlightBoard(Player newPlayer,int pos) {
         pos = pos - 1;
         if(!podium.contains(newPlayer)){
             System.out.println("Player not found");
-            return false;
+            return;
         }
         if(pos<0 || pos>= inGamePlayers.size()){
             System.out.println("Position out of bounds or playerRanking is greater than numPlayer+1");
-            return false;
+            return;
         }
         if (occupiedPos.contains(pos)) {
             System.out.println("Position occupied");
-            return false;
+            return;
         }
         inGamePlayers.remove(newPlayer);
         inGamePlayers.add(pos,newPlayer);
@@ -98,7 +97,6 @@ public class FlightBoard {
                 throw new IllegalArgumentException("Invalid position: " + pos);
         }
         inGamePlayers.get(pos).setPlayerRanking(pos+1);
-        return true;
     }
     public void removePlayer(Player player) {
         if (!inGamePlayers.contains(player)) {

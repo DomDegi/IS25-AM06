@@ -11,7 +11,7 @@ public class DoubleEngine extends Engine{
         return "DoubleEngine"+ super.toString();
     }
 
-    public boolean ChoosetoUse(){
+    public boolean chooseToUse(){
         return true;
     }
 

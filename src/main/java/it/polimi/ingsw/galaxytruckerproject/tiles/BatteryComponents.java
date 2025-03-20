@@ -2,8 +2,8 @@ package it.polimi.ingsw.galaxytruckerproject.tiles;
 
 public class BatteryComponents extends Tile{
     int batteryCells;
-    public BatteryComponents(Link nord, Link south, Link east, Link west, int numCells) {
-        super(nord,south,west,east);
+    public BatteryComponents(Link north, Link south, Link east, Link west, int numCells) {
+        super(north,south,west,east);
         this.batteryCells = numCells;
     }
     public int getNumBatteries(){

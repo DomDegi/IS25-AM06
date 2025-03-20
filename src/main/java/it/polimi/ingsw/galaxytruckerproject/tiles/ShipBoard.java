@@ -349,25 +349,25 @@ public class ShipBoard {
         numExposedConnectors = 0;
         //if the tile at its LEFT is either out of bounds, a VoidTile, or empty,
         //then our Tile iss a borderTile and I have to check if it is Exsposed
-        if (i - 1 < 0 || !tilesTable[i - 1][j].get().Pleaceble() || tilesTable[i + 1][j].isEmpty())
+        if (i - 1 < 0 || !tilesTable[i - 1][j].get().Placeable() || tilesTable[i + 1][j].isEmpty())
             if (!tilesTable[i][j].get().getWest().getConnectorsType().equals(Connectors.SMOOTH))
                 numExposedConnectors++;
 
         //if the tile at its RIGHT is either out of bounds, a VoidTile, or empty,
         //then our Tile iss a borderTile and I have to check if it is Exsposed
-        if (i + 1 > 6 || !tilesTable[i + 1][j].get().Pleaceble() || tilesTable[i + 1][j].isEmpty())
+        if (i + 1 > 6 || !tilesTable[i + 1][j].get().Placeable() || tilesTable[i + 1][j].isEmpty())
             if (!tilesTable[i][j].get().getEast().getConnectorsType().equals(Connectors.SMOOTH))
                 numExposedConnectors++;
 
         //if the tile UNDER is either out of bounds, a VoidTile, or empty,
         // then our Tile iss a borderTile and I have to check if it is Exsposed
-        if (j + 1 > 4 || tilesTable[i][j + 1].get().Pleaceble() || tilesTable[i][j + 1].isEmpty())
+        if (j + 1 > 4 || tilesTable[i][j + 1].get().Placeable() || tilesTable[i][j + 1].isEmpty())
             if (!tilesTable[i][j].get().getSouth().getConnectorsType().equals(Connectors.SMOOTH))
                 numExposedConnectors++;
 
         //if the tile OVER is either out of bounds, a VoidTile, or empty,
         // then our Tile iss a borderTile and I have to check if it is Exsposed
-        if (j - 1 < 0 || tilesTable[i][j - 1].get().Pleaceble() || tilesTable[i][j + 1].isEmpty())
+        if (j - 1 < 0 || tilesTable[i][j - 1].get().Placeable() || tilesTable[i][j + 1].isEmpty())
             if (!tilesTable[i][j].get().getNorth().getConnectorsType().equals(Connectors.SMOOTH))
                 numExposedConnectors++;
     }

@@ -252,7 +252,7 @@ public class Player {
         Goods placedGood;
         while (!whereToPlace.isEmpty()) {
             placedGood = goods.removeFirst();
-            if (playerShip.gainGoods(placedGood ,whereToPlace.removeFirst())) {
+            if (playerShip.gainGoods(placedGood ,whereToPlace.removeFirst())==1) {
                 placedCorrectly.add(placedGood);
             }
         }

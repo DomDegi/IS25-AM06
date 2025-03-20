@@ -10,9 +10,9 @@ public class AbandonedShip extends Card{
     private final int crewNumberRequired;
     private final int possibleCreditGains;
     private int playerIndex;
-    private CrewPenalty penaltyIfAccept;
+    private final CrewPenalty penaltyIfAccept;
     private Optional<Player> playerToPlay =  Optional.empty();
-    boolean playerAccepted;
+    private boolean playerAccepted;
 
     public AbandonedShip(int level, int requiredDays, int crewNumberRequired, int possibleCreditGains) {
         super(level, requiredDays);

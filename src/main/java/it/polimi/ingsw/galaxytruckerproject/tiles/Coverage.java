@@ -5,22 +5,13 @@ public enum Coverage {
 
     @Override
     public String toString() {
-        switch(this){
-            case NORTH_EAST:{
-                return "NORTH_EAST";
-            }
-            case SOUTH_EAST:{
-            return "SOUTH_EAST";}
-            case SOUTH_WEST:{
-            return "SOUTH_WEST";}
-            case NORTH_WEST:{
-                return "NORTH_WEST";}
-            case NONE:{
-                return "NONE";
-            }
-            default:
-                return "";
-        }
-        }
+        return switch (this) {
+            case NORTH_EAST -> "NORTH_EAST";
+            case SOUTH_EAST -> "SOUTH_EAST";
+            case SOUTH_WEST -> "SOUTH_WEST";
+            case NORTH_WEST -> "NORTH_WEST";
+            case NONE -> "NONE";
+        };
+    }
 }
 
