@@ -9,10 +9,12 @@ public class StartingCabin extends Cabin {
     public StartingCabin(Link nord, Link east, Link south, Link west) {
         super(nord, east, south, west);
         crew = 2;
-        playerColor = shipBoard.player.getPlayerColor();
     }
 
-    public void getStat(){shipBoard.addBreakHumanCrew(+2);}
+    public void getStat(){
+        shipBoard.getCabinsCoordinates().add(this.coordinates);
+        shipBoard.addBreakHumanCrew(+2);
+    }
     public boolean removeCrew(){
         if(crew > 0) {
             crew--;
@@ -22,17 +24,25 @@ public class StartingCabin extends Cabin {
         return false;
     }
 
+    @Override
+    public void setCoordinates(Coordinates coordinates) {
+        playerColor= shipBoard.getPlayer().getPlayerColor();
+        super.setCoordinates(coordinates);
+    }
 
     public void destroy(){
+        shipBoard.getCabinsCoordinates().remove(this.coordinates);
         shipBoard.addBreakHumanCrew(-crew);
         crew=0;
+        super.destroy();
     }
 
     public String toString(){
         StringBuilder s = new StringBuilder();
-        s.append(getCoordinates().getX()).append(" ").append(getCoordinates().getY()).append(" ")
-                .append(this.crew).append(" ").append("Human");
-        return s.toString();
+        s.append(playerColor.toString()).append(" Starting Cabin: ");
+        s.append(" numCrew:");
+        s.append(this.crew).append(" ").append("Human");
+        return s.toString()+ super.toString();
     }
 
 }

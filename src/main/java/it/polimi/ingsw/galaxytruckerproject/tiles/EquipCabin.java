@@ -10,6 +10,10 @@ public class EquipCabin extends Cabin {
         super(north, east, south, west);
     }
 
+    public void setAlienAbility(AlienOptions alienabilty){
+        
+    }
+
     //SELECT THE CREWTYPE ACCORDING TO ITS ALIENOPTIONS
     public void setCrewType(CrewType crewType) {
         switch (crewType) {
@@ -52,8 +56,8 @@ public class EquipCabin extends Cabin {
                 shipBoard.addBreakBrownAliens(true);
                 break;
         }
+        shipBoard.getCabinsCoordinates().add(this.coordinates);
     }
-
 
     public boolean removeCrew(){
         if (this.crew>0) {
@@ -95,14 +99,23 @@ public class EquipCabin extends Cabin {
                     break;
             }
             crew=0;
+            shipBoard.getCabinsCoordinates().remove(this.coordinates);
+
         }
+        super.destroy();
     }
+
+    public CrewType getCrewType(){
+        return this.crewType;
+    }
+
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+        sb.append("EquipCabin: ");
         sb.append(getCoordinates().getX()).append(" ").append(getCoordinates().getY()).
                                     append(" ").append(this.crew).append(" ").append(this.crewType);
-        return sb.toString();
+        return sb.toString() +" " + super.toString();
     }
 }

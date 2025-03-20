@@ -25,6 +25,7 @@ public class SingleCannon extends Cannon {
     public void destroy(){
         shipBoard.addBreakSingleCannonPower(-fireStrength);
         fireStrength=0;
+        super.destroy();
     }
 
     public Direction getDirection(){

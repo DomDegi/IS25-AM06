@@ -22,6 +22,7 @@ public class DoubleCannon extends Cannon{
     }
 
     public void destroy(){
+        super.destroy();
         shipBoard.addBreakDoubleCannon(false,this.coordinates);
     }
 

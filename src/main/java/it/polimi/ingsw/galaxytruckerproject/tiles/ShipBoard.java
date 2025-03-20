@@ -4,6 +4,7 @@ import java.util.*;
 import it.polimi.ingsw.galaxytruckerproject.Goods;
 import it.polimi.ingsw.galaxytruckerproject.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
 
 
 public class ShipBoard {
@@ -31,6 +32,19 @@ public class ShipBoard {
     private int numPurpleAliens;
     private int numHumanCrew;
 
+    public String toString() {
+        StringBuilder s = new StringBuilder("Schipboard: ");
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 7; j++) {
+                if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable()) {
+                    s.append(tilesTable[i][j].get().toString());
+                    s.append("\n");
+                }
+            }
+            s.append("\n-\n");
+        }
+        return s.toString();
+    }
 
     public ShipBoard(Player player) {
         this.player = player;
@@ -55,6 +69,10 @@ public class ShipBoard {
     //GETTER METHODS
     public int getPenalty() {
         return penalty;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public int getNumBatteries() {
@@ -193,8 +211,8 @@ public class ShipBoard {
     public boolean positionTile(Optional<Tile> tile, Coordinates coordinates) {
         if (tile.isPresent() && tilesTable[coordinates.getX()][coordinates.getY()].isEmpty()) {
             tilesTable[coordinates.getX()][coordinates.getY()] = tile;
-            tile.get().setCoordinates(coordinates);
             tile.get().setShipBoard(this);
+            tile.get().setCoordinates(coordinates);
             return true;
         }
         return false;
@@ -230,10 +248,19 @@ public class ShipBoard {
         for (int[] pos : voidPositions) {
             this.tilesTable[pos[0]][pos[1]] = Optional.of(new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH)));
         }
+        Tile tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL));
+        positionTile(Optional.of(tile), new Coordinates(2, 3));
     }
 
     public void initializeTestFlight() {
-        tilesTable = new Optional[5][7];
+        this.tilesTable = new Optional[5][7];
+        // Inizializza le caselle riempibili a null
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 7; j++) {
+                this.tilesTable[i][j] = Optional.empty();
+
+            }
+        }
         // Coordinates of VoidTile
         int[][] voidPositions = {
                 {0, 0}, {0, 1}, {0, 2}, {0, 4}, {0, 5}, {0, 6},
@@ -247,14 +274,7 @@ public class ShipBoard {
             tilesTable[pos[0]][pos[1]] = Optional.of(new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH)));
         }
 
-        // Inizializza le caselle riempibili a null
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 7; j++) {
-                if (!(tilesTable[i][j].get() instanceof VoidTile)) {
-                    tilesTable[i][j] = Optional.empty();
-                }
-            }
-        }
+
         this.tilesTable = tilesTable;
     }
 

@@ -23,7 +23,7 @@ public abstract class Tile {
 
     @Override
     public String toString() {
-        return "Tile north"+north.toString() + " east:" + east.toString() + " south" + south.toString() + " west" + west.toString()+"\n"
+        return "Tile north:"+north.toString() + " east:" + east.toString() + " south:" + south.toString() + " west:" + west.toString()+"\n"
                 +"coordinates: "+coordinates.getX()+coordinates.getY();
     }
 

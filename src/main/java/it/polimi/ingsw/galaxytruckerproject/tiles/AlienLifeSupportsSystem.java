@@ -14,4 +14,10 @@ public class AlienLifeSupportsSystem extends Tile{
     public String toString() {
         return "AlienLifeSupportsSystem alienType=" + alienType +" " + super.toString();
     }
+
+    public void destroy(){
+        super.destroy();
+        //more
+    }
+
 }

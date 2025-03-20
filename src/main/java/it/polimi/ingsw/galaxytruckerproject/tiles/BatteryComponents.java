@@ -2,8 +2,8 @@ package it.polimi.ingsw.galaxytruckerproject.tiles;
 
 public class BatteryComponents extends Tile{
     int batteryCells;
-    public BatteryComponents(Link nord, Link south, Link east, Link west, int numCells) {
-        super(nord,south,west,east);
+    public BatteryComponents(Link nord, Link east, Link south, Link west, int numCells) {
+        super(nord,east,south,west);
         this.batteryCells = numCells;
     }
     public int getNumBatteries(){
@@ -27,6 +27,7 @@ public class BatteryComponents extends Tile{
     }
     public void destroy(){
         shipBoard.addBreakBatteries(-batteryCells);
+        shipBoard.getBatteryCoordinates().remove(this.coordinates);
         super.destroy();
     }
 

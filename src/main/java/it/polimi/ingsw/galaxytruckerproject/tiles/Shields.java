@@ -27,9 +27,10 @@ public class Shields extends Tile{
     public Coverage getCoveredArea() {return this.coveredArea;}
     public void destroy(){
         for(Coverage cov : shipBoard.getCoverageShields()){
-            if(cov == coveredArea){
+            if(cov.equals(this.coveredArea)){
                 shipBoard.getCoverageShields().remove(cov);
-                break;
+                super.destroy();
+                return;
             }
         }
     }

@@ -38,7 +38,7 @@ public class LargeMeteor extends Projectile {
         }
         if(direction.equals(Direction.NORTH))
         {
-            return checkNorthLev2(player,diceRoll);
+            return checkNorthLev1(player,diceRoll);
         }
         if(direction.equals(Direction.SOUTH))
         {
@@ -143,7 +143,7 @@ public class LargeMeteor extends Projectile {
 
     }
 
-    private Defense checkNorthLev2(Player player, int diceRoll) {
+    /*private Defense checkNorthLev2(Player player, int diceRoll) {
         Defense defense = Defense.HIT;
         Defense temp = Defense.HIT;
         temp = checkNorthLev1(player,diceRoll);
@@ -162,7 +162,7 @@ public class LargeMeteor extends Projectile {
         if(temp==Defense.CHOOSETOUSEBATTERY)
             defense = temp;
         return defense;
-    }
+    }*/
     private Defense checkEastLev2(Player player, int diceRoll) {
         Defense defense = Defense.HIT;
         Defense temp = Defense.HIT;

@@ -14,6 +14,7 @@ public class SingleEngine extends Engine{
         shipBoard.addBreakSingleEngine(true);
     }
     public void destroy(){
+        super.destroy();
         shipBoard.addBreakSingleEngine(false);
     }
 }
