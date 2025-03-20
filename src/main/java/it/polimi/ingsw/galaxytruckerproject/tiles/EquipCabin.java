@@ -113,6 +113,6 @@ public class EquipCabin extends Cabin {
 
     @Override
     public String toString() {
-        return super.toString() + " " + this.crewType +  " " + this.crew;
+        return "EquipCabin" + " " + this.crewType +  " " + this.crew + " " + super.toString();
     }
 }

@@ -18,7 +18,6 @@ class TileFactoryTest {
     @BeforeEach
     void setUp() {
         tiles = loadTilesFromJson("Tiles.json");
-        tilesQueue = new TileFactory().getStack(tiles);
     }
 
     @Test

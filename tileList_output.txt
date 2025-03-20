@@ -1,459 +1,459 @@
-Cargo Blue Tile north:SINGLE east:SMOOTH south:DOUBLE west:SINGLE
+DoubleCannon direction: N Tile north:SMOOTH east:SMOOTH south:SINGLE west:SMOOTH
 coordinates: 00
 
-AlienLifeSupportsSystem alienType=BROWN Tile north:SINGLE east:SINGLE south:SMOOTH west:SINGLE
+DoubleCannon direction: N Tile north:SMOOTH east:UNIVERSAL south:DOUBLE west:SMOOTH
 coordinates: 00
 
-BatteryComponents 3 cellsTile north:SINGLE east:SINGLE south:DOUBLE west:SMOOTH
+DoubleCannon direction: N Tile north:SMOOTH east:DOUBLE south:SINGLE west:DOUBLE
 coordinates: 00
 
-Shield coverage:NORTH_EASTTile north:SINGLE east:DOUBLE south:SINGLE west:DOUBLE
+DoubleCannon direction: N Tile north:SMOOTH east:SMOOTH south:DOUBLE west:SMOOTH
 coordinates: 00
 
-SingleEngine:direction:S Tile north:UNIVERSAL east:DOUBLE south:SMOOTH west:SMOOTH
+DoubleCannon direction: N Tile north:SMOOTH east:SMOOTH south:SINGLE west:UNIVERSAL
 coordinates: 00
 
-Cargo Red Tile north:SMOOTH east:DOUBLE south:SINGLE west:UNIVERSAL
+DoubleCannon direction: N Tile north:SMOOTH east:SMOOTH south:UNIVERSAL west:DOUBLE
 coordinates: 00
 
-SingleEngine:direction:S Tile north:DOUBLE east:SMOOTH south:SMOOTH west:SMOOTH
+DoubleCannon direction: N Tile north:SMOOTH east:DOUBLE south:SMOOTH west:SINGLE
 coordinates: 00
 
-DoubleEnginedirection:S Tile north:UNIVERSAL east:SMOOTH south:SMOOTH west:DOUBLE
+DoubleCannon direction: N Tile north:SMOOTH east:UNIVERSAL south:SMOOTH west:SMOOTH
 coordinates: 00
 
-SingleCannon direction: NTile north:SMOOTH east:SMOOTH south:DOUBLE west:UNIVERSAL
+DoubleCannon direction: N Tile north:SMOOTH east:SMOOTH south:SMOOTH west:UNIVERSAL
 coordinates: 00
 
-Tile north:DOUBLE east:SMOOTH south:DOUBLE west:UNIVERSAL
-coordinates: 00 null 0
-
-SingleCannon direction: NTile north:SMOOTH east:SMOOTH south:DOUBLE west:SINGLE
+DoubleCannon direction: N Tile north:SMOOTH east:SINGLE south:DOUBLE west:SINGLE
 coordinates: 00
 
-SingleEngine:direction:S Tile north:SINGLE east:SMOOTH south:SMOOTH west:UNIVERSAL
+DoubleCannon direction: N Tile north:SMOOTH east:SINGLE south:UNIVERSAL west:SMOOTH
 coordinates: 00
 
-DoubleCannon direction: NTile north:SMOOTH east:UNIVERSAL south:DOUBLE west:SMOOTH
+SingleCannon direction: N Tile north:SMOOTH east:DOUBLE south:DOUBLE west:DOUBLE
 coordinates: 00
 
-AlienLifeSupportsSystem alienType=PURPLE Tile north:DOUBLE east:DOUBLE south:SMOOTH west:DOUBLE
+SingleCannon direction: N Tile north:SMOOTH east:SMOOTH south:SINGLE west:SMOOTH
 coordinates: 00
 
-Tile north:DOUBLE east:UNIVERSAL south:SMOOTH west:UNIVERSAL
+SingleCannon direction: N Tile north:SMOOTH east:SINGLE south:UNIVERSAL west:DOUBLE
 coordinates: 00
 
-SingleEngine:direction:S Tile north:SMOOTH east:SMOOTH south:SMOOTH west:UNIVERSAL
+SingleCannon direction: N Tile north:SMOOTH east:SINGLE south:UNIVERSAL west:SMOOTH
 coordinates: 00
 
-SingleEngine:direction:S Tile north:SINGLE east:SINGLE south:SMOOTH west:SMOOTH
+SingleCannon direction: N Tile north:SMOOTH east:SINGLE south:SINGLE west:SINGLE
 coordinates: 00
 
-DoubleCannon direction: NTile north:SMOOTH east:SMOOTH south:UNIVERSAL west:DOUBLE
+SingleCannon direction: N Tile north:SMOOTH east:DOUBLE south:SINGLE west:SINGLE
 coordinates: 00
 
-SingleCannon direction: NTile north:SMOOTH east:DOUBLE south:SMOOTH west:UNIVERSAL
+SingleCannon direction: N Tile north:SMOOTH east:DOUBLE south:UNIVERSAL west:SMOOTH
 coordinates: 00
 
-SingleCannon direction: NTile north:SMOOTH east:SMOOTH south:UNIVERSAL west:SINGLE
+SingleCannon direction: N Tile north:SMOOTH east:SINGLE south:DOUBLE west:SMOOTH
 coordinates: 00
 
-AlienLifeSupportsSystem alienType=PURPLE Tile north:DOUBLE east:SMOOTH south:SMOOTH west:UNIVERSAL
+SingleCannon direction: N Tile north:SMOOTH east:SINGLE south:SMOOTH west:SMOOTH
 coordinates: 00
 
-SingleEngine:direction:S Tile north:SMOOTH east:SINGLE south:SMOOTH west:DOUBLE
+SingleCannon direction: N Tile north:SMOOTH east:SMOOTH south:DOUBLE west:SMOOTH
 coordinates: 00
 
-Cargo Blue Tile north:DOUBLE east:SMOOTH south:SINGLE west:DOUBLE
+SingleCannon direction: N Tile north:SMOOTH east:SMOOTH south:UNIVERSAL west:DOUBLE
 coordinates: 00
 
-Cargo Red Tile north:SINGLE east:SINGLE south:SINGLE west:UNIVERSAL
+SingleCannon direction: N Tile north:SMOOTH east:SMOOTH south:DOUBLE west:UNIVERSAL
 coordinates: 00
 
-BatteryComponents 3 cellsTile north:DOUBLE east:DOUBLE south:SINGLE west:SMOOTH
+SingleCannon direction: N Tile north:SMOOTH east:DOUBLE south:SINGLE west:SMOOTH
 coordinates: 00
 
-SingleCannon direction: NTile north:SMOOTH east:SINGLE south:SMOOTH west:SMOOTH
+SingleCannon direction: N Tile north:SMOOTH east:SMOOTH south:SINGLE west:DOUBLE
 coordinates: 00
 
-AlienLifeSupportsSystem alienType=PURPLE Tile north:SINGLE east:DOUBLE south:SMOOTH west:DOUBLE
+SingleCannon direction: N Tile north:SMOOTH east:SMOOTH south:DOUBLE west:SMOOTH
 coordinates: 00
 
-Cargo Red Tile north:DOUBLE east:SINGLE south:SMOOTH west:UNIVERSAL
+SingleCannon direction: N Tile north:SMOOTH east:UNIVERSAL south:SMOOTH west:SINGLE
 coordinates: 00
 
-SingleCannon direction: NTile north:SMOOTH east:DOUBLE south:SINGLE west:SMOOTH
+SingleCannon direction: N Tile north:SMOOTH east:DOUBLE south:SMOOTH west:UNIVERSAL
 coordinates: 00
 
-SingleEngine:direction:S Tile north:UNIVERSAL east:SINGLE south:SMOOTH west:DOUBLE
+SingleCannon direction: N Tile north:SMOOTH east:SMOOTH south:SMOOTH west:SINGLE
 coordinates: 00
 
-Tile north:UNIVERSAL east:SINGLE south:DOUBLE west:UNIVERSAL
+SingleCannon direction: N Tile north:SMOOTH east:SMOOTH south:SMOOTH west:DOUBLE
 coordinates: 00
 
-Cargo Red Tile north:DOUBLE east:DOUBLE south:DOUBLE west:UNIVERSAL
+SingleCannon direction: N Tile north:SMOOTH east:SMOOTH south:SINGLE west:SMOOTH
 coordinates: 00
 
-Tile north:SMOOTH east:SINGLE south:SMOOTH west:UNIVERSAL
-coordinates: 00 null 0
-
-DoubleCannon direction: NTile north:SMOOTH east:DOUBLE south:SMOOTH west:SINGLE
+SingleCannon direction: N Tile north:SMOOTH east:SMOOTH south:DOUBLE west:SINGLE
 coordinates: 00
 
-Tile north:SINGLE east:SMOOTH south:DOUBLE west:UNIVERSAL
-coordinates: 00 null 0
+SingleCannon direction: N Tile north:SMOOTH east:SMOOTH south:UNIVERSAL west:SINGLE
+coordinates: 00
+
+SingleCannon direction: N Tile north:SMOOTH east:SINGLE south:SMOOTH west:DOUBLE
+coordinates: 00
+
+SingleCannon direction: N Tile north:SMOOTH east:UNIVERSAL south:SINGLE west:SMOOTH
+coordinates: 00
+
+SingleCannon direction: N Tile north:SMOOTH east:DOUBLE south:UNIVERSAL west:SINGLE
+coordinates: 00
 
 Shield coverage:NORTH_EASTTile north:SMOOTH east:SMOOTH south:UNIVERSAL west:DOUBLE
-coordinates: 00
-
-SingleEngine:direction:S Tile north:SINGLE east:SMOOTH south:SMOOTH west:SMOOTH
-coordinates: 00
-
-Cargo Red Tile north:UNIVERSAL east:SMOOTH south:SMOOTH west:UNIVERSAL
-coordinates: 00
-
-BatteryComponents 3 cellsTile north:DOUBLE east:SMOOTH south:SMOOTH west:SMOOTH
-coordinates: 00
-
-SingleCannon direction: NTile north:SMOOTH east:SMOOTH south:SINGLE west:DOUBLE
-coordinates: 00
-
-Tile north:SMOOTH east:SMOOTH south:UNIVERSAL west:SINGLE
-coordinates: 00 null 0
-
-AlienLifeSupportsSystem alienType=PURPLE Tile north:SMOOTH east:SMOOTH south:SMOOTH west:UNIVERSAL
-coordinates: 00
-
-SingleCannon direction: NTile north:SMOOTH east:SMOOTH south:SMOOTH west:SINGLE
-coordinates: 00
-
-DoubleCannon direction: NTile north:SMOOTH east:SMOOTH south:DOUBLE west:SMOOTH
-coordinates: 00
-
-DoubleEnginedirection:S Tile north:SINGLE east:UNIVERSAL south:SMOOTH west:SMOOTH
-coordinates: 00
-
-Tile north:DOUBLE east:SMOOTH south:SMOOTH west:SINGLE
-coordinates: 00 null 0
-
-Tile north:SINGLE east:UNIVERSAL south:SMOOTH west:UNIVERSAL
-coordinates: 00
-
-SingleEngine:direction:S Tile north:DOUBLE east:SINGLE south:SMOOTH west:SINGLE
-coordinates: 00
-
-SingleEngine:direction:S Tile north:SMOOTH east:DOUBLE south:SMOOTH west:UNIVERSAL
-coordinates: 00
-
-SingleCannon direction: NTile north:SMOOTH east:SINGLE south:UNIVERSAL west:SMOOTH
-coordinates: 00
-
-Cargo Blue Tile north:SMOOTH east:SMOOTH south:SMOOTH west:UNIVERSAL
-coordinates: 00
-
-Tile north:UNIVERSAL east:DOUBLE south:DOUBLE west:UNIVERSAL
-coordinates: 00
-
-Cargo Blue Tile north:DOUBLE east:SMOOTH south:DOUBLE west:SMOOTH
-coordinates: 00
-
-BatteryComponents 2 cellsTile north:DOUBLE east:SINGLE south:DOUBLE west:SINGLE
-coordinates: 00
-
-AlienLifeSupportsSystem alienType=PURPLE Tile north:SMOOTH east:SINGLE south:SMOOTH west:UNIVERSAL
-coordinates: 00
-
-SingleEngine:direction:S Tile north:SMOOTH east:UNIVERSAL south:SMOOTH west:SMOOTH
-coordinates: 00
-
-DoubleEnginedirection:S Tile north:SMOOTH east:UNIVERSAL south:SMOOTH west:UNIVERSAL
-coordinates: 00
-
-SingleCannon direction: NTile north:SMOOTH east:SMOOTH south:DOUBLE west:SMOOTH
-coordinates: 00
-
-DoubleEnginedirection:S Tile north:DOUBLE east:SMOOTH south:SMOOTH west:SMOOTH
-coordinates: 00
-
-SingleCannon direction: NTile north:SMOOTH east:UNIVERSAL south:SINGLE west:SMOOTH
-coordinates: 00
-
-SingleCannon direction: NTile north:SMOOTH east:SMOOTH south:SINGLE west:SMOOTH
-coordinates: 00
-
-Tile north:SMOOTH east:SINGLE south:UNIVERSAL west:DOUBLE
-coordinates: 00 null 0
-
-AlienLifeSupportsSystem alienType=PURPLE Tile north:SMOOTH east:SMOOTH south:DOUBLE west:UNIVERSAL
-coordinates: 00
-
-BatteryComponents 2 cellsTile north:SMOOTH east:SMOOTH south:SMOOTH west:UNIVERSAL
-coordinates: 00
-
-DoubleCannon direction: NTile north:SMOOTH east:SINGLE south:DOUBLE west:SINGLE
-coordinates: 00
-
-DoubleCannon direction: NTile north:SMOOTH east:SINGLE south:UNIVERSAL west:SMOOTH
-coordinates: 00
-
-BatteryComponents 2 cellsTile north:UNIVERSAL east:SMOOTH south:SMOOTH west:SINGLE
-coordinates: 00
-
-Cargo Red Tile north:SMOOTH east:UNIVERSAL south:SMOOTH west:UNIVERSAL
-coordinates: 00
-
-Shield coverage:NORTH_EASTTile north:SMOOTH east:SMOOTH south:SINGLE west:UNIVERSAL
-coordinates: 00
-
-Tile north:SINGLE east:UNIVERSAL south:SINGLE west:UNIVERSAL
-coordinates: 00
-
-AlienLifeSupportsSystem alienType=BROWN Tile north:DOUBLE east:SINGLE south:SMOOTH west:SINGLE
-coordinates: 00
-
-SingleCannon direction: NTile north:SMOOTH east:SINGLE south:DOUBLE west:SMOOTH
-coordinates: 00
-
-SingleCannon direction: NTile north:SMOOTH east:SMOOTH south:SINGLE west:SMOOTH
-coordinates: 00
-
-Tile north:SINGLE east:SINGLE south:DOUBLE west:SINGLE
-coordinates: 00 null 0
-
-BatteryComponents 2 cellsTile north:UNIVERSAL east:DOUBLE south:SINGLE west:SMOOTH
-coordinates: 00
-
-Tile north:DOUBLE east:DOUBLE south:SMOOTH west:UNIVERSAL
-coordinates: 00 null 0
-
-SingleCannon direction: NTile north:SMOOTH east:UNIVERSAL south:SMOOTH west:SINGLE
-coordinates: 00
-
-Cargo Blue Tile north:UNIVERSAL east:SMOOTH south:SMOOTH west:UNIVERSAL
-coordinates: 00
-
-DoubleCannon direction: NTile north:SMOOTH east:SMOOTH south:SINGLE west:UNIVERSAL
-coordinates: 00
-
-DoubleEnginedirection:S Tile north:SINGLE east:SINGLE south:SMOOTH west:SINGLE
-coordinates: 00
-
-SingleCannon direction: NTile north:SMOOTH east:SINGLE south:UNIVERSAL west:DOUBLE
-coordinates: 00
-
-BatteryComponents 2 cellsTile north:UNIVERSAL east:DOUBLE south:SMOOTH west:SMOOTH
-coordinates: 00
-
-DoubleCannon direction: NTile north:SMOOTH east:UNIVERSAL south:SMOOTH west:SMOOTH
-coordinates: 00
-
-Cargo Red Tile north:SMOOTH east:DOUBLE south:SMOOTH west:SINGLE
-coordinates: 00
-
-SingleEngine:direction:S Tile north:SINGLE east:SMOOTH south:SMOOTH west:SMOOTH
-coordinates: 00
-
-BatteryComponents 2 cellsTile north:UNIVERSAL east:DOUBLE south:DOUBLE west:DOUBLE
-coordinates: 00
-
-DoubleCannon direction: NTile north:SMOOTH east:DOUBLE south:SINGLE west:DOUBLE
-coordinates: 00
-
-DoubleEnginedirection:S Tile north:SINGLE east:SMOOTH south:SMOOTH west:SMOOTH
-coordinates: 00
-
-AlienLifeSupportsSystem alienType=BROWN Tile north:SMOOTH east:DOUBLE south:SMOOTH west:UNIVERSAL
-coordinates: 00
-
-DoubleEnginedirection:S Tile north:DOUBLE east:DOUBLE south:SMOOTH west:DOUBLE
-coordinates: 00
-
-BatteryComponents 2 cellsTile north:UNIVERSAL east:SINGLE south:SINGLE west:SINGLE
-coordinates: 00
-
-Cargo Blue Tile north:SMOOTH east:SMOOTH south:SMOOTH west:DOUBLE
-coordinates: 00
-
-BatteryComponents 3 cellsTile north:SINGLE east:SMOOTH south:DOUBLE west:SMOOTH
-coordinates: 00
-
-Cargo Blue Tile north:SMOOTH east:DOUBLE south:SMOOTH west:UNIVERSAL
-coordinates: 00
-
-Tile north:DOUBLE east:SINGLE south:DOUBLE west:SINGLE
-coordinates: 00 null 0
-
-SingleEngine:direction:S Tile north:SMOOTH east:UNIVERSAL south:SMOOTH west:SINGLE
-coordinates: 00
-
-SingleEngine:direction:S Tile north:SMOOTH east:SMOOTH south:SMOOTH west:UNIVERSAL
-coordinates: 00
-
-Cargo Red Tile north:SMOOTH east:SMOOTH south:SMOOTH west:SINGLE
-coordinates: 00
-
-Cargo Blue Tile north:SINGLE east:SMOOTH south:SINGLE west:SMOOTH
-coordinates: 00
-
-Tile north:SMOOTH east:SINGLE south:SINGLE west:UNIVERSAL
-coordinates: 00 null 0
-
-SingleEngine:direction:S Tile north:DOUBLE east:UNIVERSAL south:SMOOTH west:SMOOTH
-coordinates: 00
-
-Shield coverage:NORTH_EASTTile north:SMOOTH east:DOUBLE south:DOUBLE west:DOUBLE
-coordinates: 00
-
-SingleCannon direction: NTile north:SMOOTH east:SINGLE south:SMOOTH west:DOUBLE
-coordinates: 00
-
-Cargo Blue Tile north:DOUBLE east:SINGLE south:UNIVERSAL west:SMOOTH
-coordinates: 00
-
-SingleEngine:direction:S Tile north:UNIVERSAL east:SMOOTH south:SMOOTH west:SINGLE
-coordinates: 00
-
-SingleCannon direction: NTile north:SMOOTH east:SMOOTH south:SMOOTH west:DOUBLE
-coordinates: 00
-
-SingleEngine:direction:S Tile north:SMOOTH east:UNIVERSAL south:SMOOTH west:SMOOTH
-coordinates: 00
-
-SingleCannon direction: NTile north:SMOOTH east:DOUBLE south:SINGLE west:SINGLE
-coordinates: 00
-
-Tile north:SINGLE east:SMOOTH south:SINGLE west:UNIVERSAL
-coordinates: 00 null 0
-
-BatteryComponents 3 cellsTile north:DOUBLE east:SINGLE south:SMOOTH west:SMOOTH
-coordinates: 00
-
-Cargo Blue Tile north:DOUBLE east:UNIVERSAL south:SMOOTH west:SINGLE
-coordinates: 00
-
-Shield coverage:NORTH_EASTTile north:DOUBLE east:SINGLE south:DOUBLE west:SINGLE
-coordinates: 00
-
-SingleCannon direction: NTile north:SMOOTH east:SINGLE south:SINGLE west:SINGLE
-coordinates: 00
-
-BatteryComponents 2 cellsTile north:UNIVERSAL east:SINGLE south:DOUBLE west:SMOOTH
-coordinates: 00
-
-AlienLifeSupportsSystem alienType=BROWN Tile north:SMOOTH east:SMOOTH south:SMOOTH west:UNIVERSAL
-coordinates: 00
-
-AlienLifeSupportsSystem alienType=BROWN Tile north:SINGLE east:SMOOTH south:SMOOTH west:UNIVERSAL
-coordinates: 00
-
-BatteryComponents 2 cellsTile north:SMOOTH east:SMOOTH south:SMOOTH west:UNIVERSAL
-coordinates: 00
-
-Cargo Red Tile north:SMOOTH east:SMOOTH south:SMOOTH west:SINGLE
-coordinates: 00
-
-BatteryComponents 2 cellsTile north:UNIVERSAL east:SMOOTH south:SMOOTH west:UNIVERSAL
-coordinates: 00
-
-Tile north:UNIVERSAL east:SMOOTH south:SMOOTH west:DOUBLE
-coordinates: 00 null 0
-
-Cargo Red Tile north:SMOOTH east:SMOOTH south:SMOOTH west:DOUBLE
-coordinates: 00
-
-Tile north:UNIVERSAL east:UNIVERSAL south:SMOOTH west:SINGLE
-coordinates: 00
-
-AlienLifeSupportsSystem alienType=BROWN Tile north:SMOOTH east:SMOOTH south:SINGLE west:UNIVERSAL
-coordinates: 00
-
-SingleEngine:direction:S Tile north:DOUBLE east:SMOOTH south:SMOOTH west:SMOOTH
-coordinates: 00
-
-DoubleEnginedirection:S Tile north:UNIVERSAL east:SINGLE south:SMOOTH west:SMOOTH
-coordinates: 00
-
-Cargo Blue Tile north:SMOOTH east:SINGLE south:SMOOTH west:UNIVERSAL
 coordinates: 00
 
 Shield coverage:NORTH_EASTTile north:SINGLE east:SMOOTH south:SINGLE west:SINGLE
 coordinates: 00
 
-Cargo Blue Tile north:SMOOTH east:SMOOTH south:SMOOTH west:SINGLE
-coordinates: 00
-
-Tile north:SINGLE east:DOUBLE south:DOUBLE west:SINGLE
-coordinates: 00 null 0
-
-Tile north:SINGLE east:UNIVERSAL south:DOUBLE west:UNIVERSAL
-coordinates: 00
-
-SingleEngine:direction:S Tile north:UNIVERSAL east:DOUBLE south:SMOOTH west:SINGLE
-coordinates: 00
-
-DoubleCannon direction: NTile north:SMOOTH east:SMOOTH south:SINGLE west:SMOOTH
-coordinates: 00
-
-Tile north:SINGLE east:DOUBLE south:SMOOTH west:DOUBLE
-coordinates: 00 null 0
-
-SingleCannon direction: NTile north:SMOOTH east:DOUBLE south:DOUBLE west:DOUBLE
-coordinates: 00
-
 Shield coverage:NORTH_EASTTile north:SMOOTH east:SINGLE south:UNIVERSAL west:SINGLE
-coordinates: 00
-
-Cargo Blue Tile north:DOUBLE east:SINGLE south:UNIVERSAL west:SINGLE
-coordinates: 00
-
-Tile north:SMOOTH east:DOUBLE south:SMOOTH west:UNIVERSAL
-coordinates: 00 null 0
-
-SingleEngine:direction:S Tile north:DOUBLE east:SMOOTH south:SMOOTH west:DOUBLE
-coordinates: 00
-
-BatteryComponents 2 cellsTile north:SMOOTH east:UNIVERSAL south:SMOOTH west:UNIVERSAL
-coordinates: 00
-
-SingleCannon direction: NTile north:SMOOTH east:SMOOTH south:DOUBLE west:SMOOTH
-coordinates: 00
-
-SingleCannon direction: NTile north:SMOOTH east:DOUBLE south:UNIVERSAL west:SMOOTH
-coordinates: 00
-
-Cargo Blue Tile north:SMOOTH east:SMOOTH south:SMOOTH west:UNIVERSAL
-coordinates: 00
-
-Tile north:UNIVERSAL east:DOUBLE south:SMOOTH west:UNIVERSAL
-coordinates: 00
-
-DoubleCannon direction: NTile north:SMOOTH east:SMOOTH south:SMOOTH west:UNIVERSAL
-coordinates: 00
-
-SingleCannon direction: NTile north:SMOOTH east:DOUBLE south:UNIVERSAL west:SINGLE
-coordinates: 00
-
-DoubleEnginedirection:S Tile north:DOUBLE east:SMOOTH south:SMOOTH west:UNIVERSAL
-coordinates: 00
-
-Tile north:DOUBLE east:SINGLE south:DOUBLE west:DOUBLE
-coordinates: 00 null 0
-
-BatteryComponents 3 cellsTile north:SMOOTH east:SMOOTH south:SMOOTH west:SINGLE
 coordinates: 00
 
 Shield coverage:NORTH_EASTTile north:SMOOTH east:DOUBLE south:DOUBLE west:UNIVERSAL
 coordinates: 00
 
-Cargo Blue Tile north:DOUBLE east:SINGLE south:DOUBLE west:UNIVERSAL
+Shield coverage:NORTH_EASTTile north:SINGLE east:DOUBLE south:SINGLE west:DOUBLE
 coordinates: 00
 
-Tile north:DOUBLE east:SINGLE south:SMOOTH west:SINGLE
-coordinates: 00 null 0
+Shield coverage:NORTH_EASTTile north:DOUBLE east:SINGLE south:DOUBLE west:SINGLE
+coordinates: 00
 
-SingleCannon direction: NTile north:SMOOTH east:SMOOTH south:UNIVERSAL west:DOUBLE
+Shield coverage:NORTH_EASTTile north:SMOOTH east:SMOOTH south:SINGLE west:UNIVERSAL
+coordinates: 00
+
+Shield coverage:NORTH_EASTTile north:SMOOTH east:DOUBLE south:DOUBLE west:DOUBLE
+coordinates: 00
+
+SingleEngine:direction:S Tile north:SMOOTH east:UNIVERSAL south:SMOOTH west:SMOOTH
+coordinates: 00
+
+SingleEngine:direction:S Tile north:SINGLE east:SINGLE south:SMOOTH west:SMOOTH
+coordinates: 00
+
+SingleEngine:direction:S Tile north:SINGLE east:SMOOTH south:SMOOTH west:SMOOTH
+coordinates: 00
+
+SingleEngine:direction:S Tile north:SMOOTH east:SMOOTH south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+SingleEngine:direction:S Tile north:UNIVERSAL east:SMOOTH south:SMOOTH west:SINGLE
+coordinates: 00
+
+SingleEngine:direction:S Tile north:SMOOTH east:SINGLE south:SMOOTH west:DOUBLE
+coordinates: 00
+
+SingleEngine:direction:S Tile north:DOUBLE east:SMOOTH south:SMOOTH west:DOUBLE
+coordinates: 00
+
+SingleEngine:direction:S Tile north:DOUBLE east:SINGLE south:SMOOTH west:SINGLE
+coordinates: 00
+
+SingleEngine:direction:S Tile north:SMOOTH east:UNIVERSAL south:SMOOTH west:SINGLE
 coordinates: 00
 
 SingleEngine:direction:S Tile north:SINGLE east:DOUBLE south:SMOOTH west:DOUBLE
+coordinates: 00
+
+SingleEngine:direction:S Tile north:UNIVERSAL east:SINGLE south:SMOOTH west:DOUBLE
+coordinates: 00
+
+SingleEngine:direction:S Tile north:UNIVERSAL east:DOUBLE south:SMOOTH west:SMOOTH
+coordinates: 00
+
+SingleEngine:direction:S Tile north:DOUBLE east:SMOOTH south:SMOOTH west:SMOOTH
+coordinates: 00
+
+SingleEngine:direction:S Tile north:SMOOTH east:SMOOTH south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+SingleEngine:direction:S Tile north:DOUBLE east:UNIVERSAL south:SMOOTH west:SMOOTH
+coordinates: 00
+
+SingleEngine:direction:S Tile north:UNIVERSAL east:DOUBLE south:SMOOTH west:SINGLE
+coordinates: 00
+
+SingleEngine:direction:S Tile north:SMOOTH east:UNIVERSAL south:SMOOTH west:SMOOTH
+coordinates: 00
+
+SingleEngine:direction:S Tile north:SINGLE east:SMOOTH south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+SingleEngine:direction:S Tile north:DOUBLE east:SMOOTH south:SMOOTH west:SMOOTH
+coordinates: 00
+
+SingleEngine:direction:S Tile north:SINGLE east:SMOOTH south:SMOOTH west:SMOOTH
+coordinates: 00
+
+SingleEngine:direction:S Tile north:SMOOTH east:DOUBLE south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+DoubleEnginedirection:S Tile north:SINGLE east:SMOOTH south:SMOOTH west:SMOOTH
+coordinates: 00
+
+DoubleEnginedirection:S Tile north:DOUBLE east:DOUBLE south:SMOOTH west:DOUBLE
+coordinates: 00
+
+DoubleEnginedirection:S Tile north:SINGLE east:SINGLE south:SMOOTH west:SINGLE
+coordinates: 00
+
+DoubleEnginedirection:S Tile north:SINGLE east:UNIVERSAL south:SMOOTH west:SMOOTH
+coordinates: 00
+
+DoubleEnginedirection:S Tile north:UNIVERSAL east:SMOOTH south:SMOOTH west:DOUBLE
+coordinates: 00
+
+DoubleEnginedirection:S Tile north:UNIVERSAL east:SINGLE south:SMOOTH west:SMOOTH
+coordinates: 00
+
+DoubleEnginedirection:S Tile north:DOUBLE east:SMOOTH south:SMOOTH west:SMOOTH
+coordinates: 00
+
+DoubleEnginedirection:S Tile north:DOUBLE east:SMOOTH south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+DoubleEnginedirection:S Tile north:SMOOTH east:UNIVERSAL south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+Pipe Tile north:SINGLE east:UNIVERSAL south:SINGLE west:UNIVERSAL
+coordinates: 00
+
+Pipe Tile north:DOUBLE east:UNIVERSAL south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+Pipe Tile north:SINGLE east:UNIVERSAL south:DOUBLE west:UNIVERSAL
+coordinates: 00
+
+Pipe Tile north:UNIVERSAL east:DOUBLE south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+Pipe Tile north:UNIVERSAL east:SINGLE south:DOUBLE west:UNIVERSAL
+coordinates: 00
+
+Pipe Tile north:SINGLE east:UNIVERSAL south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+Pipe Tile north:UNIVERSAL east:UNIVERSAL south:SMOOTH west:SINGLE
+coordinates: 00
+
+Pipe Tile north:UNIVERSAL east:DOUBLE south:DOUBLE west:UNIVERSAL
+coordinates: 00
+
+EquipCabin null 0 Tile north:SMOOTH east:SINGLE south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+EquipCabin null 0 Tile north:SINGLE east:DOUBLE south:DOUBLE west:SINGLE
+coordinates: 00
+
+EquipCabin null 0 Tile north:SMOOTH east:SINGLE south:UNIVERSAL west:DOUBLE
+coordinates: 00
+
+EquipCabin null 0 Tile north:SMOOTH east:DOUBLE south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+EquipCabin null 0 Tile north:SINGLE east:SMOOTH south:DOUBLE west:UNIVERSAL
+coordinates: 00
+
+EquipCabin null 0 Tile north:DOUBLE east:SINGLE south:DOUBLE west:SINGLE
+coordinates: 00
+
+EquipCabin null 0 Tile north:SMOOTH east:SMOOTH south:UNIVERSAL west:SINGLE
+coordinates: 00
+
+EquipCabin null 0 Tile north:SINGLE east:SMOOTH south:SINGLE west:UNIVERSAL
+coordinates: 00
+
+EquipCabin null 0 Tile north:DOUBLE east:SINGLE south:SMOOTH west:SINGLE
+coordinates: 00
+
+EquipCabin null 0 Tile north:SINGLE east:DOUBLE south:SMOOTH west:DOUBLE
+coordinates: 00
+
+EquipCabin null 0 Tile north:DOUBLE east:DOUBLE south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+EquipCabin null 0 Tile north:UNIVERSAL east:SMOOTH south:SMOOTH west:DOUBLE
+coordinates: 00
+
+EquipCabin null 0 Tile north:DOUBLE east:SINGLE south:DOUBLE west:DOUBLE
+coordinates: 00
+
+EquipCabin null 0 Tile north:SMOOTH east:SINGLE south:SINGLE west:UNIVERSAL
+coordinates: 00
+
+EquipCabin null 0 Tile north:DOUBLE east:SMOOTH south:SMOOTH west:SINGLE
+coordinates: 00
+
+EquipCabin null 0 Tile north:DOUBLE east:SMOOTH south:DOUBLE west:UNIVERSAL
+coordinates: 00
+
+EquipCabin null 0 Tile north:SINGLE east:SINGLE south:DOUBLE west:SINGLE
+coordinates: 00
+
+BatteryComponents 2 cellsTile north:UNIVERSAL east:SMOOTH south:SMOOTH west:SINGLE
+coordinates: 00
+
+BatteryComponents 2 cellsTile north:SMOOTH east:SMOOTH south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+BatteryComponents 2 cellsTile north:DOUBLE east:SINGLE south:DOUBLE west:SINGLE
+coordinates: 00
+
+BatteryComponents 2 cellsTile north:SMOOTH east:UNIVERSAL south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+BatteryComponents 2 cellsTile north:UNIVERSAL east:SINGLE south:DOUBLE west:SMOOTH
+coordinates: 00
+
+BatteryComponents 2 cellsTile north:UNIVERSAL east:DOUBLE south:SINGLE west:SMOOTH
+coordinates: 00
+
+BatteryComponents 2 cellsTile north:SMOOTH east:SMOOTH south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+BatteryComponents 2 cellsTile north:UNIVERSAL east:SMOOTH south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+BatteryComponents 2 cellsTile north:UNIVERSAL east:SINGLE south:SINGLE west:SINGLE
+coordinates: 00
+
+BatteryComponents 2 cellsTile north:UNIVERSAL east:DOUBLE south:DOUBLE west:DOUBLE
+coordinates: 00
+
+BatteryComponents 2 cellsTile north:UNIVERSAL east:DOUBLE south:SMOOTH west:SMOOTH
+coordinates: 00
+
+BatteryComponents 3 cellsTile north:SINGLE east:SMOOTH south:DOUBLE west:SMOOTH
+coordinates: 00
+
+BatteryComponents 3 cellsTile north:DOUBLE east:SINGLE south:SMOOTH west:SMOOTH
+coordinates: 00
+
+BatteryComponents 3 cellsTile north:DOUBLE east:DOUBLE south:SINGLE west:SMOOTH
+coordinates: 00
+
+BatteryComponents 3 cellsTile north:SMOOTH east:SMOOTH south:SMOOTH west:SINGLE
+coordinates: 00
+
+BatteryComponents 3 cellsTile north:DOUBLE east:SMOOTH south:SMOOTH west:SMOOTH
+coordinates: 00
+
+BatteryComponents 3 cellsTile north:SINGLE east:SINGLE south:DOUBLE west:SMOOTH
+coordinates: 00
+
+AlienLifeSupportsSystem alienType=PURPLE Tile north:DOUBLE east:SMOOTH south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+AlienLifeSupportsSystem alienType=PURPLE Tile north:SMOOTH east:SINGLE south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+AlienLifeSupportsSystem alienType=PURPLE Tile north:SMOOTH east:SMOOTH south:DOUBLE west:UNIVERSAL
+coordinates: 00
+
+AlienLifeSupportsSystem alienType=PURPLE Tile north:SMOOTH east:SMOOTH south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+AlienLifeSupportsSystem alienType=PURPLE Tile north:DOUBLE east:DOUBLE south:SMOOTH west:DOUBLE
+coordinates: 00
+
+AlienLifeSupportsSystem alienType=PURPLE Tile north:SINGLE east:DOUBLE south:SMOOTH west:DOUBLE
+coordinates: 00
+
+AlienLifeSupportsSystem alienType=BROWN Tile north:SINGLE east:SMOOTH south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+AlienLifeSupportsSystem alienType=BROWN Tile north:SMOOTH east:DOUBLE south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+AlienLifeSupportsSystem alienType=BROWN Tile north:SMOOTH east:SMOOTH south:SINGLE west:UNIVERSAL
+coordinates: 00
+
+AlienLifeSupportsSystem alienType=BROWN Tile north:SMOOTH east:SMOOTH south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+AlienLifeSupportsSystem alienType=BROWN Tile north:DOUBLE east:SINGLE south:SMOOTH west:SINGLE
+coordinates: 00
+
+AlienLifeSupportsSystem alienType=BROWN Tile north:SINGLE east:SINGLE south:SMOOTH west:SINGLE
+coordinates: 00
+
+Cargo Blue Tile north:UNIVERSAL east:SMOOTH south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+Cargo Blue Tile north:DOUBLE east:SINGLE south:DOUBLE west:UNIVERSAL
+coordinates: 00
+
+Cargo Blue Tile north:SMOOTH east:DOUBLE south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+Cargo Blue Tile north:SMOOTH east:SINGLE south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+Cargo Blue Tile north:SMOOTH east:SMOOTH south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+Cargo Blue Tile north:SMOOTH east:SMOOTH south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+Cargo Blue Tile north:DOUBLE east:SINGLE south:UNIVERSAL west:SINGLE
+coordinates: 00
+
+Cargo Blue Tile north:DOUBLE east:UNIVERSAL south:SMOOTH west:SINGLE
+coordinates: 00
+
+Cargo Blue Tile north:DOUBLE east:SINGLE south:UNIVERSAL west:SMOOTH
+coordinates: 00
+
+Cargo Blue Tile north:SINGLE east:SMOOTH south:SINGLE west:SMOOTH
+coordinates: 00
+
+Cargo Blue Tile north:SMOOTH east:SMOOTH south:SMOOTH west:SINGLE
+coordinates: 00
+
+Cargo Blue Tile north:DOUBLE east:SMOOTH south:SINGLE west:DOUBLE
+coordinates: 00
+
+Cargo Blue Tile north:SMOOTH east:SMOOTH south:SMOOTH west:DOUBLE
+coordinates: 00
+
+Cargo Blue Tile north:DOUBLE east:SMOOTH south:DOUBLE west:SMOOTH
+coordinates: 00
+
+Cargo Blue Tile north:SINGLE east:SMOOTH south:DOUBLE west:SINGLE
+coordinates: 00
+
+Cargo Red Tile north:UNIVERSAL east:SMOOTH south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+Cargo Red Tile north:DOUBLE east:DOUBLE south:DOUBLE west:UNIVERSAL
+coordinates: 00
+
+Cargo Red Tile north:DOUBLE east:SINGLE south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+Cargo Red Tile north:SINGLE east:SINGLE south:SINGLE west:UNIVERSAL
+coordinates: 00
+
+Cargo Red Tile north:SMOOTH east:UNIVERSAL south:SMOOTH west:UNIVERSAL
+coordinates: 00
+
+Cargo Red Tile north:SMOOTH east:DOUBLE south:SINGLE west:UNIVERSAL
+coordinates: 00
+
+Cargo Red Tile north:SMOOTH east:SMOOTH south:SMOOTH west:SINGLE
+coordinates: 00
+
+Cargo Red Tile north:SMOOTH east:DOUBLE south:SMOOTH west:SINGLE
+coordinates: 00
+
+Cargo Red Tile north:SMOOTH east:SMOOTH south:SMOOTH west:SINGLE
+coordinates: 00
+
+Cargo Red Tile north:SMOOTH east:SMOOTH south:SMOOTH west:DOUBLE
 coordinates: 00
 

@@ -12,7 +12,7 @@ public abstract class Cannon extends Tile {
 
     @Override
     public String toString() {
-        return "direction: "+direction.toString() +super.toString();
+        return "direction: "+direction.toString() + " " +super.toString();
     }
 
     public void getStat(){
