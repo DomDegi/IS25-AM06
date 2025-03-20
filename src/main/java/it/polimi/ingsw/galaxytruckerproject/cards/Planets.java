@@ -74,6 +74,9 @@ public class Planets extends Card{
                 System.out.printf("Error, planet %d is already taken\n", choice);
             } else if (choice == 0) {
                 System.out.println("No action performed");
+                playerToInteract.removeFirst();
+                won=0;
+                initializeCard(game);
             } else {
                 System.out.println("Invalid choice: " + choice);
             }
@@ -86,7 +89,7 @@ public class Planets extends Card{
         }else if(won == 2){
             goodsRemovedFromCargo.add(swapGoods(input));
         }else if(won == 3){
-            System.out.println("Good removed from cargo: ");
+            System.out.println("Goods removed from cargo: ");
             AtomicInteger i= new AtomicInteger(1);
             goodsRemovedFromCargo.forEach(goods -> {System.out.printf(i+" - %s good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue());
                 i.getAndIncrement();});
@@ -219,7 +222,6 @@ public class Planets extends Card{
                 }
                 goodToSwap= cargo.get(2);
                 currentPlayer.getPlayerShip().removeGood(cargo.get(2), coordinatesToPut);
-
                 break;
         }
         currentPlayer.getPlayerShip().gainGoods(listOfPlanets.get(choice - 1).getListOfGoods().get(goodsToGet-1), coordinatesToPut);

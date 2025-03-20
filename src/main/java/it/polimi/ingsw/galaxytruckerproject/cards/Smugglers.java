@@ -71,7 +71,8 @@ public class Smugglers extends Enemies{
                 }else if(currentPlayer.useDoubleCannons(new ArrayList<>()) == cannonStrength){
                     System.out.println("YAY!! You are as powerful as the Smugglers, you've defeated them, but they managed to escape jus in time!\n");
                     won=0;
-                    game.endCardEvent();
+                    playerToInteract.removeFirst();
+                    initializeCard(game);
                 }
             }else {
                 System.out.println("Invalid input: " + input[0]+ " retry");
@@ -103,7 +104,8 @@ public class Smugglers extends Enemies{
             }else if(playerStrength == cannonStrength){
                 System.out.println("YAY!! You are as powerful as the Smugglers, you've defeated them, but they managed to escape jus in time!\n");
                 won=0;
-                game.endCardEvent();
+                playerToInteract.removeFirst();
+                initializeCard(game);
             }
         } else if(won == 2){
             if (input[0].equalsIgnoreCase("yes")){
@@ -119,10 +121,11 @@ public class Smugglers extends Enemies{
                 game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
             }else if (input[0].equalsIgnoreCase("no")){
                 System.out.println("You are too pure of heart for a galaxy truck driver");
+                game.endCardEvent();
+                return;
             }else {
                 System.out.println("Invalid input: " + input[0]);
             }
-            playerToInteract.removeFirst();
         } else if(won == 3){
             if(getReward(input)){
                 game.endCardEvent();
@@ -158,6 +161,9 @@ public class Smugglers extends Enemies{
     private boolean getReward(String[] input){
         int CoordinatesX;
         int CoordinatesY;
+        if (input[0].equalsIgnoreCase("done")) {
+            input[0] = "0";
+        }
         try {
             goodsToGet = Integer.parseInt(input[0]);
         } catch (NumberFormatException e) {
