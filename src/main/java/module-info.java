@@ -15,11 +15,8 @@ module it.polimi.ingsw.galaxytruckerproject {
     opens it.polimi.ingsw.galaxytruckerproject.cards.penalties to com.fasterxml.jackson.databind;
     exports it.polimi.ingsw.galaxytruckerproject;
     exports it.polimi.ingsw.galaxytruckerproject.player;
-    //exports it.polimi.ingsw.galaxytruckerproject.observers;
     exports it.polimi.ingsw.galaxytruckerproject.tiles;
-   // exports it.polimi.ingsw.galaxytruckerproject.cards;
-    //exports it.polimi.ingsw.galaxytruckerproject.cards.penalties;
-   // exports it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
-   // exports it.polimi.ingsw.galaxytruckerproject.stuff;
-   // opens it.polimi.ingsw.galaxytruckerproject.stuff to javafx.fxml;
+    exports it.polimi.ingsw.galaxytruckerproject.cards;
+    exports it.polimi.ingsw.galaxytruckerproject.cards.penalties;
+    exports it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
 }

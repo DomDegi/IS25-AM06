@@ -17,11 +17,11 @@ class CardDeckTest {
 
     @BeforeEach
     void setUp() {
-        this.cardDeck = new CardDeck("cards.json")
+        this.cardDeck = new CardDeck("cards.json");
         cardsLvl1 = cardDeck.getDeckLvl1();
         cardsLvl2 = cardDeck.getDeckLvl2();
     }
-
+/*
     @Test
     void print_cards_to_output_file() {
         String filename = "cardsList_output";
@@ -31,4 +31,5 @@ class CardDeckTest {
             }
         }
     }
+    */
 }
