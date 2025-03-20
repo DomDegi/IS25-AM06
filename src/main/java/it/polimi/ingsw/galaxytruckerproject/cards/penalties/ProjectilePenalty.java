@@ -9,13 +9,13 @@ import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class CannonPenalty extends Penalty {
+public class ProjectilePenalty extends Penalty {
     private final ArrayList<Projectile> listOfProjectiles;
     private int diceRoll = 0;
     private Game game = null;
     private Defense defenseStatus = null;
 
-    public CannonPenalty(ArrayList<Projectile> listOfShots) {
+    public ProjectilePenalty(ArrayList<Projectile> listOfShots) {
         this.listOfProjectiles = listOfShots;
     }
 
@@ -68,55 +68,64 @@ public class CannonPenalty extends Penalty {
         return 0;
     }
 
-        @Override
-        public String toString () {
-            return "CannonPenalty";
-        }
+    @Override
+    public String toString () {
+        return "CannonPenalty";
+    }
 
-        @Override
-        //prints next cannon shot coming and sets the defense status for it (HIT, CHOOSESHIELD or PROTECTED)
-        public void printInfo (Player player){
-            System.out.println(listOfProjectiles.getFirst().toString() + "\n");
-            if (diceRoll != 0) {
-                this.defenseStatus = listOfProjectiles.getFirst().throwProjectile(player, diceRoll, game);
-                System.out.println(defenseStatus);
-            }
+    @Override
+    //prints next cannon shot coming and sets the defense status for it (HIT, CHOOSESHIELD or PROTECTED)
+    public void printInfo (Player player){
+        System.out.println(listOfProjectiles.getFirst().toString() + "\n");
+        if (diceRoll != 0) {
+            this.defenseStatus = listOfProjectiles.getFirst().throwProjectile(player, diceRoll, game);
+            System.out.println(defenseStatus);
         }
+    }
 
 
-        public void printInfoOnAllProjectiles() {
-            for (Projectile projectile : listOfProjectiles) {
-                System.out.println(projectile.toString() + "\n");
-            }
+    public void printInfoOnAllProjectiles() {
+        for (Projectile projectile : listOfProjectiles) {
+            System.out.println(projectile.toString() + "\n");
         }
+    }
 
-        public void setDiceRoll ( int diceRoll){
-            this.diceRoll = diceRoll;
-        }
+    public void playerGetsHit (Player player){
+        player.getShipBoard().destroyTile(listOfProjectiles.getFirst().getCoordinatesToDestroy());
+        resetForNextProjectile();
+    }
 
-        public void playerGetsHit (Player player){
-            player.getShipBoard().destroyTile(listOfProjectiles.getFirst().getCoordinatesToDestroy());
-            resetForNextProjectile();
+    public void resetForNextProjectile () {
+        this.listOfProjectiles.removeFirst();
+        diceRoll = 0;
+        defenseStatus = null;
+    }
+    
+    public int playerUsesBatteryToDefend (Player player, String[]input){
+        if (player.getShipBoard().getNumBatteries() < 1) {
+            return 0;
         }
+        ArrayList<Coordinates> batteryToUse = player.parseCoordinates(input);
+        if (batteryToUse.isEmpty()) {
+            return 1;
+        }
+        if (player.getShipBoard().chooseBatteryUse(batteryToUse.getFirst()))
+            return 2;
+        else
+            return 1;
+    }
+        
+    //these methods are needed for meteor swarm
+    public void setDiceRoll ( int diceRoll){
+        this.diceRoll = diceRoll;
+    }
 
-        public void resetForNextProjectile () {
-            this.listOfProjectiles.removeFirst();
-            diceRoll = 0;
-            defenseStatus = null;
-        }
-
-        public int playerUsesBatteryToDefend (Player player, String[]input){
-            if (player.getShipBoard().getNumBatteries() < 1) {
-                return 0;
-            }
-            ArrayList<Coordinates> batteryToUse = player.parseCoordinates(input);
-            if (batteryToUse.isEmpty()) {
-                return 1;
-            }
-            if (player.getShipBoard().chooseBatteryUse(batteryToUse.getFirst()))
-                return 2;
-            else
-                return 1;
-        }
+    public void removeDiceRoll () {
+        this.diceRoll = 0;
+    }
+    
+    public void addProjectile (Projectile projectile) {
+        this.listOfProjectiles.add(projectile);
+    }
 }
 

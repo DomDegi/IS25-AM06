@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.cards.penalties.CannonPenalty;
+import it.polimi.ingsw.galaxytruckerproject.cards.penalties.ProjectilePenalty;
 import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
@@ -10,18 +11,15 @@ import java.util.ArrayList;
 
 public class Pirates extends Enemies {
     private final int rewardCredits;
-    private final ArrayList<Projectile> listOfShots;
     private int playerIndex;
     private Player currentPlayer = null;
-    private final CannonPenalty penaltyIfLose;
+    private final ProjectilePenalty penaltyIfLose;
     private int won = 0;
-
     public Pirates(int level, int requiredDays, int cannonStrength, int rewardCredits, ArrayList<Projectile> listOfShots) {
         super(level, requiredDays, cannonStrength);
         this.rewardCredits = rewardCredits;
-        this.listOfShots = listOfShots;
         this.playerIndex = 0;
-        this.penaltyIfLose = new CannonPenalty(listOfShots);
+        this.penaltyIfLose = new ProjectilePenalty(listOfShots);
     }
 
     public String toString() {

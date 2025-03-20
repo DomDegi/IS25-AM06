@@ -1,21 +1,26 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.Game;
-import it.polimi.ingsw.galaxytruckerproject.cards.penalties.CannonPenalty;
+import it.polimi.ingsw.galaxytruckerproject.cards.penalties.ProjectilePenalty;
 import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MeteorSwarm extends Card {
-    private final ArrayList<Projectile> listOfMeteors;
+    private ArrayList<Projectile> listOfMeteors;
     private Player currentPlayer;
     private int playerIndex;
-    private CannonPenalty currentMeteor = null;
+    private ProjectilePenalty currentMeteor;
+    private int currentDiceRoll;
 
     public MeteorSwarm(int level, ArrayList<Projectile> listOfMeteors) {
         super(level, 0);
         this.listOfMeteors = listOfMeteors;
+        this.currentMeteor = new ProjectilePenalty(new ArrayList<>());
+        this.playerIndex = 0;
+        this.currentDiceRoll = 0;
     }
 
     @Override
@@ -27,18 +32,35 @@ public class MeteorSwarm extends Card {
         if (playerIndex > game.getNumberOfPlayers() - 1){
             listOfMeteors.removeFirst();
             playerIndex = 0;
+            diceRoll();
         }
 
         currentPlayer = game.getListOfAllPlayer().get(playerIndex);
+
+        if (currentMeteor.getListOfProjectiles().isEmpty()){
+            currentMeteor.addProjectile(listOfMeteors.getFirst());
+            currentMeteor.setDiceRoll(currentDiceRoll);
+        }
     }
 
     @Override
-    public void executeCard(Game game, String player, String[] input){
-
+    public void executeCard(Game game, String playerName, String[] input){
+        if (playerName.equalsIgnoreCase(currentPlayer.getPlayerName()) && currentPlayer != null) {
+            //when penalty is over on the current player
+            if (currentMeteor.applyPenalty(game, currentPlayer, input) == 1){
+                playerIndex++;
+                initializeCard(game);
+            }
+        }
     }
 
     @Override
     public String toString() {
         return "MeteorSwarm";
+    }
+
+    public void diceRoll() {
+        Random random = new Random();
+        this.currentDiceRoll = 2 + random.nextInt(11);
     }
 }

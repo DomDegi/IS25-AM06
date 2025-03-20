@@ -8,7 +8,7 @@ import it.polimi.ingsw.galaxytruckerproject.player.Player;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = CrewPenalty.class, name = "CrewPenalty"),
-        @JsonSubTypes.Type(value = CannonPenalty.class, name = "CannonPenalty"),
+        @JsonSubTypes.Type(value = ProjectilePenalty.class, name = "CannonPenalty"),
         @JsonSubTypes.Type(value = GoodsPenalty.class, name = "GoodsPenalty"),
         @JsonSubTypes.Type(value = FlightDaysPenalty.class, name = "FlightDaysPenalty")
 })
