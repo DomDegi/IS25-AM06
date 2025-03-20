@@ -8,10 +8,11 @@ public class FlightBoard {
     private final ArrayList<Player> inGamePlayers;
     private final ArrayList<Player> podium;
     private int freePodiumPosition;
-    //needed to check if pos in inGamePlayers is free or not
+    private final GameMode gameMode;    //needed to check if pos in inGamePlayers is free or not
     private final ArrayList<Integer> occupiedPos = new ArrayList<>();
 
-    public FlightBoard() {
+    public FlightBoard(GameMode gameMode) {
+        this.gameMode = gameMode;
         this.inGamePlayers = new ArrayList<>();
         this.podium = new ArrayList<>();
         this.freePodiumPosition=1;
@@ -206,9 +207,17 @@ public class FlightBoard {
         for (int i = 1; i < inGamePlayers.size(); i++) {
             Player player = inGamePlayers.get(i) ;
             if (player != null) {
-                if (firstPlayer.getPlayerPosition() >= player.getPlayerPosition() + 18 && !player.isLanded()) {
-                    earlyLanding(player);
+                switch (gameMode) {
+                    case LEVEL2:
+                        if (firstPlayer.getPlayerPosition() >= player.getPlayerPosition() + 24 && !player.isLanded()) {
+                            earlyLanding(player);
+                        }
+                    case TRIAL:
+                        if (firstPlayer.getPlayerPosition() >= player.getPlayerPosition() + 18 && !player.isLanded()) {
+                            earlyLanding(player);
+                        }
                 }
+
             }
         }
         rearrange();

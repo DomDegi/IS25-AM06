@@ -12,7 +12,7 @@ public class Slavers extends Enemies{
     private final int lostCrew;
     private int playerIndex;
     private Player currentPlayer = null;
-    private CrewPenalty penaltyIfLose;
+    private final CrewPenalty penaltyIfLose;
     private int won = 0;
 
     public Slavers(int level, int requiredDays, int cannonStrength, int rewardCredits, int lostCrew) {
@@ -20,6 +20,7 @@ public class Slavers extends Enemies{
         this.rewardCredits = rewardCredits;
         this.lostCrew = lostCrew;
         this.playerIndex = 0;
+        this.penaltyIfLose = new CrewPenalty(lostCrew);
     }
 
     public String toString() {
@@ -49,12 +50,12 @@ public class Slavers extends Enemies{
         if (currentPlayer != null && playerName.equalsIgnoreCase(currentPlayer.getPlayerName())) {
             if (won == 0) {
                 if (input[0].equalsIgnoreCase("no")){
-                    if (currentPlayer.useDoubleCannons(new ArrayList<Coordinates>()) > cannonStrength) {
+                    if (currentPlayer.useDoubleCannons(new ArrayList<>()) > cannonStrength) {
                         won = 1;
                         System.out.println("input yes or no if you want to spend " + requiredDays + " flight days to gain" +
                                 rewardCredits + " cosmic credits for defeating the slavers\n");
                     }
-                    else if (currentPlayer.useDoubleCannons(new ArrayList<Coordinates>()) < cannonStrength){
+                    else if (currentPlayer.useDoubleCannons(new ArrayList<>()) < cannonStrength){
                         won = - 1;
                         System.out.println("input the coordinates of the crew members to lose to the slavers\n");
                         currentPlayer.printCurrentInfoCabins();
@@ -69,17 +70,17 @@ public class Slavers extends Enemies{
                 else {
                     ArrayList<Coordinates> coordinates = new ArrayList<>(currentPlayer.parseCoordinates(input));
                     if (coordinates.isEmpty()){
-                        System.out.println("invalid input\n");
+                        System.out.println("Invalid input\n");
                         return;
                     }
                     float playerStrength = currentPlayer.useDoubleCannons(coordinates);
                     if (playerStrength == -2){
-                        System.out.println("need the batteries coordinates\n");
+                        System.out.println("Need the batteries coordinates\n");
                         return;
                     }
 
                     if (playerStrength == -1){
-                        System.out.println("invalid input of batteries or cannons: input again cannons coordinates\n");
+                        System.out.println("Invalid input of batteries or cannons: input again cannons coordinates\n");
                         return;
                     }
                     if (playerStrength > cannonStrength){

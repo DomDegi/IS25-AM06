@@ -29,13 +29,17 @@ public class Planets extends Card{
         }
         currentPlayer= playerToInteract.getFirst();
         printListOfPlanets();
-        System.out.printf(currentPlayer+"input from 1 to %d to pick which to land on, input 0 to ignore", numberOfPlanets);
+        System.out.printf(currentPlayer+"input from 1 to %d to pick which to land on, input 'no' to ignore", numberOfPlanets);
+        if(playerToInteract.isEmpty()){
+            game.endCardEvent();
+        }
     }
     //for each player asks if they want to spend the required days to occupy the planet they choose
     @Override
     public void executeCard(Game game, String playerName, String[] input) {
         if(playerToInteract.isEmpty()){
             game.endCardEvent();
+            return;
         }
         if(currentPlayer==null){
             currentPlayer=game.getListOfPlayers().getFirst();
@@ -43,14 +47,16 @@ public class Planets extends Card{
         if (!playerName.equals(currentPlayer.getPlayerName()))
             return;
         int choice;
+        if (input[0].equalsIgnoreCase("no")) {
+            input[0] = "0";
+        }
         try {
             choice = Integer.parseInt(input[0]);
         } catch (NumberFormatException e) {
             System.out.println("Invalid input format. Please provide integer values.");
-            executeCard(game, playerName, input);
             return;
         }
-        if (choice > 0 && choice <= listOfPlanets.size() && !listOfPlanets.get(choice - 1).getOccupationStatus()) {
+        if (choice > 0 && choice < listOfPlanets.size() && !listOfPlanets.get(choice - 1).getOccupationStatus()) {
             currentPlayer.gainGoods(listOfPlanets.get(choice - 1).getListOfGoods());
             listOfPlanets.get(choice - 1).setOccupationStatus();
             game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
@@ -60,12 +66,10 @@ public class Planets extends Card{
             System.out.println("No action performed");
         } else {
             System.out.println("Invalid choice: " + choice);
-            executeCard(game, playerName, input);
             return;
         }
         playerToInteract.removeFirst();
         initializeCard(game);
-        return;
     }
 
     public void printListOfPlanets() {

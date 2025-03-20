@@ -43,7 +43,7 @@ public class OpenSpace extends Card {
 
             //decides against using double engines
             if (input[0].equals("no")) {
-                int engineStrength = currentPlayer.useDoubleEngines(new ArrayList<Coordinates>());
+                int engineStrength = currentPlayer.useDoubleEngines(new ArrayList<>());
                 MoveOrEarlyLand(game, engineStrength);
             }
             else {

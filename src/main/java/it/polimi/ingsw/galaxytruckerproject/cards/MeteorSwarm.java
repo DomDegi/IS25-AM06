@@ -60,6 +60,7 @@ public class MeteorSwarm extends Card {
             initializeCard(game);
         }
         if(playerToInteract.isEmpty()&&listOfMeteors.isEmpty()){
+            game.endCardEvent();
             return;
         }
         if(playerToInteract.isEmpty()){
@@ -84,7 +85,6 @@ public class MeteorSwarm extends Card {
             choice = Integer.parseInt(input[0]);
         } catch (NumberFormatException e) {
             System.out.println("Invalid input format. Please provide integer values.");
-            executeCard(game, playerName, input);
             return;
         }
         if (choice == 1) {
@@ -96,7 +96,6 @@ public class MeteorSwarm extends Card {
             initializeCard(game);
         }else {
             System.out.println("Invalid choice: " + choice);
-            executeCard(game, playerName, input);
         }
         playerToInteract.removeFirst();
         initializeCard(game);

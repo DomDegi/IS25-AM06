@@ -37,8 +37,9 @@ public class AbandonedStation extends Card {
             initializeCard(game);
             return;
         }
-        System.out.printf(currentPlayer+"input 1 to land on the station, input 0 to ignore, you will loose %d flight and get days\n", requiredDays);
+        System.out.printf(currentPlayer+"input 'yes' to land on the station, input 'no' to ignore, you will loose %d flight and get days\n", requiredDays);
         if(playerToInteract.isEmpty()){
+            game.endCardPhase();
         }
     }
 
@@ -54,12 +55,16 @@ public class AbandonedStation extends Card {
         if (!playerName.equals(currentPlayer.getPlayerName()))
             return;
         int choice;
+        if (input[0].equalsIgnoreCase("no")) {
+            input[0] = "0";
+        }
+        if (input[0].equalsIgnoreCase("yes")) {
+            input[0] = "1";
+        }
         try {
             choice = Integer.parseInt(input[0]);
         } catch (NumberFormatException e) {
             System.out.println("Invalid input format. Please provide integer values.");
-            executeCard(game, playerName, input);
-
             return;
         }
         if (currentPlayer.getTotalCrew() >= crewNumberRequired) {
@@ -73,7 +78,7 @@ public class AbandonedStation extends Card {
                 initializeCard(game);
             } else {
                 System.out.println("Invalid choice: " + choice);
-                executeCard(game, playerName, input);
+                return;
             }
         } else {
             System.out.printf("Sorry" + currentPlayer + "you can't land on the station, you need at least %d crew members\n", crewNumberRequired);

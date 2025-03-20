@@ -198,8 +198,7 @@ public class Player {
         return doubleCannonPower;
     }
     public float calculateCannonStrength(ArrayList<Coordinates> DoubleCannonToUse, ArrayList<Coordinates> BatteriesToConsume){
-        float cannonStrength=0;
-        cannonStrength = chooseDoubleCannon(DoubleCannonToUse,BatteriesToConsume);
+        float cannonStrength=chooseDoubleCannon(DoubleCannonToUse,BatteriesToConsume);
         if(cannonStrength!=-1){
             cannonStrength += playerShip.getSingleCannonPower();
             if(cannonStrength>0){
@@ -243,7 +242,7 @@ public class Player {
     //or had wrong coordinates won't get removed
     public ArrayList<Goods> gainGoods (ArrayList<Coordinates> whereToPlace, ArrayList<Goods> goods){
 
-        ArrayList<Goods> placedCorrectly = new ArrayList<Goods>();
+        ArrayList<Goods> placedCorrectly = new ArrayList<>();
 
         //if you put more coordinates than the goods in the card event
         while (whereToPlace.size() > goods.size()){
@@ -294,6 +293,7 @@ public class Player {
         }
         return counter;
     }
+
     public void printCurrentInfoCargoHolds() {
         System.out.println("RED goods are at: ");
         playerShip.cargoHoldContainsGood(new Goods(GoodsColor.RED));

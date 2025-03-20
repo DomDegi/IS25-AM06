@@ -93,8 +93,6 @@ public class ShipBoard {
         return 0;
     }
 
-
-
     //Getter methods for managing the COORDINATES of tile groups of type SHIELD, EQUIP CABIN, and CARGO HOLD.
     public ArrayList<Coordinates> getBatteryCoordinates() {
         return batteryCoordinates;
@@ -198,7 +196,6 @@ public class ShipBoard {
     public Tile getTile(int x, int y) {
         return tilesTable[x][y].get();
     }
-
     /*
         private ThreadLocal<Object> tilesTable() {
         }
@@ -249,8 +246,6 @@ public class ShipBoard {
         }
         this.tilesTable = tilesTable;
     }
-
-
 
     //destroy tile+ return set of new possible shipboard coordinates
     public ArrayList<Set<Coordinates>> destroyTile(Coordinates coordinates) {
@@ -346,12 +341,8 @@ public class ShipBoard {
     }
 
     public boolean checkEarlyLanding() {
-        if (numHumanCrew == 0) {
-            return true;
-        }
-        return false;
+        return numHumanCrew == 0;
     }
-
 
     //ADDITIONAL METHOD THAT GETS IMPLEMENTED IN COUNT EXSPOSEDCONNECTORS
     public void checkBorderTile(int i, int j) {
@@ -403,7 +394,6 @@ public class ShipBoard {
         return true;
     }
 
-
     public void chooseHowToFillCabins() {
         for (Coordinates coordinates : crewCoordinates) {
             Scanner scanner = new Scanner(System.in);
@@ -424,7 +414,6 @@ public class ShipBoard {
         return false;
     }
 
-
     public void epidemic(){
         HashSet<Coordinates> InfectedCabin = new HashSet<>();
         for(Coordinates coordinates : crewCoordinates){
@@ -439,8 +428,6 @@ public class ShipBoard {
         }
     }
 
-
-
     //BATTERY METHODS
     public boolean chooseBatteryUse(Coordinates coordinates){
         if(batteryCoordinates.contains(coordinates)){
@@ -452,9 +439,7 @@ public class ShipBoard {
         //forse non serve il batteryCoordinates perché tanto se non è una batteryTile stampo il fatto che non lo è
     }
 
-
     //SHIELD METHODS
-
     //This method takes as input the coordinates of the Shield to be used and the coordinates of the BatteryComponents
     // from which it wants to consume the battery to activate the Shield.
     public Coverage chooseShields(Coordinates shieldCoordinates, Coordinates batteryCoordinates){
@@ -467,23 +452,23 @@ public class ShipBoard {
         return tilesTable[shieldCoordinates.getX()][shieldCoordinates.getY()].get().getCoveredArea();
     }
 
-
-
     //GOODS METHODS
 
     //Returns true if the adding of the Good is successfully, false otherwise ()
-    public boolean gainGoods(Goods goods, Coordinates coordinates){
+    public int gainGoods(Goods goods, Coordinates coordinates){
         if(cargoHoldCoordinates.contains(coordinates)){
-            return tilesTable[coordinates.getX()][coordinates.getY()].get().getCargo().add(goods);
+            if(tilesTable[coordinates.getX()][coordinates.getY()].get().getCargo().add(goods))
+                return 1;
         }else{
-            System.out.println("THIS TILE IS NOT A CARGOHOLDER");
-            return false;
+            System.out.println("THIS TILE IS NOT A CARGO HOLDER, input again");
+            return -1;
         }
+        return 0;
 
     }
 
-    //IT RETURNS THE COORDINATES OF EVERY CARGOHOLD THAT CONTAINS A TYPE OF GOOD (RED, YELLOW, GREEN, BLU). IF
-    //A CARGOHOLD CONTAINS MORE THAN ONE GOOD WITH THE SAME COLOR IS GOING TO BE ADD TWICE.
+    //IT RETURNS THE COORDINATES OF EVERY CARGO_HOLD THAT CONTAINS A TYPE OF GOOD (RED, YELLOW, GREEN, BLU). IF
+    //A CARGO_HOLD CONTAINS MORE THAN ONE GOOD WITH THE SAME COLOR IS GOING TO BE ADD TWICE.
     public ArrayList<Coordinates> cargoHoldContainsGood(Goods goodColor){
         ArrayList<Coordinates> cargoHoldContainsGood = new ArrayList<>();
         for(Coordinates coordinates : cargoHoldCoordinates){
@@ -585,19 +570,19 @@ public class ShipBoard {
     }
 
     public int convertGoodsToCredit(){
-        Goods good = new Goods(GoodsColor.RED);
         int credit = 0;
-        credit = cargoHoldContainsGood(good).size();
+        Goods good = new Goods(GoodsColor.RED);
+        credit = 4 * cargoHoldContainsGood(good).size();
         good = new Goods(GoodsColor.YELLOW);
-        credit += cargoHoldContainsGood(good).size();
+        credit += 3 * cargoHoldContainsGood(good).size();
         good = new Goods(GoodsColor.GREEN);
-        credit += cargoHoldContainsGood(good).size();
+        credit += 2 * cargoHoldContainsGood(good).size();
         good = new Goods(GoodsColor.BLUE);
         credit += cargoHoldContainsGood(good).size();
         return credit;
     }
 
-    //if this methods finds no goods in cargo holds, returns false
+    //if these methods finds no goods in cargo holds, returns false
     public boolean isCargoEmpty() {
         for (Coordinates coordinates : cargoHoldCoordinates) {
             if (!tilesTable[coordinates.x][coordinates.getY()].get().getCargo().isEmpty())
@@ -605,7 +590,6 @@ public class ShipBoard {
         }
         return true;
     }
-
 
     //EXAMPLE OF WHAT IT NEEDS TO BE IMPLEMENTED, MAYBE I NEED TO GIVE TO PLAYER THE NUMBER OF RED,YELLOW, GREEN, BLU GOODS
     public void checkBeforeAsking(int goodsToRemove){
@@ -629,10 +613,10 @@ public class ShipBoard {
     }
 
     //give back all the player Goods
-    public ArrayList<Goods> getGoods(){
+    public ArrayList<Goods> getAllGoods(){
         ArrayList<Goods> goods = new ArrayList<>();
-        Goods good = new Goods(GoodsColor.RED);
         int i;
+        Goods good = new Goods(GoodsColor.RED);
         for(i=cargoHoldContainsGood(good).size();i==0;i--){
             goods.add(good);
         }
@@ -651,4 +635,29 @@ public class ShipBoard {
         }
         return goods;
     }
+    public ArrayList<Goods> getSingleCargoGoods(Coordinates coordinatesToFind){
+        ArrayList<Goods> goods = new ArrayList<>();
+        for(Coordinates coordinates :cargoHoldContainsGood(new Goods(GoodsColor.RED))) {
+            if (coordinates.equals(coordinatesToFind)) {
+                goods.add(new Goods(GoodsColor.RED));
+            }
+        }
+        for(Coordinates coordinates :cargoHoldContainsGood(new Goods(GoodsColor.RED))) {
+            if (coordinates.equals(coordinatesToFind)) {
+                goods.add(new Goods(GoodsColor.YELLOW));
+            }
+        }
+        for(Coordinates coordinates :cargoHoldContainsGood(new Goods(GoodsColor.RED))) {
+            if (coordinates.equals(coordinatesToFind)) {
+                goods.add(new Goods(GoodsColor.GREEN));
+            }
+        }
+        for(Coordinates coordinates :cargoHoldContainsGood(new Goods(GoodsColor.RED))) {
+            if (coordinates.equals(coordinatesToFind)) {
+                goods.add(new Goods(GoodsColor.BLUE));
+            }
+        }
+        return goods;
+    }
+
 }

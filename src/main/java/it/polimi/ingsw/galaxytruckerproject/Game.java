@@ -32,7 +32,7 @@ public class Game implements GameInterface{
     public Game() {
         this.gameState = START_GAME;
         this.turnedTiles = new ArrayList<>();
-        this.flightBoard = new FlightBoard();
+        this.flightBoard = new FlightBoard(mode);
         this.hourglassTurns = 0;
         this.tileStack = new TileFactory().getStack(TileFactory.loadTilesFromJson("Tiles.json"));
         CardDeck cardDeck = new CardDeck("cards.json");
