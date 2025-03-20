@@ -12,11 +12,11 @@ public abstract class Cannon extends Tile {
 
     @Override
     public String toString() {
-        return "direzione: "+direction.toString() +super.toString();
+        return "direction: "+direction.toString() +super.toString();
     }
 
     public void getStat(){
-        //OVVERIDE IN THE SUBCLASSES
+        //OVERRIDE IN THE SUBCLASSES
     }
     public boolean isCorrect(){
         Optional<Tile> other= Optional.empty();
@@ -34,7 +34,7 @@ public abstract class Cannon extends Tile {
         else if(this.direction == Direction.WEST && this.coordinates.getY()!=0){
             other = tileTable[this.coordinates.getX()][this.coordinates.getY()-1];
         }
-        if(!other.isEmpty() && !(other.get() instanceof VoidTile)){
+        if(other.isPresent() && !(other.get() instanceof VoidTile)){
             return false;
         }
         return super.isCorrect();

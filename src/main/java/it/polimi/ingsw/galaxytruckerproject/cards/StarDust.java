@@ -27,7 +27,7 @@ public class StarDust extends Card {
             int playerExposedConnectors = players.get(i).getShipBoard().countExposedConnectors();
 
             if (playerExposedConnectors > 0) {
-                game.getFlightBoard().moveBackward(players.get(i).getPlayerRanking(), playerExposedConnectors);
+                game.getFlightBoard().moveBackward(players.get(i), playerExposedConnectors);
                 System.out.println(players.get(i).getPlayerName() + " moved backward as many steps as their exposed connectors: " + playerExposedConnectors + "\n");
             }
             else {

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.Game;
+import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.Meteor;
 import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
@@ -8,7 +9,7 @@ import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
 import java.util.ArrayList;
 
 public class MeteorSwarm extends Card {
-    private final ArrayList<Meteor> listOfMeteors;
+    private final ArrayList<Projectile> listOfMeteors;
     private ArrayList<Player> playerToInteract;
     private Player currentPlayer;
     private boolean initialized;
@@ -33,7 +34,6 @@ public class MeteorSwarm extends Card {
         if (listOfMeteors.isEmpty()) {
             return;
         }
-        // i dice li devi rollare tu non la meteora, perchè così li chiami con lo stesso tiro su tutti i player
         int diceRoll = listOfMeteors.getFirst().rollTheDices();
         System.out.println(listOfMeteors.getTipe() + "from" + listOfMeteors.getFirst().getDirection() + "at" + diceRoll);
         currentPlayer = playerToInteract.removeFirst();
@@ -60,9 +60,10 @@ public class MeteorSwarm extends Card {
             initializeCard(game);
         }
         if(playerToInteract.isEmpty()&&listOfMeteors.isEmpty()){
+            game.endCardEvent();
             return;
         }
-        if(playerToInteract.isEmpty(){
+        if(playerToInteract.isEmpty()){
             listOfMeteors.removeFirst();
             initialized=false;
         }
@@ -84,7 +85,6 @@ public class MeteorSwarm extends Card {
             choice = Integer.parseInt(input[0]);
         } catch (NumberFormatException e) {
             System.out.println("Invalid input format. Please provide integer values.");
-            executeCard(game, playerName, input);
             return;
         }
         if (choice == 1) {
@@ -96,7 +96,6 @@ public class MeteorSwarm extends Card {
             initializeCard(game);
         }else {
             System.out.println("Invalid choice: " + choice);
-            executeCard(game, playerName, input);
         }
         playerToInteract.removeFirst();
         initializeCard(game);

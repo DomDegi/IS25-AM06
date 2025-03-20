@@ -3,8 +3,10 @@ package it.polimi.ingsw.galaxytruckerproject.cards;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.Goods;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class AbandonedStation extends Card {
     private final int crewNumberRequired;
@@ -12,6 +14,10 @@ public class AbandonedStation extends Card {
     private ArrayList<Player> playerToInteract;
     private Player currentPlayer;
     private boolean initialized;
+    private int won;
+    private int goodsToGet;
+    private Coordinates coordinatesToPut;
+    private final ArrayList<Goods> goodsRemovedFromCargo;
 
     public AbandonedStation(int level, int requiredDays, int crewNumberRequired, ArrayList<Goods> possibleGoodsGain) {
         super(level, requiredDays);
@@ -20,6 +26,8 @@ public class AbandonedStation extends Card {
         this.initialized=false;
         this.currentPlayer =null;
         this.playerToInteract = new ArrayList<>();
+        this.won =0;
+        this.goodsRemovedFromCargo = new ArrayList<>();
     }
     //asks every player in order of ranking that meets the requirements if they want to spend days to gain the goods
     @Override
@@ -37,47 +45,202 @@ public class AbandonedStation extends Card {
             initializeCard(game);
             return;
         }
-        System.out.printf(currentPlayer+"input 1 to land on the station, input 0 to ignore, you will loose %d flight and get days\n", requiredDays);
+        System.out.printf(currentPlayer+"input 'yes' to land on the station, input 'no' to ignore, you will loose %d flight and get days\n", requiredDays);
         if(playerToInteract.isEmpty()){
+            game.endCardPhase();
         }
     }
 
     @Override
     public void executeCard(Game game, String playerName, String[] input) {
-        if (playerToInteract.isEmpty()) {
-            game.endCardPhase();
-            return;
+        if (won == 0) {
+            if (playerToInteract.isEmpty()) {
+                game.endCardPhase();
+                return;
+            }
+            if (currentPlayer == null) {
+                currentPlayer = game.getListOfPlayers().getFirst();
+            }
+            if (!playerName.equals(currentPlayer.getPlayerName()))
+                return;
+            int choice;
+            if (input[0].equalsIgnoreCase("no")) {
+                input[0] = "0";
+            }
+            if (input[0].equalsIgnoreCase("yes")) {
+                input[0] = "1";
+            }
+            try {
+                choice = Integer.parseInt(input[0]);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input format. Please provide integer values.");
+                return;
+            }
+            if (currentPlayer.getTotalCrew() >= crewNumberRequired) {
+                if (choice == 1) {
+                    game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
+                    won=1;
+                    System.out.print("Chose for each good where to put it, input done to stop");
+                    //exit for loop: the station has been claimed
+                } else if (choice == 0) {
+                    System.out.println("No action performed");
+                    playerToInteract.removeFirst();
+                    initializeCard(game);
+                } else {
+                    System.out.println("Invalid choice: " + choice);
+                }
+            } else {
+                System.out.printf("Sorry" + currentPlayer + "you can't land on the station, you need at least %d crew members\n", crewNumberRequired);
+            }
+        }else if(won == 1){
+            if(getReward(input)){
+                game.endCardEvent();
+            }
+        }else if(won == 2){
+            goodsRemovedFromCargo.add(swapGoods(input));
+        }else if(won == 3){
+            System.out.println("Good removed from cargo: ");
+            AtomicInteger i= new AtomicInteger(1);
+            goodsRemovedFromCargo.forEach(goods -> {System.out.printf(i+" - %s good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue());
+            i.getAndIncrement();});
+            System.out.println("Enter what good of these you want to put in the cargo again(1-"+goodsRemovedFromCargo.size()+", done to stop) and where to put it: \n");
+            won = 4;
+        }else if(won == 4){
+            if(getReward(input)){
+                game.endCardEvent();
+            }
+        }else if(won == 5){
+            goodsRemovedFromCargo.add(swapGoods(input));
         }
-        if (currentPlayer == null) {
-            currentPlayer = game.getListOfPlayers().getFirst();
+    }
+
+    private boolean getReward(String[] input){
+        int CoordinatesX;
+        int CoordinatesY;
+        if (input[0].equalsIgnoreCase("done")) {
+            input[0] = "0";
         }
-        if (!playerName.equals(currentPlayer.getPlayerName()))
-            return;
-        int choice;
         try {
-            choice = Integer.parseInt(input[0]);
+            goodsToGet = Integer.parseInt(input[0]);
         } catch (NumberFormatException e) {
             System.out.println("Invalid input format. Please provide integer values.");
-            executeCard(game, playerName, input);
-
-            return;
+            return false;
         }
-        if (currentPlayer.getTotalCrew() >= crewNumberRequired) {
-            if (choice == 1) {
-                game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
-                currentPlayer.gainGoods();
-                //exit for loop: the station has been claimed
-            } else if (choice == 0) {
-                System.out.println("No action performed");
-                playerToInteract.removeFirst();
-                initializeCard(game);
+        try {
+            CoordinatesX = Integer.parseInt(input[1]);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input format. Please provide integer values.");
+            return false;
+        }
+        try {
+            CoordinatesY = Integer.parseInt(input[2]);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input format. Please provide integer values.");
+            return false;
+        }
+        coordinatesToPut = new Coordinates(CoordinatesX, CoordinatesY);
+        if (won==1){
+            if (goodsToGet > 0 && goodsToGet < possibleGoodsGain.size()) {
+                int positioned = currentPlayer.getShipBoard().gainGoods(possibleGoodsGain.get(goodsToGet-1),coordinatesToPut);
+                if(positioned==0){
+                    System.out.printf("You've successfully put the %s good in the %d,%d cargo\n", possibleGoodsGain.get(goodsToGet -1).getColor(), coordinatesToPut.getX(),coordinatesToPut.getY() );
+                    possibleGoodsGain.remove(goodsToGet-1);
+                    return possibleGoodsGain.isEmpty();
+                }else if(positioned==1){
+                    System.out.printf("Sorry, you can't put the %s good in the %d,%d cargo, it is full, chose what good to remove (input 'no' to select an other good and cargo coordinates)\n",possibleGoodsGain.get(goodsToGet -1).getColor(), coordinatesToPut.getX(),coordinatesToPut.getY() );
+                    AtomicInteger i= new AtomicInteger(1);
+                    currentPlayer.getPlayerShip().getSingleCargoGoods(coordinatesToPut).forEach(goods -> {System.out.printf(i+" - %s good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue());
+                        i.getAndIncrement();});
+                    won=2;
+                    return false;
+                }else if(positioned==-1){
+                    return false;
+                }
+            } else if (goodsToGet == 0) {
+                System.out.println("You stopped positioning your cargo");
+                return true;
             } else {
-                System.out.println("Invalid choice: " + choice);
-                executeCard(game, playerName, input);
+                System.out.println("Invalid goodsToGet: " + goodsToGet);
+                return false;
             }
-        } else {
-            System.out.printf("Sorry" + currentPlayer + "you can't land on the station, you need at least %d crew members\n", crewNumberRequired);
+            return false;
+        }else if(won == 4){
+            if (goodsToGet > 0 && goodsToGet < possibleGoodsGain.size()) {
+                int positioned = currentPlayer.getShipBoard().gainGoods(goodsRemovedFromCargo.get(goodsToGet-1),coordinatesToPut);
+                if(positioned==0){
+                    System.out.printf("You've successfully put the %s good in the %d,%d cargo\n", possibleGoodsGain.get(goodsToGet -1).getColor(), coordinatesToPut.getX(),coordinatesToPut.getY() );
+                    goodsRemovedFromCargo.remove(goodsToGet-1);
+                    return goodsRemovedFromCargo.isEmpty();
+                }else if(positioned==1){
+                    System.out.printf("Sorry, you can't put the %s good in the %d,%d cargo, it is full, chose what good to remove (input 'no' to select an other good and cargo coordinates)\n",possibleGoodsGain.get(goodsToGet -1).getColor(), coordinatesToPut.getX(),coordinatesToPut.getY() );
+                    AtomicInteger i= new AtomicInteger(1);
+                    currentPlayer.getPlayerShip().getSingleCargoGoods(coordinatesToPut).forEach(goods -> {System.out.printf(i+" - %s good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue());
+                        i.getAndIncrement();});
+                    won=5;
+                    return false;
+                }else if(positioned==-1){
+                    return false;
+                }
+            } else if (goodsToGet == 0) {
+                System.out.println("You stopped positioning your cargo");
+                return true;
+            } else {
+                System.out.println("Invalid goodsToGet: " + goodsToGet);
+                return false;
+            }
+            return false;
         }
+        return false;
+    }
+
+    public Goods swapGoods(String[] input){
+        int chose;
+        if (input[0].equalsIgnoreCase("no")) {
+            input[0] = "0";
+        }
+        try {
+            chose = Integer.parseInt(input[0]);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input format. Please provide integer values.");
+            return null;
+        }
+        ArrayList<Goods> cargo = currentPlayer.getPlayerShip().getSingleCargoGoods(coordinatesToPut);
+        Goods goodToSwap=null;
+        switch (chose){
+            case 0:
+                System.out.println("No action performed, select a good to remove from the cargo");
+                return null;
+            case 1:
+                goodToSwap= cargo.getFirst();
+                currentPlayer.getPlayerShip().removeGood(cargo.getFirst(), coordinatesToPut);
+                break;
+            case 2:
+                if(cargo.size()<2) {
+                    System.out.println("Invalid choice: " + chose + " - this cargo container does not exist");
+                    return null;
+                }
+                goodToSwap= cargo.get(1);
+                currentPlayer.getPlayerShip().removeGood(cargo.get(1), coordinatesToPut);
+                break;
+            case 3:
+                if(cargo.size()<3) {
+                    System.out.println("Invalid choice: " + chose + " - this cargo container does not exist");
+                    return null;
+                }
+                goodToSwap= cargo.get(2);
+                currentPlayer.getPlayerShip().removeGood(cargo.get(2), coordinatesToPut);
+
+                break;
+        }
+        currentPlayer.getPlayerShip().gainGoods(possibleGoodsGain.get(goodsToGet-1), coordinatesToPut);
+        if(won==2){
+            possibleGoodsGain.remove(goodsToGet-1);
+            won=3;
+        } else if(won==5){
+            goodsRemovedFromCargo.remove(goodsToGet-1);
+            won=3;
+        }
+        return goodToSwap;
     }
 
     @Override

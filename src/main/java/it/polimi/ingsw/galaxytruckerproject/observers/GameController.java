@@ -2,7 +2,6 @@ package it.polimi.ingsw.galaxytruckerproject.observers;
 
 import it.polimi.ingsw.galaxytruckerproject.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.GameState;
-import it.polimi.ingsw.galaxytruckerproject.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
@@ -177,7 +176,7 @@ public class GameController implements GameObserver {
                     System.out.println("tile stack empty or playerNotFound");
                     return;
                 }
-                System.out.println("Your drawn tile is:" + drawnTile.toString());
+                System.out.println("Your drawn tile is:" + drawnTile);
                 playerInputs.put(playerName, "draw stack");
                 break;
             }
@@ -195,7 +194,7 @@ public class GameController implements GameObserver {
                         System.out.println("no turned tiles or the index is  out of bounds");
                         return;
                     }
-                    System.out.println("Your drawn tile is:" + drawnTile.toString());
+                    System.out.println("Your drawn tile is:" + drawnTile);
                     playerInputs.put(playerName, "draw turned " + input[2]);
                 } catch (NumberFormatException e) {
                     System.out.println("Didn't input a numerical index for the turned tiles to pick");
@@ -216,7 +215,7 @@ public class GameController implements GameObserver {
                         System.out.println("no booked tiles or the index is  out of bounds");
                         return;
                     }
-                    System.out.println("Your drawn tile is:" + drawnTile.toString());
+                    System.out.println("Your drawn tile is:" + drawnTile);
                     playerInputs.put(playerName, "draw booked " + input[2]);
                 } catch (RuntimeException e) {
                     System.out.println("Didn't input a numerical index for the booked tile to pick");
@@ -335,7 +334,7 @@ public class GameController implements GameObserver {
             System.out.println("no player with that name to check");
             return;
         }
-        System.out.println(shipBoardToCheck.toString());
+        System.out.println(shipBoardToCheck);
     }
 
     //now no input except hourglass and checkShipboard work and checks if the other player have completed

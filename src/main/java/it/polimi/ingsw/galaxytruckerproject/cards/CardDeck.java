@@ -24,7 +24,7 @@ public class CardDeck {
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filename);
 
             if (inputStream == null) {
-                System.out.println("Errore: file " + filename + " not found");
+                System.out.println("Error: file " + filename + " not found");
                 return;
             }
             CardCollection cardCollection = objectMapper.readValue(inputStream, CardCollection.class);

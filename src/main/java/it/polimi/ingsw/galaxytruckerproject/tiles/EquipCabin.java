@@ -3,14 +3,14 @@ package it.polimi.ingsw.galaxytruckerproject.tiles;
 
 public class EquipCabin extends Cabin {
 
-    AlienOptions alienabilty;
+    AlienOptions alienability;
     CrewType crewType;
 
     public EquipCabin(Link north, Link east, Link south, Link west) {
         super(north, east, south, west);
     }
 
-    //SELECT THE CREWTYPE ACCORDING TO ITS ALIENOPTIONS
+    //SELECT THE CREW_TYPE ACCORDING TO ITS ALIEN_OPTIONS
     public void setCrewType(CrewType crewType) {
         switch (crewType) {
             case HUMAN:
@@ -18,25 +18,23 @@ public class EquipCabin extends Cabin {
                 this.crew = 2;
             break;
             case PURPLE:
-                if (this.alienabilty == AlienOptions.BOTH || this.alienabilty == AlienOptions.PURPLE){
+                if (this.alienability == AlienOptions.BOTH || this.alienability == AlienOptions.PURPLE){
                     this.crewType = CrewType.PURPLE;
                     this.crew = 1;
-                    break;
                 }
                 else{
                     System.out.println("CAN'T FILL THIS CABIN WITH A PURPLE ALIEN");
-                    break;
                 }
+                break;
             case BROWN:
-                if(this.alienabilty == AlienOptions.BOTH || this.alienabilty == AlienOptions.BROWN){
+                if(this.alienability == AlienOptions.BOTH || this.alienability == AlienOptions.BROWN){
                     this.crewType = CrewType.BROWN;
                     this.crew = 1;
-                    break;
                 }
                 else{
                     System.out.println("CAN'T FILL THIS CABIN WITH A BROWN ALIEN");
-                    break;
                 }
+                break;
         }
     }
 
@@ -55,7 +53,7 @@ public class EquipCabin extends Cabin {
     }
 
 
-    public boolean removeCrew(){
+    public void removeCrew(){
         if (this.crew>0) {
             crew--;
             switch (crewType) {
@@ -72,12 +70,11 @@ public class EquipCabin extends Cabin {
         }
         else{
             System.out.println("THIS CABIN IS EMPTY");
-            return false;
+            return;
         }
         if (this.crew == 0) {
             shipBoard.getCabinsCoordinates().remove(this.coordinates);
         }
-        return true;
     }
 
     public void destroy(){
@@ -100,9 +97,7 @@ public class EquipCabin extends Cabin {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getCoordinates().getX()).append(" ").append(getCoordinates().getY()).
-                                    append(" ").append(this.crew).append(" ").append(this.crewType);
-        return sb.toString();
+        return getCoordinates().getX() + " " + getCoordinates().getY() +
+                " " + this.crew + " " + this.crewType;
     }
 }
