@@ -38,6 +38,8 @@ nbdist/
 
 ### Mac OS ###
 .DS_Store
+/.idea/
 
 ### Windows ###
 Thumbs.db
+

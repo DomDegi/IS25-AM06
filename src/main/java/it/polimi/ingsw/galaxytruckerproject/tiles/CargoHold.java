@@ -9,10 +9,10 @@ public abstract class CargoHold extends Tile{
     final int totSpaces;
     ArrayList<Goods> cargo;
 
-    public CargoHold(int totSpaces, Link nord, Link east, Link south, Link west) {
-        super(nord, east, south, west);
+    public CargoHold(int totSpaces, Link north, Link east, Link south, Link west) {
+        super(north, east, south, west);
         this.totSpaces = totSpaces;
-        this.cargo = new ArrayList<Goods>();
+        this.cargo = new ArrayList<>();
         // It makes more sense to use an ArrayList since they are much easier to manage in Java.
         // Instead of dealing with null values, we can simply use an ArrayList.
         // and to check if there are goods and how many, we just get the size of the ArrayList and compare it with totSpaces.
@@ -23,7 +23,7 @@ public abstract class CargoHold extends Tile{
         for(Goods g : cargo)
             g.toString();
         return cargo.stream()
-                .map(i->i.toString())
+                .map(Goods::toString)
                 .collect(Collectors.joining()) +" "+super.toString();
     }
 

@@ -5,8 +5,8 @@ import java.util.Optional;
 public abstract class Engine extends Tile{
     Direction direction;
 
-    public Engine(Link nord, Link east, Link south, Link west) {
-        super(nord, east, south, west);
+    public Engine(Link north, Link east, Link south, Link west) {
+        super(north, east, south, west);
         south.connectorsType = Connectors.SMOOTH;
         direction = Direction.SOUTH;
     }
@@ -33,7 +33,7 @@ public abstract class Engine extends Tile{
         //check south tile
         else if(this.coordinates.getX()!=4){
             other = tileTable[this.coordinates.getX()+1][this.coordinates.getY()];
-            if(!other.isEmpty() && !(other.get() instanceof VoidTile)){
+            if(other.isPresent() && !(other.get() instanceof VoidTile)){
                 return false;
             }
         }

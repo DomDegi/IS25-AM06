@@ -253,7 +253,7 @@ public class Player {
         Goods placedGood;
         while (!whereToPlace.isEmpty()) {
             placedGood = goods.removeFirst();
-            if (playerShip.gainGoods(placedGood ,whereToPlace.removeFirst())) {
+            if (playerShip.gainGoods(placedGood ,whereToPlace.removeFirst())==1) {
                 placedCorrectly.add(placedGood);
             }
         }
@@ -294,6 +294,7 @@ public class Player {
         }
         return counter;
     }
+
     public void printCurrentInfoCargoHolds() {
         System.out.println("RED goods are at: ");
         playerShip.cargoHoldContainsGood(new Goods(GoodsColor.RED));
@@ -330,7 +331,7 @@ public class Player {
         this.credit += credit;
     }
 
-    //THIS METHOD RECEIVES THE Coordinates OF THE SHIELD THAT WANTS TO BE ACTIVATED AND THE Coordinates OF THE BATTERY COMPONENTS
+    //THIS METHOD RECEIVES THE Coordinates OF THE SHIELD THAT WANTS TO BE ACTIVATED AND THE Coordinates OF THE BATTERY_COMPONENTS
     //FROM WHICH IT'S GOING TO BE USED THE ONE BATTERY NECESSARY TO POWER THE SHIELD
     public Coverage useShield(Coordinates shieldCoordinates, Coordinates batteryCoordinates) {
         return playerShip.chooseShields(shieldCoordinates,batteryCoordinates);
