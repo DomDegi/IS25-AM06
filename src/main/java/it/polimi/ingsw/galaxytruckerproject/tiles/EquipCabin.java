@@ -10,7 +10,11 @@ public class EquipCabin extends Cabin {
         super(north, east, south, west);
     }
 
-    //SELECT THE CREW_TYPE ACCORDING TO ITS ALIEN_OPTIONS
+    public void setAlienAbility(AlienOptions alienabilty){
+
+    }
+
+    //SELECT THE CREWTYPE ACCORDING TO ITS ALIENOPTIONS
     public void setCrewType(CrewType crewType) {
         switch (crewType) {
             case HUMAN:
@@ -21,6 +25,7 @@ public class EquipCabin extends Cabin {
                 if (this.alienability == AlienOptions.BOTH || this.alienability == AlienOptions.PURPLE){
                     this.crewType = CrewType.PURPLE;
                     this.crew = 1;
+                    break;
                 }
                 else{
                     System.out.println("CAN'T FILL THIS CABIN WITH A PURPLE ALIEN");
@@ -30,6 +35,7 @@ public class EquipCabin extends Cabin {
                 if(this.alienability == AlienOptions.BOTH || this.alienability == AlienOptions.BROWN){
                     this.crewType = CrewType.BROWN;
                     this.crew = 1;
+                    break;
                 }
                 else{
                     System.out.println("CAN'T FILL THIS CABIN WITH A BROWN ALIEN");
@@ -50,10 +56,11 @@ public class EquipCabin extends Cabin {
                 shipBoard.addBreakBrownAliens(true);
                 break;
         }
+        shipBoard.getCabinsCoordinates().add(this.coordinates);
     }
 
 
-    public void removeCrew(){
+    public boolean removeCrew(){
         if (this.crew>0) {
             crew--;
             switch (crewType) {
@@ -70,11 +77,12 @@ public class EquipCabin extends Cabin {
         }
         else{
             System.out.println("THIS CABIN IS EMPTY");
-            return;
+            return false;
         }
         if (this.crew == 0) {
             shipBoard.getCabinsCoordinates().remove(this.coordinates);
         }
+        return true;
     }
 
     public void destroy(){
@@ -92,8 +100,16 @@ public class EquipCabin extends Cabin {
                     break;
             }
             crew=0;
+            shipBoard.getCabinsCoordinates().remove(this.coordinates);
+
         }
+        super.destroy();
     }
+
+    public CrewType getCrewType(){
+        return this.crewType;
+    }
+
 
     @Override
     public String toString() {

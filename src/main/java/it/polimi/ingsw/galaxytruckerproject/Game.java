@@ -12,7 +12,7 @@ import it.polimi.ingsw.galaxytruckerproject.tiles.TileFactory;
 
 import java.util.*;
 
-import static it.polimi.ingsw.galaxytruckerproject.GameState.*;
+import static it.polimi.ingsw.galaxytruckerproject.stuff.GameState.*;
 
 public class Game implements GameInterface{
     private final GameMode mode;

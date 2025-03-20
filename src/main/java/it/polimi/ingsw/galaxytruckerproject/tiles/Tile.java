@@ -24,8 +24,8 @@ public abstract class Tile {
 
     @Override
     public String toString() {
-            return "Tile north" + north.toString() + " east:" + east.toString() + " south" + south.toString() + " west" + west.toString() + "\n"
-                    + "coordinates: " + coordinates.getX() + coordinates.getY();
+        return "Tile north:"+north.toString() + " east:" + east.toString() + " south:" + south.toString() + " west:" + west.toString()+"\n"
+                +"coordinates: "+coordinates.getX()+coordinates.getY();
     }
 
 
@@ -65,7 +65,9 @@ public abstract class Tile {
         //Check south
         if(this.coordinates.getX()!=4) {
             other = tileTable[this.coordinates.getX()+1][this.coordinates.getY()];
-            return other.isEmpty() || other.get() instanceof VoidTile || south.isConnected(other.get().getNorth());
+            if(!other.isEmpty() && !(other.get() instanceof VoidTile) && !south.isConnected(other.get().getNorth())) {
+                return false;
+            }
         }/*
         //Check west
 
@@ -84,7 +86,7 @@ public abstract class Tile {
         Link tmp2=east;
         east=tmp;
         west=south;
-        south=east;
+        south=tmp2;
     }
 
     public void setCoordinates(Coordinates coordinates) {
@@ -103,8 +105,8 @@ public abstract class Tile {
 
     //METHOD THAT GETS OVERRIDE ONLY BY THE SPECIFIC CLASSES
     public void setCrewType(CrewType crewType) {System.out.println("THIS TILE IS NOT A CABIN"); }
-    public void consumeBattery(){System.out.println("THIS TILE IS NOT A BATTERY_COMPONENT"); }
-    public void removeCrew(){ System.out.println("THIS TILE IS NOT A CABIN");}
+    public void consumeBattery(){System.out.println("THIS TILE IS NOT A BATTERYCOMPONENT"); }
+    public boolean removeCrew(){ System.out.println("THIS TILE IS NOT A CABIN");return false; }
     public void removeGood(Goods good){System.out.println("THIS TILE IS NOT A GOOD");}
     public Coverage getCoveredArea(){System.out.println("THIS TILE IS NOT A SHIELD"); return Coverage.NONE;}
     public ArrayList<Goods> getCargo(){System.out.println("THIS TILE IS NOT A CARGO_HOLD"); return null;}

@@ -17,6 +17,15 @@ public class Link {
         return connectorsType;
     }
 
+    public void setConnectorsType(Connectors connectorsType) {
+        this.connectorsType = connectorsType;
+    }
+
+    @Override
+    public String toString() {
+        return connectorsType.toString();
+    }
+
     public boolean isConnected(Link other){
         if(this.connectorsType == other.connectorsType)
             return true;
@@ -27,6 +36,7 @@ public class Link {
 
         return false;
     }
+
     public void setConnectorType(Connectors connectorType) {
         this.connectorsType = connectorType;
     }

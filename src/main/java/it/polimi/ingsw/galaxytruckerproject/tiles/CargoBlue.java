@@ -11,4 +11,5 @@ public class CargoBlue extends CargoHold {
 
         return "Cargo Blue" +super.toString();
     }
+
 }

@@ -25,6 +25,12 @@ public abstract class Engine extends Tile{
     }
 
     @Override
+    public void destroy() {
+        super.destroy();
+        shipBoard.addBreakSingleEngine(false);
+    }
+
+    @Override
     public boolean isCorrect() {
         Optional<Tile> other=null;
         Optional<Tile>[][] tileTable = shipBoard.getTilesTable();

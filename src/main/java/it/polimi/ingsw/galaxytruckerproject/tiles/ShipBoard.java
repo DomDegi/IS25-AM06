@@ -4,6 +4,7 @@ import java.util.*;
 import it.polimi.ingsw.galaxytruckerproject.Goods;
 import it.polimi.ingsw.galaxytruckerproject.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
 
 
 public class ShipBoard {
@@ -11,18 +12,19 @@ public class ShipBoard {
     private Optional<Tile>[][] tilesTable;
     private int numExposedConnectors;
     private int penalty;
-    private final ArrayList<Tile> bookedTiles;
+    private ArrayList<Tile> bookedTiles;
     private int numBatteries;
     private float singleCannonPower;
-    private final ArrayList<Coordinates> DoubleCannon;
+    private ArrayList<Coordinates> DoubleCannon;
 
     //TO ENNIO: IF THERE'S A REASON TO NOT USE THIS SET UP, FEEL FREE TO RESET EVERYTHING AS IT WAS
-    private ArrayList<Coordinates> DoubleStraightCannon;
-    private ArrayList<Coordinates> DoubleSideCannon;
+   // private ArrayList<Coordinates> DoubleStraightCannon;
+   // private ArrayList<Coordinates> DoubleSideCannon;
+    //TO SOHEIL I FEAR RESETTING
 
     private int numSingleEngine;
-    private final ArrayList<Coordinates> DoubleEngine;
-    private final ArrayList<Coverage> shields;
+    private ArrayList<Coordinates> DoubleEngine;
+    private ArrayList<Coverage> shields;
     private ArrayList<Coordinates> batteryCoordinates;
     private ArrayList<Coordinates> crewCoordinates;
     private ArrayList<Coordinates> cargoHoldCoordinates;
@@ -30,17 +32,33 @@ public class ShipBoard {
     private int numPurpleAliens;
     private int numHumanCrew;
 
+    public String toString() {
+        StringBuilder s = new StringBuilder("Schipboard: ");
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 7; j++) {
+                if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable()) {
+                    s.append(tilesTable[i][j].get().toString());
+                    s.append("\n");
+                }
+            }
+            s.append("\n-\n");
+        }
+        return s.toString();
+    }
 
     public ShipBoard(Player player) {
         this.player = player;
         this.penalty = 0;
-        this.bookedTiles = new ArrayList<>();
+        this.bookedTiles = new ArrayList<Tile>();
         this.numBatteries = 0;
         this.singleCannonPower = 0;
-        this.DoubleCannon = new ArrayList<>();
+        this.DoubleCannon = new ArrayList<Coordinates>();
+        this.batteryCoordinates= new ArrayList<Coordinates>();
+        this.crewCoordinates=  new ArrayList<Coordinates>();
+        this.cargoHoldCoordinates= new ArrayList<Coordinates>();
         this.numSingleEngine = 0;
-        this.DoubleEngine = new ArrayList<>();
-        this.shields = new ArrayList<>();
+        this.DoubleEngine = new ArrayList<Coordinates>();
+        this.shields = new ArrayList<Coverage>();
         this.numBrownAliens = 0;
         this.numPurpleAliens = 0;
         this.numExposedConnectors = 0;
@@ -50,6 +68,10 @@ public class ShipBoard {
     //GETTER METHODS
     public int getPenalty() {
         return penalty;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public int getNumBatteries() {
@@ -186,8 +208,8 @@ public class ShipBoard {
     public boolean positionTile(Optional<Tile> tile, Coordinates coordinates) {
         if (tile.isPresent() && tilesTable[coordinates.getX()][coordinates.getY()].isEmpty()) {
             tilesTable[coordinates.getX()][coordinates.getY()] = tile;
-            tile.get().setCoordinates(coordinates);
             tile.get().setShipBoard(this);
+            tile.get().setCoordinates(coordinates);
             return true;
         }
         return false;
@@ -196,6 +218,10 @@ public class ShipBoard {
     public Tile getTile(int x, int y) {
         return tilesTable[x][y].get();
     }
+    public Tile getTile(Coordinates coordinates){
+        return tilesTable[coordinates.getX()][coordinates.getY()].get();
+    }
+
     /*
         private ThreadLocal<Object> tilesTable() {
         }
@@ -219,10 +245,19 @@ public class ShipBoard {
         for (int[] pos : voidPositions) {
             this.tilesTable[pos[0]][pos[1]] = Optional.of(new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH)));
         }
+        Tile tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL));
+        positionTile(Optional.of(tile), new Coordinates(2, 3));
     }
 
     public void initializeTestFlight() {
-        tilesTable = new Optional[5][7];
+        this.tilesTable = new Optional[5][7];
+        // Inizializza le caselle riempibili a null
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 7; j++) {
+                this.tilesTable[i][j] = Optional.empty();
+
+            }
+        }
         // Coordinates of VoidTile
         int[][] voidPositions = {
                 {0, 0}, {0, 1}, {0, 2}, {0, 4}, {0, 5}, {0, 6},
@@ -236,16 +271,11 @@ public class ShipBoard {
             tilesTable[pos[0]][pos[1]] = Optional.of(new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH)));
         }
 
-        // Inizializza le caselle riempibili a null
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 7; j++) {
-                if (!(tilesTable[i][j].get() instanceof VoidTile)) {
-                    tilesTable[i][j] = Optional.empty();
-                }
-            }
-        }
+
         this.tilesTable = tilesTable;
     }
+
+
 
     //destroy tile+ return set of new possible shipboard coordinates
     public ArrayList<Set<Coordinates>> destroyTile(Coordinates coordinates) {
@@ -314,28 +344,29 @@ public class ShipBoard {
     //in the case of construction errors this method will be played for each error
     public Set<Coordinates> brokenGraph(Coordinates start) {
         Set<Coordinates> set = new HashSet<Coordinates>();
-        return brokenGraph2(start, set);
+        return connectedSet(start, set);
     }
 
-    public Set<Coordinates> brokenGraph2(Coordinates start, Set<Coordinates> set) {
+
+    public Set<Coordinates> connectedSet(Coordinates start, Set<Coordinates> set) {
         int x = start.x;
         int y = start.y;
         set.add(new Coordinates(x, y));
         //south
         if (tilesTable[x][y].get().south.getConnectorsType() != Connectors.SMOOTH && tilesTable[x + 1][y].isPresent() && tilesTable[x + 1][y].get().fillable() && !set.contains(tilesTable[x + 1][y].get().getCoordinates())) {
-            brokenGraph2(new Coordinates(x + 1, y), set);
+            connectedSet(new Coordinates(x + 1, y), set);
         }
         //east
         if (tilesTable[x][y].get().east.getConnectorsType() != Connectors.SMOOTH && tilesTable[x][y + 1].isPresent() && tilesTable[x][y + 1].get().fillable() && !set.contains(tilesTable[x][y + 1].get().getCoordinates())) {
-            brokenGraph2(new Coordinates(x, y + 1), set);
+            connectedSet(new Coordinates(x, y + 1), set);
         }
         //north
         if (tilesTable[x][y].get().north.getConnectorsType() != Connectors.SMOOTH && tilesTable[x - 1][y].isPresent() && tilesTable[x - 1][y].get().fillable() && !set.contains(tilesTable[x - 1][y].get().getCoordinates())) {
-            brokenGraph2(new Coordinates(x - 1, y), set);
+            connectedSet(new Coordinates(x - 1, y), set);
         }
         //west
         if (tilesTable[x][y].get().west.getConnectorsType() != Connectors.SMOOTH && tilesTable[x][y - 1].isPresent() && tilesTable[x][y - 1].get().fillable() && !set.contains(tilesTable[x][y - 1].get().getCoordinates())) {
-            brokenGraph2(new Coordinates(x, y - 1), set);
+            connectedSet(new Coordinates(x, y - 1), set);
         }
         return set;
     }
@@ -381,6 +412,9 @@ public class ShipBoard {
     }
 
     public boolean verifyCorrectness() {
+        //Set<Coordinates> set = new HashSet<Coordinates>();
+        //set=connectedSet( new Coordinates(2,3), set);
+        // da controllare che tutte le caselle non vuote siano nel set per la correttezza (no caso delle due navi separate)
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 7; j++) {
                 if (tilesTable[i][j].isPresent())
