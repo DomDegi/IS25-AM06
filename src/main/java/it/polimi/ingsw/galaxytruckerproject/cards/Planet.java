@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.Goods;
 
 import java.util.ArrayList;
@@ -8,7 +10,8 @@ public class Planet {
     private final ArrayList<Goods> listOfGoods;
     private boolean occupationStatus = false;
 
-    public Planet(ArrayList<Goods> listOfGoods) {
+    @JsonCreator
+    public Planet(@JsonProperty("listOfGoods") ArrayList<Goods> listOfGoods) {
         this.listOfGoods = listOfGoods;
     }
 

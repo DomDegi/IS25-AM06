@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.cards.penalties.Penalty;
@@ -15,10 +17,13 @@ public class CombatZone extends Card {
     private ChallengeType currentChallenge = null;
     private boolean losingPlayerDecided = false;
 
-
-    public CombatZone(int level, LinkedHashMap<ChallengeType, Penalty> listOfPenalties) {
+    @JsonCreator
+    public CombatZone(
+            @JsonProperty("level") int level,
+            @JsonProperty("listOfChallenges") LinkedHashMap<ChallengeType, Penalty> listOfChallenges
+    ) {
         super(level, 0);
-        this.listOfChallenges = listOfPenalties;
+        this.listOfChallenges = listOfChallenges;
         this.playerIndex = 0;
         this.savedValues = new LinkedHashMap<>();
     }

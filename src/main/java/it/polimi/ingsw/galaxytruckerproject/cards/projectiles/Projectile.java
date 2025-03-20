@@ -25,6 +25,7 @@ public abstract class Projectile {
     public Projectile(Direction direction) {
         this.direction = direction;
     }
+
     public Direction getDirection() {
         return direction;
     }

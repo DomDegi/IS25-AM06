@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards.penalties;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
@@ -10,7 +12,8 @@ public class CrewPenalty extends Penalty {
 
     private int numberOfLostCrew;
 
-    public CrewPenalty(int numberOfLostCrew) {
+    @JsonCreator
+    public CrewPenalty(@JsonProperty("numberOfLostCrew") int numberOfLostCrew) {
         this.numberOfLostCrew = numberOfLostCrew;
     }
 

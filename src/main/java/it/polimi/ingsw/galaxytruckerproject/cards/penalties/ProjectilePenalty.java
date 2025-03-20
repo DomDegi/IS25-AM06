@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards.penalties;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.Defense;
 import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.Projectile;
@@ -15,7 +17,8 @@ public class ProjectilePenalty extends Penalty {
     private Game game = null;
     private Defense defenseStatus = null;
 
-    public ProjectilePenalty(ArrayList<Projectile> listOfShots) {
+    @JsonCreator
+    public ProjectilePenalty(@JsonProperty("listOfShots") ArrayList<Projectile> listOfShots) {
         this.listOfProjectiles = listOfShots;
     }
 

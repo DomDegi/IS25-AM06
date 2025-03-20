@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
@@ -9,10 +11,11 @@ import it.polimi.ingsw.galaxytruckerproject.tiles.Direction;
 import java.util.Optional;
 
 public class LargeMeteor extends Projectile {
-    public LargeMeteor(Direction direction) {
+
+    @JsonCreator
+    public LargeMeteor(@JsonProperty("direction") Direction direction) {
         super(direction);
     }
-
 
     public Defense throwProjectile(Player player,int diceRoll, Game game) {
         Throw(player,diceRoll);

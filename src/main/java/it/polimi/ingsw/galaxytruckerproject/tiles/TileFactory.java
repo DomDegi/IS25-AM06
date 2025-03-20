@@ -1,7 +1,9 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,93 +11,73 @@ import java.util.List;
 
 public class TileFactory {
 
-    public static ArrayList<Tile> loadTilesFromJson(String filePath) {
+    public static ArrayList<Tile> loadTilesFromJson(String fileName) {
         ObjectMapper objectMapper = new ObjectMapper();
         ArrayList<Tile> tiles = new ArrayList<>();
 
-        try {
-            File jsonFile = new File(filePath);
+        try (InputStream inputStream = TileFactory.class.getClassLoader().getResourceAsStream(fileName)) {
+            if (inputStream == null) {
+                throw new IllegalArgumentException("Errore: file " + fileName + " non trovato nelle risorse!");
+            }
 
-            // Deserializza il JSON in una lista di oggetti generici (può essere qualsiasi tipo di Tile, CargoHold o SingleCannon)
-            List<JsonTile> jsonTiles = objectMapper.readValue(jsonFile, objectMapper.getTypeFactory().constructCollectionType(List.class, JsonTile.class));
+            // Deserializza il JSON in una lista di oggetti generici (JsonTile)
+            List<JsonTile> jsonTiles = objectMapper.readValue(inputStream,
+                    objectMapper.getTypeFactory().constructCollectionType(List.class, JsonTile.class));
 
-            // Creiamo le istanze di Tile, CargoHold o SingleCannon a seconda dei dati nel JSON
             for (JsonTile jsonTile : jsonTiles) {
-                Tile tile = null;
-
-                switch (jsonTile.getType()) {
-                    case "DoubleCannon": {
-                        tile = new DoubleCannon(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest());
-                        break;
-                    }
-                    case "SingleCannon":{
-                        tile = new SingleCannon(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest());
-                        break;
-                    }
-                    case "Shields":{
-                        tile=new Shields(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest());
-                        break;
-                    }
-                    case "SingleEngine":{
-                        tile=new SingleEngine(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest());
-                        break;
-                    }
-                    case "DoubleEngine":{
-                        tile=new DoubleEngine(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest());
-                        break;
-                    }
-                    case "Pipe":{
-                        tile=new Pipe(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest());
-                        break;
-                    }
-                    case "EquipCabin":{
-                        tile=new EquipCabin(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest());
-                        break;
-                    }
-                    case "BatteryComponents":{
-                        tile=new BatteryComponents(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(), jsonTile.getNumCells());
-                        break;
-                    }
-                    case "AlienLifeSupportsSystem": {
-                        tile=new AlienLifeSupportsSystem(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(), jsonTile.getAlienType());
-                        break;
-                    }
-                    case"CargoBlue":{
-                        tile=new CargoBlue(jsonTile.getTotSpaces(), jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest());
-                        break;
-                    }
-                    case"CargoRed":{
-                        tile=new CargoRed(jsonTile.getTotSpaces(), jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest());
-                        break;
-                    }
-
-                    default:
-                        System.out.println("Unknown tile type: " + jsonTile.getType());
-                        break;
-                }
-
+                Tile tile = createTileFromJson(jsonTile);
                 if (tile != null) {
                     tiles.add(tile);
                 }
             }
+
+            System.out.println("✅ File " + fileName + " caricato correttamente! Tiles trovate: " + tiles.size());
+
         } catch (IOException e) {
+            System.err.println("❌ Errore durante il caricamento del file JSON: " + fileName);
             e.printStackTrace();
         }
 
         return tiles;
     }
 
-    public ArrayDeque<Tile> getStack(ArrayList<Tile> tiles) {
-        Collections.shuffle(tiles);
-        ArrayDeque<Tile> stack = new ArrayDeque<>();
-        for (Tile tile : tiles) {
-            stack.push(tile);
+    private static Tile createTileFromJson(JsonTile jsonTile) {
+        switch (jsonTile.getType()) {
+            case "DoubleCannon":
+                return new DoubleCannon(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest());
+            case "SingleCannon":
+                return new SingleCannon(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest());
+            case "Shields":
+                return new Shields(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest());
+            case "SingleEngine":
+                return new SingleEngine(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest());
+            case "DoubleEngine":
+                return new DoubleEngine(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest());
+            case "Pipe":
+                return new Pipe(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest());
+            case "EquipCabin":
+                return new EquipCabin(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest());
+            case "BatteryComponents":
+                return new BatteryComponents(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(), jsonTile.getNumCells());
+            case "AlienLifeSupportsSystem":
+                return new AlienLifeSupportsSystem(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(), jsonTile.getAlienType());
+            case "CargoBlue":
+                return new CargoBlue(jsonTile.getTotSpaces(), jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest());
+            case "CargoRed":
+                return new CargoRed(jsonTile.getTotSpaces(), jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest());
+            default:
+                System.err.println("⚠️ Tipo di tile sconosciuto: " + jsonTile.getType());
+                return null;
         }
-        return stack;
     }
 
-    // Classe JSON per mappare i dati dal file JSON
-    static class JsonTile {
+    public ArrayDeque<Tile> getStack(ArrayList<Tile> tiles) {
+        Collections.shuffle(tiles);
+        return new ArrayDeque<>(tiles);
+    }
+
+    // Classe JSON per il mapping dei dati
+    public static class JsonTile {
         private String type;
         private Link north;
         private Link east;
@@ -106,69 +88,21 @@ public class TileFactory {
         private int totSpaces;
 
         // Getters e Setters
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public Link getNorth() {
-            return north;
-        }
-
-        public void setNorth(Link north) {
-            this.north = north;
-        }
-
-        public Link getEast() {
-            return east;
-        }
-
-        public void setEast(Link east) {
-            this.east = east;
-        }
-
-        public Link getSouth() {
-            return south;
-        }
-
-        public void setSouth(Link south) {
-            this.south = south;
-        }
-
-        public Link getWest() {
-            return west;
-        }
-
-        public void setWest(Link west) {
-            this.west = west;
-        }
-
-        public int getNumCells() {
-            return numCells;
-        }
-
-        public void setNumCells(int numCells) {
-            this.numCells = numCells;
-        }
-
-        public CrewType getAlienType() {
-            return alienType;
-        }
-
-        public void setAlienType(CrewType alienType) {
-            this.alienType = alienType;
-        }
-
-        public int getTotSpaces() {
-            return totSpaces;
-        }
-
-        public void setTotSpaces(int totSpaces) {
-            this.totSpaces = totSpaces;
-        }
-
+        public String getType() { return type; }
+        public void setType(String type) { this.type = type; }
+        public Link getNorth() { return north; }
+        public void setNorth(Link north) { this.north = north; }
+        public Link getEast() { return east; }
+        public void setEast(Link east) { this.east = east; }
+        public Link getSouth() { return south; }
+        public void setSouth(Link south) { this.south = south; }
+        public Link getWest() { return west; }
+        public void setWest(Link west) { this.west = west; }
+        public int getNumCells() { return numCells; }
+        public void setNumCells(int numCells) { this.numCells = numCells; }
+        public CrewType getAlienType() { return alienType; }
+        public void setAlienType(CrewType alienType) { this.alienType = alienType; }
+        public int getTotSpaces() { return totSpaces; }
+        public void setTotSpaces(int totSpaces) { this.totSpaces = totSpaces; }
     }
 }

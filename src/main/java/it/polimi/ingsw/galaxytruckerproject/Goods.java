@@ -1,9 +1,14 @@
 
 package it.polimi.ingsw.galaxytruckerproject;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Goods {
     private final GoodsColor color;
 
-    public Goods(GoodsColor color){
+    @JsonCreator
+    public Goods(@JsonProperty("color") GoodsColor color) {
         this.color = color;
     }
 

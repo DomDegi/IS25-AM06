@@ -7,7 +7,7 @@ import it.polimi.ingsw.galaxytruckerproject.Game;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = MeteorSwarm.class, name = "meteorSwarm"),
+        @JsonSubTypes.Type(value = MeteorSwarm.class, name = "MeteorSwarm"),
         @JsonSubTypes.Type(value = AbandonedStation.class, name = "AbandonedStation"),
         @JsonSubTypes.Type(value = AbandonedShip.class, name = "AbandonedShip"),
         @JsonSubTypes.Type(value = CombatZone.class, name = "CombatZone"),

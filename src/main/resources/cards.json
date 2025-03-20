@@ -1,5 +1,5 @@
 {
-  "deck": [
+  "cards": [
     {
       "type": "Slavers",
       "level": 1,
@@ -34,16 +34,16 @@
       "rewardCredits": 4,
       "listOfShots": [
         {
-          "direction": "NORTH",
-          "size": "NORMAL"
+          "type": "SmallCannonShot",
+          "direction": "NORTH"
         },
         {
-          "direction": "NORTH",
-          "size": "LARGE"
+          "type": "LargeCannonShot",
+          "direction": "NORTH"
         },
         {
-          "direction": "NORTH",
-          "size": "NORMAL"
+          "type": "SmallMeteor",
+          "direction": "NORTH"
         }
       ]
     },
@@ -72,16 +72,16 @@
       "level": 1,
       "listOfMeteors": [
         {
-          "direction": "NORTH",
-          "size": "LARGE"
+          "type": "LargeMeteor",
+          "direction": "NORTH"
         },
         {
-          "direction": "WEST",
-          "size": "NORMAL"
+          "type": "SmallMeteor",
+          "direction": "WEST"
         },
         {
-          "direction": "EAST",
-          "size": "NORMAL"
+          "type": "SmallMeteor",
+          "direction": "EAST"
         }
       ]
     },
@@ -90,24 +90,24 @@
       "level": 1,
       "listOfMeteors": [
         {
-          "direction": "NORTH",
-          "size": "NORMAL"
+          "type": "SmallMeteor",
+          "direction": "NORTH"
         },
         {
-          "direction": "NORTH",
-          "size": "NORMAL"
+          "type": "SmallMeteor",
+          "direction": "NORTH"
         },
         {
-          "direction": "WEST",
-          "size": "NORMAL"
+          "type": "SmallMeteor",
+          "direction": "WEST"
         },
         {
-          "direction": "EAST",
-          "size": "NORMAL"
+          "type": "SmallMeteor",
+          "direction": "EAST"
         },
         {
-          "direction": "SOUTH",
-          "size": "NORMAL"
+          "type": "SmallMeteor",
+          "direction": "SOUTH"
         }
       ]
     },
@@ -116,16 +116,16 @@
       "level": 1,
       "listOfMeteors": [
         {
-          "direction": "NORTH",
-          "size": "LARGE"
+          "type": "LargeMeteor",
+          "direction": "NORTH"
         },
         {
-          "direction": "NORTH",
-          "size": "NORMAL"
+          "type": "SmallMeteor",
+          "direction": "NORTH"
         },
         {
-          "direction": "NORTH",
-          "size": "LARGE"
+          "type": "LargeMeteor",
+          "direction": "NORTH"
         }
       ]
     },
@@ -247,18 +247,18 @@
         },
         "MINIMUM_ENGINE_POWER": {
           "type": "CrewPenalty",
-          "amount": 2
+          "numberOfLostCrew": 2
         },
         "MINIMUM_CANNON_STRENGTH": {
           "type": "CannonPenalty",
           "listOfShots": [
             {
-              "direction": "SOUTH",
-              "size": "NORMAL"
+              "type": "SmallCannonShot",
+              "direction": "SOUTH"
             },
             {
-              "direction": "SOUTH",
-              "size": "LARGE"
+              "type": "LargeCannonShot",
+              "direction": "SOUTH"
             }
           ]
         }
@@ -266,23 +266,23 @@
     },
     {
       "type": "AbandonedShip",
-      "level": "1",
-      "requiredDays": "1",
-      "crewNumberRequired": "2",
-      "possibleCreditGains": "3"
+      "level": 1,
+      "requiredDays": 1,
+      "crewNumberRequired": 2,
+      "possibleCreditGains": 3
     },
     {
       "type": "AbandonedShip",
-      "level": "1",
-      "requiredDays": "1",
-      "crewNumberRequired": "3",
-      "possibleCreditGains": "4"
+      "level": 1,
+      "requiredDays": 1,
+      "crewNumberRequired": 3,
+      "possibleCreditGains": 4
     },
     {
       "type": "AbandonedStation",
-      "level": "1",
-      "requiredDays": "1",
-      "crewNumberRequired": "5",
+      "level": 1,
+      "requiredDays": 1,
+      "crewNumberRequired": 5,
       "possibleGoodsGain": [
         { "color": "YELLOW"},
         { "color": "GREEN"}
@@ -290,9 +290,9 @@
     },
     {
       "type": "AbandonedStation",
-      "level": "1",
-      "requiredDays": "1",
-      "crewNumberRequired": "6",
+      "level": 1,
+      "requiredDays": 1,
+      "crewNumberRequired": 6,
       "possibleGoodsGain": [
         { "color": "RED"},
         { "color": "RED"}
@@ -332,16 +332,16 @@
       "rewardCredits": 7,
       "listOfShots": [
         {
-          "direction": "NORTH",
-          "size": "LARGE"
+          "type": "LargeCannonShot",
+          "direction": "NORTH"
         },
         {
-          "direction": "NORTH",
-          "size": "NORMAL"
+          "type": "SmallCannonShot",
+          "direction": "NORTH"
         },
         {
-          "direction": "NORTH",
-          "size": "LARGE"
+          "type": "LargeCannonShot",
+          "direction": "NORTH"
         }
       ]
     },
@@ -370,24 +370,24 @@
       "level": 2,
       "listOfMeteors": [
         {
-          "direction": "NORTH",
-          "size": "NORMAL"
+          "type": "SmallMeteor",
+          "direction": "NORTH"
         },
         {
-          "direction": "NORTH",
-          "size": "NORMAL"
+          "type": "SmallMeteor",
+          "direction": "NORTH"
         },
         {
-          "direction": "WEST",
-          "size": "LARGE"
+          "type": "LargeMeteor",
+          "direction": "WEST"
         },
         {
-          "direction": "WEST",
-          "size": "NORMAL"
+          "type": "SmallMeteor",
+          "direction": "WEST"
         },
         {
-          "direction": "WEST",
-          "size": "NORMAL"
+          "type": "SmallMeteor",
+          "direction": "WEST"
         }
       ]
     },
@@ -396,20 +396,20 @@
       "level": 2,
       "listOfMeteors": [
         {
-          "direction": "NORTH",
-          "size": "LARGE"
+          "type": "LargeMeteor",
+          "direction": "NORTH"
         },
         {
-          "direction": "NORTH",
-          "size": "LARGE"
+          "type": "LargeMeteor",
+          "direction": "NORTH"
         },
         {
-          "direction": "SOUTH",
-          "size": "NORMAL"
+          "type": "SmallMeteor",
+          "direction": "SOUTH"
         },
         {
-          "direction": "SOUTH",
-          "size": "NORMAL"
+          "type": "SmallMeteor",
+          "direction": "SOUTH"
         }
       ]
     },
@@ -418,22 +418,24 @@
       "level": 2,
       "listOfMeteors": [
         {
+          "type": "SmallMeteor",
           "direction": "NORTH"
         },
         {
+          "type": "SmallMeteor",
           "direction": "NORTH"
         },
         {
-          "direction": "EAST",
-          "size": "LARGE"
+          "type": "LargeMeteor",
+          "direction": "EAST"
         },
         {
-          "direction": "EAST",
-          "size": "NORMAL"
+          "type": "SmallMeteor",
+          "direction": "EAST"
         },
         {
-          "direction": "EAST",
-          "size": "NORMAL"
+          "type": "SmallMeteor",
+          "direction": "EAST"
         }
       ]
     },
@@ -560,26 +562,26 @@
         },
         "MINIMUM_ENGINE_POWER": {
           "type": "GoodsPenalty",
-          "amount": 3
+          "numberOfLostGoods": 3
         },
         "MINIMUM_CREW_NUMBER": {
           "type": "CannonPenalty",
           "listOfShots": [
             {
-              "direction": "NORTH",
-              "size": "NORMAL"
+              "type": "SmallCannonShot",
+              "direction": "NORTH"
             },
             {
-              "direction": "WEST",
-              "size": "NORMAL"
+              "type": "SmallCannonShot",
+              "direction": "WEST"
             },
             {
-              "direction": "EAST",
-              "size": "NORMAL"
+              "type": "SmallCannonShot",
+              "direction": "EAST"
             },
             {
-              "direction": "SOUTH",
-              "size": "LARGE"
+              "type": "LargeCannonShot",
+              "direction": "SOUTH"
             }
           ]
         }
@@ -587,23 +589,23 @@
     },
     {
       "type": "AbandonedShip",
-      "level": "2",
-      "requiredDays": "1",
-      "crewNumberRequired": "4",
-      "possibleCreditGains": "6"
+      "level": 2,
+      "requiredDays": 1,
+      "crewNumberRequired": 4,
+      "possibleCreditGains": 6
     },
     {
       "type": "AbandonedShip",
-      "level": "2",
-      "requiredDays": "2",
-      "crewNumberRequired": "5",
-      "possibleCreditGains": "8"
+      "level": 2,
+      "requiredDays": 2,
+      "crewNumberRequired": 5,
+      "possibleCreditGains": 8
     },
     {
       "type": "AbandonedStation",
-      "level": "2",
-      "requiredDays": "1",
-      "crewNumberRequired": "7",
+      "level": 2,
+      "requiredDays": 1,
+      "crewNumberRequired": 7,
       "possibleGoodsGain": [
         { "color": "RED"},
         { "color": "YELLOW"}
@@ -611,9 +613,9 @@
     },
     {
       "type": "AbandonedStation",
-      "level": "2",
-      "requiredDays": "2",
-      "crewNumberRequired": "8",
+      "level": 2,
+      "requiredDays": 2,
+      "crewNumberRequired": 8,
       "possibleGoodsGain": [
         { "color": "YELLOW"},
         { "color": "YELLOW"},

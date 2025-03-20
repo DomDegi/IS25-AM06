@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards.penalties;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
@@ -11,7 +13,8 @@ public class GoodsPenalty extends Penalty {
 
     private int numberOfLostGoods;
 
-    public GoodsPenalty(int numberOfLostGoods) {
+    @JsonCreator
+    public GoodsPenalty(@JsonProperty("numberOfLostGoods") int numberOfLostGoods) {
         this.numberOfLostGoods = numberOfLostGoods;
     }
 

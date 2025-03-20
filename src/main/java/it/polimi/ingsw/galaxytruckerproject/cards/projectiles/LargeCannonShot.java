@@ -1,10 +1,14 @@
 package it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Direction;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
 public class LargeCannonShot extends Projectile  {
-    public LargeCannonShot(Direction direction){
+
+    @JsonCreator
+    public LargeCannonShot(@JsonProperty("direction") Direction direction) {
         super(direction);
     }
 

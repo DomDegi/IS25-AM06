@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.Goods;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
@@ -19,7 +21,13 @@ public class AbandonedStation extends Card {
     private Coordinates coordinatesToPut;
     private final ArrayList<Goods> goodsRemovedFromCargo;
 
-    public AbandonedStation(int level, int requiredDays, int crewNumberRequired, ArrayList<Goods> possibleGoodsGain) {
+    @JsonCreator
+    public AbandonedStation(
+            @JsonProperty("level") int level,
+            @JsonProperty("requiredDays") int requiredDays,
+            @JsonProperty("crewNumberRequired") int crewNumberRequired,
+            @JsonProperty("possibleGoodsGain") ArrayList<Goods> possibleGoodsGain
+    ) {
         super(level, requiredDays);
         this.crewNumberRequired = crewNumberRequired;
         this.possibleGoodsGain = possibleGoodsGain;

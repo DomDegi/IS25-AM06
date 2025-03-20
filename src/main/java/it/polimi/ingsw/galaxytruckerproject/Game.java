@@ -40,6 +40,7 @@ public class Game implements GameInterface{
         this.inGameCards = cardDeck.getTier2FlightCards();
         this.hourglassON = false;
         this.playerCount = 0;
+        this.drawnCard = null;
     }
 
     //add a new observer type to the game

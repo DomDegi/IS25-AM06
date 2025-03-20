@@ -1,11 +1,14 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
 public class Epidemic extends Card {
 
-    public Epidemic(int level) {
+    @JsonCreator
+    public Epidemic(@JsonProperty("level") int level) {
         super(level, 0);
     }
 

@@ -1,10 +1,18 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
 
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Link {
     Connectors connectorsType;
-    public Link(Connectors connectorsType){
+
+
+    @JsonCreator
+    public Link(@JsonProperty("connectorsType") Connectors connectorsType){
         this.connectorsType = connectorsType;
     }
+
     public Connectors getConnectorsType(){
         return connectorsType;
     }

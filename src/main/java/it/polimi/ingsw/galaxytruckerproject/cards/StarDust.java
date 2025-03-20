@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 
@@ -7,7 +9,8 @@ import java.util.ArrayList;
 
 public class StarDust extends Card {
 
-    public StarDust(int level) {
+    @JsonCreator
+    public StarDust(@JsonProperty("level") int level) {
         super(level, 0);
     }
 

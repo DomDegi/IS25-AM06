@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
@@ -13,7 +15,8 @@ public class OpenSpace extends Card {
     
 
     //the subclass OpenSpace needs the same parameters as the superclass
-    public OpenSpace(int level) {
+    @JsonCreator
+    public OpenSpace(@JsonProperty("level") int level) {
         super(level, 0);
     }
 

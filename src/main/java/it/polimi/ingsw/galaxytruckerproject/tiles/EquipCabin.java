@@ -97,7 +97,6 @@ public class EquipCabin extends Cabin {
 
     @Override
     public String toString() {
-        return getCoordinates().getX() + " " + getCoordinates().getY() +
-                " " + this.crew + " " + this.crewType;
+        return super.toString() + " " + this.crewType +  " " + this.crew;
     }
 }

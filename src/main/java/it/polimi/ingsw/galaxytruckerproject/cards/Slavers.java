@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.cards.penalties.CrewPenalty;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
@@ -15,7 +17,14 @@ public class Slavers extends Enemies{
     private final CrewPenalty penaltyIfLose;
     private int won = 0;
 
-    public Slavers(int level, int requiredDays, int cannonStrength, int rewardCredits, int lostCrew) {
+    @JsonCreator
+    public Slavers(
+            @JsonProperty("level") int level,
+            @JsonProperty("requiredDays") int requiredDays,
+            @JsonProperty("cannonStrength") int cannonStrength,
+            @JsonProperty("rewardCredits") int rewardCredits,
+            @JsonProperty("lostCrew") int lostCrew
+    ) {
         super(level, requiredDays, cannonStrength);
         this.rewardCredits = rewardCredits;
         this.lostCrew = lostCrew;

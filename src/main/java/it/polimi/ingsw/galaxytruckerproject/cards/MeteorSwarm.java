@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.cards.penalties.ProjectilePenalty;
 import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.Projectile;
@@ -15,7 +17,9 @@ public class MeteorSwarm extends Card {
     private ProjectilePenalty currentMeteor;
     private int currentDiceRoll;
 
-    public MeteorSwarm(int level, ArrayList<Projectile> listOfMeteors) {
+    @JsonCreator
+    public MeteorSwarm(@JsonProperty("level") int level,
+                       @JsonProperty("listOfMeteors") ArrayList<Projectile> listOfMeteors) {
         super(level, 0);
         this.listOfMeteors = listOfMeteors;
         this.currentMeteor = new ProjectilePenalty(new ArrayList<>());

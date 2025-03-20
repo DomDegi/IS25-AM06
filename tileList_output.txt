@@ -1,0 +1,459 @@
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@48d61b48 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@68d279ec southit.polimi.ingsw.galaxytruckerproject.tiles.Link@258d79be westit.polimi.ingsw.galaxytruckerproject.tiles.Link@14f9390f
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@20435c40 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@573906eb southit.polimi.ingsw.galaxytruckerproject.tiles.Link@479ceda0 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@6d07a63d
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@571c5681 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@488d1cd7 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@68dc098b westit.polimi.ingsw.galaxytruckerproject.tiles.Link@38ba6ce3
+coordinates: 00
+
+SingleEngine:direction:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@d278d2b east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@2d6c53fc southit.polimi.ingsw.galaxytruckerproject.tiles.Link@25f4878b westit.polimi.ingsw.galaxytruckerproject.tiles.Link@4e423aa2
+coordinates: 00
+
+SingleEngine:direction:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@7fbdb894 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@3081f72c southit.polimi.ingsw.galaxytruckerproject.tiles.Link@3148f668 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@6e005dc9
+coordinates: 00
+
+Cargo Blue Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@609db546 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@20f5281c southit.polimi.ingsw.galaxytruckerproject.tiles.Link@56c4278e westit.polimi.ingsw.galaxytruckerproject.tiles.Link@301eda63
+coordinates: 00
+
+DoubleEnginedirection:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@3d246ea3 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@341814d3 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@4397ad89 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@59cba5a
+coordinates: 00
+
+Cargo Blue Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@1bd39d3c east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@6f19ac19 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@119cbf96 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@71329995
+coordinates: 00
+
+AlienLifeSupportsSystem alienType=BROWN Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@768fc0f2 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@5454d35e southit.polimi.ingsw.galaxytruckerproject.tiles.Link@20c0a64d westit.polimi.ingsw.galaxytruckerproject.tiles.Link@455b6df1
+coordinates: 00
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@4ddbbdf8 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@3f67593e southit.polimi.ingsw.galaxytruckerproject.tiles.Link@1ab06251 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@41ab013
+coordinates: 00
+
+DoubleEnginedirection:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@14bee915 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@1115ec15 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@82ea68c westit.polimi.ingsw.galaxytruckerproject.tiles.Link@59e505b2
+coordinates: 00
+
+Cargo Blue Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@3af0a9da east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@43b9fd5 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@79dc5318 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@8e50104
+coordinates: 00
+
+DoubleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@37e4d7bb east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@6f7923a5 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@74a6f9c1 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@54eb2b70
+coordinates: 00
+
+Shield coverage:NORTH_EASTTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@45a37759 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@63611043 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@20ca951f westit.polimi.ingsw.galaxytruckerproject.tiles.Link@2d778add
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@73302995 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@1838ccb8 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@6c2ed0cd westit.polimi.ingsw.galaxytruckerproject.tiles.Link@7d9e8ef7
+coordinates: 00
+
+DoubleEnginedirection:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@f107c50 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@51133c06 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@4b213651 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@4241e0f4
+coordinates: 00
+
+SingleEngine:direction:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@4ebff610 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@60410cd southit.polimi.ingsw.galaxytruckerproject.tiles.Link@44d52de2 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@95e33cc
+coordinates: 00
+
+Cargo Blue Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@38604b81 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@1e44b638 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@7393222f westit.polimi.ingsw.galaxytruckerproject.tiles.Link@babafc2
+coordinates: 00
+
+Cargo Red Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@31add175 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@ae3540e southit.polimi.ingsw.galaxytruckerproject.tiles.Link@600b9d27 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@3688eb5b
+coordinates: 00
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@69f1a286 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@7922d892 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@457c9034 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@345f69f3
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@50de186c east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@3f57bcad southit.polimi.ingsw.galaxytruckerproject.tiles.Link@1e8b7643 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@51549490
+coordinates: 00 null 0
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@d771cc9 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@36b4091c southit.polimi.ingsw.galaxytruckerproject.tiles.Link@4671115f westit.polimi.ingsw.galaxytruckerproject.tiles.Link@36cda2c2
+coordinates: 00
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@3697186 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@1583741e southit.polimi.ingsw.galaxytruckerproject.tiles.Link@5b367418 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@36060e
+coordinates: 00
+
+SingleEngine:direction:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@481ba2cf east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@46b61c56 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@2e48362c westit.polimi.ingsw.galaxytruckerproject.tiles.Link@1efe439d
+coordinates: 00
+
+DoubleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@be68757 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@7d446ed1 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@12d2ce03 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@7e5c856f
+coordinates: 00
+
+DoubleEnginedirection:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@413f69cc east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@1f53a5dc southit.polimi.ingsw.galaxytruckerproject.tiles.Link@1b75c2e3 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@1984b1f
+coordinates: 00
+
+Cargo Blue Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@3bd323e9 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@39ac0c0a southit.polimi.ingsw.galaxytruckerproject.tiles.Link@c7ba306 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@4ff8d125
+coordinates: 00
+
+Shield coverage:NORTH_EASTTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@6d167f58 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@3403e2ac southit.polimi.ingsw.galaxytruckerproject.tiles.Link@65b104b9 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@6c4980d3
+coordinates: 00
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@327bcebd east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@19c65cdc southit.polimi.ingsw.galaxytruckerproject.tiles.Link@74bf1791 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@54504ecd
+coordinates: 00
+
+AlienLifeSupportsSystem alienType=PURPLE Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@38b27cdc east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@1339e7aa southit.polimi.ingsw.galaxytruckerproject.tiles.Link@1fb669c3 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@49c66ade
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@6239aba6 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@3e6104fc southit.polimi.ingsw.galaxytruckerproject.tiles.Link@12359a82 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@68df9280
+coordinates: 00 null 0
+
+DoubleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@479460a6 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@7164ca4c southit.polimi.ingsw.galaxytruckerproject.tiles.Link@4f3bbf68 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@5be46f9d
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@3f91b517 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@68702e03 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@7a220c9a westit.polimi.ingsw.galaxytruckerproject.tiles.Link@2421cc4
+coordinates: 00
+
+SingleEngine:direction:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@30c93896 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@59a008ba southit.polimi.ingsw.galaxytruckerproject.tiles.Link@338c99c8 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@21ba0741
+coordinates: 00
+
+Cargo Red Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@58ce9668 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@172b013 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@56673b2c westit.polimi.ingsw.galaxytruckerproject.tiles.Link@2796aeae
+coordinates: 00
+
+DoubleEnginedirection:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@b4711e2 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@1fa1cab1 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@70f02c32 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@62010f5c
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@51fadaff east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@401f7633 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@31ff43be westit.polimi.ingsw.galaxytruckerproject.tiles.Link@5b6ec132
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@5c44c582 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@67d18ed7 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@2c78d320 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@132e0cc
+coordinates: 00 null 0
+
+SingleEngine:direction:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@7b205dbd east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@106cc338 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@7a67e3c6 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@6cc558c6
+coordinates: 00
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@15713d56 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@63f259c3 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@26ceffa8 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@600b90df
+coordinates: 00
+
+AlienLifeSupportsSystem alienType=PURPLE Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@7c8c9a05 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@d41f816 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@5c2375a9 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@60129b9a
+coordinates: 00
+
+SingleEngine:direction:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@78d6692f east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@7a55af6b southit.polimi.ingsw.galaxytruckerproject.tiles.Link@3d9c13b5 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@492691d7
+coordinates: 00
+
+Cargo Blue Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@27216cd east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@558bdf1f southit.polimi.ingsw.galaxytruckerproject.tiles.Link@8576fa0 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@7582ff54
+coordinates: 00
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@67545b57 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@6c2c1385 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@5f354bcf westit.polimi.ingsw.galaxytruckerproject.tiles.Link@3daf7722
+coordinates: 00
+
+Shield coverage:NORTH_EASTTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@78641d23 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@74589991 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@146dfe6 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@4716be8b
+coordinates: 00
+
+Cargo Blue Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@1fc32e4f east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@2f67b837 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@1869fbd2 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@6af9fcb2
+coordinates: 00
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@6cce16f4 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@7efaad5a southit.polimi.ingsw.galaxytruckerproject.tiles.Link@291a7e3c westit.polimi.ingsw.galaxytruckerproject.tiles.Link@ca30bc1
+coordinates: 00
+
+DoubleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@1046d517 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@3b7d3a38 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@416c58f5 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@5505ae1a
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@73cd37c0 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@21337f7b southit.polimi.ingsw.galaxytruckerproject.tiles.Link@2bb3058 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@7a362b6b
+coordinates: 00
+
+Shield coverage:NORTH_EASTTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@60df60da east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@5a2d131d southit.polimi.ingsw.galaxytruckerproject.tiles.Link@14fc1f0 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@4ae9cfc1
+coordinates: 00
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@512baff6 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@632ceb35 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@1c93f6e1 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@1800a575
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@1458ed9c east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@10a9d961 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@130e116b westit.polimi.ingsw.galaxytruckerproject.tiles.Link@e383572
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@5ddf0d24 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@363a52f southit.polimi.ingsw.galaxytruckerproject.tiles.Link@60856961 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@2fd953a6
+coordinates: 00
+
+DoubleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@a4add54 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@141e5bef southit.polimi.ingsw.galaxytruckerproject.tiles.Link@5f9be66c westit.polimi.ingsw.galaxytruckerproject.tiles.Link@3abada5a
+coordinates: 00
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@66c61024 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@61fe30 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@c9d0d6 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@6ccdb29f
+coordinates: 00
+
+SingleEngine:direction:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@3adcc812 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@35432107 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@7b420819 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@7a1a14a4
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@265adfad east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@a3d9978 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@61544ae6 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@4b41dd5c
+coordinates: 00
+
+Cargo Red Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@3b96c42e east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@5d066c7d southit.polimi.ingsw.galaxytruckerproject.tiles.Link@1e461e41 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@5ba88be8
+coordinates: 00
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@56928307 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@3899782c southit.polimi.ingsw.galaxytruckerproject.tiles.Link@1603cd68 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@9ebe38b
+coordinates: 00
+
+SingleEngine:direction:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@4b23c30a east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@38089a5a southit.polimi.ingsw.galaxytruckerproject.tiles.Link@30e868be westit.polimi.ingsw.galaxytruckerproject.tiles.Link@66c92293
+coordinates: 00
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@332796d3 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@4f0100a7 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@3cdf2c61 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@13ad5cd3
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@1c33c17b east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@5bf0fe62 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@1e097d59 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@673be18f
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@6581dc0a east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@39de3d36 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@6ce86ce1 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@54e7df6a
+coordinates: 00 null 0
+
+Cargo Red Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@3fed2870 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@77128536 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@58326051 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@32c4e8b2
+coordinates: 00
+
+Cargo Red Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@64bce832 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@764faa6 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@4c1f22f3 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@598bd2ba
+coordinates: 00
+
+DoubleEnginedirection:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@5a755cc1 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@7ae42ce3 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@4f5991f6 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@484094a5
+coordinates: 00
+
+Cargo Blue Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@38234a38 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@63fbfaeb southit.polimi.ingsw.galaxytruckerproject.tiles.Link@602e0143 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@2c07545f
+coordinates: 00
+
+AlienLifeSupportsSystem alienType=BROWN Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@e57b96d east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@32c726ee southit.polimi.ingsw.galaxytruckerproject.tiles.Link@22f31dec westit.polimi.ingsw.galaxytruckerproject.tiles.Link@34c01041
+coordinates: 00
+
+SingleEngine:direction:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@76f4b65 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@c94fd30 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@36328d33 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@2c4d1ac
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@7f0d96f2 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@545b995e southit.polimi.ingsw.galaxytruckerproject.tiles.Link@76a2ddf3 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@524f3b3a
+coordinates: 00 null 0
+
+Cargo Red Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@41e68d87 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@49ff7d8c southit.polimi.ingsw.galaxytruckerproject.tiles.Link@29526c05 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@2ef14fe
+coordinates: 00
+
+Shield coverage:NORTH_EASTTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@77102b91 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@45312be2 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@7fb95505 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@58be6e8
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@7331196b east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@3f9342d4 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@ab7395e westit.polimi.ingsw.galaxytruckerproject.tiles.Link@50d13246
+coordinates: 00
+
+DoubleEnginedirection:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@2bd08376 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@e70f13a southit.polimi.ingsw.galaxytruckerproject.tiles.Link@3d3e5463 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@64a40280
+coordinates: 00
+
+DoubleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@4b40f651 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@42b02722 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@d62fe5b westit.polimi.ingsw.galaxytruckerproject.tiles.Link@49964d75
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@528c868 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@466276d8 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@5ce8d869 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@27eedb64
+coordinates: 00 null 0
+
+SingleEngine:direction:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@64c63c79 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@31c7528f southit.polimi.ingsw.galaxytruckerproject.tiles.Link@2b76ff4e westit.polimi.ingsw.galaxytruckerproject.tiles.Link@7a1234bf
+coordinates: 00
+
+Shield coverage:NORTH_EASTTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@2f62ea70 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@24ba9639 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@38aa816f westit.polimi.ingsw.galaxytruckerproject.tiles.Link@53f6fd09
+coordinates: 00
+
+DoubleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@6bffbc6d east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@1b84f475 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@7749bf93 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@13330ac6
+coordinates: 00
+
+SingleEngine:direction:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@539d019 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@39a2bb97 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@3ad2e17 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@8c3619e
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@4331d187 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@6f63b475 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@554e218 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@1608bcbd
+coordinates: 00
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@5bf8fa12 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@29ca3d04 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@b2c5e07 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@5812f68b
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@4426bff1 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@3c7c886c southit.polimi.ingsw.galaxytruckerproject.tiles.Link@55493582 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@1a20270e
+coordinates: 00 null 0
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@6b88ca8c east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@336f1079 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@2f16c6b3 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@34158c08
+coordinates: 00 null 0
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@19e4fcac east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@52c3cb31 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@4b79ac84 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@53941c2f
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@6dab9b6d east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@21fd5faa southit.polimi.ingsw.galaxytruckerproject.tiles.Link@2766ca9d westit.polimi.ingsw.galaxytruckerproject.tiles.Link@5460cf3a
+coordinates: 00
+
+SingleEngine:direction:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@65a15628 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@2e6a5539 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@3fc9504b westit.polimi.ingsw.galaxytruckerproject.tiles.Link@6d025197
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@27d4a09 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@7e4204e2 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@b7c4869 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@740d2e78
+coordinates: 00 null 0
+
+SingleEngine:direction:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@1c481ff2 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@72437d8d southit.polimi.ingsw.galaxytruckerproject.tiles.Link@1b955cac westit.polimi.ingsw.galaxytruckerproject.tiles.Link@676cf48
+coordinates: 00
+
+Cargo Blue Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@5a1de7fb east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@335b5620 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@29a0cdb westit.polimi.ingsw.galaxytruckerproject.tiles.Link@32a68f4f
+coordinates: 00
+
+SingleEngine:direction:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@73194df east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@6eb2384f southit.polimi.ingsw.galaxytruckerproject.tiles.Link@3c9c0d96 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@3a4621bd
+coordinates: 00
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@31dadd46 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@4ed5eb72 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@12f9af83 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@19b93fa8
+coordinates: 00
+
+DoubleEnginedirection:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@7e6ef134 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@1f010bf0 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@40db2a24 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@10cf09e8
+coordinates: 00
+
+DoubleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@1921ad94 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@ee86bcb southit.polimi.ingsw.galaxytruckerproject.tiles.Link@177bea38 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@7f132176
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@6bca7e0d east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@2631f68c southit.polimi.ingsw.galaxytruckerproject.tiles.Link@6ed3f258 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@8ad6665
+coordinates: 00
+
+Cargo Blue Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@30af5b6b east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@19835e64 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@68b32e3e westit.polimi.ingsw.galaxytruckerproject.tiles.Link@bcef303
+coordinates: 00
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@41709512 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@42039326 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@33308786 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@4f9a2c08
+coordinates: 00
+
+AlienLifeSupportsSystem alienType=BROWN Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@a87f8ec east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@5443d039 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@63787180 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@7d1cfb8b
+coordinates: 00
+
+Cargo Red Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@48e92c5c east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@2e1ef60 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@22356acd westit.polimi.ingsw.galaxytruckerproject.tiles.Link@386f0da3
+coordinates: 00
+
+Cargo Red Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@39655d3e east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@34f22f9d southit.polimi.ingsw.galaxytruckerproject.tiles.Link@3d1848cc westit.polimi.ingsw.galaxytruckerproject.tiles.Link@7dda48d9
+coordinates: 00
+
+Cargo Red Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@6e4566f1 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@4b6e2263 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@344f4dea westit.polimi.ingsw.galaxytruckerproject.tiles.Link@1b7c473a
+coordinates: 00
+
+SingleEngine:direction:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@5e4bd84a east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@648c94da southit.polimi.ingsw.galaxytruckerproject.tiles.Link@2a62b5bc westit.polimi.ingsw.galaxytruckerproject.tiles.Link@53de625d
+coordinates: 00
+
+AlienLifeSupportsSystem alienType=BROWN Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@535779e4 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@53fd0d10 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@6c0d9d86 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@4ce1d6d0
+coordinates: 00
+
+AlienLifeSupportsSystem alienType=BROWN Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@24111ef1 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@1f3f02ee southit.polimi.ingsw.galaxytruckerproject.tiles.Link@1fde5d22 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@5dcb4f5f
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@71812481 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@16ce702d southit.polimi.ingsw.galaxytruckerproject.tiles.Link@7b94089b westit.polimi.ingsw.galaxytruckerproject.tiles.Link@7ca20101
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@47f9738 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@6155d082 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@3a5ecce3 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@561868a0
+coordinates: 00 null 0
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@2ea6e30c east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@6138e79a southit.polimi.ingsw.galaxytruckerproject.tiles.Link@2dcd168a westit.polimi.ingsw.galaxytruckerproject.tiles.Link@388526fb
+coordinates: 00 null 0
+
+DoubleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@21a21c64 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@7803bfd southit.polimi.ingsw.galaxytruckerproject.tiles.Link@42bc14c1 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@531f4093
+coordinates: 00
+
+AlienLifeSupportsSystem alienType=BROWN Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@62ef27a8 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@6436a7db southit.polimi.ingsw.galaxytruckerproject.tiles.Link@460ebd80 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@6f3c660a
+coordinates: 00
+
+SingleEngine:direction:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@74f5ce22 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@25aca718 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@16fdec90 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@1afdd473
+coordinates: 00
+
+Cargo Blue Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@40238dd0 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@7776ab southit.polimi.ingsw.galaxytruckerproject.tiles.Link@79179359 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@dbd8e44
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@51acdf2e east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@6a55299e southit.polimi.ingsw.galaxytruckerproject.tiles.Link@2f1de2d6 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@4eb386df
+coordinates: 00 null 0
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@79517588 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@3a0baae5 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@7ac0e420 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@289710d9
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@5a18cd76 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@3da30852 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@403f0a22 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@503ecb24
+coordinates: 00 null 0
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@4c51cf28 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@6995bf68 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@5143c662 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@77825085
+coordinates: 00
+
+Cargo Blue Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@3568f9d2 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@71c27ee8 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@3e7dd664 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@5b1ebf56
+coordinates: 00
+
+Cargo Red Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@294a6b8e east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@4b1d6571 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@1b835480 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@3549bca9
+coordinates: 00
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@4f25b795 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@6fb365ed southit.polimi.ingsw.galaxytruckerproject.tiles.Link@6e950bcf westit.polimi.ingsw.galaxytruckerproject.tiles.Link@16414e40
+coordinates: 00
+
+Shield coverage:NORTH_EASTTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@74bada02 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@525575 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@46dffdc3 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@5a709816
+coordinates: 00
+
+DoubleEnginedirection:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@78383390 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@6ad3381f southit.polimi.ingsw.galaxytruckerproject.tiles.Link@53dbe163 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@db57326
+coordinates: 00
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@34a875b3 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@4748a0f9 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@4b14918a westit.polimi.ingsw.galaxytruckerproject.tiles.Link@6d1ef78d
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@1a6c1270 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@18a136ac southit.polimi.ingsw.galaxytruckerproject.tiles.Link@77d67cf3 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@6dee4f1b
+coordinates: 00 null 0
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@176b3f44 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@6ee6f53 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@421bba99 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@5d12a356
+coordinates: 00
+
+AlienLifeSupportsSystem alienType=PURPLE Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@134d26af east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@66ac5762 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@797cf65c westit.polimi.ingsw.galaxytruckerproject.tiles.Link@31bcf236
+coordinates: 00
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@4b3ed2f0 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@4fad9bb2 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@517d4a0d westit.polimi.ingsw.galaxytruckerproject.tiles.Link@7862f56
+coordinates: 00
+
+Shield coverage:NORTH_EASTTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@3a12c404 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@1941a8ff southit.polimi.ingsw.galaxytruckerproject.tiles.Link@22d7b4f8 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@149dd36b
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@38831718 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@2c1156a7 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@33fe57a9 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@4982cc36
+coordinates: 00
+
+DoubleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@691939c9 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@4f1bfe23 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@e19bb76 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@512535ff
+coordinates: 00
+
+AlienLifeSupportsSystem alienType=PURPLE Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@71529963 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@61a88b8c southit.polimi.ingsw.galaxytruckerproject.tiles.Link@22295ec4 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@5adb0db3
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@3f270e0a east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@1a760689 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@7241a47d westit.polimi.ingsw.galaxytruckerproject.tiles.Link@70f59913
+coordinates: 00
+
+AlienLifeSupportsSystem alienType=PURPLE Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@77258e59 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@5dcd8c7a southit.polimi.ingsw.galaxytruckerproject.tiles.Link@2250b9f2 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@7e3181aa
+coordinates: 00
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@253d9f73 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@142269f2 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@331acdad westit.polimi.ingsw.galaxytruckerproject.tiles.Link@41d426b5
+coordinates: 00
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@8dbfffb east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@f316aeb southit.polimi.ingsw.galaxytruckerproject.tiles.Link@6aa3a905 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@a22cb6a
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@5dd1c9f2 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@59b38691 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@2e2ff723 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@324a0017
+coordinates: 00 null 0
+
+SingleEngine:direction:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@6187d1f5 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@2445445a southit.polimi.ingsw.galaxytruckerproject.tiles.Link@7502291e westit.polimi.ingsw.galaxytruckerproject.tiles.Link@17aad511
+coordinates: 00
+
+Cargo Blue Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@487db668 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@46944ca9 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@22bac7bc westit.polimi.ingsw.galaxytruckerproject.tiles.Link@63798ca7
+coordinates: 00
+
+DoubleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@4612b856 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@22875539 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@5674e1f2 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@79c7532f
+coordinates: 00
+
+Cargo Blue Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@2a448449 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@32f232a5 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@43f82e78 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@e54303
+coordinates: 00
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@e8df99a east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@2dc995f4 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@2f40e5db westit.polimi.ingsw.galaxytruckerproject.tiles.Link@517566b
+coordinates: 00
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@64b73e7a east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@530712d southit.polimi.ingsw.galaxytruckerproject.tiles.Link@2df6226d westit.polimi.ingsw.galaxytruckerproject.tiles.Link@12ed9db6
+coordinates: 00
+
+SingleEngine:direction:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@4ff4357f east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@49cb9cb5 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@55322aab westit.polimi.ingsw.galaxytruckerproject.tiles.Link@2b4c1d96
+coordinates: 00
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@45fd9a4d east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@50468873 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@146587a2 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@5f0e9815
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@76884e4b east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@126945f9 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@2a898881 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@16c63f5
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@35229f85 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@6d3c5255 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@b1712f3 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@6986bbaf
+coordinates: 00 null 0
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@4879dfad east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@4758820d southit.polimi.ingsw.galaxytruckerproject.tiles.Link@74eb909f westit.polimi.ingsw.galaxytruckerproject.tiles.Link@28ec166e
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@2eee3069 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@2da59753 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@5629510 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@4df5bcb4
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@12c7a01b east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@13d9b21f southit.polimi.ingsw.galaxytruckerproject.tiles.Link@2826f61 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@62727399
+coordinates: 00
+
+Cargo Blue Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@4d9ac0b4 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@130dca52 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@2654635 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@737a135b
+coordinates: 00
+
+SingleCannon direction: NTile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@687ef2e0 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@15dcfae7 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@3da05287 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@1e636ea3
+coordinates: 00
+
+AlienLifeSupportsSystem alienType=PURPLE Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@115667d east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@736caf7a southit.polimi.ingsw.galaxytruckerproject.tiles.Link@4ce7fffa westit.polimi.ingsw.galaxytruckerproject.tiles.Link@497486b3
+coordinates: 00
+
+SingleEngine:direction:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@63f8276e east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@75f95314 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@6127a7e westit.polimi.ingsw.galaxytruckerproject.tiles.Link@6bbe2511
+coordinates: 00
+
+SingleEngine:direction:S Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@495fac5f east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@76012793 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@635572a7 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@79d94571
+coordinates: 00
+
+Tile northit.polimi.ingsw.galaxytruckerproject.tiles.Link@4dd02341 east:it.polimi.ingsw.galaxytruckerproject.tiles.Link@3212a8d7 southit.polimi.ingsw.galaxytruckerproject.tiles.Link@7a1a3478 westit.polimi.ingsw.galaxytruckerproject.tiles.Link@495b0487
+coordinates: 00 null 0
+

@@ -19,14 +19,15 @@ public abstract class Tile {
         this.east=east;
         this.south=south;
         this.west=west;
-
+        this.coordinates = new Coordinates(0,0);
     }
 
     @Override
     public String toString() {
-        return "Tile north"+north.toString() + " east:" + east.toString() + " south" + south.toString() + " west" + west.toString()+"\n"
-                +"coordinates: "+coordinates.getX()+coordinates.getY();
+            return "Tile north" + north.toString() + " east:" + east.toString() + " south" + south.toString() + " west" + west.toString() + "\n"
+                    + "coordinates: " + coordinates.getX() + coordinates.getY();
     }
+
 
     //GETTER METHODS LINKS
     public Link getNorth(){

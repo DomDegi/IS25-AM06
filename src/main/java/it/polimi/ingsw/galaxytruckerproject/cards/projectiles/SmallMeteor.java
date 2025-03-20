@@ -1,4 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Direction;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
@@ -8,7 +10,9 @@ import java.security.PublicKey;
 import java.util.Optional;
 
 public class SmallMeteor extends Projectile {
-    public SmallMeteor(Direction direction) {
+
+    @JsonCreator
+    public SmallMeteor(@JsonProperty("direction") Direction direction) {
         super(direction);
     }
 

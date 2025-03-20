@@ -27,8 +27,7 @@ public class StartingCabin extends Cabin {
     }
 
     public String toString(){
-        return getCoordinates().getX() + " " + getCoordinates().getY() + " " +
-                this.crew + " " + "Human";
+        return super.toString() + " " + this.crew + " " + "Human";
     }
 
 }

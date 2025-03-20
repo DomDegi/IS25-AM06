@@ -550,6 +550,7 @@ public class ShipBoard {
         tilesTable[coordinates.getX()][coordinates.getY()].get().removeGood(good);
     }
 
+    /*
     public void swapGoods(Coordinates coordinatesFrom,Coordinates coordinatesTo, Goods goodToSwap ){
         //Check if the coordinates are of a CargoHolder
         if(cargoHoldCoordinates.contains(coordinatesFrom) && cargoHoldCoordinates.contains(coordinatesTo)){
@@ -565,9 +566,8 @@ public class ShipBoard {
         else{
             System.out.println("ONE OR BOTH THE TWO TILES ARE NOT A CARGOHOLDER");
         }
-
-
     }
+    */
 
     public int convertGoodsToCredit(){
         int credit = 0;

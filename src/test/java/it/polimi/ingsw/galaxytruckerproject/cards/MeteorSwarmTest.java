@@ -2,6 +2,8 @@ package it.polimi.ingsw.galaxytruckerproject.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.LargeMeteor;
 import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.SmallMeteor;
+import it.polimi.ingsw.galaxytruckerproject.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Direction;
 import it.polimi.ingsw.galaxytruckerproject.tiles.ShipBoard;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +19,8 @@ class MeteorSwarmTest {
 
     @BeforeEach
     void setUp() {
-        ShipBoard shipBoard = new ShipBoard();
+        Player player = new Player("dummy", PlayersColor.RED);
+        ShipBoard shipBoard = new ShipBoard(player);
         int level = 2;
         ArrayList listOfMeteors = new ArrayList<> (Arrays.asList(
                 new LargeMeteor(Direction.NORTH),
@@ -31,7 +34,4 @@ class MeteorSwarmTest {
         ));
         MeteorSwarm meteorSwarm = new MeteorSwarm(level, listOfMeteors);
     }
-
-    @Test
-    void test_nord
 }

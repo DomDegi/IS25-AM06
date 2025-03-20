@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.Goods;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
@@ -20,7 +22,12 @@ public class Planets extends Card{
     private Coordinates coordinatesToPut;
     private final ArrayList<Goods> goodsRemovedFromCargo;
 
-    public Planets(int level, int requiredDays, ArrayList<Planet> listOfPlanets) {
+    @JsonCreator
+    public Planets(
+            @JsonProperty("level") int level,
+            @JsonProperty("requiredDays") int requiredDays,
+            @JsonProperty("listOfPlanets") ArrayList<Planet> listOfPlanets
+    ) {
         super(level, requiredDays);
         this.listOfPlanets = listOfPlanets;
         this.numberOfPlanets = listOfPlanets.size();

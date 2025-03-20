@@ -33,13 +33,13 @@ public class GameController implements GameObserver {
 
     public void processPlayerInput(String playerName, String input) {
         switch (game.getGameState()) {
-            case START_GAME: {
-                PlayerSelection(playerName, input);
+            case GameState.START_GAME: {
+                playerSelection(playerName, input);
             }
-            case SHIPS_CREATION: {
+            case GameState.SHIPS_CREATION: {
                 shipsCreation(playerName, input);
             }
-            case VERIFY_SHIP_CORRECTNESS: {
+            case GameState.VERIFY_SHIP_CORRECTNESS: {
                 if (input.equalsIgnoreCase("shipboard")) {
                     checkShipBoard(playerName, input.toLowerCase().split(" "));
                 } else {
@@ -50,13 +50,13 @@ public class GameController implements GameObserver {
                 }
 
             }
-            case DRAW_CARD: {
+            case GameState.DRAW_CARD: {
                 drawCard(playerName, input);
             }
-            case CARD_EVENT: {
+            case GameState.CARD_EVENT: {
                 cardEvent(playerName, input);
             }
-            case CONCLUDE_GAME: {
+            case GameState.CONCLUDE_GAME: {
                 concludeGame();
             }
         }
@@ -64,7 +64,7 @@ public class GameController implements GameObserver {
 
     //first player that enters the game inputs number of players to start the game with (2 to 4)
     //every player inputs a color as they enter (input ex: playersColor int (only if first)
-    public synchronized void PlayerSelection(String playerName, String input) {
+    public synchronized void playerSelection(String playerName, String input) {
         String[] words = input.split(" ");
         if (game.getPlayerCount() == 0 && words.length >= 2) {
             try {

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.cards.penalties.ProjectilePenalty;
 import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.Projectile;
@@ -15,8 +17,14 @@ public class Pirates extends Enemies {
     private final ProjectilePenalty penaltyIfLose;
     private int won = 0;
 
-    public Pirates(int level, int requiredDays, int cannonStrength, int rewardCredits, ArrayList<Projectile> listOfShots) {
-        super(level, requiredDays, cannonStrength);
+    @JsonCreator
+    public Pirates(
+            @JsonProperty("level") int level,
+            @JsonProperty("requiredDays") int requiredDays,
+            @JsonProperty("cannonStrength") int cannonStrength,
+            @JsonProperty("rewardCredits") int rewardCredits,
+            @JsonProperty("listOfShots") ArrayList<Projectile> listOfShots) {
+        super(level, requiredDays, cannonStrength);  // Chiamata al costruttore della classe base
         this.rewardCredits = rewardCredits;
         this.playerIndex = 0;
         this.penaltyIfLose = new ProjectilePenalty(listOfShots);

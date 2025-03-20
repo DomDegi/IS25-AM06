@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.Goods;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
@@ -18,15 +20,23 @@ public class Smugglers extends Enemies{
     private int goodsToGet;
     private Coordinates coordinatesToPut;
 
-    public Smugglers(int level, int requiredDays, int cannonStrength, int lostGoods, ArrayList<Goods> rewardGoods){
-        super(level, requiredDays, cannonStrength);
+    @JsonCreator
+    public Smugglers(
+            @JsonProperty("level") int level,
+            @JsonProperty("requiredDays") int requiredDays,
+            @JsonProperty("cannonStrength") int cannonStrength,
+            @JsonProperty("lostGoods") int lostGoods,
+            @JsonProperty("rewardGoods") ArrayList<Goods> rewardGoods
+    ) {
+        super(level, requiredDays, cannonStrength);  // Chiamata al costruttore della classe base
         this.lostGoods = lostGoods;
         this.rewardGoods = rewardGoods;
-        this.initialized=false;
-        this.currentPlayer =null;
+        this.initialized = false;
+        this.currentPlayer = null;
         this.playerToInteract = new ArrayList<>();
-        this.won =0;
+        this.won = 0;
     }
+
     @Override
     public void initializeCard(Game game) {
         if (!initialized) {
