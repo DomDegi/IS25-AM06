@@ -68,7 +68,7 @@ public class Smugglers extends Enemies{
                 }else if(currentPlayer.useDoubleCannons(new ArrayList<>()) > cannonStrength){
                     System.out.printf("HURRAY!! You are more powerful than the Smugglers, you've defeated them!!\n"+currentPlayer+"want to pillage dose filthy Smugglers(loose %d days)(yes/no)?",requiredDays);
                     won=2;
-                }else if(currentPlayer.useDoubleCannons(new ArrayList<>()) > cannonStrength){
+                }else if(currentPlayer.useDoubleCannons(new ArrayList<>()) == cannonStrength){
                     System.out.println("YAY!! You are as powerful as the Smugglers, you've defeated them, but they managed to escape jus in time!\n");
                     won=0;
                     game.endCardEvent();
@@ -86,12 +86,10 @@ public class Smugglers extends Enemies{
             if (playerStrength == -2){
                 System.out.println("Need the batteries coordinates\n");
                 return;
-            }
-            if (playerStrength == -1){
+            }else if (playerStrength == -1){
                 System.out.println("Invalid input of batteries or cannons: input again cannons coordinates\n");
                 return;
-            }
-            if (playerStrength > cannonStrength){
+            }else if (playerStrength > cannonStrength){
                 System.out.printf("HURRAY!! You are more powerful than the Smugglers, you've defeated them!!\n"+currentPlayer+"want to pillage dose filthy Smugglers(loose %d days)(yes/no)?",requiredDays);
                 won=2;
             }else if (playerStrength < cannonStrength){
@@ -102,6 +100,10 @@ public class Smugglers extends Enemies{
                     System.out.print("Choose the battery container that will be pillaged by the Smugglers?");
                 }
                 won=-1;
+            }else if(playerStrength == cannonStrength){
+                System.out.println("YAY!! You are as powerful as the Smugglers, you've defeated them, but they managed to escape jus in time!\n");
+                won=0;
+                game.endCardEvent();
             }
         } else if(won == 2){
             if (input[0].equalsIgnoreCase("yes")){
@@ -179,7 +181,7 @@ public class Smugglers extends Enemies{
             int positioned = currentPlayer.getShipBoard().gainGoods(rewardGoods.get(goodsToGet -1),coordinatesToPut);
             if(positioned==0){
                 System.out.printf("You've successfully put the %s good in the %d,%d cargo\n", rewardGoods.get(goodsToGet -1).getColor(), coordinatesToPut.getX(),coordinatesToPut.getY() );
-                rewardGoods.removeFirst();
+                rewardGoods.remove(goodsToGet-1);
                 return rewardGoods.isEmpty();
             }else if(positioned==1){
                 System.out.printf("Sorry, you can't put the %s good in the %d,%d cargo, it is full, chose what good to remove (no to select an other good and cargo coordinates)\n", rewardGoods.get(goodsToGet -1).getColor(), coordinatesToPut.getX(),coordinatesToPut.getY() );
@@ -220,7 +222,6 @@ public class Smugglers extends Enemies{
                 return;
             case 1:
                 currentPlayer.getPlayerShip().removeGood(cargo.getFirst(), coordinatesToPut);
-                currentPlayer.getPlayerShip().gainGoods(rewardGoods.get(goodsToGet-1), coordinatesToPut);
                 won=3;
                 break;
             case 2:
@@ -229,7 +230,6 @@ public class Smugglers extends Enemies{
                     return;
                 }
                 currentPlayer.getPlayerShip().removeGood(cargo.get(1), coordinatesToPut);
-                currentPlayer.getPlayerShip().gainGoods(rewardGoods.get(goodsToGet-1), coordinatesToPut);
                 won=3;
                 break;
             case 3:
@@ -238,11 +238,11 @@ public class Smugglers extends Enemies{
                     return;
                 }
                 currentPlayer.getPlayerShip().removeGood(cargo.get(2), coordinatesToPut);
-                currentPlayer.getPlayerShip().gainGoods(rewardGoods.get(goodsToGet-1), coordinatesToPut);
                 won=3;
                 break;
-
         }
+        currentPlayer.getPlayerShip().gainGoods(rewardGoods.get(goodsToGet-1), coordinatesToPut);
+        rewardGoods.remove(goodsToGet-1);
     }
 
     @Override
