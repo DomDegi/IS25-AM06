@@ -1,4 +1,4 @@
-package it.polimi.ingsw.galaxytruckerproject.stuff;
+package it.polimi.ingsw.galaxytruckerproject;
 
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 

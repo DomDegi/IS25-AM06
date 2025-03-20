@@ -347,28 +347,29 @@ public class ShipBoard {
     //in the case of construction errors this method will be played for each error
     public Set<Coordinates> brokenGraph(Coordinates start) {
         Set<Coordinates> set = new HashSet<Coordinates>();
-        return brokenGraph2(start, set);
+        return connectedSet(start, set);
     }
 
-    public Set<Coordinates> brokenGraph2(Coordinates start, Set<Coordinates> set) {
+
+    public Set<Coordinates> connectedSet(Coordinates start, Set<Coordinates> set) {
         int x = start.x;
         int y = start.y;
         set.add(new Coordinates(x, y));
         //south
         if (tilesTable[x][y].get().south.getConnectorsType() != Connectors.SMOOTH && tilesTable[x + 1][y].isPresent() && tilesTable[x + 1][y].get().fillable() && !set.contains(tilesTable[x + 1][y].get().getCoordinates())) {
-            brokenGraph2(new Coordinates(x + 1, y), set);
+            connectedSet(new Coordinates(x + 1, y), set);
         }
         //east
         if (tilesTable[x][y].get().east.getConnectorsType() != Connectors.SMOOTH && tilesTable[x][y + 1].isPresent() && tilesTable[x][y + 1].get().fillable() && !set.contains(tilesTable[x][y + 1].get().getCoordinates())) {
-            brokenGraph2(new Coordinates(x, y + 1), set);
+            connectedSet(new Coordinates(x, y + 1), set);
         }
         //north
         if (tilesTable[x][y].get().north.getConnectorsType() != Connectors.SMOOTH && tilesTable[x - 1][y].isPresent() && tilesTable[x - 1][y].get().fillable() && !set.contains(tilesTable[x - 1][y].get().getCoordinates())) {
-            brokenGraph2(new Coordinates(x - 1, y), set);
+            connectedSet(new Coordinates(x - 1, y), set);
         }
         //west
         if (tilesTable[x][y].get().west.getConnectorsType() != Connectors.SMOOTH && tilesTable[x][y - 1].isPresent() && tilesTable[x][y - 1].get().fillable() && !set.contains(tilesTable[x][y - 1].get().getCoordinates())) {
-            brokenGraph2(new Coordinates(x, y - 1), set);
+            connectedSet(new Coordinates(x, y - 1), set);
         }
         return set;
     }
@@ -418,10 +419,12 @@ public class ShipBoard {
     }
 
     public boolean verifyCorrectness() {
+        Set<Coordinates> set = new HashSet<Coordinates>();
+        set=connectedSet( new Coordinates(2,3), set);
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 7; j++) {
                 if (tilesTable[i][j].isPresent())
-                    if(!tilesTable[i][j].get().isCorrect()) return false;
+                    if(!tilesTable[i][j].get().isCorrect() || !set.contains(tilesTable[i][j].get().getCoordinates())) return false;
             }
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 7; j++) {
@@ -430,6 +433,7 @@ public class ShipBoard {
             }
         return true;
     }
+
 
 
     public void chooseHowToFillCabins() {

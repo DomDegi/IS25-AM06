@@ -6,6 +6,12 @@ public class BatteryComponents extends Tile{
         super(nord,east,south,west);
         this.batteryCells = numCells;
     }
+
+    @Override
+    public String toString() {
+        return "BatteryComponents "+batteryCells+" cells"+super.toString();
+    }
+
     public int getNumBatteries(){
         return this.batteryCells;
     }
