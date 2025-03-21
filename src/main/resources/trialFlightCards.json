@@ -1,11 +1,11 @@
 {
-  "testDeck": [
+  "cards": [
     {
       "type": "Smugglers",
       "level": 1,
       "requiredDays": 1,
       "cannonStrength": 4,
-      "lostGoods": 3,
+      "lostGoods": 2,
       "rewardGoods": [
         {
           "color" : "YELLOW"
@@ -31,16 +31,16 @@
       "level": 1,
       "listOfMeteors": [
         {
-          "direction": "NORTH",
-          "size": "LARGE"
+          "type": "LargeMeteor",
+          "direction": "NORTH"
         },
         {
-          "direction": "WEST",
-          "size": "NORMAL"
+          "type": "SmallMeteor",
+          "direction": "WEST"
         },
         {
-          "direction": "EAST",
-          "size": "NORMAL"
+          "type": "SmallMeteor",
+          "direction": "EAST"
         }
       ]
     },
@@ -79,18 +79,18 @@
         },
         "MINIMUM_ENGINE_POWER": {
           "type": "CrewPenalty",
-          "amount": 2
+          "numberOfLostCrew": 2
         },
         "MINIMUM_CANNON_STRENGTH": {
           "type": "CannonPenalty",
           "listOfShots": [
             {
-              "direction": "SOUTH",
-              "size": "NORMAL"
+              "type": "SmallCannonShot",
+              "direction": "SOUTH"
             },
             {
-              "direction": "SOUTH",
-              "size": "LARGE"
+              "type": "LargeCannonShot",
+              "direction": "SOUTH"
             }
           ]
         }
@@ -98,16 +98,16 @@
     },
     {
       "type": "AbandonedShip",
-      "level": "1",
-      "requiredDays": "1",
-      "crewNumberRequired": "3",
-      "possibleCreditGains": "4"
+      "level": 1,
+      "requiredDays": 1,
+      "crewNumberRequired": 3,
+      "possibleCreditGains": 4
     },
     {
       "type": "AbandonedStation",
-      "level": "1",
-      "requiredDays": "1",
-      "crewNumberRequired": "5",
+      "level": 1,
+      "requiredDays": 1,
+      "crewNumberRequired": 5,
       "possibleGoodsGain": [
         { "color": "YELLOW"},
         { "color": "GREEN"}

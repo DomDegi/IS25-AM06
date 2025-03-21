@@ -9,20 +9,6 @@
   {
     "type": "DoubleCannon",
     "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "UNIVERSAL" },
-    "south": {"connectorsType": "DOUBLE"},
-    "west": {"connectorsType": "SMOOTH"}
-  },
-  {
-    "type": "DoubleCannon",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "DOUBLE" },
-    "south": {"connectorsType": "SINGLE"},
-    "west": {"connectorsType": "DOUBLE"}
-  },
-  {
-    "type": "DoubleCannon",
-    "north": { "connectorsType" : "SMOOTH"},
     "east": {"connectorsType": "SMOOTH" },
     "south": {"connectorsType": "DOUBLE"},
     "west": {"connectorsType": "SMOOTH"}
@@ -30,23 +16,9 @@
   {
     "type": "DoubleCannon",
     "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SINGLE"},
-    "west": {"connectorsType": "UNIVERSAL"}
-  },
-  {
-    "type": "DoubleCannon",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SMOOTH" },
+    "east": {"connectorsType": "SINGLE" },
     "south": {"connectorsType": "UNIVERSAL"},
-    "west": {"connectorsType": "DOUBLE"}
-  },
-  {
-    "type": "DoubleCannon",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "DOUBLE" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "SINGLE"}
+    "west": {"connectorsType": "SMOOTH"}
   },
   {
     "type": "DoubleCannon",
@@ -58,9 +30,9 @@
   {
     "type": "DoubleCannon",
     "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"}
+    "east": {"connectorsType": "UNIVERSAL" },
+    "south": {"connectorsType": "DOUBLE"},
+    "west": {"connectorsType": "SMOOTH"}
   },
   {
     "type": "DoubleCannon",
@@ -72,16 +44,37 @@
   {
     "type": "DoubleCannon",
     "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SINGLE" },
-    "south": {"connectorsType": "UNIVERSAL"},
-    "west": {"connectorsType": "SMOOTH"}
+    "east": {"connectorsType": "DOUBLE" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "SINGLE"}
   },
   {
-    "type": "SingleCannon",
+    "type": "DoubleCannon",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "UNIVERSAL"},
+    "west": {"connectorsType": "DOUBLE"}
+  },
+  {
+    "type": "DoubleCannon",
     "north": { "connectorsType" : "SMOOTH"},
     "east": {"connectorsType": "DOUBLE" },
-    "south": {"connectorsType": "DOUBLE"},
+    "south": {"connectorsType": "SINGLE"},
     "west": {"connectorsType": "DOUBLE"}
+  },
+  {
+    "type": "DoubleCannon",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "UNIVERSAL"}
+  },
+  {
+    "type": "DoubleCannon",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SINGLE"},
+    "west": {"connectorsType": "UNIVERSAL"}
   },
   {
     "type": "SingleCannon",
@@ -93,64 +86,155 @@
   {
     "type": "SingleCannon",
     "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SINGLE" },
-    "south": {"connectorsType": "UNIVERSAL"},
-    "west": {"connectorsType": "DOUBLE"}
-  },
-  {
-    "type": "SingleCannon",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SINGLE" },
-    "south": {"connectorsType": "UNIVERSAL"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SINGLE"},
     "west": {"connectorsType": "SMOOTH"}
   },
   {
     "type": "SingleCannon",
     "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SINGLE" },
-    "south": {"connectorsType": "SINGLE"},
-    "west": {"connectorsType": "SINGLE"}
-  },
-  {
-    "type": "SingleCannon",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "DOUBLE" },
-    "south": {"connectorsType": "SINGLE"},
-    "west": {"connectorsType": "SINGLE"}
-  },
-  {
-    "type": "SingleCannon",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "DOUBLE" },
-    "south": {"connectorsType": "UNIVERSAL"},
-    "west": {"connectorsType": "SMOOTH"}
-  },
-  {
-    "type": "SingleCannon",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SINGLE" },
+    "east": {"connectorsType": "SMOOTH" },
     "south": {"connectorsType": "DOUBLE"},
     "west": {"connectorsType": "SMOOTH"}
   },
   {
     "type": "SingleCannon",
     "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SINGLE"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "DOUBLE"},
+    "west": {"connectorsType": "SMOOTH"}
+  },
+  {
+    "type": "SingleCannon",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SINGLE" },
     "south": {"connectorsType": "SMOOTH"},
     "west": {"connectorsType": "SMOOTH"}
   },
   {
     "type": "SingleCannon",
     "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SMOOTH" },
+    "east": {"connectorsType": "SINGLE" },
     "south": {"connectorsType": "DOUBLE"},
     "west": {"connectorsType": "SMOOTH"}
   },
   {
     "type": "SingleCannon",
     "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SINGLE" },
+    "south": {"connectorsType": "UNIVERSAL"},
+    "west": {"connectorsType": "SMOOTH"}
+  },
+  {
+    "type": "SingleCannon",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "DOUBLE" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "SMOOTH"}
+  },
+  {
+    "type": "SingleCannon",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "DOUBLE"},
+    "south": {"connectorsType": "SINGLE"},
+    "west": {"connectorsType": "SMOOTH"}
+  },
+  {
+    "type": "SingleCannon",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "DOUBLE" },
+    "south": {"connectorsType": "UNIVERSAL"},
+    "west": {"connectorsType": "SMOOTH"}
+  },
+  {
+    "type": "SingleCannon",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "UNIVERSAL" },
+    "south": {"connectorsType": "SINGLE"},
+    "west": {"connectorsType": "SMOOTH"}
+  },
+  {
+    "type": "SingleCannon",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "SINGLE"}
+  },
+  {
+    "type": "SingleCannon",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "DOUBLE"},
+    "west": {"connectorsType": "SINGLE"}
+  },
+  {
+    "type": "SingleCannon",
+    "north": { "connectorsType" : "SMOOTH"},
     "east": {"connectorsType": "SMOOTH" },
     "south": {"connectorsType": "UNIVERSAL"},
+    "west": {"connectorsType": "SINGLE"}
+  },
+  {
+    "type": "SingleCannon",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SINGLE" },
+    "south": {"connectorsType": "SINGLE"},
+    "west": {"connectorsType": "SINGLE"}
+  },
+  {
+    "type": "SingleCannon",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "DOUBLE" },
+    "south": {"connectorsType": "UNIVERSAL"},
+    "west": {"connectorsType": "SINGLE"}
+  },
+  {
+    "type": "SingleCannon",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "UNIVERSAL" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "SINGLE"}
+  },
+  {
+    "type": "SingleCannon",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "DOUBLE"}
+  },
+  {
+    "type": "SingleCannon",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SINGLE"},
+    "west": {"connectorsType": "DOUBLE"}
+  },
+  {
+    "type": "SingleCannon",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "UNIVERSAL"},
+    "west": {"connectorsType": "DOUBLE"}
+  },
+  {
+    "type": "SingleCannon",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SINGLE" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "DOUBLE"}
+  },
+  {
+    "type": "SingleCannon",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SINGLE" },
+    "south": {"connectorsType": "UNIVERSAL"},
+    "west": {"connectorsType": "DOUBLE"}
+  },
+  {
+    "type": "SingleCannon",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "DOUBLE" },
+    "south": {"connectorsType": "DOUBLE"},
     "west": {"connectorsType": "DOUBLE"}
   },
   {
@@ -164,99 +248,15 @@
     "type": "SingleCannon",
     "north": { "connectorsType" : "SMOOTH"},
     "east": {"connectorsType": "DOUBLE" },
-    "south": {"connectorsType": "SINGLE"},
-    "west": {"connectorsType": "SMOOTH"}
-  },
-  {
-    "type": "SingleCannon",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SINGLE"},
-    "west": {"connectorsType": "DOUBLE"}
-  },
-  {
-    "type": "SingleCannon",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "DOUBLE"},
-    "west": {"connectorsType": "SMOOTH"}
-  },
-  {
-    "type": "SingleCannon",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "UNIVERSAL" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "SINGLE"}
-  },
-  {
-    "type": "SingleCannon",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "DOUBLE" },
     "south": {"connectorsType": "SMOOTH"},
     "west": {"connectorsType": "UNIVERSAL"}
-  },
-  {
-    "type": "SingleCannon",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "SINGLE"}
-  },
-  {
-    "type": "SingleCannon",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "DOUBLE"}
-  },
-  {
-    "type": "SingleCannon",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SINGLE"},
-    "west": {"connectorsType": "SMOOTH"}
-  },
-  {
-    "type": "SingleCannon",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "DOUBLE"},
-    "west": {"connectorsType": "SINGLE"}
-  },
-  {
-    "type": "SingleCannon",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "UNIVERSAL"},
-    "west": {"connectorsType": "SINGLE"}
-  },
-  {
-    "type": "SingleCannon",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SINGLE" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "DOUBLE"}
-  },
-  {
-    "type": "SingleCannon",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "UNIVERSAL" },
-    "south": {"connectorsType": "SINGLE"},
-    "west": {"connectorsType": "SMOOTH"}
-  },
-  {
-    "type": "SingleCannon",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "DOUBLE" },
-    "south": {"connectorsType": "UNIVERSAL"},
-    "west": {"connectorsType": "SINGLE"}
   },
   {
     "type": "Shields",
     "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SMOOTH" },
+    "east": {"connectorsType": "SINGLE" },
     "south": {"connectorsType": "UNIVERSAL"},
-    "west": {"connectorsType": "DOUBLE"}
+    "west": {"connectorsType": "SINGLE"}
   },
   {
     "type": "Shields",
@@ -264,27 +264,6 @@
     "east": {"connectorsType": "SMOOTH" },
     "south": {"connectorsType": "SINGLE"},
     "west": {"connectorsType": "SINGLE"}
-  },
-  {
-    "type": "Shields",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SINGLE" },
-    "south": {"connectorsType": "UNIVERSAL"},
-    "west": {"connectorsType": "SINGLE"}
-  },
-  {
-    "type": "Shields",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "DOUBLE" },
-    "south": {"connectorsType": "DOUBLE"},
-    "west": {"connectorsType": "UNIVERSAL"}
-  },
-  {
-    "type": "Shields",
-    "north": { "connectorsType" : "SINGLE"},
-    "east": {"connectorsType": "DOUBLE" },
-    "south": {"connectorsType": "SINGLE"},
-    "west": {"connectorsType": "DOUBLE"}
   },
   {
     "type": "Shields",
@@ -297,8 +276,8 @@
     "type": "Shields",
     "north": { "connectorsType" : "SMOOTH"},
     "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SINGLE"},
-    "west": {"connectorsType": "UNIVERSAL"}
+    "south": {"connectorsType": "UNIVERSAL"},
+    "west": {"connectorsType": "DOUBLE"}
   },
   {
     "type": "Shields",
@@ -308,6 +287,34 @@
     "west": {"connectorsType": "DOUBLE"}
   },
   {
+    "type": "Shields",
+    "north": { "connectorsType" : "SINGLE"},
+    "east": {"connectorsType": "DOUBLE" },
+    "south": {"connectorsType": "SINGLE"},
+    "west": {"connectorsType": "DOUBLE"}
+  },
+  {
+    "type": "Shields",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SINGLE"},
+    "west": {"connectorsType": "UNIVERSAL"}
+  },
+  {
+    "type": "Shields",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "DOUBLE" },
+    "south": {"connectorsType": "DOUBLE"},
+    "west": {"connectorsType": "UNIVERSAL"}
+  },
+  {
+    "type": "SingleEngine",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "UNIVERSAL" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "SMOOTH"}
+  },
+  {
     "type": "SingleEngine",
     "north": { "connectorsType" : "SMOOTH"},
     "east": {"connectorsType": "UNIVERSAL" },
@@ -317,7 +324,7 @@
   {
     "type": "SingleEngine",
     "north": { "connectorsType" : "SINGLE"},
-    "east": {"connectorsType": "SINGLE" },
+    "east": {"connectorsType": "SMOOTH" },
     "south": {"connectorsType": "SMOOTH"},
     "west": {"connectorsType": "SMOOTH"}
   },
@@ -330,64 +337,8 @@
   },
   {
     "type": "SingleEngine",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"}
-  },
-  {
-    "type": "SingleEngine",
-    "north": { "connectorsType" : "UNIVERSAL"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "SINGLE"}
-  },
-  {
-    "type": "SingleEngine",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SINGLE" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "DOUBLE"}
-  },
-  {
-    "type": "SingleEngine",
-    "north": { "connectorsType" : "DOUBLE"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "DOUBLE"}
-  },
-  {
-    "type": "SingleEngine",
-    "north": { "connectorsType" : "DOUBLE"},
-    "east": {"connectorsType": "SINGLE" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "SINGLE"}
-  },
-  {
-    "type": "SingleEngine",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "UNIVERSAL" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "SINGLE"}
-  },
-  {
-    "type": "SingleEngine",
     "north": { "connectorsType" : "SINGLE"},
-    "east": {"connectorsType": "DOUBLE" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "DOUBLE"}
-  },
-  {
-    "type": "SingleEngine",
-    "north": { "connectorsType" : "UNIVERSAL"},
     "east": {"connectorsType": "SINGLE" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "DOUBLE"}
-  },
-  {
-    "type": "SingleEngine",
-    "north": { "connectorsType" : "UNIVERSAL"},
-    "east": {"connectorsType": "DOUBLE" },
     "south": {"connectorsType": "SMOOTH"},
     "west": {"connectorsType": "SMOOTH"}
   },
@@ -400,10 +351,10 @@
   },
   {
     "type": "SingleEngine",
-    "north": { "connectorsType" : "SMOOTH"},
+    "north": { "connectorsType" : "DOUBLE"},
     "east": {"connectorsType": "SMOOTH" },
     "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"}
+    "west": {"connectorsType": "SMOOTH"}
   },
   {
     "type": "SingleEngine",
@@ -417,35 +368,77 @@
     "north": { "connectorsType" : "UNIVERSAL"},
     "east": {"connectorsType": "DOUBLE" },
     "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "SINGLE"}
+    "west": {"connectorsType": "SMOOTH"}
   },
   {
     "type": "SingleEngine",
     "north": { "connectorsType" : "SMOOTH"},
     "east": {"connectorsType": "UNIVERSAL" },
     "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "SMOOTH"}
+    "west": {"connectorsType": "SINGLE"}
+  },
+  {
+    "type": "SingleEngine",
+    "north": { "connectorsType" : "DOUBLE"},
+    "east": {"connectorsType": "SINGLE" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "SINGLE"}
+  },
+  {
+    "type": "SingleEngine",
+    "north": { "connectorsType" : "UNIVERSAL"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "SINGLE"}
+  },
+  {
+    "type": "SingleEngine",
+    "north": { "connectorsType" : "UNIVERSAL"},
+    "east": {"connectorsType": "DOUBLE" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "SINGLE"}
+  },
+  {
+    "type": "SingleEngine",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SINGLE" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "DOUBLE"}
   },
   {
     "type": "SingleEngine",
     "north": { "connectorsType" : "SINGLE"},
-    "east": {"connectorsType": "SMOOTH" },
+    "east": {"connectorsType": "DOUBLE" },
     "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"}
+    "west": {"connectorsType": "DOUBLE"}
   },
   {
     "type": "SingleEngine",
     "north": { "connectorsType" : "DOUBLE"},
     "east": {"connectorsType": "SMOOTH" },
     "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "SMOOTH"}
+    "west": {"connectorsType": "DOUBLE"}
   },
   {
     "type": "SingleEngine",
-    "north": { "connectorsType" : "SINGLE"},
+    "north": { "connectorsType" : "UNIVERSAL"},
+    "east": {"connectorsType": "SINGLE" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "DOUBLE"}
+  },
+  {
+    "type": "SingleEngine",
+    "north": { "connectorsType" : "SMOOTH"},
     "east": {"connectorsType": "SMOOTH" },
     "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "SMOOTH"}
+    "west": {"connectorsType": "UNIVERSAL"}
+  },
+  {
+    "type": "SingleEngine",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "UNIVERSAL"}
   },
   {
     "type": "SingleEngine",
@@ -455,6 +448,13 @@
     "west": {"connectorsType": "UNIVERSAL"}
   },
   {
+    "type": "SingleEngine",
+    "north": { "connectorsType" : "SINGLE"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "UNIVERSAL"}
+  },
+  {
     "type": "DoubleEngine",
     "north": { "connectorsType" : "SINGLE"},
     "east": {"connectorsType": "SMOOTH" },
@@ -463,10 +463,24 @@
   },
   {
     "type": "DoubleEngine",
-    "north": { "connectorsType" : "DOUBLE"},
-    "east": {"connectorsType": "DOUBLE" },
+    "north": { "connectorsType" : "SINGLE"},
+    "east": {"connectorsType": "UNIVERSAL" },
     "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "DOUBLE"}
+    "west": {"connectorsType": "SMOOTH"}
+  },
+  {
+    "type": "DoubleEngine",
+    "north": { "connectorsType" : "DOUBLE"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "SMOOTH"}
+  },
+  {
+    "type": "DoubleEngine",
+    "north": { "connectorsType" : "UNIVERSAL"},
+    "east": {"connectorsType": "SINGLE" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "SMOOTH"}
   },
   {
     "type": "DoubleEngine",
@@ -477,10 +491,10 @@
   },
   {
     "type": "DoubleEngine",
-    "north": { "connectorsType" : "SINGLE"},
-    "east": {"connectorsType": "UNIVERSAL" },
+    "north": { "connectorsType" : "DOUBLE"},
+    "east": {"connectorsType": "DOUBLE" },
     "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "SMOOTH"}
+    "west": {"connectorsType": "DOUBLE"}
   },
   {
     "type": "DoubleEngine",
@@ -491,66 +505,24 @@
   },
   {
     "type": "DoubleEngine",
-    "north": { "connectorsType" : "UNIVERSAL"},
-    "east": {"connectorsType": "SINGLE" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "SMOOTH"}
-  },
-  {
-    "type": "DoubleEngine",
-    "north": { "connectorsType" : "DOUBLE"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "SMOOTH"}
-  },
-  {
-    "type": "DoubleEngine",
-    "north": { "connectorsType" : "DOUBLE"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"}
-  },
-  {
-    "type": "DoubleEngine",
     "north": { "connectorsType" : "SMOOTH"},
     "east": {"connectorsType": "UNIVERSAL" },
     "south": {"connectorsType": "SMOOTH"},
     "west": {"connectorsType": "UNIVERSAL"}
   },
   {
-    "type": "Pipe",
-    "north": { "connectorsType" : "SINGLE"},
-    "east": {"connectorsType": "UNIVERSAL" },
-    "south": {"connectorsType": "SINGLE"},
-    "west": {"connectorsType": "UNIVERSAL"}
-  },
-  {
-    "type": "Pipe",
+    "type": "DoubleEngine",
     "north": { "connectorsType" : "DOUBLE"},
-    "east": {"connectorsType": "UNIVERSAL" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"}
-  },
-  {
-    "type": "Pipe",
-    "north": { "connectorsType" : "SINGLE"},
-    "east": {"connectorsType": "UNIVERSAL" },
-    "south": {"connectorsType": "DOUBLE"},
-    "west": {"connectorsType": "UNIVERSAL"}
-  },
-  {
-    "type": "Pipe",
-    "north": { "connectorsType" : "UNIVERSAL"},
-    "east": {"connectorsType": "DOUBLE" },
+    "east": {"connectorsType": "SMOOTH" },
     "south": {"connectorsType": "SMOOTH"},
     "west": {"connectorsType": "UNIVERSAL"}
   },
   {
     "type": "Pipe",
     "north": { "connectorsType" : "UNIVERSAL"},
-    "east": {"connectorsType": "SINGLE" },
-    "south": {"connectorsType": "DOUBLE"},
-    "west": {"connectorsType": "UNIVERSAL"}
+    "east": {"connectorsType": "UNIVERSAL" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "SINGLE"}
   },
   {
     "type": "Pipe",
@@ -561,10 +533,38 @@
   },
   {
     "type": "Pipe",
-    "north": { "connectorsType" : "UNIVERSAL"},
+    "north": { "connectorsType" : "SINGLE"},
+    "east": {"connectorsType": "UNIVERSAL" },
+    "south": {"connectorsType": "SINGLE"},
+    "west": {"connectorsType": "UNIVERSAL"}
+  },
+  {
+    "type": "Pipe",
+    "north": { "connectorsType" : "SINGLE"},
+    "east": {"connectorsType": "UNIVERSAL" },
+    "south": {"connectorsType": "DOUBLE"},
+    "west": {"connectorsType": "UNIVERSAL"}
+  },
+  {
+    "type": "Pipe",
+    "north": { "connectorsType" : "DOUBLE"},
     "east": {"connectorsType": "UNIVERSAL" },
     "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "SINGLE"}
+    "west": {"connectorsType": "UNIVERSAL"}
+  },
+  {
+    "type": "Pipe",
+    "north": { "connectorsType" : "UNIVERSAL"},
+    "east": {"connectorsType": "SINGLE" },
+    "south": {"connectorsType": "DOUBLE"},
+    "west": {"connectorsType": "UNIVERSAL"}
+  },
+  {
+    "type": "Pipe",
+    "north": { "connectorsType" : "UNIVERSAL"},
+    "east": {"connectorsType": "DOUBLE" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "UNIVERSAL"}
   },
   {
     "type": "Pipe",
@@ -576,9 +576,16 @@
   {
     "type": "EquipCabin",
     "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SINGLE" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"}
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "UNIVERSAL"},
+    "west": {"connectorsType": "SINGLE"}
+  },
+  {
+    "type": "EquipCabin",
+    "north": { "connectorsType" : "SINGLE"},
+    "east": {"connectorsType": "DOUBLE"},
+    "south": {"connectorsType": "SINGLE"},
+    "west": {"connectorsType": "SINGLE"}
   },
   {
     "type": "EquipCabin",
@@ -589,71 +596,36 @@
   },
   {
     "type": "EquipCabin",
+    "north": { "connectorsType" : "DOUBLE"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "SINGLE"}
+  },
+  {
+    "type": "EquipCabin",
+    "north": { "connectorsType" : "DOUBLE"},
+    "east": {"connectorsType": "SINGLE" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "SINGLE"}
+  },
+  {
+    "type": "EquipCabin",
+    "north": { "connectorsType" : "DOUBLE"},
+    "east": {"connectorsType": "SINGLE" },
+    "south": {"connectorsType": "DOUBLE"},
+    "west": {"connectorsType": "SINGLE"}
+  },
+  {
+    "type": "EquipCabin",
     "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SINGLE"},
+    "east": {"connectorsType": "SINGLE" },
     "south": {"connectorsType": "UNIVERSAL"},
     "west": {"connectorsType": "DOUBLE"}
   },
   {
     "type": "EquipCabin",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "DOUBLE" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"}
-  },
-  {
-    "type": "EquipCabin",
-    "north": { "connectorsType" : "SINGLE"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "DOUBLE"},
-    "west": {"connectorsType": "UNIVERSAL"}
-  },
-  {
-    "type": "EquipCabin",
-    "north": { "connectorsType" : "DOUBLE"},
-    "east": {"connectorsType": "SINGLE" },
-    "south": {"connectorsType": "DOUBLE"},
-    "west": {"connectorsType": "SINGLE"}
-  },
-  {
-    "type": "EquipCabin",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "UNIVERSAL"},
-    "west": {"connectorsType": "SINGLE"}
-  },
-  {
-    "type": "EquipCabin",
-    "north": { "connectorsType" : "SINGLE"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SINGLE"},
-    "west": {"connectorsType": "UNIVERSAL"}
-  },
-  {
-    "type": "EquipCabin",
-    "north": { "connectorsType" : "DOUBLE"},
-    "east": {"connectorsType": "SINGLE" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "SINGLE"}
-  },
-  {
-    "type": "EquipCabin",
     "north": { "connectorsType" : "SINGLE"},
     "east": {"connectorsType": "DOUBLE" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "DOUBLE"}
-  },
-  {
-    "type": "EquipCabin",
-    "north": { "connectorsType" : "DOUBLE"},
-    "east": {"connectorsType": "DOUBLE" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"}
-  },
-  {
-    "type": "EquipCabin",
-    "north": { "connectorsType" : "UNIVERSAL"},
-    "east": {"connectorsType": "SMOOTH" },
     "south": {"connectorsType": "SMOOTH"},
     "west": {"connectorsType": "DOUBLE"}
   },
@@ -666,6 +638,20 @@
   },
   {
     "type": "EquipCabin",
+    "north": { "connectorsType" : "UNIVERSAL"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "DOUBLE"}
+  },
+  {
+    "type": "EquipCabin",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SINGLE" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "UNIVERSAL"}
+  },
+  {
+    "type": "EquipCabin",
     "north": { "connectorsType" : "SMOOTH"},
     "east": {"connectorsType": "SINGLE" },
     "south": {"connectorsType": "SINGLE"},
@@ -673,10 +659,24 @@
   },
   {
     "type": "EquipCabin",
-    "north": { "connectorsType" : "DOUBLE"},
-    "east": {"connectorsType": "SMOOTH" },
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "DOUBLE" },
     "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "SINGLE"}
+    "west": {"connectorsType": "UNIVERSAL"}
+  },
+  {
+    "type": "EquipCabin",
+    "north": { "connectorsType" : "SINGLE"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SINGLE"},
+    "west": {"connectorsType": "UNIVERSAL"}
+  },
+  {
+    "type": "EquipCabin",
+    "north": { "connectorsType" : "SINGLE"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "DOUBLE"},
+    "west": {"connectorsType": "UNIVERSAL"}
   },
   {
     "type": "EquipCabin",
@@ -687,42 +687,10 @@
   },
   {
     "type": "EquipCabin",
-    "north": { "connectorsType" : "SINGLE"},
-    "east": {"connectorsType": "SINGLE" },
-    "south": {"connectorsType": "DOUBLE"},
-    "west": {"connectorsType": "SINGLE"}
-  },
-  {
-    "type": "BatteryComponents",
-    "north": { "connectorsType" : "UNIVERSAL"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "SINGLE"},
-    "numCells":2
-  },
-  {
-    "type": "BatteryComponents",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"},
-    "numCells":2
-  },
-  {
-    "type": "BatteryComponents",
     "north": { "connectorsType" : "DOUBLE"},
-    "east": {"connectorsType": "SINGLE" },
-    "south": {"connectorsType": "DOUBLE"},
-    "west": {"connectorsType": "SINGLE"},
-    "numCells":2
-  },
-  {
-    "type": "BatteryComponents",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "UNIVERSAL"},
+    "east": {"connectorsType": "DOUBLE" },
     "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"},
-    "numCells":2
+    "west": {"connectorsType": "UNIVERSAL"}
   },
   {
     "type": "BatteryComponents",
@@ -732,7 +700,14 @@
     "west": {"connectorsType": "SMOOTH"},
     "numCells":2
   },
-
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "UNIVERSAL"},
+    "east": {"connectorsType": "DOUBLE" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "SMOOTH"},
+    "numCells":2
+  },
   {
     "type": "BatteryComponents",
     "north": { "connectorsType" : "UNIVERSAL"},
@@ -740,242 +715,227 @@
     "south": {"connectorsType": "SINGLE"},
     "west": {"connectorsType": "SMOOTH"},
     "numCells":2
-  },
-
-  {
-    "type": "BatteryComponents",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"},
-    "numCells":2
-  },
-
-  {
-    "type": "BatteryComponents",
-    "north": { "connectorsType" : "UNIVERSAL"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"},
-    "numCells":2
-  },
-
-  {
-    "type": "BatteryComponents",
-    "north": { "connectorsType" : "UNIVERSAL"},
-    "east": {"connectorsType": "SINGLE" },
-    "south": {"connectorsType": "SINGLE"},
-    "west": {"connectorsType": "SINGLE"},
-    "numCells":2
-  },
-
-  {
-    "type": "BatteryComponents",
-    "north": { "connectorsType" : "UNIVERSAL"},
-    "east": {"connectorsType": "DOUBLE" },
-    "south": {"connectorsType": "DOUBLE"},
-    "west": {"connectorsType": "DOUBLE"},
-    "numCells":2
-  },
-  {
-    "type": "BatteryComponents",
-    "north": { "connectorsType" : "UNIVERSAL"},
-    "east": {"connectorsType": "DOUBLE" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "SMOOTH"},
-    "numCells":2
-  },
-  {
-    "type": "BatteryComponents",
-    "north": { "connectorsType" : "SINGLE"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "DOUBLE"},
-    "west": {"connectorsType": "SMOOTH"},
-    "numCells":3
   },
   {
     "type": "BatteryComponents",
     "north": { "connectorsType" : "DOUBLE"},
     "east": {"connectorsType": "SINGLE"},
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "SMOOTH"},
-    "numCells":3
-  },
-  {
-    "type": "BatteryComponents",
-    "north": { "connectorsType" : "DOUBLE"},
-    "east": {"connectorsType": "DOUBLE" },
-    "south": {"connectorsType": "SINGLE"},
-    "west": {"connectorsType": "SMOOTH"},
-    "numCells":3
-  },
-  {
-    "type": "BatteryComponents",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "SINGLE"},
-    "numCells":3
-  },
-  {
-    "type": "BatteryComponents",
-    "north": { "connectorsType" : "DOUBLE"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "SMOOTH"},
-    "numCells":3
-  },
-  {
-    "type": "BatteryComponents",
-    "north": { "connectorsType" : "SINGLE"},
-    "east": {"connectorsType": "SINGLE" },
     "south": {"connectorsType": "DOUBLE"},
-    "west": {"connectorsType": "SMOOTH"},
-    "numCells":3
-  },
-  {
-    "type": "AlienLifeSupportsSystem",
-    "north": { "connectorsType" : "DOUBLE"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"},
-    "alienType":"PURPLE"
-  },
-  {
-    "type": "AlienLifeSupportsSystem",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SINGLE" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"},
-    "alienType":"PURPLE"
-  },
-  {
-    "type": "AlienLifeSupportsSystem",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "DOUBLE"},
-    "west": {"connectorsType": "UNIVERSAL"},
-    "alienType":"PURPLE"
-  },
-  {
-    "type": "AlienLifeSupportsSystem",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"},
-    "alienType":"PURPLE"
-  },
-  {
-    "type": "AlienLifeSupportsSystem",
-    "north": { "connectorsType" : "DOUBLE"},
-    "east": {"connectorsType": "DOUBLE" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "DOUBLE"},
-    "alienType":"PURPLE"
-  },
-  {
-    "type": "AlienLifeSupportsSystem",
-    "north": { "connectorsType" : "SINGLE"},
-    "east": {"connectorsType": "DOUBLE" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "DOUBLE"},
-    "alienType":"PURPLE"
-  },
-  {
-    "type": "AlienLifeSupportsSystem",
-    "north": { "connectorsType" : "SINGLE"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"},
-    "alienType":"BROWN"
-  },
-  {
-    "type": "AlienLifeSupportsSystem",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "DOUBLE" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"},
-    "alienType":"BROWN"
-  },
-  {
-    "type": "AlienLifeSupportsSystem",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SINGLE"},
-    "west": {"connectorsType": "UNIVERSAL"},
-    "alienType":"BROWN"
-  },
-  {
-    "type": "AlienLifeSupportsSystem",
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"},
-    "alienType":"BROWN"
-  },
-  {
-    "type": "AlienLifeSupportsSystem",
-    "north": { "connectorsType" : "DOUBLE"},
-    "east": {"connectorsType": "SINGLE" },
-    "south": {"connectorsType": "SMOOTH"},
     "west": {"connectorsType": "SINGLE"},
-    "alienType":"BROWN"
+    "numCells":2
   },
   {
-    "type": "AlienLifeSupportsSystem",
-    "north": { "connectorsType" : "SINGLE"},
-    "east": {"connectorsType": "SINGLE" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "SINGLE"},
-    "alienType":"BROWN"
-  },
-  {
-    "type": "CargoBlue",
-    "totSpaces":2,
+    "type": "BatteryComponents",
     "north": { "connectorsType" : "UNIVERSAL"},
     "east": {"connectorsType": "SMOOTH" },
     "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"}
+    "west": {"connectorsType": "SINGLE"},
+    "numCells":2
+  },
+
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "UNIVERSAL"},
+    "east": {"connectorsType": "SINGLE" },
+    "south": {"connectorsType": "SINGLE"},
+    "west": {"connectorsType": "SINGLE"},
+    "numCells":2
+  },
+
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "UNIVERSAL"},
+    "east": {"connectorsType": "DOUBLE" },
+    "south": {"connectorsType": "DOUBLE"},
+    "west": {"connectorsType": "DOUBLE"},
+    "numCells":2
+  },
+
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "UNIVERSAL"},
+    "numCells":2
+  },
+
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "UNIVERSAL"},
+    "numCells":2
+  },
+
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "UNIVERSAL" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "UNIVERSAL"},
+    "numCells":2
+  },
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "UNIVERSAL"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "UNIVERSAL"},
+    "numCells":2
+  },
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "SINGLE"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "DOUBLE"},
+    "west": {"connectorsType": "SMOOTH"},
+    "numCells":3
+  },
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "SINGLE"},
+    "east": {"connectorsType": "SINGLE"},
+    "south": {"connectorsType": "DOUBLE"},
+    "west": {"connectorsType": "SMOOTH"},
+    "numCells":3
+  },
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "DOUBLE"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "SMOOTH"},
+    "numCells":3
+  },
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "DOUBLE"},
+    "east": {"connectorsType": "SINGLE" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "SMOOTH"},
+    "numCells":3
+  },
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "DOUBLE"},
+    "east": {"connectorsType": "DOUBLE" },
+    "south": {"connectorsType": "SINGLE"},
+    "west": {"connectorsType": "SMOOTH"},
+    "numCells":3
+  },
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "SINGLE"},
+    "numCells":3
+  },
+  {
+    "type": "AlienLifeSupportsSystem",
+    "north": { "connectorsType" : "SINGLE"},
+    "east": {"connectorsType": "DOUBLE" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "DOUBLE"},
+    "alienType":"PURPLE"
+  },
+  {
+    "type": "AlienLifeSupportsSystem",
+    "north": { "connectorsType" : "DOUBLE"},
+    "east": {"connectorsType": "DOUBLE" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "DOUBLE"},
+    "alienType":"PURPLE"
+  },
+  {
+    "type": "AlienLifeSupportsSystem",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "UNIVERSAL"},
+    "alienType":"PURPLE"
+  },
+  {
+    "type": "AlienLifeSupportsSystem",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "DOUBLE"},
+    "west": {"connectorsType": "UNIVERSAL"},
+    "alienType":"PURPLE"
+  },
+  {
+    "type": "AlienLifeSupportsSystem",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SINGLE" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "UNIVERSAL"},
+    "alienType":"PURPLE"
+  },
+  {
+    "type": "AlienLifeSupportsSystem",
+    "north": { "connectorsType" : "DOUBLE"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "UNIVERSAL"},
+    "alienType":"PURPLE"
+  },
+  {
+    "type": "AlienLifeSupportsSystem",
+    "north": { "connectorsType" : "SINGLE"},
+    "east": {"connectorsType": "SINGLE" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "SINGLE"},
+    "alienType":"BROWN"
+  },
+  {
+    "type": "AlienLifeSupportsSystem",
+    "north": { "connectorsType" : "DOUBLE"},
+    "east": {"connectorsType": "SINGLE" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "SINGLE"},
+    "alienType":"BROWN"
+  },
+  {
+    "type": "AlienLifeSupportsSystem",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "UNIVERSAL"},
+    "alienType":"BROWN"
+  },
+  {
+    "type": "AlienLifeSupportsSystem",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SINGLE"},
+    "west": {"connectorsType": "UNIVERSAL"},
+    "alienType":"BROWN"
+  },
+  {
+    "type": "AlienLifeSupportsSystem",
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "DOUBLE" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "UNIVERSAL"},
+    "alienType":"BROWN"
+  },
+  {
+    "type": "AlienLifeSupportsSystem",
+    "north": { "connectorsType" : "SINGLE"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "UNIVERSAL"},
+    "alienType":"BROWN"
   },
   {
     "type": "CargoBlue",
     "totSpaces":2,
     "north": { "connectorsType" : "DOUBLE"},
     "east": {"connectorsType": "SINGLE" },
-    "south": {"connectorsType": "DOUBLE"},
-    "west": {"connectorsType": "UNIVERSAL"}
-  },
-  {
-    "type": "CargoBlue",
-    "totSpaces":2,
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "DOUBLE" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"}
-  },
-  {
-    "type": "CargoBlue",
-    "totSpaces":2,
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SINGLE" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"}
-  },
-  {
-    "type": "CargoBlue",
-    "totSpaces":2,
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"}
-  },
-  {
-    "type": "CargoBlue",
-    "totSpaces":2,
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"}
+    "south": {"connectorsType": "UNIVERSAL"},
+    "west": {"connectorsType": "SMOOTH"}
   },
   {
     "type": "CargoBlue",
@@ -996,18 +956,50 @@
   {
     "type": "CargoBlue",
     "totSpaces":2,
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "UNIVERSAL"}
+  },
+  {
+    "type": "CargoBlue",
+    "totSpaces":2,
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "UNIVERSAL"}
+  },
+  {
+    "type": "CargoBlue",
+    "totSpaces":2,
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "SINGLE" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "UNIVERSAL"}
+  },
+  {
+    "type": "CargoBlue",
+    "totSpaces":2,
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "DOUBLE" },
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "UNIVERSAL"}
+  },
+  {
+    "type": "CargoBlue",
+    "totSpaces":2,
     "north": { "connectorsType" : "DOUBLE"},
     "east": {"connectorsType": "SINGLE" },
-    "south": {"connectorsType": "UNIVERSAL"},
-    "west": {"connectorsType": "SMOOTH"}
+    "south": {"connectorsType": "DOUBLE"},
+    "west": {"connectorsType": "UNIVERSAL"}
   },
   {
     "type": "CargoBlue",
-    "totSpaces":3,
-    "north": { "connectorsType" : "SINGLE"},
+    "totSpaces":2,
+    "north": { "connectorsType" : "UNIVERSAL"},
     "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SINGLE"},
-    "west": {"connectorsType": "SMOOTH"}
+    "south": {"connectorsType": "SMOOTH"},
+    "west": {"connectorsType": "UNIVERSAL"}
   },
   {
     "type": "CargoBlue",
@@ -1020,10 +1012,10 @@
   {
     "type": "CargoBlue",
     "totSpaces":3,
-    "north": { "connectorsType" : "DOUBLE"},
+    "north": { "connectorsType" : "SINGLE"},
     "east": {"connectorsType": "SMOOTH" },
     "south": {"connectorsType": "SINGLE"},
-    "west": {"connectorsType": "DOUBLE"}
+    "west": {"connectorsType": "SMOOTH"}
   },
   {
     "type": "CargoBlue",
@@ -1048,38 +1040,30 @@
     "east": {"connectorsType": "SMOOTH" },
     "south": {"connectorsType": "DOUBLE"},
     "west": {"connectorsType": "SINGLE"}
+  },
+  {
+    "type": "CargoBlue",
+    "totSpaces":3,
+    "north": { "connectorsType" : "DOUBLE"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SINGLE"},
+    "west": {"connectorsType": "DOUBLE"}
   },
   {
     "type": "CargoRed",
     "totSpaces":1,
-    "north": { "connectorsType" : "UNIVERSAL"},
-    "east": {"connectorsType": "SMOOTH" },
-    "south": {"connectorsType": "SMOOTH"},
+    "north": { "connectorsType" : "SMOOTH"},
+    "east": {"connectorsType": "DOUBLE" },
+    "south": {"connectorsType": "SINGLE"},
     "west": {"connectorsType": "UNIVERSAL"}
   },
   {
     "type": "CargoRed",
     "totSpaces": 1,
-    "north": {
-      "connectorsType": "DOUBLE"
-    },
-    "east": {
-      "connectorsType": "DOUBLE"
-    },
-    "south": {
-      "connectorsType": "DOUBLE"
-    },
-    "west": {
-      "connectorsType": "UNIVERSAL"
-    }
-  },
-  {
-    "type": "CargoRed",
-    "totSpaces":1,
-    "north": { "connectorsType" : "DOUBLE"},
-    "east": {"connectorsType": "SINGLE" },
-    "south": {"connectorsType": "SMOOTH"},
-    "west": {"connectorsType": "UNIVERSAL"}
+    "north": { "connectorsType": "SMOOTH" },
+    "east": { "connectorsType": "UNIVERSAL" },
+    "south": { "connectorsType": "SMOOTH" },
+    "west": { "connectorsType": "UNIVERSAL" }
   },
   {
     "type": "CargoRed",
@@ -1092,17 +1076,25 @@
   {
     "type": "CargoRed",
     "totSpaces":1,
-    "north": { "connectorsType" : "SMOOTH"},
-    "east": {"connectorsType": "UNIVERSAL" },
+    "north": { "connectorsType" : "DOUBLE"},
+    "east": {"connectorsType": "SINGLE" },
     "south": {"connectorsType": "SMOOTH"},
     "west": {"connectorsType": "UNIVERSAL"}
   },
   {
     "type": "CargoRed",
     "totSpaces":1,
-    "north": { "connectorsType" : "SMOOTH"},
+    "north": { "connectorsType" : "DOUBLE"},
     "east": {"connectorsType": "DOUBLE" },
-    "south": {"connectorsType": "SINGLE"},
+    "south": {"connectorsType": "DOUBLE"},
+    "west": {"connectorsType": "UNIVERSAL"}
+  },
+  {
+    "type": "CargoRed",
+    "totSpaces":1,
+    "north": { "connectorsType" : "UNIVERSAL"},
+    "east": {"connectorsType": "SMOOTH" },
+    "south": {"connectorsType": "SMOOTH"},
     "west": {"connectorsType": "UNIVERSAL"}
   },
   {
@@ -1115,7 +1107,7 @@
   },
   {
     "type": "CargoRed",
-    "totSpaces":1,
+    "totSpaces":2,
     "north": { "connectorsType" : "SMOOTH"},
     "east": {"connectorsType": "DOUBLE" },
     "south": {"connectorsType": "SMOOTH"},
@@ -1123,7 +1115,7 @@
   },
   {
     "type": "CargoRed",
-    "totSpaces":1,
+    "totSpaces":2,
     "north": { "connectorsType" : "SMOOTH"},
     "east": {"connectorsType": "SMOOTH" },
     "south": {"connectorsType": "SMOOTH"},

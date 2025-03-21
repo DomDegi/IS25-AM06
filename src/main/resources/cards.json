@@ -13,7 +13,7 @@
       "level": 1,
       "requiredDays": 1,
       "cannonStrength": 4,
-      "lostGoods": 3,
+      "lostGoods": 2,
       "rewardGoods": [
         {
           "color" : "YELLOW"
@@ -42,7 +42,7 @@
           "direction": "NORTH"
         },
         {
-          "type": "SmallMeteor",
+          "type": "SmallCannonShot",
           "direction": "NORTH"
         }
       ]

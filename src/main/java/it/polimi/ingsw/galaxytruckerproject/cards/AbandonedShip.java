@@ -32,11 +32,6 @@ public class AbandonedShip extends Card{
     }
 
     @Override
-    public String toString() {
-        return "AbandonedShip";
-    }
-
-    @Override
     public void initializeCard(Game game) {
         if (playerIndex > game.getNumberOfPlayers() - 1) {
             System.out.println("Everyone refused to fix the abandoned ship\n");
@@ -72,5 +67,12 @@ public class AbandonedShip extends Card{
                 }
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return
+                "AbandonedShip: " + super.toString() + " crewNumberRequired "
+                        + crewNumberRequired + " possibleCreditsGain " + possibleCreditGains;
     }
 }

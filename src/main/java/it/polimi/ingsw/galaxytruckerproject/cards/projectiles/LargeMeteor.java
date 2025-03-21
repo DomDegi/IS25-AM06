@@ -231,6 +231,6 @@ public class LargeMeteor extends Projectile {
 
     @Override
     public String toString() {
-        return "Large Meteor " + direction;
+        return "Large Meteor " + direction + " ";
     }
 }

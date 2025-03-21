@@ -17,12 +17,12 @@ class TileFactoryTest {
 
     @BeforeEach
     void setUp() {
-        tiles = loadTilesFromJson("Tiles.json");
+        tiles = loadTilesFromJson("TilesLikeGraphics.json");
     }
 
     @Test
     public void print_tiles_to_file() {
-        String filename = "tileList_output.txt";
+        String filename = "tileList_output";
         try (FileWriter writer = new FileWriter(filename)) {
             for (Tile tile : tiles) {
                 writer.write(tile.toString() + "\n\n");

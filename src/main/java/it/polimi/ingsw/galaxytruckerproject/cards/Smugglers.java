@@ -263,6 +263,12 @@ public class Smugglers extends Enemies{
 
     @Override
     public String toString() {
-        return "Smugglers";
+        StringBuilder string = new StringBuilder();
+        string.append("Smugglers: ").append(super.toString()).append(" lostGoods: ").append(this.lostGoods).append(" ");
+        string.append("rewardGoods: ");
+        for (Goods goods : rewardGoods) {
+            string.append(goods.toString()).append(" ");
+        }
+        return string.toString();
     }
 }

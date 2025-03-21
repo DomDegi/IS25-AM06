@@ -20,7 +20,9 @@ public abstract class Enemies extends Card {
     }
 
     @Override
-    public abstract String toString();
+    public String toString() {
+        return super.toString() + "  cannonStrength: " + cannonStrength + " ";
+    }
 
     @Override
     public abstract void initializeCard(Game game);

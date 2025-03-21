@@ -253,6 +253,12 @@ public class AbandonedStation extends Card {
 
     @Override
     public String toString() {
-        return "AbandonedStation";
+        StringBuilder sb = new StringBuilder();
+        sb.append("AbandonedStation: ").append(super.toString()).append(" ").
+                append("crewNumberRequired: ").append(crewNumberRequired).
+                append(" possibleGoodsGain: ");
+        for (Goods good: possibleGoodsGain)
+            sb.append(good.toString()).append(" ");
+        return sb.toString();
     }
 }

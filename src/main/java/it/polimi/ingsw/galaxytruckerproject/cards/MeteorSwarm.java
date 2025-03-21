@@ -60,7 +60,12 @@ public class MeteorSwarm extends Card {
 
     @Override
     public String toString() {
-        return "MeteorSwarm";
+        StringBuilder string = new StringBuilder();
+        string.append("MeteorSwarm: ");
+        for (Projectile projectile : listOfMeteors) {
+            string.append(projectile.toString());
+        }
+        return string.toString();
     }
 
     public void diceRoll() {

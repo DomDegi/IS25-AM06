@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject;
 
 import it.polimi.ingsw.galaxytruckerproject.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.cards.CardDeck;
+import it.polimi.ingsw.galaxytruckerproject.cards.TrialCardDeck;
 import it.polimi.ingsw.galaxytruckerproject.observers.GameObserver;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
@@ -36,8 +37,14 @@ public class Game implements GameInterface{
         this.flightBoard = new FlightBoard(mode);
         this.hourglassTurns = 0;
         this.tileStack = new TileFactory().getStack(TileFactory.loadTilesFromJson("Tiles.json"));
-        CardDeck cardDeck = new CardDeck("cards.json");
-        this.inGameCards = cardDeck.getTier2FlightCards();
+
+        if (this.mode == GameMode.LEVEL2) {
+            CardDeck cardDeck = new CardDeck("cards.json");
+            this.inGameCards = cardDeck.getTier2FlightCards();
+        }
+        else {
+            this.inGameCards = new TrialCardDeck("trialFlightCards.json").getTrialDeck();
+        }
         this.hourglassON = false;
         this.playerCount = 0;
         this.drawnCard = null;

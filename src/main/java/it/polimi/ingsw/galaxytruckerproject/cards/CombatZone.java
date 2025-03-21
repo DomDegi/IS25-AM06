@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.cards;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.Game;
+import it.polimi.ingsw.galaxytruckerproject.cards.penalties.FlightDaysPenalty;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.cards.penalties.Penalty;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
@@ -180,9 +181,8 @@ public class CombatZone extends Card {
     public String toString() {
         StringBuilder string = new StringBuilder("Combat Zone: ");
         for (ChallengeType challengeType: listOfChallenges.keySet()) {
-            string.append(challengeType).append(" ").append(listOfChallenges.get(challengeType).toString()).append(" ");
-        }
-        string.append("\n");
+            string.append(challengeType).append(" ").append(listOfChallenges.get(challengeType).toString()).append(" ");;
+            }
         return string.toString();
     }
 }

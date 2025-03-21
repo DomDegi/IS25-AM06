@@ -68,6 +68,6 @@ public class SmallCannonShot extends Projectile {
 
     @Override
     public String toString() {
-        return "Small CannonShot " + direction;
+        return "Small CannonShot " + direction + " ";
     }
 }

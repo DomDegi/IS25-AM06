@@ -73,7 +73,11 @@ public class ProjectilePenalty extends Penalty {
 
     @Override
     public String toString () {
-        return "CannonPenalty";
+        StringBuilder string = new StringBuilder("Projectile Penalty: ");
+        for (Projectile projectile: listOfProjectiles) {
+            string.append(projectile.toString()).append(" ");
+        }
+        return string.toString();
     }
 
     @Override

@@ -33,7 +33,7 @@ public class Slavers extends Enemies{
     }
 
     public String toString() {
-        return "Slavers";
+        return "Slavers " + super.toString() + " rewardCredits: " + rewardCredits + "  lostCrew: " + lostCrew;
     }
 
     @Override

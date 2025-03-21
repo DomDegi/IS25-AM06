@@ -29,4 +29,13 @@ public class Planet {
     public void setOccupationStatus(){
         this.occupationStatus = true;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder string = new StringBuilder();
+        for (Goods goods : listOfGoods) {
+            string.append(goods.toString()).append(" ");
+        }
+        return string.toString();
+    }
 }

@@ -23,6 +23,6 @@ public class LargeCannonShot extends Projectile  {
 
     @Override
     public String toString() {
-        return "Large CannonShot " + direction;
+        return "Large CannonShot " + direction + " ";
     }
 }

@@ -37,5 +37,7 @@ public abstract class Card {
     }
 
     @Override
-    public abstract String toString();
+    public String toString() {
+        return "level: " +  level + ", required days: " + requiredDays;
+    }
 }

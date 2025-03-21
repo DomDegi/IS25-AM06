@@ -42,7 +42,8 @@ public class GoodsPenalty extends Penalty {
 
     @Override
     public String toString() {
-        return "GoodsPenalty";
+
+        return "GoodsPenalty " +  numberOfLostGoods;
     }
 
     public void printInfo(Player player) {

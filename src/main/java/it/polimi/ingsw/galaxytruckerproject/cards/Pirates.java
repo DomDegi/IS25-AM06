@@ -31,7 +31,12 @@ public class Pirates extends Enemies {
     }
 
     public String toString() {
-        return "Pirates";
+        StringBuilder string = new StringBuilder();
+        string.append("Pirates: ").append(super.toString()).append("rewardCredits: ").append(rewardCredits).append(" ");
+        for (Projectile projectile: penaltyIfLose.getListOfProjectiles()) {
+            string.append(projectile.toString());
+        }
+        return string.toString();
     }
 
     @Override

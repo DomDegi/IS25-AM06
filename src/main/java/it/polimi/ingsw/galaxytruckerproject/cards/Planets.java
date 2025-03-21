@@ -258,6 +258,13 @@ public class Planets extends Card{
 
     @Override
     public String toString() {
-        return "Planets";
+        StringBuilder string = new StringBuilder();
+        string.append("Planets: "). append(super.toString()).append(" ");
+        int i = 0;
+        for (Planet planet : listOfPlanets) {
+            i++;
+            string.append("planet ").append(i).append(" - ").append(planet.toString());
+        }
+        return string.toString();
     }
 }

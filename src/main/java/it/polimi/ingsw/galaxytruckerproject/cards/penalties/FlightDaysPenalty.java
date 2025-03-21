@@ -22,7 +22,8 @@ public class FlightDaysPenalty extends Penalty{
 
     @Override
     public String toString() {
-        return "FlightDaysPenalty";
+
+        return "FlightDaysPenalty: " +  numberOfLostDays;
     }
 
     public void printInfo(Player player) {}
