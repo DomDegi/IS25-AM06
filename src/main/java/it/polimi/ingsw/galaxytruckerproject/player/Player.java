@@ -15,7 +15,7 @@ public class Player {
     private final PlayersColor playerColor;
     private int credit;
     private boolean landed;
-    private final ShipBoard playerShip;
+    private ShipBoard playerShip;
     private Tile drawnTile;
     private ArrayList<Coordinates> firstCoordinatesChoice = new ArrayList<>();
 
@@ -335,6 +335,12 @@ public class Player {
     //FROM WHICH IT'S GOING TO BE USED THE ONE BATTERY NECESSARY TO POWER THE SHIELD
     public Coverage useShield(Coordinates shieldCoordinates, Coordinates batteryCoordinates) {
         return playerShip.chooseShields(shieldCoordinates,batteryCoordinates);
+    }
+
+    //methods for testing
+
+    public void setPlayerShip(ShipBoard shipBoard) {
+        this.playerShip = shipBoard;
     }
 
 }

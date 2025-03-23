@@ -13,6 +13,7 @@ module it.polimi.ingsw.galaxytruckerproject {
     opens it.polimi.ingsw.galaxytruckerproject.cards to com.fasterxml.jackson.databind;
     opens it.polimi.ingsw.galaxytruckerproject.cards.projectiles to com.fasterxml.jackson.databind;
     opens it.polimi.ingsw.galaxytruckerproject.cards.penalties to com.fasterxml.jackson.databind;
+    opens it.polimi.ingsw.galaxytruckerproject.player to com.fasterxml.jackson.databind;
     exports it.polimi.ingsw.galaxytruckerproject;
     exports it.polimi.ingsw.galaxytruckerproject.player;
     exports it.polimi.ingsw.galaxytruckerproject.tiles;

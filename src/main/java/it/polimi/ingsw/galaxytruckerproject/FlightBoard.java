@@ -60,13 +60,14 @@ public class FlightBoard {
         inGamePlayers.get(occupiedPos.getFirst()).setPlayerRanking(occupiedPos.getFirst()+1);
         occupiedPos.set(0,occupiedPos.getFirst()+1);
     }
-    public void addToFlightBoard(Player newPlayer,int pos) {
-        pos = pos - 1;
-        if(!podium.contains(newPlayer)){
+
+    public void addToFlightBoard(Player newPlayer, int pos) {
+        pos = pos - 1; // offsets to match position to arraylist indexes
+        if (!podium.contains(newPlayer)) {
             System.out.println("Player not found");
             return;
         }
-        if(pos<0 || pos>= inGamePlayers.size()){
+        if (pos < 0 || pos >= podium.size()) {
             System.out.println("Position out of bounds or playerRanking is greater than numPlayer+1");
             return;
         }
@@ -74,30 +75,34 @@ public class FlightBoard {
             System.out.println("Position occupied");
             return;
         }
+
+        //removes only if the player is already present in inGamePlayers
         inGamePlayers.remove(newPlayer);
-        inGamePlayers.add(pos,newPlayer);
-        switch (pos) {
-            case 0:
-                inGamePlayers.get(pos).setPlayerPosition(9);
-                occupiedPos.set(pos,pos);
-                break;
-            case 1:
-                inGamePlayers.get(pos).setPlayerPosition(5);
-                occupiedPos.set(pos,pos);
-                break;
-            case 2:
-                inGamePlayers.get(pos).setPlayerPosition(2);
-                occupiedPos.set(pos,pos);
-                break;
-            case 3:
-                inGamePlayers.get(pos).setPlayerPosition(0);
-                occupiedPos.set(pos,pos);
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid position: " + pos);
+
+        //makes sure that inGamePlayers is big enough to avoid IndexOutOfBoundException
+        while (inGamePlayers.size() <= pos) {
+            inGamePlayers.add(null);  // adds null positions
         }
-        inGamePlayers.get(pos).setPlayerRanking(pos+1);
+        inGamePlayers.set(pos, newPlayer);
+
+        //makes sure that the position chosen is from 0 to 3 (after the offset) and sets the right value for starting pos
+        int[] startingPositions = {9, 5, 2, 0};
+        if (pos < startingPositions.length) {
+            inGamePlayers.get(pos).setPlayerPosition(startingPositions[pos]);
+        } else {
+            System.out.println("Warning: pos out of predefined flight positions.");
+        }
+
+        // makes sure that occupied pos has enough spaces just like we did with inGamePlayers with the null values
+        while (occupiedPos.size() <= pos) {
+            occupiedPos.add(-1);
+        }
+        occupiedPos.set(pos, pos);
+
+        // gives player a ranking
+        inGamePlayers.get(pos).setPlayerRanking(pos + 1);
     }
+
     public void removePlayer(Player player) {
         if (!inGamePlayers.contains(player)) {
             throw new IllegalArgumentException("Invalid Player:" + player);
