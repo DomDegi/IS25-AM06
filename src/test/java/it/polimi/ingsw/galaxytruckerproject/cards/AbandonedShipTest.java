@@ -104,22 +104,25 @@ class AbandonedShipTest {
         flightBoard.addToFlightBoard(player2, 1);
         flightBoard.addToFlightBoard(player3, 3);
         flightBoard.addToFlightBoard(player4, 4);
+        int player1_initialDays = player1.getPlayerPosition();
         game.setDrawnCard(abandonedShip);
         game.getDrawnCard().initializeCard(game);
         game.setGameState(GameState.CARD_EVENT);
         assertEquals(abandonedShip, game.getDrawnCard());
-        //first player to play doesn't have enough crew so should be skipped automatically whatever his input is
+        //first player (2) to play doesn't have enough crew so should be skipped automatically whatever his input is
         assertEquals(player2, abandonedShip.getPlayerToPlay());
         abandonedShip.executeCard(game, player2.getPlayerName(), new String[]{""});
         assertEquals(player1, abandonedShip.getPlayerToPlay());
-        //player 2 is next and says yes
-        abandonedShip.executeCard(game, player2.getPlayerName(), new String[]{"yes"});
+        //player 1 is next and says yes
+        abandonedShip.executeCard(game, player1.getPlayerName(), new String[]{"yes"});
         //now player 2 has to choose crew to remove
-        System.out.println(player2.getTotalCrew());
-        abandonedShip.executeCard(game, player2.getPlayerName(), new String[]{"1", "1", "2", "1", "2", "7"});
+        abandonedShip.executeCard(game, player1.getPlayerName(), new String[]{"1", "1", "2", "1", "2", "7"});
         //it's still his turn because he typed one of the coordinates wrong, now has to re input the last one
-        //assertEquals(player2, abandonedShip.getPlayerToPlay());
-        abandonedShip.executeCard(game, player2.getPlayerName(), new String[]{"2", "1"});
+        assertEquals(player1, abandonedShip.getPlayerToPlay());
+        abandonedShip.executeCard(game, player1.getPlayerName(), new String[]{"2", "1"});
         assertEquals(GameState.DRAW_CARD, game.getGameState());
+        assertEquals(player1.getCredit(), 10);
+        assertEquals(player1.getPlayerPosition(), player1_initialDays - 2);
     }
+
 }

@@ -147,8 +147,9 @@ public class ShipBoard {
     }
 
     public void addBreakDoubleEngine(boolean ab, Coordinates coordinates) {
-        if (ab) DoubleEngine.add(coordinates);
-        DoubleEngine.remove(coordinates);
+        if (ab) {
+            DoubleEngine.add(coordinates);
+        } else DoubleEngine.remove(coordinates);
     }
 
     public void addBreakDoubleCannon(boolean ab, Coordinates coordinates) {

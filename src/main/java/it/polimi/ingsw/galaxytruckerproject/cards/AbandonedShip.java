@@ -71,6 +71,8 @@ public class AbandonedShip extends Card{
                     game.getFlightBoard().moveBackward(playerToPlay, requiredDays);
                     game.endCardEvent();
                 }
+                else
+                    System.out.println("need more inputs");
             }
         }
     }

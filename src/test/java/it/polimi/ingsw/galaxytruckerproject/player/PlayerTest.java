@@ -7,6 +7,7 @@ import it.polimi.ingsw.galaxytruckerproject.tiles.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -82,8 +83,35 @@ class PlayerTest {
     @Test
     void remove_crew_test() {
         int initial_crew = player.getTotalCrew();
+        player.printCurrentInfoCabins();
         player.removeCrew(player.parseCoordinates(new String[]{"2", "1", "2", "1", "1", "1"}));
-        assertEquals(initial_crew, player.getTotalCrew() - 3);
+        player.printCurrentInfoCabins();
+        assertEquals(initial_crew - 3, player.getTotalCrew());
+    }
+
+    //basic test
+    @Test
+    void use_double_cannon_test1() {
+        float base_firepower = player.useDoubleCannons(new ArrayList<>());
+        int initial_batteries = player.getShipBoard().getNumBatteries();
+        player.useDoubleCannons(player.parseCoordinates(new String []{"2", "0", "2", "6"}));
+        float after_2_double_cannons = player.useDoubleCannons(player.parseCoordinates(new String[]{"3", "6", "3", "6"}));
+        assertEquals(base_firepower + 4, after_2_double_cannons);
+        assertEquals(initial_batteries - 2, player.getPlayerShip().getNumBatteries());
+    }
+
+    //basic test
+    @Test
+    void use_double_engine_test1() {
+        float base_enginestrength = player.useDoubleEngines(new ArrayList<>());
+        int initial_batteries = player.getShipBoard().getNumBatteries();
+        player.useDoubleEngines(player.parseCoordinates(new String []{"4", "2", "3", "5"}));
+        player.printCurrentInfoEngines();
+        if (player.getShipBoard().getDoubleEngine().isEmpty())
+            System.out.println("is empty");
+        int after_2_double_engines = player.useDoubleEngines(player.parseCoordinates(new String[]{"3", "0", "3", "0"}));
+        assertEquals(base_enginestrength + 4, after_2_double_engines);
+        assertEquals(initial_batteries - 2, player.getPlayerShip().getNumBatteries());
     }
 
 }
