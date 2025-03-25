@@ -8,16 +8,17 @@ public class EquipCabin extends Cabin {
 
     private AlienOptions alienability;
     private CrewType crewType;
-    protected ArrayList<Coordinates> coordinatesAlienSupportSystem;
 
     public EquipCabin(Link north, Link east, Link south, Link west) {
         super(north, east, south, west);
     }
 
-    public ArrayList<Coordinates> checkAlienability(AlienOptions alienabilty){
+    //THIS METHOD GET CALLED IN THE getStat
+    public ArrayList<Coordinates> checkAlienability(){
         Optional<Tile>[][] tilesTable = shipBoard.getTilesTable();
+        ArrayList<Coordinates> coordinatesAlienSupportSystem = new ArrayList<>();
         alienability = AlienOptions.NO;
-
+    /*
         if(shipBoard.getTilesTable()[this.coordinates.getX()-1][this.coordinates.getY()].get().getAlienType().equals(CrewType.BROWN)
          || shipBoard.getTilesTable()[this.coordinates.getX()+1][this.coordinates.getY()].get().getAlienType().equals(CrewType.BROWN)
          || shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].get().getAlienType().equals(CrewType.BROWN)
@@ -33,8 +34,9 @@ public class EquipCabin extends Cabin {
             else
                 alienability = AlienOptions.PURPLE;
         }
-
+    */
         ArrayList<Coordinates> adjacentTiles = new ArrayList<Coordinates>();
+        if()
         adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()-1][this.coordinates.getY()].get().getCoordinates());
         adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()+1][this.coordinates.getY()].get().getCoordinates());
         adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].get().getCoordinates());
@@ -42,20 +44,24 @@ public class EquipCabin extends Cabin {
 
 
         alienability = AlienOptions.NO;
-        CrewType alienSupportSystemType;
+        CrewType alienLifeSupportSystemColor;
         boolean checkDouble = false;
         for(Coordinates c : adjacentTiles) {
-            alienSupportSystemType = shipBoard.getTilesTable()[c.getX()][c.getY()].get().getAlienType();
+            alienLifeSupportSystemColor = shipBoard.getTilesTable()[c.getX()][c.getY()].get().getAlienLifeSupportSystemColor();
+
 
             //CHECK IF THE ADJACENT TILE IS AN ALIEN LIFE SUPPORT SYSTEM
-            if(alienSupportSystemType.equals(CrewType.BROWN) || alienSupportSystemType.equals(CrewType.PURPLE)) {
+            if(alienLifeSupportSystemColor.equals(CrewType.BROWN) || alienLifeSupportSystemColor.equals(CrewType.PURPLE)) {
                 coordinatesAlienSupportSystem.add(c);
-                //CHECK IF
+                //CHECK IF WE ALREADY VERIFIED THE PRESENCE OF TWO DIFFERENT COLORS OF ALIEN LIFE SUPPORT SYSTEM
                 if (!alienability.equals(AlienOptions.BOTH)) {
-                    if (alienSupportSystemType.equals(CrewType.BROWN)) {
+                    //CHECK IF THE CURRENT ALIEN LIFE SUPPORT SYSTEM IS BROWN
+                    if (alienLifeSupportSystemColor.equals(CrewType.BROWN)) {
                         alienability = AlienOptions.BROWN;
                     }
-                    if (alienSupportSystemType.equals(CrewType.PURPLE)) {
+                    //CHECK IF IT IS PURPLE
+                    if (alienLifeSupportSystemColor.equals(CrewType.PURPLE)) {
+                        //CHECK IF WE ALREADY FOUND A BROWN ONE
                         if (alienability == AlienOptions.BROWN) {
                             alienability = AlienOptions.BOTH;
                         }
@@ -99,7 +105,9 @@ public class EquipCabin extends Cabin {
         }
     }
 
+
     public void getStat(){
+        //checkAlienability();
         switch (crewType) {
             case HUMAN:
                 shipBoard.addBreakHumanCrew(+2);
@@ -112,7 +120,6 @@ public class EquipCabin extends Cabin {
                 break;
         }
         shipBoard.getCabinsCoordinates().add(this.coordinates);
-        checkAlienAbility(alienability);
     }
 
 
@@ -171,4 +178,9 @@ public class EquipCabin extends Cabin {
     public String toString() {
         return "EquipCabin" + " " + this.crewType +  " " + this.crew + " " + super.toString();
     }
+
+    //METHODS FOR TESTING
+
+
+
 }

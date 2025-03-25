@@ -2,63 +2,65 @@ package it.polimi.ingsw.galaxytruckerproject.tiles;
 
 import java.util.ArrayList;
 
-public class AlienLifeSupportsSystem extends Tile{
-    CrewType alienType;
-    ArrayList<Coordinates> adjacentEquipCabin;
+public class AlienLifeSupportsSystem extends Tile {
+    CrewType colorAlienSupported;
 
 
-    public AlienLifeSupportsSystem(Link north, Link east, Link south, Link west, CrewType alienType) {
-        super(north,east,south,west);
-        this.alienType = alienType;
-        if(alienType == CrewType.HUMAN)
+    public AlienLifeSupportsSystem(Link north, Link east, Link south, Link west, CrewType colorAlienSupported) {
+        super(north, east, south, west);
+        this.colorAlienSupported = colorAlienSupported;
+        if (colorAlienSupported == CrewType.HUMAN)
             System.out.println("AlienLifeSupportsSystem only supports BROWN AND PURPLE");
     }
-    public CrewType getAlienType() {
-        return alienType;
+
+    public CrewType getAlienLifeSupportSystemColor() {
+        return colorAlienSupported;
     }
+
     @Override
     public String toString() {
-        return "AlienLifeSupportsSystem alienType=" + alienType +" " + super.toString();
+        return "AlienLifeSupportsSystem alienType=" + colorAlienSupported + " " + super.toString();
     }
-    //CHECK IF THERE IS A CABIN NEAR THE TILE AND WHICH ALIEN OPTION IT HAS
-    public void checkEquipCabin(){
-        ArrayList<Coordinates> adjacentTiles = new ArrayList<Coordinates>();
-        adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()-1][this.coordinates.getY()].get().getCoordinates());
-        adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()+1][this.coordinates.getY()].get().getCoordinates());
-        adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].get().getCoordinates());
-        adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].get().getCoordinates());
 
-        for(Coordinates c: adjacentTiles){
-            if(shipBoard.getTilesTable()[c.getX()][c.getY()].get().getCrewType().equals(CrewType.BROWN)||shipBoard.getTilesTable()[c.getX()][c.getY()].get().getCrewType().equals(CrewType.PURPLE)){
+    //RETURNS THE COORDINATES OF ALL THE ADJACENT EQUIP CABIN THAT HAS AN ALIEN
+    public ArrayList<Coordinates> adjacentEquipCabinWithAlien() {
+        ArrayList<Coordinates> adjacentTiles = new ArrayList<Coordinates>();
+        adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX() - 1][this.coordinates.getY()].get().getCoordinates());
+        adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX() + 1][this.coordinates.getY()].get().getCoordinates());
+        adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY() - 1].get().getCoordinates());
+        adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY() + 1].get().getCoordinates());
+
+        ArrayList<Coordinates> adjacentEquipCabin = new ArrayList<Coordinates>();
+
+        for (Coordinates c : adjacentTiles) {
+            if (shipBoard.getTilesTable()[c.getX()][c.getY()].get().getCrewType().equals(colorAlienSupported)) {
                 adjacentEquipCabin.add(c);
             }
         }
-
+        return adjacentEquipCabin;
     }
 
-    public void destroy(){
+    public void destroy() {
         super.destroy();
-        checkEquipCabin();
-        for(Coordinates c: adjacentEquipCabin){
-            if(shipBoard.getTilesTable()[c.getX()][c.getY()].get().getCrewType().equals(alienType)){
-                ArrayList<Coordinates> adjacentToCabin = shipBoard.getTilesTable()[c.getX()][c.getY()].get().checkAlienability();
+        ArrayList<Coordinates> adjacentEquipCabinwithAlien = adjacentEquipCabinWithAlien();
 
-                boolean foundAnotherOne = false;
-                for (Coordinates c1:adjacentToCabin){
-                    if(shipBoard.getTilesTable()[c1.getX()][c1.getY()].get().getAlienType().equals(alienType)){
-                        foundAnotherOne = true;
-                        break;
-                    }
+
+        for (Coordinates c : adjacentEquipCabinwithAlien) {
+            boolean covered = false;
+            //Initialize with 0,0 that never get used in the ShipBoard
+            Coordinates cabinToEmpty = new Coordinates(0, 0);
+            ArrayList<Coordinates> otherAlienLifeSupport = shipBoard.getTile(c).checkAlienability();
+            for (Coordinates other : otherAlienLifeSupport) {
+                if (shipBoard.getTile(c).getAlienLifeSupportSystemColor().equals(colorAlienSupported)) {
+                    covered = true;
+                    cabinToEmpty = other;
+                    break;
                 }
-                if(!foundAnotherOne){
-
-                }
-
+            }
+            if (covered == false) {
+                shipBoard.getTile(cabinToEmpty).removeCrew();
             }
         }
 
-
-        //more
     }
-
 }

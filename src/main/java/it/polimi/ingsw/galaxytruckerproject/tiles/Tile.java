@@ -130,7 +130,10 @@ public abstract class Tile {
     public boolean fillable(){
         return true;
     }
-    public CrewType getAlienType(){System.out.println("THIS TILE IS NOT A ALIEN LIFE SUPPORT SYSTEM"); return null;}
+    public CrewType getAlienLifeSupportSystemColor(){System.out.println("THIS TILE IS NOT A ALIEN LIFE SUPPORT SYSTEM"); return null;}
+    public ArrayList<Coordinates> getcoordinatesAdjacentAlienSupportSystem(){System.out.println("THIS TILE IS NOT A CABIN"); return null;}
+
+
     public CrewType getCrewType(){System.out.println("THIS TILE IS NOT A CABIN"); return null;}
     public ArrayList<Coordinates> checkAlienability(){System.out.println("THIS TILE IS NOT A CABIN"); return null;}
 
