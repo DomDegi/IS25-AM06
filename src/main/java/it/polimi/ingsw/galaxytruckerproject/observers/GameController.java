@@ -37,7 +37,11 @@ public class GameController implements GameObserver {
                 playerSelection(playerName, input);
             }
             case GameState.SHIPS_CREATION: {
-                shipsCreation(playerName, input);
+                if (game.getHourglassTurns() > 0){
+                    shipsCreation(playerName, input);
+                }
+                else
+                    startGame(playerName, input);
             }
             case GameState.VERIFY_SHIP_CORRECTNESS: {
                 if (input.equalsIgnoreCase("shipboard")) {
@@ -64,7 +68,7 @@ public class GameController implements GameObserver {
 
     //first player that enters the game inputs number of players to start the game with (2 to 4)
     //every player inputs a color as they enter (input ex: playersColor int (only if first)
-    public synchronized void playerSelection(String playerName, String input) {
+    public void playerSelection(String playerName, String input) {
         String[] words = input.split(" ");
         if (game.getPlayerCount() == 0 && words.length >= 2) {
             try {
@@ -89,7 +93,8 @@ public class GameController implements GameObserver {
         }
     }
 
-    public synchronized void ShipsCreation(String playerName, String input) {
+    //first input has to be hourglass
+    public synchronized void startGame(String playerName, String input) {
 
         String[] words = input.split(" ");
 
@@ -101,7 +106,7 @@ public class GameController implements GameObserver {
         }
     }
 
-    public synchronized void shipsCreation(String playerName, String input) {
+    public void shipsCreation(String playerName, String input) {
         String[] words = input.split(" ");
         switch (words[0].toLowerCase()) {
 
@@ -164,7 +169,7 @@ public class GameController implements GameObserver {
         }
     }
 
-    public synchronized void drawTile(String playerName, String[] input) {
+    public  void drawTile(String playerName, String[] input) {
         //Could add that if we are looking at cards we can't call draw, but we can also make so that the input of look is hidden when calling other methods
         if (Objects.equals(playerInputs.get(playerName), "draw") || Objects.equals(playerInputs.get(playerName), "completed")) {
             return;
@@ -225,7 +230,7 @@ public class GameController implements GameObserver {
     }
 
     //errors check and management
-    public synchronized void verifyShipCorrectness() {
+    public void verifyShipCorrectness() {
         for (Player player : game.getListOfPlayers()) {
             boolean correctness = player.getShipBoard().verifyCorrectness();
             if (correctness){

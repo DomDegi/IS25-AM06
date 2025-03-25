@@ -38,6 +38,15 @@ public class SingleCannon extends Cannon {
             return -2;
         return -1;
     }
+
+    @Override
+    public void rotate(){
+        super.rotate();
+        if (this.direction == Direction.NORTH)
+            this.fireStrength = 1;
+        else
+            this.fireStrength=0.5f;
+    }
 }
 
 

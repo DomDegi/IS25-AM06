@@ -69,13 +69,15 @@ public class Game implements GameInterface{
 
     //adds player to game with the input string as name
     public void addPlayer(String playerName, PlayersColor color) {
+
+        if (identifyPlayerByName(playerName) != null) {
+            System.out.println("player with this name is already registered\n");
+            return;
+        }
         for (Player player: flightBoard.getAllPlayers()){
-            if (identifyPlayerByName(playerName) != null) {
-                System.out.println("player with this name is already registered\n");
-                return;
-            }
             if (color.equals(player.getPlayerColor())){
                 System.out.println(color + "has already been chosen\n");
+                return;
             }
         }
         Player player = new Player(playerName, color);
@@ -260,12 +262,11 @@ public class Game implements GameInterface{
 
     //input a string and if it's the same as a player name returns the player
     public Player identifyPlayerByName(String playerName) {
-        for (Player player: getListOfPlayers()) {
+        for (Player player: getListOfAllPlayer()) {
             if (playerName.equals(player.getPlayerName())) {
                 return player;
             }
         }
-        System.out.println("There is no player with that name\n");
         return null;
     }
 
@@ -319,9 +320,14 @@ public class Game implements GameInterface{
         return inGameCards.size();
     }
 
+
+    //For testing purposes
+
+    public void setDrawnCard (Card card) {
+        this.drawnCard = card;
+    }
+
     public Card getDrawnCard() {
         return drawnCard;
     }
-
-
 }

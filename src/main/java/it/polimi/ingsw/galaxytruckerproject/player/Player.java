@@ -15,7 +15,7 @@ public class Player {
     private final PlayersColor playerColor;
     private int credit;
     private boolean landed;
-    private final ShipBoard playerShip;
+    private ShipBoard playerShip;
     private Tile drawnTile;
     private ArrayList<Coordinates> firstCoordinatesChoice = new ArrayList<>();
 
@@ -68,7 +68,7 @@ public class Player {
         ArrayList<Coordinates> coordinates = new ArrayList<>();
         if (input.length % 2 == 0 && input.length > 0) {
             try {
-                for (int i = 0; i < input.length; i++) {
+                for (int i = 0; i < input.length; i+=2) {
                     coordinates.add(new Coordinates(Integer.parseInt(input[i]), Integer.parseInt(input[i + 1])));
                 }
                 return coordinates;
@@ -125,10 +125,16 @@ public class Player {
                 used.add(coordinates);
             }
         }
-        chooseBatteriesUse(BatteriesToConsume);
-        //EVERY DOUBLE ENGINE IS EQUIVALENT TO 2
-        return DoubleEngineToUse.size()*2;
+        if (chooseBatteriesUse(BatteriesToConsume)) {
+            //EVERY DOUBLE ENGINE IS EQUIVALENT TO 2
+            return DoubleEngineToUse.size() * 2;
+        }
+        else {
+            System.out.println("WRONG BATTERY COORDINATES");
+            return -1;
+        }
     }
+
     public int calculateEngineStrength(ArrayList<Coordinates> DoubleEngineToUse, ArrayList<Coordinates> BatteriesToConsume){
         int engineStrength;
         engineStrength= chooseDoubleEngine(DoubleEngineToUse,BatteriesToConsume);
@@ -161,7 +167,7 @@ public class Player {
 
         //this condition inputs the chosen engines to use and awaits for another input to choose the batteries
         if (firstCoordinatesChoice.isEmpty()) {
-            firstCoordinatesChoice = new ArrayList<>(chosenCoordinates);
+            this.firstCoordinatesChoice = new ArrayList<>(chosenCoordinates);
             return -2;
         }
         //this condition calculate if the inputs were correct, uses the batteries and returns the total value
@@ -187,7 +193,7 @@ public class Player {
 
         int doubleCannonPower =0;
         for(Coordinates coordinates : DoubleCannonToUse){
-            if(!playerShip.getDoubleEngine().contains(coordinates) || used.contains(coordinates)){
+            if(!playerShip.getDoubleCannon().contains(coordinates) || used.contains(coordinates)){
                 System.out.println("ONE OF THE DOUBLE CANNON Coordinates IS INCORRECT");
                 return -1;
             }else {
@@ -195,7 +201,12 @@ public class Player {
                 used.add(coordinates);
             }
         }
-        return doubleCannonPower;
+        if (chooseBatteriesUse(BatteriesToConsume))
+            return doubleCannonPower;
+        else {
+            System.out.println("Wrong battery coordinates\n");
+            return -1;
+        }
     }
     public float calculateCannonStrength(ArrayList<Coordinates> DoubleCannonToUse, ArrayList<Coordinates> BatteriesToConsume){
         float cannonStrength;
@@ -210,15 +221,15 @@ public class Player {
         return -1;
     }
     public void printCurrentInfoCannons(){
-        System.out.println("Current number of Single Engine Power" + playerShip.getNumSingleEngine());
-        System.out.println("Current Coordinates of Straight Double Engine Power:");
-        for(Coordinates Coordinates : playerShip.getDoubleEngine()){
+        System.out.println("Current number of Single Cannon Strength" + playerShip.getSingleCannonPower());
+        System.out.println("Current Coordinates of Straight Double Cannons:");
+        for(Coordinates Coordinates : playerShip.getDoubleCannon()){
             if(playerShip.getTilesTable()[Coordinates.getX()][Coordinates.getY()].get().getStrength() == 2){
                 System.out.println(Coordinates.getX() + " " + Coordinates.getY());
             }
         }
-        System.out.println("Current Coordinates of Sided Double Engine Power:");
-        for(Coordinates Coordinates : playerShip.getDoubleEngine()){
+        System.out.println("Current Coordinates of Sided Double Cannons:");
+        for(Coordinates Coordinates : playerShip.getDoubleCannon()){
             if(playerShip.getTilesTable()[Coordinates.getX()][Coordinates.getY()].get().getStrength() == 1){
                 System.out.println(Coordinates.getX() + " " + Coordinates.getY());
             }
@@ -226,11 +237,19 @@ public class Player {
     }
 
     //BATTERIES METHODS
-    public void chooseBatteriesUse(ArrayList<Coordinates> BatteriesToConsume){
-        for(Coordinates coordinates : BatteriesToConsume){
-            playerShip.chooseBatteryUse(coordinates);
+    public boolean chooseBatteriesUse(ArrayList<Coordinates> BatteriesToConsume){
+        //doesn't consume any batteries if even one isn't contained
+        for (Coordinates Coordinates : BatteriesToConsume) {
+            if (!playerShip.getBatteryCoordinates().contains(Coordinates)) {
+                return false;
+            }
         }
+        for (Coordinates Coordinates : BatteriesToConsume) {
+            playerShip.chooseBatteryUse(Coordinates);
+        }
+        return true;
     }
+
     public void printCurrentInfoBatteries(){
         for(Coordinates Coordinates : playerShip.getBatteryCoordinates()){
             System.out.println("Battery Coordinates " + Coordinates.getX() + " " + Coordinates.getY());
@@ -314,7 +333,7 @@ public class Player {
     public int removeCrew(ArrayList<Coordinates> coordinates) {
         int counter = 0;
         for (Coordinates coord: coordinates) {
-            if (getShipBoard().chooseCrewToRemove(coord))
+            if (playerShip.chooseCrewToRemove(coord))
                 counter++;
         }
         return counter;
@@ -335,6 +354,12 @@ public class Player {
     //FROM WHICH IT'S GOING TO BE USED THE ONE BATTERY NECESSARY TO POWER THE SHIELD
     public Coverage useShield(Coordinates shieldCoordinates, Coordinates batteryCoordinates) {
         return playerShip.chooseShields(shieldCoordinates,batteryCoordinates);
+    }
+
+    //methods for testing
+
+    public void setPlayerShip(ShipBoard shipBoard) {
+        this.playerShip = shipBoard;
     }
 
 }

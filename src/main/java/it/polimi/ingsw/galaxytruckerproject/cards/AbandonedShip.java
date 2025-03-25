@@ -13,7 +13,7 @@ public class AbandonedShip extends Card{
     private final int possibleCreditGains;
     private int playerIndex;
     private final CrewPenalty penaltyIfAccept;
-    private Optional<Player> playerToPlay =  Optional.empty();
+    private Player playerToPlay =  null;
     private boolean playerAccepted;
 
     @JsonCreator
@@ -38,33 +38,41 @@ public class AbandonedShip extends Card{
             game.endCardEvent();
             return;
         }
-        playerToPlay = Optional.of(game.getListOfPlayers().get(this.playerIndex));
+        playerToPlay = game.getListOfPlayers().get(this.playerIndex);
     }
 
     @Override
     public void executeCard(Game game, String playerName, String[] input) {
-        if (playerToPlay.isPresent() && playerToPlay.get().getPlayerName().equalsIgnoreCase(playerName)) {
+        if (playerToPlay != null && playerToPlay.getPlayerName().equalsIgnoreCase(playerName)) {
             if (!playerAccepted) {
-                System.out.println(playerToPlay.get().getPlayerName() + " do you wish to trade" +
-                        crewNumberRequired + " for " + possibleCreditGains + " cosmic credits and lose " +
-                        requiredDays + " flight days?\n");
-                System.out.println("Input yes or no");
-                if (input[0].equalsIgnoreCase("yes")) {
-                    playerAccepted = true;
-                    System.out.println("input a pair of number x y for every crew to remove\n");
-                    penaltyIfAccept.printInfo(playerToPlay.get());
+                if (playerToPlay.getTotalCrew() >= crewNumberRequired){
+                    System.out.println(playerToPlay.getPlayerName() + " do you wish to trade" +
+                            crewNumberRequired + " for " + possibleCreditGains + " cosmic credits and lose " +
+                            requiredDays + " flight days?\n");
+                    System.out.println("Input yes or no");
+                    if (input[0].equalsIgnoreCase("yes")) {
+                        playerAccepted = true;
+                        System.out.println("input a pair of number x y for every crew to remove\n");
+                        penaltyIfAccept.printInfo(playerToPlay);
+                    }
+                    else if (input[0].equalsIgnoreCase("no")){
+                        playerIndex++;
+                        initializeCard(game);
+                    }
                 }
-                else if (input[0].equalsIgnoreCase("no")){
+                else {
                     playerIndex++;
                     initializeCard(game);
                 }
             }
             else {
-                if (penaltyIfAccept.applyPenalty(game, playerToPlay.get(), input) == 1) {
-                    playerToPlay.get().gainCredit(possibleCreditGains);
-                    game.getFlightBoard().moveBackward(playerToPlay.get(), requiredDays);
-                    game.drawCard();
+                if (penaltyIfAccept.applyPenalty(game, playerToPlay, input) == 1) {
+                    playerToPlay.gainCredit(possibleCreditGains);
+                    game.getFlightBoard().moveBackward(playerToPlay, requiredDays);
+                    game.endCardEvent();
                 }
+                else
+                    System.out.println("need more inputs");
             }
         }
     }
@@ -74,5 +82,9 @@ public class AbandonedShip extends Card{
         return
                 "AbandonedShip: " + super.toString() + " crewNumberRequired "
                         + crewNumberRequired + " possibleCreditsGain " + possibleCreditGains;
+    }
+
+    public Player getPlayerToPlay() {
+        return playerToPlay;
     }
 }
