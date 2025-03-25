@@ -1,17 +1,72 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
 
 
+import java.util.ArrayList;
+import java.util.Optional;
+
 public class EquipCabin extends Cabin {
 
-    AlienOptions alienability;
-    CrewType crewType;
+    private AlienOptions alienability;
+    private CrewType crewType;
+    protected ArrayList<Coordinates> coordinatesAlienSupportSystem;
 
     public EquipCabin(Link north, Link east, Link south, Link west) {
         super(north, east, south, west);
     }
 
-    public void setAlienAbility(AlienOptions alienabilty){
+    public ArrayList<Coordinates> checkAlienability(AlienOptions alienabilty){
+        Optional<Tile>[][] tilesTable = shipBoard.getTilesTable();
+        alienability = AlienOptions.NO;
 
+        if(shipBoard.getTilesTable()[this.coordinates.getX()-1][this.coordinates.getY()].get().getAlienType().equals(CrewType.BROWN)
+         || shipBoard.getTilesTable()[this.coordinates.getX()+1][this.coordinates.getY()].get().getAlienType().equals(CrewType.BROWN)
+         || shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].get().getAlienType().equals(CrewType.BROWN)
+         || shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].get().getAlienType().equals(CrewType.BROWN)) {
+            alienability = AlienOptions.BROWN;
+        }
+
+        if(shipBoard.getTilesTable()[this.coordinates.getX()-1][this.coordinates.getY()].get().getAlienType().equals(CrewType.PURPLE)
+                || shipBoard.getTilesTable()[this.coordinates.getX()+1][this.coordinates.getY()].get().getAlienType().equals(CrewType.PURPLE)
+                || shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].get().getAlienType().equals(CrewType.PURPLE)
+                || shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].get().getAlienType().equals(CrewType.PURPLE)){
+            if(alienability == AlienOptions.BROWN){alienability = AlienOptions.BOTH;}
+            else
+                alienability = AlienOptions.PURPLE;
+        }
+
+        ArrayList<Coordinates> adjacentTiles = new ArrayList<Coordinates>();
+        adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()-1][this.coordinates.getY()].get().getCoordinates());
+        adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()+1][this.coordinates.getY()].get().getCoordinates());
+        adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].get().getCoordinates());
+        adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].get().getCoordinates());
+
+
+        alienability = AlienOptions.NO;
+        CrewType alienSupportSystemType;
+        boolean checkDouble = false;
+        for(Coordinates c : adjacentTiles) {
+            alienSupportSystemType = shipBoard.getTilesTable()[c.getX()][c.getY()].get().getAlienType();
+
+            //CHECK IF THE ADJACENT TILE IS AN ALIEN LIFE SUPPORT SYSTEM
+            if(alienSupportSystemType.equals(CrewType.BROWN) || alienSupportSystemType.equals(CrewType.PURPLE)) {
+                coordinatesAlienSupportSystem.add(c);
+                //CHECK IF
+                if (!alienability.equals(AlienOptions.BOTH)) {
+                    if (alienSupportSystemType.equals(CrewType.BROWN)) {
+                        alienability = AlienOptions.BROWN;
+                    }
+                    if (alienSupportSystemType.equals(CrewType.PURPLE)) {
+                        if (alienability == AlienOptions.BROWN) {
+                            alienability = AlienOptions.BOTH;
+                        }
+                        else
+                            alienability = AlienOptions.PURPLE;
+                    }
+
+                }
+            }
+        }
+        return coordinatesAlienSupportSystem;
     }
 
     //SELECT THE CREWTYPE ACCORDING TO ITS ALIENOPTIONS
@@ -57,6 +112,7 @@ public class EquipCabin extends Cabin {
                 break;
         }
         shipBoard.getCabinsCoordinates().add(this.coordinates);
+        checkAlienAbility(alienability);
     }
 
 

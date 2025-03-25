@@ -109,7 +109,9 @@ public abstract class Tile {
     public boolean removeCrew(){ System.out.println("THIS TILE IS NOT A CABIN");return false; }
     public void removeGood(Goods good){System.out.println("THIS TILE IS NOT A GOOD");}
     public Coverage getCoveredArea(){System.out.println("THIS TILE IS NOT A SHIELD"); return Coverage.NONE;}
-    public ArrayList<Goods> getCargo(){System.out.println("THIS TILE IS NOT A CARGO_HOLD"); return null;}
+    public boolean addGood(Goods good){System.out.println("THIS TILE IS NOT A CARGO_HOLD"); return false;}
+
+    public ArrayList<Goods> getCargo(){System.out.println("THIS TILE IS NOT A CARGO_HOLD");return null;}
     public boolean Placeable(){return true;}
     public int getNumBatteries() {
         System.out.println("THIS TILE IS NOT A BATTERY_COMPONENT");
@@ -128,4 +130,8 @@ public abstract class Tile {
     public boolean fillable(){
         return true;
     }
+    public CrewType getAlienType(){System.out.println("THIS TILE IS NOT A ALIEN LIFE SUPPORT SYSTEM"); return null;}
+    public CrewType getCrewType(){System.out.println("THIS TILE IS NOT A CABIN"); return null;}
+    public ArrayList<Coordinates> checkAlienability(){System.out.println("THIS TILE IS NOT A CABIN"); return null;}
+
 }
