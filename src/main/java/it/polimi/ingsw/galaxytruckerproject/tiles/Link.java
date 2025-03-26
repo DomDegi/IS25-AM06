@@ -27,6 +27,7 @@ public class Link {
     }
 
     public boolean isConnected(Link other){
+
         if(this.connectorsType == other.connectorsType)
             return true;
         if(this.connectorsType == Connectors.UNIVERSAL && (other.connectorsType == Connectors.DOUBLE || other.connectorsType == Connectors.SINGLE))
@@ -40,5 +41,7 @@ public class Link {
     public void setConnectorType(Connectors connectorType) {
         this.connectorsType = connectorType;
     }
+
+
 
 }
