@@ -378,33 +378,34 @@ public class ShipBoard {
 
     //ADDITIONAL METHOD THAT GETS IMPLEMENTED IN COUNT EXSPOSEDCONNECTORS
     public void checkBorderTile(int i, int j) {
-        numExposedConnectors = 0;
+
         //if the tile at its LEFT is either out of bounds, a VoidTile, or empty,
         //then our Tile iss a borderTile and I have to check if it is Exsposed
-        if (i - 1 < 0 || !tilesTable[i - 1][j].get().Placeable() || tilesTable[i + 1][j].isEmpty())
+        if ((j - 1 < 0 || tilesTable[i][j-1].isEmpty() || !tilesTable[i][j-1].get().fillable())&& tilesTable[i][j].isPresent() &&  tilesTable[i][j].get().fillable())
             if (!tilesTable[i][j].get().getWest().getConnectorsType().equals(Connectors.SMOOTH))
                 numExposedConnectors++;
 
         //if the tile at its RIGHT is either out of bounds, a VoidTile, or empty,
         //then our Tile iss a borderTile and I have to check if it is Exsposed
-        if (i + 1 > 6 || !tilesTable[i + 1][j].get().Placeable() || tilesTable[i + 1][j].isEmpty())
+        if ((j + 1 > 6 ||  tilesTable[i] [j+1].isEmpty() || !tilesTable[i][j+1].get().fillable()) && tilesTable[i][j].isPresent() &&  tilesTable[i][j].get().fillable())
             if (!tilesTable[i][j].get().getEast().getConnectorsType().equals(Connectors.SMOOTH))
                 numExposedConnectors++;
 
         //if the tile UNDER is either out of bounds, a VoidTile, or empty,
         // then our Tile iss a borderTile and I have to check if it is Exsposed
-        if (j + 1 > 4 || tilesTable[i][j + 1].get().Placeable() || tilesTable[i][j + 1].isEmpty())
+        if ((i + 1 > 4  || tilesTable[i+1][j].isEmpty() || !tilesTable[i+1][j].get().fillable())&& tilesTable[i][j].isPresent() &&  tilesTable[i][j].get().fillable())
             if (!tilesTable[i][j].get().getSouth().getConnectorsType().equals(Connectors.SMOOTH))
                 numExposedConnectors++;
 
         //if the tile OVER is either out of bounds, a VoidTile, or empty,
         // then our Tile iss a borderTile and I have to check if it is Exsposed
-        if (j - 1 < 0 || tilesTable[i][j - 1].get().Placeable() || tilesTable[i][j + 1].isEmpty())
+        if ((i - 1 < 0  || tilesTable[i-1][j].isEmpty() || !tilesTable[i-1][j].get().fillable())&& tilesTable[i][j].isPresent() &&  tilesTable[i][j].get().fillable())
             if (!tilesTable[i][j].get().getNorth().getConnectorsType().equals(Connectors.SMOOTH))
                 numExposedConnectors++;
     }
 
     public int countExposedConnectors() {
+        numExposedConnectors = 0;
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 7; j++) {
                 checkBorderTile(i, j);
