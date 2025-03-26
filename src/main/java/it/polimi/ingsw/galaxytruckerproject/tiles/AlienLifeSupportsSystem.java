@@ -25,10 +25,18 @@ public class AlienLifeSupportsSystem extends Tile {
     //RETURNS THE COORDINATES OF ALL THE ADJACENT EQUIP CABIN THAT HAS AN ALIEN
     public ArrayList<Coordinates> adjacentEquipCabinWithAlien() {
         ArrayList<Coordinates> adjacentTiles = new ArrayList<Coordinates>();
-        adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX() - 1][this.coordinates.getY()].get().getCoordinates());
-        adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX() + 1][this.coordinates.getY()].get().getCoordinates());
-        adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY() - 1].get().getCoordinates());
-        adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY() + 1].get().getCoordinates());
+        if(shipBoard.getTilesTable()[this.coordinates.getX() - 1][this.coordinates.getY()].isPresent() && shipBoard.getTilesTable()[this.coordinates.getX() - 1][this.coordinates.getY()].get().Placeable())
+            adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX() - 1][this.coordinates.getY()].get().getCoordinates());
+
+        if(shipBoard.getTilesTable()[this.coordinates.getX() + 1][this.coordinates.getY()].isPresent() && shipBoard.getTilesTable()[this.coordinates.getX() + 1][this.coordinates.getY()].get().Placeable())
+            adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX() + 1][this.coordinates.getY()].get().getCoordinates());
+
+        if(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].isPresent() && shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].get().Placeable())
+            adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].get().getCoordinates());
+
+        if(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].isPresent() && shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].get().Placeable())
+            adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].get().getCoordinates());
+
 
         ArrayList<Coordinates> adjacentEquipCabin = new ArrayList<Coordinates>();
 
@@ -41,7 +49,7 @@ public class AlienLifeSupportsSystem extends Tile {
     }
 
     public void destroy() {
-        super.destroy();
+        //super.destroy();
         ArrayList<Coordinates> adjacentEquipCabinwithAlien = adjacentEquipCabinWithAlien();
 
 

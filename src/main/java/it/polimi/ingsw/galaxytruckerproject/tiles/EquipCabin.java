@@ -36,12 +36,17 @@ public class EquipCabin extends Cabin {
         }
     */
         ArrayList<Coordinates> adjacentTiles = new ArrayList<Coordinates>();
-        if()
-        adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()-1][this.coordinates.getY()].get().getCoordinates());
-        adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()+1][this.coordinates.getY()].get().getCoordinates());
-        adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].get().getCoordinates());
-        adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].get().getCoordinates());
+        if(shipBoard.getTilesTable()[this.coordinates.getX() - 1][this.coordinates.getY()].isPresent() && shipBoard.getTilesTable()[this.coordinates.getX() - 1][this.coordinates.getY()].get().Placeable())
+            adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX() - 1][this.coordinates.getY()].get().getCoordinates());
 
+        if(shipBoard.getTilesTable()[this.coordinates.getX() + 1][this.coordinates.getY()].isPresent() && shipBoard.getTilesTable()[this.coordinates.getX() + 1][this.coordinates.getY()].get().Placeable())
+            adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX() + 1][this.coordinates.getY()].get().getCoordinates());
+
+        if(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].isPresent() && shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].get().Placeable())
+            adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].get().getCoordinates());
+
+        if(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].isPresent() && shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].get().Placeable())
+            adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].get().getCoordinates());
 
         alienability = AlienOptions.NO;
         CrewType alienLifeSupportSystemColor;
@@ -140,10 +145,8 @@ public class EquipCabin extends Cabin {
         }
         else{
             System.out.println("THIS CABIN IS EMPTY");
-            return false;
-        }
-        if (this.crew == 0) {
             shipBoard.getCabinsCoordinates().remove(this.coordinates);
+            return false;
         }
         return true;
     }
