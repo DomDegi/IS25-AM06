@@ -492,12 +492,14 @@ public class ShipBoard {
     //Returns true if the adding of the Good is successfully, false otherwise ()
     public int gainGoods(Goods goods, Coordinates coordinates){
         if(cargoHoldCoordinates.contains(coordinates)){
-            if(tilesTable[coordinates.getX()][coordinates.getY()].get().addGood(goods));
+            if(tilesTable[coordinates.getX()][coordinates.getY()].get().addGood(goods))
                 return 1;
-        }else{
+        }
+        else{
             System.out.println("THIS TILE IS NOT A CARGO HOLDER, input again");
             return -1;
         }
+        return -1;
     }
 
     //IT RETURNS THE COORDINATES OF EVERY CARGO_HOLD THAT CONTAINS A TYPE OF GOOD (RED, YELLOW, GREEN, BLU). IF
