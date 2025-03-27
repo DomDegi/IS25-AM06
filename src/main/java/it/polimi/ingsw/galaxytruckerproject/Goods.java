@@ -15,7 +15,6 @@ public class Goods {
     public String toString() {
         return color.toString();
     }
-
     public GoodsColor getColor() {
         return color;
     }

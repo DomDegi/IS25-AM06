@@ -15,12 +15,12 @@ public enum GoodsColor {
     @Override
     public String toString() {
         if(this == RED)
-            return "Red ";
+            return "Red";
         if(this == YELLOW)
-            return "Yellow ";
+            return "Yellow";
         if (this == GREEN)
-            return "Green ";
-        return "Blue ";
+            return "Green";
+        return "Blue";
     }
 
     public int getValue() {

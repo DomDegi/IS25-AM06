@@ -66,6 +66,9 @@ public class ShipBoard {
     }
 
     //GETTER METHODS
+    public void setHumanCrew(int numHumanCrew) {
+        this.numHumanCrew = numHumanCrew;
+    }
     public int getPenalty() {
         return penalty;
     }
