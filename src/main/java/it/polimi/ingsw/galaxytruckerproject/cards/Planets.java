@@ -43,12 +43,14 @@ public class Planets extends Card{
             playerToInteract = new ArrayList<>(game.getListOfPlayers());
             initialized=true;
         }
+        if (playerToInteract.isEmpty()) {
+            game.endCardPhase();
+            return;
+        }
         currentPlayer= playerToInteract.getFirst();
         printListOfPlanets();
         System.out.printf(currentPlayer+"input from 1 to %d to pick which to land on, input 'no' to ignore", numberOfPlanets);
-        if(playerToInteract.isEmpty()){
-            game.endCardEvent();
-        }
+
     }
     //for each player asks if they want to spend the required days to occupy the planet they choose
     @Override
@@ -76,7 +78,12 @@ public class Planets extends Card{
                 listOfPlanets.get(choice - 1).setOccupationStatus();
                 game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
                 won=1;
-                System.out.print("Chose for each good where to put it, input done to stop");
+                AtomicInteger i = new AtomicInteger(1);
+                goodsRemovedFromCargo.forEach(goods -> {
+                    System.out.printf(i + " - %s good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue());
+                    i.getAndIncrement();
+                });
+                System.out.print("Chose for each good where to put it, input 'done' to stop");
             } else if (choice > 0 && choice <= listOfPlanets.size() && listOfPlanets.get(choice - 1).getOccupationStatus()) {
                 System.out.printf("Error, planet %d is already taken\n", choice);
             } else if (choice == 0) {

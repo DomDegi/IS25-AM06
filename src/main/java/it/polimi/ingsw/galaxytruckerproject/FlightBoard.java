@@ -15,7 +15,7 @@ public class FlightBoard {
         this.gameMode = gameMode;
         this.inGamePlayers = new ArrayList<>();
         this.podium = new ArrayList<>();
-        this.freePodiumPosition=1;
+        this.freePodiumPosition=0;
     }
     //getter
     public ArrayList<Player> getAllPlayers() {
@@ -37,10 +37,13 @@ public class FlightBoard {
         }
         if(occupiedPos.isEmpty()){
             int pos=0;
-            occupiedPos.add(pos);
+            occupiedPos.set(pos,pos);
         }
         inGamePlayers.remove(newPlayer);
-        inGamePlayers.add(occupiedPos.getFirst(),newPlayer);
+        while (inGamePlayers.size() <= occupiedPos.getFirst()) {
+            inGamePlayers.add(null);  // adds null positions
+        }
+        inGamePlayers.set(occupiedPos.getFirst(),newPlayer);
         switch (occupiedPos.getFirst()) {
             case 0:
                 inGamePlayers.get(occupiedPos.getFirst()).setPlayerPosition(4);
@@ -57,8 +60,8 @@ public class FlightBoard {
             default:
                 throw new IllegalArgumentException("Invalid position: " + occupiedPos.getFirst());
         }
-        inGamePlayers.get(occupiedPos.getFirst()).setPlayerRanking(occupiedPos.getFirst()+1);
         occupiedPos.set(0,occupiedPos.getFirst()+1);
+        inGamePlayers.get(occupiedPos.getFirst()).setPlayerRanking(occupiedPos.getFirst()+1);
     }
 
     public void addToFlightBoard(Player newPlayer, int pos) {
@@ -75,29 +78,33 @@ public class FlightBoard {
             System.out.println("Position occupied");
             return;
         }
-
         //removes only if the player is already present in inGamePlayers
         inGamePlayers.remove(newPlayer);
-
         //makes sure that inGamePlayers is big enough to avoid IndexOutOfBoundException
         while (inGamePlayers.size() <= pos) {
             inGamePlayers.add(null);  // adds null positions
         }
         inGamePlayers.set(pos, newPlayer);
-
         //makes sure that the position chosen is from 0 to 3 (after the offset) and sets the right value for starting pos
-        int[] startingPositions = {9, 5, 2, 0};
-        if (pos < startingPositions.length) {
-            inGamePlayers.get(pos).setPlayerPosition(startingPositions[pos]);
-        } else {
-            System.out.println("Warning: pos out of predefined flight positions.");
+        switch (pos) {
+            case 0:
+                inGamePlayers.get(pos).setPlayerPosition(9);
+                break;
+            case 1:
+                inGamePlayers.get(pos).setPlayerPosition(5);
+                break;
+            case 2:
+                inGamePlayers.get(pos).setPlayerPosition(2);
+                break;
+            case 3:
+                inGamePlayers.get(pos).setPlayerPosition(0);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid position: " + occupiedPos.getFirst());
         }
-
         // makes sure that occupied pos has enough spaces just like we did with inGamePlayers with the null values
-        while (occupiedPos.size() <= pos) {
-            occupiedPos.add(-1);
-        }
-        occupiedPos.set(pos, pos);
+
+        occupiedPos.add(pos);
 
         // gives player a ranking
         inGamePlayers.get(pos).setPlayerRanking(pos + 1);
@@ -125,11 +132,14 @@ public class FlightBoard {
         rearrange();
     }
     public void earlyLanding(Player player) {
+        if (player.isLanded()) {
+            throw new IllegalArgumentException("Player already landed: " + player);
+        }
         int playerRank=player.getPlayerRanking()-1;
         if (playerRank < 0 || playerRank >= inGamePlayers.size()) {
             throw new IllegalArgumentException("Invalid player ranking: " + playerRank+1);
         }
-        if (freePodiumPosition >= inGamePlayers.size() || freePodiumPosition <= 0) {
+        if (freePodiumPosition > inGamePlayers.size() || freePodiumPosition <= 0) {
             throw new IllegalStateException("freePodiumPosition out of bounds: " + freePodiumPosition);
         }
 
@@ -138,12 +148,15 @@ public class FlightBoard {
         inGamePlayers.remove(player);
         podium.remove(player);
         podium.add(freePodiumPosition-1, player);
-        inGamePlayers.add(freePodiumPosition-1, player);
         freePodiumPosition--;
         rearrange();
     }
     //moving methods
     public void moveForward(Player player, int movement) {
+        if (player.isLanded()) {
+            System.out.println("Player already landed: " + player);
+            return;
+        }
         int playerRank=player.getPlayerRanking()-1;
         if (playerRank< 0 || playerRank>= inGamePlayers.size()) {
             throw new IllegalArgumentException("Invalid player ranking: " + playerRank+1);
@@ -158,6 +171,10 @@ public class FlightBoard {
         }
     }
     public void moveBackward(Player player, int movement) {
+        if (player.isLanded()) {
+            System.out.println("Player already landed: " + player);
+            return;
+        }
         int playerRank=player.getPlayerRanking()-1;
         if (playerRank< 0 || playerRank>= inGamePlayers.size()) {
             throw new IllegalArgumentException("Invalid player ranking: " + playerRank+1);
@@ -187,21 +204,21 @@ public class FlightBoard {
         }
     }
     public void concludeMovement() {
-        for (Player player:  inGamePlayers) {
-            if (player.getShipBoard().getNumHumanCrew() == 0)
-                earlyLanding(player);
-        }
-
         Player firstPlayer = null;
-        if (inGamePlayers.size() < 2) {
-            System.err.println("Error: inGamePlayers is either null or does not have enough players0");
+        if (inGamePlayers.size() <= 1) {
+            System.err.println("Error: inGamePlayers is either null or does not have enough players");
             return;
         }
+        rearrange();
         for (Player player : inGamePlayers) {
-            if (player != null && player.getPlayerRanking() == 1) {
+            if (player.getPlayerRanking() == 1) {
                 firstPlayer = player;
                 break;
             }
+        }
+        for (Player player:  inGamePlayers) {
+            if (player.getShipBoard().getNumHumanCrew() == 0)
+                earlyLanding(player);
         }
         if (firstPlayer == null) {
             System.err.println("Error: No player with rank 1 found");
@@ -223,6 +240,6 @@ public class FlightBoard {
 
             }
         }
-        rearrange();
+
     }
 }

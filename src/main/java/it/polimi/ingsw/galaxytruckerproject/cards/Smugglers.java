@@ -45,11 +45,12 @@ public class Smugglers extends Enemies{
             System.out.printf("WATCH OUT, SMUGGLERS!! \n If you don't have at least a Cannon Strength of "+cannonStrength+" you will loose "+lostGoods+"\n DESTROY THEM and you will loose"+requiredDays+"to fill your cargo with the following goods:\n");
             rewardGoods.forEach(goods -> System.out.printf("%s good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue()));
         }
+        if (playerToInteract.isEmpty()) {
+            game.endCardPhase();
+            return;
+        }
         currentPlayer= playerToInteract.getFirst();
         System.out.printf(currentPlayer+"they are coming for you! \n Do you want to use your double cannon?(yes/no)\n");
-        if(playerToInteract.isEmpty()){
-            game.endCardEvent();
-        }
     }
 
     @Override
