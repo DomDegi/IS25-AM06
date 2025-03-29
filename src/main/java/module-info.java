@@ -8,16 +8,18 @@ module it.polimi.ingsw.galaxytruckerproject {
     requires java.compiler;
     requires java.desktop;
 
-    opens it.polimi.ingsw.galaxytruckerproject to com.fasterxml.jackson.databind;
-    opens it.polimi.ingsw.galaxytruckerproject.tiles to com.fasterxml.jackson.databind;
-    opens it.polimi.ingsw.galaxytruckerproject.cards to com.fasterxml.jackson.databind;
-    opens it.polimi.ingsw.galaxytruckerproject.cards.projectiles to com.fasterxml.jackson.databind;
-    opens it.polimi.ingsw.galaxytruckerproject.cards.penalties to com.fasterxml.jackson.databind;
-    opens it.polimi.ingsw.galaxytruckerproject.player to com.fasterxml.jackson.databind;
-    exports it.polimi.ingsw.galaxytruckerproject;
-    exports it.polimi.ingsw.galaxytruckerproject.player;
-    exports it.polimi.ingsw.galaxytruckerproject.tiles;
-    exports it.polimi.ingsw.galaxytruckerproject.cards;
-    exports it.polimi.ingsw.galaxytruckerproject.cards.penalties;
-    exports it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
+    opens it.polimi.ingsw.galaxytruckerproject.model to com.fasterxml.jackson.databind;
+    opens it.polimi.ingsw.galaxytruckerproject.model.tiles to com.fasterxml.jackson.databind;
+    opens it.polimi.ingsw.galaxytruckerproject.model.cards to com.fasterxml.jackson.databind;
+    opens it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles to com.fasterxml.jackson.databind;
+    opens it.polimi.ingsw.galaxytruckerproject.model.cards.penalties to com.fasterxml.jackson.databind;
+    opens it.polimi.ingsw.galaxytruckerproject.model.player to com.fasterxml.jackson.databind;
+    exports it.polimi.ingsw.galaxytruckerproject.model.player;
+    exports it.polimi.ingsw.galaxytruckerproject.model.tiles;
+    exports it.polimi.ingsw.galaxytruckerproject.model.cards;
+    exports it.polimi.ingsw.galaxytruckerproject.model.cards.penalties;
+    exports it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles;
+    exports it.polimi.ingsw.galaxytruckerproject.model;
+    exports it.polimi.ingsw.galaxytruckerproject.controller;
+    opens it.polimi.ingsw.galaxytruckerproject.controller to com.fasterxml.jackson.databind;
 }
