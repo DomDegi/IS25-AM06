@@ -1,5 +1,5 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
 
 public enum CrewType {
-    HUMAN, PURPLE, BROWN
+    HUMAN, PURPLE, BROWN, NotAcabin, NotSupportSystem;
 }

@@ -14,7 +14,7 @@ public abstract class Tile {
     protected Coordinates coordinates;
     protected ShipBoard shipBoard;
 
-    public Tile(Link north, Link east, Link south, Link west){
+    public Tile(Link north, Link east, Link south, Link west) {
         this.north =north;
         this.east=east;
         this.south=south;
@@ -111,6 +111,7 @@ public abstract class Tile {
     public Coverage getCoveredArea(){System.out.println("THIS TILE IS NOT A SHIELD"); return Coverage.NONE;}
     public boolean addGood(Goods good){System.out.println("THIS TILE IS NOT A CARGO_HOLD"); return false;}
 
+    //
     public ArrayList<Goods> getCargo(){System.out.println("THIS TILE IS NOT A CARGO_HOLD");return null;}
     public boolean Placeable(){return true;}
     public int getNumBatteries() {
@@ -127,14 +128,12 @@ public abstract class Tile {
         //System.out.println("THIS TILE IS NOT A DOUBLE CANNON");
         return 0;
     }
-    public boolean fillable(){
-        return true;
-    }
-    public CrewType getAlienLifeSupportSystemColor(){System.out.println("THIS TILE IS NOT A ALIEN LIFE SUPPORT SYSTEM"); return null;}
-    public ArrayList<Coordinates> getcoordinatesAdjacentAlienSupportSystem(){System.out.println("THIS TILE IS NOT A CABIN"); return null;}
+    public boolean fillable(){return true;}
+    public CrewType getAlienLifeSupportSystemColor(){System.out.println("THIS TILE IS NOT A ALIEN LIFE SUPPORT SYSTEM"); return CrewType.NotSupportSystem;}
+    public ArrayList<Coordinates> adjacentLifeSupport(){System.out.println("THIS TILE IS NOT A CABIN"); return new ArrayList<Coordinates>();}
 
 
-    public CrewType getCrewType(){System.out.println("THIS TILE IS NOT A CABIN"); return null;}
-    public ArrayList<Coordinates> checkAlienability(){System.out.println("THIS TILE IS NOT A CABIN"); return null;}
+    public CrewType getCrewType(){System.out.println("THIS TILE IS NOT A CABIN"); return CrewType.NotAcabin;}
+    public void checkAlienability(){System.out.println("THIS TILE IS NOT A CABIN");}
 
 }

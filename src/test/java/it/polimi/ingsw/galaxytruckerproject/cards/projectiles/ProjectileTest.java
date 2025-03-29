@@ -1,0 +1,135 @@
+package it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
+
+import it.polimi.ingsw.galaxytruckerproject.Game;
+import it.polimi.ingsw.galaxytruckerproject.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.cards.penalties.ProjectilePenalty;
+import it.polimi.ingsw.galaxytruckerproject.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.tiles.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class ProjectileTest {
+
+    private Player player1;
+    private ShipBoard shipBoard1;
+    private Player player2;
+    private ShipBoard shipBoard2;
+    private Game gameLvl2 = new Game(GameMode.LEVEL2);
+    private Game gameTrial = new Game(GameMode.TRIAL);
+
+    @BeforeEach
+    void setUp() {
+
+        //setupShipBoard made of only single cannons
+        player1 = new Player("dummy", PlayersColor.RED);
+        shipBoard1 = new ShipBoard(player1);
+        player1.setPlayerShip(shipBoard1);
+        shipBoard1.initializeLevel2();
+        Tile tile1=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile1), new Coordinates(1,3));
+        Tile tile2=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile2), new Coordinates(1,4));
+        Tile tile3=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE));
+        tile3.rotate();
+        shipBoard1.positionTile(Optional.of(tile3), new Coordinates(2,5));
+        Tile tile4=new Pipe( new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL));
+        shipBoard1.positionTile(Optional.of(tile4), new Coordinates(2,4));
+        Tile tile5=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
+        tile5.rotate();
+        tile5.rotate();
+        tile5.rotate();
+        shipBoard1.positionTile(Optional.of(tile5), new Coordinates(2,2));
+        Tile tile6=new SingleEngine( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile6), new Coordinates(3,3));
+        boolean result=shipBoard1.verifyCorrectness();
+        //verifyCorrectness is needed for the shipboard stats setting
+
+
+        Player player2 = new Player("MimmoPericoloso", PlayersColor.BLUE);
+        ShipBoard shipBoard2 = new ShipBoard(player2);
+        shipBoard2.initializeLevel2();
+        player2.setPlayerShip(shipBoard2);
+        Tile tile7=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
+        shipBoard2.positionTile(Optional.of(tile7), new Coordinates(0,4));
+        Tile tile8=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE));
+        tile8.setCrewType(CrewType.HUMAN);
+        shipBoard2.positionTile(Optional.of(tile8), new Coordinates(1,1));
+        Tile tile9=new AlienLifeSupportsSystem( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),CrewType.BROWN);
+        shipBoard2.positionTile(Optional.of(tile9), new Coordinates(1,2));
+        Tile tile10=new CargoBlue(3, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
+        shipBoard2.positionTile(Optional.of(tile10), new Coordinates(1,3));
+        Tile tile11=new CargoBlue(3, new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
+        shipBoard2.positionTile(Optional.of(tile11), new Coordinates(1,4));
+        Tile tile12=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE));
+        shipBoard2.positionTile(Optional.of(tile12), new Coordinates(1,5));
+
+        Tile tile13=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH));
+        shipBoard2.positionTile(Optional.of(tile13), new Coordinates(2,0));
+        Tile tile14=new EquipCabin( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE));
+        tile14.setCrewType(CrewType.HUMAN);
+        shipBoard2.positionTile(Optional.of(tile14), new Coordinates(2,1));
+        Tile tile15=new EquipCabin( new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
+        tile15.setCrewType(CrewType.HUMAN);
+        shipBoard2.positionTile(Optional.of(tile15), new Coordinates(2,2));
+        Tile tile16=new Shields( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL));
+        shipBoard2.positionTile(Optional.of(tile16), new Coordinates(2,4));
+        Tile tile17=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL));
+        tile17.setCrewType(CrewType.HUMAN);
+        shipBoard2.positionTile(Optional.of(tile17), new Coordinates(2,5));
+        Tile tile18=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL));
+        shipBoard2.positionTile(Optional.of(tile18), new Coordinates(2,6));
+
+        Tile tile19=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE), 2);
+        shipBoard2.positionTile(Optional.of(tile19), new Coordinates(3,0));
+        Tile tile20=new EquipCabin( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH));
+        tile20.setCrewType(CrewType.HUMAN);
+        shipBoard2.positionTile(Optional.of(tile20), new Coordinates(3,2));
+        Tile tile21=new SingleEngine( new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH));
+        shipBoard2.positionTile(Optional.of(tile21), new Coordinates(3,3));
+        Tile tile22=new CargoRed(1, new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE));
+        shipBoard2.positionTile(Optional.of(tile22), new Coordinates(3,4));
+        Tile tile23=new DoubleEngine( new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE));
+        shipBoard2.positionTile(Optional.of(tile23), new Coordinates(3,5));
+        Tile tile24=new BatteryComponents( new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH), 2);
+        shipBoard2.positionTile(Optional.of(tile24), new Coordinates(3,6));
+
+        Tile tile25=new BatteryComponents( new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH), 2);
+        shipBoard2.positionTile(Optional.of(tile25), new Coordinates(4,0));
+        Tile tile26=new SingleCannon(new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
+        shipBoard2.positionTile(Optional.of(tile26), new Coordinates(4,1));
+        Tile tile27=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
+        shipBoard2.positionTile(Optional.of(tile27), new Coordinates(4,2));
+        Tile tile28=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE));
+        tile28.rotate();
+        tile28.rotate();
+        shipBoard2.positionTile(Optional.of(tile28), new Coordinates(4,4));
+        shipBoard2.verifyCorrectness();
+        //verifyCorrectness is needed for the shipboard stats setting
+        assertTrue(result);
+    }
+
+    @Test
+    void testShipoboard1SmallMeteorN(){
+        SmallMeteor met= new SmallMeteor(Direction.NORTH);
+        assertTrue(met.throwProjectile(player1,5,gameLvl2)==Defense.PROTECTED);
+        System.out.println(shipBoard1.toString());
+    }
+
+    @Test
+    void testShipoboard1SmallMeteorS(){
+        SmallMeteor met= new SmallMeteor(Direction.SOUTH);
+        assertTrue(met.throwProjectile(player1,8,gameLvl2)==Defense.HIT);
+        System.out.println(met.getCoordinatesToDestroy());
+    }
+
+
+
+}

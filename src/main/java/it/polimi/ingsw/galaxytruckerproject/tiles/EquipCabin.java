@@ -2,7 +2,6 @@ package it.polimi.ingsw.galaxytruckerproject.tiles;
 
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class EquipCabin extends Cabin {
 
@@ -13,94 +12,100 @@ public class EquipCabin extends Cabin {
         super(north, east, south, west);
     }
 
-    //THIS METHOD GET CALLED IN THE getStat
-    public ArrayList<Coordinates> checkAlienability(){
-        Optional<Tile>[][] tilesTable = shipBoard.getTilesTable();
-        ArrayList<Coordinates> coordinatesAlienSupportSystem = new ArrayList<>();
+    //GETTER METHOD
+    public CrewType getCrewType(){
+        return this.crewType;
+    }
+
+    //THIS METHOD RETURNS THE LIST OF THE ADJACENT ALIEN LIFE SUPPORT SYSTEM
+    public ArrayList<Coordinates> adjacentLifeSupport(){
+        ArrayList<Coordinates> adjacentLifeSupport = new ArrayList<>();
+
+        if(shipBoard.getTilesTable()[this.coordinates.getX() - 1][this.coordinates.getY()].isPresent()
+                && shipBoard.getTilesTable()[this.coordinates.getX() - 1][this.coordinates.getY()].get().Placeable()
+                && !shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()].get().getAlienLifeSupportSystemColor().equals(CrewType.NotSupportSystem))
+            adjacentLifeSupport.add(shipBoard.getTilesTable()[this.coordinates.getX() - 1][this.coordinates.getY()].get().getCoordinates());
+
+        if(shipBoard.getTilesTable()[this.coordinates.getX() + 1][this.coordinates.getY()].isPresent()
+                && shipBoard.getTilesTable()[this.coordinates.getX() + 1][this.coordinates.getY()].get().Placeable()
+                && !shipBoard.getTilesTable()[this.coordinates.getX()+ 1][this.coordinates.getY()].get().getAlienLifeSupportSystemColor().equals(CrewType.NotSupportSystem))
+            adjacentLifeSupport.add(shipBoard.getTilesTable()[this.coordinates.getX() + 1][this.coordinates.getY()].get().getCoordinates());
+
+        if(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].isPresent()
+                && shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].get().Placeable()
+                && !shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].get().getAlienLifeSupportSystemColor().equals(CrewType.NotSupportSystem))
+            adjacentLifeSupport.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].get().getCoordinates());
+
+        if(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].isPresent()
+                && shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].get().Placeable()
+                && !shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].get().getAlienLifeSupportSystemColor().equals(CrewType.NotSupportSystem))
+            adjacentLifeSupport.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].get().getCoordinates());
+
+        return adjacentLifeSupport;
+    }
+
+    //THIS METHOD CHECKS IF THE CABIN CAN HAVE AN ALIEN AND WHICH
+    public void checkAlienability(){
+
         alienability = AlienOptions.NO;
-    /*
-        if(shipBoard.getTilesTable()[this.coordinates.getX()-1][this.coordinates.getY()].get().getAlienType().equals(CrewType.BROWN)
-         || shipBoard.getTilesTable()[this.coordinates.getX()+1][this.coordinates.getY()].get().getAlienType().equals(CrewType.BROWN)
-         || shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].get().getAlienType().equals(CrewType.BROWN)
-         || shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].get().getAlienType().equals(CrewType.BROWN)) {
-            alienability = AlienOptions.BROWN;
-        }
+        ArrayList<Coordinates> adjacentLifeSupport = new ArrayList<Coordinates>();
+        adjacentLifeSupport = adjacentLifeSupport();
 
-        if(shipBoard.getTilesTable()[this.coordinates.getX()-1][this.coordinates.getY()].get().getAlienType().equals(CrewType.PURPLE)
-                || shipBoard.getTilesTable()[this.coordinates.getX()+1][this.coordinates.getY()].get().getAlienType().equals(CrewType.PURPLE)
-                || shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].get().getAlienType().equals(CrewType.PURPLE)
-                || shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].get().getAlienType().equals(CrewType.PURPLE)){
-            if(alienability == AlienOptions.BROWN){alienability = AlienOptions.BOTH;}
-            else
-                alienability = AlienOptions.PURPLE;
-        }
-    */
-        ArrayList<Coordinates> adjacentTiles = new ArrayList<Coordinates>();
-        if(shipBoard.getTilesTable()[this.coordinates.getX() - 1][this.coordinates.getY()].isPresent() && shipBoard.getTilesTable()[this.coordinates.getX() - 1][this.coordinates.getY()].get().Placeable())
-            adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX() - 1][this.coordinates.getY()].get().getCoordinates());
-
-        if(shipBoard.getTilesTable()[this.coordinates.getX() + 1][this.coordinates.getY()].isPresent() && shipBoard.getTilesTable()[this.coordinates.getX() + 1][this.coordinates.getY()].get().Placeable())
-            adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX() + 1][this.coordinates.getY()].get().getCoordinates());
-
-        if(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].isPresent() && shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].get().Placeable())
-            adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].get().getCoordinates());
-
-        if(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].isPresent() && shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].get().Placeable())
-            adjacentTiles.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].get().getCoordinates());
-
-        alienability = AlienOptions.NO;
         CrewType alienLifeSupportSystemColor;
         boolean checkDouble = false;
-        for(Coordinates c : adjacentTiles) {
+        for(Coordinates c : adjacentLifeSupport) {
             alienLifeSupportSystemColor = shipBoard.getTilesTable()[c.getX()][c.getY()].get().getAlienLifeSupportSystemColor();
+            //CHECK WHICH COLOR IS THE ADJACENT ALIEN LIFE SUPPORT SYSTEM
 
-
-            //CHECK IF THE ADJACENT TILE IS AN ALIEN LIFE SUPPORT SYSTEM
-            if(alienLifeSupportSystemColor.equals(CrewType.BROWN) || alienLifeSupportSystemColor.equals(CrewType.PURPLE)) {
-                coordinatesAlienSupportSystem.add(c);
-                //CHECK IF WE ALREADY VERIFIED THE PRESENCE OF TWO DIFFERENT COLORS OF ALIEN LIFE SUPPORT SYSTEM
-                if (!alienability.equals(AlienOptions.BOTH)) {
-                    //CHECK IF THE CURRENT ALIEN LIFE SUPPORT SYSTEM IS BROWN
-                    if (alienLifeSupportSystemColor.equals(CrewType.BROWN)) {
-                        alienability = AlienOptions.BROWN;
-                    }
-                    //CHECK IF IT IS PURPLE
-                    if (alienLifeSupportSystemColor.equals(CrewType.PURPLE)) {
-                        //CHECK IF WE ALREADY FOUND A BROWN ONE
-                        if (alienability == AlienOptions.BROWN) {
-                            alienability = AlienOptions.BOTH;
-                        }
-                        else
-                            alienability = AlienOptions.PURPLE;
-                    }
-
-                }
+            //CHECK IF THE CURRENT ALIEN LIFE SUPPORT SYSTEM IS BROWN
+            if (alienLifeSupportSystemColor.equals(CrewType.BROWN)) {
+                //CHECK IF WE ALREADY FOUND A PURPLE ONE
+                if (alienability == AlienOptions.PURPLE) {
+                    alienability = AlienOptions.BOTH;
+                    break;
+                } else
+                    alienability = AlienOptions.BROWN;
+            }
+            //CHECK IF THE CURRENT ALIEN LIFE SUPPORT SYSTEM IS PURPLE
+            else if (alienLifeSupportSystemColor.equals(CrewType.PURPLE)) {
+                //CHECK IF WE ALREADY FOUND A BROWN ONE
+                if (alienability == AlienOptions.BROWN) {
+                    alienability = AlienOptions.BOTH;
+                    break;
+                } else
+                    alienability = AlienOptions.PURPLE;
             }
         }
-        return coordinatesAlienSupportSystem;
     }
+
 
     //SELECT THE CREWTYPE ACCORDING TO ITS ALIENOPTIONS
     public void setCrewType(CrewType crewType) {
+        //checkAlienability();
         switch (crewType) {
             case HUMAN:
                 this.crewType = CrewType.HUMAN;
-                this.crew = 2;
+                this.crew = 2 ;
+                shipBoard.addBreakHumanCrew(+2);
             break;
+
             case PURPLE:
                 if (this.alienability == AlienOptions.BOTH || this.alienability == AlienOptions.PURPLE){
                     this.crewType = CrewType.PURPLE;
                     this.crew = 1;
+                    shipBoard.addBreakPurpleAliens(true);
                     break;
                 }
                 else{
                     System.out.println("CAN'T FILL THIS CABIN WITH A PURPLE ALIEN");
                 }
                 break;
+
             case BROWN:
                 if(this.alienability == AlienOptions.BOTH || this.alienability == AlienOptions.BROWN){
                     this.crewType = CrewType.BROWN;
                     this.crew = 1;
+                    shipBoard.addBreakBrownAliens(true);
                     break;
                 }
                 else{
@@ -112,18 +117,7 @@ public class EquipCabin extends Cabin {
 
 
     public void getStat(){
-        //checkAlienability();
-        switch (crewType) {
-            case HUMAN:
-                shipBoard.addBreakHumanCrew(+2);
-                break;
-            case PURPLE:
-                shipBoard.addBreakPurpleAliens(true);
-                break;
-            case BROWN:
-                shipBoard.addBreakBrownAliens(true);
-                break;
-        }
+        checkAlienability();
         shipBoard.getCabinsCoordinates().add(this.coordinates);
     }
 
@@ -172,9 +166,6 @@ public class EquipCabin extends Cabin {
         super.destroy();
     }
 
-    public CrewType getCrewType(){
-        return this.crewType;
-    }
 
 
     @Override
@@ -183,7 +174,9 @@ public class EquipCabin extends Cabin {
     }
 
     //METHODS FOR TESTING
-
+    public AlienOptions getAlienability() {
+        return alienability;
+    }
 
 
 }

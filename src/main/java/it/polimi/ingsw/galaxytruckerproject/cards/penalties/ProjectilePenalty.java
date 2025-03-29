@@ -32,12 +32,13 @@ public class ProjectilePenalty extends Penalty {
             this.game = game;
         }
         if (diceRoll == 0) {
-            if (!input[0].equalsIgnoreCase("roll")) {
+            if (input!=null && input.length>0 && !input[0].equalsIgnoreCase("roll")) {
                 printInfo(player);
                 System.out.println("input roll to roll the dices and find out exactly what will be hit");
             } else {
                 Random rand = new Random();
                 diceRoll = 2 + rand.nextInt(11);
+                System.out.println("diceRoll: " + diceRoll);
                 printInfo(player);
             }
             return 0;

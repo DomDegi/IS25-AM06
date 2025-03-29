@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.cards.penalties;
 
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.LargeCannonShot;
 import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.LargeMeteor;
 import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.SmallMeteor;
@@ -25,6 +26,7 @@ class ProjectilePenaltyTest {
     private ProjectilePenalty penalty;
     private ArrayList<Projectile> listOfMeteors1;
     private ArrayList<Projectile> listOfMeteorsFull;
+    private ArrayList<Projectile> listOfLargeCannonShot1;
     private ShipBoard shipBoard;
     private Game gameLvl2 = new Game(GameMode.LEVEL2);
     private Game gameTrial = new Game(GameMode.TRIAL);
@@ -35,6 +37,7 @@ class ProjectilePenaltyTest {
         //setupShipBoard made of only single cannons
         player = new Player("dummy", PlayersColor.RED);
         shipBoard = new ShipBoard(player);
+        player.setPlayerShip(shipBoard);
         shipBoard.initializeLevel2();
         SingleCannon singleCannonN = new SingleCannon(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.UNIVERSAL), new Link(Connectors.SMOOTH));
         SingleCannon singleCannonE = new SingleCannon(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.UNIVERSAL));
@@ -60,13 +63,30 @@ class ProjectilePenaltyTest {
                 new LargeMeteor(Direction.WEST),
                 new SmallMeteor(Direction.WEST)
         ));
-        penalty = new ProjectilePenalty(listOfMeteors1);
+
+        listOfLargeCannonShot1= new ArrayList<>(List.of(new LargeCannonShot(Direction.NORTH)));
     }
 
     @Test
-    void large_meteor_from_north_on_small_cannon() {
+    void large_meteor_from_north_on_single_cannon() {
+        System.out.println(shipBoard.toString());
+        System.out.println("Lancio meteore");
         String[] input = {};
+        penalty = new ProjectilePenalty(listOfMeteors1);
         int returnValue = penalty.applyPenalty(gameLvl2, player, input);
-        assertEquals(1, returnValue);
+        assertEquals(0, returnValue);
+        System.out.println(shipBoard.toString());
     }
+
+    @Test
+    void largeCannonShot_from_north_on_small_cannon() {
+        System.out.println(shipBoard.toString());
+        System.out.println("Lancio cannonShot");
+        String[] input = {};
+        penalty = new ProjectilePenalty(listOfLargeCannonShot1);
+        int returnValue = penalty.applyPenalty(gameLvl2, player, input);
+        assertEquals(0, returnValue);
+        System.out.println(shipBoard.toString());
+    }
+
 }
