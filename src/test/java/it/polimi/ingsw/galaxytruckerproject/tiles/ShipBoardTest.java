@@ -1,9 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
-import it.polimi.ingsw.galaxytruckerproject.model.Goods;
-import it.polimi.ingsw.galaxytruckerproject.model.GoodsColor;
-import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.Goods;
+import it.polimi.ingsw.galaxytruckerproject.GoodsColor;
+import it.polimi.ingsw.galaxytruckerproject.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
