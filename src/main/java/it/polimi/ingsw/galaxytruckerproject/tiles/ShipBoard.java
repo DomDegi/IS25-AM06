@@ -4,7 +4,6 @@ import java.util.*;
 import it.polimi.ingsw.galaxytruckerproject.Goods;
 import it.polimi.ingsw.galaxytruckerproject.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
 
 
 public class ShipBoard {
@@ -274,7 +273,8 @@ public class ShipBoard {
         for (int[] pos : voidPositions) {
             tilesTable[pos[0]][pos[1]] = Optional.of(new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH)));
         }
-
+        Tile tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL));
+        positionTile(Optional.of(tile), new Coordinates(2, 3));
 
         this.tilesTable = tilesTable;
     }
@@ -357,19 +357,19 @@ public class ShipBoard {
         int y = start.y;
         set.add(new Coordinates(x, y));
         //south
-        if (tilesTable[x][y].get().south.getConnectorsType() != Connectors.SMOOTH && tilesTable[x + 1][y].isPresent() && tilesTable[x + 1][y].get().fillable() && !set.contains(tilesTable[x + 1][y].get().getCoordinates())) {
+        if (x<4 && tilesTable[x][y].get().south.getConnectorsType() != Connectors.SMOOTH && tilesTable[x + 1][y].isPresent() && tilesTable[x + 1][y].get().fillable() && !set.contains(tilesTable[x + 1][y].get().getCoordinates())) {
             connectedSet(new Coordinates(x + 1, y), set);
         }
         //east
-        if (tilesTable[x][y].get().east.getConnectorsType() != Connectors.SMOOTH && tilesTable[x][y + 1].isPresent() && tilesTable[x][y + 1].get().fillable() && !set.contains(tilesTable[x][y + 1].get().getCoordinates())) {
+        if (y<6 && tilesTable[x][y].get().east.getConnectorsType() != Connectors.SMOOTH && tilesTable[x][y + 1].isPresent() && tilesTable[x][y + 1].get().fillable() && !set.contains(tilesTable[x][y + 1].get().getCoordinates())) {
             connectedSet(new Coordinates(x, y + 1), set);
         }
         //north
-        if (tilesTable[x][y].get().north.getConnectorsType() != Connectors.SMOOTH && tilesTable[x - 1][y].isPresent() && tilesTable[x - 1][y].get().fillable() && !set.contains(tilesTable[x - 1][y].get().getCoordinates())) {
+        if (x>0 && tilesTable[x][y].get().north.getConnectorsType() != Connectors.SMOOTH && tilesTable[x - 1][y].isPresent() && tilesTable[x - 1][y].get().fillable() && !set.contains(tilesTable[x - 1][y].get().getCoordinates())) {
             connectedSet(new Coordinates(x - 1, y), set);
         }
         //west
-        if (tilesTable[x][y].get().west.getConnectorsType() != Connectors.SMOOTH && tilesTable[x][y - 1].isPresent() && tilesTable[x][y - 1].get().fillable() && !set.contains(tilesTable[x][y - 1].get().getCoordinates())) {
+        if (y>0 && tilesTable[x][y].get().west.getConnectorsType() != Connectors.SMOOTH && tilesTable[x][y - 1].isPresent() && tilesTable[x][y - 1].get().fillable() && !set.contains(tilesTable[x][y - 1].get().getCoordinates())) {
             connectedSet(new Coordinates(x, y - 1), set);
         }
         return set;
@@ -381,33 +381,34 @@ public class ShipBoard {
 
     //ADDITIONAL METHOD THAT GETS IMPLEMENTED IN COUNT EXSPOSEDCONNECTORS
     public void checkBorderTile(int i, int j) {
-        numExposedConnectors = 0;
+
         //if the tile at its LEFT is either out of bounds, a VoidTile, or empty,
         //then our Tile iss a borderTile and I have to check if it is Exsposed
-        if (i - 1 < 0 || !tilesTable[i - 1][j].get().Placeable() || tilesTable[i + 1][j].isEmpty())
+        if ((j - 1 < 0 || tilesTable[i][j-1].isEmpty() || !tilesTable[i][j-1].get().fillable())&& tilesTable[i][j].isPresent() &&  tilesTable[i][j].get().fillable())
             if (!tilesTable[i][j].get().getWest().getConnectorsType().equals(Connectors.SMOOTH))
                 numExposedConnectors++;
 
         //if the tile at its RIGHT is either out of bounds, a VoidTile, or empty,
         //then our Tile iss a borderTile and I have to check if it is Exsposed
-        if (i + 1 > 6 || !tilesTable[i + 1][j].get().Placeable() || tilesTable[i + 1][j].isEmpty())
+        if ((j + 1 > 6 ||  tilesTable[i] [j+1].isEmpty() || !tilesTable[i][j+1].get().fillable()) && tilesTable[i][j].isPresent() &&  tilesTable[i][j].get().fillable())
             if (!tilesTable[i][j].get().getEast().getConnectorsType().equals(Connectors.SMOOTH))
                 numExposedConnectors++;
 
         //if the tile UNDER is either out of bounds, a VoidTile, or empty,
         // then our Tile iss a borderTile and I have to check if it is Exsposed
-        if (j + 1 > 4 || tilesTable[i][j + 1].get().Placeable() || tilesTable[i][j + 1].isEmpty())
+        if ((i + 1 > 4  || tilesTable[i+1][j].isEmpty() || !tilesTable[i+1][j].get().fillable())&& tilesTable[i][j].isPresent() &&  tilesTable[i][j].get().fillable())
             if (!tilesTable[i][j].get().getSouth().getConnectorsType().equals(Connectors.SMOOTH))
                 numExposedConnectors++;
 
         //if the tile OVER is either out of bounds, a VoidTile, or empty,
         // then our Tile iss a borderTile and I have to check if it is Exsposed
-        if (j - 1 < 0 || tilesTable[i][j - 1].get().Placeable() || tilesTable[i][j + 1].isEmpty())
+        if ((i - 1 < 0  || tilesTable[i-1][j].isEmpty() || !tilesTable[i-1][j].get().fillable())&& tilesTable[i][j].isPresent() &&  tilesTable[i][j].get().fillable())
             if (!tilesTable[i][j].get().getNorth().getConnectorsType().equals(Connectors.SMOOTH))
                 numExposedConnectors++;
     }
 
     public int countExposedConnectors() {
+        numExposedConnectors = 0;
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 7; j++) {
                 checkBorderTile(i, j);
@@ -416,13 +417,13 @@ public class ShipBoard {
     }
 
     public boolean verifyCorrectness() {
-        //Set<Coordinates> set = new HashSet<Coordinates>();
-        //set=connectedSet( new Coordinates(2,3), set);
+        Set<Coordinates> set = new HashSet<Coordinates>();
+        set=this.connectedSet( new Coordinates(2,3), set);
         // da controllare che tutte le caselle non vuote siano nel set per la correttezza (no caso delle due navi separate)
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 7; j++) {
-                if (tilesTable[i][j].isPresent())
-                    if(!tilesTable[i][j].get().isCorrect()) return false;
+                if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable() )
+                    if(!tilesTable[i][j].get().isCorrect() ||! set.contains(tilesTable[i][j].get().getCoordinates()) ) return false;
             }
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 7; j++) {
@@ -697,5 +698,7 @@ public class ShipBoard {
         }
         return goods;
     }
+
+
 
 }

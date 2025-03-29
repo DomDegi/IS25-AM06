@@ -19,7 +19,7 @@ public class SmallMeteor extends Projectile {
     public  Defense throwProjectile(Player player, int diceRoll, Game game) {
         Throw(player, diceRoll);
 
-        if(coordinatesToDestroy.isEmpty()){
+        if(coordinatesToDestroy.isEmpty() ){
             return Defense.PROTECTED;
         }
         if(this.direction.equals(Direction.NORTH)){
