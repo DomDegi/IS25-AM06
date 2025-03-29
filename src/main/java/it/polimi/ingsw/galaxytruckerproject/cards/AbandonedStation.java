@@ -19,7 +19,6 @@ public class AbandonedStation extends Card {
     private int won;
     private int goodsToGet;
     private Coordinates coordinatesToPut;
-    private final ArrayList<Goods> goodsRemovedFromCargo;
 
     @JsonCreator
     public AbandonedStation(
@@ -35,7 +34,6 @@ public class AbandonedStation extends Card {
         this.currentPlayer =null;
         this.playerToInteract = new ArrayList<>();
         this.won =0;
-        this.goodsRemovedFromCargo = new ArrayList<>();
     }
     //asks every player in order of ranking that meets the requirements if they want to spend days to gain the goods
     @Override
@@ -94,7 +92,7 @@ public class AbandonedStation extends Card {
                         System.out.printf(i + " - %s good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue());
                         i.getAndIncrement();
                     });
-                    System.out.print("\nChose for each good where to put it, input 'done' to stop\n");
+                    System.out.print("Chose for each good where to put it, input 'done' to stop,'pick x y' to pick one good from your cargo\n");
                     //exit for loop: the station has been claimed
                 } else if (choice == 0) {
                     System.out.println("\nNo action performed");
@@ -110,35 +108,23 @@ public class AbandonedStation extends Card {
             if(getReward(input)){
                 game.endCardEvent();
             }
-        }else if(won == 2){
-            goodsRemovedFromCargo.add(swapGoods(input));
-        }else if(won == 3){
-            System.out.println("\nGood removed from cargo:\n ");
-            AtomicInteger i = new AtomicInteger(1);
-            goodsRemovedFromCargo.forEach(goods -> {
-                System.out.printf(i + " - %s good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue());
-                i.getAndIncrement();
-            });
-            System.out.println("\nEnter what good of these you want to put in the cargo again(1-"+goodsRemovedFromCargo.size()+", done to stop) and where to put it: \n");
-            won = 4;
-        }else if(won == 4){
-            if(getReward(input)){
-                game.endCardEvent();
-            }
-        }else if(won == 5){
-            goodsRemovedFromCargo.add(swapGoods(input));
+        }else if(won == 2||won == 3){
+            swapGoods(input);
         }
     }
 
     private boolean getReward(String[] input){
         int CoordinatesX;
         int CoordinatesY;
-        if (input[0].equalsIgnoreCase("done")) {
-            input[0] = "0";
+        if (input.length==0) {
+            System.out.println("\nInvalid input format. Please provide integer values.");
+            return false;
         }
-        try {
-            goodsToGet = Integer.parseInt(input[0]);
-        } catch (NumberFormatException e) {
+        if (input[0].equalsIgnoreCase("done")||input[0].equalsIgnoreCase("0")) {
+            System.out.println("\nYou stopped positioning your cargo");
+            return true;
+        }
+        if (input.length<3) {
             System.out.println("\nInvalid input format. Please provide integer values.");
             return false;
         }
@@ -155,62 +141,63 @@ public class AbandonedStation extends Card {
             return false;
         }
         coordinatesToPut = new Coordinates(CoordinatesX, CoordinatesY);
-        if (won==1){
-            if (goodsToGet > 0 && goodsToGet < possibleGoodsGain.size()) {
-                int positioned = currentPlayer.getShipBoard().gainGoods(possibleGoodsGain.get(goodsToGet-1),coordinatesToPut);
-                if(positioned==0){
-                    System.out.printf("\nYou've successfully put the %s good in the %d,%d cargo\n", possibleGoodsGain.get(goodsToGet -1).getColor(), coordinatesToPut.getX(),coordinatesToPut.getY() );
-                    possibleGoodsGain.remove(goodsToGet-1);
-                    return possibleGoodsGain.isEmpty();
-                }else if(positioned==1){
-                    System.out.printf("\nSorry, you can't put the %s good in the %d,%d cargo, it is full, chose what good to remove (input 'no' to select an other good and cargo coordinates)\n",possibleGoodsGain.get(goodsToGet -1).getColor(), coordinatesToPut.getX(),coordinatesToPut.getY() );
-                    AtomicInteger i= new AtomicInteger(1);
-                    currentPlayer.getPlayerShip().getSingleCargoGoods(coordinatesToPut).forEach(goods -> {System.out.printf(i+" - %s good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue());
-                        i.getAndIncrement();});
-                    won=2;
-                    return false;
-                }else if(positioned==-1){
-                    return false;
-                }
-            } else if (goodsToGet == 0) {
-                System.out.println("\nYou stopped positioning your cargo");
-                return true;
-            } else {
-                System.out.println("\nInvalid goodsToGet: " + goodsToGet);
+        if (input[0].equalsIgnoreCase("pick")) {
+            if(currentPlayer.getPlayerShip().getSingleCargoGoods(coordinatesToPut).isEmpty()){
+                System.out.println("\nCargo Hold is empty");
                 return false;
             }
+            AtomicInteger i = new AtomicInteger(1);
+            currentPlayer.getPlayerShip().getSingleCargoGoods(coordinatesToPut).forEach(goods -> {
+                System.out.printf(i + " - %s good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue());
+                i.getAndIncrement();
+            });
+            System.out.println("Input witch good to pick:");
+            won=3;
             return false;
-        }else if(won == 4){
-            if (goodsToGet > 0 && goodsToGet < possibleGoodsGain.size()) {
-                int positioned = currentPlayer.getShipBoard().gainGoods(goodsRemovedFromCargo.get(goodsToGet-1),coordinatesToPut);
-                if(positioned==0){
-                    System.out.printf("\nYou've successfully put the %s good in the %d,%d cargo\n", possibleGoodsGain.get(goodsToGet -1).getColor(), coordinatesToPut.getX(),coordinatesToPut.getY() );
-                    goodsRemovedFromCargo.remove(goodsToGet-1);
-                    return goodsRemovedFromCargo.isEmpty();
-                }else if(positioned==1){
-                    System.out.printf("\nSorry, you can't put the %s good in the %d,%d cargo, it is full, chose what good to remove (input 'no' to select an other good and cargo coordinates)\n",possibleGoodsGain.get(goodsToGet -1).getColor(), coordinatesToPut.getX(),coordinatesToPut.getY() );
-                    AtomicInteger i= new AtomicInteger(1);
-                    currentPlayer.getPlayerShip().getSingleCargoGoods(coordinatesToPut).forEach(goods -> {System.out.printf(i+" - %s good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue());
-                        i.getAndIncrement();});
-                    won=5;
-                    return false;
-                }else if(positioned==-1){
-                    return false;
-                }
-            } else if (goodsToGet == 0) {
-                System.out.println("\nYou stopped positioning your cargo");
-                return true;
-            } else {
-                System.out.println("\nInvalid goodsToGet: " + goodsToGet);
+        }
+        try {
+            goodsToGet = Integer.parseInt(input[0]);
+        } catch (NumberFormatException e) {
+            System.out.println("\nInvalid input format. Please provide integer values.");
+            return false;
+        }
+        if (goodsToGet > 0 && goodsToGet < possibleGoodsGain.size()) {
+            int positioned = currentPlayer.getShipBoard().gainGoods(possibleGoodsGain.get(goodsToGet - 1), coordinatesToPut);
+            if (positioned == 0) {
+                System.out.printf("\nYou've successfully put the %s good in the %d,%d cargo\n\n", possibleGoodsGain.get(goodsToGet - 1).getColor(), coordinatesToPut.getX(), coordinatesToPut.getY());
+                possibleGoodsGain.remove(goodsToGet - 1);
+                AtomicInteger i= new AtomicInteger(1);
+                possibleGoodsGain.forEach(goods -> {
+                    System.out.printf(i + " - %s good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue());
+                    i.getAndIncrement();
+                });
+                System.out.print("Chose for each good where to put it, input 'no' to stop:\n");
+                return false;
+            } else if (positioned == 1) {
+                System.out.printf("\nSorry, you can't put the %s good in the %d,%d cargo, it is full, chose what good to remove (input 'no' to select an other good and cargo coordinates)\n", possibleGoodsGain.get(goodsToGet - 1).getColor(), coordinatesToPut.getX(), coordinatesToPut.getY());
+                AtomicInteger i = new AtomicInteger(1);
+                currentPlayer.getPlayerShip().getSingleCargoGoods(coordinatesToPut).forEach(goods -> {
+                    System.out.printf(i + " - %s good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue());
+                    i.getAndIncrement();
+                });
+                won = 2;
+                return false;
+            } else if (positioned == -1) {
                 return false;
             }
+        } else {
+            System.out.println("\nInvalid goodsToGet: " + goodsToGet);
             return false;
         }
         return false;
     }
 
-    public Goods swapGoods(String[] input){
+    public void swapGoods(String[] input){
         int chose;
+        if (input.length==0) {
+            System.out.println("\nInvalid input format. Please provide integer values.");
+            return ;
+        }
         if (input[0].equalsIgnoreCase("no")) {
             input[0] = "0";
         }
@@ -218,22 +205,39 @@ public class AbandonedStation extends Card {
             chose = Integer.parseInt(input[0]);
         } catch (NumberFormatException e) {
             System.out.println("\nInvalid input format. Please provide integer values.");
-            return null;
+            return ;
         }
         ArrayList<Goods> cargo = currentPlayer.getPlayerShip().getSingleCargoGoods(coordinatesToPut);
-        Goods goodToSwap=null;
+        Goods goodToSwap;
         switch (chose){
             case 0:
                 System.out.println("\nNo action performed, select a good to remove from the cargo");
-                return null;
+                won=1;
+                return;
             case 1:
+                if(cargo.isEmpty()) {
+                    System.out.println("\nInvalid choice: " + chose + " - this cargo container does not exist");
+                    AtomicInteger i = new AtomicInteger(1);
+                    currentPlayer.getPlayerShip().getSingleCargoGoods(coordinatesToPut).forEach(goods -> {
+                        System.out.printf(i + " - %s good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue());
+                        i.getAndIncrement();
+                    });
+                    System.out.print("Chose what good to swap, input 'no' to stop\n");
+                    return;
+                }
                 goodToSwap= cargo.getFirst();
                 currentPlayer.getPlayerShip().removeGood(cargo.getFirst(), coordinatesToPut);
                 break;
             case 2:
                 if(cargo.size()<2) {
                     System.out.println("\nInvalid choice: " + chose + " - this cargo container does not exist");
-                    return null;
+                    AtomicInteger i = new AtomicInteger(1);
+                    currentPlayer.getPlayerShip().getSingleCargoGoods(coordinatesToPut).forEach(goods -> {
+                        System.out.printf(i + " - %s good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue());
+                        i.getAndIncrement();
+                    });
+                    System.out.print("Chose what good to swap, input 'no' to stop\n");
+                    return;
                 }
                 goodToSwap= cargo.get(1);
                 currentPlayer.getPlayerShip().removeGood(cargo.get(1), coordinatesToPut);
@@ -241,22 +245,46 @@ public class AbandonedStation extends Card {
             case 3:
                 if(cargo.size()<3) {
                     System.out.println("\nInvalid choice: " + chose + " - this cargo container does not exist");
-                    return null;
+                    AtomicInteger i = new AtomicInteger(1);
+                    currentPlayer.getPlayerShip().getSingleCargoGoods(coordinatesToPut).forEach(goods -> {
+                        System.out.printf(i + " - %s good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue());
+                        i.getAndIncrement();
+                    });
+                    System.out.print("Chose what good to swap, input 'no' to stop\n");
+                    return;
                 }
                 goodToSwap= cargo.get(2);
                 currentPlayer.getPlayerShip().removeGood(cargo.get(2), coordinatesToPut);
-
                 break;
+            default:
+                System.out.println("\nInvalid choice: " + chose + " - this cargo container does not exist");
+                AtomicInteger i = new AtomicInteger(1);
+                currentPlayer.getPlayerShip().getSingleCargoGoods(coordinatesToPut).forEach(goods -> {
+                    System.out.printf(i + " - %s good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue());
+                    i.getAndIncrement();
+                });
+                System.out.print("Chose what good to swap, input 'no' to stop\n");
+                return;
         }
-        currentPlayer.getPlayerShip().gainGoods(possibleGoodsGain.get(goodsToGet-1), coordinatesToPut);
-        if(won==2){
-            possibleGoodsGain.remove(goodsToGet-1);
-            won=3;
-        } else if(won==5){
-            goodsRemovedFromCargo.remove(goodsToGet-1);
-            won=3;
+        if(won==2) {
+            currentPlayer.getPlayerShip().gainGoods(possibleGoodsGain.get(goodsToGet - 1), coordinatesToPut);
+            possibleGoodsGain.remove(goodsToGet - 1);
         }
-        return goodToSwap;
+        System.out.print("\nCargoHold"+coordinatesToPut+":\n");
+        AtomicInteger i = new AtomicInteger(1);
+        currentPlayer.getPlayerShip().getSingleCargoGoods(coordinatesToPut).forEach(goods -> {
+            System.out.printf(i + " - %s good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue());
+            i.getAndIncrement();
+        });
+        possibleGoodsGain.add(goodToSwap);
+        System.out.print("Planet:\n");
+        AtomicInteger j= new AtomicInteger(1);
+        possibleGoodsGain.forEach(goods -> {
+            System.out.printf(j + " - %s good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue());
+            j.getAndIncrement();
+        });
+        System.out.print("Chose for each good where to put it, input 'done' to stop,'pick  x y' to pick one good from your cargo:\n\n");
+        won=1;
     }
 
     @Override
