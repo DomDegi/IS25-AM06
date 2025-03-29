@@ -1,16 +1,19 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
-import it.polimi.ingsw.galaxytruckerproject.model.cards.MeteorSwarm;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.LargeMeteor;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.SmallMeteor;
-import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Direction;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.LargeMeteor;
+import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.SmallMeteor;
+import it.polimi.ingsw.galaxytruckerproject.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.tiles.Direction;
+import it.polimi.ingsw.galaxytruckerproject.tiles.ShipBoard;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class MeteorSwarmTest {
 

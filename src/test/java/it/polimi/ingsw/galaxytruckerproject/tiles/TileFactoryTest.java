@@ -1,6 +1,5 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
 
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +8,8 @@ import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
-import static it.polimi.ingsw.galaxytruckerproject.model.tiles.TileFactory.loadTilesFromJson;
+import static it.polimi.ingsw.galaxytruckerproject.tiles.TileFactory.loadTilesFromJson;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TileFactoryTest {
     private ArrayList<Tile> tiles;

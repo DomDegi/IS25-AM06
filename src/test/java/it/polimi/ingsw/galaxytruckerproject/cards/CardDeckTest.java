@@ -1,14 +1,13 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
-import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.CardDeck;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.TrialCardDeck;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class CardDeckTest {
 

@@ -1,11 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
 
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Connectors;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Link;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class LinkTest {
     @Test
