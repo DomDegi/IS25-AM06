@@ -4,7 +4,6 @@ import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.Goods;
-import it.polimi.ingsw.galaxytruckerproject.observers.GameController;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.tiles.*;
@@ -162,8 +161,17 @@ class AbandonedStationTest {
         String input="no pippo pasta";
         String[] words = input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+    }
 
-
+    @Test
+    void successfully_execute_card_and_error () {
+        successfully_initialize_card();
+        String input="ni pippo pasta";
+        String[] words = input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="1 1 3";
+        words = input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
     }
 
     @Test
@@ -175,12 +183,111 @@ class AbandonedStationTest {
     }
 
     @Test
-    void successfully_execute_card_accepted_landing_putted () {
+    void successfully_execute_card_accepted_landed_putted () {
         successfully_initialize_card();
         successfully_execute_card_and_accepted();
         String input="1 1 3";
         String[] words = input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+
+    }
+
+    @Test
+    void successfully_execute_card_accepted_landed_error () {
+        successfully_execute_card_and_accepted();
+        String input="10 1 3";
+        String[] words = input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="1 1 3";
+        words = input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="1 1 3";
+        words = input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="1 1 3";
+        words = input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+    }
+
+    @Test
+    void successfully_execute_card_accepted_landed_overloaded () {
+        successfully_execute_card_and_accepted();
+        String input="1 1 3";
+        String[] words = input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="1 1 3";
+        words = input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="1 1 3";
+        words = input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="1 1 3";
+        words = input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+    }
+
+    @Test
+    void managed_full_cargo(){
+        successfully_execute_card_accepted_landed_overloaded ();
+        String input="1";
+        String[] words = input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+
+    }
+
+    @Test
+    void managed_full_cargo_error(){
+        successfully_execute_card_accepted_landed_overloaded ();
+        String input="4";
+        String[] words = input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="1";
+        words = input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+    }
+
+    @Test
+    void successfully_execute_card_accepted_landed_overloaded_managed_error(){
+        managed_full_cargo();
+        String input="1";
+        String[] words = input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+    }
+
+    @Test
+    void successfully_execute_card_accepted_landed_overloaded_managed_resolved(){
+        managed_full_cargo();
+        String input="1 1 3";
+        String[] words = input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+    }
+
+    @Test
+    void successfully_execute_card_accepted_landed_pick(){
+        successfully_execute_card_and_accepted();
+        String input="pick 1 3";
+        String[] words = input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+    }
+
+    @Test
+    void successfully_execute_card_accepted_landed_overloaded_managed_pick(){
+        managed_full_cargo();
+        String input="pick 1 3";
+        String[] words = input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="1";
+        words = input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+    }
+
+    @Test
+    void successfully_execute_card_accepted_landed_overloaded_managed_pick_done(){
+        successfully_execute_card_accepted_landed_overloaded_managed_pick();
+        String input="done";
+        String[] words = input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+
     }
 
 }

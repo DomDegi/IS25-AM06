@@ -497,13 +497,13 @@ public class ShipBoard {
     public int gainGoods(Goods goods, Coordinates coordinates){
         if(cargoHoldCoordinates.contains(coordinates)){
             if(tilesTable[coordinates.getX()][coordinates.getY()].get().addGood(goods))
-                return 1;
+                return 0;
         }
         else{
             System.out.println("THIS TILE IS NOT A CARGO HOLDER, input again");
             return -1;
         }
-        return -1;
+        return 1;
     }
 
     //IT RETURNS THE COORDINATES OF EVERY CARGO_HOLD THAT CONTAINS A TYPE OF GOOD (RED, YELLOW, GREEN, BLU). IF
@@ -512,8 +512,7 @@ public class ShipBoard {
         ArrayList<Coordinates> cargoHoldContainsGood = new ArrayList<>();
         for(Coordinates coordinates : cargoHoldCoordinates){
             for(int i=0; i<tilesTable[coordinates.getX()][coordinates.getY()].get().getCargo().size(); i++){
-                if(tilesTable[coordinates.getX()][coordinates.getY()].get().getCargo().contains(goodColor)){
-                    System.out.println(coordinates.getX()+" "+coordinates.getY());
+                if(tilesTable[coordinates.getX()][coordinates.getY()].get().getCargo().get(i).getColor()==goodColor.getColor()){
                     cargoHoldContainsGood.add(coordinates);
                 }
             }
@@ -681,17 +680,17 @@ public class ShipBoard {
                 goods.add(new Goods(GoodsColor.RED));
             }
         }
-        for(Coordinates coordinates :cargoHoldContainsGood(new Goods(GoodsColor.RED))) {
+        for(Coordinates coordinates :cargoHoldContainsGood(new Goods(GoodsColor.YELLOW))) {
             if (coordinates.equals(coordinatesToFind)) {
                 goods.add(new Goods(GoodsColor.YELLOW));
             }
         }
-        for(Coordinates coordinates :cargoHoldContainsGood(new Goods(GoodsColor.RED))) {
+        for(Coordinates coordinates :cargoHoldContainsGood(new Goods(GoodsColor.GREEN))) {
             if (coordinates.equals(coordinatesToFind)) {
                 goods.add(new Goods(GoodsColor.GREEN));
             }
         }
-        for(Coordinates coordinates :cargoHoldContainsGood(new Goods(GoodsColor.RED))) {
+        for(Coordinates coordinates :cargoHoldContainsGood(new Goods(GoodsColor.BLUE))) {
             if (coordinates.equals(coordinatesToFind)) {
                 goods.add(new Goods(GoodsColor.BLUE));
             }

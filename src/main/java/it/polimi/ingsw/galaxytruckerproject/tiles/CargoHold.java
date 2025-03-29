@@ -32,7 +32,7 @@ public abstract class CargoHold extends Tile{
     }
     public boolean addGood(Goods good){
         if(cargo.size() == totSpaces){
-            System.out.println("CargoHold is full");
+            System.out.println("\nCargoHold is full");
             return false;
         }
         else {
@@ -46,7 +46,7 @@ public abstract class CargoHold extends Tile{
             System.out.println("CargoHold is already empty");
         }
         else
-            cargo.remove(good);
+            cargo.removeIf(g -> g.getColor().equals(good.getColor()));
     }
 
     public void destroy(){
