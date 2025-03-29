@@ -542,7 +542,5 @@ class ShipBoardTest {
         System.out.println(set.toString());
     }
 
-    @Test
-
 }
   

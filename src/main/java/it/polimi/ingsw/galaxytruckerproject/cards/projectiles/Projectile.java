@@ -19,11 +19,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 public abstract class Projectile {
     protected Direction direction;
     protected int diceRoll;
-    protected Optional<Coordinates> coordinatesToDestroy;
+    protected Optional<Coordinates> coordinatesToDestroy = Optional.empty();
 
 
     public Projectile(Direction direction) {
         this.direction = direction;
+
     }
 
     public Direction getDirection() {
@@ -50,7 +51,7 @@ public abstract class Projectile {
                 return;
             }
             diceRoll = diceRoll-4;
-            i=5;
+            i=4;
             Temp= tileTable[i][diceRoll];
             while(Temp.isEmpty() || !Temp.get().fillable())
             {
@@ -75,7 +76,7 @@ public abstract class Projectile {
             while(Temp.isEmpty() || !Temp.get().fillable())
             {
                 i++;
-                if(i>5) {
+                if(i>4) {
                     coordinatesToDestroy=Optional.empty();
                     return;
                 }
