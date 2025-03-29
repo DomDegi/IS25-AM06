@@ -1,8 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
 
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class TileTest {
     Tile tile;

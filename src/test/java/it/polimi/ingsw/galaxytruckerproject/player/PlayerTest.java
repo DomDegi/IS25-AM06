@@ -1,9 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.player;
 
-import it.polimi.ingsw.galaxytruckerproject.Game;
-import it.polimi.ingsw.galaxytruckerproject.GameMode;
-import it.polimi.ingsw.galaxytruckerproject.cards.AbandonedShip;
-import it.polimi.ingsw.galaxytruckerproject.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

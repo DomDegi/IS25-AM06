@@ -1,19 +1,20 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
-import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
-import it.polimi.ingsw.galaxytruckerproject.Game;
-import it.polimi.ingsw.galaxytruckerproject.GameMode;
-import it.polimi.ingsw.galaxytruckerproject.Goods;
-import it.polimi.ingsw.galaxytruckerproject.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
-import it.polimi.ingsw.galaxytruckerproject.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.AbandonedStation;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static it.polimi.ingsw.galaxytruckerproject.GoodsColor.*;
+import static it.polimi.ingsw.galaxytruckerproject.model.GoodsColor.*;
 
 class AbandonedStationTest {
     private AbandonedStation abandonedStation;
@@ -50,8 +51,8 @@ class AbandonedStationTest {
         Tile tile1=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
         shipBoard1.positionTile(Optional.of(tile1), new Coordinates(0,4));
         Tile tile2=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE));
-        tile2.setCrewType(CrewType.HUMAN);
         shipBoard1.positionTile(Optional.of(tile2), new Coordinates(1,1));
+        tile2.setCrewType(CrewType.HUMAN);
         Tile tile3=new AlienLifeSupportsSystem( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),CrewType.BROWN);
         shipBoard1.positionTile(Optional.of(tile3), new Coordinates(1,2));
         Tile tile4=new CargoBlue(3, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
@@ -63,23 +64,23 @@ class AbandonedStationTest {
         Tile tile7=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH));
         shipBoard1.positionTile(Optional.of(tile7), new Coordinates(2,0));
         Tile tile8=new EquipCabin( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE));
-        tile8.setCrewType(CrewType.HUMAN);
         shipBoard1.positionTile(Optional.of(tile8), new Coordinates(2,1));
+        tile8.setCrewType(CrewType.HUMAN);
         Tile tile9=new EquipCabin( new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
-        tile9.setCrewType(CrewType.HUMAN);
         shipBoard1.positionTile(Optional.of(tile9), new Coordinates(2,2));
+        tile9.setCrewType(CrewType.HUMAN);
         Tile tile10=new Shields( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL));
         shipBoard1.positionTile(Optional.of(tile10), new Coordinates(2,4));
         Tile tile12=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL));
-        tile12.setCrewType(CrewType.HUMAN);
         shipBoard1.positionTile(Optional.of(tile12), new Coordinates(2,5));
+        tile12.setCrewType(CrewType.HUMAN);
         Tile tile11=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL));
         shipBoard1.positionTile(Optional.of(tile11), new Coordinates(2,6));
         Tile tile13=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE), 2);
         shipBoard1.positionTile(Optional.of(tile13), new Coordinates(3,0));
         Tile tile14=new EquipCabin( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH));
-        tile14.setCrewType(CrewType.HUMAN);
         shipBoard1.positionTile(Optional.of(tile14), new Coordinates(3,2));
+        tile14.setCrewType(CrewType.HUMAN);
         Tile tile15=new SingleEngine( new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH));
         shipBoard1.positionTile(Optional.of(tile15), new Coordinates(3,3));
         Tile tile16=new CargoRed(1, new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE));
@@ -108,8 +109,8 @@ class AbandonedStationTest {
         Tile tile24=new CargoBlue(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE));
         shipBoard2.positionTile(Optional.of(tile24), new Coordinates(2,2));
         Tile tile25=new EquipCabin( new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE));
-        tile25.setCrewType(CrewType.HUMAN);
         shipBoard2.positionTile(Optional.of(tile25), new Coordinates(2,4));
+        tile25.setCrewType(CrewType.HUMAN);
         Tile tile26=new Shields( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL));
         shipBoard2.positionTile(Optional.of(tile26), new Coordinates(2,5));
         Tile tile27=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),3);

@@ -1,14 +1,15 @@
 package it.polimi.ingsw.galaxytruckerproject.cards.penalties;
 
-import it.polimi.ingsw.galaxytruckerproject.Game;
-import it.polimi.ingsw.galaxytruckerproject.GameMode;
-import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.LargeCannonShot;
-import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.LargeMeteor;
-import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.Projectile;
-import it.polimi.ingsw.galaxytruckerproject.cards.projectiles.SmallMeteor;
-import it.polimi.ingsw.galaxytruckerproject.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
-import it.polimi.ingsw.galaxytruckerproject.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.ProjectilePenalty;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.LargeCannonShot;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.LargeMeteor;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.SmallMeteor;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

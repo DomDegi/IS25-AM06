@@ -1,17 +1,15 @@
 package it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
 
-import it.polimi.ingsw.galaxytruckerproject.Game;
-import it.polimi.ingsw.galaxytruckerproject.GameMode;
-import it.polimi.ingsw.galaxytruckerproject.cards.penalties.ProjectilePenalty;
-import it.polimi.ingsw.galaxytruckerproject.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
-import it.polimi.ingsw.galaxytruckerproject.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Defense;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.SmallMeteor;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -119,7 +117,7 @@ class ProjectileTest {
     @Test
     void testShipoboard1SmallMeteorN(){
         SmallMeteor met= new SmallMeteor(Direction.NORTH);
-        assertTrue(met.throwProjectile(player1,5,gameLvl2)==Defense.PROTECTED);
+        assertTrue(met.throwProjectile(player1,5,gameLvl2)== Defense.PROTECTED);
         System.out.println(shipBoard1.toString());
     }
 
