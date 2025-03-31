@@ -1,10 +1,6 @@
 <<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/GoodsColor.java
 <<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/GoodsColor.java
-<<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/GoodsColor.java
 package it.polimi.ingsw.galaxytruckerproject;
-========
-package it.polimi.ingsw.galaxytruckerproject.model.goods;
->>>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/goods/GoodsColor.java
 ========
 package it.polimi.ingsw.galaxytruckerproject.model.goods;
 >>>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/goods/GoodsColor.java
