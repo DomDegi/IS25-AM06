@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards.penalties;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.Smugglers;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 
@@ -43,6 +44,10 @@ public class GoodsPenalty extends Penalty {
     public String toString() {
 
         return "GoodsPenalty " +  numberOfLostGoods;
+    }
+
+    public int getNumber(){
+        return numberOfLostGoods;
     }
 
     public void printInfo(Player player) {

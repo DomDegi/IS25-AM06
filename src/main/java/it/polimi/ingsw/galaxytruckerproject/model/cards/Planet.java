@@ -2,7 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.polimi.ingsw.galaxytruckerproject.model.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 
 import java.util.ArrayList;
 

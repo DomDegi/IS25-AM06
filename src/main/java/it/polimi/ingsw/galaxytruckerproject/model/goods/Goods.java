@@ -1,5 +1,5 @@
 
-package it.polimi.ingsw.galaxytruckerproject.model;
+package it.polimi.ingsw.galaxytruckerproject.model.goods;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

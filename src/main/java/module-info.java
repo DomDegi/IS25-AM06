@@ -22,4 +22,6 @@ module it.polimi.ingsw.galaxytruckerproject {
     exports it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles;
     exports it.polimi.ingsw.galaxytruckerproject.model;
     opens it.polimi.ingsw.galaxytruckerproject.model to com.fasterxml.jackson.databind;
+    exports it.polimi.ingsw.galaxytruckerproject.model.goods;
+    opens it.polimi.ingsw.galaxytruckerproject.model.goods to com.fasterxml.jackson.databind;
 }

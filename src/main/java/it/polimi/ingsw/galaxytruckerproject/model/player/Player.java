@@ -1,6 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.model.player;
-import it.polimi.ingsw.galaxytruckerproject.model.Goods;
-import it.polimi.ingsw.galaxytruckerproject.model.GoodsColor;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coverage;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;

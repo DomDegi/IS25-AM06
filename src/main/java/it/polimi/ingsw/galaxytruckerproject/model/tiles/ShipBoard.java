@@ -1,8 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 import java.util.*;
 
-import it.polimi.ingsw.galaxytruckerproject.model.Goods;
-import it.polimi.ingsw.galaxytruckerproject.model.GoodsColor;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 
 

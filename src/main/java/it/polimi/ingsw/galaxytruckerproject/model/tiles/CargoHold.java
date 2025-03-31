@@ -1,6 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
-import it.polimi.ingsw.galaxytruckerproject.model.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
