@@ -22,8 +22,8 @@ class ProjectileTest {
     private ShipBoard shipBoard1;
     private Player player2;
     private ShipBoard shipBoard2;
-    private Game gameLvl2 = new Game(GameMode.LEVEL2);
-    private Game gameTrial = new Game(GameMode.TRIAL);
+    private Game gameLvl2 = new Game(GameMode.LEVEL2, 4);
+    private Game gameTrial = new Game(GameMode.TRIAL, 4);
 
     @BeforeEach
     void setUp() {

@@ -1,0 +1,150 @@
+package it.polimi.ingsw.galaxytruckerproject.view;
+
+import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
+
+public interface ViewInterface {
+
+
+    /**
+     * asks the player to set a nickname
+     * @throws IOException
+     */
+    void askNickname () throws IOException;
+
+
+    /**
+     * asks player to set a color for the starting cabin
+     * @throws IOException
+     */
+    void askColor ();
+
+    /**
+     * show login response from server
+     * @param success
+     * @param connected
+     */
+    void showLoginResponse(boolean success, boolean connected);
+
+    /**
+     * asks the player to decide if he wants to join a game in startig phase
+     * or if player prefers to create a new game
+     */
+    void asksJoinOrCreate();
+
+    /**
+     * Shows on the view the list of the games that are in starting phase.
+     * Also asks player calls for the function asksJoinOrCreate().
+     */
+    void showJoinableGamesList(Map<String, GameController> joinableGames);
+
+    /**
+     * asks player to set a player count for the created game
+     * @throws IOException
+     */
+    void askPlayerCount () throws IOException;
+
+    /**
+     * asks the server to create a new game with the name chosen
+     * @throws IOException
+     */
+    void createGame() throws IOException;
+
+    /**
+     * asks to join the game with the inputted name
+     * @throws IOException
+     */
+    void joinGame() throws IOException;
+
+    /**
+     * shows on the view a generic message sent by the server
+     * @param genericMessage the message to be shown
+     */
+    void showGenericMessage (String genericMessage);
+
+    /**
+     * shows on the view a error message sent by the server
+     * @param errorMessage the message to be shown.
+     */
+    void showErrorMessage (String errorMessage);
+
+
+    /**
+     * shows on the view the list of players in the game with their status (in flight or landed)
+     * @param players in game players
+     */
+    void showInGamePlayers (ArrayList<Player> players);
+
+    /**
+     * asks for the inputted player's shipboard
+     */
+    void asksPlayersInfo ();
+
+    void showShipsErrors ();
+
+    /**
+     * shows the chosen players shipboard
+     * @param player
+     * @param shipBoard
+     */
+    void showPlayersBoard(String player, ShipBoard shipBoard);
+
+    /**
+     * show the drawnTile to the player
+     * @param drawnTile
+     */
+    void showDrawnTile (Tile drawnTile);
+
+    /**
+     * shows the player the tiles that got turned from player refusing them
+     * @param turnedTiles the current array in the model
+     */
+    void showTurnedTiles (ArrayList<Tile> turnedTiles);
+
+    /**
+     * shows the tiles that the player booked on their shipboard
+     * @param bookedTiles the booked tiles
+     */
+    void showBookedTiles (ArrayList<Tile> bookedTiles);
+
+    /**
+     * prints on the view the cards that are on the shipboard to be seen during
+     * ship building phase
+     * @param inGameCards the cards returned by the model
+     */
+    void showInGameCards (ArrayList<Card> inGameCards);
+
+    /**
+     * asks the player to confirm he wants to roll the dices
+     */
+    void asksToRollTheDices();
+
+    /**
+     * asks the player to choose a starting position from 1 to playerCount
+     */
+    void asksToChooseStartingPosition ();
+
+    /**
+     * asks the player to input a serie of coordinates
+     */
+    void asksToInputCoordinates ();
+
+    void asksToTurnTheHourglass ();
+
+    /**
+     * at the end of the game shows every players score on the view
+     */
+    void showScores();
+
+    /**
+     * asks the player to choose the mode of the game to be created
+     */
+    void asksChosenMode ();
+}

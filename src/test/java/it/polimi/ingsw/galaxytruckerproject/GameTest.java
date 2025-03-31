@@ -18,7 +18,7 @@ class GameTest {
 
     @BeforeEach
     void setUp() {
-        game = new Game(GameMode.LEVEL2);
+        game = new Game(GameMode.LEVEL2, 4);
         player1 = new Player("Andrea", PlayersColor.RED);
         player2 = new Player("Giacomo", PlayersColor.BLUE);
         player3 = new Player("Silvio", PlayersColor.GREEN);

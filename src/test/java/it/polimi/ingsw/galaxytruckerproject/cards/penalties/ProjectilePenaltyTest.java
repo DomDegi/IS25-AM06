@@ -28,8 +28,8 @@ class ProjectilePenaltyTest {
     private ArrayList<Projectile> listOfMeteorsFull;
     private ArrayList<Projectile> listOfLargeCannonShot1;
     private ShipBoard shipBoard;
-    private Game gameLvl2 = new Game(GameMode.LEVEL2);
-    private Game gameTrial = new Game(GameMode.TRIAL);
+    private Game gameLvl2 = new Game(GameMode.LEVEL2, 4);
+    private Game gameTrial = new Game(GameMode.TRIAL, 3);
 
     @BeforeEach
     void setUp() {

@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/player/Player.java
 package it.polimi.ingsw.galaxytruckerproject.player;
 import it.polimi.ingsw.galaxytruckerproject.Goods;
 import it.polimi.ingsw.galaxytruckerproject.GoodsColor;
@@ -5,6 +6,15 @@ import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coverage;
 import it.polimi.ingsw.galaxytruckerproject.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Tile;
+=======
+package it.polimi.ingsw.galaxytruckerproject.model.player;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coverage;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+>>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/player/Player.java
 
 import java.util.ArrayList;
 

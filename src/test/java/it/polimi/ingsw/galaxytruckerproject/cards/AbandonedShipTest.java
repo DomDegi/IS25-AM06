@@ -25,7 +25,7 @@ class AbandonedShipTest {
 
     @BeforeEach
     void setUp() {
-        game = new Game(GameMode.LEVEL2);
+        game = new Game(GameMode.LEVEL2, 4);
         flightBoard = game.getFlightBoard();
         player2 = new Player("riccardo", PlayersColor.BLUE);
         player3 = new Player("francesco", PlayersColor.YELLOW);

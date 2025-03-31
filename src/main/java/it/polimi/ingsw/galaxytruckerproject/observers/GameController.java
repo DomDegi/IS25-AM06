@@ -1,5 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.observers;
 
+<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/observers/GameController.java
 import it.polimi.ingsw.galaxytruckerproject.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.GameState;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
@@ -7,47 +8,78 @@ import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Tile;
+=======
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
+import it.polimi.ingsw.galaxytruckerproject.model.GameState;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.network.message.*;
+import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
+>>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/controller/GameController.java
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/observers/GameController.java
 import static it.polimi.ingsw.galaxytruckerproject.GameMode.*;
 
 
 public class GameController implements GameObserver {
+=======
+import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.*;
+import static it.polimi.ingsw.galaxytruckerproject.network.message.MessageType.*;
+
+
+public class GameController {
+    private final String gameName;
+>>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/controller/GameController.java
     private final GameInterface game;
     private final ArrayList<String> playersWithErrors;
-    private final Map<String, String> playerInputs;
+    private final Map<String, Message> playerInputs;
+    private final Map<String, ViewInterface> playersViewMap;
+    private final Map<String, Player> activePlayers;
+    private final Map<String, Player> disconnectedPlayers;
 
-    public GameController(GameInterface game) {
+    public GameController(GameInterface game, String gameName) {
+        this.gameName = gameName;
         this.game = game;
         playerInputs = new HashMap<>();
         this.playersWithErrors = new ArrayList<>();
+        this.playersViewMap = new HashMap<>();
+        this.activePlayers = new HashMap<>();
+        this.disconnectedPlayers = new HashMap<>();
     }
 
+<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/observers/GameController.java
     @Override
     public void notifyChanges(GameState newState) {
     }
 
     public void processPlayerInput(String playerName, String input) {
+=======
+    public void processPlayerInput(Message message) {
+>>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/controller/GameController.java
         switch (game.getGameState()) {
             case GameState.START_GAME: {
-                playerSelection(playerName, input);
+                playerAddition(message);
             }
             case GameState.SHIPS_CREATION: {
                 if (game.getHourglassTurns() > 0){
-                    shipsCreation(playerName, input);
+                    shipsCreation(message);
                 }
                 else
-                    startGame(playerName, input);
+                    startGame(message);
             }
             case GameState.VERIFY_SHIP_CORRECTNESS: {
-                if (input.equalsIgnoreCase("shipboard")) {
-                    checkShipBoard(playerName, input.toLowerCase().split(" "));
-                } else {
-                    shipErrorManagement(playerName, input);
+                if (message.getMessageType().equals(SHOW_PLAYERS_SHIPBOARD_REQUEST)) {
+                    checkShipBoard(this.getViewFromNickname(message.getNickname()) ,message);
+                } else if  (message.getMessageType().equals(SEND_COORDINATES_RESPONSE)) {
+                    shipErrorManagement(message);
                 }
                 if(playersWithErrors.isEmpty()){
                     verifyShipCorrectness();
@@ -55,10 +87,10 @@ public class GameController implements GameObserver {
 
             }
             case GameState.DRAW_CARD: {
-                drawCard(playerName, input);
+                drawCard(message);
             }
             case GameState.CARD_EVENT: {
-                cardEvent(playerName, input);
+                cardEvent(message);
             }
             case GameState.CONCLUDE_GAME: {
                 concludeGame();
@@ -66,165 +98,259 @@ public class GameController implements GameObserver {
         }
     }
 
-    //first player that enters the game inputs number of players to start the game with (2 to 4)
-    //every player inputs a color as they enter (input ex: playersColor int (only if first)
-    public void playerSelection(String playerName, String input) {
-        String[] words = input.split(" ");
-        if (game.getPlayerCount() == 0 && words.length >= 2) {
-            try {
-                int playerCount =  Integer.parseInt(words[1]);
-                game.setPlayerCount(playerCount);
+    /**
+     * Adds player to a game that's still in lobby phase or if player is reconnecting
+     * it calls for reconnectPlayer method
+     * @param playerName player that just joined the game but still isn't istanced
+     * @param view player's view
+     * @param reconnecting true if player used to be in the lobby
+     */
+    public void addToPlayersViewMap(String playerName, ViewInterface view, boolean reconnecting) {
+        if (reconnecting) {
+            reconnectPlayer(playerName, view);
+        }
+        else {
+            if (this.getGameState().equals(GameState.START_GAME)){
+                playersViewMap.put(playerName, view);
+                view.askColor();
             }
-            catch (NumberFormatException e) {
-                System.out.println("First player to input didn't pass an int to specify player count for the game");
+            else{
+                view.showGenericMessage("Can't join a game in progress");
             }
         }
-        try {
-            PlayersColor color = PlayersColor.valueOf(words[0]);
-            game.addPlayer(playerName, color);
+    }
 
-            //first one is the number of player in the list, the other is the number of player to start the game with
+    /**
+     * only reconnects player if either it's still verify_ship phase or they have already
+     * corrected their ship and chosen a starting position. If they disconnected after their
+     * phase just puts the player in LAST position FOR NOW!!!!!!
+     * @param playerName reconnecting player
+     * @param view their view
+     */
+    public void reconnectPlayer(String playerName, ViewInterface view) {
+        if (disconnectedPlayers.containsKey(playerName)) {
+            //If player disconnected during ships verification without fixing the ship
+            if (playersWithErrors.contains(playerName)) {
+                if (!this.getGameState().equals(GameState.VERIFY_SHIP_CORRECTNESS)) {
+                    view.showErrorMessage("Can't connect because didn't finish ship creation");
+                }
+                else{
+                    view.asksToInputCoordinates();
+                }
+            }
+            // if player disconnected during ships verification without choosing a starting position
+            if (disconnectedPlayers.get(playerName).getPlayerPosition() == 0 &&
+                    !this.getGameState().equals(GameState.START_GAME) ||
+                    !this.getGameState().equals(GameState.SHIPS_CREATION)) {
+
+                if (this.getGameState() != GameState.VERIFY_SHIP_CORRECTNESS) {
+                    view.showErrorMessage("Can't reconnect because player didn't complete starting position choosing");
+                }
+                else {
+                    view.asksToChooseStartingPosition();
+                }
+            }
+            playersViewMap.put(playerName, view);
+            activePlayers.put (playerName, disconnectedPlayers.remove(playerName));
+            game.getFlightBoard().setPlayerToLast(activePlayers.get(playerName));
+        }
+        else {
+            view.showErrorMessage("player was never connected to this game");
+        }
+    }
+
+    /**
+     * adds player to the gameModel after they enter a valid color for their starting cabin
+     * @param message a message that has to be of type Set_color_request so that it contains
+     *                both nickname and color String.
+     * If players number reaches the initial setted count, starts game.
+     */
+    public void playerAddition(Message message) {
+        if (message.getMessageType() == SET_COLOR_REQUEST) {
+            SetColorRequest messageReceived = (SetColorRequest) message;
+            String playerName = message.getNickname();
+            String color = messageReceived.getColor();
+            PlayersColor playersColor = PlayersColor.valueOf(color);
+            if (this.getGameState() == GameState.START_GAME && playersViewMap.containsKey(playerName)) {
+                //if playerCount is still to be reached, add player to the game model
+                if (game.getNumberOfPlayers() < game.getPlayerCount()) {
+                    game.addPlayer(playerName, playersColor);
+                    activePlayers.put(playerName, game.identifyPlayerByName(playerName));
+                }
+                else { //player count already reached
+                    playersViewMap.get(playerName).showErrorMessage("Lobby is already full");
+                }
+                //if game is already out of lobby phase
+            } else if (playersViewMap.containsKey(playerName)) {
+                playersViewMap.get(playerName).showErrorMessage("Can't join a game that's already started");
+            } // if the count has been reached starts the game
             if (game.getNumberOfPlayers() == game.getPlayerCount()) {
+                this.startGame(new GenericMessage("whatever"));
                 game.startGame();
             }
         }
-        catch (IllegalArgumentException e) {
-            System.out.println("Not a valid color for the game");
+    }
+
+    public ViewInterface removePlayer (String playerName) {
+        if (activePlayers.containsKey(playerName)) {
+            disconnectedPlayers.put(playerName, activePlayers.get(playerName));
+            activePlayers.remove(playerName);
+        }
+        return playersViewMap.remove(playerName);
+    }
+
+    /**
+     * checks if the color chosen by the player is already taken or not
+     * @param playerName player that asked the check
+     * @param view player's view
+     * @param color chosen color
+     * @return true if color is available, false otherwise
+     */
+    public boolean checkColorAvailable (String playerName, ViewInterface view, String color) {
+        if (! playersViewMap.containsKey(playerName)) {
+            view.showErrorMessage("can't choose a color without logging in");
+            return false;
+        }
+        try {
+            PlayersColor chosenColor = PlayersColor.valueOf(color);
+            for (Player player : activePlayers.values()) {
+                if (player.getPlayerColor().equals(chosenColor)) {
+                    view.showErrorMessage("color for starting cabin is already taken");
+                    return false;
+                }
+            }
+        } catch (IllegalArgumentException e) {
+            view.showErrorMessage("invalid color for the game");
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Starts the game as soon as one of the players sends a turn hourglass request message
+     * @param message received message that can start the game or makes the controller ask for
+     *                the turn hourglass request message
+     */
+    public synchronized void startGame(Message message) {
+        if (message.getMessageType() == TURN_HOURGLASS_REQUEST) {
+            turnHourglass(message.getNickname());
+        }
+        else {
+            playersViewMap.values().forEach(ViewInterface::asksToTurnTheHourglass);
         }
     }
 
-    //first input has to be hourglass
-    public synchronized void startGame(String playerName, String input) {
-
-        String[] words = input.split(" ");
-
-        if (game.getHourglassTurns() == 0 && !words[0].equals("hourglass")) {
-            System.out.println("To begin ship creation flip the hourglass\n");
-        }
-        else if (words[0].equals("hourglass")) {
-            turnHourglass(playerName);
-        }
-    }
-
-    public void shipsCreation(String playerName, String input) {
-        String[] words = input.split(" ");
-        switch (words[0].toLowerCase()) {
+    public void shipsCreation(Message message) {
+        String playerName = message.getNickname();
+        ViewInterface playersView = this.playersViewMap.get(playerName);
+        switch (message.getMessageType()) {
 
             //draws either from stack or from turned depending on words[1], if turned words[3] is the index of turnedTiles
-            case "draw":
-                drawTile(playerName, words);
+            case DRAW_TILE_REQUEST:
+                drawTile((DrawTileRequest) message);
                 break;
 
             //prints the turned tiles ArrayList
-            case "turned":
-                game.printTurnedTiles();
+            case SHOW_TURNED_TILES_REQUEST:
+                playersView.showTurnedTiles(game.getTurnedTiles());
                 break;
 
             //prints the player's currently booked tiles
-            case "booked":
-                game.printBookedTiles(playerName);
+            case SHOW_BOOKED_TILES_REQUEST:
+                playersView.showBookedTiles
+                        (activePlayers
+                        .get(playerName).
+                        getPlayerShip().
+                        getBookedTiles());
                 break;
 
             //player refuses currently drawnTile
-            case "refuse":
+            case REFUSE_MESSAGE:
                 refuseTile(playerName);
                 break;
 
             //player sets currently drawnTile at coordinates passed with input
-            case "set":
-                setTile(playerName, words);
+            case SEND_COORDINATES_RESPONSE:
+                SendCoordinatesResponse coordinates = (SendCoordinatesResponse) message;
+                setTile(playersView, coordinates);
                 break;
 
             //player books currently drawnTile
-            case "book":
-                bookTile(playerName);
+            case BOOK_TILE_REQUEST:
+                bookTile(playersView, message);
                 break;
 
             //shows deck of 3 cards 1, 2, 3. Can only be called when no card is drawn.
-            case "look":
-                lookGameCards(playerName, words);
+            case SHOW_CARDS_REQUEST:
+                lookGameCards(playersView, message);
                 break;
 
             //turns the hourglass, if hourglass at last possible turn, the player last input has to be completed
-            case "hourglass":
+            case TURN_HOURGLASS_REQUEST:
                 turnHourglass(playerName);
                 break;
 
             //all other player inputs get refused afterward except for turnHourglass
-            case "completed":
+            case ACCEPT_MESSAGE:
                 completed(playerName);
                 break;
 
             //looks at other player ship, if no second word, looks at yours
-            case "shipboard":
-                checkShipBoard(playerName, words);
+            case SHOW_PLAYERS_SHIPBOARD_REQUEST:
+                checkShipBoard(playersView, message);
                 break;
 
             //if no case is met, ignore
             default:
-                if (Objects.equals(playerInputs.get(playerName), "completed")){
-                    addToFlightBoardProcess(playerName,input);
+                if (playersView != null) {
+                    playersView.showGenericMessage("input was incorrect");
                 }
                 break;
         }
     }
 
-    public  void drawTile(String playerName, String[] input) {
-        //Could add that if we are looking at cards we can't call draw, but we can also make so that the input of look is hidden when calling other methods
-        if (Objects.equals(playerInputs.get(playerName), "draw") || Objects.equals(playerInputs.get(playerName), "completed")) {
+    public  void drawTile(DrawTileRequest message) {
+
+        String playerName = message.getNickname();
+        MessageType drawFromWhere = message.DrawFromWhere();
+        ViewInterface playersView = this.playersViewMap.get(playerName);
+
+        // Can't draw if the shipboard is completed or there is already a tile to place/book/refuse
+        if (Objects.equals(playerInputs.get(playerName).getMessageType(), DRAW_TILE_REQUEST) ||
+                Objects.equals(playerInputs.get(playerName).getMessageType(), ACCEPT_MESSAGE)) {
             return;
         }
-        switch (input[1].toLowerCase()) {
-            case "stack": {
+        switch (drawFromWhere) {
+            case DRAW_TILE_FROM_STACK_REQUEST: {
                 Tile drawnTile = game.drawTile(playerName);
                 if (drawnTile == null) {
-                    System.out.println("tile stack empty or playerNotFound");
+                    playersView.showErrorMessage("drawn tile is null: stack is empty");
                     return;
                 }
-                System.out.println("Your drawn tile is:" + drawnTile);
-                playerInputs.put(playerName, "draw stack");
+                playersView.showDrawnTile(drawnTile);
+                playerInputs.put(playerName, message);
                 break;
             }
-            case "turned": {
-                //If there is no third word for the input, do nothing
-                if (input.length < 3) {
-                    System.out.println("too few inputs: index turned tiles to pick is needed");
+            case DRAW_TILE_FROM_TURNED_REQUEST: {
+                Tile drawnTile = game.drawTurnedTile(playerName, message.getTileIndex());
+                if (drawnTile == null) {
+                    playersView.showErrorMessage("drawn tile is null: turned tile is empty or index out of bounds");
                     return;
                 }
-                //If the third word can't be parsed to an int, do nothing
-                try {
-                    int index = Integer.parseInt(input[2]);
-                    Tile drawnTile = game.drawTurnedTile(playerName, index);
-                    if (drawnTile == null) {
-                        System.out.println("no turned tiles or the index is  out of bounds");
-                        return;
-                    }
-                    System.out.println("Your drawn tile is:" + drawnTile);
-                    playerInputs.put(playerName, "draw turned " + input[2]);
-                } catch (NumberFormatException e) {
-                    System.out.println("Didn't input a numerical index for the turned tiles to pick");
-                }
+                playersView.showDrawnTile(drawnTile);
+                playerInputs.put(playerName, message);
                 break;
             }
-            case "booked" : {
-                if (input.length < 3) {
-                    System.out.println("too few inputs: index booked tiles to pick is needed");
-                    return;
-                }
-                try {
-                    int index = Integer.parseInt(input[2]);
-                    Tile drawnTile = game.drawBookedTile (playerName, index);
+            case DRAW_TILE_FROM_BOOKED_REQUEST : {
+                Tile drawnTile = game.drawBookedTile (playerName, message.getTileIndex());
 
-                    //the index has to be either 0 or 1
-                    if (drawnTile == null) {
-                        System.out.println("no booked tiles or the index is  out of bounds");
-                        return;
-                    }
-                    System.out.println("Your drawn tile is:" + drawnTile);
-                    playerInputs.put(playerName, "draw booked " + input[2]);
-                } catch (RuntimeException e) {
-                    System.out.println("Didn't input a numerical index for the booked tile to pick");
+                //the index has to be either 0 or 1
+                if (drawnTile == null) {
+                    playersView.showErrorMessage("drawn tile is null: booked tile is empty or index out of bounds");
+                    return;
                 }
+                playersView.showDrawnTile(drawnTile);
+                playerInputs.put(playerName, message);
             }
         }
     }
@@ -233,33 +359,31 @@ public class GameController implements GameObserver {
     public void verifyShipCorrectness() {
         for (Player player : game.getListOfPlayers()) {
             boolean correctness = player.getShipBoard().verifyCorrectness();
+            ViewInterface playersView = this.getViewFromNickname(player.getPlayerName());
             if (correctness){
-                System.out.println("Ship construction is correct for player: " + player.getPlayerName());
+                playersView.showGenericMessage("player's ship is correct");
             } else {
-                System.out.println("Ship construction has errors for player: " + player.getPlayerName()+"Input tiles coordinates to destroy");
+                playersView.showGenericMessage("player's ship has errors: input coordinates to remove mistakes");
+                playersView.asksToInputCoordinates();
                 playersWithErrors.add(player.getPlayerName());
             }
         }
     }
-    public void shipErrorManagement(String playerName, String input){
+    public void shipErrorManagement(Message message){
+        String playerName =  message.getNickname();
         Player player = game.identifyPlayerByName(playerName);
+        ViewInterface playersView = this.getViewFromNickname(playerName);
+        SendCoordinatesResponse coordinates = (SendCoordinatesResponse) message;
+
         if(player==null){
             return;
         }
         if(!playersWithErrors.contains(playerName)){
-            System.out.println("Input refused for player: " + player.getPlayerName());
+            playersView.showErrorMessage("player's ship is already correct");
             return;
         }
-        String[] words = input.split(" ");
-        try {
-            int x = Integer.parseInt(words[0]);
-            int y = Integer.parseInt(words[1]);
-            Coordinates coordinatesToDestroy = new Coordinates(x, y);
-            player.getShipBoard().destroyTile(coordinatesToDestroy);
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please input valid numerical coordinates.");
-            return;
-        }
+        player.getShipBoard().destroyTile(coordinates.getFirst());
+
         boolean correctness = player.getShipBoard().verifyCorrectness();
         if (correctness) {
             if(game.getMode()== TRIAL) {
@@ -268,89 +392,76 @@ public class GameController implements GameObserver {
             playersWithErrors.remove(playerName);
             return;
         }
-        System.out.println("Ship construction has errors for player: " + player.getPlayerName() +"Input tiles coordinates to destroy");
+
+        playersView.showGenericMessage("player's ship is still incorrect: input coordinates to remove tile from");
+        playersView.asksToInputCoordinates();
     }
 
     public void refuseTile(String playerName) {
-        if (Objects.equals(playerInputs.get(playerName), "draw")) {
+        if (Objects.equals(playerInputs.get(playerName).getMessageType(), DRAW_TILE_REQUEST)) {
             game.refuseTile(playerName);
+            playerInputs.put(playerName, new RefuseMessage(playerName));
+        }
+        else {
+            ViewInterface playersView = this.getViewFromNickname(playerName);
+            playersView.showErrorMessage("can't refuse tile when still have to draw one");
         }
     }
 
-    public void lookGameCards(String playerName, String[] input) {
-        if (Objects.equals(playerInputs.get(playerName), "draw") && Objects.equals(playerInputs.get(playerName), "concluded")) {
-            System.out.println("Can't look at cards while you have drawn a tile or your ship is concluded");
+    public void lookGameCards(ViewInterface playersView, Message message) {
+        String playerName = message.getNickname();
+        ShowCardsRequest messageReceived = (ShowCardsRequest) message;
+        if (Objects.equals(playerInputs.get(playerName).getMessageType(), DRAW_TILE_REQUEST)
+                && Objects.equals(playerInputs.get(playerName).getMessageType(), ACCEPT_MESSAGE )) {
+            playersView.showErrorMessage("can't look at the event cards while you still have your drawn tile or you completed your ship");
             return;
         }
-        if (input.length < 2) {
-            System.out.println("no input to choose cards' group to look at");
-            return;
-        }
-        switch (input[1]) {
-            case "1":
-                game.lookInGameCards1(playerName);
-                playerInputs.put(playerName, "look 1");
-                break;
-            case "2":
-                game.lookInGameCards2(playerName);
-                playerInputs.put(playerName, "look 2");
-                break;
-            case "3":
-                game.lookInGameCards3(playerName);
-                playerInputs.put(playerName, "look 3");
-                break;
-            default:
-                System.out.println("invalid input\n");
-                break;
-        }
+        playersView.showInGameCards(game.getInGameCards(messageReceived.getCardsToLookAt()));
     }
 
     //set drawn tile on the player's shipboard
-    public void setTile (String playerName, String[] input) {
-        if (Objects.equals(playerInputs.get(playerName), "draw")) {
-            try {
-                int x = Integer.parseInt(input[1]);
-                int y = Integer.parseInt(input[2]);
-                Coordinates coordinates = new Coordinates(x, y);
-                if (!game.playerSetTile(playerName, coordinates)) {
-                    System.out.println("space at those coordinates is either out of bounds or already fixed\n");
-                    return;
-                }
-                playerInputs.put(playerName, "set " + input[1] + " " + input[2]);
-            } catch  (NumberFormatException e) {
-                System.out.println("invalid input\n");
+    public void setTile (ViewInterface playersView, SendCoordinatesResponse message) {
+        String playerName = message.getNickname();
+        if (Objects.equals(playerInputs.get(playerName).getMessageType(), DRAW_TILE_REQUEST)) {
+            if (!game.playerSetTile(playerName, message.getFirst())) {
+                playersView.showErrorMessage("coordinates input weren't valid");
+                return;
             }
+            playerInputs.put(playerName, message);
         }
     }
 
     //set currently drawn tile as booked for the player
-    public void bookTile(String playerName) {
-        if (Objects.equals(playerInputs.get(playerName), "draw")) {
-            if (!game.playerBookTile (playerName)) {
-                System.out.println("booked tile spaces are full\n");
+    public void bookTile(ViewInterface playersView, Message message) {
+        if (Objects.equals(playerInputs.get(message.getNickname()).getMessageType(), DRAW_TILE_REQUEST)) {
+            if (!game.playerBookTile (message.getNickname())) {
+                playersView.showErrorMessage("either your booked tiles are full or your input was out of bounds");
+                return;
             }
-            playerInputs.put(playerName, "book");
+            playerInputs.put(message.getNickname(), message);
         }
     }
 
-    public void checkShipBoard(String playerName, String[] input) {
-        ShipBoard shipBoardToCheck = game.getPlayerShipBoard(input[1]);
+    public void checkShipBoard(ViewInterface playersView, Message message) {
+        ShowPlayersShipboardRequest messageReceived = (ShowPlayersShipboardRequest) message;
+        ShipBoard shipBoardToCheck = game.getPlayerShipBoard(messageReceived.getPlayerName());
         if (shipBoardToCheck == null) {
-            System.out.println("no player with that name to check");
+            playersView.showErrorMessage("there is no player with the name " + messageReceived.getNickname());
             return;
         }
-        System.out.println(shipBoardToCheck);
+        playersView.showPlayersBoard(messageReceived.getPlayerName(), shipBoardToCheck);
     }
 
     //now no input except hourglass and checkShipboard work and checks if the other player have completed
     //if yes ends shipboard creation phase
     public void completed (String playerName) {
-        if (Objects.equals(playerInputs.get(playerName), "draw")) {
+        if (Objects.equals(playerInputs.get(playerName).getMessageType(), DRAW_TILE_REQUEST)) {
             refuseTile(playerName);
         }
-        playerInputs.put(playerName, "completed");
-        for (Map.Entry<String, String> entry : playerInputs.entrySet()) {
-            if (!entry.getKey().equals("completed")) {
+        AcceptMessage acceptMessage = new AcceptMessage(playerName);
+        playerInputs.put(playerName, acceptMessage);
+        for (String string: playerInputs.keySet()) {
+            if (!Objects.equals(playerInputs.get(string).getMessageType(), ACCEPT_MESSAGE)) {
                 return;
             }
         }
@@ -374,7 +485,7 @@ public class GameController implements GameObserver {
     }
 
     public void addToFlightBoardProcess(String playerName,String input){
-        if(Objects.equals(playerInputs.get(playerName), "completed"))
+        if(Objects.equals(playerInputs.get(playerName).getMessageType(), ACCEPT_MESSAGE))
             return;
         try {
             int parsedInput = Integer.parseInt(input);
@@ -386,25 +497,27 @@ public class GameController implements GameObserver {
     //Turns hourglass isn't on and adds 1 to the turn count,
     // if it's already been turned twice, player that turns it needs to have completed his ship
     public void turnHourglass(String playerName) {
+        ViewInterface playersView = this.getViewFromNickname(playerName);
+
         if (!game.getHourglassState()) {
-            System.out.println("hourglass is already going\n");
+            playersView.showErrorMessage("hourglass is already trickling");
             return;
         }
         switch (game.getHourglassTurns()) {
             case 0:
-                System.out.println(playerName + " starts the game: GO!\n");
+                broadcastMessage(playerName + " starts the game: GO!");
                 game.startTimer();
                 break;
             case 1:
-                System.out.println(playerName + " has flipped the hourglass\n");
+                broadcastMessage(playerName + " has flipped the hourglass");
                 game.startTimer();
                 break;
             case 2:
-                if (playerInputs.get(playerName).equals("completed")) {
+                if (playerInputs.get(playerName).getMessageType().equals(ACCEPT_MESSAGE)) {
                     game.startTimer();
                 }
                 else {
-                    System.out.println("can't make the last hourglass turn when your shipboard isn't complete\n");
+                    playersView.showErrorMessage("Can't make the last hourglass turn when your shipBoard isn't complete");
                 }
                 break;
             default:
@@ -416,40 +529,37 @@ public class GameController implements GameObserver {
     //Every player can check others shipboard
     //Every player can do an early landing
     //When cards are over go to CONCLUDE_GAME state
-    public void drawCard (String playerName, String input){
-        if (input == null) {
-            return;
-        }
+    public void drawCard (Message message){
+        String playerName = message.getNickname();
+        ViewInterface playersView = this.getViewFromNickname(playerName);
+
         if (game.getCardsLeft() == 0) {
             game.endCardPhase();
         }
 
-        String[] words =  input.split(" ");
-
-        switch(words[0].toLowerCase()) {
-            case "draw":
+        switch(message.getMessageType()) {
+            case DRAW_CARD_REQUEST:
                 if (game.identifyPlayerByName(playerName).equals(game.getListOfPlayers().getFirst())){
                 game.drawCard();
                 }
                 else {
-                    System.out.println("The first ranked player has to draw\n");
+                    broadcastMessage("only the first ranked player can draw");
                 }
                 break;
-            case "shipboard":
-                checkShipBoard(playerName, words);
+            case SHOW_PLAYERS_SHIPBOARD_REQUEST:
+                checkShipBoard(playersView, message);
                 break;
-            case "land":
+            case EARLY_LANDING_REQUEST:
                 game.getFlightBoard().earlyLanding(game.identifyPlayerByName(playerName));
-                System.out.println(playerName + " made an early landing\n");
+                broadcastMessage(playerName + " made an early landing\n");
                 break;
             default: break;
         }
     }
 
     //Gets the drawnCard from main and sends the input to each Card, depending on return value gives errors
-    public void cardEvent(String playerName, String input) {
-        String[] words =  input.split(" ");
-        game.cardEvent(playerName, words);
+    public void cardEvent(Message message) {
+        game.cardEvent(message);
     }
 
 
@@ -534,5 +644,51 @@ public class GameController implements GameObserver {
             Player player = game.getListOfAllPlayer().get(i);
             System.out.println((i + 1) + ". " + player.getPlayerName() + " - Credits: " + player.getCredit());
         }
+    }
+
+    public GameInterface getGame() {
+        return game;
+    }
+
+    public GameState getGameState() {
+        return game.getGameState();
+    }
+
+    public Map<String, ViewInterface> getPlayersViewMap() {
+        return playersViewMap;
+    }
+
+    public Map<String, Player> getPlayers() {
+        return activePlayers;
+    }
+
+    public String getGameName() {
+        return gameName;
+    }
+
+    /**
+     * @return true if there are no more active players
+     */
+    public boolean isGameEmpty() {
+        return (activePlayers.isEmpty());
+    }
+
+    /**
+     * sends a string message to every player's view
+     * @param messageString what gets shown on the views
+     */
+    public void broadcastMessage(String messageString) {
+        for (ViewInterface view : playersViewMap.values()) {
+            view.showGenericMessage(messageString);
+        }
+    }
+
+    /**
+     * returns playersView from playerName
+     * @param playerName player to get view for
+     * @return player's viewInterface
+     */
+    public ViewInterface getViewFromNickname(String playerName) {
+        return playersViewMap.get(playerName);
     }
 }

@@ -8,6 +8,7 @@ module it.polimi.ingsw.galaxytruckerproject {
     requires java.compiler;
     requires java.desktop;
 
+<<<<<<< Updated upstream
     opens it.polimi.ingsw.galaxytruckerproject to com.fasterxml.jackson.databind;
     opens it.polimi.ingsw.galaxytruckerproject.tiles to com.fasterxml.jackson.databind;
     opens it.polimi.ingsw.galaxytruckerproject.cards to com.fasterxml.jackson.databind;
@@ -20,4 +21,24 @@ module it.polimi.ingsw.galaxytruckerproject {
     exports it.polimi.ingsw.galaxytruckerproject.cards;
     exports it.polimi.ingsw.galaxytruckerproject.cards.penalties;
     exports it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
+=======
+    opens it.polimi.ingsw.galaxytruckerproject.controller to com.fasterxml.jackson.databind;
+    opens it.polimi.ingsw.galaxytruckerproject.model.tiles to com.fasterxml.jackson.databind;
+    opens it.polimi.ingsw.galaxytruckerproject.model.cards to com.fasterxml.jackson.databind;
+    opens it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles to com.fasterxml.jackson.databind;
+    opens it.polimi.ingsw.galaxytruckerproject.model.cards.penalties to com.fasterxml.jackson.databind;
+    opens it.polimi.ingsw.galaxytruckerproject.model.player to com.fasterxml.jackson.databind;
+    exports it.polimi.ingsw.galaxytruckerproject.controller;
+    exports it.polimi.ingsw.galaxytruckerproject.model.player;
+    exports it.polimi.ingsw.galaxytruckerproject.model.tiles;
+    exports it.polimi.ingsw.galaxytruckerproject.model.cards;
+    exports it.polimi.ingsw.galaxytruckerproject.model.cards.penalties;
+    exports it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles;
+    exports it.polimi.ingsw.galaxytruckerproject.model;
+    exports it.polimi.ingsw.galaxytruckerproject.view;
+    opens it.polimi.ingsw.galaxytruckerproject.model to com.fasterxml.jackson.databind;
+    exports it.polimi.ingsw.galaxytruckerproject.model.goods;
+    exports it.polimi.ingsw.galaxytruckerproject.network.message;
+    opens it.polimi.ingsw.galaxytruckerproject.model.goods to com.fasterxml.jackson.databind;
+>>>>>>> Stashed changes
 }

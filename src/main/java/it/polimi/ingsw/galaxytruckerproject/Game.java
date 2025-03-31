@@ -1,5 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject;
 
+<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/Game.java
 import it.polimi.ingsw.galaxytruckerproject.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.cards.CardDeck;
 import it.polimi.ingsw.galaxytruckerproject.cards.TrialCardDeck;
@@ -10,6 +11,18 @@ import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.tiles.TileFactory;
+=======
+import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.CardDeck;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.TrialCardDeck;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.TileFactory;
+import it.polimi.ingsw.galaxytruckerproject.network.message.Message;
+>>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/Game.java
 
 import java.util.*;
 
@@ -30,7 +43,7 @@ public class Game implements GameInterface{
 
 
     //instances a new game starting in the state START_GAME
-    public Game(GameMode mode) {
+    public Game(GameMode mode, int playerCount) {
         this.mode = mode;
         this.gameState = START_GAME;
         this.turnedTiles = new ArrayList<>();
@@ -46,7 +59,7 @@ public class Game implements GameInterface{
             this.inGameCards = new TrialCardDeck("trialFlightCards.json").getTrialDeck();
         }
         this.hourglassON = false;
-        this.playerCount = 0;
+        this.playerCount = playerCount;
         this.drawnCard = null;
     }
 
@@ -91,8 +104,12 @@ public class Game implements GameInterface{
     }
 
     //SHIPS_CREATION METHODS
+<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/Game.java
 
     public Tile drawTile (String playerName) {
+=======
+    public synchronized Tile drawTile (String playerName) {
+>>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/Game.java
         Player player = identifyPlayerByName(playerName);
         if (player == null) { return null;}
         Tile drawnTile = tileStack.pop();
@@ -106,7 +123,7 @@ public class Game implements GameInterface{
         return drawnTile;
     }
 
-    public Tile drawTurnedTile (String playerName, int index) {
+    public synchronized Tile drawTurnedTile (String playerName, int index) {
         Player player = identifyPlayerByName(playerName);
         if (player == null || (index < 0 || index >= turnedTiles.size())) { return null;}
         Tile drawnTile = turnedTiles.remove(index);
@@ -139,6 +156,10 @@ public class Game implements GameInterface{
         }
     }
 
+    public ArrayList<Tile> getTurnedTiles() {
+        return turnedTiles;
+    }
+
     public void printBookedTiles(String playerName) {
         Player player = identifyPlayerByName(playerName);
         ArrayList<Tile> bookedTiles = player.getShipBoard().getBookedTiles();
@@ -149,31 +170,37 @@ public class Game implements GameInterface{
         System.out.println("\n");
     }
 
-    public synchronized void lookInGameCards1 (String playerName) {
-        Player player = identifyPlayerByName(playerName);
-        System.out.println(player.getPlayerName() + " here are the 3 cards contained in flightBoard deck 1: \n");
+    public ArrayList<Card> getInGameCards(int bunchNumber) {
+        return switch (bunchNumber) {
+            case 1 -> getInGameCards1();
+            case 2 -> getInGameCards2();
+            case 3 -> getInGameCards3();
+            default -> new ArrayList<>();
+        };
+    }
+
+    public synchronized ArrayList<Card> getInGameCards1 () {
+        ArrayList<Card> bunch1 = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            System.out.println(inGameCards.get(i).toString());
+            bunch1.add(inGameCards.get(i));
         }
-        System.out.println("\n");
+        return bunch1;
     }
 
-    public synchronized void lookInGameCards2 (String playerName) {
-        Player player = identifyPlayerByName(playerName);
-        System.out.println(player.getPlayerName() + " here are the 3 cards contained in flightBoard deck 2: \n");
+    public synchronized ArrayList<Card> getInGameCards2 () {
+        ArrayList<Card> bunch2 = new ArrayList<>();
         for (int i = 3; i < 6; i++) {
-            System.out.println(inGameCards.get(i).toString());
+            bunch2.add(inGameCards.get(i));
         }
-        System.out.println("\n");
+        return bunch2;
     }
 
-    public synchronized void lookInGameCards3 (String playerName) {
-        Player player = identifyPlayerByName(playerName);
-        System.out.println(player.getPlayerName() + " here are the 3 cards contained in flightBoard deck 3: \n");
+    public synchronized ArrayList<Card> getInGameCards3 () {
+        ArrayList<Card> bunch3 = new ArrayList<>();
         for (int i = 6; i < 9; i++) {
-            System.out.println(inGameCards.get(i).toString());
+            bunch3.add(inGameCards.get(i));
         }
-        System.out.println("\n");
+        return bunch3;
     }
 
     public boolean playerSetTile (String playerName, Coordinates coordinates) {
@@ -234,8 +261,8 @@ public class Game implements GameInterface{
 
     //CARD_EVENT METHODS
 
-    public void cardEvent(String playerName, String[] input) {
-        drawnCard.executeCard(this, playerName, input);
+    public void cardEvent(Message message) {
+        //drawnCard.executeCard(this, message);
     }
 
     public void endCardEvent() {

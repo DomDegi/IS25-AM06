@@ -1,5 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.cards;
 
+<<<<<<< Updated upstream
 import it.polimi.ingsw.galaxytruckerproject.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.Game;
 import it.polimi.ingsw.galaxytruckerproject.GameMode;
@@ -7,13 +8,27 @@ import it.polimi.ingsw.galaxytruckerproject.Goods;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.tiles.*;
+=======
+import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.AbandonedStation;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
+>>>>>>> Stashed changes
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
+<<<<<<< Updated upstream
 import static it.polimi.ingsw.galaxytruckerproject.GoodsColor.*;
+=======
+import static it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor.*;
+>>>>>>> Stashed changes
 
 class AbandonedStationTest {
     private AbandonedStation abandonedStation;
@@ -25,7 +40,7 @@ class AbandonedStationTest {
 
     @BeforeEach
     void setUp() {
-        game = new Game(GameMode.LEVEL2);
+        game = new Game(GameMode.LEVEL2, 3);
         flightBoard = game.getFlightBoard();
         player1 = new Player("MimmoPericoloso", PlayersColor.BLUE);
         player2 = new Player("FedeGalattico", PlayersColor.RED);

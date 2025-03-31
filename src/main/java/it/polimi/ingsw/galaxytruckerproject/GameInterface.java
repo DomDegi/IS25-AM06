@@ -1,11 +1,21 @@
 package it.polimi.ingsw.galaxytruckerproject;
 
+<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/GameInterface.java
 import it.polimi.ingsw.galaxytruckerproject.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Tile;
+=======
+import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.network.message.Message;
+>>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/GameInterface.java
 
 import java.util.ArrayList;
 
@@ -37,17 +47,14 @@ public interface GameInterface {
     void drawCard();
     void endCardPhase();
     void endCardEvent();
-    void lookInGameCards1(String playerName);
-    void lookInGameCards2(String playerName);
-    void lookInGameCards3(String playerName);
+    ArrayList<Card> getInGameCards (int number);
     boolean getHourglassState();
     int getHourglassTurns();
-    void printTurnedTiles();
-    void printBookedTiles(String playerName);
+    ArrayList<Tile> getTurnedTiles();
     boolean playerSetTile(String playerName, Coordinates coordinates);
     boolean playerBookTile(String playerName);
 
     //Card phase cards
     int getCardsLeft();
-    void cardEvent(String playerName, String[] input);
+    void cardEvent(Message message);
 }
