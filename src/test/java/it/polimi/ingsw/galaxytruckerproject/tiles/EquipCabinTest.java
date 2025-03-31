@@ -1,7 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
 
-import it.polimi.ingsw.galaxytruckerproject.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -56,7 +57,7 @@ class EquipCabinTest {
         Tile tile16=new CargoRed(1, new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE));
         shipBoard1.positionTile(Optional.of(tile16), new Coordinates(3,4));
 
-        Tile tile17=new AlienLifeSupportsSystem( new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),CrewType.PURPLE);
+        Tile tile17=new AlienLifeSupportsSystem( new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE), CrewType.PURPLE);
         shipBoard1.positionTile(Optional.of(tile17), new Coordinates(3,5));
 
         Tile tile18=new BatteryComponents( new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH), 2);

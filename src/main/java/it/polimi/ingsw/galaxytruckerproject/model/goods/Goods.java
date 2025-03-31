@@ -1,9 +1,5 @@
 
-<<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/Goods.java
-package it.polimi.ingsw.galaxytruckerproject;
-========
 package it.polimi.ingsw.galaxytruckerproject.model.goods;
->>>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/goods/Goods.java
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
