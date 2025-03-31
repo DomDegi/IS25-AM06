@@ -46,7 +46,7 @@ public class Smugglers extends Enemies{
             return;
         }
         currentPlayer= playerToInteract.getFirst();
-        System.out.printf(currentPlayer.getPlayerName()+", they are coming for you! \nDo you want to use your double cannon?(yes/no)\n");
+        System.out.printf("\n"+currentPlayer.getPlayerName()+", they are coming for you! \nDo you want to use your double cannon?(yes/no)\n");
     }
 
     @Override
@@ -60,24 +60,35 @@ public class Smugglers extends Enemies{
             game.endCardEvent();
             return;
         }
+        if (input.length == 0) {
+            System.out.println("Invalid input format. Please provide integer values.\n");
+            return;
+        }
+        //executeCard
         if(won == 0){
             if (input[0].equalsIgnoreCase("yes")){
-                System.out.println("input first the double cannons coordinates and after the batteries coordinates\n");
+                System.out.println("\nInput first the double cannons coordinates and after the batteries coordinates\n");
                 won=1;
             }else if (input[0].equalsIgnoreCase("no")){
                 if(currentPlayer.useDoubleCannons(new ArrayList<>()) < cannonStrength){
-                    System.out.printf("Sorry"+currentPlayer+"you are too weak(looser)\n");
+                    System.out.printf("\nSorry"+currentPlayer.getPlayerName()+"you are too weak(looser)\n");
                     if(currentPlayer.getShipBoard().getAllGoods().size()>=lostGoods.getNumber()){
-                        System.out.print("Choose the cargo hold that will be pillaged by the Smugglers?");
-                    }else {
-                        System.out.print("Choose the battery container that will be pillaged by the Smugglers?");
+                        System.out.print("\nChoose the cargo hold that will be pillaged by the Smugglers?\n");
+                    }else if(currentPlayer.getShipBoard().getNumBatteries()!=0){
+                        System.out.print("\nChoose the battery container that will be pillaged by the Smugglers?\n");
+                    }else{
+                        System.out.print("\nYou have nothing to pillage\n");
+                        won=0;
+                        playerToInteract.removeFirst();
+                        initializeCard(game);
+                        return;
                     }
                     won=-1;
                 }else if(currentPlayer.useDoubleCannons(new ArrayList<>()) > cannonStrength){
-                    System.out.printf("HURRAY!! You are more powerful than the Smugglers, you've defeated them!!\n"+currentPlayer+"want to pillage dose filthy Smugglers(loose %d days)(yes/no)?",requiredDays);
+                    System.out.printf("\nHURRAY!! You are more powerful than the Smugglers, you've defeated them!!\n\n"+currentPlayer.getPlayerName()+"want to pillage dose filthy Smugglers(loose %d days)(yes/no)?",requiredDays);
                     won=2;
                 }else if(currentPlayer.useDoubleCannons(new ArrayList<>()) == cannonStrength){
-                    System.out.println("YAY!! You are as powerful as the Smugglers, you've defeated them, but they managed to escape jus in time!\n");
+                    System.out.println("\nYAY!! You are as powerful as the Smugglers, you've defeated them, but they managed to escape jus in time!\n");
                     won=0;
                     playerToInteract.removeFirst();
                     initializeCard(game);
@@ -85,6 +96,7 @@ public class Smugglers extends Enemies{
             }else {
                 System.out.println("Invalid input: " + input[0]+ " retry");
             }
+        //D.C.Manager
         } else if(won == 1) {
             ArrayList<Coordinates> coordinates = new ArrayList<>(currentPlayer.parseCoordinates(input));
             if (coordinates.isEmpty()){
@@ -95,24 +107,25 @@ public class Smugglers extends Enemies{
             if (playerStrength == -2){
                 System.out.println("Need the batteries coordinates\n");
             }else if (playerStrength == -1){
-                System.out.println("Invalid input of batteries or cannons: input again cannons coordinates\n");
+                System.out.println("\nInvalid input of batteries or cannons: input again cannons coordinates\n");
             }else if (playerStrength > cannonStrength){
-                System.out.printf("HURRAY!! You are more powerful than the Smugglers, you've defeated them!!\n"+currentPlayer+"want to pillage dose filthy Smugglers(loose %d days)(yes/no)?",requiredDays);
+                System.out.printf("\nHURRAY!! You are more powerful than the Smugglers, you've defeated them!!\n\n"+currentPlayer.getPlayerName()+"want to pillage dose filthy Smugglers(loose %d days)(yes/no)?",requiredDays);
                 won=2;
             }else if (playerStrength < cannonStrength){
-                System.out.printf("Sorry"+currentPlayer+"you are too weak(looser)");
+                System.out.printf("Sorry"+currentPlayer.getPlayerName()+"you are too weak(looser)\n");
                 if(currentPlayer.getShipBoard().getAllGoods().size()>=lostGoods.getNumber()){
-                    System.out.print("Choose the cargo hold that will be pillaged by the Smugglers?");
+                    System.out.print("\nChoose the cargo hold that will be pillaged by the Smugglers?\n");
                 }else {
-                    System.out.print("Choose the battery container that will be pillaged by the Smugglers?");
+                    System.out.print("\nChoose the battery container that will be pillaged by the Smugglers?\n");
                 }
                 won=-1;
             }else if(playerStrength == cannonStrength){
-                System.out.println("YAY!! You are as powerful as the Smugglers, you've defeated them, but they managed to escape jus in time!\n");
+                System.out.println("\nYAY!! You are as powerful as the Smugglers, you've defeated them, but they managed to escape jus in time!\n");
                 won=0;
                 playerToInteract.removeFirst();
                 initializeCard(game);
             }
+        //won
         } else if(won == 2){
             if (input[0].equalsIgnoreCase("yes")){
                 System.out.println("Good job galaxy truck driver /n here is hour reward: \n");
@@ -127,11 +140,13 @@ public class Smugglers extends Enemies{
             }else {
                 System.out.println("Invalid input: " + input[0]);
             }
+        //getReward
         } else if(won == 3){
             if(goodsManager.getReward(input)){
                 System.out.print("Card Finished\n");
                 game.endCardEvent();
             }
+        //loseManager
         } else if(won == -1) {
             if(lostGoods.applyPenalty(game,currentPlayer,input)==1){
                 won=0;

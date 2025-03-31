@@ -60,11 +60,11 @@ public class Planets extends Card{
             game.endCardEvent();
             return;
         }
+        if (input.length == 0) {
+            System.out.println("Invalid input format. Please provide integer values.\n");
+            return;
+        }
         if (!won) {
-            if (input.length == 0) {
-                System.out.println("Invalid input format. Please provide integer values.\n");
-                return;
-            }
             int choice;
             if (input[0].equalsIgnoreCase("no")) {
                 input[0] = "0";
