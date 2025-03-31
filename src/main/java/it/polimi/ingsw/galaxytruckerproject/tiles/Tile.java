@@ -1,6 +1,14 @@
-package it.polimi.ingsw.galaxytruckerproject.model.tiles;
+package it.polimi.ingsw.galaxytruckerproject.tiles;
 
+<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/tiles/Tile.java
+<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/tiles/Tile.java
+import it.polimi.ingsw.galaxytruckerproject.Goods;
+=======
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+>>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/tiles/Tile.java
+=======
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+>>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/tiles/Tile.java
 
 import java.util.Optional;
 

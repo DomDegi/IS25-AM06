@@ -1,9 +1,19 @@
 package it.polimi.ingsw.galaxytruckerproject.tiles;
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+import it.polimi.ingsw.galaxytruckerproject.Goods;
+import it.polimi.ingsw.galaxytruckerproject.GoodsColor;
+import it.polimi.ingsw.galaxytruckerproject.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
+=======
+=======
+>>>>>>> Stashed changes
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
+>>>>>>> Stashed changes
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

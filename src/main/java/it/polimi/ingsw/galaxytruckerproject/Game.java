@@ -1,5 +1,17 @@
-package it.polimi.ingsw.galaxytruckerproject.model;
+package it.polimi.ingsw.galaxytruckerproject;
 
+<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/Game.java
+import it.polimi.ingsw.galaxytruckerproject.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.cards.CardDeck;
+import it.polimi.ingsw.galaxytruckerproject.cards.TrialCardDeck;
+import it.polimi.ingsw.galaxytruckerproject.observers.GameObserver;
+import it.polimi.ingsw.galaxytruckerproject.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.tiles.ShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.tiles.TileFactory;
+=======
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.CardDeck;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.TrialCardDeck;
@@ -10,14 +22,19 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.TileFactory;
 import it.polimi.ingsw.galaxytruckerproject.network.message.Message;
+<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/Game.java
+>>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/Game.java
+=======
+>>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/Game.java
 
 import java.util.*;
 
-import static it.polimi.ingsw.galaxytruckerproject.model.GameState.*;
+import static it.polimi.ingsw.galaxytruckerproject.GameState.*;
 
-public class Game implements GameInterface {
+public class Game implements GameInterface{
     private final GameMode mode;
     private GameState gameState;
+    private final ArrayList<GameObserver> observerList = new ArrayList<>();
     private int playerCount;
     private final ArrayList<Card> inGameCards;
     private final ArrayDeque<Tile> tileStack;
@@ -49,6 +66,18 @@ public class Game implements GameInterface {
         this.drawnCard = null;
     }
 
+    //add a new observer type to the game
+    public void AddObserver(GameObserver observer) {
+        observerList.add(observer);
+    }
+
+    //notify all the instanced observers about a change in GameState
+    public void notifyObservers(GameState newGameState) {
+        for (GameObserver observer: observerList){
+            observer.notifyChanges(newGameState);
+        }
+    }
+
     //set player count for the game
     public void setPlayerCount(int playerCount) {
         this.playerCount = playerCount;
@@ -74,10 +103,20 @@ public class Game implements GameInterface {
     //changes game state to SHIPS_CREATION and notifies observers of it (GUI, TUI, Log)
     public void startGame(){
         this.gameState = SHIPS_CREATION;
+        notifyObservers(gameState);
     }
 
     //SHIPS_CREATION METHODS
+<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/Game.java
+<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/Game.java
+
+    public Tile drawTile (String playerName) {
+=======
     public synchronized Tile drawTile (String playerName) {
+>>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/Game.java
+=======
+    public synchronized Tile drawTile (String playerName) {
+>>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/Game.java
         Player player = identifyPlayerByName(playerName);
         if (player == null) { return null;}
         Tile drawnTile = tileStack.pop();
@@ -208,6 +247,7 @@ public class Game implements GameInterface {
 
     public void endShipCreation() {
         this.gameState = VERIFY_SHIP_CORRECTNESS;
+        notifyObservers(gameState);
     }
 
     //VERIFY_SHIP_CORRECTNESS METHODS
@@ -218,10 +258,12 @@ public class Game implements GameInterface {
         this.drawnCard = inGameCards.removeFirst();
         drawnCard.initializeCard(this);
         this.gameState = CARD_EVENT;
+        notifyObservers(gameState);
     }
 
     public void endCardPhase() {
         this.gameState = CONCLUDE_GAME;
+        notifyObservers(gameState);
     }
 
     //CARD_EVENT METHODS
@@ -232,6 +274,7 @@ public class Game implements GameInterface {
 
     public void endCardEvent() {
         this.gameState = DRAW_CARD;
+        notifyObservers(gameState);
     }
 
 
