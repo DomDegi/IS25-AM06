@@ -8,20 +8,6 @@ module it.polimi.ingsw.galaxytruckerproject {
     requires java.compiler;
     requires java.desktop;
 
-<<<<<<< Updated upstream
-    opens it.polimi.ingsw.galaxytruckerproject to com.fasterxml.jackson.databind;
-    opens it.polimi.ingsw.galaxytruckerproject.tiles to com.fasterxml.jackson.databind;
-    opens it.polimi.ingsw.galaxytruckerproject.cards to com.fasterxml.jackson.databind;
-    opens it.polimi.ingsw.galaxytruckerproject.cards.projectiles to com.fasterxml.jackson.databind;
-    opens it.polimi.ingsw.galaxytruckerproject.cards.penalties to com.fasterxml.jackson.databind;
-    opens it.polimi.ingsw.galaxytruckerproject.player to com.fasterxml.jackson.databind;
-    exports it.polimi.ingsw.galaxytruckerproject;
-    exports it.polimi.ingsw.galaxytruckerproject.player;
-    exports it.polimi.ingsw.galaxytruckerproject.tiles;
-    exports it.polimi.ingsw.galaxytruckerproject.cards;
-    exports it.polimi.ingsw.galaxytruckerproject.cards.penalties;
-    exports it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
-=======
     opens it.polimi.ingsw.galaxytruckerproject.controller to com.fasterxml.jackson.databind;
     opens it.polimi.ingsw.galaxytruckerproject.model.tiles to com.fasterxml.jackson.databind;
     opens it.polimi.ingsw.galaxytruckerproject.model.cards to com.fasterxml.jackson.databind;
@@ -40,8 +26,4 @@ module it.polimi.ingsw.galaxytruckerproject {
     exports it.polimi.ingsw.galaxytruckerproject.model.goods;
     exports it.polimi.ingsw.galaxytruckerproject.network.message;
     opens it.polimi.ingsw.galaxytruckerproject.model.goods to com.fasterxml.jackson.databind;
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 }

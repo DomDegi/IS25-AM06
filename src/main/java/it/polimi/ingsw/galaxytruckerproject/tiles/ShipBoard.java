@@ -1,18 +1,9 @@
-package it.polimi.ingsw.galaxytruckerproject.tiles;
+package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 import java.util.*;
 
-<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/tiles/ShipBoard.java
-<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/tiles/ShipBoard.java
-import it.polimi.ingsw.galaxytruckerproject.Goods;
-import it.polimi.ingsw.galaxytruckerproject.GoodsColor;
-import it.polimi.ingsw.galaxytruckerproject.player.Player;
-=======
-=======
->>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/tiles/ShipBoard.java
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
->>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/tiles/ShipBoard.java
 
 
 public class ShipBoard {
