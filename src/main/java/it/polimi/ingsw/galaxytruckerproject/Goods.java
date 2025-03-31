@@ -1,10 +1,6 @@
 
 <<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/Goods.java
-<<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/Goods.java
 package it.polimi.ingsw.galaxytruckerproject;
-========
-package it.polimi.ingsw.galaxytruckerproject.model.goods;
->>>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/goods/Goods.java
 ========
 package it.polimi.ingsw.galaxytruckerproject.model.goods;
 >>>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/goods/Goods.java
