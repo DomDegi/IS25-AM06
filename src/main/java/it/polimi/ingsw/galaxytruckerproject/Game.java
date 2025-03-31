@@ -22,6 +22,9 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.TileFactory;
 import it.polimi.ingsw.galaxytruckerproject.network.message.Message;
+<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/Game.java
+>>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/Game.java
+=======
 >>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/Game.java
 
 import java.util.*;
@@ -105,8 +108,12 @@ public class Game implements GameInterface{
 
     //SHIPS_CREATION METHODS
 <<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/Game.java
+<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/Game.java
 
     public Tile drawTile (String playerName) {
+=======
+    public synchronized Tile drawTile (String playerName) {
+>>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/Game.java
 =======
     public synchronized Tile drawTile (String playerName) {
 >>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/Game.java

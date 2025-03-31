@@ -25,7 +25,11 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import static it.polimi.ingsw.galaxytruckerproject.GoodsColor.*;
+=======
+import static it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor.*;
+>>>>>>> Stashed changes
 =======
 import static it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor.*;
 >>>>>>> Stashed changes

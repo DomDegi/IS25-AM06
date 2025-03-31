@@ -3,7 +3,11 @@ package it.polimi.ingsw.galaxytruckerproject.cards;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 <<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/cards/Planet.java
+<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/cards/Planet.java
 import it.polimi.ingsw.galaxytruckerproject.Goods;
+=======
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+>>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/cards/Planet.java
 =======
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 >>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/cards/Planet.java

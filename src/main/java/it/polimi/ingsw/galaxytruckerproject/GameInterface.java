@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject;
 
 <<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/GameInterface.java
+<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/GameInterface.java
 import it.polimi.ingsw.galaxytruckerproject.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.player.PlayersColor;
@@ -8,6 +9,8 @@ import it.polimi.ingsw.galaxytruckerproject.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.tiles.Tile;
 =======
+=======
+>>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/GameInterface.java
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
@@ -15,6 +18,9 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.message.Message;
+<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/galaxytruckerproject/GameInterface.java
+>>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/GameInterface.java
+=======
 >>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/galaxytruckerproject/model/GameInterface.java
 
 import java.util.ArrayList;
