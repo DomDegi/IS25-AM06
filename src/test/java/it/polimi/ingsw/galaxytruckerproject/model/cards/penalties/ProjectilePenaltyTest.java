@@ -1,4 +1,4 @@
-package it.polimi.ingsw.galaxytruckerproject.cards.penalties;
+package it.polimi.ingsw.galaxytruckerproject.model.cards.penalties;
 
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;

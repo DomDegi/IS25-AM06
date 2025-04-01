@@ -1,4 +1,4 @@
-package it.polimi.ingsw.galaxytruckerproject.cards;
+package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.CardDeck;

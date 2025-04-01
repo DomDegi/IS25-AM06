@@ -1,4 +1,4 @@
-package it.polimi.ingsw.galaxytruckerproject.tiles;
+package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Connectors;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Link;

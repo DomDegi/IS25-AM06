@@ -1,7 +1,5 @@
-package it.polimi.ingsw.galaxytruckerproject;
+package it.polimi.ingsw.galaxytruckerproject.model;
 
-import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
-import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import org.junit.jupiter.api.BeforeEach;

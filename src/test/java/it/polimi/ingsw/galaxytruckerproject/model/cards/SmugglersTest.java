@@ -1,10 +1,10 @@
-package it.polimi.ingsw.galaxytruckerproject.cards;
+package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.Smugglers;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.AbandonedStation;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
@@ -15,18 +15,20 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor.*;
+import static it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor.YELLOW;
 
-class AbandonedStationTest {
-    private AbandonedStation abandonedStation;
+class SmugglersTest {
+    private Smugglers smugglers;
     private Game game;
     private Player player1;
     private Player player2;
     private Player player3;
+    private Player player4;
     private FlightBoard flightBoard;
 
     @BeforeEach
     void setUp() {
-        game = new Game(GameMode.LEVEL2);
+        game = new Game(GameMode.LEVEL2, 3);
         flightBoard = game.getFlightBoard();
         player1 = new Player("MimmoPericoloso", PlayersColor.BLUE);
         player2 = new Player("FedeGalattico", PlayersColor.RED);
@@ -35,14 +37,15 @@ class AbandonedStationTest {
         Goods good2=new Goods(RED);
         Goods good3=new Goods(GREEN);
         Goods good4=new Goods(YELLOW);
-        ArrayList<Goods> goodsList = new ArrayList<>();
-        goodsList.add(good1);
-        goodsList.add(good2);
-        goodsList.add(good3);
-        goodsList.add(good4);
-        goodsList.add(good1);
-        goodsList.add(good1);
-        abandonedStation = new AbandonedStation(1, 2, 3,goodsList );
+        ArrayList<Goods> rewardGoods =new ArrayList<>();
+
+        rewardGoods.add(good2);
+        rewardGoods.add(good3);
+        rewardGoods.add(good4);
+        rewardGoods.add(good1);
+        rewardGoods.add(good1);
+
+        smugglers = new Smugglers(1, 2, 2,2,rewardGoods);
 
         //shipboard 5 to player1
         ShipBoard shipBoard1 = new ShipBoard(player1);
@@ -95,10 +98,6 @@ class AbandonedStationTest {
         shipBoard1.positionTile(Optional.of(tile20), new Coordinates(4,1));
         Tile tile21=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
         shipBoard1.positionTile(Optional.of(tile21), new Coordinates(4,2));
-        Tile tile22=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE));
-        tile22.rotate();
-        tile22.rotate();
-        shipBoard1.positionTile(Optional.of(tile22), new Coordinates(4,4));
         shipBoard1.verifyCorrectness();
 
         //shipboard4 to player2
@@ -107,7 +106,7 @@ class AbandonedStationTest {
         shipBoard2.initializeLevel2();
         Tile tile23=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
         shipBoard2.positionTile(Optional.of(tile23), new Coordinates(1,3));
-        Tile tile24=new CargoBlue(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE));
+        Tile tile24=new CargoRed(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE));
         shipBoard2.positionTile(Optional.of(tile24), new Coordinates(2,2));
         Tile tile25=new EquipCabin( new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE));
         shipBoard2.positionTile(Optional.of(tile25), new Coordinates(2,4));
@@ -154,143 +153,216 @@ class AbandonedStationTest {
 
     @Test
     void successfully_initialize_card () {
-        game.setDrawnCard(abandonedStation);
+        game.setDrawnCard(smugglers);
         game.getDrawnCard().initializeCard(game);
     }
 
     @Test
-    void successfully_execute_card_and_refused () {
-        successfully_initialize_card();
-        String input="no pippo pasta";
-        String[] words = input.split(" ");
+    void successfully_initialize_all_lost () {
+        Goods good1=new Goods(BLUE);
+        Goods good2=new Goods(RED);
+        Goods good3=new Goods(GREEN);
+        Goods good4=new Goods(YELLOW);
+        ArrayList<Goods> rewardGoods =new ArrayList<>();
+
+        rewardGoods.add(good2);
+        rewardGoods.add(good3);
+        rewardGoods.add(good4);
+        rewardGoods.add(good1);
+        rewardGoods.add(good1);
+        smugglers = new Smugglers(1, 2, 10,2,rewardGoods);
+
+        game.setDrawnCard(smugglers);
+        game.getDrawnCard().initializeCard(game);
+
+        String input="no";
+        String[] words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+
+        input="no";
+        words= input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="3 0";
+        words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="3 0";
+        words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+
+        input="no";
+        words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"FedeGalattico",words);
+        input="3 3 3 3";
+        words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"FedeGalattico",words);
+
     }
 
     @Test
-    void successfully_execute_card_and_error () {
+    void successfully_initialize_player2_won_refused(){
         successfully_initialize_card();
-        String input="ni pippo pasta";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
-        input="1 1 3";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        String input="no";
+        String[] words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        input="no";
+        words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
     }
 
     @Test
-    void successfully_execute_card_and_accepted () {
+    void successfully_initialize_player2_won_accepted(){
+        successfully_initialize_card();
+        String input="no";
+        String[] words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        input="yes";
+        words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+    }
+
+    @Test
+    void successfully_initialize_player2_won_accepted_managed(){
+        successfully_initialize_player2_won_accepted();
+        String input="1 3 3";
+        String[] words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        input="done";
+        words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+    }
+
+    @Test
+    void successfully_initialize_player1_usedDC_won_withErrors(){
+        flightBoard.moveBackward(player3,10);
         successfully_initialize_card();
         String input="yes";
-        String[] words = input.split(" ");
+        String[] words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="3 3";
+        words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="3 0";
+        words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="2 6";
+        words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="3 0";
+        words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="no";
+        words= input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
     }
 
     @Test
-    void successfully_execute_card_accepted_landed_putted () {
+    void successfully_initialize_player1_usedDC_won_multiple(){
+        flightBoard.moveBackward(player3,10);
         successfully_initialize_card();
-        successfully_execute_card_and_accepted();
-        String input="1 1 3";
-        String[] words = input.split(" ");
+        String input="yes";
+        String[] words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="2 0 2 6";
+        words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="3 0 3 0";
+        words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="no";
+        words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+    }
+
+    @Test
+    void successfully_initialize_player1_tie(){
+        Goods good1=new Goods(BLUE);
+        Goods good2=new Goods(RED);
+        Goods good3=new Goods(GREEN);
+        Goods good4=new Goods(YELLOW);
+        ArrayList<Goods> rewardGoods =new ArrayList<>();
+
+        rewardGoods.add(good2);
+        rewardGoods.add(good3);
+        rewardGoods.add(good4);
+        rewardGoods.add(good1);
+        rewardGoods.add(good1);
+        smugglers = new Smugglers(1, 2, 3,2,rewardGoods);
+        flightBoard.moveBackward(player3,10);
+
+        game.setDrawnCard(smugglers);
+        game.getDrawnCard().initializeCard(game);
+
+        String input="no";
+        String[] words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="no";
+        words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+    }
+
+    @Test
+    void successfully_initialize_player1_usedDB_tie(){
+        Goods good1=new Goods(BLUE);
+        Goods good2=new Goods(RED);
+        Goods good3=new Goods(GREEN);
+        Goods good4=new Goods(YELLOW);
+        ArrayList<Goods> rewardGoods =new ArrayList<>();
+
+        rewardGoods.add(good2);
+        rewardGoods.add(good3);
+        rewardGoods.add(good4);
+        rewardGoods.add(good1);
+        rewardGoods.add(good1);
+        smugglers = new Smugglers(1, 2, 7,2,rewardGoods);
+        flightBoard.moveBackward(player3,10);
+
+        game.setDrawnCard(smugglers);
+        game.getDrawnCard().initializeCard(game);
+
+        String input="yes";
+        String[] words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="2 0 2 6";
+        words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="3 0 3 0";
+        words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="no";
+        words= input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
 
     }
 
     @Test
-    void successfully_execute_card_accepted_landed_error () {
-        successfully_execute_card_and_accepted();
-        String input="10 1 3";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
-        input="1 1 3";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
-        input="1 1 3";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
-        input="1 1 3";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
-    }
+    void successfully_initialize_player1_usedDB_loose(){
+        Goods good1=new Goods(BLUE);
+        Goods good2=new Goods(RED);
+        Goods good3=new Goods(GREEN);
+        Goods good4=new Goods(YELLOW);
+        ArrayList<Goods> rewardGoods =new ArrayList<>();
 
-    @Test
-    void successfully_execute_card_accepted_landed_overloaded () {
-        successfully_execute_card_and_accepted();
-        String input="1 1 3";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
-        input="1 1 3";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
-        input="1 1 3";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
-        input="1 1 3";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
-    }
+        rewardGoods.add(good2);
+        rewardGoods.add(good3);
+        rewardGoods.add(good4);
+        rewardGoods.add(good1);
+        rewardGoods.add(good1);
+        smugglers = new Smugglers(1, 2, 7,2,rewardGoods);
+        flightBoard.moveBackward(player3,10);
 
-    @Test
-    void managed_full_cargo(){
-        successfully_execute_card_accepted_landed_overloaded ();
-        String input="1";
-        String[] words = input.split(" ");
+        game.setDrawnCard(smugglers);
+        game.getDrawnCard().initializeCard(game);
+
+        String input="yes";
+        String[] words= input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="2 0";
+        words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="3 0";
+        words= input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+
 
     }
-
-    @Test
-    void managed_full_cargo_error(){
-        successfully_execute_card_accepted_landed_overloaded ();
-        String input="4";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
-        input="1";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
-    }
-
-    @Test
-    void successfully_execute_card_accepted_landed_overloaded_managed_error(){
-        managed_full_cargo();
-        String input="1";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
-    }
-
-    @Test
-    void successfully_execute_card_accepted_landed_overloaded_managed_resolved(){
-        managed_full_cargo();
-        String input="1 1 3";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
-    }
-
-    @Test
-    void successfully_execute_card_accepted_landed_pick(){
-        successfully_execute_card_and_accepted();
-        String input="pick 1 3";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
-    }
-
-    @Test
-    void successfully_execute_card_accepted_landed_overloaded_managed_pick(){
-        managed_full_cargo();
-        String input="pick 1 3";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
-        input="1";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
-    }
-
-    @Test
-    void successfully_execute_card_accepted_landed_overloaded_managed_pick_done(){
-        successfully_execute_card_accepted_landed_overloaded_managed_pick();
-        String input="done";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
-
-    }
-
 }

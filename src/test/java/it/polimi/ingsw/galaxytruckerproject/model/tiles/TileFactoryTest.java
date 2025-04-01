@@ -1,4 +1,4 @@
-package it.polimi.ingsw.galaxytruckerproject.tiles;
+package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import org.junit.jupiter.api.BeforeEach;

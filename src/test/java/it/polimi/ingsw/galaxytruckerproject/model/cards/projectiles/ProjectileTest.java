@@ -1,4 +1,4 @@
-package it.polimi.ingsw.galaxytruckerproject.cards.projectiles;
+package it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles;
 
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;

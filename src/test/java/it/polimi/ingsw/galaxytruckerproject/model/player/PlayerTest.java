@@ -1,4 +1,4 @@
-package it.polimi.ingsw.galaxytruckerproject.player;
+package it.polimi.ingsw.galaxytruckerproject.model.player;
 
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
