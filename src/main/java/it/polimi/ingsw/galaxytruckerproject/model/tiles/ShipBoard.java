@@ -47,6 +47,7 @@ public class ShipBoard {
 
     public ShipBoard(Player player) {
         this.player = player;
+        this.player.setPlayerShip(this);
         this.penalty = 0;
         this.bookedTiles = new ArrayList<Tile>();
         this.numBatteries = 0;

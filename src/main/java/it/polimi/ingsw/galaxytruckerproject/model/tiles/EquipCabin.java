@@ -9,7 +9,9 @@ public class EquipCabin extends Cabin {
     private CrewType crewType;
 
     public EquipCabin(Link north, Link east, Link south, Link west) {
+
         super(north, east, south, west);
+        alienability=null;
     }
 
     //GETTER METHOD
@@ -20,7 +22,7 @@ public class EquipCabin extends Cabin {
     //THIS METHOD RETURNS THE LIST OF THE ADJACENT ALIEN LIFE SUPPORT SYSTEM
     public ArrayList<Coordinates> adjacentLifeSupport(){
         ArrayList<Coordinates> adjacentLifeSupport = new ArrayList<>();
-
+/*
         if(shipBoard.getTilesTable()[this.coordinates.getX() - 1][this.coordinates.getY()].isPresent()
                 && shipBoard.getTilesTable()[this.coordinates.getX() - 1][this.coordinates.getY()].get().Placeable()
                 && !shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()].get().getAlienLifeSupportSystemColor().equals(CrewType.NotSupportSystem))
@@ -40,13 +42,28 @@ public class EquipCabin extends Cabin {
                 && shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].get().Placeable()
                 && !shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].get().getAlienLifeSupportSystemColor().equals(CrewType.NotSupportSystem))
             adjacentLifeSupport.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].get().getCoordinates());
+*/
+        if(shipBoard.getTilesTable()[this.coordinates.getX() - 1][this.coordinates.getY()].isPresent())
+            adjacentLifeSupport.add(shipBoard.getTilesTable()[this.coordinates.getX() - 1][this.coordinates.getY()].get().getCoordinates());
 
+        if(shipBoard.getTilesTable()[this.coordinates.getX() + 1][this.coordinates.getY()].isPresent())
+            adjacentLifeSupport.add(shipBoard.getTilesTable()[this.coordinates.getX() + 1][this.coordinates.getY()].get().getCoordinates());
+
+        if(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].isPresent())
+            adjacentLifeSupport.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].get().getCoordinates());
+
+        if(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].isPresent())
+            adjacentLifeSupport.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].get().getCoordinates());
         return adjacentLifeSupport;
     }
 
     //THIS METHOD CHECKS IF THE CABIN CAN HAVE AN ALIEN AND WHICH
     public void checkAlienability(){
-
+        AlienOptions tempAlien = null;
+        if(this.alienability!=null)
+        {
+            tempAlien = this.alienability;
+        }
         alienability = AlienOptions.NO;
         ArrayList<Coordinates> adjacentLifeSupport = new ArrayList<Coordinates>();
         adjacentLifeSupport = adjacentLifeSupport();
@@ -54,7 +71,7 @@ public class EquipCabin extends Cabin {
         CrewType alienLifeSupportSystemColor;
         boolean checkDouble = false;
         for(Coordinates c : adjacentLifeSupport) {
-            alienLifeSupportSystemColor = shipBoard.getTilesTable()[c.getX()][c.getY()].get().getAlienLifeSupportSystemColor();
+            alienLifeSupportSystemColor = shipBoard.getTile(c).getAlienLifeSupportSystemColor();
             //CHECK WHICH COLOR IS THE ADJACENT ALIEN LIFE SUPPORT SYSTEM
 
             //CHECK IF THE CURRENT ALIEN LIFE SUPPORT SYSTEM IS BROWN
@@ -76,8 +93,19 @@ public class EquipCabin extends Cabin {
                     alienability = AlienOptions.PURPLE;
             }
         }
+        if(tempAlien!=null && this.alienability != tempAlien){
+            resetAlien(this.alienability, tempAlien);
+        }
     }
 
+    public void resetAlien(AlienOptions current, AlienOptions prec){
+        if(current.equals(AlienOptions.BOTH))
+            return;
+        if((!(current==AlienOptions.PURPLE) && crewType==CrewType.PURPLE) ||  (!(current==AlienOptions.BROWN) && crewType==CrewType.BROWN) )
+        {
+            this.removeCrew();
+        }
+    }
 
     //SELECT THE CREWTYPE ACCORDING TO ITS ALIENOPTIONS
     public void setCrewType(CrewType crewType) {

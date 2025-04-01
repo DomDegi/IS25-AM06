@@ -18,7 +18,7 @@ public class SmallMeteor extends Projectile {
     public  Defense throwProjectile(Player player, int diceRoll, Game game) {
         Throw(player, diceRoll);
 
-        if(coordinatesToDestroy.isEmpty() ){
+        if(coordinatesToDestroy.isEmpty()){
             return Defense.PROTECTED;
         }
         if(this.direction.equals(Direction.NORTH)){
@@ -36,12 +36,18 @@ public class SmallMeteor extends Projectile {
         return Defense.PROTECTED;
     }
 
+    /**
+     *
+     * @param player
+     * @param diceRoll
+     * @return
+     */
     private Defense checkNorth(Player player, int diceRoll) {
         ShipBoard ship = player.getPlayerShip();
         Optional<Tile> Temp = Optional.empty();
         Optional<Tile>[][] tileTable= ship.getTilesTable();
 
-        if(tileTable[coordinatesToDestroy.get().getY()][coordinatesToDestroy.get().getX()].get().getNorth().getConnectorsType()== Connectors.SMOOTH){
+        if(ship.getTile(coordinatesToDestroy.get()).getNorth().getConnectorsType()== Connectors.SMOOTH){
             return Defense.PROTECTED;
         }
         if(ship.getCoverageShields().contains(Coverage.NORTH_EAST)||ship.getCoverageShields().contains(Coverage.NORTH_WEST)){
@@ -53,7 +59,7 @@ public class SmallMeteor extends Projectile {
         ShipBoard ship = player.getPlayerShip();
         Optional<Tile> Temp = Optional.empty();
         Optional<Tile>[][] tileTable= ship.getTilesTable();
-        if(tileTable[coordinatesToDestroy.get().getY()][coordinatesToDestroy.get().getX()].get().getSouth().getConnectorsType()==Connectors.SMOOTH){
+        if(ship.getTile(coordinatesToDestroy.get()).getSouth().getConnectorsType()==Connectors.SMOOTH){
             return Defense.PROTECTED;
         }
         if(ship.getCoverageShields().contains(Coverage.SOUTH_EAST)||ship.getCoverageShields().contains(Coverage.SOUTH_WEST)){
@@ -65,7 +71,7 @@ public class SmallMeteor extends Projectile {
         ShipBoard ship = player.getPlayerShip();
         Optional<Tile> Temp = Optional.empty();
         Optional<Tile>[][] tileTable= ship.getTilesTable();
-        if(tileTable[coordinatesToDestroy.get().getY()][coordinatesToDestroy.get().getX()].get().getEast().getConnectorsType()==Connectors.SMOOTH){
+        if(ship.getTile(coordinatesToDestroy.get()).getEast().getConnectorsType()==Connectors.SMOOTH){
             return Defense.PROTECTED;
         }
         if(ship.getCoverageShields().contains(Coverage.SOUTH_EAST)||ship.getCoverageShields().contains(Coverage.NORTH_EAST)){
@@ -77,7 +83,7 @@ public class SmallMeteor extends Projectile {
         ShipBoard ship = player.getPlayerShip();
         Optional<Tile> Temp = Optional.empty();
         Optional<Tile>[][] tileTable= ship.getTilesTable();
-        if(tileTable[coordinatesToDestroy.get().getY()][coordinatesToDestroy.get().getX()].get().getWest().getConnectorsType()==Connectors.SMOOTH){
+        if(ship.getTile(coordinatesToDestroy.get()).getWest().getConnectorsType()==Connectors.SMOOTH){
 
             return Defense.PROTECTED;
         }

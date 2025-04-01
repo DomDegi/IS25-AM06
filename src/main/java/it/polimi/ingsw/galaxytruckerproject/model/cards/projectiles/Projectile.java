@@ -33,6 +33,13 @@ public abstract class Projectile {
         return direction;
     }
 
+    /**
+     *
+     * @param player
+     * @param DiceRoll
+     * @param game
+     * @return
+     */
     public Defense throwProjectile(Player player, int DiceRoll, Game game) {
         return Defense.PROTECTED;
     }
@@ -42,9 +49,14 @@ public abstract class Projectile {
         return coordinatesToDestroy.get();
     }
 
+    /**
+     *
+     * @param player
+     * @param diceRoll
+     */
     protected void Throw(Player player, int diceRoll){
         ShipBoard ship = player.getShipBoard();
-        Optional<Tile> Temp = Optional.empty();
+        Optional<Tile> Temp;
         Optional<Tile>[][] tileTable= ship.getTilesTable();
         int i;// num of iteration
         if(direction==Direction.SOUTH){
