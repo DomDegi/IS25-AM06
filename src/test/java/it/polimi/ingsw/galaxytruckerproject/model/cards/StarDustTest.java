@@ -3,42 +3,39 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
-import it.polimi.ingsw.galaxytruckerproject.model.GameState;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.AbandonedShip;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class AbandonedShipTest {
-    private AbandonedShip abandonedShip;
+class StarDustTest {
+    private StarDust starDust;
     private Game game;
     private Player player1;
     private Player player2;
     private Player player3;
-    private Player player4;
     private FlightBoard flightBoard;
 
     @BeforeEach
     void setUp() {
-        game = new Game(GameMode.LEVEL2, 4);
+        game = new Game(GameMode.LEVEL2,4);
         flightBoard = game.getFlightBoard();
-        player2 = new Player("riccardo", PlayersColor.BLUE);
-        player3 = new Player("francesco", PlayersColor.YELLOW);
-        player4 = new Player("pietro", PlayersColor.GREEN);
-        abandonedShip = new AbandonedShip(1, 2, 3, 10);
         player1 = new Player("MimmoPericoloso", PlayersColor.BLUE);
+        player2 = new Player("FedeGalattico", PlayersColor.RED);
+        player3 = new Player("EnnioVolante", PlayersColor.YELLOW);
+        starDust = new StarDust(1);
+
+        //shipboard 5 to player1
         ShipBoard shipBoard1 = new ShipBoard(player1);
         player1.setPlayerShip(shipBoard1);
         shipBoard1.initializeLevel2();
         Tile tile1=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
         shipBoard1.positionTile(Optional.of(tile1), new Coordinates(0,4));
-
         Tile tile2=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE));
         shipBoard1.positionTile(Optional.of(tile2), new Coordinates(1,1));
         tile2.setCrewType(CrewType.HUMAN);
@@ -50,7 +47,6 @@ class AbandonedShipTest {
         shipBoard1.positionTile(Optional.of(tile5), new Coordinates(1,4));
         Tile tile6=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE));
         shipBoard1.positionTile(Optional.of(tile6), new Coordinates(1,5));
-
         Tile tile7=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH));
         shipBoard1.positionTile(Optional.of(tile7), new Coordinates(2,0));
         Tile tile8=new EquipCabin( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE));
@@ -85,43 +81,67 @@ class AbandonedShipTest {
         shipBoard1.positionTile(Optional.of(tile20), new Coordinates(4,1));
         Tile tile21=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
         shipBoard1.positionTile(Optional.of(tile21), new Coordinates(4,2));
-        Tile tile22=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE));
-        tile22.rotate();
-        tile22.rotate();
-        shipBoard1.positionTile(Optional.of(tile22), new Coordinates(4,4));
         shipBoard1.verifyCorrectness();
+
+        //shipboard4 to player2
+        ShipBoard shipBoard2 = new ShipBoard(player2);
+        player2.setPlayerShip(shipBoard2);
+        shipBoard2.initializeLevel2();
+        Tile tile23=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
+        shipBoard2.positionTile(Optional.of(tile23), new Coordinates(1,3));
+        Tile tile24=new CargoRed(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE));
+        shipBoard2.positionTile(Optional.of(tile24), new Coordinates(2,2));
+        Tile tile25=new EquipCabin( new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE));
+        shipBoard2.positionTile(Optional.of(tile25), new Coordinates(2,4));
+        tile25.setCrewType(CrewType.HUMAN);
+        Tile tile26=new Shields( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL));
+        shipBoard2.positionTile(Optional.of(tile26), new Coordinates(2,5));
+        Tile tile27=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),3);
+        shipBoard2.positionTile(Optional.of(tile27), new Coordinates(3,2));
+        Tile tile28=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),2);
+        shipBoard2.positionTile(Optional.of(tile28), new Coordinates(3,3));
+        Tile tile29=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
+        shipBoard2.positionTile(Optional.of(tile29), new Coordinates(3,4));
+        shipBoard2.verifyCorrectness();
+
+        //shipboard1 to player3
+        ShipBoard shipBoard3 = new ShipBoard(player3);
+        player3.setPlayerShip(shipBoard3);
+        shipBoard3.initializeLevel2();
+        Tile tile30=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
+        shipBoard3.positionTile(Optional.of(tile30), new Coordinates(1,3));
+        Tile tile31=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH));
+        shipBoard3.positionTile(Optional.of(tile31), new Coordinates(1,4));
+        Tile tile32=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE));
+        tile32.rotate();
+        shipBoard3.positionTile(Optional.of(tile32), new Coordinates(2,5));
+        Tile tile33=new Pipe( new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL));
+        shipBoard3.positionTile(Optional.of(tile33), new Coordinates(2,4));
+        Tile tile34=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
+        tile34.rotate();
+        tile34.rotate();
+        tile34.rotate();
+        shipBoard3.positionTile(Optional.of(tile34), new Coordinates(2,2));
+        Tile tile35=new SingleEngine( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH));
+        shipBoard3.positionTile(Optional.of(tile35), new Coordinates(3,3));
+        shipBoard3.verifyCorrectness();
 
         flightBoard.addPlayerToGame(player1);
         flightBoard.addPlayerToGame(player2);
         flightBoard.addPlayerToGame(player3);
-        flightBoard.addPlayerToGame(player4);
+        flightBoard.addToFlightBoard(player1, 2);
+        flightBoard.addToFlightBoard(player2, 3);
+        flightBoard.addToFlightBoard(player3, 1);
     }
 
     @Test
-    void the_only_player_that_can_pass_is_player1_in_position_2_and_accepts_the_trade() {
-        flightBoard.addToFlightBoard(player1, 2);
-        flightBoard.addToFlightBoard(player2, 1);
-        flightBoard.addToFlightBoard(player3, 3);
-        flightBoard.addToFlightBoard(player4, 4);
-        int player1_initialDays = player1.getPlayerPosition();
-        game.setDrawnCard(abandonedShip);
+    void successfully_initialize_card_and_execute () {
+        game.setDrawnCard(starDust);
         game.getDrawnCard().initializeCard(game);
-        game.setGameState(GameState.CARD_EVENT);
-        assertEquals(abandonedShip, game.getDrawnCard());
-        //first player (2) to play doesn't have enough crew so should be skipped automatically whatever his input is
-        assertEquals(player2, abandonedShip.getPlayerToPlay());
-        abandonedShip.executeCard(game, player2.getPlayerName(), new String[]{""});
-        assertEquals(player1, abandonedShip.getPlayerToPlay());
-        //player 1 is next and says yes
-        abandonedShip.executeCard(game, player1.getPlayerName(), new String[]{"yes"});
-        //now player 2 has to choose crew to remove
-        abandonedShip.executeCard(game, player1.getPlayerName(), new String[]{"1", "1", "2", "1", "2", "7"});
-        //it's still his turn because he typed one of the coordinates wrong, now has to re input the last one
-        assertEquals(player1, abandonedShip.getPlayerToPlay());
-        abandonedShip.executeCard(game, player1.getPlayerName(), new String[]{"2", "1"});
-        assertEquals(GameState.DRAW_CARD, game.getGameState());
-        assertEquals(10, player1.getCredit());
-        assertEquals(player1.getPlayerPosition(), player1_initialDays - 2);
+
+        assertEquals(-2, player1.getPlayerPosition());
+        assertEquals(-6, player2.getPlayerPosition());
+        assertEquals(5, player3.getPlayerPosition());
     }
 
 }
