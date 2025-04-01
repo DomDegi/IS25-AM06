@@ -79,7 +79,7 @@ public class LargeMeteor extends Projectile {
         Optional<Tile> Temp = Optional.empty();
         Optional<Tile>[][] tileTable= ship.getTilesTable();
         boolean doubleCannon = false;
-        int i = 5;// num of iteration
+        int i = 4;// num of iteration
         diceRoll = diceRoll-4;
         while(i>=0) {
             Temp = tileTable[i][diceRoll];
@@ -102,7 +102,7 @@ public class LargeMeteor extends Projectile {
         Optional<Tile>[][] tileTable= ship.getTilesTable();
         boolean doubleCannon = false;
         int i = 6;// num of iteration
-        diceRoll = diceRoll-4;
+        diceRoll = diceRoll-5;
         while(i>=0) {
             Temp = tileTable[diceRoll][i];
             if (Temp.isPresent() && Temp.get().fillable()) {
@@ -124,9 +124,9 @@ public class LargeMeteor extends Projectile {
         Optional<Tile>[][] tileTable= ship.getTilesTable();
         boolean doubleCannon = false;
         int i = 0;// num of iteration
-        diceRoll = diceRoll-4;
+        diceRoll = diceRoll-5;
         while(i<=6) {
-            Temp = tileTable[i][diceRoll];
+            Temp = tileTable[diceRoll][i];
             if (Temp.isPresent() && Temp.get().fillable()) {
                 if (Temp.get().getStrength() == 1 && Temp.get().getDirection()== Direction.WEST)
                     doubleCannon = true;
@@ -170,16 +170,20 @@ public class LargeMeteor extends Projectile {
             return temp;
         if(temp==Defense.CHOOSETOUSEBATTERY)
             defense = temp;
-        temp = checkEastLev1(player,diceRoll+1);
-        if(temp==Defense.PROTECTED)
-            return temp;
-        if(temp==Defense.CHOOSETOUSEBATTERY)
-            defense = temp;
-        temp = checkEastLev1(player,diceRoll-1);
-        if(temp==Defense.PROTECTED)
-            return temp;
-        if(temp==Defense.CHOOSETOUSEBATTERY)
-            defense = temp;
+        if(diceRoll!=9) {
+            temp = checkEastLev1(player, diceRoll + 1);
+            if (temp == Defense.PROTECTED)
+                return temp;
+            if (temp == Defense.CHOOSETOUSEBATTERY)
+                defense = temp;
+        }
+        if(diceRoll!=0) {
+            temp = checkEastLev1(player, diceRoll - 1);
+            if (temp == Defense.PROTECTED)
+                return temp;
+            if (temp == Defense.CHOOSETOUSEBATTERY)
+                defense = temp;
+        }
         return defense;
     }
     private Defense checkWestLev2(Player player, int diceRoll) {
@@ -190,16 +194,20 @@ public class LargeMeteor extends Projectile {
             return temp;
         if(temp==Defense.CHOOSETOUSEBATTERY)
             defense = temp;
-        temp = checkWestLev1(player,diceRoll+1);
-        if(temp==Defense.PROTECTED)
-            return temp;
-        if(temp==Defense.CHOOSETOUSEBATTERY)
-            defense = temp;
-        temp = checkWestLev1(player,diceRoll-1);
-        if(temp==Defense.PROTECTED)
-            return temp;
-        if(temp==Defense.CHOOSETOUSEBATTERY)
-            defense = temp;
+        if(diceRoll!=9) {
+            temp = checkWestLev1(player, diceRoll + 1);
+            if (temp == Defense.PROTECTED)
+                return temp;
+            if (temp == Defense.CHOOSETOUSEBATTERY)
+                defense = temp;
+        }
+        if(diceRoll!=0) {
+            temp = checkWestLev1(player, diceRoll - 1);
+            if (temp == Defense.PROTECTED)
+                return temp;
+            if (temp == Defense.CHOOSETOUSEBATTERY)
+                defense = temp;
+        }
         return defense;
     }
     /* private Defense checkSouthLev2(Player player, int diceRoll) {

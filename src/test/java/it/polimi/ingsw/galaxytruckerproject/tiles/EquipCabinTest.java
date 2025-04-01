@@ -99,6 +99,7 @@ class EquipCabinTest {
         tile12.getStat();
 
         boolean result;
+        
         if(((EquipCabin) tile12).getAlienability().equals(AlienOptions.PURPLE))
             result = true;
         else
@@ -195,12 +196,16 @@ class EquipCabinTest {
         tile12.getStat();
 
         boolean result;
-        if(((EquipCabin) tile12).getAlienability().equals(AlienOptions.BOTH))
+        tile17.destroy();
+
+        if(((EquipCabin) tile12).getAlienability().equals(AlienOptions.BROWN))
             result = true;
         else
             result = false;
 
         assertTrue(result);
     }
+
+
 
 }

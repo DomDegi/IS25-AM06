@@ -51,10 +51,9 @@ class ProjectilePenaltyTest {
         shipBoard.positionTile(Optional.of(singleCannonW), new Coordinates(2, 2));
 
 
+        listOfMeteors1 = new ArrayList<>(List.of(new LargeMeteor(Direction.NORTH)));
 
-        listOfMeteors1 = new ArrayList<> (List.of(new LargeMeteor(Direction.NORTH)));
-
-        listOfMeteorsFull = new ArrayList<> (Arrays.asList(
+        listOfMeteorsFull = new ArrayList<>(Arrays.asList(
                 new LargeMeteor(Direction.NORTH),
                 new SmallMeteor(Direction.NORTH),
                 new LargeMeteor(Direction.EAST),
@@ -65,7 +64,7 @@ class ProjectilePenaltyTest {
                 new SmallMeteor(Direction.WEST)
         ));
 
-        listOfLargeCannonShot1= new ArrayList<>(List.of(new LargeCannonShot(Direction.NORTH)));
+        listOfLargeCannonShot1 = new ArrayList<>(List.of(new LargeCannonShot(Direction.NORTH)));
     }
 
     @Test
@@ -75,7 +74,7 @@ class ProjectilePenaltyTest {
         String[] input = {};
         penalty = new ProjectilePenalty(listOfMeteors1);
         int returnValue = penalty.applyPenalty(gameLvl2, player, input);
-        assertEquals(0, returnValue);
+        assertEquals(1, returnValue);
         System.out.println(shipBoard.toString());
     }
 
@@ -86,8 +85,18 @@ class ProjectilePenaltyTest {
         String[] input = {};
         penalty = new ProjectilePenalty(listOfLargeCannonShot1);
         int returnValue = penalty.applyPenalty(gameLvl2, player, input);
-        assertEquals(0, returnValue);
+        assertEquals(1, returnValue);
         System.out.println(shipBoard.toString());
     }
 
+    @Test
+    void ListOfMeteorsFull_test() {
+        System.out.println(shipBoard.toString());
+        System.out.println("Lancio cannonShot");
+        String[] input = {};
+        penalty = new ProjectilePenalty(listOfMeteorsFull);
+        int returnValue = penalty.applyPenalty(gameLvl2, player, input);
+        assertEquals(1, returnValue);
+        System.out.println(shipBoard.toString());
+    }
 }

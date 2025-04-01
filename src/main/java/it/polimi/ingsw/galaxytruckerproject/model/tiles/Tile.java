@@ -1,6 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
-import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.Goods;
 
 import java.util.Optional;
 
@@ -129,7 +129,10 @@ public abstract class Tile {
         return 0;
     }
     public boolean fillable(){return true;}
-    public CrewType getAlienLifeSupportSystemColor(){/*System.out.println("THIS TILE IS NOT A ALIEN LIFE SUPPORT SYSTEM");*/ return CrewType.NotSupportSystem;}
+    public CrewType getAlienLifeSupportSystemColor(){
+        //System.out.println("THIS TILE IS NOT A ALIEN LIFE SUPPORT SYSTEM");
+        return CrewType.NotSupportSystem;
+    }
     public ArrayList<Coordinates> adjacentLifeSupport(){System.out.println("THIS TILE IS NOT A CABIN"); return new ArrayList<Coordinates>();}
 
 
