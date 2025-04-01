@@ -1,9 +1,9 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 import java.util.*;
 
-import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 
 
 public class ShipBoard {
@@ -623,7 +623,7 @@ public class ShipBoard {
     //if these methods finds no goods in cargo holds, returns false
     public boolean isCargoEmpty() {
         for (Coordinates coordinates : cargoHoldCoordinates) {
-            if (!tilesTable[coordinates.x][coordinates.getY()].get().getCargo().isEmpty())
+            if (!tilesTable[coordinates.getX()][coordinates.getY()].get().getCargo().isEmpty())
                 return false;
         }
         return true;
@@ -655,20 +655,20 @@ public class ShipBoard {
         ArrayList<Goods> goods = new ArrayList<>();
         int i;
         Goods good = new Goods(GoodsColor.RED);
-        for(i=cargoHoldContainsGood(good).size();i==0;i--){
+        for(i=cargoHoldContainsGood(good).size();i>0;i--){
             goods.add(good);
         }
         good = new Goods(GoodsColor.YELLOW);
-        for(i=cargoHoldContainsGood(good).size();i==0;i--){
+        for(i=cargoHoldContainsGood(good).size();i>0;i--){
             goods.add(good);
 
         }
         good = new Goods(GoodsColor.GREEN);
-        for(i=cargoHoldContainsGood(good).size();i==0;i--){
+        for(i=cargoHoldContainsGood(good).size();i>0;i--){
             goods.add(good);
         }
         good = new Goods(GoodsColor.BLUE);
-        for(i=cargoHoldContainsGood(good).size();i==0;i--){
+        for(i=cargoHoldContainsGood(good).size();i>0;i--){
             goods.add(good);
         }
         return goods;

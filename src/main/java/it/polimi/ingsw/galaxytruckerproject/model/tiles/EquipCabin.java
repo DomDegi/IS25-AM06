@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class EquipCabin extends Cabin {
 
-    private AlienOptions alienability;
+    private AlienOptions    alienability;
     private CrewType crewType;
 
     public EquipCabin(Link north, Link east, Link south, Link west) {
