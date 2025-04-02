@@ -49,7 +49,7 @@ public class SmallCannonShot extends Projectile {
     }
     private Defense checkEast(Player player, int diceRoll) {
         ShipBoard ship = player.getShipBoard();
-        if(ship.getCoverageShields().contains(Coverage.SOUTH_EAST)||ship.getCoverageShields().contains(Coverage.SOUTH_WEST)){
+        if(ship.getCoverageShields().contains(Coverage.SOUTH_EAST)||ship.getCoverageShields().contains(Coverage.NORTH_EAST)){
             return Defense.CHOOSETOUSEBATTERY;
         }
         return Defense.HIT;

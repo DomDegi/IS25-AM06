@@ -73,6 +73,8 @@ class ProjectilePenaltyTest {
         System.out.println("Lancio meteore");
         String[] input = {};
         penalty = new ProjectilePenalty(listOfMeteors1);
+        penalty.setDiceRoll(1);
+
         int returnValue = penalty.applyPenalty(gameLvl2, player, input);
         assertEquals(1, returnValue);
         System.out.println(shipBoard.toString());

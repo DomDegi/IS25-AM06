@@ -170,7 +170,7 @@ class ProjectileTest {
     @Test
     void testShipoboard1LargeMeteorN(){
         LargeMeteor met= new LargeMeteor(Direction.NORTH);
-        assertTrue(met.throwProjectile(player1,7,gameLvl2)== Defense.PROTECTED);
+        assertTrue(met.throwProjectile(player1,7,gameTrial)== Defense.PROTECTED);
         System.out.println(shipBoard1.toString());
     }
 
@@ -183,13 +183,13 @@ class ProjectileTest {
     @Test
     void testShipoboard1LargeMeteorE(){
         LargeMeteor met= new LargeMeteor(Direction.EAST);
-        assertTrue(met.throwProjectile(player1,8,gameLvl2)==Defense.PROTECTED);
+        assertTrue(met.throwProjectile(player1,8,gameTrial)==Defense.HIT);
         System.out.println(met.getCoordinatesToDestroy());
     }
     @Test
     void testShipoboard1LargeMeteorW(){
         LargeMeteor met= new LargeMeteor(Direction.WEST);
-        assertTrue(met.throwProjectile(player1,8,gameLvl2)==Defense.PROTECTED);
+        assertTrue(met.throwProjectile(player1,8,gameTrial)==Defense.HIT);
         System.out.println(met.getCoordinatesToDestroy());
     }
 
@@ -219,6 +219,62 @@ class ProjectileTest {
         System.out.println(met.getCoordinatesToDestroy());
     }
 
+    @Test
+    void testShipoboard1LargeCannonShotN(){
+        LargeCannonShot met= new LargeCannonShot(Direction.NORTH);
+        assertTrue(met.throwProjectile(player1,7,gameLvl2)== Defense.HIT);
+        System.out.println(shipBoard1.toString());
+    }
+
+    @Test
+    void testShipoboard1LargeCannonShotS(){
+        LargeCannonShot met= new LargeCannonShot(Direction.SOUTH);
+        assertTrue(met.throwProjectile(player1,8,gameLvl2)==Defense.HIT);
+        System.out.println(met.getCoordinatesToDestroy());
+    }
+    @Test
+    void testShipoboard1LargeCannonShotE(){
+        LargeCannonShot met= new LargeCannonShot(Direction.EAST);
+        assertTrue(met.throwProjectile(player1,9,gameLvl2)==Defense.PROTECTED);
+        System.out.println(met.getCoordinatesToDestroy());
+    }
+    @Test
+    void testShipoboard1LargeCannonShotW(){
+        LargeCannonShot met= new LargeCannonShot(Direction.WEST);
+        assertTrue(met.throwProjectile(player1,8,gameLvl2)==Defense.HIT);
+        System.out.println(met.getCoordinatesToDestroy());
+    }
+    @Test
+    void testShipoboard1SmallCannonShot(){
+        SmallCannonShot met= new SmallCannonShot(Direction.NORTH);
+        assertTrue(met.throwProjectile(player1,7,gameLvl2)== Defense.HIT);
+        System.out.println(shipBoard1.toString());
+        SmallCannonShot met1= new SmallCannonShot(Direction.SOUTH);
+        assertTrue(met1.throwProjectile(player1,8,gameLvl2)==Defense.HIT);
+        System.out.println(met1.getCoordinatesToDestroy());
+        SmallCannonShot met2= new SmallCannonShot(Direction.EAST);
+        assertTrue(met2.throwProjectile(player1,9,gameLvl2)==Defense.PROTECTED);
+        System.out.println(met2.getCoordinatesToDestroy());
+        SmallCannonShot met3= new SmallCannonShot(Direction.WEST);
+        assertTrue(met3.throwProjectile(player1,8,gameLvl2)==Defense.HIT);
+        System.out.println(met3.getCoordinatesToDestroy());
+    }
+
+    @Test
+    void testShipoboard2allCannonShot(){
+        SmallCannonShot met= new SmallCannonShot(Direction.NORTH);
+        assertTrue(met.throwProjectile(player2,7,gameLvl2)== Defense.CHOOSETOUSEBATTERY);
+        System.out.println(met.getCoordinatesToDestroy());
+        SmallCannonShot met1= new SmallCannonShot(Direction.SOUTH);
+        assertTrue(met1.throwProjectile(player2,8,gameLvl2)==Defense.HIT);
+        System.out.println(met1.getCoordinatesToDestroy());
+        SmallCannonShot met2= new SmallCannonShot(Direction.EAST);
+        assertTrue(met2.throwProjectile(player2,9,gameLvl2)==Defense.CHOOSETOUSEBATTERY);
+        System.out.println(met2.getCoordinatesToDestroy());
+        SmallCannonShot met3= new SmallCannonShot(Direction.WEST);
+        assertTrue(met3.throwProjectile(player2,8,gameLvl2)==Defense.HIT);
+        System.out.println(met3.getCoordinatesToDestroy());
+    }
 
 
 }
