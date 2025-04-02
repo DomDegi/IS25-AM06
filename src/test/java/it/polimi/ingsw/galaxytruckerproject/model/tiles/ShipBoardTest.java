@@ -53,7 +53,15 @@ class ShipBoardTest {
         boolean result=shipBoard1.verifyCorrectness();
         //verifyCorrectness is needed for the shipboard stats setting
         System.out.println(shipBoard1.toString());
+        assertEquals(shipBoard1.getNumSingleEngine(),1);
         assertTrue(result);
+        assertEquals(shipBoard1.getNumHumanCrew(), 2);
+        shipBoard1.destroyTile(new Coordinates(2,3));
+        assertEquals(shipBoard1.getNumHumanCrew(), 0);
+        shipBoard1.destroyTile(new Coordinates(3,3));
+        System.out.println(shipBoard1.getNumSingleEngine());
+        assertEquals(shipBoard1.getNumSingleEngine(),0);
+
     }
 
     @Test
@@ -119,8 +127,8 @@ class ShipBoardTest {
         Tile tile2=new CargoBlue(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE));
         shipBoard1.positionTile(Optional.of(tile2), new Coordinates(2,2));
         Tile tile3=new EquipCabin( new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE));
-        tile3.setCrewType(CrewType.HUMAN);
         shipBoard1.positionTile(Optional.of(tile3), new Coordinates(2,4));
+        tile3.setCrewType(CrewType.HUMAN);
         Tile tile4=new Shields( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL));
         shipBoard1.positionTile(Optional.of(tile4), new Coordinates(2,5));
         Tile tile5=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),3);
@@ -133,6 +141,9 @@ class ShipBoardTest {
         //verifyCorrectness is needed for the shipboard stats setting
         System.out.println(shipBoard1.toString());
         assertTrue(result);
+        assertEquals(shipBoard1.getNumHumanCrew(), 4);
+        shipBoard1.destroyTile(new Coordinates(2,4));
+        assertEquals(shipBoard1.getNumHumanCrew(), 2);
     }
 
     @Test
@@ -552,6 +563,7 @@ class ShipBoardTest {
         assertEquals(goods.get(2).getColor(),shipBoard1.getSingleCargoGoods(new Coordinates(1,3)).get(2).getColor());
 
     }
+
     @Test
     void DestroyAndSetNewShip_Shipboard5_ (){
         Player player1 = new Player("MimmoPericoloso", PlayersColor.BLUE);

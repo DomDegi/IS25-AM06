@@ -59,7 +59,7 @@ public class LargeMeteor extends Projectile {
         boolean doubleCannon = false;
         int i = 0;// num of iteration
         diceRoll = diceRoll-4;
-        while(i<=5) {
+        while(i<=4) {
             Temp = tileTable[i][diceRoll];
             if (Temp.isPresent() && Temp.get().fillable()) {
                 if (Temp.get().getStrength() == 2)

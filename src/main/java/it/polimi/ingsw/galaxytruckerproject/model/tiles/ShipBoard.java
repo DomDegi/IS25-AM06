@@ -287,6 +287,7 @@ public class ShipBoard {
         if (coordinates.x == 0 && coordinates.y == 0) {
             System.out.println("Can't destroy ");
         }
+        ArrayList<Set<Coordinates>> array = new ArrayList<>();
         tilesTable[coordinates.x][coordinates.y].get().destroy();
         tilesTable[coordinates.getX()][coordinates.getY()] = Optional.empty();
         Set<Coordinates> set1 = null;
@@ -313,7 +314,7 @@ public class ShipBoard {
         if (!tilesTable[x][y - 1].isEmpty() && tilesTable[x][y - 1].get().fillable() && (set1 == null || !set1.contains(tilesTable[x][y - 1].get().getCoordinates())) && (set2 == null || !set2.contains(tilesTable[x][y - 1].get().getCoordinates())) && (set3 == null || !set3.contains(tilesTable[x][y - 1].get().getCoordinates()))) {
             set4 = brokenGraph(new Coordinates(x, y - 1));
         }
-        ArrayList<Set<Coordinates>> array = new ArrayList<>();
+
         if (set1 != null) {
             array.add(set1);
         }
@@ -458,7 +459,13 @@ public class ShipBoard {
         HashSet<Coordinates> InfectedCabin = new HashSet<>();
         for(Coordinates coordinates : crewCoordinates){
             for(Coordinates coordinates2 : crewCoordinates){
-                if((Math.abs(coordinates.getX() - coordinates2.getX())==1 || Math.abs(coordinates.getY() - coordinates2.getY())==1)&& !coordinates.equals(coordinates2)){
+                if(     (coordinates.getX() == coordinates2.getX() &&  coordinates.getY()-1 == coordinates2.getY() && !this.getTile(coordinates).getWest().getConnectorsType().equals(Connectors.SMOOTH))
+                        || (coordinates.getX() == coordinates2.getX() &&  coordinates.getY()+1 == coordinates2.getY() && !this.getTile(coordinates).getEast().getConnectorsType().equals(Connectors.SMOOTH))
+                            || (coordinates.getX()-1 == coordinates2.getX() &&  coordinates.getY() == coordinates2.getY() && !this.getTile(coordinates).getNorth().getConnectorsType().equals(Connectors.SMOOTH))
+                                || coordinates.getX()+1 == coordinates2.getX() &&  coordinates.getY() == coordinates2.getY() && !this.getTile(coordinates).getSouth().getConnectorsType().equals(Connectors.SMOOTH)
+                )
+                {
+                    //(Math.abs(coordinates.getX() - coordinates2.getX())==1 ^ Math.abs(coordinates.getY() - coordinates2.getY())==1)&& !coordinates.equals(coordinates2)
                     InfectedCabin.add(coordinates2);
                 }
             }

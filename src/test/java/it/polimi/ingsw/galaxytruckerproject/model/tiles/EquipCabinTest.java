@@ -196,14 +196,26 @@ class EquipCabinTest {
         tile12.getStat();
 
         boolean result;
-        tile17.destroy();
-
-        if(((EquipCabin) tile12).getAlienability().equals(AlienOptions.BROWN))
+        if(((EquipCabin) tile12).getAlienability().equals(AlienOptions.BOTH))
             result = true;
         else
             result = false;
 
         assertTrue(result);
+        tile12.setCrewType(CrewType.BROWN);
+        assertTrue(tile12.getCrewType().equals(CrewType.BROWN) && ((EquipCabin) tile12).getCrew()==1);
+        assertTrue(shipBoard1.getNumBrownAliens()==1);
+
+        tile10.destroy();
+
+        if(((EquipCabin) tile12).getAlienability().equals(AlienOptions.PURPLE))
+            result = true;
+        else
+            result = false;
+        assertTrue(((EquipCabin) tile12).getCrew()==0);
+        assertTrue(shipBoard1.getNumBrownAliens()==0);
+        assertTrue(result);
+
     }
 
 

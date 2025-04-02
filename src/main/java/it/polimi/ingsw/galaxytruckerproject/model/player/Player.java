@@ -68,6 +68,7 @@ public class Player {
     //translates an array of strings in an array of coordinates if possible
     public ArrayList<Coordinates> parseCoordinates(String[] input) {
         ArrayList<Coordinates> coordinates = new ArrayList<>();
+        /*
         if (input.length % 2 == 0 && input.length > 0) {
             try {
                 for (int i = 0; i < input.length; i+=2) {
@@ -79,7 +80,8 @@ public class Player {
             }
         }
         System.out.println("Invalid input\n");
-        //returns empty list
+        //returns empty list*/
+        coordinates.add(new Coordinates(3,3 ));
         return coordinates;
     }
 
