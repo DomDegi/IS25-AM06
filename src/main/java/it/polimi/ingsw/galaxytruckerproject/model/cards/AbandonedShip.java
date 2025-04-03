@@ -52,24 +52,20 @@ public class AbandonedShip extends Card{
                         playerAccepted = true;
                         System.out.println("input a pair of number x y for every crew to remove\n");
                         penaltyIfAccept.printInfo(playerToPlay);
-                    }
-                    else if (input[0].equalsIgnoreCase("no")){
+                    } else if (input[0].equalsIgnoreCase("no")){
                         playerIndex++;
                         initializeCard(game);
                     }
-                }
-                else {
+                } else {
                     playerIndex++;
                     initializeCard(game);
                 }
-            }
-            else {
+            } else {
                 if (penaltyIfAccept.applyPenalty(game, playerToPlay, input) == 1) {
                     playerToPlay.gainCredit(possibleCreditGains);
                     game.getFlightBoard().moveBackward(playerToPlay, requiredDays);
                     game.endCardEvent();
-                }
-                else
+                } else
                     System.out.println("need more inputs");
             }
         }

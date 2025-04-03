@@ -201,7 +201,7 @@ class FlightBoardTest {
     }
 
     @Test
-    void full_moving_players_with_early_landed(){
+    void full_moving_players_with_early_landed_and_human(){
         flightBoard.addToFlightBoard(player1, 1);
         flightBoard.addToFlightBoard(player2, 2);
         flightBoard.addToFlightBoard(player3, 3);
@@ -209,6 +209,7 @@ class FlightBoardTest {
         player1.getPlayerShip().setHumanCrew(2);
         player2.getPlayerShip().setHumanCrew(2);
         player3.getPlayerShip().setHumanCrew(2);
+        player4.getPlayerShip().setHumanCrew(0);
 
         flightBoard.moveForward(player1,5);
         flightBoard.moveForward(player2,10);
@@ -246,5 +247,70 @@ class FlightBoardTest {
         assertFalse(flightBoard.getInGamePlayers().contains(player2));
         assertEquals(player4, flightBoard.getAllPlayers().get(3));
         assertFalse(flightBoard.getInGamePlayers().contains(player4));
+    }
+    @Test
+    void full_moving_players_with_early_landed(){
+        flightBoard.addToFlightBoard(player1, 1);
+        flightBoard.addToFlightBoard(player2, 2);
+        flightBoard.addToFlightBoard(player3, 3);
+        flightBoard.addToFlightBoard(player4, 4);
+        player1.getPlayerShip().setHumanCrew(2);
+        player2.getPlayerShip().setHumanCrew(2);
+        player3.getPlayerShip().setHumanCrew(2);
+        player4.getPlayerShip().setHumanCrew(2);
+
+        flightBoard.moveForward(player1,5);
+        flightBoard.moveForward(player2,10);
+        flightBoard.moveForward(player3,6);
+        flightBoard.moveForward(player4,9);
+        assertEquals(14, player1.getPlayerPosition());
+        assertEquals(16, player2.getPlayerPosition());
+        assertEquals(8, player3.getPlayerPosition());
+        assertEquals(10, player4.getPlayerPosition());
+
+        assertEquals(1, player2.getPlayerRanking());
+        assertEquals(2, player1.getPlayerRanking());
+        assertEquals(3, player4.getPlayerRanking());
+        assertEquals(4, player3.getPlayerRanking());
+        flightBoard.concludeMovement();
+
+        assertEquals(14, player1.getPlayerPosition());
+        assertEquals(16, player2.getPlayerPosition());
+        assertEquals(8, player3.getPlayerPosition());
+        assertEquals(10, player4.getPlayerPosition());
+
+        assertEquals(1, player2.getPlayerRanking());
+        assertEquals(2, player1.getPlayerRanking());
+        assertEquals(3, player4.getPlayerRanking());
+        assertEquals(4, player3.getPlayerRanking());
+
+        flightBoard.moveBackward(player3,6);
+        flightBoard.moveBackward(player4,1);
+        flightBoard.moveBackward(player1,9);
+        flightBoard.moveBackward(player2,40);
+        assertEquals(4, player1.getPlayerPosition());
+        assertEquals(-27, player2.getPlayerPosition());
+        assertEquals(2, player3.getPlayerPosition());
+        assertEquals(9, player4.getPlayerPosition());
+
+        assertEquals(4, player2.getPlayerRanking());
+        assertEquals(2, player1.getPlayerRanking());
+        assertEquals(1, player4.getPlayerRanking());
+        assertEquals(3, player3.getPlayerRanking());
+        flightBoard.concludeMovement();
+
+        assertEquals(4, player1.getPlayerPosition());
+        assertEquals(-27, player2.getPlayerPosition());
+        assertEquals(2, player3.getPlayerPosition());
+        assertEquals(9, player4.getPlayerPosition());
+
+        assertEquals(4, player2.getPlayerRanking());
+        assertEquals(2, player1.getPlayerRanking());
+        assertEquals(1, player4.getPlayerRanking());
+        assertEquals(3, player3.getPlayerRanking());
+
+        assertEquals(player2, flightBoard.getAllPlayers().get(3));
+        assertFalse(flightBoard.getInGamePlayers().contains(player2));
+
     }
 }

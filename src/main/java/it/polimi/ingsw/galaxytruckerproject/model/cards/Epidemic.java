@@ -14,6 +14,8 @@ public class Epidemic extends Card {
 
     @Override
     public void initializeCard(Game game) {
+        String[] input = {"any", "input"};
+        executeCard(game, game.getListOfPlayers().getFirst().getPlayerName(), input);
     }
 
     @Override
@@ -21,6 +23,7 @@ public class Epidemic extends Card {
         for(Player player: game.getFlightBoard().getInGamePlayers()){
             player.getShipBoard().epidemic();
         }
+        game.endCardEvent();
     }
 
     @Override

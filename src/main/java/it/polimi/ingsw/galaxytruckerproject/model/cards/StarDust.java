@@ -37,6 +37,7 @@ public class StarDust extends Card {
                 System.out.println(players.get(i).getPlayerName() + " has no exposed connectors. StarDust doesn't affect them\n");
             }
         }
+        game.endCardEvent();
     }
 
     @Override

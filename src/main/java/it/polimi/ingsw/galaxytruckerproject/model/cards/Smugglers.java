@@ -41,8 +41,8 @@ public class Smugglers extends Enemies{
             goodsManager.goodsPrinter(rewardGoods);
         }
         if (playerToInteract.isEmpty()) {
-            System.out.print("Card Finished\n");
-            game.endCardPhase();
+
+            game.endCardEvent();
             return;
         }
         currentPlayer= playerToInteract.getFirst();
@@ -56,7 +56,6 @@ public class Smugglers extends Enemies{
         if (!playerName.equals(currentPlayer.getPlayerName()))
             return;
         if(playerToInteract.isEmpty()) {
-            System.out.print("Card Finished\n");
             game.endCardEvent();
             return;
         }
@@ -143,7 +142,6 @@ public class Smugglers extends Enemies{
         //getReward
         } else if(won == 3){
             if(goodsManager.getReward(input)){
-                System.out.print("Card Finished\n");
                 game.endCardEvent();
             }
         //loseManager
