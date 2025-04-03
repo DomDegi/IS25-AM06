@@ -231,6 +231,8 @@ public class Game implements GameInterface {
     }
 
     public void endCardEvent() {
+        System.out.print("Card Finished\n");
+        this.getFlightBoard().concludeMovement();
         this.gameState = DRAW_CARD;
     }
 

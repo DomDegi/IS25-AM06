@@ -40,8 +40,7 @@ public class Planets extends Card{
                 i.getAndIncrement();
         });
         if (playerToInteract.isEmpty()||i.get() ==listOfPlanets.size()) {
-            System.out.print("Card Finished\n");
-            game.endCardPhase();
+            game.endCardEvent();
             return;
         }
         currentPlayer= playerToInteract.getFirst();
@@ -56,7 +55,6 @@ public class Planets extends Card{
         if (!playerName.equals(currentPlayer.getPlayerName()))
             return;
         if(playerToInteract.isEmpty()||listOfPlanets.isEmpty()){
-            System.out.print("Card Finished\n");
             game.endCardEvent();
             return;
         }

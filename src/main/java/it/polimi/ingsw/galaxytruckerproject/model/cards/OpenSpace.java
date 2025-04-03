@@ -28,9 +28,9 @@ public class OpenSpace extends Card {
             for (Player player: playersToEarlyLand) {
                 game.getFlightBoard().earlyLanding(player);
             }
-            game.getFlightBoard().concludeMovement();
             //draw next card
             game.endCardEvent();
+            return;
         }
 
         currentPlayer = game.getListOfPlayers().get(playerIndex);
@@ -43,14 +43,12 @@ public class OpenSpace extends Card {
     public void executeCard(Game game, String playerName, String[] input) {
         //playerName has to be the same as the current one to face the card's adventure
         if (currentPlayer != null && currentPlayer.getPlayerName().equalsIgnoreCase(playerName)) {
-
             //decides against using double engines
             if (input[0].equals("no")) {
                 int engineStrength = currentPlayer.useDoubleEngines(new ArrayList<>());
-                MoveOrEarlyLand(game, engineStrength);
-            }
-            else {
-                ArrayList<Coordinates> coordinates =  new ArrayList<>(currentPlayer.parseCoordinates(input));
+                moveOrEarlyLand(game, engineStrength);
+            } else {
+                ArrayList<Coordinates> coordinates = new ArrayList<>(currentPlayer.parseCoordinates(input));
                 if (coordinates.isEmpty()) {
                     return;
                 }
@@ -63,13 +61,14 @@ public class OpenSpace extends Card {
                 if (engineStrength == -1) {
                     return;
                 }
-                MoveOrEarlyLand(game, engineStrength);
+                moveOrEarlyLand(game, engineStrength);
             }
         }
     }
 
     //moves player forward; early lands if engineStrength == 0
-    private void MoveOrEarlyLand(Game game, int engineStrength) {
+    private void moveOrEarlyLand(Game game, int engineStrength) {
+        System.out.println("\n");
         if (engineStrength == 0) {
             playersToEarlyLand.add(currentPlayer);
             playerIndex++;

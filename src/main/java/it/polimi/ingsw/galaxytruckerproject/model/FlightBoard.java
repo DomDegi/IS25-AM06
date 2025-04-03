@@ -165,8 +165,8 @@ public class FlightBoard {
         for (int i = playerRank-1; i>=0 ; i--) {
             if (inGamePlayers.get(playerRank).getPlayerPosition() >= inGamePlayers.get(i).getPlayerPosition()) {
                 inGamePlayers.get(playerRank).setPlayerPosition(inGamePlayers.get(playerRank).getPlayerPosition() + 1);
-                inGamePlayers.get(playerRank).setPlayerRanking(inGamePlayers.get(playerRank).getPlayerRanking() + 1);
-                inGamePlayers.get(i).setPlayerRanking(inGamePlayers.get(i).getPlayerRanking() - 1);
+                inGamePlayers.get(playerRank).setPlayerRanking(inGamePlayers.get(playerRank).getPlayerRanking() - 1);
+                inGamePlayers.get(i).setPlayerRanking(inGamePlayers.get(i).getPlayerRanking() + 1);
             }
         }
     }
@@ -183,8 +183,8 @@ public class FlightBoard {
         for (int i = playerRank+1; i<inGamePlayers.size() ; i++) {
             if (inGamePlayers.get(playerRank).getPlayerPosition() <= inGamePlayers.get(i).getPlayerPosition()) {
                 inGamePlayers.get(playerRank).setPlayerPosition(inGamePlayers.get(playerRank).getPlayerPosition() - 1);
-                inGamePlayers.get(playerRank).setPlayerRanking(inGamePlayers.get(playerRank).getPlayerRanking() - 1);
-                inGamePlayers.get(i).setPlayerRanking(inGamePlayers.get(i).getPlayerRanking() + 1);
+                inGamePlayers.get(playerRank).setPlayerRanking(inGamePlayers.get(playerRank).getPlayerRanking() + 1);
+                inGamePlayers.get(i).setPlayerRanking(inGamePlayers.get(i).getPlayerRanking() - 1);
             }
         }
     }
@@ -203,23 +203,23 @@ public class FlightBoard {
             inGamePlayers.get(i).setPlayerRanking(i + 1);
         }
     }
+
     public void concludeMovement() {
-        Player firstPlayer = null;
+        ArrayList<Player> landed=new ArrayList<>();
+        Player firstPlayer;
         if (inGamePlayers.size() <= 1) {
             System.err.println("Error: inGamePlayers is either null or does not have enough players");
             return;
         }
-        rearrange();
-        for (Player player : inGamePlayers) {
-            if (player.getPlayerRanking() == 1) {
-                firstPlayer = player;
-                break;
-            }
-        }
         for (Player player:  inGamePlayers) {
             if (player.getShipBoard().getNumHumanCrew() == 0)
-                earlyLanding(player);
+                landed.add(player);
         }
+        for (Player player:  landed) {
+            earlyLanding(player);
+        }
+        rearrange();
+        firstPlayer = inGamePlayers.getFirst();
         if (firstPlayer == null) {
             System.err.println("Error: No player with rank 1 found");
             return;

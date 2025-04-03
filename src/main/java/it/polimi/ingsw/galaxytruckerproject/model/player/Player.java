@@ -150,8 +150,8 @@ public class Player {
         return -1;
     }
     public void printCurrentInfoEngines(){
-        System.out.println("Current number of Single Engine" + playerShip.getNumSingleEngine());
-        System.out.println("Current Coordinates of Double Engine");
+        System.out.println(playerName+" Current number of Single Engine " + playerShip.getNumSingleEngine());
+        System.out.println(playerName+" Current Coordinates of Double Engine ");
         for(Coordinates Coordinates : playerShip.getDoubleEngine()){
             System.out.println(Coordinates.getX() + " " + Coordinates.getY());
         }
@@ -254,7 +254,7 @@ public class Player {
 
     public void printCurrentInfoBatteries(){
         for(Coordinates Coordinates : playerShip.getBatteryCoordinates()){
-            System.out.println("Battery Coordinates " + Coordinates.getX() + " " + Coordinates.getY());
+            System.out.println(playerName+ ": Battery Coordinates " + Coordinates.getX() + " " + Coordinates.getY());
         }
     }
 

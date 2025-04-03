@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Link {
     Connectors connectorsType;
 
-
     @JsonCreator
     public Link(@JsonProperty("connectorsType") Connectors connectorsType){
         this.connectorsType = connectorsType;

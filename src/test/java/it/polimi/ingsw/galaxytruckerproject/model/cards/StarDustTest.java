@@ -1,29 +1,41 @@
-package it.polimi.ingsw.galaxytruckerproject.model.player;
+package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
+import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class PlayerTest {
-
-    private Player player = new Player("manuEl", PlayersColor.RED);
+class StarDustTest {
+    private StarDust starDust;
+    private Game game;
+    private Player player1;
+    private Player player2;
+    private Player player3;
+    private FlightBoard flightBoard;
 
     @BeforeEach
-
     void setUp() {
-        ShipBoard shipBoard1 = new ShipBoard(player);
-        player.setPlayerShip(shipBoard1);
+        game = new Game(GameMode.LEVEL2,3);
+        flightBoard = game.getFlightBoard();
+        player1 = new Player("MimmoPericoloso", PlayersColor.BLUE);
+        player2 = new Player("FedeGalattico", PlayersColor.RED);
+        player3 = new Player("EnnioVolante", PlayersColor.YELLOW);
+        starDust = new StarDust(1);
+
+        //shipboard 5 to player1
+        ShipBoard shipBoard1 = new ShipBoard(player1);
+        player1.setPlayerShip(shipBoard1);
         shipBoard1.initializeLevel2();
         Tile tile1=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
         shipBoard1.positionTile(Optional.of(tile1), new Coordinates(0,4));
-
         Tile tile2=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE));
         shipBoard1.positionTile(Optional.of(tile2), new Coordinates(1,1));
         tile2.setCrewType(CrewType.HUMAN);
@@ -35,7 +47,6 @@ class PlayerTest {
         shipBoard1.positionTile(Optional.of(tile5), new Coordinates(1,4));
         Tile tile6=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE));
         shipBoard1.positionTile(Optional.of(tile6), new Coordinates(1,5));
-
         Tile tile7=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH));
         shipBoard1.positionTile(Optional.of(tile7), new Coordinates(2,0));
         Tile tile8=new EquipCabin( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE));
@@ -70,45 +81,67 @@ class PlayerTest {
         shipBoard1.positionTile(Optional.of(tile20), new Coordinates(4,1));
         Tile tile21=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
         shipBoard1.positionTile(Optional.of(tile21), new Coordinates(4,2));
-        Tile tile22=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE));
-        tile22.rotate();
-        tile22.rotate();
-        shipBoard1.positionTile(Optional.of(tile22), new Coordinates(4,4));
         shipBoard1.verifyCorrectness();
+
+        //shipboard4 to player2
+        ShipBoard shipBoard2 = new ShipBoard(player2);
+        player2.setPlayerShip(shipBoard2);
+        shipBoard2.initializeLevel2();
+        Tile tile23=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
+        shipBoard2.positionTile(Optional.of(tile23), new Coordinates(1,3));
+        Tile tile24=new CargoRed(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE));
+        shipBoard2.positionTile(Optional.of(tile24), new Coordinates(2,2));
+        Tile tile25=new EquipCabin( new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE));
+        shipBoard2.positionTile(Optional.of(tile25), new Coordinates(2,4));
+        tile25.setCrewType(CrewType.HUMAN);
+        Tile tile26=new Shields( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL));
+        shipBoard2.positionTile(Optional.of(tile26), new Coordinates(2,5));
+        Tile tile27=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),3);
+        shipBoard2.positionTile(Optional.of(tile27), new Coordinates(3,2));
+        Tile tile28=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),2);
+        shipBoard2.positionTile(Optional.of(tile28), new Coordinates(3,3));
+        Tile tile29=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
+        shipBoard2.positionTile(Optional.of(tile29), new Coordinates(3,4));
+        shipBoard2.verifyCorrectness();
+
+        //shipboard1 to player3
+        ShipBoard shipBoard3 = new ShipBoard(player3);
+        player3.setPlayerShip(shipBoard3);
+        shipBoard3.initializeLevel2();
+        Tile tile30=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
+        shipBoard3.positionTile(Optional.of(tile30), new Coordinates(1,3));
+        Tile tile31=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH));
+        shipBoard3.positionTile(Optional.of(tile31), new Coordinates(1,4));
+        Tile tile32=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE));
+        tile32.rotate();
+        shipBoard3.positionTile(Optional.of(tile32), new Coordinates(2,5));
+        Tile tile33=new Pipe( new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL));
+        shipBoard3.positionTile(Optional.of(tile33), new Coordinates(2,4));
+        Tile tile34=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
+        tile34.rotate();
+        tile34.rotate();
+        tile34.rotate();
+        shipBoard3.positionTile(Optional.of(tile34), new Coordinates(2,2));
+        Tile tile35=new SingleEngine( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH));
+        shipBoard3.positionTile(Optional.of(tile35), new Coordinates(3,3));
+        shipBoard3.verifyCorrectness();
+
+        flightBoard.addPlayerToGame(player1);
+        flightBoard.addPlayerToGame(player2);
+        flightBoard.addPlayerToGame(player3);
+        flightBoard.addToFlightBoard(player1, 2);
+        flightBoard.addToFlightBoard(player2, 3);
+        flightBoard.addToFlightBoard(player3, 1);
     }
 
     @Test
-    void remove_crew_test() {
-        int initial_crew = player.getTotalCrew();
-        player.printCurrentInfoCabins();
-        player.removeCrew(player.parseCoordinates(new String[]{"2", "1", "2", "1", "1", "1"}));
-        player.printCurrentInfoCabins();
-        assertEquals(initial_crew - 3, player.getTotalCrew());
-    }
+    void successfully_initialize_card_and_execute () {
+        game.setDrawnCard(starDust);
+        game.getDrawnCard().initializeCard(game);
 
-    //basic test
-    @Test
-    void use_double_cannon_test1() {
-        float base_firepower = player.useDoubleCannons(new ArrayList<>());
-        int initial_batteries = player.getShipBoard().getNumBatteries();
-        player.useDoubleCannons(player.parseCoordinates(new String []{"2", "0", "2", "6"}));
-        float after_2_double_cannons = player.useDoubleCannons(player.parseCoordinates(new String[]{"3", "6", "3", "6"}));
-        assertEquals(base_firepower + 4, after_2_double_cannons);
-        assertEquals(initial_batteries - 2, player.getPlayerShip().getNumBatteries());
-    }
-
-    //basic test
-    @Test
-    void use_double_engine_test1() {
-        float base_enginestrength = player.useDoubleEngines(new ArrayList<>());
-        int initial_batteries = player.getShipBoard().getNumBatteries();
-        player.useDoubleEngines(player.parseCoordinates(new String []{"4", "2", "3", "5"}));
-        player.printCurrentInfoEngines();
-        if (player.getShipBoard().getDoubleEngine().isEmpty())
-            System.out.println("is empty");
-        int after_2_double_engines = player.useDoubleEngines(player.parseCoordinates(new String[]{"3", "0", "3", "0"}));
-        assertEquals(base_enginestrength + 4, after_2_double_engines);
-        assertEquals(initial_batteries - 2, player.getPlayerShip().getNumBatteries());
+        assertEquals(-2, player1.getPlayerPosition());
+        assertEquals(-6, player2.getPlayerPosition());
+        assertEquals(5, player3.getPlayerPosition());
     }
 
 }

@@ -36,7 +36,7 @@ public class AbandonedStation extends Card {
             initialized=true;
         }
         if(playerToInteract.isEmpty()){
-            game.endCardPhase();
+            game.endCardEvent();
             return;
         }
         System.out.printf("\nAbandoned station: you will loose %d flight days to gain the following goods:\n", requiredDays);
@@ -59,8 +59,7 @@ public class AbandonedStation extends Card {
         if (!playerName.equals(currentPlayer.getPlayerName()))
             return;
         if (playerToInteract.isEmpty()) {
-            System.out.print("Card Finished\n");
-            game.endCardPhase();
+            game.endCardEvent();
             return;
         }
         if (input.length == 0) {
@@ -101,7 +100,6 @@ public class AbandonedStation extends Card {
             }
         }else{
             if(goodsManager.getReward(input)){
-                System.out.print("Card Finished\n");
                 game.endCardEvent();
             }
         }
