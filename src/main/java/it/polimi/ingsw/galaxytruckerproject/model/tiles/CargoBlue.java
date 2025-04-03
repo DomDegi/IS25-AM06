@@ -1,7 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
 public class CargoBlue extends CargoHold {
-    boolean hazard;
 
     public CargoBlue(int totSpaces, Link north, Link east, Link west, Link south) {
         super(totSpaces, north, east, west, south);

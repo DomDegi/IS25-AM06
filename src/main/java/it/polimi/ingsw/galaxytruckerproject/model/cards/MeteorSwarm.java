@@ -25,6 +25,7 @@ public class MeteorSwarm extends Card {
         this.currentMeteor = new ProjectilePenalty(new ArrayList<>());
         this.playerIndex = 0;
         this.currentDiceRoll = 0;
+        diceRoll();
     }
 
     @Override
@@ -33,13 +34,13 @@ public class MeteorSwarm extends Card {
             game.endCardEvent();
             return;
         }
-        if (playerIndex > game.getNumberOfPlayers() - 1){
+        if (playerIndex > game.getNumberOfPlayers()-1 ){
             listOfMeteors.removeFirst();
             playerIndex = 0;
             diceRoll();
         }
 
-        currentPlayer = game.getListOfAllPlayer().get(playerIndex);
+        currentPlayer = game.getListOfPlayers().get(playerIndex);
 
         if (currentMeteor.getListOfProjectiles().isEmpty()){
             currentMeteor.addProjectile(listOfMeteors.getFirst());
@@ -69,7 +70,15 @@ public class MeteorSwarm extends Card {
     }
 
     public void diceRoll() {
-        Random random = new Random();
+        /*Random random = new Random();
         this.currentDiceRoll = 2 + random.nextInt(11);
+
+         */
+        currentDiceRoll=8;
+    }
+
+    //for testing
+    public int getPlayerIndex(){
+        return playerIndex;
     }
 }

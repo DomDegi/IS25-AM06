@@ -431,6 +431,10 @@ public class ShipBoard {
                 if (tilesTable[i][j].isPresent())
                     tilesTable[i][j].get().getStat();
             }
+        int i=bookedTiles.size();
+        for(int j=0;j<i;j++) {
+            addPenalty();
+        }
         return true;
     }
 
@@ -502,8 +506,13 @@ public class ShipBoard {
     //Returns true if the adding of the Good is successfully, false otherwise ()
     public int gainGoods(Goods goods, Coordinates coordinates){
         if(cargoHoldCoordinates.contains(coordinates)){
-            if(tilesTable[coordinates.getX()][coordinates.getY()].get().addGood(goods))
+            if(tilesTable[coordinates.getX()][coordinates.getY()].get().addGood(goods)==1)
                 return 0;
+            if( tilesTable[coordinates.getX()][coordinates.getY()].get().addGood(goods)==-1){
+                System.out.println("THIS TILE IS NOT RED CARGO HOLDER, input again");
+                return -1;
+            }
+
         }
         else{
             System.out.println("THIS TILE IS NOT A CARGO HOLDER, input again");
