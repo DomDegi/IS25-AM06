@@ -53,7 +53,15 @@ class ShipBoardTest {
         boolean result=shipBoard1.verifyCorrectness();
         //verifyCorrectness is needed for the shipboard stats setting
         System.out.println(shipBoard1.toString());
+        assertEquals(shipBoard1.getNumSingleEngine(),1);
         assertTrue(result);
+        assertEquals(shipBoard1.getNumHumanCrew(), 2);
+        shipBoard1.destroyTile(new Coordinates(2,3));
+        assertEquals(shipBoard1.getNumHumanCrew(), 0);
+        shipBoard1.destroyTile(new Coordinates(3,3));
+        System.out.println(shipBoard1.getNumSingleEngine());
+        assertEquals(shipBoard1.getNumSingleEngine(),0);
+
     }
 
     @Test
@@ -133,6 +141,9 @@ class ShipBoardTest {
         //verifyCorrectness is needed for the shipboard stats setting
         System.out.println(shipBoard1.toString());
         assertTrue(result);
+        assertEquals(shipBoard1.getNumHumanCrew(), 4);
+        shipBoard1.destroyTile(new Coordinates(2,4));
+        assertEquals(shipBoard1.getNumHumanCrew(), 2);
     }
 
     @Test
@@ -552,6 +563,7 @@ class ShipBoardTest {
         assertEquals(goods.get(2).getColor(),shipBoard1.getSingleCargoGoods(new Coordinates(1,3)).get(2).getColor());
 
     }
+
     @Test
     void DestroyAndSetNewShip_Shipboard5_ (){
         Player player1 = new Player("MimmoPericoloso", PlayersColor.BLUE);

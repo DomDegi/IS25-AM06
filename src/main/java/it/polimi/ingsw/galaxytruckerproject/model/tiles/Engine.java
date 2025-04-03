@@ -27,7 +27,6 @@ public abstract class Engine extends Tile{
     @Override
     public void destroy() {
         super.destroy();
-        shipBoard.addBreakSingleEngine(false);
     }
 
     @Override
@@ -35,11 +34,10 @@ public abstract class Engine extends Tile{
         Optional<Tile> other=null;
         Optional<Tile>[][] tileTable = shipBoard.getTilesTable();
         if(this.direction!= Direction.SOUTH ) return false;
-
         //check south tile
         else if(this.coordinates.getX()!=4){
             other = tileTable[this.coordinates.getX()+1][this.coordinates.getY()];
-            if(other.isPresent() && !(other.get() instanceof VoidTile)){
+            if(other.isPresent() && other.get().fillable()){
                 return false;
             }
         }

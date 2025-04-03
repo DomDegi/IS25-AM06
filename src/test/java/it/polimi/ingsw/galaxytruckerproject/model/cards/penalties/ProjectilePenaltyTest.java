@@ -31,6 +31,8 @@ class ProjectilePenaltyTest {
     private ShipBoard shipBoard;
     private Game gameLvl2 = new Game(GameMode.LEVEL2, 4);
     private Game gameTrial = new Game(GameMode.TRIAL, 3);
+    private ShipBoard shipBoard1;
+    private Player player1;
 
     @BeforeEach
     void setUp() {
@@ -51,6 +53,26 @@ class ProjectilePenaltyTest {
         shipBoard.positionTile(Optional.of(singleCannonW), new Coordinates(2, 2));
 
 
+        player1= new  Player("MimmoPericoloso", PlayersColor.BLUE);
+        shipBoard1=new ShipBoard(player1);
+        shipBoard1.initializeLevel2();
+        Tile tile1=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile1), new Coordinates(1,3));
+        Tile tile2=new CargoBlue(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE));
+        shipBoard1.positionTile(Optional.of(tile2), new Coordinates(2,2));
+        Tile tile3=new EquipCabin( new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE));
+        shipBoard1.positionTile(Optional.of(tile3), new Coordinates(2,4));
+        tile3.setCrewType(CrewType.HUMAN);
+        Tile tile4=new Shields( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL));
+        shipBoard1.positionTile(Optional.of(tile4), new Coordinates(2,5));
+        Tile tile5=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),3);
+        shipBoard1.positionTile(Optional.of(tile5), new Coordinates(3,2));
+        Tile tile7=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),2);
+        shipBoard1.positionTile(Optional.of(tile7), new Coordinates(3,3));
+        Tile tile6=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
+        shipBoard1.positionTile(Optional.of(tile6), new Coordinates(3,4));
+        boolean result=shipBoard1.verifyCorrectness();
+
         listOfMeteors1 = new ArrayList<>(List.of(new LargeMeteor(Direction.NORTH)));
 
         listOfMeteorsFull = new ArrayList<>(Arrays.asList(
@@ -69,16 +91,16 @@ class ProjectilePenaltyTest {
 
     @Test
     void large_meteor_from_north_on_single_cannon() {
-        System.out.println(shipBoard.toString());
-        System.out.println("Lancio meteore");
+        //System.out.println(shipBoard.toString());
+        //System.out.println("Lancio meteore");
         String[] input = {};
         penalty = new ProjectilePenalty(listOfMeteors1);
         penalty.setDiceRoll(1);
 
         int returnValue = penalty.applyPenalty(gameLvl2, player, input);
         assertEquals(1, returnValue);
-        System.out.println(shipBoard.toString());
     }
+
 
     @Test
     void largeCannonShot_from_north_on_small_cannon() {
@@ -98,7 +120,38 @@ class ProjectilePenaltyTest {
         String[] input = {};
         penalty = new ProjectilePenalty(listOfMeteorsFull);
         int returnValue = penalty.applyPenalty(gameLvl2, player, input);
-        assertEquals(1, returnValue);
+        assertEquals(0, returnValue);
         System.out.println(shipBoard.toString());
     }
+
+    @Test
+    void large_meteor_from_north_on_double_cannon_activate_Battery() {
+        //System.out.println(shipBoard.toString());
+        //System.out.println("Lancio meteore");
+        String[] input = {};
+        penalty = new ProjectilePenalty(listOfMeteors1);
+        penalty.setDiceRoll(7);
+        //modified input method to use battery in this test
+        int returnValue = penalty.applyPenalty(gameLvl2, player1, input);
+        assertEquals(1, returnValue);
+        assertEquals(shipBoard1.getTile(3,3).getNumBatteries(),1);
+    }
+    @Test
+    void large_meteor_from_north_choose_shipboard_to_mantain() {
+        //System.out.println(shipBoard.toString());
+        //System.out.println("Lancio meteore");
+        shipBoard1.destroyTile(new Coordinates(1,3));
+        String[] input = {};
+        penalty = new ProjectilePenalty(listOfMeteors1);
+        penalty.setDiceRoll(8);
+        //modified input method to use battery in this test
+        int returnValue = penalty.applyPenalty(gameLvl2, player1, input);
+        assertEquals(1, returnValue);
+        assertEquals(shipBoard1.getTilesTable()[2][4],Optional.empty());
+        assertEquals(shipBoard1.getTilesTable()[2][5],Optional.empty());
+        System.out.println(shipBoard1.toString());
+    }
+
+
+
 }

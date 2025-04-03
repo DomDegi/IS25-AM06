@@ -10,6 +10,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Set;
 
 public class ProjectilePenalty extends Penalty {
     private final ArrayList<Projectile> listOfProjectiles;
@@ -41,25 +42,31 @@ public class ProjectilePenalty extends Penalty {
                 System.out.println("diceRoll: " + diceRoll);
                 printInfo(player);
             }
-            return 0;
+            //return 0;
+        }
+        else {
+            printInfo(player);
         }
         if (defenseStatus == Defense.PROTECTED) {
             resetForNextProjectile();
 
         } else if (defenseStatus == Defense.HIT) {
-            playerGetsHit(player);
+            System.out.println("colpito");
+            playerGetsHit(player, input );
 
         } else if (defenseStatus == Defense.CHOOSETOUSEBATTERY) {
             switch (playerUsesBatteryToDefend(player, input)) {
                 //there are no battery to be used: player gets hit and initialize next projectile
                 case 0: {
-                    playerGetsHit(player);
+                    playerGetsHit(player, input);
                     resetForNextProjectile();
                     break;
                 }
                 //player input is wrong
-                case 1:  break;
-
+                case 1: {
+                    System.out.println("wrong input");
+                    break;
+                }
                 //player successfully used a battery to defend
                 case 2: {
                     resetForNextProjectile();
@@ -98,8 +105,20 @@ public class ProjectilePenalty extends Penalty {
         }
     }
 
-    public void playerGetsHit (Player player){
-        player.getShipBoard().destroyTile(listOfProjectiles.getFirst().getCoordinatesToDestroy());
+    public void playerGetsHit (Player player , String[]input){
+        ArrayList<Set<Coordinates>> rami = player.getShipBoard().destroyTile(listOfProjectiles.getFirst().getCoordinatesToDestroy());
+        int i=0;
+        while (rami.size()>1 && i==0) {
+            System.out.println("scegli un ramo della nave \n" + rami.toString());
+            ArrayList<Coordinates> coordinates=player.parseCoordinates(input);
+            for (Set<Coordinates> set : rami) {
+                if (set.contains(coordinates.getFirst())) {
+                    player.getPlayerShip().SetNewShip(set);
+                    i=1;
+                }
+            }
+
+        }
         resetForNextProjectile();
     }
 
@@ -131,5 +150,7 @@ public class ProjectilePenalty extends Penalty {
     public void addProjectile (Projectile projectile) {
         this.listOfProjectiles.add(projectile);
     }
+
+
 }
 
