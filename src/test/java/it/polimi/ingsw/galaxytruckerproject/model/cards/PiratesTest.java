@@ -3,19 +3,23 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.LargeCannonShot;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.SmallCannonShot;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Optional;
-import java.util.SimpleTimeZone;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SlaversTest {
-    private Slavers slavers;
+class PiratesTest {
+    private Pirates pirates;
     private Game game;
     private Player player1;
     private Player player2;
@@ -29,7 +33,14 @@ class SlaversTest {
         player1 = new Player("MimmoPericoloso", PlayersColor.BLUE);
         player2 = new Player("FedeGalattico", PlayersColor.RED);
         player3 = new Player("EnnioVolante", PlayersColor.YELLOW);
-        slavers = new Slavers(1,2,3,6,4);
+        SmallCannonShot first= new SmallCannonShot(Direction.SOUTH);
+        SmallCannonShot second= new SmallCannonShot(Direction.SOUTH);
+        LargeCannonShot third= new LargeCannonShot(Direction.SOUTH);
+        ArrayList<Projectile> projectiles = new ArrayList<>();
+        projectiles.add(first);
+        projectiles.add(second);
+        projectiles.add(third);
+        pirates = new Pirates(1,2,3,6, projectiles);
 
         //shipboard 5 to player1
         ShipBoard shipBoard1 = new ShipBoard(player1);
@@ -137,52 +148,74 @@ class SlaversTest {
 
     @Test
     void successfully_initialised_executed(){
-        game.setDrawnCard(slavers);
+        game.setDrawnCard(pirates);
         game.getDrawnCard().initializeCard(game);
+
         String input;
         String[] words;
         input="no";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game, "EnnioVolante", words);
-        input="2 0";
-        words=input.split(" ");
-        game.getDrawnCard().executeCard(game, "MimmoPericoloso", words);
-        input="3 0";
-        words=input.split(" ");
-        game.getDrawnCard().executeCard(game, "MimmoPericoloso", words);
+        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+
         input="yes";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game, "MimmoPericoloso", words);
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="2 0";
+        words=input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="3 0";
+        words=input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="yes";
+        words=input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
         assertEquals(6, player1.getCredit());
+
     }
 
     @Test
-    void successfully_initialised_executed_negated_all(){
-        game.setDrawnCard(slavers);
+    void successfully_initialised_executed_lost(){
+        SmallCannonShot first= new SmallCannonShot(Direction.SOUTH);
+        SmallCannonShot second= new SmallCannonShot(Direction.SOUTH);
+        LargeCannonShot third= new LargeCannonShot(Direction.SOUTH);
+        ArrayList<Projectile> projectiles = new ArrayList<>();
+        projectiles.add(first);
+        projectiles.add(second);
+        projectiles.add(third);
+        pirates = new Pirates(1,2,4,6, projectiles);
+        game.setDrawnCard(pirates);
         game.getDrawnCard().initializeCard(game);
         String input;
         String[] words;
         input="no";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game, "EnnioVolante", words);
-        input="no";
+        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        input="roll";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game, "MimmoPericoloso", words);
-        input="no";
+        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        input="roll";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game, "FedeGalattico", words);
-        input="2 3";
+        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        input="rol";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game, "FedeGalattico", words);
-        input="2 4";
+        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        input="roll";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game, "FedeGalattico", words);
-        input="2 4";
+        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+
+        input="yes";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game, "FedeGalattico", words);
-        input="2 3";
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="2 0";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game, "FedeGalattico", words);
-        assertEquals(0, player2.getTotalCrew());
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="3 0";
+        words=input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        input="yes";
+        words=input.split(" ");
+        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        assertEquals(6, player1.getCredit());
+
     }
 }

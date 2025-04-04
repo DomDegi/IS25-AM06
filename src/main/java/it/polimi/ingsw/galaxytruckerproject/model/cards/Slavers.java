@@ -43,7 +43,7 @@ public class Slavers extends Enemies{
             game.endCardEvent();
             return;
         }
-        currentPlayer = game.getListOfAllPlayer().get(playerIndex);
+        currentPlayer = game.getListOfPlayers().get(playerIndex);
         System.out.println(currentPlayer.getPlayerName() + ", you are face to face with a ship of Slavers\n");
         System.out.println("their cannon strength is " + cannonStrength + "\n");
         System.out.println("if yours is lower than theirs, you will lose "+ lostCrew + "crew members\n");

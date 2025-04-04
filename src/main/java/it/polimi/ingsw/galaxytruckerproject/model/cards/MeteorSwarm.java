@@ -39,7 +39,7 @@ public class MeteorSwarm extends Card {
             diceRoll();
         }
 
-        currentPlayer = game.getListOfAllPlayer().get(playerIndex);
+        currentPlayer = game.getListOfPlayers().get(playerIndex);
 
         if (currentMeteor.getListOfProjectiles().isEmpty()){
             currentMeteor.addProjectile(listOfMeteors.getFirst());
