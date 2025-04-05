@@ -240,6 +240,7 @@ public class Player {
 
     //BATTERIES METHODS
     public boolean chooseBatteriesUse(ArrayList<Coordinates> BatteriesToConsume){
+        ArrayList<Coordinates> used = new ArrayList<>();
         //doesn't consume any batteries if even one isn't contained
         for (Coordinates Coordinates : BatteriesToConsume) {
             if (!playerShip.getBatteryCoordinates().contains(Coordinates)) {
@@ -247,7 +248,14 @@ public class Player {
             }
         }
         for (Coordinates Coordinates : BatteriesToConsume) {
-            playerShip.chooseBatteryUse(Coordinates);
+            if(!playerShip.chooseBatteryUse(Coordinates)) {
+                for(Coordinates coordinates : used){
+                    playerShip.addBattery(coordinates);
+                }
+                return false;
+            }
+            used.add(Coordinates);
+
         }
         return true;
     }

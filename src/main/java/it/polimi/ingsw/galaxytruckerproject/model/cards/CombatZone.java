@@ -9,13 +9,18 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 
 import java.util.*;
 
+import static java.lang.Float.valueOf;
+
 public class CombatZone extends Card {
     private final LinkedHashMap<ChallengeType, Penalty> listOfChallenges ;
     private int playerIndex;
     private Player currentPlayer = null;
     private final LinkedHashMap<Player, Float> savedValues;
+    float minvalue;
+    List<Player> minPlayers = new ArrayList<>();
     private ChallengeType currentChallenge = null;
     private boolean losingPlayerDecided = false;
+
 
     @JsonCreator
     public CombatZone(
@@ -31,7 +36,7 @@ public class CombatZone extends Card {
     @Override
     public void initializeCard(Game game) {
         //if there is only one player still flying, combat>one cards get skipped
-        if (game.getNumberOfPlayers() == 1) {
+        if (game.getNumberOfPlayers() <= 1) {
             game.endCardEvent();
         }
         if (listOfChallenges.isEmpty()) {
@@ -40,40 +45,59 @@ public class CombatZone extends Card {
             return;
         }
 
-        if (playerIndex > game.getNumberOfPlayers() - 1 && !losingPlayerDecided) {
-            //this means the losing player still has to get chosen
-            currentPlayer = Collections.min(savedValues.entrySet(), Comparator.comparingDouble(Map.Entry::getValue)).getKey();
-            losingPlayerDecided = true;
-            savedValues.clear();
-            listOfChallenges.get(currentChallenge).printInfo(currentPlayer);
-        }
-
         if (currentChallenge == null) {
             currentChallenge = listOfChallenges.entrySet().iterator().next().getKey();
         }
 
-        currentPlayer = game.getListOfPlayers().get(playerIndex);
-        switch(currentChallenge) {
-            case MINIMUM_CANNON_STRENGTH: {
-                System.out.println("You can decide to try the challenge with the single cannon strength or activate the double cannons\n");
-                currentPlayer.printCurrentInfoCannons();
-                currentPlayer.printCurrentInfoBatteries();
-                break;
+        if (playerIndex > game.getNumberOfPlayers() - 1 && !losingPlayerDecided) {
+            //this means the losing player still has to get chosen
+            System.out.println("loosing player decision\n");
+            currentPlayer = Collections.min(savedValues.entrySet(), Comparator.comparingDouble(Map.Entry::getValue)).getKey();
+            minvalue= valueOf(savedValues.get(currentPlayer));
+            for (Map.Entry<Player, Float> entry : savedValues.entrySet()) {
+                if (entry.getValue().equals(minvalue)) {
+                    minPlayers.add(entry.getKey());
+                }
             }
+            for (Player player : minPlayers) {
+                if(currentPlayer.getPlayerPosition() > player.getPlayerPosition()) {
+                    currentPlayer = player;
+                }
+            }
+            losingPlayerDecided = true;
+            savedValues.clear();
+            listOfChallenges.get(currentChallenge).printInfo(currentPlayer);
+            playerIndex=0;
+            return;
+        }
 
-            //This case is automatically saves the values because it doesn't need inputs
-            case MINIMUM_CREW_NUMBER: {
-                System.out.println("You have this many crew members" + currentPlayer.getTotalCrew());
-                savedValues.put(currentPlayer, (float) currentPlayer.getTotalCrew());
-                playerIndex++;
-                initializeCard(game);
-                break;
-            }
-            case MINIMUM_ENGINE_POWER: {
-                System.out.println("You can decide to try the challenge with the single engine power or activate the double engines\n");
-                currentPlayer.printCurrentInfoCannons();
-                currentPlayer.printCurrentInfoBatteries();
-                break;
+
+        if(playerIndex <= game.getNumberOfPlayers() - 1) {
+            currentPlayer = game.getListOfPlayers().get(playerIndex);
+        }
+        if(!losingPlayerDecided) {
+            switch (currentChallenge) {
+                case MINIMUM_CANNON_STRENGTH: {
+                    System.out.println("You can decide to try the challenge with the single cannon strength or activate the double cannons\n");
+                    currentPlayer.printCurrentInfoCannons();
+                    currentPlayer.printCurrentInfoBatteries();
+                    break;
+                }
+
+                //This case is automatically saves the values because it doesn't need inputs
+                case MINIMUM_CREW_NUMBER: {
+                    System.out.println("You have this many crew members" + currentPlayer.getTotalCrew());
+                    savedValues.put(currentPlayer, (float) currentPlayer.getTotalCrew());
+                    playerIndex++;
+                    initializeCard(game);
+                    break;
+                }
+                case MINIMUM_ENGINE_POWER: {
+                    System.out.println("You can decide to try the challenge with the single engine power or activate the double engines\n");
+                    currentPlayer.printCurrentInfoEngines();
+                    currentPlayer.printCurrentInfoBatteries();
+                    break;
+                }
             }
         }
     }
@@ -87,6 +111,8 @@ public class CombatZone extends Card {
                 losingPlayerDecided = false;
                 playerIndex = 0;
                 listOfChallenges.remove(currentChallenge);
+                currentChallenge = listOfChallenges.entrySet().iterator().next().getKey();
+                currentPlayer=null;
                 initializeCard(game);
             }
             else {
@@ -183,5 +209,9 @@ public class CombatZone extends Card {
             string.append(challengeType).append(" ").append(listOfChallenges.get(challengeType).toString()).append(" ");;
             }
         return string.toString();
+    }
+
+    public int getPlayerIndex() {
+        return playerIndex;
     }
 }

@@ -110,7 +110,9 @@ public abstract class Tile {
     public void removeGood(Goods good){System.out.println("THIS TILE IS NOT A GOOD");}
     public Coverage getCoveredArea(){System.out.println("THIS TILE IS NOT A SHIELD"); return Coverage.NONE;}
     public int addGood(Goods good){System.out.println("THIS TILE IS NOT A CARGO_HOLD"); return 0;}
-
+    public void addBattery(){
+        return;
+    }
     //
     public ArrayList<Goods> getCargo(){System.out.println("THIS TILE IS NOT A CARGO_HOLD");return null;}
     public boolean Placeable(){return true;}

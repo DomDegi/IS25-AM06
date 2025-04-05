@@ -712,7 +712,9 @@ public class ShipBoard {
         }
         return goods;
     }
-
+    public void addBattery(Coordinates coordinates){
+        getTile(coordinates).addBattery();
+    }
 
 
 }

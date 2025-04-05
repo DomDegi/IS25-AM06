@@ -1,5 +1,15 @@
-package it.polimi.ingsw.galaxytruckerproject.model.player;
+package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
+import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.GameState;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.*;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.CrewPenalty;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.FlightDaysPenalty;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.LargeMeteor;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.SmallMeteor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
@@ -7,22 +17,31 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PlayerTest {
+class CombatZoneTest {
+    Game game;
+    Player player1;
+    Player player2;
+    Player player3;
+    ShipBoard shipBoard1;
+    ShipBoard shipBoard2;
+    ShipBoard shipBoard3;
+    FlightBoard flightBoard;
+    CombatZone combatZone;
+    ArrayList<Projectile> listOfMeteor;
 
-    private Player player1;
-    private Player player2;
-    private Player player3;
-    private ShipBoard shipBoard1;
-    private ShipBoard shipBoard2;
-    private ShipBoard shipBoard3;
 
     @BeforeEach
     void setUp() {
+        int level = 2;
 
+
+        game = new Game(GameMode.LEVEL2,3);
         player1 = new Player("player 1", PlayersColor.BLUE);
         player2 = new Player("player 2", PlayersColor.RED);
         player3 = new Player("player 3", PlayersColor.YELLOW);
@@ -77,12 +96,7 @@ class PlayerTest {
         Tile tile20=new SingleCannon(new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
         shipBoard1.positionTile(Optional.of(tile20), new Coordinates(4,1));
         Tile tile21=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
-        Tile tile22=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE));
-        tile22.rotate();
-        tile22.rotate();
         shipBoard1.positionTile(Optional.of(tile21), new Coordinates(4,2));
-        shipBoard1.positionTile(Optional.of(tile22), new Coordinates(4,4));
-
         shipBoard1.verifyCorrectness();
 
         //shipboard4 to player2
@@ -125,45 +139,44 @@ class PlayerTest {
         Tile tile35=new SingleEngine( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH));
         shipBoard3.positionTile(Optional.of(tile35), new Coordinates(3,3));
         shipBoard3.verifyCorrectness();
+
+        flightBoard = game.getFlightBoard();
+        flightBoard.addPlayerToGame(player1);
+        flightBoard.addPlayerToGame(player2);
+        flightBoard.addPlayerToGame(player3);
+        flightBoard.addToFlightBoard(player1, 1);
+        flightBoard.addToFlightBoard(player2, 2);
+        flightBoard.addToFlightBoard(player3, 3);
+
+        listOfMeteor = new ArrayList<>(Arrays.asList(
+                new SmallMeteor(Direction.SOUTH),
+                new SmallMeteor(Direction.SOUTH)
+        ));
+
+        LinkedHashMap<ChallengeType, Penalty> listOfChallenges = new LinkedHashMap<>();
+        listOfChallenges.put(ChallengeType.MINIMUM_CREW_NUMBER, new FlightDaysPenalty(3));
+        listOfChallenges.put(ChallengeType.MINIMUM_ENGINE_POWER, new FlightDaysPenalty(3));
+        listOfChallenges.put(ChallengeType.MINIMUM_CANNON_STRENGTH, new CrewPenalty(1));
+
+        combatZone = new CombatZone(2,listOfChallenges);
     }
 
     @Test
-    void remove_crew_test() {
-        int initial_crew = player1.getTotalCrew();
-        player1.printCurrentInfoCabins();
-        player1.removeCrew(player1.parseCoordinates(new String[]{"2", "1", "2", "1", "1", "1"}));
-        player1.printCurrentInfoCabins();
-        assertEquals(initial_crew - 3, player1.getTotalCrew());
-    }
+    void testCombatZone(){
+        int player1_initialDays = player1.getPlayerPosition();
+        game.setDrawnCard(combatZone);
+        game.getDrawnCard().initializeCard(game);
+        game.setGameState(GameState.CARD_EVENT);
+        assertEquals(combatZone, game.getDrawnCard());
+        assertEquals(player1,game.getListOfPlayers().get(combatZone.getPlayerIndex()));
+        combatZone.executeCard(game, player1.getPlayerName(), new String[]{""});
+        combatZone.executeCard(game, player2.getPlayerName(), new String[]{""});
+        combatZone.executeCard(game, player3.getPlayerName(), new String[]{"no"});
+        combatZone.executeCard(game, player1.getPlayerName(), new String[]{"no"});
+        combatZone.executeCard(game, player2.getPlayerName(), new String[]{"no"});
+        combatZone.executeCard(game, player3.getPlayerName(), new String[]{"no"});
 
-    //basic test
-    @Test
-    void use_double_cannon_test1() {
-        float base_firepower = player1.useDoubleCannons(new ArrayList<>());
-        assertEquals(base_firepower, 3.5);
-        int initial_batteries = player1.getShipBoard().getNumBatteries();
-        player1.useDoubleCannons(player1.parseCoordinates(new String []{"2", "0", "2", "6"}));
-        float after_2_double_cannons = player1.useDoubleCannons(player1.parseCoordinates(new String[]{"3", "6", "3", "6"}));
-        assertEquals(base_firepower + 4, after_2_double_cannons);
-        assertEquals(initial_batteries - 2, player1.getPlayerShip().getNumBatteries());
-    }
-
-    //basic test
-    @Test
-    void use_double_engine_test1() {
-        float base_enginestrength = player1.useDoubleEngines(new ArrayList<>());
-        int initial_batteries = player1.getShipBoard().getNumBatteries();
-        assertEquals(base_enginestrength , 1);
-        player1.useDoubleEngines(player1.parseCoordinates(new String []{"4", "2", "3", "5"}));
-        player1.printCurrentInfoEngines();
-        if (player1.getShipBoard().getDoubleEngine().isEmpty())
-            System.out.println("is empty");
-        int after_2_double_engines = player1.useDoubleEngines(player1.parseCoordinates(new String[]{"3", "0", "3", "0"}));
-        assertEquals(base_enginestrength + 4, after_2_double_engines);
-        assertEquals(initial_batteries - 2, player1.getPlayerShip().getNumBatteries());
+        //problema con la gestione dell' indice
 
     }
-
-
-
 }

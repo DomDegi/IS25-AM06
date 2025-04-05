@@ -9,7 +9,7 @@ public class SingleCannon extends Cannon {
             this.fireStrength = 1;
         }
         else {
-            this.fireStrength=0.5f;
+            this.fireStrength= 0.5F;
         }
     }
 

@@ -171,6 +171,5 @@ class MeteorSwarmTest {
         assertEquals(player3,game.getListOfPlayers().get(meteorSwarm.getPlayerIndex()));
         meteorSwarm.executeCard(game, player3.getPlayerName(), new String[]{""});
         assertEquals(player1,game.getListOfPlayers().get(meteorSwarm.getPlayerIndex()));
-
     }
 }

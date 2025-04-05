@@ -26,6 +26,14 @@ public class BatteryComponents extends Tile{
         else{System.out.println("Run out of batteries in this Tile");}
     }
 
+    @Override
+    public void addBattery() {
+        this.batteryCells++;
+        shipBoard.addBreakBatteries(+1);
+        if(!shipBoard.getBatteryCoordinates().contains(this.coordinates)){
+            shipBoard.getBatteryCoordinates().add(this.coordinates);
+        }
+    }
 
     public void getStat(){
         shipBoard.addBreakBatteries(batteryCells);
