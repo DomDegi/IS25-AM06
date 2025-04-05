@@ -128,7 +128,7 @@ class ProjectilePenaltyTest {
     void large_meteor_from_north_on_double_cannon_activate_Battery() {
         //System.out.println(shipBoard.toString());
         //System.out.println("Lancio meteore");
-        String[] input = {};
+        String[] input = {"3","3"};
         penalty = new ProjectilePenalty(listOfMeteors1);
         penalty.setDiceRoll(7);
         //modified input method to use battery in this test
@@ -141,7 +141,7 @@ class ProjectilePenaltyTest {
         //System.out.println(shipBoard.toString());
         //System.out.println("Lancio meteore");
         shipBoard1.destroyTile(new Coordinates(1,3));
-        String[] input = {};
+        String[] input = {"3","3"};
         penalty = new ProjectilePenalty(listOfMeteors1);
         penalty.setDiceRoll(8);
         //modified input method to use battery in this test

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PlanetsTest {
     private Planets planetsToLand;
@@ -193,6 +194,8 @@ class PlanetsTest {
         input="done";
         words = input.split(" ");
         game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        assertEquals(0,player2.getShipBoard().getAllGoods().size());
+
     }
 
     @Test
@@ -237,6 +240,7 @@ class PlanetsTest {
         input="done";
         words = input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        assertEquals(3,player1.getShipBoard().getAllGoods().size());
 
         input="3";
         words = input.split(" ");
@@ -250,5 +254,7 @@ class PlanetsTest {
         input="done";
         words = input.split(" ");
         game.getDrawnCard().executeCard(game,"FedeGalattico",words);
+        assertEquals(2,player2.getShipBoard().getAllGoods().size());
+
     }
 }

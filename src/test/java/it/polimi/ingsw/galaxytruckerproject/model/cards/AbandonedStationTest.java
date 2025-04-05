@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AbandonedStationTest {
     private AbandonedStation abandonedStation;
@@ -164,6 +166,7 @@ class AbandonedStationTest {
         String input="no pippo pasta";
         String[] words = input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        assert(player1.getShipBoard().getAllGoods().isEmpty());
     }
 
     @Test
@@ -175,6 +178,7 @@ class AbandonedStationTest {
         input="1 1 3";
         words = input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        assert(player1.getShipBoard().getAllGoods().isEmpty());
     }
 
     @Test
@@ -183,6 +187,7 @@ class AbandonedStationTest {
         String input="yes";
         String[] words = input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        assertTrue(player1.getShipBoard().getAllGoods().isEmpty());
     }
 
     @Test
@@ -192,7 +197,7 @@ class AbandonedStationTest {
         String input="1 1 3";
         String[] words = input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
-
+        assertEquals(1,player1.getShipBoard().getAllGoods().size());
     }
 
     @Test
@@ -210,6 +215,7 @@ class AbandonedStationTest {
         input="1 1 3";
         words = input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        assertEquals(3,player1.getShipBoard().getAllGoods().size());
     }
 
     @Test
@@ -227,6 +233,8 @@ class AbandonedStationTest {
         input="1 1 3";
         words = input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        assertEquals(3,player1.getShipBoard().getAllGoods().size());
+
     }
 
     @Test
@@ -235,7 +243,7 @@ class AbandonedStationTest {
         String input="1";
         String[] words = input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
-
+        assertEquals(3,player1.getShipBoard().getAllGoods().size());
     }
 
     @Test
@@ -247,6 +255,7 @@ class AbandonedStationTest {
         input="1";
         words = input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        assertEquals(3,player1.getShipBoard().getAllGoods().size());
     }
 
     @Test
@@ -255,6 +264,7 @@ class AbandonedStationTest {
         String input="1";
         String[] words = input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        assertEquals(3,player1.getShipBoard().getAllGoods().size());
     }
 
     @Test
@@ -263,6 +273,7 @@ class AbandonedStationTest {
         String input="1 1 3";
         String[] words = input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        assertEquals(3,player1.getShipBoard().getAllGoods().size());
     }
 
     @Test
@@ -271,6 +282,7 @@ class AbandonedStationTest {
         String input="pick 1 3";
         String[] words = input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        assertEquals(0,player1.getShipBoard().getAllGoods().size());
     }
 
     @Test
@@ -282,6 +294,7 @@ class AbandonedStationTest {
         input="1";
         words = input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        assertEquals(2,player1.getShipBoard().getAllGoods().size());
     }
 
     @Test
@@ -290,7 +303,7 @@ class AbandonedStationTest {
         String input="done";
         String[] words = input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
-
+        assertEquals(2,player1.getShipBoard().getAllGoods().size());
     }
 
 }
