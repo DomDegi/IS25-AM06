@@ -46,7 +46,7 @@ public class Pirates extends Enemies {
             game.endCardEvent();
             return;
         }
-        currentPlayer = game.getListOfAllPlayer().get(playerIndex);
+        currentPlayer = game.getListOfPlayers().get(playerIndex);
         System.out.println(currentPlayer.getPlayerName() + ", you are face to face with a ship of Pirates\n");
         System.out.println("their cannon strength is " + cannonStrength + "\n");
         System.out.println("if yours is lower than theirs, you will get hit by a series of cannon shots\n");
@@ -64,21 +64,18 @@ public class Pirates extends Enemies {
                 if (input[0].equalsIgnoreCase("no")){
                     if (currentPlayer.useDoubleCannons(new ArrayList<Coordinates>()) > cannonStrength) {
                         won = 1;
-                        System.out.println("input yes or no if you want to spend " + requiredDays + " flight days to gain" +
-                                rewardCredits + " cosmic credits for defeating the pirates\n");
-                    }
-                    else if (currentPlayer.useDoubleCannons(new ArrayList<Coordinates>()) < cannonStrength){
+                        System.out.println("input yes or no if you want to spend " + requiredDays + " flight days to gain" + rewardCredits + " cosmic credits for defeating the pirates\n");
+                    } else if (currentPlayer.useDoubleCannons(new ArrayList<Coordinates>()) < cannonStrength){
                         won = - 1;
+                        System.out.println(currentPlayer.getPlayerName() + " they are firing\n");
                         penaltyIfLose.printInfoOnAllProjectiles();
-                    }
-                    else {
+                    } else {
                         System.out.println(currentPlayer.getPlayerName() + " tied with the pirates\n");
                         System.out.println("next player\n");
                         playerIndex++;
                         initializeCard(game);
                     }
-                }
-                else {
+                } else {
                     ArrayList<Coordinates> coordinates = new ArrayList<>(currentPlayer.parseCoordinates(input));
                     if (coordinates.isEmpty()){
                         System.out.println("invalid input\n");
@@ -89,30 +86,25 @@ public class Pirates extends Enemies {
                         System.out.println("need the batteries coordinates\n");
                         return;
                     }
-
                     if (playerStrength == -1){
                         System.out.println("invalid input of batteries or cannons: input again cannons coordinates\n");
                         return;
                     }
                     if (playerStrength > cannonStrength){
                         won = 1;
-                        System.out.println("input yes or no if you want to spend " + requiredDays + " flight days to gain" +
-                                rewardCredits + " cosmic credits for defeating the pirates\n");
-                    }
-                    else if (playerStrength < cannonStrength){
+                        System.out.println("input yes or no if you want to spend " + requiredDays + " flight days to gain" + rewardCredits + " cosmic credits for defeating the pirates\n");
+                    } else if (playerStrength < cannonStrength){
                         won = - 1;
                         System.out.println("input the coordinates of the crew members to lose to the pirates\n");
                         currentPlayer.printCurrentInfoCargoHolds();
-                    }
-                    else  {
+                    } else  {
                         System.out.println(currentPlayer.getPlayerName() + " tied with the pirates\n");
                         System.out.println("next player\n");
                         playerIndex++;
                         initializeCard(game);
                     }
                 }
-            }
-            else if (won == 1){
+            } else if (won == 1){
                 if (input[0].equalsIgnoreCase("no")){
                     game.drawCard();
                 }
@@ -122,13 +114,12 @@ public class Pirates extends Enemies {
                     game.endCardEvent();
                 }
 
-            }
-            else if (won == -1){
+            } else if (won == -1){
                 if (penaltyIfLose.applyPenalty(game, currentPlayer, input) == 1) {
                     playerIndex++;
+                    won=0;
                     initializeCard(game);
-                }
-                else {
+                } else {
                     System.out.println("input more correct coordinates\n");
                     currentPlayer.printCurrentInfoCabins();
                 }

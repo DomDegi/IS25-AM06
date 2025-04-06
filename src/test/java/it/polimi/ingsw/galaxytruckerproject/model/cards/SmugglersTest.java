@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor.*;
 import static it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor.YELLOW;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SmugglersTest {
     private Smugglers smugglers;
@@ -179,6 +180,7 @@ class SmugglersTest {
         String[] words= input.split(" ");
         game.getDrawnCard().executeCard(game,"EnnioVolante",words);
 
+        int batteries=player1.getShipBoard().getNumBatteries();
         input="no";
         words= input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
@@ -189,13 +191,16 @@ class SmugglersTest {
         words= input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
 
+        assertEquals(batteries-2,player1.getShipBoard().getNumBatteries());
+
+        batteries=player2.getShipBoard().getNumBatteries();
         input="no";
         words= input.split(" ");
         game.getDrawnCard().executeCard(game,"FedeGalattico",words);
         input="3 3 3 3";
         words= input.split(" ");
         game.getDrawnCard().executeCard(game,"FedeGalattico",words);
-
+        assertEquals(batteries-2,player2.getShipBoard().getNumBatteries());
     }
 
     @Test
@@ -207,6 +212,8 @@ class SmugglersTest {
         input="no";
         words= input.split(" ");
         game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        assertEquals(0,player2.getShipBoard().getAllGoods().size());
+
     }
 
     @Test
@@ -218,6 +225,7 @@ class SmugglersTest {
         input="yes";
         words= input.split(" ");
         game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        assertEquals(0,player2.getShipBoard().getAllGoods().size());
     }
 
     @Test
@@ -229,6 +237,7 @@ class SmugglersTest {
         input="done";
         words= input.split(" ");
         game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        assertEquals(0,player2.getShipBoard().getAllGoods().size());
     }
 
     @Test
@@ -237,6 +246,7 @@ class SmugglersTest {
         successfully_initialize_card();
         String input="yes";
         String[] words= input.split(" ");
+        int batteries=player1.getShipBoard().getNumBatteries();
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
         input="3 3";
         words= input.split(" ");
@@ -253,12 +263,14 @@ class SmugglersTest {
         input="no";
         words= input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        assertEquals(batteries-1,player1.getShipBoard().getNumBatteries());
     }
 
     @Test
     void successfully_initialize_player1_usedDC_won_multiple(){
         flightBoard.moveBackward(player3,10);
         successfully_initialize_card();
+        int batteries=player1.getShipBoard().getNumBatteries();
         String input="yes";
         String[] words= input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
@@ -271,6 +283,7 @@ class SmugglersTest {
         input="no";
         words= input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        assertEquals(batteries-2,player1.getShipBoard().getNumBatteries());
     }
 
     @Test
@@ -280,6 +293,7 @@ class SmugglersTest {
         Goods good3=new Goods(GREEN);
         Goods good4=new Goods(YELLOW);
         ArrayList<Goods> rewardGoods =new ArrayList<>();
+        int batteries=player1.getShipBoard().getNumBatteries();
 
         rewardGoods.add(good2);
         rewardGoods.add(good3);
@@ -298,6 +312,8 @@ class SmugglersTest {
         input="no";
         words= input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        assertEquals(0,player2.getShipBoard().getAllGoods().size());
+        assertEquals(batteries,player1.getShipBoard().getNumBatteries());
     }
 
     @Test
@@ -307,6 +323,7 @@ class SmugglersTest {
         Goods good3=new Goods(GREEN);
         Goods good4=new Goods(YELLOW);
         ArrayList<Goods> rewardGoods =new ArrayList<>();
+        int batteries=player1.getShipBoard().getNumBatteries();
 
         rewardGoods.add(good2);
         rewardGoods.add(good3);
@@ -331,7 +348,8 @@ class SmugglersTest {
         input="no";
         words= input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
-
+        assertEquals(0,player2.getShipBoard().getAllGoods().size());
+        assertEquals(batteries-2,player1.getShipBoard().getNumBatteries());
     }
 
     @Test
@@ -341,6 +359,7 @@ class SmugglersTest {
         Goods good3=new Goods(GREEN);
         Goods good4=new Goods(YELLOW);
         ArrayList<Goods> rewardGoods =new ArrayList<>();
+        int batteries=player1.getShipBoard().getNumBatteries();
 
         rewardGoods.add(good2);
         rewardGoods.add(good3);
@@ -362,7 +381,8 @@ class SmugglersTest {
         input="3 0";
         words= input.split(" ");
         game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
-
+        assertEquals(0,player2.getShipBoard().getAllGoods().size());
+        assertEquals(batteries-1,player1.getShipBoard().getNumBatteries());
 
     }
 }

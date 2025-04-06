@@ -49,7 +49,6 @@ public class CrewPenalty extends Penalty {
 
     @Override
     public String toString() {
-
         return "CrewPenalty: " + numberOfLostCrew;
     }
 }

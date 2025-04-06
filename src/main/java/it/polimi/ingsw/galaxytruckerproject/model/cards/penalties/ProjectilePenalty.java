@@ -43,15 +43,14 @@ public class ProjectilePenalty extends Penalty {
                 printInfo(player);
             }
             //return 0;
-        }
-        else {
+        } else {
             printInfo(player);
         }
         if (defenseStatus == Defense.PROTECTED) {
             resetForNextProjectile();
 
         } else if (defenseStatus == Defense.HIT) {
-            System.out.println("colpito");
+            System.out.println("hit");
             playerGetsHit(player, input );
 
         } else if (defenseStatus == Defense.CHOOSETOUSEBATTERY) {
@@ -106,12 +105,12 @@ public class ProjectilePenalty extends Penalty {
     }
 
     public void playerGetsHit (Player player , String[]input){
-        ArrayList<Set<Coordinates>> rami = player.getShipBoard().destroyTile(listOfProjectiles.getFirst().getCoordinatesToDestroy());
+        ArrayList<Set<Coordinates>> branch = player.getShipBoard().destroyTile(listOfProjectiles.getFirst().getCoordinatesToDestroy());
         int i=0;
-        while (rami.size()>1 && i==0) {
-            System.out.println("scegli un ramo della nave \n" + rami.toString());
+        while (branch.size()>1 && i==0) {
+            System.out.println("choose ShipBoard branch \n" + branch.toString());
             ArrayList<Coordinates> coordinates=player.parseCoordinates(input);
-            for (Set<Coordinates> set : rami) {
+            for (Set<Coordinates> set : branch) {
                 if (set.contains(coordinates.getFirst())) {
                     player.getPlayerShip().SetNewShip(set);
                     i=1;

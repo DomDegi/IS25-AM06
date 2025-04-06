@@ -46,12 +46,7 @@ public abstract class Projectile {
 
     //returns the coordinates of the tile that would get hit
     public Coordinates getCoordinatesToDestroy() {
-        if (coordinatesToDestroy.isPresent())
-            return coordinatesToDestroy.get();
-        else
-            return new Coordinates(0,0);
-
-
+        return coordinatesToDestroy.orElseGet(() -> new Coordinates(0, 0));
     }
 
     /**

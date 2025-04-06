@@ -223,14 +223,14 @@ public class Player {
         return -1;
     }
     public void printCurrentInfoCannons(){
-        System.out.println("Current number of Single Cannon Strength" + playerShip.getSingleCannonPower());
-        System.out.println("Current Coordinates of Straight Double Cannons:");
+        System.out.println(playerName+ ": Current number of Single Cannon Strength: " + playerShip.getSingleCannonPower());
+        System.out.println(playerName+ ": Current Coordinates of Straight Double Cannons:");
         for(Coordinates Coordinates : playerShip.getDoubleCannon()){
             if(playerShip.getTilesTable()[Coordinates.getX()][Coordinates.getY()].get().getStrength() == 2){
                 System.out.println(Coordinates.getX() + " " + Coordinates.getY());
             }
         }
-        System.out.println("Current Coordinates of Sided Double Cannons:");
+        System.out.println(playerName+ ": Current Coordinates of Sided Double Cannons: ");
         for(Coordinates Coordinates : playerShip.getDoubleCannon()){
             if(playerShip.getTilesTable()[Coordinates.getX()][Coordinates.getY()].get().getStrength() == 1){
                 System.out.println(Coordinates.getX() + " " + Coordinates.getY());
@@ -262,7 +262,7 @@ public class Player {
 
     public void printCurrentInfoBatteries(){
         for(Coordinates Coordinates : playerShip.getBatteryCoordinates()){
-            System.out.println(playerName+ ": Battery Coordinates " + Coordinates.getX() + " " + Coordinates.getY());
+            System.out.println(playerName+ ": Battery Coordinates: " + Coordinates.getX() + " " + Coordinates.getY());
         }
     }
 

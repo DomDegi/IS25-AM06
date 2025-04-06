@@ -2,6 +2,8 @@ package it.polimi.ingsw.galaxytruckerproject.model;
 
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -56,6 +58,23 @@ class GameTest {
         game.addPlayer("Pietro", PlayersColor.RED);
         assertEquals(3, game.getFlightBoard().getAllPlayers().size());
     }
+
+    @Test
+    void test_drawTile(){
+        game.setPlayerCount(4);
+        ShipBoard shipBoard1 = new ShipBoard(player1);
+        player1.setPlayerShip(shipBoard1);
+        game.addPlayer("Andrea", PlayersColor.RED);
+        game.addPlayer("Giacomo", PlayersColor.BLUE);
+        game.addPlayer("Silvio", PlayersColor.GREEN);
+        game.addPlayer("Pietro", PlayersColor.YELLOW);
+        Tile tile=game.drawTile("Andrea");
+        game.getListOfAllPlayer().getFirst().hasDrawnTile(tile);
+        game.playerBookTile("Andrea");
+        assertEquals(tile,game.getListOfAllPlayer().getFirst().getShipBoard().getBookedTiles().getFirst());
+
+    }
+
 
 
 }
