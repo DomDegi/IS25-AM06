@@ -6,7 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.network.message.*;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.*;
-import static it.polimi.ingsw.galaxytruckerproject.network.message.MessageType.*;
 
 
 public class GameController {

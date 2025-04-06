@@ -23,6 +23,6 @@ module it.polimi.ingsw.galaxytruckerproject {
     exports it.polimi.ingsw.galaxytruckerproject.model;
     exports it.polimi.ingsw.galaxytruckerproject.view;
     exports it.polimi.ingsw.galaxytruckerproject.model.goods;
-    exports it.polimi.ingsw.galaxytruckerproject.network.message;
+    exports it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message;
     opens it.polimi.ingsw.galaxytruckerproject.model.goods to com.fasterxml.jackson.databind;
 }

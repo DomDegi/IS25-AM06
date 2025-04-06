@@ -1,6 +1,4 @@
-package it.polimi.ingsw.galaxytruckerproject.network.message;
-
-import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
+package it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message;
 
 public class LoginRequestMessage extends Message {
 

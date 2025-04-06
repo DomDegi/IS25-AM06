@@ -2,7 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.controller.interfaces;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
-import it.polimi.ingsw.galaxytruckerproject.network.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 
 /** this interface is used to define the methods that
  * the player can call to interact with the server
