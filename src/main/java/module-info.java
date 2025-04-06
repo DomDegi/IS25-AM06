@@ -7,6 +7,7 @@ module it.polimi.ingsw.galaxytruckerproject {
     requires java.smartcardio;
     requires java.compiler;
     requires java.desktop;
+    requires java.rmi;
 
     opens it.polimi.ingsw.galaxytruckerproject.controller to com.fasterxml.jackson.databind;
     opens it.polimi.ingsw.galaxytruckerproject.model.tiles to com.fasterxml.jackson.databind;

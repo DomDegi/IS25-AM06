@@ -7,10 +7,12 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.rmi.Remote;
 import java.util.ArrayList;
 import java.util.Map;
 
-public interface ViewInterface {
+public interface ViewInterface extends Remote, Serializable {
 
 
     /**
