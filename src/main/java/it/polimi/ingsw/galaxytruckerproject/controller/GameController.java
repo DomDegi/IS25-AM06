@@ -78,6 +78,8 @@ public class GameController {
      * @param view player's view
      * @param reconnecting true if player used to be in the lobby
      */
+
+    //ASSOCIA IL PLAYER ALLA VIEW
     public void addToPlayersViewMap(String playerName, ViewInterface view, boolean reconnecting) {
         if (reconnecting) {
             reconnectPlayer(playerName, view);
@@ -100,6 +102,8 @@ public class GameController {
      * @param playerName reconnecting player
      * @param view their view
      */
+
+    //RICONNETTE IL PLAYER SE DISCONNESSO
     public void reconnectPlayer(String playerName, ViewInterface view) {
         if (disconnectedPlayers.containsKey(playerName)) {
             //If player disconnected during ships verification without fixing the ship

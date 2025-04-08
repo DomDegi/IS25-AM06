@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 public class RMIclient extends UnicastRemoteObject implements ViewInterface {
     final VirtualController server;
+
     public RMIclient(VirtualController server) throws RemoteException {
         super();
         this.server = server;
@@ -29,7 +30,9 @@ public class RMIclient extends UnicastRemoteObject implements ViewInterface {
 
     }
     public void showUpdate () throws RemoteException {
-
     }
+
+
+
 
 }
