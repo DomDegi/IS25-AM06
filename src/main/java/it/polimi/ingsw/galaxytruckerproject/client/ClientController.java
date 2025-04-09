@@ -30,6 +30,7 @@ public class ClientController {
             case LOBBY:{
 
             }
+
             case ACTION:{
                 if (words[0].equals("yes")) {
                     //accept action
@@ -45,21 +46,7 @@ public class ClientController {
             }
 
             case COORD_REQUEST:{
-                int CoordinatesX;
-                try {
-                    CoordinatesX = Integer.parseInt(words[0]);
-                } catch (NumberFormatException e) {
-                    System.out.println("\nInvalid input format. Please provide integer values.");
-                    return;
-                }
-                int CoordinatesY;
-                try {
-                    CoordinatesY = Integer.parseInt(words[1]);
-                } catch (NumberFormatException e) {
-                    System.out.println("\nInvalid input format. Please provide integer values.");
-                    return;
-                }
-                Coordinates coordinates = new Coordinates(CoordinatesX, CoordinatesY);
+                transformCoordinates(words);
             }
 
             case MANAGE_CARDS:{
@@ -129,7 +116,6 @@ public class ClientController {
                     }
                     return;
                 }
-
             }
 
             case S_MANAGE_DRAWN_TILE:{
@@ -137,23 +123,10 @@ public class ClientController {
 
                 }
                 if(words[0].equals("position")) {
-                    int CoordinatesX;
-                    try {
-                        CoordinatesX = Integer.parseInt(words[1]);
-                    } catch (NumberFormatException e) {
-                        System.out.println("\nInvalid input format. Please provide integer values.");
-                        return;
+                    for (int i = 0; i < words.length - 1; i++) {
+                        words[i] = words[i + 1];
                     }
-                    int CoordinatesY;
-                    try {
-                        CoordinatesY = Integer.parseInt(words[2]);
-                    } catch (NumberFormatException e) {
-                        System.out.println("\nInvalid input format. Please provide integer values.");
-                        return;
-                    }
-                    Coordinates coordinates = new Coordinates(CoordinatesX, CoordinatesY);
-                    //check is free
-                    state=ClientState.S_END_DRAW_TILE_CARD;
+                    transformCoordinates(words);
                     //notify positioned
                 }
                 if(words[0].equals("refuse")){
@@ -174,29 +147,27 @@ public class ClientController {
             }
 
             case S_CORRECT_SHIPBOARD:{
-                int CoordinatesX;
-                try {
-                    CoordinatesX = Integer.parseInt(words[0]);
-                } catch (NumberFormatException e) {
-                    System.out.println("\nInvalid input format. Please provide integer values.");
-                    return;
-                }
-                int CoordinatesY;
-                try {
-                    CoordinatesY = Integer.parseInt(words[1]);
-                } catch (NumberFormatException e) {
-                    System.out.println("\nInvalid input format. Please provide integer values.");
-                    return;
-                }
-                Coordinates coordinates = new Coordinates(CoordinatesX, CoordinatesY);
+                transformCoordinates(words);
                 //check
             }
         }
     }
 
-
-
-
-
-
+    private Coordinates transformCoordinates(String[] input) {
+        int CoordinatesX;
+        try {
+            CoordinatesX = Integer.parseInt(input[0]);
+        } catch (NumberFormatException e) {
+            System.out.println("\nInvalid input format. Please provide integer values.");
+            return null;
+        }
+        int CoordinatesY;
+        try {
+            CoordinatesY = Integer.parseInt(input[1]);
+        } catch (NumberFormatException e) {
+            System.out.println("\nInvalid input format. Please provide integer values.");
+            return null;
+        }
+        return new Coordinates(CoordinatesX, CoordinatesY);
+    }
 }
