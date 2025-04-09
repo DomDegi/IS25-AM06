@@ -7,7 +7,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 
 import java.util.*;
 
-public class LightShipBoard {
+public class LightShipboard {
 
     //Variable that saves the reference to the ShipBoard present in the model along with all the game logic
     private ShipBoard shipBoard;
@@ -31,7 +31,7 @@ public class LightShipBoard {
     private int numHumanCrew;
 
 
-    public LightShipBoard(ShipBoard shipBoard) {
+    public LightShipboard(ShipBoard shipBoard) {
         this.player = shipBoard.getPlayer();
         this.shipBoard = shipBoard;
     }
@@ -87,7 +87,9 @@ public class LightShipBoard {
     }
 
     public Tile getTile(Coordinates coordinates){
-        return tilesTable[coordinates.getX()][coordinates.getY()].get();
+        if(tilesTable[coordinates.getX()][coordinates.getY()].isPresent())
+            return tilesTable[coordinates.getX()][coordinates.getY()].get();
+        else return null;
     }
 
 

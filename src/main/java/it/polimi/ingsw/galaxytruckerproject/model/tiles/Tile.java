@@ -126,8 +126,8 @@ public abstract class Tile {
         return null;
     }
 
+    //negative return in case of single cannon
     public int getStrength(){
-        //System.out.println("THIS TILE IS NOT A DOUBLE CANNON");
         return 0;
     }
     public boolean fillable(){return true;}

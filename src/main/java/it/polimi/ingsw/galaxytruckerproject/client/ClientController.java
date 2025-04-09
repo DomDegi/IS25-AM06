@@ -46,6 +46,7 @@ public class ClientController {
             }
 
             case COORD_REQUEST:{
+                //if coordinate process else END PROCESSING
                 transformCoordinates(words);
             }
 
