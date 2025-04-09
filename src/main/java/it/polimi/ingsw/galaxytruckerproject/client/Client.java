@@ -22,4 +22,7 @@ public class Client {
     public LightPlayer getMe() {
         return me;
     }
+    public ArrayList<ArrayList<Card>> getDeck() {
+        return deck;
+    }
 }
