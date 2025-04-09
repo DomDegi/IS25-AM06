@@ -10,6 +10,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.TileFactory;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.*;
 
@@ -214,9 +215,9 @@ public class Game implements GameInterface {
 
     //DRAW_CARD METHODS
 
-    public void drawCard() {
+    public void drawCard(Map<String, ViewInterface> viewsMap) {
         this.drawnCard = inGameCards.removeFirst();
-        drawnCard.initializeCard(this);
+        drawnCard.initializeCard(this, viewsMap);
         this.gameState = CARD_EVENT;
     }
 
@@ -227,7 +228,7 @@ public class Game implements GameInterface {
     //CARD_EVENT METHODS
 
     public void cardEvent(Message message) {
-        //drawnCard.executeCard(this, message);
+        drawnCard.executeCard(this, message);
     }
 
     public void endCardEvent() {
@@ -267,13 +268,13 @@ public class Game implements GameInterface {
         return flightBoard.getAllPlayers();
     }
 
-    public ArrayList<Player> getListOfPlayers() {
+    public ArrayList<Player> getListOfInFlightPlayers() {
         return flightBoard.getInGamePlayers();
     }
 
     //returns the number of player in the game
     public int getNumberOfPlayers() {
-        return getListOfPlayers().size();
+        return getListOfInFlightPlayers().size();
     }
 
     //returns the current GameState
@@ -283,7 +284,7 @@ public class Game implements GameInterface {
 
     //returns the player's name at playerIndex (0 to 3) as a string
     public String getPlayerName(int playerIndex) {
-        return getListOfPlayers().get(playerIndex).getPlayerName();
+        return getListOfInFlightPlayers().get(playerIndex).getPlayerName();
     }
 
     public ShipBoard getPlayerShipBoard (String playerName) {

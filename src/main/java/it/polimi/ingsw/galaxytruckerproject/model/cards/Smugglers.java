@@ -8,8 +8,11 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsManager;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Smugglers extends Enemies{
     private final GoodsPenalty lostGoods;
@@ -32,9 +35,9 @@ public class Smugglers extends Enemies{
     }
 
     @Override
-    public void initializeCard(Game game) {
+    public void initializeCard(Game game, Map<String, ViewInterface> viewsMap) {
         if (!initialized) {
-            playerToInteract = new ArrayList<>(game.getListOfPlayers());
+            playerToInteract = new ArrayList<>(game.getListOfInFlightPlayers());
             initialized=true;
             System.out.printf("WATCH OUT, SMUGGLERS!! \nIf you don't have at least a Cannon Strength of "+cannonStrength+" you will loose "+lostGoods+"\nDESTROY THEM and you will loose"+requiredDays+"to fill your cargo with the following goods:\n");
             goodsManager=new GoodsManager(currentPlayer,rewardGoods);
@@ -50,9 +53,9 @@ public class Smugglers extends Enemies{
     }
 
     @Override
-    public void executeCard(Game game, String playerName, String[] input) {
+    public void executeCard(Game game, Message message) {
         if(currentPlayer==null)
-            currentPlayer=game.getListOfPlayers().getFirst();
+            currentPlayer=game.getListOfInFlightPlayers().getFirst();
         if (!playerName.equals(currentPlayer.getPlayerName()))
             return;
         if(playerToInteract.isEmpty()) {
@@ -79,7 +82,7 @@ public class Smugglers extends Enemies{
                         System.out.print("\nYou have nothing to pillage\n");
                         won=0;
                         playerToInteract.removeFirst();
-                        initializeCard(game);
+                        initializeCard(game, );
                         return;
                     }
                     won=-1;
@@ -90,7 +93,7 @@ public class Smugglers extends Enemies{
                     System.out.println("\nYAY!! You are as powerful as the Smugglers, you've defeated them, but they managed to escape jus in time!\n");
                     won=0;
                     playerToInteract.removeFirst();
-                    initializeCard(game);
+                    initializeCard(game, );
                 }
             }else {
                 System.out.println("Invalid input: " + input[0]+ " retry");
@@ -122,7 +125,7 @@ public class Smugglers extends Enemies{
                 System.out.println("\nYAY!! You are as powerful as the Smugglers, you've defeated them, but they managed to escape jus in time!\n");
                 won=0;
                 playerToInteract.removeFirst();
-                initializeCard(game);
+                initializeCard(game, );
             }
         //won
         } else if(won == 2){
@@ -146,10 +149,10 @@ public class Smugglers extends Enemies{
             }
         //loseManager
         } else if(won == -1) {
-            if(lostGoods.applyPenalty(game,currentPlayer,input)==1){
+            if(lostGoods.applyPenalty(game,currentPlayer, ,input, )==1){
                 won=0;
                 playerToInteract.removeFirst();
-                initializeCard(game);
+                initializeCard(game, );
             }
         }
     }

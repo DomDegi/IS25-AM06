@@ -12,7 +12,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -149,26 +148,26 @@ class PiratesTest {
     @Test
     void successfully_initialised_executed(){
         game.setDrawnCard(pirates);
-        game.getDrawnCard().initializeCard(game);
+        game.getDrawnCard().initializeCard(game, );
 
         String input;
         String[] words;
         input="no";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
 
         input="yes";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="2 0";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="3 0";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="yes";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         assertEquals(6, player1.getCredit());
 
     }
@@ -184,37 +183,37 @@ class PiratesTest {
         projectiles.add(third);
         pirates = new Pirates(1,2,4,6, projectiles);
         game.setDrawnCard(pirates);
-        game.getDrawnCard().initializeCard(game);
+        game.getDrawnCard().initializeCard(game, );
         String input;
         String[] words;
         input="no";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
         input="roll";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
         input="roll";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
         input="rol";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
         input="roll";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
 
         input="yes";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="2 0";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="3 0";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="yes";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         assertEquals(6, player1.getCredit());
 
     }

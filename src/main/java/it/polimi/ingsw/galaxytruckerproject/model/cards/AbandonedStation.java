@@ -6,8 +6,11 @@ import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsManager;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class AbandonedStation extends Card {
     private final int crewNumberRequired;
@@ -30,9 +33,9 @@ public class AbandonedStation extends Card {
     }
     //asks every player in order of ranking that meets the requirements if they want to spend days to gain the goods
     @Override
-    public void initializeCard(Game game) {
+    public void initializeCard(Game game, Map<String, ViewInterface> viewsMap) {
         if (!initialized) {
-            playerToInteract = new ArrayList<>(game.getListOfPlayers());
+            playerToInteract = new ArrayList<>(game.getListOfInFlightPlayers());
             initialized=true;
         }
         if(playerToInteract.isEmpty()){
@@ -46,16 +49,16 @@ public class AbandonedStation extends Card {
         if (currentPlayer.getTotalCrew() < crewNumberRequired){
             System.out.printf("\nSorry "+currentPlayer.getPlayerName()+" you can't land on the station, you need at least %d crew members and you have %d\n", crewNumberRequired,currentPlayer.getTotalCrew() );
             playerToInteract.removeFirst();
-            initializeCard(game);
+            initializeCard(game, );
             return;
         }
         System.out.printf("\n"+currentPlayer.getPlayerName()+" congratulation, you have "+currentPlayer.getTotalCrew() +" witch is more than %d input 'yes' to land on the station, input 'no' to ignore, you will loose %d flight days\n\n", crewNumberRequired,requiredDays);
     }
 
     @Override
-    public void executeCard(Game game, String playerName, String[] input) {
+    public void executeCard(Game game, Message message) {
         if (currentPlayer == null)
-            currentPlayer = game.getListOfPlayers().getFirst();
+            currentPlayer = game.getListOfInFlightPlayers().getFirst();
         if (!playerName.equals(currentPlayer.getPlayerName()))
             return;
         if (playerToInteract.isEmpty()) {
@@ -91,7 +94,7 @@ public class AbandonedStation extends Card {
                 } else if (choice == 0) {
                     System.out.println("\nNo action performed");
                     playerToInteract.removeFirst();
-                    initializeCard(game);
+                    initializeCard(game, );
                 } else {
                     System.out.println("\nInvalid choice: " + choice);
                 }

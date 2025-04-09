@@ -6,8 +6,11 @@ import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.CrewPenalty;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Slavers extends Enemies{
     private final int rewardCredits;
@@ -37,13 +40,13 @@ public class Slavers extends Enemies{
     }
 
     @Override
-    public void initializeCard(Game game) {
+    public void initializeCard(Game game, Map<String, ViewInterface> viewsMap) {
         if (playerIndex > game.getNumberOfPlayers() - 1){
             System.out.println("No player beat the slavers\n");
             game.endCardEvent();
             return;
         }
-        currentPlayer = game.getListOfPlayers().get(playerIndex);
+        currentPlayer = game.getListOfInFlightPlayers().get(playerIndex);
         System.out.println(currentPlayer.getPlayerName() + ", you are face to face with a ship of Slavers\n");
         System.out.println("their cannon strength is " + cannonStrength + "\n");
         System.out.println("if yours is lower than theirs, you will lose "+ lostCrew + "crew members\n");
@@ -55,7 +58,7 @@ public class Slavers extends Enemies{
 
     //pay crew penalty
     @Override
-    public void executeCard(Game game, String playerName, String[] input) {
+    public void executeCard(Game game, Message message) {
         if (currentPlayer != null && playerName.equalsIgnoreCase(currentPlayer.getPlayerName())) {
             if (won == 0) {
                 if (input[0].equalsIgnoreCase("no")){
@@ -73,7 +76,7 @@ public class Slavers extends Enemies{
                         System.out.println(currentPlayer.getPlayerName() + " tied with the slavers\n");
                         System.out.println("next player\n");
                         playerIndex++;
-                        initializeCard(game);
+                        initializeCard(game, );
                     }
                 }
                 else {
@@ -106,7 +109,7 @@ public class Slavers extends Enemies{
                         System.out.println(currentPlayer.getPlayerName() + " tied with the slavers\n");
                         System.out.println("next player\n");
                         playerIndex++;
-                        initializeCard(game);
+                        initializeCard(game, );
                     }
                 }
             }
@@ -121,9 +124,9 @@ public class Slavers extends Enemies{
                 }
             }
             else if (won == -1){
-                if (penaltyIfLose.applyPenalty(game, currentPlayer, input) == 1) {
+                if (penaltyIfLose.applyPenalty(game, currentPlayer, , input, ) == 1) {
                     playerIndex++;
-                    initializeCard(game);
+                    initializeCard(game, );
                 }
                 else {
                     System.out.println("input more correct coordinates\n");

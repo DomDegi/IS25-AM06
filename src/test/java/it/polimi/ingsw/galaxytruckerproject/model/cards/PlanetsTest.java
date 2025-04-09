@@ -3,8 +3,6 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.Planet;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.Planets;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
@@ -178,7 +176,7 @@ class PlanetsTest {
     @Test
     void successfully_initialize_card () {
         game.setDrawnCard(planetsToLand);
-        game.getDrawnCard().initializeCard(game);
+        game.getDrawnCard().initializeCard(game, );
     }
 
     @Test
@@ -186,14 +184,14 @@ class PlanetsTest {
         successfully_initialize_card();
         String input="1";
         String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
         input="1 1 3";
         words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
 
         input="done";
         words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
         assertEquals(0,player2.getShipBoard().getAllGoods().size());
 
     }
@@ -203,13 +201,13 @@ class PlanetsTest {
         successfully_initialize_card();
         String input="no";
         String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
         input="no";
         words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="no";
         words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"FedeGalattico",words);
+        game.getDrawnCard().executeCard(game, ,"FedeGalattico");
     }
 
     @Test
@@ -217,43 +215,43 @@ class PlanetsTest {
         successfully_initialize_card();
         String input="1";
         String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
         input="done";
         words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
 
         input="1";
         words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="2";
         words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="1 1 3";
         words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="1 1 3";
         words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="1 1 3";
         words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="done";
         words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         assertEquals(3,player1.getShipBoard().getAllGoods().size());
 
         input="3";
         words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"FedeGalattico",words);
+        game.getDrawnCard().executeCard(game, ,"FedeGalattico");
         input="1 2 2";
         words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"FedeGalattico",words);
+        game.getDrawnCard().executeCard(game, ,"FedeGalattico");
         input="1 2 2";
         words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"FedeGalattico",words);
+        game.getDrawnCard().executeCard(game, ,"FedeGalattico");
         input="done";
         words = input.split(" ");
-        game.getDrawnCard().executeCard(game,"FedeGalattico",words);
+        game.getDrawnCard().executeCard(game, ,"FedeGalattico");
         assertEquals(2,player2.getShipBoard().getAllGoods().size());
 
     }

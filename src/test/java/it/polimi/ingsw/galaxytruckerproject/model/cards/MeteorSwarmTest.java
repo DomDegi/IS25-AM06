@@ -4,7 +4,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.MeteorSwarm;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.LargeMeteor;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.SmallMeteor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
@@ -158,18 +157,18 @@ class MeteorSwarmTest {
     void testMeteorSwarm() {
         int player1_initialDays = player1.getPlayerPosition();
         game.setDrawnCard(meteorSwarm);
-        game.getDrawnCard().initializeCard(game);
+        game.getDrawnCard().initializeCard(game, );
         game.setGameState(GameState.CARD_EVENT);
         assertEquals(meteorSwarm, game.getDrawnCard());
         //first player (2) to play doesn't have enough crew so should be skipped automatically whatever his input is
-        assertEquals(player3,game.getListOfPlayers().get(meteorSwarm.getPlayerIndex()));
-        meteorSwarm.executeCard(game, player3.getPlayerName(), new String[]{""});
-        assertEquals(player1,game.getListOfPlayers().get(meteorSwarm.getPlayerIndex()));
-        meteorSwarm.executeCard(game, player1.getPlayerName(), new String[]{""});
-        assertEquals(player2,game.getListOfPlayers().get(meteorSwarm.getPlayerIndex()));
-        meteorSwarm.executeCard(game, player2.getPlayerName(), new String[]{""});
-        assertEquals(player3,game.getListOfPlayers().get(meteorSwarm.getPlayerIndex()));
-        meteorSwarm.executeCard(game, player3.getPlayerName(), new String[]{""});
-        assertEquals(player1,game.getListOfPlayers().get(meteorSwarm.getPlayerIndex()));
+        assertEquals(player3,game.getListOfInFlightPlayers().get(meteorSwarm.getPlayerIndex()));
+        meteorSwarm.executeCard(game, , player3.getPlayerName());
+        assertEquals(player1,game.getListOfInFlightPlayers().get(meteorSwarm.getPlayerIndex()));
+        meteorSwarm.executeCard(game, , player1.getPlayerName());
+        assertEquals(player2,game.getListOfInFlightPlayers().get(meteorSwarm.getPlayerIndex()));
+        meteorSwarm.executeCard(game, , player2.getPlayerName());
+        assertEquals(player3,game.getListOfInFlightPlayers().get(meteorSwarm.getPlayerIndex()));
+        meteorSwarm.executeCard(game, , player3.getPlayerName());
+        assertEquals(player1,game.getListOfInFlightPlayers().get(meteorSwarm.getPlayerIndex()));
     }
 }

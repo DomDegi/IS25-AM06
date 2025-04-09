@@ -3,7 +3,6 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.Smugglers;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
@@ -155,7 +154,7 @@ class SmugglersTest {
     @Test
     void successfully_initialize_card () {
         game.setDrawnCard(smugglers);
-        game.getDrawnCard().initializeCard(game);
+        game.getDrawnCard().initializeCard(game, );
     }
 
     @Test
@@ -174,32 +173,32 @@ class SmugglersTest {
         smugglers = new Smugglers(1, 2, 10,2,rewardGoods);
 
         game.setDrawnCard(smugglers);
-        game.getDrawnCard().initializeCard(game);
+        game.getDrawnCard().initializeCard(game, );
 
         String input="no";
         String[] words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
 
         int batteries=player1.getShipBoard().getNumBatteries();
         input="no";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="3 0";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="3 0";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
 
         assertEquals(batteries-2,player1.getShipBoard().getNumBatteries());
 
         batteries=player2.getShipBoard().getNumBatteries();
         input="no";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"FedeGalattico",words);
+        game.getDrawnCard().executeCard(game, ,"FedeGalattico");
         input="3 3 3 3";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"FedeGalattico",words);
+        game.getDrawnCard().executeCard(game, ,"FedeGalattico");
         assertEquals(batteries-2,player2.getShipBoard().getNumBatteries());
     }
 
@@ -208,10 +207,10 @@ class SmugglersTest {
         successfully_initialize_card();
         String input="no";
         String[] words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
         input="no";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
         assertEquals(0,player2.getShipBoard().getAllGoods().size());
 
     }
@@ -221,10 +220,10 @@ class SmugglersTest {
         successfully_initialize_card();
         String input="no";
         String[] words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
         input="yes";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
         assertEquals(0,player2.getShipBoard().getAllGoods().size());
     }
 
@@ -233,10 +232,10 @@ class SmugglersTest {
         successfully_initialize_player2_won_accepted();
         String input="1 3 3";
         String[] words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
         input="done";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
         assertEquals(0,player2.getShipBoard().getAllGoods().size());
     }
 
@@ -247,22 +246,22 @@ class SmugglersTest {
         String input="yes";
         String[] words= input.split(" ");
         int batteries=player1.getShipBoard().getNumBatteries();
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="3 3";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="3 0";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="2 6";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="3 0";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="no";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         assertEquals(batteries-1,player1.getShipBoard().getNumBatteries());
     }
 
@@ -273,16 +272,16 @@ class SmugglersTest {
         int batteries=player1.getShipBoard().getNumBatteries();
         String input="yes";
         String[] words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="2 0 2 6";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="3 0 3 0";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="no";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         assertEquals(batteries-2,player1.getShipBoard().getNumBatteries());
     }
 
@@ -304,14 +303,14 @@ class SmugglersTest {
         flightBoard.moveBackward(player3,10);
 
         game.setDrawnCard(smugglers);
-        game.getDrawnCard().initializeCard(game);
+        game.getDrawnCard().initializeCard(game, );
 
         String input="no";
         String[] words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="no";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         assertEquals(0,player2.getShipBoard().getAllGoods().size());
         assertEquals(batteries,player1.getShipBoard().getNumBatteries());
     }
@@ -334,20 +333,20 @@ class SmugglersTest {
         flightBoard.moveBackward(player3,10);
 
         game.setDrawnCard(smugglers);
-        game.getDrawnCard().initializeCard(game);
+        game.getDrawnCard().initializeCard(game, );
 
         String input="yes";
         String[] words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="2 0 2 6";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="3 0 3 0";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="no";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         assertEquals(0,player2.getShipBoard().getAllGoods().size());
         assertEquals(batteries-2,player1.getShipBoard().getNumBatteries());
     }
@@ -370,17 +369,17 @@ class SmugglersTest {
         flightBoard.moveBackward(player3,10);
 
         game.setDrawnCard(smugglers);
-        game.getDrawnCard().initializeCard(game);
+        game.getDrawnCard().initializeCard(game, );
 
         String input="yes";
         String[] words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="2 0";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input="3 0";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         assertEquals(0,player2.getShipBoard().getAllGoods().size());
         assertEquals(batteries-1,player1.getShipBoard().getNumBatteries());
 

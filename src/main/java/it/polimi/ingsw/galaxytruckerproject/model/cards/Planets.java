@@ -7,8 +7,11 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsManager;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Planets extends Card{
@@ -29,9 +32,9 @@ public class Planets extends Card{
         this.won = false;
     }
     @Override
-    public void initializeCard(Game game) {
+    public void initializeCard(Game game, Map<String, ViewInterface> viewsMap) {
         if (!initialized) {
-            playerToInteract = new ArrayList<>(game.getListOfPlayers());
+            playerToInteract = new ArrayList<>(game.getListOfInFlightPlayers());
             initialized=true;
         }
         AtomicInteger i = new AtomicInteger();
@@ -49,9 +52,9 @@ public class Planets extends Card{
     }
     //for each player asks if they want to spend the required days to occupy the planet they choose
     @Override
-    public void executeCard(Game game, String playerName, String[] input) {
+    public void executeCard(Game game, Message message) {
         if(currentPlayer==null)
-            currentPlayer=game.getListOfPlayers().getFirst();
+            currentPlayer=game.getListOfInFlightPlayers().getFirst();
         if (!playerName.equals(currentPlayer.getPlayerName()))
             return;
         if(playerToInteract.isEmpty()||listOfPlanets.isEmpty()){
@@ -88,7 +91,7 @@ public class Planets extends Card{
                 System.out.println("No action performed\n");
                 playerToInteract.removeFirst();
                 won=false;
-                initializeCard(game);
+                initializeCard(game, );
             } else {
                 System.out.println("Invalid choice: " + choice);
             }
@@ -96,7 +99,7 @@ public class Planets extends Card{
             if(goodsManager.getReward(input)){
                 playerToInteract.removeFirst();
                 won=false;
-                initializeCard(game);
+                initializeCard(game, );
             }
         }
     }

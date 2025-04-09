@@ -4,8 +4,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coverage;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
-import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 
 import java.util.ArrayList;
@@ -20,6 +18,7 @@ public class Player {
     private ShipBoard playerShip;
     private Tile drawnTile;
     private ArrayList<Coordinates> firstCoordinatesChoice = new ArrayList<>();
+    private boolean isDisconnected;
 
     public Player(String playerName, PlayersColor playerColor) {
         this.playerName = playerName;
@@ -30,6 +29,7 @@ public class Player {
         this.landed = false;
         this.playerShip = new ShipBoard(this);
         this.drawnTile = null;
+        this.isDisconnected = false;
     }
 
     //GETTER METHODS
@@ -340,13 +340,16 @@ public class Player {
     }
 
     //CREW METHODS
-    public int removeCrew(ArrayList<Coordinates> coordinates) {
-        int counter = 0;
+    public boolean removeCrew(ArrayList<Coordinates> coordinates) {
         for (Coordinates coord: coordinates) {
-            if (playerShip.chooseCrewToRemove(coord))
-                counter++;
+            if (!playerShip.getCabinsCoordinates().contains(coord)) {
+                return false;
+            }
         }
-        return counter;
+        for (Coordinates coord: coordinates) {
+            playerShip.chooseCrewToRemove(coord);
+        }
+        return true;
     }
 
     public void printCurrentInfoCabins() {
@@ -364,6 +367,20 @@ public class Player {
     //FROM WHICH IT'S GOING TO BE USED THE ONE BATTERY NECESSARY TO POWER THE SHIELD
     public Coverage useShield(Coordinates shieldCoordinates, Coordinates batteryCoordinates) {
         return playerShip.chooseShields(shieldCoordinates,batteryCoordinates);
+    }
+
+
+    //Disconnected flag methods
+    public void playerDisconnects() {
+        this.isDisconnected = true;
+    }
+
+    public void playerReconnects() {
+        this.isDisconnected = false;
+    }
+
+    public boolean IsDisconnected() {
+        return isDisconnected;
     }
 
     //methods for testing

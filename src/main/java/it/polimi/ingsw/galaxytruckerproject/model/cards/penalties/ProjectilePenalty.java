@@ -3,10 +3,13 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards.penalties;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Defense;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -28,23 +31,23 @@ public class ProjectilePenalty extends Penalty {
     }
 
     @Override
-    public int applyPenalty(Game game, Player player, String[] input) {
+    public int applyPenalty(GameInterface game, Player player, ViewInterface playersView, Message message) {
         if (this.game == null) {
             this.game = game;
         }
         if (diceRoll == 0) {
             if (input!=null && input.length>0 && !input[0].equalsIgnoreCase("roll")) {
-                printInfo(player);
+                printInfo(, player);
                 System.out.println("input roll to roll the dices and find out exactly what will be hit");
             } else {
                 Random rand = new Random();
                 diceRoll = 2 + rand.nextInt(11);
                 System.out.println("diceRoll: " + diceRoll);
-                printInfo(player);
+                printInfo(, player);
             }
             //return 0;
         } else {
-            printInfo(player);
+            printInfo(, player);
         }
         if (defenseStatus == Defense.PROTECTED) {
             resetForNextProjectile();
@@ -89,7 +92,7 @@ public class ProjectilePenalty extends Penalty {
 
     @Override
     //prints next cannon shot coming and sets the defense status for it (HIT, CHOOSESHIELD or PROTECTED)
-    public void printInfo (Player player){
+    public void printInfo (ViewInterface view, Player player){
         System.out.println(listOfProjectiles.getFirst().toString() + "\n");
         if (diceRoll != 0) {
             this.defenseStatus = listOfProjectiles.getFirst().throwProjectile(player, diceRoll, game);

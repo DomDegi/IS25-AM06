@@ -2,10 +2,11 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards.penalties;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.polimi.ingsw.galaxytruckerproject.model.Game;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.Smugglers;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
 
@@ -24,7 +25,7 @@ public class GoodsPenalty extends Penalty {
     }
 
     @Override
-    public int applyPenalty(Game game, Player player, String[] input){
+    public int applyPenalty(GameInterface game, Player player, ViewInterface playersView, Message message){
         ArrayList<Coordinates> coordinates = player.parseCoordinates(input);
         if (coordinates.isEmpty()) {
             return 0;
@@ -38,7 +39,7 @@ public class GoodsPenalty extends Penalty {
             return 1;
         }
         System.out.printf("You have %d more goods to remove\n", numberPlayerOfLostGoods);
-        printInfo(player);
+        printInfo(, player);
         return 0;
     }
 
@@ -51,7 +52,7 @@ public class GoodsPenalty extends Penalty {
         return numberOfLostGoods;
     }
 
-    public void printInfo(Player player) {
+    public void printInfo(ViewInterface view, Player player) {
         if (player.getShipBoard().isCargoEmpty()) {
             if (player.getShipBoard().getNumBatteries() == 0) {
                 numberPlayerOfLostGoods = 0;

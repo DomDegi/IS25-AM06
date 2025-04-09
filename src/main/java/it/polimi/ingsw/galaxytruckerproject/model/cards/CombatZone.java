@@ -6,6 +6,8 @@ import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.Penalty;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.*;
 
@@ -34,7 +36,7 @@ public class CombatZone extends Card {
     }
 
     @Override
-    public void initializeCard(Game game) {
+    public void initializeCard(Game game, Map<String, ViewInterface> viewsMap) {
         //if there is only one player still flying, combat>one cards get skipped
         if (game.getNumberOfPlayers() <= 1) {
             game.endCardEvent();
@@ -66,14 +68,14 @@ public class CombatZone extends Card {
             }
             losingPlayerDecided = true;
             savedValues.clear();
-            listOfChallenges.get(currentChallenge).printInfo(currentPlayer);
+            listOfChallenges.get(currentChallenge).printInfo(, currentPlayer);
             playerIndex=0;
             return;
         }
 
 
         if(playerIndex <= game.getNumberOfPlayers() - 1) {
-            currentPlayer = game.getListOfPlayers().get(playerIndex);
+            currentPlayer = game.getListOfInFlightPlayers().get(playerIndex);
         }
         if(!losingPlayerDecided) {
             switch (currentChallenge) {
@@ -89,7 +91,7 @@ public class CombatZone extends Card {
                     System.out.println("You have this many crew members" + currentPlayer.getTotalCrew());
                     savedValues.put(currentPlayer, (float) currentPlayer.getTotalCrew());
                     playerIndex++;
-                    initializeCard(game);
+                    initializeCard(game, );
                     break;
                 }
                 case MINIMUM_ENGINE_POWER: {
@@ -103,9 +105,9 @@ public class CombatZone extends Card {
     }
 
     @Override
-    public void executeCard(Game game, String playerName, String[] input) {
+    public void executeCard(Game game, Message message) {
         if (losingPlayerDecided && currentPlayer != null && playerName.equalsIgnoreCase(currentPlayer.getPlayerName())) {
-            int penaltyReturn = listOfChallenges.get(currentChallenge).applyPenalty(game, currentPlayer, input);
+            int penaltyReturn = listOfChallenges.get(currentChallenge).applyPenalty(game, currentPlayer, , input, );
             if (penaltyReturn == 1) {
                 System.out.println("Penalty has been applied to " + currentPlayer.getPlayerName() + "\n");
                 losingPlayerDecided = false;
@@ -113,7 +115,7 @@ public class CombatZone extends Card {
                 listOfChallenges.remove(currentChallenge);
                 currentChallenge = listOfChallenges.entrySet().iterator().next().getKey();
                 currentPlayer=null;
-                initializeCard(game);
+                initializeCard(game, );
             }
             else {
                 System.out.println("Penalty needs more input to get completed\n");
@@ -141,7 +143,7 @@ public class CombatZone extends Card {
             int engineStrength = playerToPlay.useDoubleEngines(new ArrayList<>());
             savedValues.put(playerToPlay, (float) engineStrength);
             playerIndex++;
-            initializeCard(game);
+            initializeCard(game, );
             return;
         }
         ArrayList<Coordinates> coordinates = new ArrayList<>(playerToPlay.parseCoordinates(input));
@@ -167,7 +169,7 @@ public class CombatZone extends Card {
         //saves the engine strength of current player and goes to the next one
         savedValues.put(playerToPlay, (float) engineStrength);
         playerIndex++;
-        initializeCard(game);
+        initializeCard(game, );
     }
 
     public void minimumCannonStrength (Game game, Player playerToPlay, String[] input) {
@@ -175,7 +177,7 @@ public class CombatZone extends Card {
             float cannonStrength = playerToPlay.useDoubleCannons(new ArrayList<>());
             savedValues.put(playerToPlay, cannonStrength);
             playerIndex++;
-            initializeCard(game);
+            initializeCard(game, );
             return;
         }
         ArrayList<Coordinates> coordinates = new ArrayList<>(playerToPlay.parseCoordinates(input));
@@ -199,7 +201,7 @@ public class CombatZone extends Card {
         //saves the engine strength of current player and goes to the next one
         savedValues.put(playerToPlay, cannonStrength);
         playerIndex++;
-        initializeCard(game);
+        initializeCard(game, );
     }
 
     @Override

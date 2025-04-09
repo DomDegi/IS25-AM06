@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.*;
+import static it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.MessageType.*;
 
 
 public class GameController {
@@ -123,9 +124,11 @@ public class GameController {
                     view.asksToChooseStartingPosition();
                 }
             }
+            Player reconnectingPlayer = disconnectedPlayers.get(playerName);
             playersViewMap.put(playerName, view);
-            activePlayers.put (playerName, disconnectedPlayers.remove(playerName));
+            activePlayers.put (playerName, reconnectingPlayer);
             game.getFlightBoard().setPlayerToLast(activePlayers.get(playerName));
+            reconnectingPlayer.playerReconnects();
         }
         else {
             view.showErrorMessage("player was never connected to this game");
@@ -166,8 +169,10 @@ public class GameController {
 
     public ViewInterface removePlayer (String playerName) {
         if (activePlayers.containsKey(playerName)) {
-            disconnectedPlayers.put(playerName, activePlayers.get(playerName));
+            Player removedPlayer = activePlayers.get(playerName);
+            disconnectedPlayers.put(playerName, removedPlayer);
             activePlayers.remove(playerName);
+            removedPlayer.playerDisconnects();
         }
         return playersViewMap.remove(playerName);
     }
@@ -330,7 +335,7 @@ public class GameController {
 
     //errors check and management
     public void verifyShipCorrectness() {
-        for (Player player : game.getListOfPlayers()) {
+        for (Player player : game.getListOfInFlightPlayers()) {
             boolean correctness = player.getShipBoard().verifyCorrectness();
             ViewInterface playersView = this.getViewFromNickname(player.getPlayerName());
             if (correctness){
@@ -512,8 +517,8 @@ public class GameController {
 
         switch(message.getMessageType()) {
             case DRAW_CARD_REQUEST:
-                if (game.identifyPlayerByName(playerName).equals(game.getListOfPlayers().getFirst())){
-                    game.drawCard();
+                if (game.identifyPlayerByName(playerName).equals(game.getListOfInFlightPlayers().getFirst())){
+                    game.drawCard(playersViewMap);
                 }
                 else {
                     broadcastMessage("only the first ranked player can draw");
