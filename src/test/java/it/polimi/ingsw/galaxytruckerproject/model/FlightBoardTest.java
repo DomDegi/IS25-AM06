@@ -159,10 +159,10 @@ class FlightBoardTest {
         flightBoard.addToFlightBoard(player2, 2);
         flightBoard.addToFlightBoard(player3, 3);
         flightBoard.addToFlightBoard(player4, 4);
-        player1.getPlayerShip().setHumanCrew(2);
-        player2.getPlayerShip().setHumanCrew(2);
-        player3.getPlayerShip().setHumanCrew(2);
-        player4.getPlayerShip().setHumanCrew(2);
+        player1.getShipBoard().setHumanCrew(2);
+        player2.getShipBoard().setHumanCrew(2);
+        player3.getShipBoard().setHumanCrew(2);
+        player4.getShipBoard().setHumanCrew(2);
 
         flightBoard.moveForward(player1,5);
         flightBoard.moveForward(player2,10);
@@ -206,10 +206,10 @@ class FlightBoardTest {
         flightBoard.addToFlightBoard(player2, 2);
         flightBoard.addToFlightBoard(player3, 3);
         flightBoard.addToFlightBoard(player4, 4);
-        player1.getPlayerShip().setHumanCrew(2);
-        player2.getPlayerShip().setHumanCrew(2);
-        player3.getPlayerShip().setHumanCrew(2);
-        player4.getPlayerShip().setHumanCrew(0);
+        player1.getShipBoard().setHumanCrew(2);
+        player2.getShipBoard().setHumanCrew(2);
+        player3.getShipBoard().setHumanCrew(2);
+        player4.getShipBoard().setHumanCrew(0);
 
         flightBoard.moveForward(player1,5);
         flightBoard.moveForward(player2,10);
@@ -254,10 +254,10 @@ class FlightBoardTest {
         flightBoard.addToFlightBoard(player2, 2);
         flightBoard.addToFlightBoard(player3, 3);
         flightBoard.addToFlightBoard(player4, 4);
-        player1.getPlayerShip().setHumanCrew(2);
-        player2.getPlayerShip().setHumanCrew(2);
-        player3.getPlayerShip().setHumanCrew(2);
-        player4.getPlayerShip().setHumanCrew(2);
+        player1.getShipBoard().setHumanCrew(2);
+        player2.getShipBoard().setHumanCrew(2);
+        player3.getShipBoard().setHumanCrew(2);
+        player4.getShipBoard().setHumanCrew(2);
 
         flightBoard.moveForward(player1,5);
         flightBoard.moveForward(player2,10);

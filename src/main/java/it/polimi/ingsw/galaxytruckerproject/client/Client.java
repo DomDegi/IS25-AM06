@@ -10,11 +10,10 @@ import java.util.Map;
 import java.util.Timer;
 
 public class Client {
-    private Map<LightShipboard,String> players;
     private LightPlayer me;
-    private LightShipboard myShipboard;
+    private ArrayList<LightPlayer> playersList;
     private ArrayList<ArrayList<Card>> deck;
-    private LightFlightboard flightboard;
+    private LightFlightboard flightBoard;
     private HashMap<Integer, Tile> drawnTiles;
     private Tile tileInHand;
     private Timer timer;
@@ -22,7 +21,13 @@ public class Client {
     public LightPlayer getMe() {
         return me;
     }
+
+    public ArrayList<LightPlayer> getPlayersList() {
+        return playersList;
+    }
+
     public ArrayList<ArrayList<Card>> getDeck() {
         return deck;
     }
+
 }

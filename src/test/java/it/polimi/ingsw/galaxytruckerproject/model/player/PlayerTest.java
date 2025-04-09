@@ -1,7 +1,5 @@
 package it.polimi.ingsw.galaxytruckerproject.model.player;
 
-import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -145,7 +143,7 @@ class PlayerTest {
         player1.useDoubleCannons(player1.parseCoordinates(new String []{"2", "0", "2", "6"}));
         float after_2_double_cannons = player1.useDoubleCannons(player1.parseCoordinates(new String[]{"3", "6", "3", "6"}));
         assertEquals(base_firepower + 4, after_2_double_cannons);
-        assertEquals(initial_batteries - 2, player1.getPlayerShip().getNumBatteries());
+        assertEquals(initial_batteries - 2, player1.getShipBoard().getNumBatteries());
     }
 
     //basic test
@@ -160,7 +158,7 @@ class PlayerTest {
             System.out.println("is empty");
         int after_2_double_engines = player1.useDoubleEngines(player1.parseCoordinates(new String[]{"3", "0", "3", "0"}));
         assertEquals(base_enginestrength + 4, after_2_double_engines);
-        assertEquals(initial_batteries - 2, player1.getPlayerShip().getNumBatteries());
+        assertEquals(initial_batteries - 2, player1.getShipBoard().getNumBatteries());
 
     }
 

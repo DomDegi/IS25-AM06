@@ -1,27 +1,26 @@
 package it.polimi.ingsw.galaxytruckerproject.client;
 
-import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsManager;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 
 import java.util.ArrayList;
-import java.util.SplittableRandom;
 
 public class ClientController {
 
     private ClientState state;
-    private int turns=0;
+    private int turns;
     private ArrayList<Goods> goodsList;
     private final Client client;
     private int indexDeckInHand;
+
     public ClientController (Client client) {
         this.client = client;
+        this.indexDeckInHand = 0;
+        this.turns=0;
         state=ClientState.LOBBY;
     }
-
-
 
     public void input(String input) {
         input.toLowerCase();
@@ -97,9 +96,11 @@ public class ClientController {
                         System.out.println("\nInvalid input format. Please provide integer values.");
                         return ;
                     }
-                    if(chose>1&&chose<5){
-                        System.out.println(shipboard[chose]);
-                        return;
+                    if(chose==0) {
+                        System.out.println(client.getMe().getShipBoard());
+                    }
+                    if(chose>=1 && chose<=4){
+                        System.out.println(client.getPlayersList().get(indexDeckInHand).getShipBoard());
                     }
                     return;
                 }

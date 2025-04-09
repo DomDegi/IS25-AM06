@@ -1,9 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.lightmodel;
 
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Shields;
-
 public class LightPlayer {
     private int position; //position on the board
+    private LightShipBoard shipboard;
     private int rank;
     private String playerName;
     private boolean landed = false;
@@ -31,5 +30,11 @@ public class LightPlayer {
     }
     public void setLanded(boolean landed) {
         this.landed = landed;
+    }
+    public LightShipBoard getShipBoard() {
+        return shipboard;
+    }
+    public void setShipboard(LightShipBoard shipboard) {
+        this.shipboard = shipboard;
     }
 }

@@ -238,7 +238,7 @@ public class GameController {
                 playersView.showBookedTiles
                         (activePlayers
                                 .get(playerName).
-                                getPlayerShip().
+                                getShipBoard().
                                 getBookedTiles());
                 break;
 

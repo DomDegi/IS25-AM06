@@ -1,7 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.model.goods;
 
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
-import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 
 import java.util.ArrayList;
@@ -59,11 +58,11 @@ public class GoodsManager {
             }
             coordinatesToPut = new Coordinates(CoordinatesX, CoordinatesY);
             if (input[0].equalsIgnoreCase("pick")) {
-                if (currentPlayer.getPlayerShip().getSingleCargoGoods(coordinatesToPut).isEmpty()) {
+                if (currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut).isEmpty()) {
                     System.out.println("\nCargo Hold is empty");
                     return false;
                 }
-                goodsPrinter(currentPlayer.getPlayerShip().getSingleCargoGoods(coordinatesToPut));
+                goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
                 System.out.println("Input witch good to pick:");
                 state = -1;
                 return false;
@@ -89,7 +88,7 @@ public class GoodsManager {
                     return false;
                 } else if (positioned == 1) {
                     System.out.printf("\nSorry, you can't put the %s good in the %d,%d cargo, it is full, chose what good to remove (input 'no' to select an other good and cargo coordinates)\n", possibleGoodsGain.get(goodsToGet - 1).getColor(), coordinatesToPut.getX(), coordinatesToPut.getY());
-                    goodsPrinter(currentPlayer.getPlayerShip().getSingleCargoGoods(coordinatesToPut));
+                    goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
                     state = 1;
                     return false;
                 } else if (positioned == -1) {
@@ -120,7 +119,7 @@ public class GoodsManager {
             System.out.println("\nInvalid input format. Please provide integer values.");
             return ;
         }
-        ArrayList<Goods> cargo = currentPlayer.getPlayerShip().getSingleCargoGoods(coordinatesToPut);
+        ArrayList<Goods> cargo = currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut);
         Goods goodToSwap;
         switch (chose){
             case 0:
@@ -130,46 +129,46 @@ public class GoodsManager {
             case 1:
                 if(cargo.isEmpty()) {
                     System.out.println("\nInvalid choice: " + chose + " - this cargo container does not exist");
-                    goodsPrinter(currentPlayer.getPlayerShip().getSingleCargoGoods(coordinatesToPut));
+                    goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
                     System.out.print("Chose what good to swap, input 'no' to stop\n");
                     return;
                 }
                 goodToSwap= cargo.getFirst();
-                currentPlayer.getPlayerShip().removeGood(cargo.getFirst(), coordinatesToPut);
+                currentPlayer.getShipBoard().removeGood(cargo.getFirst(), coordinatesToPut);
                 break;
             case 2:
                 if(cargo.size()<2) {
                     System.out.println("\nInvalid choice: " + chose + " - this cargo container does not exist");
-                    goodsPrinter(currentPlayer.getPlayerShip().getSingleCargoGoods(coordinatesToPut));
+                    goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
                     System.out.print("Chose what good to swap, input 'no' to stop\n");
                     return;
                 }
                 goodToSwap= cargo.get(1);
-                currentPlayer.getPlayerShip().removeGood(cargo.get(1), coordinatesToPut);
+                currentPlayer.getShipBoard().removeGood(cargo.get(1), coordinatesToPut);
                 break;
             case 3:
                 if(cargo.size()<3) {
                     System.out.println("\nInvalid choice: " + chose + " - this cargo container does not exist");
-                    goodsPrinter(currentPlayer.getPlayerShip().getSingleCargoGoods(coordinatesToPut));
+                    goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
                     System.out.print("Chose what good to swap, input 'no' to stop\n");
                     return;
                 }
                 goodToSwap= cargo.get(2);
-                currentPlayer.getPlayerShip().removeGood(cargo.get(2), coordinatesToPut);
+                currentPlayer.getShipBoard().removeGood(cargo.get(2), coordinatesToPut);
                 break;
             default:
                 System.out.println("\nInvalid choice: " + chose + " - this cargo container does not exist");
-                goodsPrinter(currentPlayer.getPlayerShip().getSingleCargoGoods(coordinatesToPut));
+                goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
                 System.out.print("Chose what good to swap, input 'no' to stop\n");
                 return;
         }
         if(state ==1) {
-            currentPlayer.getPlayerShip().gainGoods(possibleGoodsGain.get(goodsToGet - 1), coordinatesToPut);
+            currentPlayer.getShipBoard().gainGoods(possibleGoodsGain.get(goodsToGet - 1), coordinatesToPut);
             possibleGoodsGain.remove(goodsToGet - 1);
         }
         possibleGoodsGain.add(goodToSwap);
         System.out.print("\nCargoHold"+coordinatesToPut+":\n");
-        goodsPrinter(currentPlayer.getPlayerShip().getSingleCargoGoods(coordinatesToPut));
+        goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
         System.out.print("Planet:\n");
         goodsPrinter(possibleGoodsGain);
         System.out.print("Chose for each good where to put it, input 'done' to stop,'pick  x y' to pick one good from your cargo:\n\n");

@@ -53,7 +53,7 @@ public class LargeMeteor extends Projectile {
 
 
     private Defense checkNorthLev1(Player player, int diceRoll) {
-        ShipBoard ship = player.getPlayerShip();
+        ShipBoard ship = player.getShipBoard();
         Optional<Tile> Temp = Optional.empty();
         Optional<Tile>[][] tileTable= ship.getTilesTable();
         boolean doubleCannon = false;
@@ -75,7 +75,7 @@ public class LargeMeteor extends Projectile {
         return Defense.HIT;
     }
     private Defense checkSouthLev1(Player player, int diceRoll) {
-        ShipBoard ship = player.getPlayerShip();
+        ShipBoard ship = player.getShipBoard();
         Optional<Tile> Temp = Optional.empty();
         Optional<Tile>[][] tileTable= ship.getTilesTable();
         boolean doubleCannon = false;
@@ -97,7 +97,7 @@ public class LargeMeteor extends Projectile {
         return Defense.HIT;
     }
     private Defense checkEastLev1(Player player, int diceRoll) {
-        ShipBoard ship = player.getPlayerShip();
+        ShipBoard ship = player.getShipBoard();
         Optional<Tile> Temp = Optional.empty();
         Optional<Tile>[][] tileTable= ship.getTilesTable();
         boolean doubleCannon = false;
@@ -119,7 +119,7 @@ public class LargeMeteor extends Projectile {
         return Defense.HIT;
     }
     private Defense checkWestLev1(Player player, int diceRoll) {
-        ShipBoard ship = player.getPlayerShip();
+        ShipBoard ship = player.getShipBoard();
         Optional<Tile> Temp = Optional.empty();
         Optional<Tile>[][] tileTable= ship.getTilesTable();
         boolean doubleCannon = false;

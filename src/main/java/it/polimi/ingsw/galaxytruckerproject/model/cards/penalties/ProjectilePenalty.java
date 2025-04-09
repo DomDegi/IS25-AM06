@@ -112,7 +112,7 @@ public class ProjectilePenalty extends Penalty {
             ArrayList<Coordinates> coordinates=player.parseCoordinates(input);
             for (Set<Coordinates> set : branch) {
                 if (set.contains(coordinates.getFirst())) {
-                    player.getPlayerShip().SetNewShip(set);
+                    player.getShipBoard().SetNewShip(set);
                     i=1;
                 }
             }
