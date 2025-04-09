@@ -6,7 +6,9 @@ public class ClientController {
 
     private final Client client;
     public ClientController (Client client) {
-        this.view = view;
-        state=
+        this.client = client;
     }
+
+
+
 }
