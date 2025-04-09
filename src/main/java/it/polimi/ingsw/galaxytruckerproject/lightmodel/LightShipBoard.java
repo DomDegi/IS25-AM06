@@ -3,12 +3,17 @@ package it.polimi.ingsw.galaxytruckerproject.lightmodel;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coverage;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
 public class LightShipBoard {
+
+    //Variable that saves the reference to the ShipBoard present in the model along with all the game logic
+    private ShipBoard shipBoard;
+
     protected final Player player; //protected because it need to be called in StartingCabin (Tiles)
     private Optional<Tile>[][] tilesTable;
     private int numExposedConnectors;
@@ -33,7 +38,75 @@ public class LightShipBoard {
     private int numPurpleAliens;
     private int numHumanCrew;
 
-    public setTilesTable(){
-        
+
+    public LightShipBoard(ShipBoard shipBoard) {
+        this.player = shipBoard.getPlayer();
+        this.shipBoard = shipBoard;
     }
+
+
+    public void setTilesTable(Coordinates coordinates) {
+        tilesTable = shipBoard.getTilesTable();
+    }
+
+    public void setNumSingleEngine() {
+        this.numSingleEngine = shipBoard.getNumSingleEngine();
+    }
+
+    public void setDoubleEngine() {
+        this.DoubleEngine = shipBoard.getDoubleEngine();
+    }
+
+    public void setNumBrownAliens() {
+        this.numBrownAliens = shipBoard.getNumBrownAliens();
+    }
+
+    public void setNumPurpleAliens() {
+        this.numPurpleAliens = shipBoard.getNumPurpleAliens();
+    }
+
+    public void setNumHumanCrew() {
+        this.numHumanCrew = shipBoard.getNumHumanCrew();
+    }
+
+    public void setNumBattery() {
+        this.numBatteries = shipBoard.getNumBatteries();
+    }
+
+    public void setSingleCannonPower() {
+        this.singleCannonPower = shipBoard.getSingleCannonPower();
+    }
+
+    public void setDoubleCannon() {
+        this.DoubleCannon = shipBoard.getDoubleCannon();
+    }
+
+    public void setNumExposedConnectors(){
+        this.numExposedConnectors = shipBoard.getNumExposedConnectors();
+    }
+
+    public void setShields() {
+        this.shields = shipBoard.getCoverageShields();
+    }
+
+    public void setBatteryCoordinates() {
+        this.batteryCoordinates = shipBoard.getBatteryCoordinates();
+    }
+
+    public void setCrewCoordinates() {
+        this.crewCoordinates = shipBoard.getCabinsCoordinates();
+    }
+
+    public void setCargoHoldCoordinates() {
+        this.cargoHoldCoordinates = shipBoard.getCargoHoldCoordinates();
+    }
+
+    public void setBookedTiles() {
+        this.bookedTiles = shipBoard.getBookedTiles();
+    }
+
+
+
+
+
 }
