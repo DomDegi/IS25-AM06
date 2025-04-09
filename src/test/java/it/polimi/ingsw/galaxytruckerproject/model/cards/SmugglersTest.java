@@ -59,7 +59,7 @@ class SmugglersTest {
         tile2.setCrewType(CrewType.HUMAN);
         Tile tile3=new AlienLifeSupportsSystem( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),CrewType.BROWN);
         shipBoard1.positionTile(Optional.of(tile3), new Coordinates(1,2));
-        Tile tile4=new CargoBlue(3, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
+        Tile tile4=new CargoRed(3, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
         shipBoard1.positionTile(Optional.of(tile4), new Coordinates(1,3));
         Tile tile5=new CargoBlue(3, new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
         shipBoard1.positionTile(Optional.of(tile5), new Coordinates(1,4));
