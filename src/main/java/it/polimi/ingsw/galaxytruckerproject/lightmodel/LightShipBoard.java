@@ -64,7 +64,6 @@ public class LightShipBoard {
 
         this.tilesTable = tilesTable;
     }
-
     public void initializeLevel2() {
         this.tilesTable = new Optional[5][7];
         //Set empty the normal Tile
@@ -87,15 +86,21 @@ public class LightShipBoard {
         positionTile(Optional.of(tile), new Coordinates(2, 3));
     }
 
+    public Tile getTile(Coordinates coordinates){
+        return tilesTable[coordinates.getX()][coordinates.getY()].get();
+    }
+
 
     public boolean positionTile(Optional<Tile> tile, Coordinates coordinates) {
         if (tile.isPresent() && tilesTable[coordinates.getX()][coordinates.getY()].isEmpty()) {
             tilesTable[coordinates.getX()][coordinates.getY()] = tile;
+            tile.get().setCoordinates(coordinates);
+
             /*we're going to add the class tile also in the client. IF so we need to add this:
             //Personally I don't think we should but we'll see
-            //EDIT: I think we should, */
             tile.get().setShipBoard(this);
-            tile.get().setCoordinates(coordinates);
+
+            //EDIT: I think we should, */
             return true;
         }
         return false;
@@ -161,25 +166,6 @@ public class LightShipBoard {
         } else
             System.out.println("THIS TILE IS NOT A CABIN");
         return false;
-    }
-
-    public void epidemic(){
-        HashSet<Coordinates> InfectedCabin = new HashSet<>();
-        for(Coordinates coordinates : crewCoordinates){
-            for(Coordinates coordinates2 : crewCoordinates){
-                if ((coordinates.getX() == coordinates2.getX() && coordinates.getY() - 1 == coordinates2.getY() && !this.getTile(coordinates).getWest().getConnectorsType().equals(Connectors.SMOOTH))
-                        || (coordinates.getX() == coordinates2.getX() && coordinates.getY() + 1 == coordinates2.getY() && !this.getTile(coordinates).getEast().getConnectorsType().equals(Connectors.SMOOTH))
-                        || (coordinates.getX() - 1 == coordinates2.getX() && coordinates.getY() == coordinates2.getY() && !this.getTile(coordinates).getNorth().getConnectorsType().equals(Connectors.SMOOTH))
-                        || coordinates.getX() + 1 == coordinates2.getX() && coordinates.getY() == coordinates2.getY() && !this.getTile(coordinates).getSouth().getConnectorsType().equals(Connectors.SMOOTH)
-                ) {
-                    //(Math.abs(coordinates.getX() - coordinates2.getX())==1 ^ Math.abs(coordinates.getY() - coordinates2.getY())==1)&& !coordinates.equals(coordinates2)
-                    InfectedCabin.add(coordinates2);
-                }
-            }
-        }
-        for(Coordinates coordinates : InfectedCabin){
-            tilesTable[coordinates.getX()][coordinates.getY()].get().removeCrew();
-        }
     }
 
     //BATTERY METHODS
@@ -422,7 +408,7 @@ public class LightShipBoard {
     }
 
 
-}
+
 
 
 

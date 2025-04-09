@@ -219,9 +219,11 @@ public class ShipBoard {
         return false;
     }
 
+    //Used only for testing (toEnnio: why brotha?)
     public Tile getTile(int x, int y) {
         return tilesTable[x][y].get();
     }
+
     public Tile getTile(Coordinates coordinates){
         return tilesTable[coordinates.getX()][coordinates.getY()].get();
     }
