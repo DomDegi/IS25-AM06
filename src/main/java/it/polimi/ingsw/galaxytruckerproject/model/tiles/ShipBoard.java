@@ -11,10 +11,10 @@ public class ShipBoard {
     private Optional<Tile>[][] tilesTable;
     private int numExposedConnectors;
     private int penalty;
-    private ArrayList<Tile> bookedTiles;
+    private final ArrayList<Tile> bookedTiles;
     private int numBatteries;
     private float singleCannonPower;
-    private ArrayList<Coordinates> DoubleCannon;
+    private final ArrayList<Coordinates> DoubleCannon;
 
     //TO ENNIO: IF THERE'S A REASON TO NOT USE THIS SET UP, FEEL FREE TO RESET EVERYTHING AS IT WAS
    // private ArrayList<Coordinates> DoubleStraightCannon;
@@ -22,11 +22,11 @@ public class ShipBoard {
     //TO SOHEIL I FEAR RESETTING
 
     private int numSingleEngine;
-    private ArrayList<Coordinates> DoubleEngine;
-    private ArrayList<Coverage> shields;
-    private ArrayList<Coordinates> batteryCoordinates;
-    private ArrayList<Coordinates> crewCoordinates;
-    private ArrayList<Coordinates> cargoHoldCoordinates;
+    private final ArrayList<Coordinates> DoubleEngine;
+    private final ArrayList<Coverage> shields;
+    private final ArrayList<Coordinates> batteryCoordinates;
+    private final ArrayList<Coordinates> crewCoordinates;
+    private final ArrayList<Coordinates> cargoHoldCoordinates;
     private int numBrownAliens;
     private int numPurpleAliens;
     private int numHumanCrew;
@@ -221,11 +221,15 @@ public class ShipBoard {
 
     //Used only for testing (toEnnio: why brotha?)
     public Tile getTile(int x, int y) {
+        if(tilesTable[x][y].isPresent())
         return tilesTable[x][y].get();
+        return null;
     }
 
     public Tile getTile(Coordinates coordinates){
+        if (tilesTable[coordinates.getX()][coordinates.getY()].isPresent())
         return tilesTable[coordinates.getX()][coordinates.getY()].get();
+        return null;
     }
 
     /*
@@ -300,19 +304,19 @@ public class ShipBoard {
         int y = coordinates.getY();
 
         //south
-        if (!tilesTable[x + 1][y].isEmpty() && tilesTable[x + 1][y].get().fillable()) {
+        if (tilesTable[x + 1][y].isPresent() && tilesTable[x + 1][y].get().fillable()) {
             set1 = (brokenGraph(new Coordinates(x + 1, y)));
         }
         //east
-        if (!tilesTable[x][y + 1].isEmpty() && tilesTable[x][y + 1].get().fillable() && (set1 == null || !set1.contains(tilesTable[x][y + 1].get().getCoordinates()))) {
+        if (tilesTable[x][y + 1].isPresent() && tilesTable[x][y + 1].get().fillable() && (set1 == null || !set1.contains(tilesTable[x][y + 1].get().getCoordinates()))) {
             set2 = brokenGraph(new Coordinates(x, y + 1));
         }
         //north
-        if (!tilesTable[x - 1][y].isEmpty() && tilesTable[x - 1][y].get().fillable() && (set1 == null || !set1.contains(tilesTable[x - 1][y].get().getCoordinates())) && (set2 == null || !set2.contains(tilesTable[x - 1][y].get().getCoordinates()))) {
+        if (tilesTable[x - 1][y].isPresent() && tilesTable[x - 1][y].get().fillable() && (set1 == null || !set1.contains(tilesTable[x - 1][y].get().getCoordinates())) && (set2 == null || !set2.contains(tilesTable[x - 1][y].get().getCoordinates()))) {
             set3 = brokenGraph(new Coordinates(x - 1, y));
         }
         //west
-        if (!tilesTable[x][y - 1].isEmpty() && tilesTable[x][y - 1].get().fillable() && (set1 == null || !set1.contains(tilesTable[x][y - 1].get().getCoordinates())) && (set2 == null || !set2.contains(tilesTable[x][y - 1].get().getCoordinates())) && (set3 == null || !set3.contains(tilesTable[x][y - 1].get().getCoordinates()))) {
+        if (tilesTable[x][y - 1].isPresent() && tilesTable[x][y - 1].get().fillable() && (set1 == null || !set1.contains(tilesTable[x][y - 1].get().getCoordinates())) && (set2 == null || !set2.contains(tilesTable[x][y - 1].get().getCoordinates())) && (set3 == null || !set3.contains(tilesTable[x][y - 1].get().getCoordinates()))) {
             set4 = brokenGraph(new Coordinates(x, y - 1));
         }
         ArrayList<Set<Coordinates>> array = new ArrayList<>();
@@ -335,7 +339,7 @@ public class ShipBoard {
         Coordinates c = new Coordinates(0, 0);
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 7; j++) {
-                if (!tilesTable[i][j].isEmpty() && tilesTable[i][j].get().fillable()) {
+                if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable()) {
                     c.set(i, j);
                     if (!set.contains(c)) {
                         tilesTable[i][j].get().destroy();

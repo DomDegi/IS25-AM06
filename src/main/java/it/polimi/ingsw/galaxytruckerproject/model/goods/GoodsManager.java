@@ -1,5 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.model.goods;
 
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 
@@ -9,11 +10,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class GoodsManager {
     private final ArrayList<Goods> possibleGoodsGain;
     private Coordinates coordinatesToPut;
-    private final Player currentPlayer;
+    private final LightPlayer currentPlayer;
     private int state;
     private int goodsToGet;
 
-    public GoodsManager(Player currentPlayer, ArrayList<Goods> possibleGoodsGain) {
+//    public GoodsManager(Player currentPlayer, ArrayList<Goods> possibleGoodsGain) {
+//        this.currentPlayer=currentPlayer;
+//        this.possibleGoodsGain=possibleGoodsGain;
+//        this.state=0;
+//        this.goodsToGet=0;
+//        this.coordinatesToPut=new Coordinates(0,0);
+//    }
+    public GoodsManager(LightPlayer currentPlayer, ArrayList<Goods> possibleGoodsGain) {
         this.currentPlayer=currentPlayer;
         this.possibleGoodsGain=possibleGoodsGain;
         this.state=0;
