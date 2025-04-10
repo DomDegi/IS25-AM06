@@ -51,7 +51,7 @@ public class MeteorSwarm extends Card {
     }
 
     @Override
-    public void executeCard(Game game, Message message){
+    public void executeCard(Message message){
         if (playerName.equalsIgnoreCase(currentPlayer.getPlayerName()) && currentPlayer != null) {
             //when penalty is over on the current player
             if (currentMeteor.applyPenalty(game, currentPlayer, , input, ) == 1){

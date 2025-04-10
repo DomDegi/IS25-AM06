@@ -25,7 +25,7 @@ public class StarDust extends Card {
 
     //makes so that the player loses as many days as their exposedConnectors
     @Override
-    public void executeCard(Game game, Message message) {
+    public void executeCard(Message message) {
         ArrayList<Player> players = game.getListOfInFlightPlayers();
 
         //when moving backward starts from the last

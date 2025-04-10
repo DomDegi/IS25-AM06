@@ -37,7 +37,7 @@ public abstract class Card {
 
     public abstract void initializeCard(Game game, Map<String, ViewInterface> viewsMap);
 
-    public abstract void executeCard(Game game, Message message);
+    public abstract void executeCard(Message message);
 
     public int getLevel() {
         return level;

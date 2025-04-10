@@ -43,7 +43,7 @@ public class OpenSpace extends Card {
 
     //makes so that the player gain as many days as their engineStrength
     @Override
-    public void executeCard(Game game, Message message) {
+    public void executeCard(Message message) {
         //playerName has to be the same as the current one to face the card's adventure
         if (currentPlayer != null && currentPlayer.getPlayerName().equalsIgnoreCase(playerName)) {
             //decides against using double engines

@@ -228,7 +228,7 @@ public class Game implements GameInterface {
     //CARD_EVENT METHODS
 
     public void cardEvent(Message message) {
-        drawnCard.executeCard(this, message);
+        drawnCard.executeCard(message);
     }
 
     public void endCardEvent() {

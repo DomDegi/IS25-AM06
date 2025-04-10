@@ -61,7 +61,7 @@ public class Pirates extends Enemies {
 
     //pay crew penalty
     @Override
-    public void executeCard(Game game, Message message) {
+    public void executeCard(Message message) {
         if (currentPlayer != null && playerName.equalsIgnoreCase(currentPlayer.getPlayerName())) {
             if (won == 0) {
                 if (input[0].equalsIgnoreCase("no")){

@@ -21,7 +21,7 @@ public class AbandonedShip extends Card{
     private Player playerToPlay =  null;
     private boolean playerAccepted;
     private final Map<String, ViewInterface>  viewsMap = new HashMap<String, ViewInterface>();
-    private final GameInterface game;
+    private GameInterface game = null;
 
     @JsonCreator
     public AbandonedShip(
@@ -40,6 +40,7 @@ public class AbandonedShip extends Card{
 
     @Override
     public void initializeCard(Game game, Map<String, ViewInterface> viewsMap) {
+        this.game = game;
         this.nextPlayer();
         this.viewsMap.putAll(viewsMap);
     }
@@ -91,6 +92,9 @@ public class AbandonedShip extends Card{
             return;
         }
         this.playerToPlay = game.getListOfInFlightPlayers().get(playerIndex);
+        if (playerToPlay.IsDisconnected()) {
+            nextPlayer();
+        }
     }
 
     @Override

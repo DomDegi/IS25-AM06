@@ -23,7 +23,7 @@ public class Epidemic extends Card {
     }
 
     @Override
-    public void executeCard(Game game, Message message) {
+    public void executeCard(Message message) {
         for(Player player: game.getFlightBoard().getInGamePlayers()){
             player.getShipBoard().epidemic();
         }

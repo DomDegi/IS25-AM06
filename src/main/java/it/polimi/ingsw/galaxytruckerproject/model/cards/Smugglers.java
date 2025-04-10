@@ -53,7 +53,7 @@ public class Smugglers extends Enemies{
     }
 
     @Override
-    public void executeCard(Game game, Message message) {
+    public void executeCard(Message message) {
         if(currentPlayer==null)
             currentPlayer=game.getListOfInFlightPlayers().getFirst();
         if (!playerName.equals(currentPlayer.getPlayerName()))

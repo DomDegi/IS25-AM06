@@ -168,25 +168,28 @@ public class GoodsManager {
         state =0;
     }
 
-    public void goodsPrinter(ArrayList<Goods> goodsArray) {
+    public String goodsPrinter(ArrayList<Goods> goodsArray) {
         String ANSI_RESET = "\u001B[0m";
         String ANSI_BLUE = "\u001B[34m";
         String ANSI_GREEN = "\u001B[32m";
         String ANSI_YELLOW = "\u001B[33m";
         String ANSI_RED= "\u001B[31m";
 
+        StringBuilder sb= new StringBuilder();
+
         AtomicInteger i = new AtomicInteger(1);
         goodsArray.forEach(goods -> {
             if(goods.getColor()==GoodsColor.BLUE){
-                System.out.printf(i + " - "+ANSI_BLUE +"%s "+ANSI_RESET+"good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue());
+                sb.append(i).append(" - ").append(ANSI_BLUE).append(goods.getColor()).append(" ").append(ANSI_RESET).append("good: it equals to ").append(goods.getValue()).append(" cosmic credits\n");
             }else if(goods.getColor()==GoodsColor.GREEN){
-                System.out.printf(i + " - "+ANSI_GREEN +"%s "+ANSI_RESET+"good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue());
+                sb.append(i).append(" - ").append(ANSI_GREEN).append(goods.getColor()).append(" ").append(ANSI_RESET).append("good: it equals to ").append(goods.getValue()).append(" cosmic credits\n");
             }else if(goods.getColor()==GoodsColor.YELLOW){
-                System.out.printf(i + " - "+ANSI_YELLOW +"%s "+ANSI_RESET+"good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue());
+                sb.append(i).append(" - ").append(ANSI_YELLOW).append(goods.getColor()).append(" ").append(ANSI_RESET).append("good: it equals to ").append(goods.getValue()).append(" cosmic credits\n");
             }else if(goods.getColor()==GoodsColor.RED){
-                System.out.printf(i + " - "+ANSI_RED +"%s "+ANSI_RESET+"good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue());
+                sb.append(i).append(" - ").append(ANSI_RED).append(goods.getColor()).append(" ").append(ANSI_RESET).append("good: it equals to ").append(goods.getValue()).append(" cosmic credits\n");
             }
             i.getAndIncrement();
         });
+        return sb.toString();
     }
 }

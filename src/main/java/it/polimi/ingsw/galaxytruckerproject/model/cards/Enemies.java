@@ -32,5 +32,5 @@ public abstract class Enemies extends Card {
     public abstract void initializeCard(Game game, Map<String, ViewInterface> viewsMap);
 
     @Override
-    public abstract void executeCard(Game game, Message message);
+    public abstract void executeCard(Message message);
 }

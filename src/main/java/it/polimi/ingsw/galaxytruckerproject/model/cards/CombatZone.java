@@ -105,7 +105,7 @@ public class CombatZone extends Card {
     }
 
     @Override
-    public void executeCard(Game game, Message message) {
+    public void executeCard(Message message) {
         if (losingPlayerDecided && currentPlayer != null && playerName.equalsIgnoreCase(currentPlayer.getPlayerName())) {
             int penaltyReturn = listOfChallenges.get(currentChallenge).applyPenalty(game, currentPlayer, , input, );
             if (penaltyReturn == 1) {

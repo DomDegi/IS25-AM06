@@ -52,7 +52,7 @@ public class Planets extends Card{
     }
     //for each player asks if they want to spend the required days to occupy the planet they choose
     @Override
-    public void executeCard(Game game, Message message) {
+    public void executeCard(Message message) {
         if(currentPlayer==null)
             currentPlayer=game.getListOfInFlightPlayers().getFirst();
         if (!playerName.equals(currentPlayer.getPlayerName()))
