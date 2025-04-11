@@ -104,16 +104,16 @@ public class LightShipBoard {
 
     //New ChooseCrew METHOD
     public boolean chooseCrewToRemove(Coordinates coordinates) {
-            return tilesTable[coordinates.getX()][coordinates.getY()].get().removeCrew();
+        return tilesTable[coordinates.getX()][coordinates.getY()].get().removeCrew();
     }
 
     //BATTERY METHODS
     public boolean chooseBatteryUse(Coordinates coordinates){
-            tilesTable[coordinates.getX()][coordinates.getY()].get().consumeBattery();
-            return true;
-        }
+        tilesTable[coordinates.getX()][coordinates.getY()].get().consumeBattery();
+        return true;
+    }
 
-        //forse non serve il batteryCoordinates perché tanto se non è una batteryTile stampo il fatto che non lo è
+    //forse non serve il batteryCoordinates perché tanto se non è una batteryTile stampo il fatto che non lo è
 
 
     //SHIELD METHODS
