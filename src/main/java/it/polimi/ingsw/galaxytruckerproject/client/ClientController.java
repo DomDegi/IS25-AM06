@@ -1,11 +1,14 @@
 package it.polimi.ingsw.galaxytruckerproject.client;
 
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipboard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsManager;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
-
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.DrawnTileResponse;
 import java.util.ArrayList;
+import java.util.Optional;
+import static it.polimi.ingsw.galaxytruckerproject.client.ClientState.*;
 
 public class ClientController {
 
@@ -14,6 +17,9 @@ public class ClientController {
     private ArrayList<Goods> goodsList;
     private final Client client;
     private int indexDeckInHand;
+    private CoordInputManager coordInputManager;
+    private Tile drownTile = null;
+    private LightShipboard lightShipboard;
 
     public ClientController (Client client) {
         this.client = client;
@@ -21,6 +27,43 @@ public class ClientController {
         this.turns=0;
         state=ClientState.LOBBY;
     }
+
+    public Tile getDrownTile() {
+        return drownTile;
+    }
+
+    public void setDrownTile(Tile drownTile) {
+        this.drownTile = drownTile;
+    }
+
+
+    public Coordinates transformCoordinates(String[] input) {
+        int CoordinatesX;
+        try {
+            CoordinatesX = Integer.parseInt(input[0]);
+        } catch (NumberFormatException e) {
+            System.out.println("\nInvalid input format. Please provide integer values.");
+            return null;
+        }
+        if(CoordinatesX<0||CoordinatesX>4){
+            System.out.println("\nInvalid input format. Please provide integer values.");
+            return null;
+        }
+        int CoordinatesY;
+        try {
+            CoordinatesY = Integer.parseInt(input[1]);
+        } catch (NumberFormatException e) {
+            System.out.println("\nInvalid coord number.");
+            return null;
+        }
+        if(CoordinatesY<0||CoordinatesY>6){
+            System.out.println("\nInvalid coord number.");
+            return null;
+        }
+
+        return new Coordinates(CoordinatesX, CoordinatesY);
+    }
+
 
     public void input(String input) {
         input.toLowerCase();
@@ -46,8 +89,11 @@ public class ClientController {
             }
 
             case COORD_REQUEST:{
-                //if coordinate process else END PROCESSING
-                transformCoordinates(words);
+                if(words[0].equals("done")) {
+                    coordInputManager.endCheckingFase();
+                }
+                else
+                    coordInputManager.checkCoord(transformCoordinates(words));
             }
 
             case MANAGE_CARDS:{
@@ -64,7 +110,7 @@ public class ClientController {
 
             case S_END_DRAW_TILE_CARD:{
                 if(words[0].equals("done")){
-                    state=ClientState.S_FINISHED;
+                    state= S_FINISHED;
                     //notify done
                 }
                 if(words[0].equals("turn")&&turns==0) {
@@ -121,14 +167,17 @@ public class ClientController {
 
             case S_MANAGE_DRAWN_TILE:{
                 if(words[0].equals("rotate")){
-
+                    drownTile.rotate();
                 }
                 if(words[0].equals("position")) {
                     for (int i = 0; i < words.length - 1; i++) {
                         words[i] = words[i + 1];
                     }
-                    transformCoordinates(words);
-                    //notify positioned
+                    Coordinates coord = transformCoordinates(words);
+                    if (lightShipboard.getTile(coord) == null) {
+                        lightShipboard.positionTile(Optional.of(drownTile), coord);
+                        //notfy positioning
+                    }
                 }
                 if(words[0].equals("refuse")){
                     state=ClientState.S_END_DRAW_TILE_CARD;
@@ -138,7 +187,7 @@ public class ClientController {
                     state=ClientState.S_END_DRAW_TILE_CARD;
                     //notify booked
                 }
-            }
+                }
 
             case S_FINISHED:{
                 if(words[0].equals("turn")&&turns<2) {
@@ -148,27 +197,14 @@ public class ClientController {
             }
 
             case S_CORRECT_SHIPBOARD:{
-                transformCoordinates(words);
-                //check
+                if(words[0].equals("done")) {
+                    coordInputManager.endCheckingFase();
+                }
+                else
+                    coordInputManager.checkCoord(transformCoordinates(words));
             }
         }
     }
 
-    private Coordinates transformCoordinates(String[] input) {
-        int CoordinatesX;
-        try {
-            CoordinatesX = Integer.parseInt(input[0]);
-        } catch (NumberFormatException e) {
-            System.out.println("\nInvalid input format. Please provide integer values.");
-            return null;
-        }
-        int CoordinatesY;
-        try {
-            CoordinatesY = Integer.parseInt(input[1]);
-        } catch (NumberFormatException e) {
-            System.out.println("\nInvalid input format. Please provide integer values.");
-            return null;
-        }
-        return new Coordinates(CoordinatesX, CoordinatesY);
-    }
 }
+

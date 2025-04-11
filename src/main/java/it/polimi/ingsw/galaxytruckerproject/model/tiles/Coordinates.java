@@ -1,8 +1,9 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Coordinates {
+public class Coordinates implements Serializable {
     int x; //row
     int y; //column
     public Coordinates(int x, int y){

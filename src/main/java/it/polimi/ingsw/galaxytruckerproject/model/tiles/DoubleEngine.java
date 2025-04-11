@@ -20,4 +20,9 @@ public class DoubleEngine extends Engine{
         super.destroy();
         shipBoard.addBreakDoubleEngine(false,this.coordinates);
     }
+
+    @Override
+    public int getEngineStrength(){
+        return 2;
+    }
 }
