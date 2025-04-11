@@ -1,12 +1,11 @@
 package it.polimi.ingsw.galaxytruckerproject.client;
 
-import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipboard;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 //import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsManager;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import it.polimi.ingsw.galaxytruckerproject.network.RMI.VirtualController;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.DrawnTileResponse;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
@@ -19,17 +18,12 @@ public class ClientController {
 
     private ClientState state;
     private int turns;
-
-    public VirtualController getVirtualController() {
-        return virtualController;
-    }
-
     private VirtualController virtualController;
     private ArrayList<Goods> goodsList;
     private final Client client;
     private int indexDeckInHand;
     private CoordInputManager coordInputManager;
-    private LightShipboard lightShipboard;
+    private LightShipBoard lightShipBoard;
 
     public ClientController (Client client) {
         this.client = client;
@@ -38,6 +32,9 @@ public class ClientController {
         state=ClientState.LOBBY;
     }
 
+    public VirtualController getVirtualController() {
+        return virtualController;
+    }
 
 
     public Coordinates transformCoordinates(String[] input) {
@@ -180,8 +177,8 @@ public class ClientController {
                         words[i] = words[i + 1];
                     }
                     Coordinates coord = transformCoordinates(words);
-                    if (lightShipboard.getTile(coord) == null) {
-                        lightShipboard.positionTile(Optional.of(tile), coord);
+                    if (lightShipBoard.getTile(coord) == null) {
+                        lightShipBoard.positionTile(Optional.of(tile), coord);
                         //notfy positioning
                     }
                 }

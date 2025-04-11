@@ -11,9 +11,9 @@ import java.util.ArrayList;
 
 public interface VirtualController extends Remote, Serializable {
     void connect(ViewInterface client) throws RemoteException;
-    void sendCoordinates(ArrayList<Coordinates> coordinates) throws RemoteException;
-    void sendStrenghtDoubleCannonUsed(int Strenght) throws RemoteException;
-    void sendNumDoubleEngineUsed(int NumDouble) throws RemoteException;
+    void sendCoordinates(   String playerName, ArrayList<Coordinates> coordinates) throws RemoteException;
+    void sendStrenghtDoubleCannonUsed(float Strength) throws RemoteException;
+    void sendNumDoubleEngineUsed(int NumEngine) throws RemoteException;
     void notifySetTile(Coordinates coordinates, Tile tile) throws RemoteException;
     void sendYes() throws RemoteException;
     void sendNo() throws RemoteException;
