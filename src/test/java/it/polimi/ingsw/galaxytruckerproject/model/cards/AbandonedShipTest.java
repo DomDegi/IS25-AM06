@@ -4,7 +4,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.AbandonedShip;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
@@ -106,20 +105,20 @@ class AbandonedShipTest {
 
         int player1_initialDays = player1.getPlayerPosition();
         game.setDrawnCard(abandonedShip);
-        game.getDrawnCard().initializeCard(game);
+        game.getDrawnCard().initializeCard(game, );
         game.setGameState(GameState.CARD_EVENT);
         assertEquals(abandonedShip, game.getDrawnCard());
         //first player (2) to play doesn't have enough crew so should be skipped automatically whatever his input is
         assertEquals(player2, abandonedShip.getPlayerToPlay());
-        abandonedShip.executeCard(game, player2.getPlayerName(), new String[]{""});
+        abandonedShip.executeCard(game, , player2.getPlayerName());
         assertEquals(player1, abandonedShip.getPlayerToPlay());
         //player 1 is next and says yes
-        abandonedShip.executeCard(game, player1.getPlayerName(), new String[]{"yes"});
+        abandonedShip.executeCard(game, , player1.getPlayerName());
         //now player 2 has to choose crew to remove
-        abandonedShip.executeCard(game, player1.getPlayerName(), new String[]{"1", "1", "2", "1", "2", "7"});
+        abandonedShip.executeCard(game, , player1.getPlayerName());
         //it's still his turn because he typed one of the coordinates wrong, now has to re input the last one
         assertEquals(player1, abandonedShip.getPlayerToPlay());
-        abandonedShip.executeCard(game, player1.getPlayerName(), new String[]{"2", "1"});
+        abandonedShip.executeCard(game, , player1.getPlayerName());
         assertEquals(GameState.DRAW_CARD, game.getGameState());
         assertEquals(10, player1.getCredit());
         assertEquals(player1.getPlayerPosition(), player1_initialDays - 2);

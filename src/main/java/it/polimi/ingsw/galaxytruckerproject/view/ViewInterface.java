@@ -134,11 +134,16 @@ public interface ViewInterface extends Remote, Serializable {
     void asksToChooseStartingPosition ();
 
     /**
-     * asks the player to input a serie of coordinates
+     * asks the player to input a series of coordinates
      */
     void asksToInputCoordinates ();
 
     void asksToTurnTheHourglass ();
+
+    /**
+     * asks the player to input yes or no to decide and sends a Accept or a Refuse Message
+     */
+    void asksToMakeAChoice ();
 
     /**
      * at the end of the game shows every players score on the view

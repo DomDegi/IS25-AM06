@@ -5,8 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class OpenSpace extends Card {
     private Player currentPlayer = null;
@@ -22,7 +25,7 @@ public class OpenSpace extends Card {
 
     //Initialize card for the player at the index playerIndex of the flightBoard ranking
     @Override
-    public void initializeCard(Game game) {
+    public void initializeCard(Game game, Map<String, ViewInterface> viewsMap) {
         //if index is higher than the number of player in the game -1, it will go out of bounds
         if (playerIndex > game.getNumberOfPlayers() - 1) {
             for (Player player: playersToEarlyLand) {
@@ -33,14 +36,14 @@ public class OpenSpace extends Card {
             return;
         }
 
-        currentPlayer = game.getListOfPlayers().get(playerIndex);
+        currentPlayer = game.getListOfInFlightPlayers().get(playerIndex);
         currentPlayer.printCurrentInfoEngines();
         currentPlayer.printCurrentInfoBatteries();
     }
 
     //makes so that the player gain as many days as their engineStrength
     @Override
-    public void executeCard(Game game, String playerName, String[] input) {
+    public void executeCard(Message message) {
         //playerName has to be the same as the current one to face the card's adventure
         if (currentPlayer != null && currentPlayer.getPlayerName().equalsIgnoreCase(playerName)) {
             //decides against using double engines
@@ -72,12 +75,12 @@ public class OpenSpace extends Card {
         if (engineStrength == 0) {
             playersToEarlyLand.add(currentPlayer);
             playerIndex++;
-            initializeCard(game);
+            initializeCard(game, );
             return;
         }
         game.getFlightBoard().moveForward(currentPlayer, engineStrength);
         playerIndex++;
-        initializeCard(game);
+        initializeCard(game, );
     }
 
     public String toString() {

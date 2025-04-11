@@ -2,8 +2,10 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards.penalties;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 public class FlightDaysPenalty extends Penalty{
     private final int numberOfLostDays;
@@ -14,7 +16,7 @@ public class FlightDaysPenalty extends Penalty{
     }
 
     @Override
-    public int applyPenalty(Game game, Player player, String[] input) {
+    public int applyPenalty(GameInterface game, Player player, ViewInterface playersView, Message message) {
         game.getFlightBoard().moveBackward(player, numberOfLostDays);
         game.getFlightBoard().concludeMovement();
         return 1;
@@ -26,5 +28,5 @@ public class FlightDaysPenalty extends Penalty{
         return "FlightDaysPenalty: " +  numberOfLostDays;
     }
 
-    public void printInfo(Player player) {}
+    public void printInfo(ViewInterface view, Player player) {}
 }

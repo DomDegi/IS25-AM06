@@ -7,8 +7,10 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public interface GameInterface {
 
@@ -18,7 +20,7 @@ public interface GameInterface {
     void startGame();
     int getPlayerCount();
     Player identifyPlayerByName(String playerName);
-    ArrayList<Player> getListOfPlayers();
+    ArrayList<Player> getListOfInFlightPlayers();
     void setPodium();
     GameState getGameState();
     ArrayList<Player> getListOfAllPlayer();
@@ -35,7 +37,7 @@ public interface GameInterface {
     void refuseTile(String playerName);
     void startTimer();
     void endShipCreation();
-    void drawCard();
+    void drawCard(Map<String, ViewInterface> playersView);
     void endCardPhase();
     void endCardEvent();
     ArrayList<Card> getInGameCards (int number);

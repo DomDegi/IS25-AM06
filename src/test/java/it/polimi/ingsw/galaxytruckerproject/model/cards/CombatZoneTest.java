@@ -7,7 +7,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.*;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.CrewPenalty;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.FlightDaysPenalty;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.LargeMeteor;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.SmallMeteor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
@@ -165,16 +164,16 @@ class CombatZoneTest {
     void testCombatZone(){
         int player1_initialDays = player1.getPlayerPosition();
         game.setDrawnCard(combatZone);
-        game.getDrawnCard().initializeCard(game);
+        game.getDrawnCard().initializeCard(game, );
         game.setGameState(GameState.CARD_EVENT);
         assertEquals(combatZone, game.getDrawnCard());
-        assertEquals(player1,game.getListOfPlayers().get(combatZone.getPlayerIndex()));
-        combatZone.executeCard(game, player1.getPlayerName(), new String[]{""});
-        combatZone.executeCard(game, player2.getPlayerName(), new String[]{""});
-        combatZone.executeCard(game, player3.getPlayerName(), new String[]{"no"});
-        combatZone.executeCard(game, player1.getPlayerName(), new String[]{"no"});
-        combatZone.executeCard(game, player2.getPlayerName(), new String[]{"no"});
-        combatZone.executeCard(game, player3.getPlayerName(), new String[]{"no"});
+        assertEquals(player1,game.getListOfInFlightPlayers().get(combatZone.getPlayerIndex()));
+        combatZone.executeCard(game, , player1.getPlayerName());
+        combatZone.executeCard(game, , player2.getPlayerName());
+        combatZone.executeCard(game, , player3.getPlayerName());
+        combatZone.executeCard(game, , player1.getPlayerName());
+        combatZone.executeCard(game, , player2.getPlayerName());
+        combatZone.executeCard(game, , player3.getPlayerName());
 
         //problema con la gestione dell' indice
 

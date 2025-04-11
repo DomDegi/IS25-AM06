@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class StarDust extends Card {
 
@@ -15,15 +18,15 @@ public class StarDust extends Card {
     }
 
     //This cards doesn't need any input, so it gets instantly executed when initialized
-    public void initializeCard(Game game) {
+    public void initializeCard(Game game, Map<String, ViewInterface> viewsMap) {
         String[] input = {"any", "input"};
-        executeCard(game, game.getListOfPlayers().getFirst().getPlayerName(), input);
+        executeCard(game, , game.getListOfInFlightPlayers().getFirst().getPlayerName());
     }
 
     //makes so that the player loses as many days as their exposedConnectors
     @Override
-    public void executeCard(Game game, String playerName, String[] input) {
-        ArrayList<Player> players = game.getListOfPlayers();
+    public void executeCard(Message message) {
+        ArrayList<Player> players = game.getListOfInFlightPlayers();
 
         //when moving backward starts from the last
         for (int i = players.size() - 1; i >= 0; i--) {

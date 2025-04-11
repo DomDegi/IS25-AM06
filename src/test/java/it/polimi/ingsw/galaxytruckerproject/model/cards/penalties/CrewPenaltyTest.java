@@ -81,22 +81,22 @@ class CrewPenaltyTest {
         String[] word;
         input="1 1";
         word=input.split(" ");
-        penalty.applyPenalty(game,player1,word);
+        penalty.applyPenalty(game,player1, ,word, );
 
         assertEquals(11,player1.getTotalCrew());
 
         input="1 2";
         word=input.split(" ");
-        penalty.applyPenalty(game,player1,word);
+        penalty.applyPenalty(game,player1, ,word, );
         assertEquals(11,player1.getTotalCrew());
 
         input=" ";
         word=input.split(" ");
-        penalty.applyPenalty(game,player1,word);
+        penalty.applyPenalty(game,player1, ,word, );
 
         input="2 2 2 3";
         word=input.split(" ");
-        penalty.applyPenalty(game,player1,word);
+        penalty.applyPenalty(game,player1, ,word, );
         assertEquals(9,player1.getTotalCrew());
     }
 }
