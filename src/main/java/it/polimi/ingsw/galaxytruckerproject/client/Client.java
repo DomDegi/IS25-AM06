@@ -37,4 +37,8 @@ public class Client {
     public void setTileInHand(Tile tileInHand) {
         this.tileInHand = tileInHand;
     }
+
+    public HashMap<Integer, Tile> getDrawnTiles() {
+        return drawnTiles;
+    }
 }
