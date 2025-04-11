@@ -3,10 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.network.RMI.Server;
 import it.polimi.ingsw.galaxytruckerproject.controller.Controller;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.network.RMI.VirtualController;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.AcceptMessage;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.RefuseMessage;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.SendCoordinatesResponse;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -21,13 +18,13 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         Message message = new SendCoordinatesResponse(playerName, coordinates);
         clients.get(playerName).playerChoiceThroughMessage(message);
     }
-    void sendStrenghtDoubleCannonUsed( String playerName ,float Strength) throws RemoteException{
-        Message message = new (playerName)
+    public void sendDoubleCannonUsed( String playerName ,float Strength, ArrayList<Coordinates> coordinates) throws RemoteException{
+        Message message = new UseCannonResponse(playerName,Strength, coordinates);
         clients.get(playerName).playerChoiceThroughMessage(message);
 
     }
-    void sendNumDoubleEngineUsed(String playerName , int NumEngine, ArrayList<Coordinates> coordinates) throws RemoteException{
-        Message message = new  (playerName);
+    public void sendNumDoubleEngineUsed(String playerName , int NumEngine, ArrayList<Coordinates> coordinates) throws RemoteException{
+        Message message = new UseEngineResponse(playerName, NumEngine, coordinates);
         clients.get(playerName).playerChoiceThroughMessage(message);
 
     }
