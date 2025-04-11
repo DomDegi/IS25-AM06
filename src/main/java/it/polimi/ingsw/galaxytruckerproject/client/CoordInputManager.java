@@ -3,16 +3,20 @@ package it.polimi.ingsw.galaxytruckerproject.client;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.*;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.network.RMI.VirtualController;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class CoordInputManager {
     private final LightShipboard lightShipboard;
+    private final ClientController client;
     private CoordReqType coordReqType;
     private ArrayList<Coordinates> coordinates;
-    public CoordInputManager(LightShipboard lightShipBoard)
+    public CoordInputManager(LightShipboard lightShipBoard, ClientController client)
     {
         this.lightShipboard = lightShipBoard;
+        this.client = client;
         coordinates = new ArrayList<>();
     }
 
@@ -87,8 +91,22 @@ public class CoordInputManager {
         return true;
     }
 
-    public void endCheckingFase(){
-        RMIControllerInterface.sendCoordinates(coordinates);
+    public void endCheckingFase() throws RemoteException {
+        if(coordReqType == CoordReqType.CHOOSE_DOUBLE_CANNON) {
+            int Strength = 0;
+            for(Coordinates coordinate : coordinates) {
+                Strength+= lightShipboard.getTile(coordinate).getStrength();
+            }
+            client.getVirtualController().sendStrenghtDoubleCannonUsed(Strength);
+            coordinates.clear();
+            return;
+        }
+        if (coordReqType == CoordReqType.CHOOSE_DOUBLE_ENGINE) {
+            client.getVirtualController().sendNumDoubleEngineUsed(coordinates.size());
+            coordinates.clear();
+            return;
+        }
+        client.getVirtualController().sendCoordinates(coordinates);
         coordinates.clear();
     }
 }

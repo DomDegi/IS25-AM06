@@ -50,6 +50,7 @@ public class GameController {
                     startGame(message);
             }
             case GameState.VERIFY_SHIP_CORRECTNESS: {
+                //potremmo toglierla e lasciare le shipboard nel client o il contrario
                 if (message.getMessageType().equals(SHOW_PLAYERS_SHIPBOARD_REQUEST)) {
                     checkShipBoard(this.getViewFromNickname(message.getNickname()) ,message);
                 } else if  (message.getMessageType().equals(SEND_COORDINATES_RESPONSE)) {

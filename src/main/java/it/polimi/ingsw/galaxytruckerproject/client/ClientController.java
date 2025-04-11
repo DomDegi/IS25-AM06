@@ -3,12 +3,14 @@ package it.polimi.ingsw.galaxytruckerproject.client;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipboard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
-import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsManager;
+//import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsManager;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.network.RMI.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.DrawnTileResponse;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Optional;
 import static it.polimi.ingsw.galaxytruckerproject.client.ClientState.*;
@@ -17,6 +19,12 @@ public class ClientController {
 
     private ClientState state;
     private int turns;
+
+    public VirtualController getVirtualController() {
+        return virtualController;
+    }
+
+    private VirtualController virtualController;
     private ArrayList<Goods> goodsList;
     private final Client client;
     private int indexDeckInHand;
@@ -30,13 +38,6 @@ public class ClientController {
         state=ClientState.LOBBY;
     }
 
-    public Tile getDrownTile() {
-        return drownTile;
-    }
-
-    public void setDrownTile(Tile drownTile) {
-        this.drownTile = drownTile;
-    }
 
 
     public Coordinates transformCoordinates(String[] input) {
@@ -67,7 +68,7 @@ public class ClientController {
     }
 
 
-    public void input(String input) {
+    public void input(String input) throws RemoteException {
         input.toLowerCase();
         input.replaceAll("\\s+"," ");
         String [] words = input.split(" ");
@@ -100,13 +101,13 @@ public class ClientController {
 
             case MANAGE_CARDS:{
                 if (words[0].equals("previous")) {
-                    //accept action
+                    //accept action(local)
                 }
                 if(words[0].equals("next")) {
-                    //deny action
+                    //deny action (local)
                 }
                 if (words[0].equals("done")) {
-                    //accept action
+                    //accept action(send to server that i'm no more using this deck)
                 }
             }
 
@@ -142,7 +143,7 @@ public class ClientController {
                 }
                 if(words[0].equals("draw") && words[1].equals("tile")){
                     state=ClientState.S_MANAGE_DRAWN_TILE;
-                    //notify drawn tile
+                    //req drawn tile
                 }
                 if(words[0].equals("draw") && words[1].equals("card")){
                     int chose;
@@ -169,8 +170,8 @@ public class ClientController {
 
             case S_MANAGE_DRAWN_TILE:{
                 Tile tile;
+                tile=client.getTileInHand();
                 if(words[0].equals("rotate")){
-                    tile=client.getTileInHand();
                     tile.rotate();
                     client.setTileInHand(tile);
                 }
@@ -207,6 +208,10 @@ public class ClientController {
                 }
                 else
                     coordInputManager.checkCoord(transformCoordinates(words));
+            }
+
+            case WAIT_OTHER_PLAYER_ACTION:{
+
             }
         }
     }
