@@ -211,15 +211,6 @@ public class ClientController {
                     //notify time
                 }
             }
-
-            case S_CORRECT_SHIPBOARD:{
-                if(words[0].equals("done")) {
-                    coordInputManager.endCheckingFase();
-                }
-                else
-                    coordInputManager.checkCoord(transformCoordinates(words));
-            }
-
             case WAIT_OTHER_PLAYER_ACTION:{
 
             }
