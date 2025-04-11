@@ -27,6 +27,10 @@ public class ClientController {
         input = input.toLowerCase();
         input = input.replaceAll("\\s+", " ");
         String[] words = input.split(" ");
+        if (words.length == 0) {
+            System.out.println("\nInvalid input format. Please provide integer values.");
+            return;
+        }
         if(words[0].isEmpty()){
             System.out.println("Empty input");
             return;
@@ -180,6 +184,7 @@ public class ClientController {
                     }
                     case "book" -> {
                         state = ClientState.S_END_DRAW_TILE_CARD;
+                        client.getMe().getShipBoard().
                         //notify booked
                         return;
                     }
@@ -198,6 +203,10 @@ public class ClientController {
     }
 
     private Coordinates transformCoordinates(String[] input) {
+        if (input.length < 2) {
+            System.out.println("\nInvalid input format. Please provide integer values.");
+            return null;
+        }
         int CoordinatesX;
         try {
             CoordinatesX = Integer.parseInt(input[0]);
