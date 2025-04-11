@@ -109,15 +109,20 @@ public class ClientController {
                     coordInputManager.checkCoord(transformCoordinates(words));
             }
 
-            case MANAGE_CARDS:{
-                if (words[0].equals("previous")) {
-                    //accept action(local)
-                }
-                if(words[0].equals("next")) {
-                    //deny action (local)
-                }
-                if (words[0].equals("done")) {
-                    //accept action(send to server that i'm no more using this deck)
+            case MANAGE_CARDS: {
+                switch (words[0]) {
+                    case "previous" -> {
+                        //go back action
+                        return;
+                    }
+                    case "next" -> {
+                        //go forward action
+                        return;
+                    }
+                    case "done" -> {
+                        //done action
+                        return;
+                    }
                 }
             }
 
@@ -215,6 +220,11 @@ public class ClientController {
 
             }
         }
+    }
+
+    @Override
+    public String getName() {
+        return client.getName();
     }
 
     public Coordinates transformCoordinates(String[] input) {

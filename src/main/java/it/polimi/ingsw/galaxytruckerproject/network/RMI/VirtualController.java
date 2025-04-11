@@ -11,17 +11,17 @@ import java.util.ArrayList;
 
 public interface VirtualController extends Remote, Serializable {
     void connect(ViewInterface client) throws RemoteException;
-    void sendCoordinates(   String playerName, ArrayList<Coordinates> coordinates) throws RemoteException;
-    void sendStrenghtDoubleCannonUsed(float Strength) throws RemoteException;
-    void sendNumDoubleEngineUsed(int NumEngine) throws RemoteException;
-    void notifySetTile(Coordinates coordinates, Tile tile) throws RemoteException;
-    void sendYes() throws RemoteException;
-    void sendNo() throws RemoteException;
-    void sendEndShipboardCreation() throws RemoteException;
-    void sendTurnTime() throws RemoteException;
-    Tile reqDrawTileFromDeck() throws RemoteException;
-    Tile reqDrawTileFromTable(int key) throws RemoteException;//pescaggio tile scoperte
-    void notifyTileBooking(int key) throws RemoteException;//per ora metto key però forse è meglio tile
-    void notifyRefusedTile(int key) throws RemoteException;
-    boolean checkCorrectionShipboard() throws RemoteException;
+    void sendCoordinates(   String playerName,ArrayList<Coordinates> coordinates) throws RemoteException;
+    void sendDoubleCannonUsed(String playerName , float Strength, ArrayList<Coordinates> coordinates) throws RemoteException;
+    void sendNumDoubleEngineUsed(String playerName , int NumEngine, ArrayList<Coordinates> coordinates) throws RemoteException;
+    void notifySetTile( String playerName, Coordinates coordinates, Tile tile) throws RemoteException;
+    void sendYes( String playerName) throws RemoteException;
+    void sendNo( String playerName) throws RemoteException;
+    void sendEndShipboardCreation( String playerName) throws RemoteException;
+    void sendTurnTime( String playerName) throws RemoteException;
+    Tile reqDrawTileFromDeck( String playerName) throws RemoteException;
+    Tile reqDrawTileFromTable( String playerName, int key) throws RemoteException;//pescaggio tile scoperte
+    void notifyTileBooking( String playerName, int key) throws RemoteException;//per ora metto key però forse è meglio tile
+    void notifyRefusedTile( String playerName, int key) throws RemoteException;
+    boolean checkCorrectionShipboard( String playerName) throws RemoteException;
 }
