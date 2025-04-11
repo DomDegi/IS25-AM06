@@ -32,7 +32,7 @@ public class SingleCannon extends Cannon {
         return direction;
     }
 
-    //no real meaning used only in large meteor
+    //no real meaning used only in large meteor, negative return only for single cannon
     public int getStrength(){
         if(direction == Direction.NORTH)
             return -2;

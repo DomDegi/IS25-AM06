@@ -1,20 +1,30 @@
 package it.polimi.ingsw.galaxytruckerproject.client;
 
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+//import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsManager;
+import it.polimi.ingsw.galaxytruckerproject.network.RMI.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoBlue;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Optional;
+import static it.polimi.ingsw.galaxytruckerproject.client.ClientState.*;
 
 public class ClientController {
 
     private ClientState state;
     private int turns;
+    private VirtualController virtualController;
     private ArrayList<Goods> goodsList;
     private final Client client;
     private int indexDeckInHandOrPlanet;
+    private CoordInputManager coordInputManager;
+    private LightShipBoard lightShipBoard;
 
     public ClientController(Client client) {
         this.client = client;
@@ -23,7 +33,15 @@ public class ClientController {
         state = ClientState.LOBBY;
     }
 
-    public void input(String input) {
+    public VirtualController getVirtualController() {
+        return virtualController;
+    }
+
+
+
+
+
+    public void input(String input) throws RemoteException {
         input = input.toLowerCase();
         input = input.replaceAll("\\s+", " ");
         String[] words = input.split(" ");
@@ -87,8 +105,12 @@ public class ClientController {
                 ;
             }
 
-            case COORD_REQUEST: {
-                transformCoordinates(words);
+            case COORD_REQUEST:{
+                if(words[0].equals("done")) {
+                    coordInputManager.endCheckingFase();
+                }
+                else
+                    coordInputManager.checkCoord(transformCoordinates(words));
             }
 
             case MANAGE_CARDS: {
@@ -199,6 +221,9 @@ public class ClientController {
                     //notify time
                 }
             }
+            case WAIT_OTHER_PLAYER_ACTION:{
+
+            }
         }
     }
 
@@ -214,11 +239,19 @@ public class ClientController {
             System.out.println("\nInvalid input format. Please provide integer values.");
             return null;
         }
+        if(CoordinatesX<0||CoordinatesX>4){
+            System.out.println("\nInvalid input format. Please provide integer values.");
+            return null;
+        }
         int CoordinatesY;
         try {
             CoordinatesY = Integer.parseInt(input[1]);
         } catch (NumberFormatException e) {
-            System.out.println("\nInvalid input format. Please provide integer values.");
+            System.out.println("\nInvalid coord number.");
+            return null;
+        }
+        if(CoordinatesY<0||CoordinatesY>6){
+            System.out.println("\nInvalid coord number.");
             return null;
         }
         return new Coordinates(CoordinatesX, CoordinatesY);

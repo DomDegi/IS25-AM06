@@ -17,4 +17,9 @@ public class SingleEngine extends Engine{
         shipBoard.addBreakSingleEngine(false);
         super.destroy();
     }
+
+    @Override
+    public int getEngineStrength(){
+        return 1;
+    }
 }

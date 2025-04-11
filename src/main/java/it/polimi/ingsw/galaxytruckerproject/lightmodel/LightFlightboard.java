@@ -11,5 +11,6 @@ public class LightFlightboard {
     }
     public ArrayList<LightPlayer> getIngamePlayers() {
         return ingamePlayers;
+
     }
 }
