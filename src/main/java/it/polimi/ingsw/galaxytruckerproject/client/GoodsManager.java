@@ -1,9 +1,13 @@
-package it.polimi.ingsw.galaxytruckerproject.model.goods;
+package it.polimi.ingsw.galaxytruckerproject.client;
 
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class GoodsManager {
@@ -12,16 +16,11 @@ public class GoodsManager {
     private final LightPlayer currentPlayer;
     private int state;
     private int goodsToGet;
+    private final HashSet<Tile> changes;
 
-//    public GoodsManager(Player currentPlayer, ArrayList<Goods> possibleGoodsGain) {
-//        this.currentPlayer=currentPlayer;
-//        this.possibleGoodsGain=possibleGoodsGain;
-//        this.state=0;
-//        this.goodsToGet=0;
-//        this.coordinatesToPut=new Coordinates(0,0);
-//    }
     public GoodsManager(LightPlayer currentPlayer, ArrayList<Goods> possibleGoodsGain) {
         this.currentPlayer=currentPlayer;
+        this.changes=new HashSet<>();
         this.possibleGoodsGain=possibleGoodsGain;
         this.state=0;
         this.goodsToGet=0;
@@ -38,6 +37,8 @@ public class GoodsManager {
             }
             if (input[0].equalsIgnoreCase("done") || input[0].equalsIgnoreCase("0")) {
                 System.out.println("\nYou stopped positioning your cargo\n");
+                //notify to server changes
+
                 return true;
             }
             if (input.length < 3) {
@@ -64,6 +65,7 @@ public class GoodsManager {
                 }
                 goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
                 System.out.println("Input witch good to pick:");
+                changes.add(currentPlayer.getShipBoard().getTile(coordinatesToPut));
                 state = -1;
                 return false;
             }
@@ -77,6 +79,7 @@ public class GoodsManager {
             if (goodsToGet > 0 && goodsToGet <=possibleGoodsGain.size()) {
                 int positioned = currentPlayer.getShipBoard().gainGoods(possibleGoodsGain.get(goodsToGet - 1), coordinatesToPut);
                 if (positioned == 0) {
+                    changes.add(currentPlayer.getShipBoard().getTile(coordinatesToPut));
                     possibleGoodsGain.remove(goodsToGet - 1);
                     if(possibleGoodsGain.isEmpty()) {
                         System.out.println("\nGoods stock is empty, input 'done' to stop,'pick  x y' to pick one good from your cargo: ");
@@ -89,6 +92,7 @@ public class GoodsManager {
                 } else if (positioned == 1) {
                     System.out.printf("\nSorry, you can't put the %s good in the %d,%d cargo, it is full, chose what good to remove (input 'no' to select an other good and cargo coordinates)\n", possibleGoodsGain.get(goodsToGet - 1).getColor(), coordinatesToPut.getX(), coordinatesToPut.getY());
                     goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
+                    changes.add(currentPlayer.getShipBoard().getTile(coordinatesToPut));
                     state = 1;
                     return false;
                 } else if (positioned == -1) {
@@ -184,7 +188,7 @@ public class GoodsManager {
 
         AtomicInteger i = new AtomicInteger(1);
         goodsArray.forEach(goods -> {
-            if(goods.getColor()==GoodsColor.BLUE){
+            if(goods.getColor()== GoodsColor.BLUE){
                 System.out.printf(i + " - "+ANSI_BLUE +"%s "+ANSI_RESET+"good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue());
             }else if(goods.getColor()==GoodsColor.GREEN){
                 System.out.printf(i + " - "+ANSI_GREEN +"%s "+ANSI_RESET+"good: it equals to %d cosmic credits\n", goods.getColor(), goods.getValue());

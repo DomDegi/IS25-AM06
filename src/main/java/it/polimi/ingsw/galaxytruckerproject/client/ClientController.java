@@ -2,8 +2,8 @@ package it.polimi.ingsw.galaxytruckerproject.client;
 
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
-import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsManager;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
 import java.util.ArrayList;
 
@@ -120,7 +120,9 @@ public class ClientController {
 
             case S_MANAGE_DRAWN_TILE:{
                 if(words[0].equals("rotate")){
-
+                    Tile tile=client.getTileInHand();
+                    tile.rotate();
+                    client.setTileInHand(tile);
                 }
                 if(words[0].equals("position")) {
                     for (int i = 0; i < words.length - 1; i++) {
@@ -144,11 +146,6 @@ public class ClientController {
                     turns++;
                     //notify time
                 }
-            }
-
-            case S_CORRECT_SHIPBOARD:{
-                transformCoordinates(words);
-                //check
             }
         }
     }
