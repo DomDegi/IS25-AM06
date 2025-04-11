@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.client;
 
-import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipboard;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 //import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsManager;
@@ -29,7 +30,7 @@ public class ClientController {
     private final Client client;
     private int indexDeckInHand;
     private CoordInputManager coordInputManager;
-    private LightShipboard lightShipboard;
+    private LightShipBoard lightShipBoard;
 
     public ClientController (Client client) {
         this.client = client;
@@ -180,8 +181,8 @@ public class ClientController {
                         words[i] = words[i + 1];
                     }
                     Coordinates coord = transformCoordinates(words);
-                    if (lightShipboard.getTile(coord) == null) {
-                        lightShipboard.positionTile(Optional.of(tile), coord);
+                    if (lightShipBoard.getTile(coord) == null) {
+                        lightShipBoard.positionTile(Optional.of(tile), coord);
                         //notfy positioning
                     }
                 }

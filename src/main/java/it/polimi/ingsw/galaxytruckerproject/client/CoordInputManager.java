@@ -9,13 +9,13 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class CoordInputManager {
-    private final LightShipboard lightShipboard;
+    private final LightShipBoard lightShipBoard;
     private final ClientController client;
     private CoordReqType coordReqType;
     private ArrayList<Coordinates> coordinates;
-    public CoordInputManager(LightShipboard lightShipBoard, ClientController client)
+    public CoordInputManager(LightShipBoard lightShipBoard, ClientController client)
     {
-        this.lightShipboard = lightShipBoard;
+        this.lightShipBoard = lightShipBoard;
         this.client = client;
         coordinates = new ArrayList<>();
     }
@@ -26,7 +26,7 @@ public class CoordInputManager {
     }
 
     public boolean checkCoord(Coordinates coordinate) {
-        Tile tile = lightShipboard.getTile(coordinate);
+        Tile tile = lightShipBoard.getTile(coordinate);
         if(tile == null) {
             System.out.println("Tile not found");
             return false;
@@ -95,7 +95,7 @@ public class CoordInputManager {
         if(coordReqType == CoordReqType.CHOOSE_DOUBLE_CANNON) {
             int Strength = 0;
             for(Coordinates coordinate : coordinates) {
-                Strength+= lightShipboard.getTile(coordinate).getStrength();
+                Strength+= lightShipBoard.getTile(coordinate).getStrength();
             }
             client.getVirtualController().sendStrenghtDoubleCannonUsed(Strength);
             coordinates.clear();

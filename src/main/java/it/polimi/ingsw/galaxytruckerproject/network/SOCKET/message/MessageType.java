@@ -25,6 +25,7 @@ public enum MessageType {
     SHOW_BOOKED_TILES_REQUEST,
     TURN_HOURGLASS_REQUEST,
     SHOW_CARDS_REQUEST,
+    END_SHIP_CREATION,
 
     //DRAW_CARD phase messages
     DRAW_CARD_REQUEST,
