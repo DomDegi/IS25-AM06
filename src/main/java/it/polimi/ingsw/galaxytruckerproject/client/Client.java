@@ -30,4 +30,11 @@ public class Client {
         return deck;
     }
 
+    public Tile getTileInHand() {
+        return tileInHand;
+    }
+
+    public void setTileInHand(Tile tileInHand) {
+        this.tileInHand = tileInHand;
+    }
 }

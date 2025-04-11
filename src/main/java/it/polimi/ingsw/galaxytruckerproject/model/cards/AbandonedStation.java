@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
-import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsManager;
+import it.polimi.ingsw.galaxytruckerproject.client.GoodsManager;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 
 import java.util.ArrayList;

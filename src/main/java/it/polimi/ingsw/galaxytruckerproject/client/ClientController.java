@@ -6,6 +6,9 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsManager;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.DrawnTileResponse;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+
 import java.util.ArrayList;
 import java.util.Optional;
 import static it.polimi.ingsw.galaxytruckerproject.client.ClientState.*;
@@ -18,7 +21,6 @@ public class ClientController {
     private final Client client;
     private int indexDeckInHand;
     private CoordInputManager coordInputManager;
-    private Tile drownTile = null;
     private LightShipboard lightShipboard;
 
     public ClientController (Client client) {
@@ -166,8 +168,11 @@ public class ClientController {
             }
 
             case S_MANAGE_DRAWN_TILE:{
+                Tile tile;
                 if(words[0].equals("rotate")){
-                    drownTile.rotate();
+                    tile=client.getTileInHand();
+                    tile.rotate();
+                    client.setTileInHand(tile);
                 }
                 if(words[0].equals("position")) {
                     for (int i = 0; i < words.length - 1; i++) {
@@ -175,7 +180,7 @@ public class ClientController {
                     }
                     Coordinates coord = transformCoordinates(words);
                     if (lightShipboard.getTile(coord) == null) {
-                        lightShipboard.positionTile(Optional.of(drownTile), coord);
+                        lightShipboard.positionTile(Optional.of(tile), coord);
                         //notfy positioning
                     }
                 }

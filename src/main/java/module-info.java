@@ -15,6 +15,7 @@ module it.polimi.ingsw.galaxytruckerproject {
     opens it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles to com.fasterxml.jackson.databind;
     opens it.polimi.ingsw.galaxytruckerproject.model.cards.penalties to com.fasterxml.jackson.databind;
     opens it.polimi.ingsw.galaxytruckerproject.model.player to com.fasterxml.jackson.databind;
+    exports it.polimi.ingsw.galaxytruckerproject.lightmodel;
     exports it.polimi.ingsw.galaxytruckerproject.controller;
     exports it.polimi.ingsw.galaxytruckerproject.model.player;
     exports it.polimi.ingsw.galaxytruckerproject.model.tiles;
