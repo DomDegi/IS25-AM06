@@ -27,53 +27,51 @@ public class GoodsManager {
         this.coordinatesToPut=new Coordinates(0,0);
     }
 
-    public boolean getReward(String[] input){
+    public HashSet<Tile> getReward(String[] input){
         if(state==0) {
             int CoordinatesX;
             int CoordinatesY;
             if (input.length == 0) {
                 System.out.println("\nInvalid input format. Please provide integer values.");
-                return false;
+                return null;
             }
             if (input[0].equalsIgnoreCase("done") || input[0].equalsIgnoreCase("0")) {
                 System.out.println("\nYou stopped positioning your cargo\n");
-                //notify to server changes
-
-                return true;
+                return changes;
             }
             if (input.length < 3) {
                 System.out.println("\nInvalid input format. Please provide integer values.");
-                return false;
+                return null;
             }
             try {
                 CoordinatesX = Integer.parseInt(input[1]);
             } catch (NumberFormatException e) {
                 System.out.println("\nInvalid input format. Please provide integer values.");
-                return false;
+                return null;
             }
             try {
                 CoordinatesY = Integer.parseInt(input[2]);
             } catch (NumberFormatException e) {
                 System.out.println("\nInvalid input format. Please provide integer values.");
-                return false;
+                return null;
             }
             coordinatesToPut = new Coordinates(CoordinatesX, CoordinatesY);
             if (input[0].equalsIgnoreCase("pick")) {
                 if (currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut).isEmpty()) {
                     System.out.println("\nCargo Hold is empty");
-                    return false;
+                    return null;
                 }
                 goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
                 System.out.println("Input witch good to pick:");
                 changes.add(currentPlayer.getShipBoard().getTile(coordinatesToPut));
                 state = -1;
-                return false;
+                return null;
             }
             try {
                 goodsToGet = Integer.parseInt(input[0]);
             } catch (NumberFormatException e) {
                 System.out.println("\nInvalid input format. Please provide integer values.");
-                return false;
+                return null;
             }
 
             if (goodsToGet > 0 && goodsToGet <=possibleGoodsGain.size()) {
@@ -83,29 +81,29 @@ public class GoodsManager {
                     possibleGoodsGain.remove(goodsToGet - 1);
                     if(possibleGoodsGain.isEmpty()) {
                         System.out.println("\nGoods stock is empty, input 'done' to stop,'pick  x y' to pick one good from your cargo: ");
-                        return false;
+                        return null;
                     }
                     System.out.printf("\nYou've successfully put the %s good in the %d,%d cargo\n\n", possibleGoodsGain.get(goodsToGet - 1).getColor(), coordinatesToPut.getX(), coordinatesToPut.getY());
                     goodsPrinter(possibleGoodsGain);
                     System.out.print("Chose for each good where to put it, input 'no' to stop:\n");
-                    return false;
+                    return null;
                 } else if (positioned == 1) {
                     System.out.printf("\nSorry, you can't put the %s good in the %d,%d cargo, it is full, chose what good to remove (input 'no' to select an other good and cargo coordinates)\n", possibleGoodsGain.get(goodsToGet - 1).getColor(), coordinatesToPut.getX(), coordinatesToPut.getY());
                     goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
                     changes.add(currentPlayer.getShipBoard().getTile(coordinatesToPut));
                     state = 1;
-                    return false;
+                    return null;
                 } else if (positioned == -1) {
-                    return false;
+                    return null;
                 }
             } else {
                 System.out.println("\nInvalid goodsToGet: " + goodsToGet);
-                return false;
+                return null;
             }
         }else {
             swapGoods(input);
         }
-        return false;
+        return null;
     }
 
     public void swapGoods(String[] input){
