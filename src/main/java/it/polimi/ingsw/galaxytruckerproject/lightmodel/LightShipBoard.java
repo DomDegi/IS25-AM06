@@ -231,6 +231,28 @@ public class LightShipBoard {
         tilesTable[coordinates.getX()][coordinates.getY()].get().removeGood(good);
     }
 
+    public boolean addBookedTile(Tile tile) {
+        if (bookedTiles.size() == 2) {
+            return false;
+        }
+        bookedTiles.add(tile);
+        return true;
+    }
+
+    public ArrayList<Tile> getBookedTiles() {
+        return bookedTiles;
+    }
+
+    public Tile removeBookedTile(int num) {
+        if (num > 1 || num < 0) {
+            System.out.println("the tile do not exist");
+            return null;
+        }
+        Tile tile = bookedTiles.get(num);
+        bookedTiles.remove(num);
+        return tile;
+    }
+
     /*
     public void swapGoods(Coordinates coordinatesFrom,Coordinates coordinatesTo, Goods goodToSwap ){
         //Check if the coordinates are of a CargoHolder
@@ -272,26 +294,7 @@ public class LightShipBoard {
         return true;
     }
 
-    //EXAMPLE OF WHAT IT NEEDS TO BE IMPLEMENTED, MAYBE I NEED TO GIVE TO PLAYER THE NUMBER OF RED,YELLOW, GREEN, BLU GOODS
-    public void checkBeforeAsking(int goodsToRemove){
-        int numberOfGoods = 0;
-        //Check if the goods that need to be deleted are more/equal/or less than the goods contained in the Ship
-        for(Coordinates coordinates : cargoHoldCoordinates){
-            numberOfGoods += tilesTable[coordinates.getX()][coordinates.getY()].get().getCargo().size();
-        }
-        //CASE NumberOfGoods equals goods that need to be removed
-        if(goodsToRemove == numberOfGoods){
-            for(Coordinates coordinates : cargoHoldCoordinates){
-                tilesTable[coordinates.getX()][coordinates.getY()].get().getCargo().clear();
-            }
-        }
-        else if(goodsToRemove > numberOfGoods){
-            ;
 
-        }
-
-
-    }
 
     //give back all the player Goods
     public ArrayList<Goods> getAllGoods(){

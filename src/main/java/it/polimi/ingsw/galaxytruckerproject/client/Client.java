@@ -21,6 +21,9 @@ public class Client {
     public LightPlayer getMe() {
         return me;
     }
+    public String getName() {
+        return me.getPlayerName();
+    }
 
     public ArrayList<LightPlayer> getPlayersList() {
         return playersList;
@@ -36,5 +39,9 @@ public class Client {
 
     public void setTileInHand(Tile tileInHand) {
         this.tileInHand = tileInHand;
+    }
+
+    public HashMap<Integer, Tile> getDrawnTiles() {
+        return drawnTiles;
     }
 }

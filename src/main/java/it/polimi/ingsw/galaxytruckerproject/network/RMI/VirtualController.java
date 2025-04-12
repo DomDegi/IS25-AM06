@@ -11,15 +11,13 @@ import java.util.ArrayList;
 
 public interface VirtualController extends Remote, Serializable {
     void connect(ViewInterface client) throws RemoteException;
-    void sendCoordinates(String playerName, ArrayList<Coordinates> coordinates) throws RemoteException;
-    void sendStrenghtDoubleCannonUsed(String playerName, int Strenght) throws RemoteException;
-    void sendNumDoubleEngineUsed(String playerName, int NumDouble) throws RemoteException;
+    void sendCoordinates(   String playerName,ArrayList<Coordinates> coordinates) throws RemoteException;
+    void sendDoubleCannonUsed(String playerName , float Strength, ArrayList<Coordinates> coordinates) throws RemoteException;
+    void sendNumDoubleEngineUsed(String playerName , int NumEngine, ArrayList<Coordinates> coordinates) throws RemoteException;
+    void notifySetTile( String playerName, Coordinates coordinates, Tile tile) throws RemoteException;
+    void sendYes( String playerName) throws RemoteException;
+    void sendNo( String playerName) throws RemoteException;
 
-    void notifySetTile(String playerName, Coordinates coordinates, Tile tile) throws RemoteException;
-
-    void sendYes(String playerName) throws RemoteException;
-
-    void sendNo(String playerName) throws RemoteException;
 
     //DONE
     void sendEndShipboardCreation(String playerName) throws RemoteException;

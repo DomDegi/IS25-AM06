@@ -2,12 +2,13 @@ package it.polimi.ingsw.galaxytruckerproject.client;
 
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 //import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsManager;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import it.polimi.ingsw.galaxytruckerproject.network.RMI.VirtualController;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.DrawnTileResponse;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoBlue;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
@@ -20,26 +21,213 @@ public class ClientController {
 
     private ClientState state;
     private int turns;
+    private VirtualController virtualController;
+    private ArrayList<Goods> goodsList;
+    private final Client client;
+    private int indexDeckInHandOrPlanet;
+    private CoordInputManager coordInputManager;
+    private LightShipBoard lightShipBoard;
+
+    public ClientController(Client client) {
+        this.client = client;
+        this.indexDeckInHandOrPlanet = 0;
+        this.turns = 0;
+        state = ClientState.LOBBY;
+    }
 
     public VirtualController getVirtualController() {
         return virtualController;
     }
 
-    private VirtualController virtualController;
-    private ArrayList<Goods> goodsList;
-    private final Client client;
-    private int indexDeckInHand;
-    private CoordInputManager coordInputManager;
-    private LightShipBoard lightShipBoard;
 
-    public ClientController (Client client) {
-        this.client = client;
-        this.indexDeckInHand = 0;
-        this.turns=0;
-        state=ClientState.LOBBY;
+
+
+
+    public void input(String input) throws RemoteException {
+        input.toLowerCase();
+        input.replaceAll("\\s+"," ");
+        String [] words = input.split(" ");
+        if(words[0].isEmpty()){
+            System.out.println("Empty input");
+            return;
+        }
+        switch (state) {
+            case LOBBY: {
+
+            }
+
+            case ACTION: {
+                if (checkShipBoards(words))
+                    return;
+                switch (words[0]){
+                    case "yes" -> {
+                        //accept action
+
+                    }
+                    case "no" -> {
+                        //deny action
+
+                    }
+                }
+            }
+
+            case PLANET_CHOICE: {
+                int chose;
+                if (checkShipBoards(words))
+                    return;
+                if (words[0].equals("no")) {
+                    //notify server
+                    return;
+                }
+                try {
+                    chose = Integer.parseInt(words[0]);
+                } catch (NumberFormatException e) {
+                    System.out.println("\nInvalid input format. Please provide integer values.");
+                    return;
+                }
+                if (chose > 0 && chose </*num pianeti*/) {
+                    state = ClientState.MANAGE_GOODS;
+                    indexDeckInHandOrPlanet = chose;
+                    //notify choose planet
+                    return;
+                }
+            }
+
+            case MANAGE_GOODS: {
+                GoodsManager goodsManager = new GoodsManager(client.getMe(), goodsList);
+                if (checkShipBoards(words))
+                    return;
+                if (!goodsManager.getReward(words).isEmpty()) {
+                    //notify server changes
+                }
+                ;
+            }
+
+            case COORD_REQUEST:{
+                if(words[0].equals("done")) {
+                    coordInputManager.endCheckingFase();
+                }
+                else
+                    coordInputManager.checkCoord(transformCoordinates(words));
+            }
+
+            case MANAGE_CARDS: {
+                switch (words[0]) {
+                    case "previous" -> {
+                        //go back action
+                        return;
+                    }
+                    case "next" -> {
+                        //go forward action
+                        return;
+                    }
+                    case "done" -> {
+                        //done action
+                        return;
+                    }
+                }
+            }
+
+            case S_END_DRAW_TILE_CARD: {
+                if(firstTurn(words))
+                    return;
+                if (checkShipBoards(words))
+                    return;
+                switch (words[0]) {
+                    case"done" -> {
+                        state = ClientState.S_FINISHED;
+                        //notify done
+                        return;
+                    }
+                    case "draw" -> {
+                        switch (words[1]) {
+                            case "card" -> {
+                                int chose;
+                                if (words[2].isEmpty()) {
+                                    System.out.println("Choose one of the decks");
+                                    return;
+                                }
+                                try {
+                                    chose = Integer.parseInt(words[2]);
+                                } catch (NumberFormatException e) {
+                                    System.out.println("\nInvalid input format. Please provide integer values.");
+                                    return;
+                                }
+                                if (chose > 0 && chose < 4) {
+                                    state = ClientState.MANAGE_CARDS;
+                                    indexDeckInHandOrPlanet = chose;
+                                    //notify drawn card
+                                    ArrayList<Card> displayedCards = client.getDeck().get(indexDeckInHandOrPlanet);
+                                    return;
+                                }
+                                return;
+                            }
+                            case "tile" -> {
+                                state = ClientState.S_MANAGE_DRAWN_TILE;
+                                //notify drawn tile
+                                client.setTileInHand(/*Drawn Tiles*/);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+
+            case S_MANAGE_DRAWN_TILE: {
+                if(firstTurn(words))
+                    return;
+                if (checkShipBoards(words))
+                    return;
+                switch (words[0]) {
+                    case "rotate" -> {
+                        Tile tile = client.getTileInHand();
+                        tile.rotate();
+                        client.setTileInHand(tile);
+                    }
+                    case "position" -> {
+                        for (int i = 0; i < words.length - 1; i++) {
+                            words[i] = words[i + 1];
+                        }
+                        Coordinates coordinates=transformCoordinates(words);
+                        if(coordinates!=null){
+                            client.getMe().getShipBoard().positionTile(/*tile*/,);
+                            //notify positioned
+                        }
+                        return;
+                    }
+                    case "refuse" -> {
+                        state = ClientState.S_END_DRAW_TILE_CARD;
+
+                        client.getDrawnTiles().put(/*id Tile*/,/*drawn Tile*/);
+                        //notify refused
+                        return;
+                    }
+                    case "book" -> {
+                        state = ClientState.S_END_DRAW_TILE_CARD;
+                        //notify booked
+                        return;
+                    }
+                }
+                }
+
+            case S_FINISHED: {
+                if (checkShipBoards(words))
+                    return;
+                if (words[0].equals("turn") && turns < 2) {
+                    turns++;
+                    //notify time
+                }
+            }
+            case WAIT_OTHER_PLAYER_ACTION:{
+
+            }
+        }
     }
 
-
+    @Override
+    public String getName() {
+        return client.getName();
+    }
 
     public Coordinates transformCoordinates(String[] input) {
         int CoordinatesX;
@@ -69,153 +257,36 @@ public class ClientController {
     }
 
 
-    public void input(String input) throws RemoteException {
-        input.toLowerCase();
-        input.replaceAll("\\s+"," ");
-        String [] words = input.split(" ");
-        switch (state) {
-            case LOBBY:{
-
+    private boolean checkShipBoards(String[] input) {
+        if (input[0].equals("check")) {
+            int chose;
+            if (input[1].isEmpty()) {
+                System.out.println("Choose one of the shipboards");
+                return false;
             }
-
-            case ACTION:{
-                if (words[0].equals("yes")) {
-                    //accept action
-                }
-                if(words[0].equals("no")) {
-                    //deny action
-                }
+            try {
+                chose = Integer.parseInt(input[1]);
+            } catch (NumberFormatException e) {
+                System.out.println("\nInvalid input format. Please provide integer values.");
+                return false;
             }
-
-            case MANAGE_GOODS:{
-                GoodsManager goodsManager=new GoodsManager(client.getMe(),goodsList);
-                goodsManager.getReward(words);
+            if (chose == 0) {
+                System.out.println(client.getMe().getShipBoard());
             }
-
-            case COORD_REQUEST:{
-                if(words[0].equals("done")) {
-                    coordInputManager.endCheckingFase();
-                }
-                else
-                    coordInputManager.checkCoord(transformCoordinates(words));
+            if (chose >= 1 && chose <= 4) {
+                System.out.println(client.getPlayersList().get(indexDeckInHandOrPlanet).getShipBoard());
             }
-
-            case MANAGE_CARDS:{
-                if (words[0].equals("previous")) {
-                    //accept action(local)
-                }
-                if(words[0].equals("next")) {
-                    //deny action (local)
-                }
-                if (words[0].equals("done")) {
-                    //accept action(send to server that i'm no more using this deck)
-                }
-            }
-
-            case S_END_DRAW_TILE_CARD:{
-                if(words[0].equals("done")){
-                    state= S_FINISHED;
-                    //notify done
-                }
-                if(words[0].equals("turn")&&turns==0) {
-                    turns++;
-                    //notify time
-                    //notify turns
-                }
-                if(words[0].equals("check")) {
-                    int chose;
-                    if(words[1].isEmpty()){
-                        System.out.println("Choose one of the shipboards");
-                        return;
-                    }
-                    try {
-                        chose = Integer.parseInt(words[1]);
-                    } catch (NumberFormatException e) {
-                        System.out.println("\nInvalid input format. Please provide integer values.");
-                        return ;
-                    }
-                    if(chose==0) {
-                        System.out.println(client.getMe().getShipBoard());
-                    }
-                    if(chose>=1 && chose<=4){
-                        System.out.println(client.getPlayersList().get(indexDeckInHand).getShipBoard());
-                    }
-                    return;
-                }
-                if(words[0].equals("draw") && words[1].equals("tile")){
-                    state=ClientState.S_MANAGE_DRAWN_TILE;
-                    //req drawn tile
-                }
-                if(words[0].equals("draw") && words[1].equals("card")){
-                    int chose;
-                    if(words[2].isEmpty()){
-                        System.out.println("Choose one of the decks");
-                        return;
-                    }
-                    try {
-                        chose = Integer.parseInt(words[2]);
-                    } catch (NumberFormatException e) {
-                        System.out.println("\nInvalid input format. Please provide integer values.");
-                        return ;
-                    }
-                    if(chose>0&&chose<4){
-                        state=ClientState.MANAGE_CARDS;
-                        indexDeckInHand=chose;
-                        //notify drawn card
-                        ArrayList<Card> displayedCards=client.getDeck().get(indexDeckInHand);
-                        return;
-                    }
-                    return;
-                }
-            }
-
-            case S_MANAGE_DRAWN_TILE:{
-                Tile tile;
-                tile=client.getTileInHand();
-                if(words[0].equals("rotate")){
-                    tile.rotate();
-                    client.setTileInHand(tile);
-                }
-                if(words[0].equals("position")) {
-                    for (int i = 0; i < words.length - 1; i++) {
-                        words[i] = words[i + 1];
-                    }
-                    Coordinates coord = transformCoordinates(words);
-                    if (lightShipBoard.getTile(coord) == null) {
-                        lightShipBoard.positionTile(Optional.of(tile), coord);
-                        //notfy positioning
-                    }
-                }
-                if(words[0].equals("refuse")){
-                    state=ClientState.S_END_DRAW_TILE_CARD;
-                    //notify refused
-                }
-                if(words[0].equals("book")){
-                    state=ClientState.S_END_DRAW_TILE_CARD;
-                    //notify booked
-                }
-                }
-
-            case S_FINISHED:{
-                if(words[0].equals("turn")&&turns<2) {
-                    turns++;
-                    //notify time
-                }
-            }
-
-            case S_CORRECT_SHIPBOARD:{
-                if(words[0].equals("done")) {
-                    coordInputManager.endCheckingFase();
-                }
-                else
-                    coordInputManager.checkCoord(transformCoordinates(words));
-            }
-
-            case WAIT_OTHER_PLAYER_ACTION:{
-
-            }
+            return true;
         }
+        return false;
     }
 
+    private boolean firstTurn(String[] input) {
+        if (input[0].equals("turn") && turns==0) {
+            turns++;
+            //notify time
+            return true;
+        }
+        return false;
+    }
 }
-
