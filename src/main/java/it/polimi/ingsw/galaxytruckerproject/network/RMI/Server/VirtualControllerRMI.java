@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.network.RMI.Server;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.Controller;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.RMI.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
 
@@ -40,7 +41,8 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).playerChoiceThroughMessage(message);
     }
 
-
-
-
+    public void notifySetTile(String playerName, Coordinates coordinates, Tile tile) throws RemoteException {
+        Message message= new SetTileRequest(playerName, coordinates, tile);
+        clients.get(playerName).playerChoiceThroughMessage(message);
+    }
 }
