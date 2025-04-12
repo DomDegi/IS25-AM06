@@ -2,7 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.CrewPenalty;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
@@ -40,7 +40,7 @@ public class Slavers extends Enemies{
     }
 
     @Override
-    public void initializeCard(Game game, Map<String, ViewInterface> viewsMap) {
+    public void initializeCard(GameInterface game, Map<String, ViewInterface> viewsMap) {
         if (playerIndex > game.getNumberOfPlayers() - 1){
             System.out.println("No player beat the slavers\n");
             game.endCardEvent();

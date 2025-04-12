@@ -3,16 +3,21 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.MessageType;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.UseEngineResponse;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
 public class OpenSpace extends Card {
     private Player currentPlayer = null;
+    private ViewInterface currentPlayerView = null;
     private int playerIndex = 0;
     ArrayList<Player> playersToEarlyLand = new ArrayList<>();
     
@@ -25,62 +30,56 @@ public class OpenSpace extends Card {
 
     //Initialize card for the player at the index playerIndex of the flightBoard ranking
     @Override
-    public void initializeCard(Game game, Map<String, ViewInterface> viewsMap) {
-        //if index is higher than the number of player in the game -1, it will go out of bounds
-        if (playerIndex > game.getNumberOfPlayers() - 1) {
-            for (Player player: playersToEarlyLand) {
-                game.getFlightBoard().earlyLanding(player);
-            }
-            //draw next card
-            game.endCardEvent();
-            return;
-        }
-
-        currentPlayer = game.getListOfInFlightPlayers().get(playerIndex);
-        currentPlayer.printCurrentInfoEngines();
-        currentPlayer.printCurrentInfoBatteries();
+    public void initializeCard(GameInterface game, Map<String, ViewInterface> viewsMap) {
+        this.game = game;
+        this.viewsMap = viewsMap;
+        this.nextPlayer();
     }
 
     //makes so that the player gain as many days as their engineStrength
     @Override
     public void executeCard(Message message) {
-        //playerName has to be the same as the current one to face the card's adventure
-        if (currentPlayer != null && currentPlayer.getPlayerName().equalsIgnoreCase(playerName)) {
-            //decides against using double engines
-            if (input[0].equals("no")) {
-                int engineStrength = currentPlayer.useDoubleEngines(new ArrayList<>());
-                moveOrEarlyLand(game, engineStrength);
-            } else {
-                ArrayList<Coordinates> coordinates = new ArrayList<>(currentPlayer.parseCoordinates(input));
-                if (coordinates.isEmpty()) {
-                    return;
-                }
-                int engineStrength = currentPlayer.useDoubleEngines(coordinates);
-                //one more input for batteries
-                if (engineStrength == -2) {
-                    return;
-                }
-                //both inputs were wrong
-                if (engineStrength == -1) {
-                    return;
-                }
-                moveOrEarlyLand(game, engineStrength);
+        String playerName = message.getNickname();
+        if (!Objects.equals(playerName, currentPlayer.getPlayerName()) || currentPlayer == null) {
+            return;
+        }
+        if (message.getMessageType().equals(MessageType.USE_ENGINE_RESPONSE)) {
+            UseEngineResponse messageReceived = (UseEngineResponse) message;
+            int engineStrength = currentPlayer.useEngines(messageReceived.getNumEngine(), messageReceived.getCoordinates());
+            if (engineStrength == -1) {
+            }
+            else {
+                this.moveOrEarlyLand(engineStrength);
+                this.nextPlayer();
             }
         }
     }
 
     //moves player forward; early lands if engineStrength == 0
-    private void moveOrEarlyLand(Game game, int engineStrength) {
+    private void moveOrEarlyLand(int engineStrength) {
         System.out.println("\n");
         if (engineStrength == 0) {
             playersToEarlyLand.add(currentPlayer);
-            playerIndex++;
-            initializeCard(game, );
+            nextPlayer();
             return;
         }
         game.getFlightBoard().moveForward(currentPlayer, engineStrength);
-        playerIndex++;
-        initializeCard(game, );
+        nextPlayer();
+    }
+
+    public void nextPlayer() {
+        if (currentPlayer != null) {
+            playerIndex++;
+        }
+        if (playerIndex > game.getNumberOfPlayers() - 1) {
+            for (Player player: playersToEarlyLand) {
+                game.getFlightBoard().earlyLanding(player);
+            }
+            game.endCardEvent();
+        }
+        this.currentPlayer = game.getListOfInFlightPlayers().get(playerIndex);
+        this.currentPlayerView = viewsMap.get(currentPlayer.getPlayerName());
+        currentPlayerView.asksToUseEngines();
     }
 
     public String toString() {

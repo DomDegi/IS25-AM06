@@ -2,8 +2,9 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.GenericMessage;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
@@ -18,9 +19,11 @@ public class StarDust extends Card {
     }
 
     //This cards doesn't need any input, so it gets instantly executed when initialized
-    public void initializeCard(Game game, Map<String, ViewInterface> viewsMap) {
-        String[] input = {"any", "input"};
-        executeCard(game, , game.getListOfInFlightPlayers().getFirst().getPlayerName());
+    public void initializeCard(GameInterface game, Map<String, ViewInterface> viewsMap) {
+        this.game = game;
+        this.viewsMap = viewsMap;
+        broadcastMessage("StarDust: every player will move backward one step for every exposed connector");
+        executeCard(new GenericMessage("w/e"));
     }
 
     //makes so that the player loses as many days as their exposedConnectors

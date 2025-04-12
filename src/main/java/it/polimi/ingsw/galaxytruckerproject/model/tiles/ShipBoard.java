@@ -716,5 +716,8 @@ public class ShipBoard {
         getTile(coordinates).addBattery();
     }
 
+    public void updateTile(Coordinates coordinates, Tile newTile){
+        tilesTable[coordinates.getX()][coordinates.getY()] = Optional.of(newTile);
+    }
 
 }

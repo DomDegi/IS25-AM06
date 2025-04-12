@@ -519,6 +519,8 @@ public class GameController {
             case DRAW_CARD_REQUEST:
                 if (game.identifyPlayerByName(playerName).equals(game.getListOfInFlightPlayers().getFirst())){
                     game.drawCard(playersViewMap);
+                    this.broadcastUpdate(new UpdateDrawnCard(game.getDrawnCard()));
+
                 }
                 else {
                     broadcastMessage("only the first ranked player can draw");
@@ -658,6 +660,12 @@ public class GameController {
     public void broadcastMessage(String messageString) {
         for (ViewInterface view : playersViewMap.values()) {
             view.showGenericMessage(messageString);
+        }
+    }
+
+    public void broadcastUpdate(Message message) {
+        for (ViewInterface view : playersViewMap.values()) {
+            view.updateLightModel(message);
         }
     }
 

@@ -2,7 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.ProjectilePenalty;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
@@ -31,7 +31,7 @@ public class MeteorSwarm extends Card {
     }
 
     @Override
-    public void initializeCard(Game game, Map<String, ViewInterface> viewsMap){
+    public void initializeCard(GameInterface game, Map<String, ViewInterface> viewsMap){
         if (listOfMeteors.isEmpty()){
             game.endCardEvent();
             return;

@@ -2,10 +2,10 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.GoodsPenalty;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
-import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsManager;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsChecker;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
@@ -21,7 +21,7 @@ public class Smugglers extends Enemies{
     private Player currentPlayer;
     private boolean initialized;
     private int won;
-    private GoodsManager goodsManager;
+    private GoodsChecker goodsChecker;
 
     @JsonCreator
     public Smugglers(@JsonProperty("level") int level, @JsonProperty("requiredDays") int requiredDays, @JsonProperty("cannonStrength") int cannonStrength, @JsonProperty("lostGoods") int lostGoods, @JsonProperty("rewardGoods") ArrayList<Goods> rewardGoods) {
@@ -35,13 +35,13 @@ public class Smugglers extends Enemies{
     }
 
     @Override
-    public void initializeCard(Game game, Map<String, ViewInterface> viewsMap) {
+    public void initializeCard(GameInterface game, Map<String, ViewInterface> viewsMap) {
         if (!initialized) {
             playerToInteract = new ArrayList<>(game.getListOfInFlightPlayers());
             initialized=true;
             System.out.printf("WATCH OUT, SMUGGLERS!! \nIf you don't have at least a Cannon Strength of "+cannonStrength+" you will loose "+lostGoods+"\nDESTROY THEM and you will loose"+requiredDays+"to fill your cargo with the following goods:\n");
-            goodsManager=new GoodsManager(currentPlayer,rewardGoods);
-            goodsManager.goodsPrinter(rewardGoods);
+            goodsChecker =new GoodsChecker(currentPlayer,rewardGoods);
+            goodsChecker.goodsPrinter(rewardGoods);
         }
         if (playerToInteract.isEmpty()) {
 
@@ -131,9 +131,9 @@ public class Smugglers extends Enemies{
         } else if(won == 2){
             if (input[0].equalsIgnoreCase("yes")){
                 System.out.println("Good job galaxy truck driver /n here is hour reward: \n");
-                goodsManager.goodsPrinter(rewardGoods);
+                goodsChecker.goodsPrinter(rewardGoods);
                 System.out.println("Chose for each good where to put it, input 'done' to stop,'pick x y' to pick one good from your cargo\n");
-                goodsManager=new GoodsManager(currentPlayer,rewardGoods);
+                goodsChecker =new GoodsChecker(currentPlayer,rewardGoods);
                 won=3;
                 game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
             }else if (input[0].equalsIgnoreCase("no")){
@@ -144,7 +144,7 @@ public class Smugglers extends Enemies{
             }
         //getReward
         } else if(won == 3){
-            if(goodsManager.getReward(input)){
+            if(goodsChecker.getReward(input)){
                 game.endCardEvent();
             }
         //loseManager
