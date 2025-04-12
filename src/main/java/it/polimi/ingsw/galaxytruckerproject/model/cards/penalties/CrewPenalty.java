@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class CrewPenalty extends Penalty {
 
-    private int numberOfLostCrew;
+    private final int numberOfLostCrew;
 
     @JsonCreator
     public CrewPenalty(@JsonProperty("numberOfLostCrew") int numberOfLostCrew) {
@@ -47,21 +47,26 @@ public class CrewPenalty extends Penalty {
                 playersView.showErrorMessage("error removing crew: coordinate wasn't a cabin with crew inside");
             }
         }
-        if (numberOfLostCrew == 0){
-            return 1;
-        }
-        printInfo(playersView, player);
+        this.initializePenalty(playersView, player);
         return 0;
     }
 
 
-    public void printInfo(ViewInterface view, Player player) {
+    public boolean initializePenalty(ViewInterface view, Player player) {
         if (player.getTotalCrew() == 0) {
             view.showGenericMessage("No crew found to remove!");
-            numberOfLostCrew = 0;
+            return false;
         }
         view.showGenericMessage("You have to remove " + numberOfLostCrew + " crew members!");
-        view.asksToInputCoordinates();
+        view.asksToRemoveCrew();
+        return true;
+    }
+
+    public void automaticPenalty(GameInterface game, Player disconnectedPlayer, ViewInterface view) {
+        for (int i = 0; i < numberOfLostCrew && disconnectedPlayer.getTotalCrew() > 0; i++) {
+            Coordinates firstCabin = disconnectedPlayer.getShipBoard().getCabinsCoordinates().getFirst();
+            disconnectedPlayer.getShipBoard().chooseCrewToRemove(firstCabin);
+        }
     }
 
     @Override

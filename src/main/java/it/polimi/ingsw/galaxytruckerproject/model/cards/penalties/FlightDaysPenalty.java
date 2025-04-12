@@ -28,5 +28,5 @@ public class FlightDaysPenalty extends Penalty{
         return "FlightDaysPenalty: " +  numberOfLostDays;
     }
 
-    public void printInfo(ViewInterface view, Player player) {}
+    public boolean initializePenalty(ViewInterface view, Player player) {}
 }

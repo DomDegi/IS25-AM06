@@ -53,8 +53,9 @@ public class AbandonedShip extends Card {
             if (message.getMessageType().equals(MessageType.ACCEPT_MESSAGE)) {
                 playerAccepted = true;
                 sendMessageToPlayer(playersView,"input a pair of number x y for every crew to remove\n");
-                penaltyIfAccept.printInfo(playersView, playerToPlay);
-
+                if (!penaltyIfAccept.initializePenalty(playersView, playerToPlay)) {
+                    game.endCardEvent();
+                }
             } else if (message.getMessageType().equals(MessageType.REFUSE_MESSAGE)) {
                 this.nextPlayer();
             }
@@ -65,7 +66,7 @@ public class AbandonedShip extends Card {
                 game.getFlightBoard().moveBackward(playerToPlay, requiredDays);
                 game.endCardEvent();
             } else {
-                penaltyIfAccept.printInfo(playersView, playerToPlay);
+                penaltyIfAccept.initializePenalty(playersView, playerToPlay);
             }
         }
     }

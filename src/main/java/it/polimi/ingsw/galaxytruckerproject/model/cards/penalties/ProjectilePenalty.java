@@ -18,7 +18,7 @@ import java.util.Set;
 public class ProjectilePenalty extends Penalty {
     private final ArrayList<Projectile> listOfProjectiles;
     private int diceRoll = 0;
-    private Game game = null;
+    private GameInterface game = null;
     private Defense defenseStatus = null;
 
     @JsonCreator
@@ -37,17 +37,17 @@ public class ProjectilePenalty extends Penalty {
         }
         if (diceRoll == 0) {
             if (input!=null && input.length>0 && !input[0].equalsIgnoreCase("roll")) {
-                printInfo(, player);
+                initializePenalty(, player);
                 System.out.println("input roll to roll the dices and find out exactly what will be hit");
             } else {
                 Random rand = new Random();
                 diceRoll = 2 + rand.nextInt(11);
                 System.out.println("diceRoll: " + diceRoll);
-                printInfo(, player);
+                initializePenalty(, player);
             }
             //return 0;
         } else {
-            printInfo(, player);
+            initializePenalty(, player);
         }
         if (defenseStatus == Defense.PROTECTED) {
             resetForNextProjectile();
@@ -92,7 +92,7 @@ public class ProjectilePenalty extends Penalty {
 
     @Override
     //prints next cannon shot coming and sets the defense status for it (HIT, CHOOSESHIELD or PROTECTED)
-    public void printInfo (ViewInterface view, Player player){
+    public boolean initializePenalty(ViewInterface view, Player player){
         System.out.println(listOfProjectiles.getFirst().toString() + "\n");
         if (diceRoll != 0) {
             this.defenseStatus = listOfProjectiles.getFirst().throwProjectile(player, diceRoll, game);

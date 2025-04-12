@@ -29,7 +29,9 @@ public class Epidemic extends Card {
     @Override
     public void executeCard(Message message) {
         for(Player player: game.getListOfInFlightPlayers()){
-            player.getShipBoard().epidemic();
+            if (!player.IsDisconnected()) {
+                player.getShipBoard().epidemic();
+            }
         }
         game.endCardEvent();
     }

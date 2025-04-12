@@ -47,6 +47,7 @@ public class OpenSpace extends Card {
             UseEngineResponse messageReceived = (UseEngineResponse) message;
             int engineStrength = currentPlayer.useEngines(messageReceived.getNumEngine(), messageReceived.getCoordinates());
             if (engineStrength == -1) {
+                return;
             }
             else {
                 this.moveOrEarlyLand(engineStrength);
@@ -79,6 +80,10 @@ public class OpenSpace extends Card {
         }
         this.currentPlayer = game.getListOfInFlightPlayers().get(playerIndex);
         this.currentPlayerView = viewsMap.get(currentPlayer.getPlayerName());
+        if (currentPlayer.IsDisconnected()) {
+            executeCard(new UseEngineResponse(currentPlayer.getPlayerName(), 0, new ArrayList<>()));
+            return;
+        }
         currentPlayerView.asksToUseEngines();
     }
 

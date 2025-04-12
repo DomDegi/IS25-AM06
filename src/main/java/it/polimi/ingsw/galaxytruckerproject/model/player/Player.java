@@ -172,38 +172,55 @@ public class Player {
         }
     }
 
-    public int removeGoods(ArrayList<Coordinates> Coordinates) {
-        int counter = 0;
-
-        while (!Coordinates.isEmpty()) {
-            Coordinates toRemove = Coordinates.removeFirst();
-            if (playerShip.isCargoEmpty()) {
-                if(!playerShip.chooseBatteryUse(toRemove))
-                    return counter;
+    public boolean removeGoods(ArrayList<Coordinates> goodsCoordinates) {
+        ArrayList<Coordinates> goodsToCheck = new ArrayList<>(goodsCoordinates);
+        ArrayList<Coordinates> redCargo = playerShip.cargoHoldContainsGood(new Goods(GoodsColor.RED));
+        ArrayList<Coordinates> yellowCargo = playerShip.cargoHoldContainsGood(new Goods(GoodsColor.YELLOW));
+        ArrayList<Coordinates> greenCargo = playerShip.cargoHoldContainsGood(new Goods(GoodsColor.GREEN));
+        ArrayList<Coordinates> blueCargo = playerShip.cargoHoldContainsGood(new Goods(GoodsColor.BLUE));
+        while (!goodsToCheck.isEmpty()) {
+            if (!redCargo.isEmpty()) {
+                if (!redCargo.contains(goodsToCheck.getFirst())) {
+                    return false;
+                }
+                redCargo.remove(goodsToCheck.getFirst());
             }
-            else if (!playerShip.cargoHoldContainsGood(new Goods(GoodsColor.RED)).isEmpty()) {
-                if (playerShip.cargoHoldContainsGood(new Goods(GoodsColor.RED)).contains(toRemove)) {
-                    playerShip.removeGood(new Goods(GoodsColor.RED), toRemove);
-                } else return counter;
+            else if (!yellowCargo.isEmpty()) {
+                if (!yellowCargo.contains(goodsToCheck.getFirst())) {
+                    return false;
+                }
+                yellowCargo.remove(goodsToCheck.getFirst());
             }
-            else if (!playerShip.cargoHoldContainsGood(new Goods(GoodsColor.YELLOW)).isEmpty()) {
-                if (playerShip.cargoHoldContainsGood(new Goods(GoodsColor.YELLOW)).contains(toRemove)) {
-                    playerShip.removeGood(new Goods(GoodsColor.YELLOW), toRemove);
-                } else return counter;
+            else if (!greenCargo.isEmpty()) {
+                if (!greenCargo.contains(goodsToCheck.getFirst())) {
+                    return false;
+                }
+                greenCargo.remove(goodsToCheck.getFirst());
             }
-            else if (!playerShip.cargoHoldContainsGood(new Goods(GoodsColor.GREEN)).isEmpty()) {
-                if (playerShip.cargoHoldContainsGood(new Goods(GoodsColor.GREEN)).contains(toRemove)) {
-                    playerShip.removeGood(new Goods(GoodsColor.GREEN), toRemove);
-                } else return counter;
+            else if (!blueCargo.isEmpty()) {
+                if (!blueCargo.contains(goodsToCheck.getFirst())) {
+                    return false;
+                }
+                blueCargo.remove(goodsToCheck.getFirst());
             }
-            else if (!playerShip.cargoHoldContainsGood(new Goods(GoodsColor.BLUE)).isEmpty()) {
-                if (playerShip.cargoHoldContainsGood(new Goods(GoodsColor.BLUE)).contains(toRemove)) {
-                    playerShip.removeGood(new Goods(GoodsColor.BLUE), toRemove);
-                } else return counter;
-            }
-            counter++;
+            goodsToCheck.remove(goodsToCheck.getFirst());
         }
-        return counter;
+        for (Coordinates coordinates : goodsCoordinates) {
+            ArrayList<Goods> singleCargoGoods = playerShip.getSingleCargoGoods(coordinates);
+            if (singleCargoGoods.contains(new Goods(GoodsColor.RED))) {
+                playerShip.removeGood(new Goods(GoodsColor.RED), coordinates);
+            }
+            else if (singleCargoGoods.contains(new Goods(GoodsColor.YELLOW))) {
+                playerShip.removeGood(new Goods(GoodsColor.YELLOW), coordinates);
+            }
+            else if (singleCargoGoods.contains(new Goods(GoodsColor.GREEN))) {
+                playerShip.removeGood(new Goods(GoodsColor.GREEN), coordinates);
+            }
+            else if (singleCargoGoods.contains(new Goods(GoodsColor.BLUE))) {
+                playerShip.removeGood(new Goods(GoodsColor.BLUE), coordinates);
+            }
+        }
+        return true;
     }
 
     public void printCurrentInfoCargoHolds() {

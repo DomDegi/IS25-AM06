@@ -603,25 +603,6 @@ public class ShipBoard {
         tilesTable[coordinates.getX()][coordinates.getY()].get().removeGood(good);
     }
 
-    /*
-    public void swapGoods(Coordinates coordinatesFrom,Coordinates coordinatesTo, Goods goodToSwap ){
-        //Check if the coordinates are of a CargoHolder
-        if(cargoHoldCoordinates.contains(coordinatesFrom) && cargoHoldCoordinates.contains(coordinatesTo)){
-            if(cargoHoldCoordinates.contains(goodToSwap)){
-               if(gainGoods(goodToSwap, coordinatesTo))
-                    removeGood(goodToSwap, coordinatesFrom);
-            }
-            else{
-                System.out.println("This Good is not present in the CargoHold you selected");
-            }
-            tilesTable[coordinatesFrom.getX()][coordinatesFrom.getY()].get().getCargo().contains(goodToSwap);
-        }
-        else{
-            System.out.println("ONE OR BOTH THE TWO TILES ARE NOT A CARGOHOLDER");
-        }
-    }
-    */
-
     public int convertGoodsToCredit(){
         int credit = 0;
         Goods good = new Goods(GoodsColor.RED);

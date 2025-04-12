@@ -37,10 +37,10 @@ public class StarDust extends Card {
 
             if (playerExposedConnectors > 0) {
                 game.getFlightBoard().moveBackward(players.get(i), playerExposedConnectors);
-                System.out.println(players.get(i).getPlayerName() + " moved backward as many steps as their exposed connectors: " + playerExposedConnectors + "\n");
+                broadcastMessage(players.get(i).getPlayerName() + " moved backward as many steps as their exposed connectors: " + playerExposedConnectors + "\n");
             }
             else {
-                System.out.println(players.get(i).getPlayerName() + " has no exposed connectors. StarDust doesn't affect them\n");
+                broadcastMessage(players.get(i).getPlayerName() + " has no exposed connectors. StarDust doesn't affect them\n");
             }
         }
         game.endCardEvent();

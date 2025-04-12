@@ -69,7 +69,7 @@ public class CombatZone extends Card {
             }
             losingPlayerDecided = true;
             savedValues.clear();
-            listOfChallenges.get(currentChallenge).printInfo(, currentPlayer);
+            listOfChallenges.get(currentChallenge).initializePenalty(, currentPlayer);
             playerIndex=0;
             return;
         }

@@ -149,7 +149,15 @@ public interface ViewInterface {
 
     void asksToManageGoods(ArrayList<Goods> goods);
 
-    void asksToUseEngines ();
+    void asksToUseEngines();
+
+    void asksToUseCannons();
+
+    void asksToUseBatteries();
+
+    void asksToRemoveGoods();
+
+    void asksToRemoveCrew();
 
     /**
      * at the end of the game shows every players score on the view
