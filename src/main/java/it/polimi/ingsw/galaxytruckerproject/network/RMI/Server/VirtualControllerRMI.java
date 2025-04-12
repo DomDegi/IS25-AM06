@@ -15,29 +15,41 @@ import java.util.HashMap;
 
 public class VirtualControllerRMI extends UnicastRemoteObject implements VirtualController{
 
+
     final MultiGameController multiController;
     //final List<ViewInterface> clients = new ArrayList<>();
     private HashMap <String, Controller> clients;
-
-    public void sendCoordinates(String playerName, ArrayList<Coordinates> coordinates) throws RemoteException{
-        Message message = new SendCoordinatesResponse(playerName, coordinates);
-        clients.get(playerName).playerChoiceThroughMessage(message);
-    }
-    public void sendDoubleCannonUsed( String playerName ,float Strength, ArrayList<Coordinates> coordinates) throws RemoteException{
-        Message message = new UseCannonResponse(playerName,Strength, coordinates);
-        clients.get(playerName).playerChoiceThroughMessage(message);
 
     protected VirtualControllerRMI(MultiGameController multiController) throws RemoteException {
         super();
         this.multiController = multiController;
     }
-    /*
+
+     /*
     public void connect(ViewInterface client) throws RemoteException {
         synchronized (this.clients) {
             this.clients.add(client);
         }
 
      */
+
+    /*
+    public void reset () throws RemoteException {
+        System.err.println("RMI server reset ");
+        synchronized (this.clients) {
+
+        }
+    }*/
+
+    public void sendCoordinates(String playerName, ArrayList<Coordinates> coordinates) throws RemoteException{
+        Message message = new SendCoordinatesResponse(playerName, coordinates);
+        clients.get(playerName).playerChoiceThroughMessage(message);
+    }
+    public void sendDoubleCannonUsed( String playerName ,float Strength, ArrayList<Coordinates> coordinates) throws RemoteException {
+        Message message = new UseCannonResponse(playerName, Strength, coordinates);
+        clients.get(playerName).playerChoiceThroughMessage(message);
+    }
+
     public void sendNumDoubleEngineUsed(String playerName , int NumEngine, ArrayList<Coordinates> coordinates) throws RemoteException{
         Message message = new UseEngineResponse(playerName, NumEngine, coordinates);
         clients.get(playerName).playerChoiceThroughMessage(message);
@@ -49,22 +61,16 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         Message message = new AcceptMessage(playerName);
         clients.get(playerName).playerChoiceThroughMessage(message);
     }
-    /*
-    public void reset () throws RemoteException {
-        System.err.println("RMI server reset ");
-        synchronized (this.clients) {
 
-        }
-    }*/
-        public void sendNo(String playerName) throws RemoteException{
-            Message message = new RefuseMessage(playerName);
-            clients.get(playerName).playerChoiceThroughMessage(message);
-        }
+    public void sendNo(String playerName) throws RemoteException{
+        Message message = new RefuseMessage(playerName);
+        clients.get(playerName).playerChoiceThroughMessage(message);
+    }
 
-        public void notifySetTile(String playerName, Coordinates coordinates, Tile tile) throws RemoteException {
-            Message message= new SetTileRequest(playerName, coordinates, tile);
-            clients.get(playerName).playerChoiceThroughMessage(message);
-        }
+    public void notifySetTile(String playerName, Coordinates coordinates, Tile tile) throws RemoteException {
+        Message message= new SetTileRequest(playerName, coordinates, tile);
+        clients.get(playerName).playerChoiceThroughMessage(message);
+    }
 
     public void sendEndShipBoardCreation(String playerName) throws RemoteException {
         AcceptMessage message = new AcceptMessage(playerName);
