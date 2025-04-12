@@ -2,10 +2,12 @@ package it.polimi.ingsw.galaxytruckerproject.network.RMI.Server;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.Controller;
 import it.polimi.ingsw.galaxytruckerproject.controller.MultiGameController;
+import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.network.RMI.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
+import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -25,14 +27,39 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         this.multiController = multiController;
     }
 
-     /*
-    public void connect(ViewInterface client) throws RemoteException {
+
+    public void connect(ViewInterface client, String playerName) throws RemoteException {
+
+        Controller controllerPlayer = new Controller(multiController, client);
+
         synchronized (this.clients) {
-            this.clients.add(client);
+            this.clients.put(playerName, controllerPlayer);
+            controllerPlayer.login(playerName);
+
         }
+    }
 
-     */
+    public void createGame(String gameName, int playerCount, GameMode chooseMode, String playerName) throws RemoteException {
+        clients.get(playerName).createGame(gameName, playerCount, chooseMode);
+    }
 
+    public void joinGame(String gameName, String playerName) throws RemoteException {
+        clients.get(playerName).joinGame(gameName);
+    }
+
+    public void leaveGame(String playerName) throws RemoteException {
+        clients.get(playerName).leaveGame();
+    }
+
+    public void leave(String playerName) throws RemoteException {
+        clients.get(playerName).leave();
+    }
+
+    public void chooseColor(String playerName, String color) throws RemoteException {
+        clients.get(playerName).chooseColor(color);
+    }
+
+    public
     /*
     public void reset () throws RemoteException {
         System.err.println("RMI server reset ");

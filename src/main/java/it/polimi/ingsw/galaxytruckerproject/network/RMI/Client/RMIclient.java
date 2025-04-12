@@ -22,10 +22,12 @@ public class RMIclient extends UnicastRemoteObject implements ViewInterface {
         this.server = server;
     }
 
+    /*
     public void run() throws RemoteException {
         this.server.connect(this);
         this.runCli();
     }
+    */
 
     public void runCli() throws RemoteException {
         Scanner scan=new Scanner(System.in);
