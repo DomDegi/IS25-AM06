@@ -10,6 +10,12 @@ public abstract class Engine extends Tile{
         south.connectorsType = Connectors.SMOOTH;
         direction = Direction.SOUTH;
     }
+    //CONSTRUCTOR METHOD FOR THE TESTING
+    public Engine(Link north, Link east, Link south, Link west) {
+        super(north, east, south, west, 0);
+        south.connectorsType = Connectors.SMOOTH;
+        direction = Direction.SOUTH;
+    }
 
     @Override
     public String toString() {

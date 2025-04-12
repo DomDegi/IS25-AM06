@@ -13,6 +13,12 @@ public class EquipCabin extends Cabin {
         super(north, east, south, west, key);
         alienability=null;
     }
+    //CONSTRUCTOR METHOD FOR THE TESTING
+    public EquipCabin(Link north, Link east, Link south, Link west) {
+
+        super(north, east, south, west, 0);
+        alienability=null;
+    }
 
     //GETTER METHOD
     public CrewType getCrewType(){

@@ -7,6 +7,13 @@ public class BatteryComponents extends Tile{
         this.batteryCells = numCells;
     }
 
+    //METODO COSTRUTTORE PER IL TESTING
+    public BatteryComponents(Link nord, Link east, Link south, Link west, int numCells) {
+        super(nord,east,south,west,0);
+        this.batteryCells = numCells;
+    }
+
+
     @Override
     public String toString() {
         return "BatteryComponents "+batteryCells+" cells"+super.toString();

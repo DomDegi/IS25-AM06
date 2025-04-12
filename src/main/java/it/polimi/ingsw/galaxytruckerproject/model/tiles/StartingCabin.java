@@ -10,6 +10,11 @@ public class StartingCabin extends Cabin {
         super(nord, east, south, west,key);
         crew = 2;
     }
+    //CONSTRUCTOR METHOD FOR THE TESTING
+    public StartingCabin(Link nord, Link east, Link south, Link west) {
+        super(nord, east, south, west,0);
+        crew = 2;
+    }
 
     public void getStat(){
         shipBoard.getCabinsCoordinates().add(this.coordinates);

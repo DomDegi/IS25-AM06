@@ -14,6 +14,14 @@ public class AlienLifeSupportsSystem extends Tile {
             System.out.println("AlienLifeSupportsSystem only supports BROWN AND PURPLE");
     }
 
+    //METODO COSTRUTTORE PER IL TEST
+    public AlienLifeSupportsSystem(Link north, Link east, Link south, Link west, CrewType colorAlienSupported) {
+        super(north, east, south, west,0);
+        this.colorAlienSupported = colorAlienSupported;
+        if (colorAlienSupported == CrewType.HUMAN)
+            System.out.println("AlienLifeSupportsSystem only supports BROWN AND PURPLE");
+    }
+
     public CrewType getAlienLifeSupportSystemColor() {return colorAlienSupported;}
 
     //RETURNS THE COORDINATES OF ALL THE ADJACENT EQUIP CABIN THAT HAS AN ALIEN WITH SAME COLOUR SUPPORTED

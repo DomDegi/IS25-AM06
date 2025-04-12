@@ -5,7 +5,10 @@ public class DoubleCannon extends Cannon{
     public DoubleCannon(Link north, Link east, Link south, Link west, int key) {
         super(north, east, south, west, key);
     }
-
+    //CONSTRUCTOR METHOD FOR THE TESTING
+    public DoubleCannon(Link north, Link east, Link south, Link west) {
+        super(north, east, south, west, 0);
+    }
 
     public boolean chooseToUse(){
         System.out.println("DoubleCannon");

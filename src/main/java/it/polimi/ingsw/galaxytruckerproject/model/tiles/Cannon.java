@@ -10,6 +10,12 @@ public abstract class Cannon extends Tile {
         this.direction = Direction.NORTH;
     }
 
+    //METODO COSTRUTTORE PER IL TESTING
+    public Cannon(Link north, Link east, Link south, Link west) {
+        super(north, east, south, west,0);
+        this.direction = Direction.NORTH;
+    }
+
     @Override
     public String toString() {
         return "direction: "+direction.toString() + " " +super.toString();

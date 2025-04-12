@@ -23,6 +23,15 @@ public abstract class Tile {
         this.coordinates = new Coordinates(0,0);
         this.key = key;
     }
+    //CONSTRUCTOR METHOD FOR THE TESTING
+    public Tile(Link north, Link east, Link south, Link west) {
+        this.north =north;
+        this.east=east;
+        this.south=south;
+        this.west=west;
+        this.coordinates = new Coordinates(0,0);
+        this.key = 0;
+    }
 
     public int getKey() {
         return key;
