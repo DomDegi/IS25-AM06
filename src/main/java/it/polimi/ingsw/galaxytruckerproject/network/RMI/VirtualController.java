@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public interface VirtualController extends Remote, Serializable {
     void connect(ViewInterface client, String playerName) throws RemoteException;
-    void createGame(String gameName, int playerCount, GameMode chooseMode) throws RemoteException;
+    void createGame(String gameName, int playerCount, GameMode chooseMode, String playerName) throws RemoteException;
     public void joinGame(String gameName, String playerName) throws RemoteException;
     public void leaveGame(String playerName) throws RemoteException;
     public void leave(String playerName) throws RemoteException;
