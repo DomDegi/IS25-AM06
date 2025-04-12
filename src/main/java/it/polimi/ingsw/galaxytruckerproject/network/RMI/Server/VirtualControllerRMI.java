@@ -56,18 +56,23 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
     }
 
 
-    public void drawTilefromPile(String playerName) throws RemoteException {
+    public void reqDrawTileFromPile(String playerName) throws RemoteException {
         DrawTileFromStackRequest message = new DrawTileFromStackRequest(playerName);
         clients.get(playerName).playerChoiceThroughMessage(message);
     }
 
-    public void drawTilefromTable(String playerName, int index) throws RemoteException {
+    public void reqDrawTileFromTable(String playerName, int index) throws RemoteException {
         DrawTileFromTurnedRequest message = new DrawTileFromTurnedRequest(playerName, index);
         clients.get(playerName).playerChoiceThroughMessage(message);
     }
 
     public void sendTurnHourGlass(String playerName) throws RemoteException {
         TurnHourglassRequest message = new TurnHourglassRequest(playerName);
+        clients.get(playerName).playerChoiceThroughMessage(message);
+    }
+
+    public void notifyEarlyLanding(String playerName) throws RemoteException {
+        EarlyLandingRequest message = new EarlyLandingRequest(playerName);
         clients.get(playerName).playerChoiceThroughMessage(message);
     }
 

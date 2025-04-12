@@ -25,13 +25,13 @@ public interface VirtualController extends Remote, Serializable {
     void sendEndShipboardCreation(String playerName) throws RemoteException;
 
     //DONE
-    void sendFlipHourGlass(String playerName) throws RemoteException;
+    void sendTurnHourGlass(String playerName) throws RemoteException;
 
     //DONE
-    Tile reqDrawTileFromPile(String playerName) throws RemoteException;
+    void reqDrawTileFromPile(String playerName) throws RemoteException;
 
     //DONE
-    Tile reqDrawTileFromTable(String playerName) throws RemoteException;//pescaggio tile scoperte
+    void reqDrawTileFromTable(String playerName, int index) throws RemoteException;//pescaggio tile scoperte
 
     //DONE
     void notifyTileBooking(String playerName) throws RemoteException;//per ora metto key però forse è meglio tile
@@ -39,6 +39,9 @@ public interface VirtualController extends Remote, Serializable {
     //DONE
     void notifyRefusedTile(String playerName) throws RemoteException;
 
-    //BOOLEAN
+    /*BOOLEAN
     boolean checkCorrectionShipboard(String playerName) throws RemoteException;
+     */
+    void notifyEarlyLanding(String playerName) throws RemoteException;
+
 }
