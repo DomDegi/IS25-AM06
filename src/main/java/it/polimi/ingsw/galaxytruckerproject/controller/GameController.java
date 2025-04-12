@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.*;
+import static it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.MessageType.*;
 
 
 public class GameController {
@@ -49,6 +50,7 @@ public class GameController {
                     startGame(message);
             }
             case GameState.VERIFY_SHIP_CORRECTNESS: {
+                //potremmo toglierla e lasciare le shipboard nel client o il contrario
                 if (message.getMessageType().equals(SHOW_PLAYERS_SHIPBOARD_REQUEST)) {
                     checkShipBoard(this.getViewFromNickname(message.getNickname()) ,message);
                 } else if  (message.getMessageType().equals(SEND_COORDINATES_RESPONSE)) {
@@ -78,6 +80,8 @@ public class GameController {
      * @param view player's view
      * @param reconnecting true if player used to be in the lobby
      */
+
+    //ASSOCIA IL PLAYER ALLA VIEW
     public void addToPlayersViewMap(String playerName, ViewInterface view, boolean reconnecting) {
         if (reconnecting) {
             reconnectPlayer(playerName, view);
@@ -100,6 +104,8 @@ public class GameController {
      * @param playerName reconnecting player
      * @param view their view
      */
+
+    //RICONNETTE IL PLAYER SE DISCONNESSO
     public void reconnectPlayer(String playerName, ViewInterface view) {
         if (disconnectedPlayers.containsKey(playerName)) {
             //If player disconnected during ships verification without fixing the ship
@@ -233,7 +239,7 @@ public class GameController {
                 playersView.showBookedTiles
                         (activePlayers
                                 .get(playerName).
-                                getPlayerShip().
+                                getShipBoard().
                                 getBookedTiles());
                 break;
 

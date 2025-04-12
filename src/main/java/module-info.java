@@ -7,6 +7,7 @@ module it.polimi.ingsw.galaxytruckerproject {
     requires java.smartcardio;
     requires java.compiler;
     requires java.desktop;
+    requires java.rmi;
 
     opens it.polimi.ingsw.galaxytruckerproject.controller to com.fasterxml.jackson.databind;
     opens it.polimi.ingsw.galaxytruckerproject.model.tiles to com.fasterxml.jackson.databind;
@@ -14,6 +15,7 @@ module it.polimi.ingsw.galaxytruckerproject {
     opens it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles to com.fasterxml.jackson.databind;
     opens it.polimi.ingsw.galaxytruckerproject.model.cards.penalties to com.fasterxml.jackson.databind;
     opens it.polimi.ingsw.galaxytruckerproject.model.player to com.fasterxml.jackson.databind;
+    exports it.polimi.ingsw.galaxytruckerproject.lightmodel;
     exports it.polimi.ingsw.galaxytruckerproject.controller;
     exports it.polimi.ingsw.galaxytruckerproject.model.player;
     exports it.polimi.ingsw.galaxytruckerproject.model.tiles;
@@ -25,4 +27,6 @@ module it.polimi.ingsw.galaxytruckerproject {
     exports it.polimi.ingsw.galaxytruckerproject.model.goods;
     exports it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message;
     opens it.polimi.ingsw.galaxytruckerproject.model.goods to com.fasterxml.jackson.databind;
+    exports it.polimi.ingsw.galaxytruckerproject.clientController;
+    opens it.polimi.ingsw.galaxytruckerproject.clientController to com.fasterxml.jackson.databind;
 }

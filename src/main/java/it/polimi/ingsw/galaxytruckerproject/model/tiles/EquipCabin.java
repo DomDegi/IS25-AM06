@@ -164,12 +164,14 @@ public class EquipCabin extends Cabin {
                     shipBoard.addBreakBrownAliens(false);
                     break;
             }
+            if(this.crew==0)
+                shipBoard.getCabinsCoordinates().remove(this.coordinates);
         }
-        else{
+        else {
             System.out.println("THIS CABIN IS EMPTY");
-            shipBoard.getCabinsCoordinates().remove(this.coordinates);
             return false;
         }
+
         return true;
     }
 

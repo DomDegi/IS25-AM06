@@ -115,7 +115,6 @@ public abstract class Tile {
     }
     //
     public ArrayList<Goods> getCargo(){System.out.println("THIS TILE IS NOT A CARGO_HOLD");return null;}
-    public boolean Placeable(){return true;}
     public int getNumBatteries() {
         System.out.println("THIS TILE IS NOT A BATTERY_COMPONENT");
         return 0;
@@ -126,8 +125,11 @@ public abstract class Tile {
         return null;
     }
 
+    //negative return in case of single cannon--positive return in case of double cannon
     public int getStrength(){
-        //System.out.println("THIS TILE IS NOT A DOUBLE CANNON");
+        return 0;
+    }
+    public int getEngineStrength(){
         return 0;
     }
     public boolean fillable(){return true;}

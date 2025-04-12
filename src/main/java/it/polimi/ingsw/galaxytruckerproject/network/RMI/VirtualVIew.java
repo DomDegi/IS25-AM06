@@ -1,4 +1,4 @@
 package it.polimi.ingsw.galaxytruckerproject.network.RMI;
 
-public class rmi {
+public class VirtualVIew {
 }
