@@ -8,9 +8,9 @@ public class EquipCabin extends Cabin {
     private AlienOptions    alienability;
     private CrewType crewType;
 
-    public EquipCabin(Link north, Link east, Link south, Link west) {
+    public EquipCabin(Link north, Link east, Link south, Link west, int key) {
 
-        super(north, east, south, west);
+        super(north, east, south, west, key);
         alienability=null;
     }
 

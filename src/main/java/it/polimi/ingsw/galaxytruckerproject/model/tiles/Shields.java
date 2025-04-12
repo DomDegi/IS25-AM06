@@ -2,8 +2,8 @@ package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
 public class Shields extends Tile{
     Coverage coveredArea;
-    public Shields(Link north, Link east, Link south, Link west) {
-        super(north, east, south, west);
+    public Shields(Link north, Link east, Link south, Link west, int key) {
+        super(north, east, south, west, key);
         this.coveredArea = Coverage.NORTH_EAST;
     }
 

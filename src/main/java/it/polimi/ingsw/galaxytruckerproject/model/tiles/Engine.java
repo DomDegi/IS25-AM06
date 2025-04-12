@@ -5,8 +5,8 @@ import java.util.Optional;
 public abstract class Engine extends Tile{
     Direction direction;
 
-    public Engine(Link north, Link east, Link south, Link west) {
-        super(north, east, south, west);
+    public Engine(Link north, Link east, Link south, Link west, int key) {
+        super(north, east, south, west, key);
         south.connectorsType = Connectors.SMOOTH;
         direction = Direction.SOUTH;
     }

@@ -11,8 +11,8 @@ public abstract class CargoHold extends Tile{
     boolean hazard;
     ArrayList<Goods> cargo;
 
-    public CargoHold(int totSpaces, Link north, Link east, Link south, Link west) {
-        super(north, east, south, west);
+    public CargoHold(int totSpaces, Link north, Link east, Link south, Link west,int key) {
+        super(north, east, south, west, key);
         this.totSpaces = totSpaces;
         this.cargo = new ArrayList<>();
         // It makes more sense to use an ArrayList since they are much easier to manage in Java.

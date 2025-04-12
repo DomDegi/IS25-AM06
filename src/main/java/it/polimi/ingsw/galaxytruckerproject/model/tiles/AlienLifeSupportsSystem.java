@@ -7,8 +7,8 @@ import static it.polimi.ingsw.galaxytruckerproject.model.tiles.CrewType.NotSuppo
 public class AlienLifeSupportsSystem extends Tile {
     CrewType colorAlienSupported;
 
-    public AlienLifeSupportsSystem(Link north, Link east, Link south, Link west, CrewType colorAlienSupported) {
-        super(north, east, south, west);
+    public AlienLifeSupportsSystem(Link north, Link east, Link south, Link west, int key, CrewType colorAlienSupported) {
+        super(north, east, south, west,key);
         this.colorAlienSupported = colorAlienSupported;
         if (colorAlienSupported == CrewType.HUMAN)
             System.out.println("AlienLifeSupportsSystem only supports BROWN AND PURPLE");

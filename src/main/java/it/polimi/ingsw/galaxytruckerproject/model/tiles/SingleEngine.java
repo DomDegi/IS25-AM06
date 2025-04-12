@@ -1,8 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
 public class SingleEngine extends Engine{
-    public SingleEngine(Link north, Link east, Link south, Link west) {
-        super(north, east, south, west);
+    public SingleEngine(Link north, Link east, Link south, Link west,int key) {
+        super(north, east, south, west,key);
     }
 
     @Override
