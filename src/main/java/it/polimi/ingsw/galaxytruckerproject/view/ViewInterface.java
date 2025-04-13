@@ -104,6 +104,7 @@ public interface ViewInterface extends Remote, Serializable {
      * show the drawnTile to the player
      * @param drawnTile
      */
+    //DEVE ANCHE MANDARLA AL CLIENT
     void showDrawnTile (Tile drawnTile);
 
     /**

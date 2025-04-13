@@ -21,6 +21,9 @@ public class Client {
     public LightPlayer getMe() {
         return me;
     }
+    public String getName() {
+        return me.getPlayerName();
+    }
 
     public ArrayList<LightPlayer> getPlayersList() {
         return playersList;

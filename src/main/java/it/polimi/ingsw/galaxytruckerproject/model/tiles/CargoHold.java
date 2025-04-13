@@ -11,8 +11,8 @@ public abstract class CargoHold extends Tile{
     boolean hazard;
     ArrayList<Goods> cargo;
 
-    public CargoHold(int totSpaces, Link north, Link east, Link south, Link west) {
-        super(north, east, south, west);
+    public CargoHold(int totSpaces, Link north, Link east, Link south, Link west,int key) {
+        super(north, east, south, west, key);
         this.totSpaces = totSpaces;
         this.cargo = new ArrayList<>();
         // It makes more sense to use an ArrayList since they are much easier to manage in Java.
@@ -20,6 +20,15 @@ public abstract class CargoHold extends Tile{
         // and to check if there are goods and how many, we just get the size of the ArrayList and compare it with totSpaces.
     }
 
+    //CONSTRUCTOR METHOD FOR THE TESTING
+    public CargoHold(int totSpaces, Link north, Link east, Link south, Link west) {
+        super(north, east, south, west, 0);
+        this.totSpaces = totSpaces;
+        this.cargo = new ArrayList<>();
+        // It makes more sense to use an ArrayList since they are much easier to manage in Java.
+        // Instead of dealing with null values, we can simply use an ArrayList.
+        // and to check if there are goods and how many, we just get the size of the ArrayList and compare it with totSpaces.
+    }
     @Override
     public String toString() {
         for(Goods g : cargo)

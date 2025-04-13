@@ -13,15 +13,29 @@ public abstract class Tile {
     protected Link west;
     protected Coordinates coordinates;
     protected ShipBoard shipBoard;
+    protected final int key;
 
+    public Tile(Link north, Link east, Link south, Link west, int key) {
+        this.north =north;
+        this.east=east;
+        this.south=south;
+        this.west=west;
+        this.coordinates = new Coordinates(0,0);
+        this.key = key;
+    }
+    //CONSTRUCTOR METHOD FOR THE TESTING
     public Tile(Link north, Link east, Link south, Link west) {
         this.north =north;
         this.east=east;
         this.south=south;
         this.west=west;
         this.coordinates = new Coordinates(0,0);
+        this.key = 0;
     }
 
+    public int getKey() {
+        return key;
+    }
     @Override
     public String toString() {
         return "Tile north:"+north.toString() + " east:" + east.toString() + " south:" + south.toString() + " west:" + west.toString()+"\n"

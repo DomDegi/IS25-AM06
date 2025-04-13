@@ -1,7 +1,10 @@
 package it.polimi.ingsw.galaxytruckerproject.client;
 
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 //import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsManager;
@@ -55,6 +58,40 @@ public class ClientController {
         }
         switch (state) {
             case LOBBY: {
+                //CHOOSE TUI OR GUI
+                switch(words[0]) {
+                    case "createGame":
+                    {
+                        String gameName = words[1];
+                        int NumberOFPlayers;
+                        try {
+                            NumberOFPlayers = Integer.parseInt(words[2]);
+                        } catch (NumberFormatException e) {
+                            System.out.println("\nInvalid input format. Please provide integer values.");
+                            return;
+                        }
+
+                        if(NumberOFPlayers<2||NumberOFPlayers>4)
+                        {
+                            System.out.println("\nInvalid input format. Please provide a different number of players.");
+                        }
+                        if(words[3].equals("TrialMode")){
+                            virtualController.createGame(gameName,NumberOFPlayers, GameMode.TRIAL, client.getName());
+                            return;
+                        }
+                        else if (words[3].equals("Level2Mode")){
+                            virtualController.createGame(gameName,NumberOFPlayers,GameMode.LEVEL2, client.getName());
+                            return;
+                        }
+                        System.out.println("\nInvalid input format. Please provide correct game mode.");
+                    }
+                    case "joinGame":
+                    {
+                        String gameName = words[1];
+                        virtualController.joinGame(gameName,client.getName());
+                    }
+
+                }
 
             }
 
@@ -227,7 +264,12 @@ public class ClientController {
         }
     }
 
-    private Coordinates transformCoordinates(String[] input) {
+    @Override
+    public String getName() {
+        return client.getName();
+    }
+
+    public Coordinates transformCoordinates(String[] input) {
         if (input.length < 2) {
             System.out.println("\nInvalid input format. Please provide integer values.");
             return null;
