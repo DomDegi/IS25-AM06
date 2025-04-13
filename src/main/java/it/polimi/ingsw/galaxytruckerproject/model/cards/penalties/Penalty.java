@@ -22,5 +22,5 @@ public abstract class Penalty {
     @Override
     public abstract String toString();
 
-    public abstract void printInfo(ViewInterface view, Player player);
+    public abstract boolean initializePenalty(ViewInterface view, Player player);
 }

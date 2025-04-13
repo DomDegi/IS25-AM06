@@ -2,17 +2,16 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
-import it.polimi.ingsw.galaxytruckerproject.client.GoodsManager;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsChecker;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.ManageGoodsResponse;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.MessageType;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public class AbandonedStation extends Card {
@@ -23,9 +22,7 @@ public class AbandonedStation extends Card {
     private ViewInterface currentPlayersView = null;
     private boolean initialized;
     private boolean won;
-    private GoodsManager goodsManager;
-    private GameInterface game = null;
-    private Map<String, ViewInterface> viewsMap =  new HashMap<String, ViewInterface>();
+    private GoodsChecker goodsChecker;
 
     @JsonCreator
     public AbandonedStation(@JsonProperty("level") int level, @JsonProperty("requiredDays") int requiredDays, @JsonProperty("crewNumberRequired") int crewNumberRequired, @JsonProperty("possibleGoodsGain") ArrayList<Goods> possibleGoodsGain) {
@@ -39,7 +36,7 @@ public class AbandonedStation extends Card {
     }
     //asks every player in order of ranking that meets the requirements if they want to spend days to gain the goods
     @Override
-    public void initializeCard(Game game, Map<String, ViewInterface> viewsMap) {
+    public void initializeCard(GameInterface game, Map<String, ViewInterface> viewsMap) {
         this.game = game;
         this.viewsMap = viewsMap;
         nextPlayer();
@@ -63,12 +60,12 @@ public class AbandonedStation extends Card {
             if (currentPlayer.getTotalCrew() >= crewNumberRequired) {
                 if (choice == 1) {
                     game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
-                    goodsManager=new GoodsManager(currentPlayer,possibleGoodsGain);
+                    goodsChecker =new GoodsChecker(currentPlayer,possibleGoodsGain);
                     won=true;
-                    goodsManager.goodsPrinter(possibleGoodsGain);
+                    goodsChecker.goodsPrinter(possibleGoodsGain);
                     currentPlayersView.showGenericMessage("Choose for each good where to put it, " +
                             "input 'done' to stop,'pick x y' to pick one good from your cargo");
-                    currentPlayersView.asksToInputCoordinates();
+                    currentPlayersView.asksToManageGoods(possibleGoodsGain);
                     //exit for loop: the station has been claimed
                 } else if (choice == 0) {
                     currentPlayersView.showGenericMessage("No action performed");
@@ -81,8 +78,11 @@ public class AbandonedStation extends Card {
                 System.out.printf("\nSorry" + currentPlayer + "you can't land on the station, you need at least %d crew members\n", crewNumberRequired);
             }
         }else{
-            if(goodsManager.getReward(message)){
-                game.endCardEvent();
+            if(message.getMessageType().equals(MessageType.MANAGE_GOODS_RESPONSE)){
+                ManageGoodsResponse messageReceived = (ManageGoodsResponse) message;
+                if (goodsChecker.check(messageReceived.getClientGoodsValue(), messageReceived.getCargoHoldsToUpdate())) {
+                    game.endCardEvent();
+                }
             }
         }
     }
@@ -122,8 +122,8 @@ public class AbandonedStation extends Card {
         currentPlayersView.showGenericMessage("Abandoned station: you will loose " +
                 requiredDays +
                 " flight days to gain the following goods:");
-        this.goodsManager=new GoodsManager(currentPlayer,possibleGoodsGain);
-        currentPlayersView.showGenericMessage(goodsManager.goodsPrinter(possibleGoodsGain));
+        this.goodsChecker =new GoodsChecker(currentPlayer,possibleGoodsGain);
+        currentPlayersView.showGenericMessage(goodsChecker.goodsPrinter(possibleGoodsGain));
 
         if (currentPlayer.getTotalCrew() < crewNumberRequired) {
             currentPlayersView.showGenericMessage("Sorry " + currentPlayer.getPlayerName() +

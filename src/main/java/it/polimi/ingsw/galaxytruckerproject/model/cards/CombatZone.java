@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.Penalty;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
@@ -36,7 +37,7 @@ public class CombatZone extends Card {
     }
 
     @Override
-    public void initializeCard(Game game, Map<String, ViewInterface> viewsMap) {
+    public void initializeCard(GameInterface game, Map<String, ViewInterface> viewsMap) {
         //if there is only one player still flying, combat>one cards get skipped
         if (game.getNumberOfPlayers() <= 1) {
             game.endCardEvent();
@@ -68,7 +69,7 @@ public class CombatZone extends Card {
             }
             losingPlayerDecided = true;
             savedValues.clear();
-            listOfChallenges.get(currentChallenge).printInfo(, currentPlayer);
+            listOfChallenges.get(currentChallenge).initializePenalty(, currentPlayer);
             playerIndex=0;
             return;
         }

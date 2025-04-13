@@ -26,6 +26,7 @@ public class GameController {
     private final Map<String, ViewInterface> playersViewMap;
     private final Map<String, Player> activePlayers;
     private final Map<String, Player> disconnectedPlayers;
+    private final ArrayList<Player> playersToEarlyLand = new ArrayList<>();
 
     public GameController(GameInterface game, String gameName) {
         this.gameName = gameName;
@@ -41,6 +42,7 @@ public class GameController {
         switch (game.getGameState()) {
             case GameState.START_GAME: {
                 playerAddition(message);
+                break;
             }
             case GameState.SHIPS_CREATION: {
                 if (game.getHourglassTurns() > 0){
@@ -48,6 +50,7 @@ public class GameController {
                 }
                 else
                     startGame(message);
+                break;
             }
             case GameState.VERIFY_SHIP_CORRECTNESS: {
                 //potremmo toglierla e lasciare le shipboard nel client o il contrario
@@ -59,16 +62,19 @@ public class GameController {
                 if(playersWithErrors.isEmpty()){
                     verifyShipCorrectness();
                 }
-
+                break;
             }
             case GameState.DRAW_CARD: {
                 drawCard(message);
+                break;
             }
             case GameState.CARD_EVENT: {
                 cardEvent(message);
+                break;
             }
             case GameState.CONCLUDE_GAME: {
                 concludeGame();
+                break;
             }
         }
     }
@@ -518,12 +524,25 @@ public class GameController {
 
         if (game.getCardsLeft() == 0) {
             game.endCardPhase();
+            concludeGame();
+            return;
+        }
+
+        for (Player player: playersToEarlyLand) {
+            game.getFlightBoard().earlyLanding(player);
+        }
+
+        if (game.getListOfInFlightPlayers().isEmpty()) {
+            concludeGame();
+            return;
         }
 
         switch(message.getMessageType()) {
             case DRAW_CARD_REQUEST:
                 if (game.identifyPlayerByName(playerName).equals(game.getListOfInFlightPlayers().getFirst())){
                     game.drawCard(playersViewMap);
+                    this.broadcastUpdate(new UpdateDrawnCard(game.getDrawnCard()));
+
                 }
                 else {
                     broadcastMessage("only the first ranked player can draw");
@@ -542,7 +561,15 @@ public class GameController {
 
     //Gets the drawnCard from main and sends the input to each Card, depending on return value gives errors
     public void cardEvent(Message message) {
-        game.cardEvent(message);
+        Player player = game.identifyPlayerByName(message.getNickname());
+        if (player.isLanded()) {
+            return;
+        }
+        if (message.getMessageType().equals(EARLY_LANDING_REQUEST)) {
+            playersToEarlyLand.add(player);
+        } else {
+            game.cardEvent(message);
+        }
     }
 
 
@@ -663,6 +690,12 @@ public class GameController {
     public void broadcastMessage(String messageString) {
         for (ViewInterface view : playersViewMap.values()) {
             view.showGenericMessage(messageString);
+        }
+    }
+
+    public void broadcastUpdate(Message message) {
+        for (ViewInterface view : playersViewMap.values()) {
+            view.updateLightModel(message);
         }
     }
 

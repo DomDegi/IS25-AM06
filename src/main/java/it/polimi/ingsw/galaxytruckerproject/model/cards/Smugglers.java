@@ -2,13 +2,13 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.GoodsPenalty;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
-import it.polimi.ingsw.galaxytruckerproject.client.GoodsManager;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsChecker;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
@@ -19,9 +19,10 @@ public class Smugglers extends Enemies{
     private final ArrayList<Goods> rewardGoods;
     private ArrayList<Player> playerToInteract;
     private Player currentPlayer;
+    private ViewInterface playersView;
     private boolean initialized;
     private int won;
-    private GoodsManager goodsManager;
+    private GoodsChecker goodsChecker;
 
     @JsonCreator
     public Smugglers(@JsonProperty("level") int level, @JsonProperty("requiredDays") int requiredDays, @JsonProperty("cannonStrength") int cannonStrength, @JsonProperty("lostGoods") int lostGoods, @JsonProperty("rewardGoods") ArrayList<Goods> rewardGoods) {
@@ -35,124 +36,127 @@ public class Smugglers extends Enemies{
     }
 
     @Override
-    public void initializeCard(Game game, Map<String, ViewInterface> viewsMap) {
-        if (!initialized) {
-            playerToInteract = new ArrayList<>(game.getListOfInFlightPlayers());
-            initialized=true;
-            System.out.printf("WATCH OUT, SMUGGLERS!! \nIf you don't have at least a Cannon Strength of "+cannonStrength+" you will loose "+lostGoods+"\nDESTROY THEM and you will loose"+requiredDays+"to fill your cargo with the following goods:\n");
-            goodsManager=new GoodsManager(currentPlayer,rewardGoods);
-            goodsManager.goodsPrinter(rewardGoods);
-        }
-        if (playerToInteract.isEmpty()) {
-
-            game.endCardEvent();
-            return;
-        }
-        currentPlayer= playerToInteract.getFirst();
-        System.out.printf("\n"+currentPlayer.getPlayerName()+", they are coming for you! \nDo you want to use your double cannon?(yes/no)\n");
+    public void initializeCard(GameInterface game, Map<String, ViewInterface> viewsMap) {
+        this.game = game;
+        this.viewsMap = viewsMap;
+        nextPlayer();
     }
 
     @Override
     public void executeCard(Message message) {
-        if(currentPlayer==null)
-            currentPlayer=game.getListOfInFlightPlayers().getFirst();
-        if (!playerName.equals(currentPlayer.getPlayerName()))
+        String playerName = message.getNickname();
+        if (!playerName.equals(currentPlayer.getPlayerName()) || currentPlayer == null)
             return;
-        if(playerToInteract.isEmpty()) {
-            game.endCardEvent();
-            return;
-        }
-        if (input.length == 0) {
-            System.out.println("Invalid input format. Please provide integer values.\n");
-            return;
-        }
-        //executeCard
-        if(won == 0){
-            if (input[0].equalsIgnoreCase("yes")){
-                System.out.println("\nInput first the double cannons coordinates and after the batteries coordinates\n");
-                won=1;
-            }else if (input[0].equalsIgnoreCase("no")){
-                if(currentPlayer.useDoubleCannons(new ArrayList<>()) < cannonStrength){
-                    System.out.printf("\nSorry"+currentPlayer.getPlayerName()+"you are too weak(looser)\n");
-                    if(currentPlayer.getShipBoard().getAllGoods().size()>=lostGoods.getNumber()){
-                        System.out.print("\nChoose the cargo hold that will be pillaged by the Smugglers?\n");
-                    }else if(currentPlayer.getShipBoard().getNumBatteries()!=0){
-                        System.out.print("\nChoose the battery container that will be pillaged by the Smugglers?\n");
-                    }else{
-                        System.out.print("\nYou have nothing to pillage\n");
-                        won=0;
-                        playerToInteract.removeFirst();
-                        initializeCard(game, );
-                        return;
+
+        if (won == 0) {
+            if (message.getMessageType().equals(MessageType.USE_CANNON_RESPONSE)) {
+                UseCannonResponse messageReceived = (UseCannonResponse) message;
+                float totalStrength = currentPlayer.useCannons(messageReceived.getStrength(), messageReceived.getCoordinates());
+                if (totalStrength != -1) {
+                    if (totalStrength > cannonStrength) {
+                        won = 1;
+                        broadcastMessage(playerName + "has beaten the smugglers!");
+                        sendMessageToPlayer(playersView, "Input yes or no to decide if you want the reward");
+                        playersView.asksToMakeAChoice();
                     }
-                    won=-1;
-                }else if(currentPlayer.useDoubleCannons(new ArrayList<>()) > cannonStrength){
-                    System.out.printf("\nHURRAY!! You are more powerful than the Smugglers, you've defeated them!!\n\n"+currentPlayer.getPlayerName()+"want to pillage dose filthy Smugglers(loose %d days)(yes/no)?",requiredDays);
-                    won=2;
-                }else if(currentPlayer.useDoubleCannons(new ArrayList<>()) == cannonStrength){
-                    System.out.println("\nYAY!! You are as powerful as the Smugglers, you've defeated them, but they managed to escape jus in time!\n");
-                    won=0;
-                    playerToInteract.removeFirst();
-                    initializeCard(game, );
+                    else if (totalStrength == cannonStrength) {
+                        nextPlayer();
+                    }
+                    else {
+                        won = -1;
+                        sendMessageToPlayer(playersView, "You've lost the smugglers, decide which goods to lose");
+                        if (!lostGoods.initializePenalty(playersView, currentPlayer)) {
+                            nextPlayer();
+                        }
+                    }
                 }
-            }else {
-                System.out.println("Invalid input: " + input[0]+ " retry");
             }
-        //D.C.Manager
-        } else if(won == 1) {
-            ArrayList<Coordinates> coordinates = new ArrayList<>(currentPlayer.parseCoordinates(input));
-            if (coordinates.isEmpty()){
-                System.out.println("Invalid input\n");
+        }
+        else if (won == 1){
+            if (message.getMessageType().equals(MessageType.REFUSE_MESSAGE)) {
+                game.endCardEvent();
+            }
+            else if (message.getMessageType().equals(MessageType.ACCEPT_MESSAGE)) {
+                game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
+                playersView.asksToManageGoods(rewardGoods);
+                won = 2;
+            }
+        }
+        else if (won == 2) {
+            if (message.getMessageType().equals(MessageType.MANAGE_GOODS_RESPONSE)) {
+                ManageGoodsResponse manageGoodsResponse = (ManageGoodsResponse) message;
+                if (goodsChecker.check(manageGoodsResponse.getClientGoodsValue(), manageGoodsResponse.getCargoHoldsToUpdate()))
+                    game.endCardEvent();
+            }
+        }
+        else if (won == -1){
+            if (lostGoods.applyPenalty(game, currentPlayer, playersView, message) == 1) {
+                nextPlayer();
+            }
+            else {
+                lostGoods.initializePenalty(playersView, currentPlayer);
+            }
+        }
+    }
+
+    public void nextPlayer() {
+        if (!initialized) {
+            this.initialized = true;
+            this.playerToInteract = game.getListOfInFlightPlayers();
+        } else {
+            if (playerToInteract.isEmpty()) {
+                game.endCardEvent();
                 return;
             }
-            float playerStrength = currentPlayer.useDoubleCannons(coordinates);
-            if (playerStrength == -2){
-                System.out.println("Need the batteries coordinates\n");
-            }else if (playerStrength == -1){
-                System.out.println("\nInvalid input of batteries or cannons: input again cannons coordinates\n");
-            }else if (playerStrength > cannonStrength){
-                System.out.printf("\nHURRAY!! You are more powerful than the Smugglers, you've defeated them!!\n\n"+currentPlayer.getPlayerName()+"want to pillage dose filthy Smugglers(loose %d days)(yes/no)?",requiredDays);
-                won=2;
-            }else if (playerStrength < cannonStrength){
-                System.out.printf("Sorry"+currentPlayer.getPlayerName()+"you are too weak(looser)\n");
-                if(currentPlayer.getShipBoard().getAllGoods().size()>=lostGoods.getNumber()){
-                    System.out.print("\nChoose the cargo hold that will be pillaged by the Smugglers?\n");
-                }else {
-                    System.out.print("\nChoose the battery container that will be pillaged by the Smugglers?\n");
+            playerToInteract.removeFirst();
+        }
+        currentPlayer = playerToInteract.getFirst();
+        String playerName = currentPlayer.getPlayerName();
+        this.playersView = viewsMap.get(playerName);
+        float singleCannonPower = currentPlayer.getShipBoard().getSingleCannonPower();
+        sendMessageToPlayer(playersView, "WATCH OUT, SMUGGLERS!! \nIf you don't have at least a Cannon Strength of "
+                +cannonStrength+" you will loose "+lostGoods+ "\nDESTROY THEM and you will loose"+requiredDays+
+                "to fill your cargo with the following goods:\n");
+        goodsChecker =new GoodsChecker(currentPlayer,rewardGoods);
+        sendMessageToPlayer(playersView, goodsChecker.goodsPrinter(rewardGoods));
+
+        if (currentPlayer.IsDisconnected()) {
+            if (singleCannonPower > cannonStrength) {
+                won = 1;
+                executeCard(new RefuseMessage(playerName));
+            }
+            else if (singleCannonPower == cannonStrength) {
+                nextPlayer();
+            }
+            else {
+                won = -1;
+                lostGoods.automaticPenalty(game, currentPlayer, playersView);
+                nextPlayer();
+            }
+        }
+        else {
+            if (singleCannonPower > cannonStrength) {
+                won = 1;
+                sendMessageToPlayer(playersView, "You've beaten the smugglers, input yes or no" +
+                        " to claim the rewards or not");
+                playersView.asksToMakeAChoice();
+            }
+            else if (currentPlayer.getPlayerShip().getDoubleCannon().isEmpty() ||
+                    currentPlayer.getPlayerShip().getBatteryCoordinates().isEmpty()) {
+                if (singleCannonPower == cannonStrength) {
+                    nextPlayer();
                 }
-                won=-1;
-            }else if(playerStrength == cannonStrength){
-                System.out.println("\nYAY!! You are as powerful as the Smugglers, you've defeated them, but they managed to escape jus in time!\n");
-                won=0;
-                playerToInteract.removeFirst();
-                initializeCard(game, );
+                else {
+                    won = -1;
+                    sendMessageToPlayer(playersView,"You've lost to the smugglers:\n");
+                    sendMessageToPlayer(playersView,"input a pair of number x y for every good to remove\n");
+                    lostGoods.initializePenalty(playersView, currentPlayer);
+                }
             }
-        //won
-        } else if(won == 2){
-            if (input[0].equalsIgnoreCase("yes")){
-                System.out.println("Good job galaxy truck driver /n here is hour reward: \n");
-                goodsManager.goodsPrinter(rewardGoods);
-                System.out.println("Chose for each good where to put it, input 'done' to stop,'pick x y' to pick one good from your cargo\n");
-                goodsManager=new GoodsManager(currentPlayer,rewardGoods);
-                won=3;
-                game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
-            }else if (input[0].equalsIgnoreCase("no")){
-                System.out.println("You are too pure of heart for a galaxy truck driver\nCard Finished\n");
-                game.endCardEvent();
-            }else {
-                System.out.println("Invalid input: " + input[0]);
-            }
-        //getReward
-        } else if(won == 3){
-            if(goodsManager.getReward(input)){
-                game.endCardEvent();
-            }
-        //loseManager
-        } else if(won == -1) {
-            if(lostGoods.applyPenalty(game,currentPlayer, ,input, )==1){
-                won=0;
-                playerToInteract.removeFirst();
-                initializeCard(game, );
+            else {
+                sendMessageToPlayer(playersView, "You can't beat the slavers with only your single cannons, " +
+                        "use your double cannons in exchange for batteries?");
+                playersView.asksToUseCannons();
             }
         }
     }

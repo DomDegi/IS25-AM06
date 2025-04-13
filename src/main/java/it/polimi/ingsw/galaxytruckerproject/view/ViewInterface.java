@@ -2,9 +2,11 @@ package it.polimi.ingsw.galaxytruckerproject.view;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -145,6 +147,20 @@ public interface ViewInterface extends Remote, Serializable {
      */
     void asksToMakeAChoice ();
 
+    void asksPlanetChoice();
+
+    void asksToManageGoods(ArrayList<Goods> goods);
+
+    void asksToUseEngines();
+
+    void asksToUseCannons();
+
+    void asksToUseBatteries();
+
+    void asksToRemoveGoods();
+
+    void asksToRemoveCrew();
+
     /**
      * at the end of the game shows every players score on the view
      */
@@ -154,4 +170,6 @@ public interface ViewInterface extends Remote, Serializable {
      * asks the player to choose the mode of the game to be created
      */
     void asksChosenMode ();
+
+    void updateLightModel (Message message);
 }

@@ -50,4 +50,5 @@ public interface GameInterface {
     //Card phase cards
     int getCardsLeft();
     void cardEvent(Message message);
+    Card getDrawnCard();
 }
