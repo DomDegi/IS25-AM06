@@ -12,7 +12,7 @@ public class LightShipBoard {
     //Variable that saves the reference to the ShipBoard present in the model along with all the game logic
     private ShipBoard shipBoard;
 
-    protected final Player player; //protected because it need to be called in StartingCabin (Tiles)
+    protected final LightPlayer player; //protected because it need to be called in StartingCabin (Tiles)
     private Optional<Tile>[][] tilesTable;
     private int penalty;
     private ArrayList<Tile> bookedTiles;
@@ -20,8 +20,8 @@ public class LightShipBoard {
     private ArrayList<Coordinates> cargoHoldCoordinates;
 
 
-    public LightShipBoard(ShipBoard shipBoard) {
-        this.player = shipBoard.getPlayer();
+    public LightShipBoard(ShipBoard shipBoard,LightPlayer player) {
+        this.player = player;
         this.shipBoard = shipBoard;
     }
 

@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.network.RMI.Server;
 import it.polimi.ingsw.galaxytruckerproject.controller.Controller;
 import it.polimi.ingsw.galaxytruckerproject.controller.MultiGameController;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
@@ -15,14 +16,16 @@ import java.util.HashMap;
 import java.util.ArrayList;
 
 public class VirtualControllerRMI extends UnicastRemoteObject implements VirtualController{
+
+
     private final MultiGameController multiController;
     //final List<ViewInterface> clients = new ArrayList<>();
     private final HashMap <String, Controller> clients;
 
-    protected VirtualControllerRMI(MultiGameController multiController, HashMap<String, Controller> clients) throws RemoteException {
+    protected VirtualControllerRMI(MultiGameController multiController) throws RemoteException {
         super();
         this.multiController = multiController;
-        this.clients = clients;
+        this.clients = new HashMap<String, Controller>();
     }
 
     public void connect(ViewInterface client, String playerName) throws RemoteException {
@@ -56,6 +59,7 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).chooseColor(color);
     }
 
+
     public void sendCoordinates(String playerName, ArrayList<Coordinates> coordinates) throws RemoteException{
         Message message = new SendCoordinatesResponse(playerName, coordinates);
         clients.get(playerName).playerChoiceThroughMessage(message);
@@ -70,6 +74,7 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).playerChoiceThroughMessage(message);
 
     }
+
 
     public void sendYes( String playerName) throws RemoteException{
         Message message = new AcceptMessage(playerName);
@@ -107,6 +112,7 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).playerChoiceThroughMessage(message);
     }
 
+
     public void reqDrawTileFromPile(String playerName) throws RemoteException {
         DrawTileFromStackRequest message = new DrawTileFromStackRequest(playerName);
         clients.get(playerName).playerChoiceThroughMessage(message);
@@ -126,5 +132,32 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         EarlyLandingRequest message = new EarlyLandingRequest(playerName);
         clients.get(playerName).playerChoiceThroughMessage(message);
     }
+
+    public void notifyNewGoodsArrangement(String playerName,int clientGoodsValue, ArrayList<CargoHold> modifiedCargoHold) throws RemoteException{
+        Message message = new ManageGoodsResponse(playerName,clientGoodsValue, modifiedCargoHold);
+        clients.get(playerName).playerChoiceThroughMessage(message);
+
+    }
+
+    public void showCardsRequest(String playerName, int deckToLookAt) throws RemoteException {
+        ShowCardsRequest message = new ShowCardsRequest(playerName, deckToLookAt);
+        clients.get(playerName).playerChoiceThroughMessage(message);
+    }
+
+    public void StopLookingAtCardsRequest(String playerName) throws RemoteException {
+        StopLookingAtCardsRequest message = new StopLookingAtCardsRequest(playerName);
+        clients.get(playerName).playerChoiceThroughMessage(message);
+    }
+
+    public void PlanetChoiceRequest(String playerName) throws RemoteException {
+        PlanetChoiceRequest message = new PlanetChoiceRequest();
+        clients.get(playerName).playerChoiceThroughMessage(message);
+    }
+
+
+
+
+
+
 
 }

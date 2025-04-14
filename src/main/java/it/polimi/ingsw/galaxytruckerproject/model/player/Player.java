@@ -43,6 +43,7 @@ public class Player {
     public void setLanded(boolean landed) {this.landed = landed;}
     public void addCredit(int credit) {this.credit += credit;}
     public void removeCredit(int credit) {this.credit -= credit;}
+    public ShipBoard getPlayerShip() {return playerShip;}
     public int getTotalCrew() { return playerShip.getNumHumanCrew() + playerShip.getNumBrownAliens() +  playerShip.getNumPurpleAliens(); }
 
 

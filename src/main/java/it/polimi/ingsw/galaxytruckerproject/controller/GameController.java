@@ -274,6 +274,7 @@ public class GameController {
                 lookGameCards(playersView, message);
                 break;
 
+
             //turns the hourglass, if hourglass at last possible turn, the player last input has to be completed
             case TURN_HOURGLASS_REQUEST:
                 turnHourglass(playerName);
