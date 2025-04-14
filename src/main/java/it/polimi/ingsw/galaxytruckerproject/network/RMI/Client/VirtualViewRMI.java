@@ -38,7 +38,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
 
     @Override
     public void askNickname() throws IOException {
-
+        view.askNickname();
     }
 
     @Override
