@@ -21,8 +21,8 @@ public class ClientController {
     private ArrayList<LightPlayer> playersList;
     private ArrayList<ArrayList<Card>> deck;
     private LightFlightboard flightBoard;
-    private HashMap<Integer, Tile> drawnTiles;
-    private Tile tileInHand;
+    private Map<Integer,Tile> TurnedTiles;
+    private Tile tileInHand; // tile appena raccolta
     private Timer timer;
     private ClientState state;
     private int turns;
@@ -438,7 +438,7 @@ public class ClientController {
 
     private boolean land(String[] input) throws RemoteException {
         if (input[0].equals("earlyland")&&!getMe().isLanded()){
-            virtualController.notifyEarlyLanding(getName());
+            virtualController.notifyEarlyLanding(client.getName());
             return true;
         }
         return false;
@@ -493,6 +493,13 @@ public class ClientController {
 
     public void setFlightBoard(LightFlightboard flightBoard) {
         this.flightBoard = flightBoard;
+    }
+
+    public void addTurnedTile(Tile tile) {
+        TurnedTiles.put(tile.getKey(), tile);
+    }
+    public void removeTurnedTile(Tile tile) {
+        TurnedTiles.remove(tile.getKey());
     }
 }
 

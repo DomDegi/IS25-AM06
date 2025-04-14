@@ -25,11 +25,18 @@ public class TUI implements ViewInterface{
 
     @Override
     public void showLoginResponse(boolean success) {
+        if(success) {
+            System.out.println("You are logged in");
 
+        }
+        else {
+            System.out.println("login failed, retry");
+        }
     }
 
     @Override
     public void asksJoinOrCreate() {
+
 
     }
 
@@ -55,12 +62,12 @@ public class TUI implements ViewInterface{
 
     @Override
     public void showGenericMessage(String genericMessage) {
-
+        System.out.println(genericMessage);
     }
 
     @Override
     public void showErrorMessage(String errorMessage) {
-
+        System.out.println(errorMessage);
     }
 
     @Override
@@ -89,8 +96,11 @@ public class TUI implements ViewInterface{
     }
 
     @Override
-    public void showTurnedTiles(ArrayList<Tile> turnedTiles) {
-
+    public void showTurnedTiles(Map<Integer,Tile> turnedTiles) {
+        for(int i: turnedTiles.keySet()) {
+            System.out.println(i+" "+turnedTiles.get(i).toString());
+            System.out.println("\n");
+        }
     }
 
     @Override
