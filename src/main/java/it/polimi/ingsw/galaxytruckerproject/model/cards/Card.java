@@ -2,7 +2,12 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
@@ -21,19 +26,32 @@ import it.polimi.ingsw.galaxytruckerproject.model.Game;
 public abstract class Card {
     protected final int level;
     protected final int requiredDays;
+    protected GameInterface game = null;
 
+    //This attribute is null until the card is initialized
+    protected Map<String, ViewInterface> viewsMap = new HashMap<>();
 
     public Card(int level, int requiredDays) {
         this.level = level;
         this.requiredDays = requiredDays;
     }
 
-    public abstract void initializeCard(Game game);
+    public abstract void initializeCard(GameInterface game, Map<String, ViewInterface> viewsMap);
 
-    public abstract void executeCard(Game game, String playerName, String[] input);
+    public abstract void executeCard(Message message);
 
     public int getLevel() {
         return level;
+    }
+
+    public void sendMessageToPlayer (ViewInterface playersView, String message) {
+        playersView.showGenericMessage(message);
+    }
+
+    public void broadcastMessage (String message) {
+        for (ViewInterface view : viewsMap.values()) {
+            view.showGenericMessage(message);
+        }
     }
 
     @Override

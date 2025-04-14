@@ -1,10 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.model.player;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coverage;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 
 import java.util.ArrayList;
 
@@ -18,6 +15,7 @@ public class Player {
     private ShipBoard playerShip;
     private Tile drawnTile;
     private ArrayList<Coordinates> firstCoordinatesChoice = new ArrayList<>();
+    private boolean isDisconnected;
 
     public Player(String playerName, PlayersColor playerColor) {
         this.playerName = playerName;
@@ -28,6 +26,7 @@ public class Player {
         this.landed = false;
         this.playerShip = new ShipBoard(this);
         this.drawnTile = null;
+        this.isDisconnected = false;
     }
 
     //GETTER METHODS
@@ -44,6 +43,7 @@ public class Player {
     public void setLanded(boolean landed) {this.landed = landed;}
     public void addCredit(int credit) {this.credit += credit;}
     public void removeCredit(int credit) {this.credit -= credit;}
+    public ShipBoard getPlayerShip() {return playerShip;}
     public int getTotalCrew() { return playerShip.getNumHumanCrew() + playerShip.getNumBrownAliens() +  playerShip.getNumPurpleAliens(); }
 
 
@@ -81,71 +81,26 @@ public class Player {
     }
 
     //ENGINE METHODS
-    //input an empty array to get the value of single engines + aliens
-    public int useDoubleEngines(ArrayList<Coordinates> chosenCoordinates) {
-
-        //this conditions returns the value of single engine power + brown aliens
-        if (chosenCoordinates.isEmpty()) {
-            return calculateEngineStrength(chosenCoordinates, chosenCoordinates);
-        }
-
-        //this condition inputs the chosen engines to use and awaits for another input to choose the batteries
-        if (firstCoordinatesChoice.isEmpty()) {
-            firstCoordinatesChoice = new ArrayList<>(chosenCoordinates);
-            return -2;
-        }
-        //this condition calculate if the inputs were correct, uses the batteries and returns the total value
-        else {
-            int engineStrength = calculateEngineStrength(firstCoordinatesChoice, chosenCoordinates);
-            if  (engineStrength == -1) {
-                System.out.println("Invalid input\n");
-                firstCoordinatesChoice = new ArrayList<>();
-                return -1;
-            }
-            firstCoordinatesChoice = new ArrayList<>();
-            return engineStrength;
-        }
-    }
-    //these methods are running together with useDoubleEngine complete the player's choice to use or not double engines
-    public int chooseDoubleEngine(ArrayList<Coordinates> DoubleEngineToUse, ArrayList<Coordinates> BatteriesToConsume){
-        if(DoubleEngineToUse.size()!=BatteriesToConsume.size()){
-            System.out.println("THE NUMBERS OF ENGINE AND BATTERIES DO NOT MATCH");
+    public int useEngines (int numberOfDoubleEngines, ArrayList<Coordinates> batteries) {
+        if (numberOfDoubleEngines != playerShip.getDoubleEngine().size()) {
             return -1;
         }
-
-        ArrayList<Coordinates> used = new ArrayList<>();
-
-        for(Coordinates coordinates : DoubleEngineToUse){
-            if(!playerShip.getDoubleEngine().contains(coordinates) || used.contains(coordinates)){
-                System.out.println("ONE OF THE DOUBLE ENGINE Coordinates IS INCORRECT");
-                return -1;
+        if (batteries.size() != numberOfDoubleEngines) {
+            return -1;
+        }
+        if (! chooseBatteriesUse(batteries)) {
+            return -1;
+        }
+        else {
+            if (numberOfDoubleEngines == 0 && playerShip.getNumSingleEngine() == 0) {
+                return 0;
             }
             else {
-                used.add(coordinates);
+                return playerShip.getNumSingleEngine() + 2*numberOfDoubleEngines + 2*playerShip.getNumBrownAliens();
             }
-        }
-        if (chooseBatteriesUse(BatteriesToConsume)) {
-            //EVERY DOUBLE ENGINE IS EQUIVALENT TO 2
-            return DoubleEngineToUse.size() * 2;
-        }
-        else {
-            System.out.println("WRONG BATTERY COORDINATES");
-            return -1;
         }
     }
 
-    public int calculateEngineStrength(ArrayList<Coordinates> DoubleEngineToUse, ArrayList<Coordinates> BatteriesToConsume){
-        int engineStrength;
-        engineStrength= chooseDoubleEngine(DoubleEngineToUse,BatteriesToConsume);
-        if(engineStrength!=-1){
-            engineStrength += playerShip.getNumSingleEngine();
-            if(engineStrength>0){
-                engineStrength += playerShip.getNumBrownAliens()*2;
-            }
-            return engineStrength;
-        }
-        return -1;
-    }
     public void printCurrentInfoEngines(){
         System.out.println(playerName+" Current number of Single Engine " + playerShip.getNumSingleEngine());
         System.out.println(playerName+" Current Coordinates of Double Engine ");
@@ -156,68 +111,29 @@ public class Player {
     }
 
     //CANNON METHODS
-    //input an empty array to get the value of single cannons + aliens
-    public float useDoubleCannons (ArrayList<Coordinates> chosenCoordinates){
-
-        //this conditions returns the value of single engine power + brown aliens
-        if (chosenCoordinates.isEmpty()) {
-            return calculateCannonStrength(chosenCoordinates, chosenCoordinates);
+    public float useCannons (float doubleFireStrength, ArrayList<Coordinates> batteries) {
+        float possibleDoubleFireStrength = 0;
+        int batteriesCounter = 0;
+        ArrayList<Coordinates> doubleCannons = new ArrayList<>(playerShip.getDoubleCannon());
+        while (possibleDoubleFireStrength < doubleFireStrength || !doubleCannons.isEmpty()) {
+            possibleDoubleFireStrength += playerShip.getDoubleCannonPower(doubleCannons.getFirst());
+            batteriesCounter++;
+            doubleCannons.removeFirst();
         }
-
-        //this condition inputs the chosen engines to use and awaits for another input to choose the batteries
-        if (firstCoordinatesChoice.isEmpty()) {
-            this.firstCoordinatesChoice = new ArrayList<>(chosenCoordinates);
-            return -2;
-        }
-        //this condition calculate if the inputs were correct, uses the batteries and returns the total value
-        else {
-            float cannonStrength = calculateCannonStrength(firstCoordinatesChoice, chosenCoordinates);
-            if  (cannonStrength == -1) {
-                System.out.println("Invalid input\n");
-                firstCoordinatesChoice = new ArrayList<>();
-                return -1;
-            }
-            firstCoordinatesChoice = new ArrayList<>();
-            return cannonStrength;
-        }
-    }
-
-    public int chooseDoubleCannon(ArrayList<Coordinates> DoubleCannonToUse, ArrayList<Coordinates> BatteriesToConsume){
-        if(DoubleCannonToUse.size()!=BatteriesToConsume.size()){
-            System.out.println("THE NUMBERS OF DOUBLE CANNON AND BATTERIES DO NOT MATCH");
+        if (batteriesCounter > batteries.size() || possibleDoubleFireStrength < doubleFireStrength) {
             return -1;
         }
-
-        ArrayList<Coordinates> used = new ArrayList<>();
-
-        int doubleCannonPower =0;
-        for(Coordinates coordinates : DoubleCannonToUse){
-            if(!playerShip.getDoubleCannon().contains(coordinates) || used.contains(coordinates)){
-                System.out.println("ONE OF THE DOUBLE CANNON Coordinates IS INCORRECT");
-                return -1;
-            }else {
-                doubleCannonPower += playerShip.getTilesTable()[coordinates.getX()][coordinates.getY()].get().getStrength();
-                used.add(coordinates);
-            }
-        }
-        if (chooseBatteriesUse(BatteriesToConsume))
-            return doubleCannonPower;
-        else {
-            System.out.println("Wrong battery coordinates\n");
+        if (! chooseBatteriesUse(batteries)) {
             return -1;
         }
-    }
-    public float calculateCannonStrength(ArrayList<Coordinates> DoubleCannonToUse, ArrayList<Coordinates> BatteriesToConsume){
-        float cannonStrength;
-        cannonStrength = chooseDoubleCannon(DoubleCannonToUse,BatteriesToConsume);
-        if(cannonStrength!=-1){
-            cannonStrength += playerShip.getSingleCannonPower();
-            if(cannonStrength>0){
-                cannonStrength += playerShip.getNumPurpleAliens()*2;
+        else {
+            if (doubleFireStrength == 0 && playerShip.getSingleCannonPower() == 0) {
+                return 0;
             }
-            return cannonStrength;
+            else {
+                return playerShip.getSingleCannonPower() + doubleFireStrength + 2 * playerShip.getNumPurpleAliens();
+            }
         }
-        return -1;
     }
     public void printCurrentInfoCannons(){
         System.out.println(playerName+ ": Current number of Single Cannon Strength: " + playerShip.getSingleCannonPower());
@@ -238,12 +154,6 @@ public class Player {
     //BATTERIES METHODS
     public boolean chooseBatteriesUse(ArrayList<Coordinates> BatteriesToConsume){
         ArrayList<Coordinates> used = new ArrayList<>();
-        //doesn't consume any batteries if even one isn't contained
-        for (Coordinates Coordinates : BatteriesToConsume) {
-            if (!playerShip.getBatteryCoordinates().contains(Coordinates)) {
-                return false;
-            }
-        }
         for (Coordinates Coordinates : BatteriesToConsume) {
             if(!playerShip.chooseBatteryUse(Coordinates)) {
                 for(Coordinates coordinates : used){
@@ -252,7 +162,6 @@ public class Player {
                 return false;
             }
             used.add(Coordinates);
-
         }
         return true;
     }
@@ -263,62 +172,55 @@ public class Player {
         }
     }
 
-    //GOODS METHODS
-    //places goods and returns the goods that got placed. Use the array to remove from the cards the goods already placed
-    //input all the coordinates in card event. WHen removing from the array in card the once that didn't have coordinates
-    //or had wrong coordinates won't get removed
-    public ArrayList<Goods> gainGoods (ArrayList<Coordinates> whereToPlace, ArrayList<Goods> goods){
-
-        ArrayList<Goods> placedCorrectly = new ArrayList<>();
-
-        //if you put more coordinates than the goods in the card event
-        while (whereToPlace.size() > goods.size()){
-            whereToPlace.removeLast();
+    public boolean removeGoods(ArrayList<Coordinates> goodsCoordinates) {
+        ArrayList<Coordinates> goodsToCheck = new ArrayList<>(goodsCoordinates);
+        ArrayList<Coordinates> redCargo = playerShip.cargoHoldContainsGood(new Goods(GoodsColor.RED));
+        ArrayList<Coordinates> yellowCargo = playerShip.cargoHoldContainsGood(new Goods(GoodsColor.YELLOW));
+        ArrayList<Coordinates> greenCargo = playerShip.cargoHoldContainsGood(new Goods(GoodsColor.GREEN));
+        ArrayList<Coordinates> blueCargo = playerShip.cargoHoldContainsGood(new Goods(GoodsColor.BLUE));
+        while (!goodsToCheck.isEmpty()) {
+            if (!redCargo.isEmpty()) {
+                if (!redCargo.contains(goodsToCheck.getFirst())) {
+                    return false;
+                }
+                redCargo.remove(goodsToCheck.getFirst());
+            }
+            else if (!yellowCargo.isEmpty()) {
+                if (!yellowCargo.contains(goodsToCheck.getFirst())) {
+                    return false;
+                }
+                yellowCargo.remove(goodsToCheck.getFirst());
+            }
+            else if (!greenCargo.isEmpty()) {
+                if (!greenCargo.contains(goodsToCheck.getFirst())) {
+                    return false;
+                }
+                greenCargo.remove(goodsToCheck.getFirst());
+            }
+            else if (!blueCargo.isEmpty()) {
+                if (!blueCargo.contains(goodsToCheck.getFirst())) {
+                    return false;
+                }
+                blueCargo.remove(goodsToCheck.getFirst());
+            }
+            goodsToCheck.remove(goodsToCheck.getFirst());
         }
-
-        Goods placedGood;
-        while (!whereToPlace.isEmpty()) {
-            placedGood = goods.removeFirst();
-            if (playerShip.gainGoods(placedGood ,whereToPlace.removeFirst())==1) {
-                placedCorrectly.add(placedGood);
+        for (Coordinates coordinates : goodsCoordinates) {
+            ArrayList<Goods> singleCargoGoods = playerShip.getSingleCargoGoods(coordinates);
+            if (singleCargoGoods.contains(new Goods(GoodsColor.RED))) {
+                playerShip.removeGood(new Goods(GoodsColor.RED), coordinates);
+            }
+            else if (singleCargoGoods.contains(new Goods(GoodsColor.YELLOW))) {
+                playerShip.removeGood(new Goods(GoodsColor.YELLOW), coordinates);
+            }
+            else if (singleCargoGoods.contains(new Goods(GoodsColor.GREEN))) {
+                playerShip.removeGood(new Goods(GoodsColor.GREEN), coordinates);
+            }
+            else if (singleCargoGoods.contains(new Goods(GoodsColor.BLUE))) {
+                playerShip.removeGood(new Goods(GoodsColor.BLUE), coordinates);
             }
         }
-        //goods that got placed
-        return placedCorrectly;
-    }
-
-    public int removeGoods(ArrayList<Coordinates> Coordinates) {
-        int counter = 0;
-
-        while (!Coordinates.isEmpty()) {
-            Coordinates toRemove = Coordinates.removeFirst();
-            if (playerShip.isCargoEmpty()) {
-                if(!playerShip.chooseBatteryUse(toRemove))
-                    return counter;
-            }
-            else if (!playerShip.cargoHoldContainsGood(new Goods(GoodsColor.RED)).isEmpty()) {
-                if (playerShip.cargoHoldContainsGood(new Goods(GoodsColor.RED)).contains(toRemove)) {
-                    playerShip.removeGood(new Goods(GoodsColor.RED), toRemove);
-                } else return counter;
-            }
-            else if (!playerShip.cargoHoldContainsGood(new Goods(GoodsColor.YELLOW)).isEmpty()) {
-                if (playerShip.cargoHoldContainsGood(new Goods(GoodsColor.YELLOW)).contains(toRemove)) {
-                    playerShip.removeGood(new Goods(GoodsColor.YELLOW), toRemove);
-                } else return counter;
-            }
-            else if (!playerShip.cargoHoldContainsGood(new Goods(GoodsColor.GREEN)).isEmpty()) {
-                if (playerShip.cargoHoldContainsGood(new Goods(GoodsColor.GREEN)).contains(toRemove)) {
-                    playerShip.removeGood(new Goods(GoodsColor.GREEN), toRemove);
-                } else return counter;
-            }
-            else if (!playerShip.cargoHoldContainsGood(new Goods(GoodsColor.BLUE)).isEmpty()) {
-                if (playerShip.cargoHoldContainsGood(new Goods(GoodsColor.BLUE)).contains(toRemove)) {
-                    playerShip.removeGood(new Goods(GoodsColor.BLUE), toRemove);
-                } else return counter;
-            }
-            counter++;
-        }
-        return counter;
+        return true;
     }
 
     public void printCurrentInfoCargoHolds() {
@@ -337,13 +239,16 @@ public class Player {
     }
 
     //CREW METHODS
-    public int removeCrew(ArrayList<Coordinates> coordinates) {
-        int counter = 0;
+    public boolean removeCrew(ArrayList<Coordinates> coordinates) {
         for (Coordinates coord: coordinates) {
-            if (playerShip.chooseCrewToRemove(coord))
-                counter++;
+            if (!playerShip.getCabinsCoordinates().contains(coord)) {
+                return false;
+            }
         }
-        return counter;
+        for (Coordinates coord: coordinates) {
+            playerShip.chooseCrewToRemove(coord);
+        }
+        return true;
     }
 
     public void printCurrentInfoCabins() {
@@ -361,6 +266,20 @@ public class Player {
     //FROM WHICH IT'S GOING TO BE USED THE ONE BATTERY NECESSARY TO POWER THE SHIELD
     public Coverage useShield(Coordinates shieldCoordinates, Coordinates batteryCoordinates) {
         return playerShip.chooseShields(shieldCoordinates,batteryCoordinates);
+    }
+
+
+    //Disconnected flag methods
+    public void playerDisconnects() {
+        this.isDisconnected = true;
+    }
+
+    public void playerReconnects() {
+        this.isDisconnected = false;
+    }
+
+    public boolean IsDisconnected() {
+        return isDisconnected;
     }
 
     //methods for testing

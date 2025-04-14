@@ -10,7 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
-import java.util.SimpleTimeZone;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -138,51 +137,51 @@ class SlaversTest {
     @Test
     void successfully_initialised_executed(){
         game.setDrawnCard(slavers);
-        game.getDrawnCard().initializeCard(game);
+        game.getDrawnCard().initializeCard(game, );
         String input;
         String[] words;
         input="no";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game, "EnnioVolante", words);
+        game.getDrawnCard().executeCard(game, , "EnnioVolante");
         input="2 0";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game, "MimmoPericoloso", words);
+        game.getDrawnCard().executeCard(game, , "MimmoPericoloso");
         input="3 0";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game, "MimmoPericoloso", words);
+        game.getDrawnCard().executeCard(game, , "MimmoPericoloso");
         input="yes";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game, "MimmoPericoloso", words);
+        game.getDrawnCard().executeCard(game, , "MimmoPericoloso");
         assertEquals(6, player1.getCredit());
     }
 
     @Test
     void successfully_initialised_executed_negated_all(){
         game.setDrawnCard(slavers);
-        game.getDrawnCard().initializeCard(game);
+        game.getDrawnCard().initializeCard(game, );
         String input;
         String[] words;
         input="no";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game, "EnnioVolante", words);
+        game.getDrawnCard().executeCard(game, , "EnnioVolante");
         input="no";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game, "MimmoPericoloso", words);
+        game.getDrawnCard().executeCard(game, , "MimmoPericoloso");
         input="no";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game, "FedeGalattico", words);
+        game.getDrawnCard().executeCard(game, , "FedeGalattico");
         input="2 3";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game, "FedeGalattico", words);
+        game.getDrawnCard().executeCard(game, , "FedeGalattico");
         input="2 4";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game, "FedeGalattico", words);
+        game.getDrawnCard().executeCard(game, , "FedeGalattico");
         input="2 4";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game, "FedeGalattico", words);
+        game.getDrawnCard().executeCard(game, , "FedeGalattico");
         input="2 3";
         words=input.split(" ");
-        game.getDrawnCard().executeCard(game, "FedeGalattico", words);
+        game.getDrawnCard().executeCard(game, , "FedeGalattico");
         assertEquals(0, player2.getTotalCrew());
     }
 }

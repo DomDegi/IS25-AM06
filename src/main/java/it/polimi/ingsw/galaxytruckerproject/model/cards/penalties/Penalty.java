@@ -2,8 +2,10 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards.penalties;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
@@ -15,10 +17,10 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 
 public abstract class Penalty {
 
-    public abstract int applyPenalty(Game game, Player player, String[] input);
+    public abstract int applyPenalty(GameInterface game, Player player, ViewInterface playersView, Message message);
 
     @Override
     public abstract String toString();
 
-    public abstract void printInfo(Player player);
+    public abstract boolean initializePenalty(ViewInterface view, Player player);
 }

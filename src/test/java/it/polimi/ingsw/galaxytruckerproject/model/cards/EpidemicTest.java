@@ -137,7 +137,7 @@ class EpidemicTest {
     @Test
     void successfully_initialize_card_and_execute () {
         game.setDrawnCard(epidemic);
-        game.getDrawnCard().initializeCard(game);
+        game.getDrawnCard().initializeCard(game, );
 
         assertEquals(7, player1.getTotalCrew());
         assertEquals(2, player2.getTotalCrew());
@@ -196,7 +196,7 @@ class EpidemicTest {
         shipBoard1.positionTile(Optional.of(tile21), new Coordinates(4,2));
         shipBoard1.verifyCorrectness();
         game.setDrawnCard(epidemic);
-        game.getDrawnCard().initializeCard(game);
+        game.getDrawnCard().initializeCard(game, );
 
         assertEquals(7, player1.getTotalCrew());
         assertEquals(2, player2.getTotalCrew());

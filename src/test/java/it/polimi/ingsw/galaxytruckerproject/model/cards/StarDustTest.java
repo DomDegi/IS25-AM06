@@ -137,7 +137,7 @@ class StarDustTest {
     @Test
     void successfully_initialize_card_and_execute () {
         game.setDrawnCard(starDust);
-        game.getDrawnCard().initializeCard(game);
+        game.getDrawnCard().initializeCard(game, );
 
         assertEquals(-2, player1.getPlayerPosition());
         assertEquals(-6, player2.getPlayerPosition());

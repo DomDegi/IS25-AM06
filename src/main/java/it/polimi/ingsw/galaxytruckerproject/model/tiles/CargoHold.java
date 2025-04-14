@@ -77,4 +77,8 @@ public abstract class CargoHold extends Tile{
         return cargo;
     }
 
+    public boolean getHazard() {
+        return hazard;
+    }
+
 }

@@ -2,13 +2,15 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.ProjectilePenalty;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Map;
 
 public class MeteorSwarm extends Card {
     private ArrayList<Projectile> listOfMeteors;
@@ -29,7 +31,7 @@ public class MeteorSwarm extends Card {
     }
 
     @Override
-    public void initializeCard(Game game){
+    public void initializeCard(GameInterface game, Map<String, ViewInterface> viewsMap){
         if (listOfMeteors.isEmpty()){
             game.endCardEvent();
             return;
@@ -40,7 +42,7 @@ public class MeteorSwarm extends Card {
             diceRoll();
         }
 
-        currentPlayer = game.getListOfPlayers().get(playerIndex);
+        currentPlayer = game.getListOfInFlightPlayers().get(playerIndex);
 
         if (currentMeteor.getListOfProjectiles().isEmpty()){
             currentMeteor.addProjectile(listOfMeteors.getFirst());
@@ -49,12 +51,12 @@ public class MeteorSwarm extends Card {
     }
 
     @Override
-    public void executeCard(Game game, String playerName, String[] input){
+    public void executeCard(Message message){
         if (playerName.equalsIgnoreCase(currentPlayer.getPlayerName()) && currentPlayer != null) {
             //when penalty is over on the current player
-            if (currentMeteor.applyPenalty(game, currentPlayer, input) == 1){
+            if (currentMeteor.applyPenalty(game, currentPlayer, , input, ) == 1){
                 playerIndex++;
-                initializeCard(game);
+                initializeCard(game, );
             }
         }
     }

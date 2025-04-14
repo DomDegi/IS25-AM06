@@ -137,22 +137,22 @@ class OpenSpaceTest {
     @Test
     void successfully_initialize_card_and_execute () {
         game.setDrawnCard(openSpace);
-        game.getDrawnCard().initializeCard(game);
+        game.getDrawnCard().initializeCard(game, );
         String input;
         String[] words;
 
         input= "no";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
         input= "no";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
         input= "no";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input= "no";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"FedeGalattico",words);
+        game.getDrawnCard().executeCard(game, ,"FedeGalattico");
 
 
         assertEquals(6, player1.getPlayerPosition());
@@ -164,28 +164,28 @@ class OpenSpaceTest {
     @Test
     void successfully_initialize_card_and_execute_yes () {
         game.setDrawnCard(openSpace);
-        game.getDrawnCard().initializeCard(game);
+        game.getDrawnCard().initializeCard(game, );
         String input;
         String[] words;
 
         input= "no";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
         input= "no";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"EnnioVolante",words);
+        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
         input= "no";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"MimmoPericoloso",words);
+        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
         input= "Yes";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"FedeGalattico",words);
+        game.getDrawnCard().executeCard(game, ,"FedeGalattico");
         input= "3 4";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"FedeGalattico",words);
+        game.getDrawnCard().executeCard(game, ,"FedeGalattico");
         input= "3 3";
         words= input.split(" ");
-        game.getDrawnCard().executeCard(game,"FedeGalattico",words);
+        game.getDrawnCard().executeCard(game, ,"FedeGalattico");
 
 
         assertEquals(6, player1.getPlayerPosition());
