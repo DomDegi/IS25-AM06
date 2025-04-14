@@ -22,10 +22,10 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
     //final List<ViewInterface> clients = new ArrayList<>();
     private final HashMap <String, Controller> clients;
 
-    protected VirtualControllerRMI(MultiGameController multiController, HashMap<String, Controller> clients) throws RemoteException {
+    protected VirtualControllerRMI(MultiGameController multiController) throws RemoteException {
         super();
         this.multiController = multiController;
-        clients = new HashMap<String, Controller>();
+        this.clients = new HashMap<String, Controller>();
     }
 
     public void connect(ViewInterface client, String playerName) throws RemoteException {
