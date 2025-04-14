@@ -147,7 +147,13 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).playerChoiceThroughMessage(message);
     }
 
-    public void putDownCards() tho
+    public void putDownCards(String playerName, int deckToLookAt) throws RemoteException {
+
+    }
+
+    public void choosePlanet(String playerName) throws RemoteException {
+
+    }
 
 
 
