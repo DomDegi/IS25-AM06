@@ -9,13 +9,6 @@ import java.util.HashMap;
 import java.util.Timer;
 
 public class Client {
-    private LightPlayer me;
-    private ArrayList<LightPlayer> playersList;
-    private ArrayList<ArrayList<Card>> deck;
-    private LightFlightboard flightBoard;
-    private HashMap<Integer, Tile> drawnTiles;
-    private Tile tileInHand;
-    private Timer timer;
 
     public LightPlayer getMe() {
         return me;

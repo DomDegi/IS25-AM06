@@ -33,14 +33,14 @@ public class MultiGameController {
             if (allConnectedPlayers().containsKey(nickname)) {
                 wasSuccessful = false;
                 try {
-                    view.showLoginResponse(false, true);
+                    view.showLoginResponse(false);
                     view.askNickname();
                 } catch (Exception ignored) {
                 }
             }
             else {
                 wasSuccessful = true;
-                view.showLoginResponse(true, true);
+                view.showLoginResponse(true);
                 if (isAlreadyInAGame(nickname)) {
                     GameController previouslyJoinedGame = gameFromNickname(nickname);
                     controller.setGameController(previouslyJoinedGame);
