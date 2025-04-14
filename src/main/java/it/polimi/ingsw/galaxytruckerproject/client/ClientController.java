@@ -438,7 +438,7 @@ public class ClientController {
 
     private boolean land(String[] input) throws RemoteException {
         if (input[0].equals("earlyland")&&!getMe().isLanded()){
-            virtualController.notifyEarlyLanding(getName());
+            virtualController.notifyEarlyLanding(client.getName());
             return true;
         }
         return false;

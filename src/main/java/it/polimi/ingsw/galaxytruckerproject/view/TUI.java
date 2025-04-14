@@ -25,6 +25,10 @@ public class TUI implements ViewInterface{
 
     @Override
     public void showLoginResponse(boolean success) {
+        if(success) {
+            System.out.println("You are logged in");
+            System.out.println("");
+        }
 
     }
 

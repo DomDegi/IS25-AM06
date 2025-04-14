@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.network.RMI.Client;
 
 import it.polimi.ingsw.galaxytruckerproject.client.ClientController;
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
@@ -52,7 +53,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     public void showLoginResponse(boolean success) {
        view.showLoginResponse(success);
        if (success) {
-           clientController.set
+           clientController.setState(ClientState.LOBBY);
        }
     }
 
