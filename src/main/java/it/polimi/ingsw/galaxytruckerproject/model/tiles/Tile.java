@@ -14,6 +14,7 @@ public abstract class Tile {
     protected Coordinates coordinates;
     protected ShipBoard shipBoard;
     protected final int key;
+    protected boolean booked;
 
     public Tile(Link north, Link east, Link south, Link west, int key) {
         this.north =north;
@@ -22,6 +23,7 @@ public abstract class Tile {
         this.west=west;
         this.coordinates = new Coordinates(0,0);
         this.key = key;
+        this.booked = false;
     }
     //CONSTRUCTOR METHOD FOR THE TESTING
     public Tile(Link north, Link east, Link south, Link west) {
@@ -31,6 +33,7 @@ public abstract class Tile {
         this.west=west;
         this.coordinates = new Coordinates(0,0);
         this.key = 0;
+        this.booked = false;
     }
 
     public int getKey() {
@@ -151,10 +154,17 @@ public abstract class Tile {
         //System.out.println("THIS TILE IS NOT A ALIEN LIFE SUPPORT SYSTEM");
         return CrewType.NotSupportSystem;
     }
-    public ArrayList<Coordinates> adjacentLifeSupport(){System.out.println("THIS TILE IS NOT A CABIN"); return new ArrayList<Coordinates>();}
+    public ArrayList<Coordinates> adjacentLifeSupport(){System.out.println("THIS TILE IS NOT A CABIN"); return new ArrayList<>();}
 
 
     public CrewType getCrewType(){System.out.println("THIS TILE IS NOT A CABIN"); return CrewType.NotAcabin;}
     public void checkAlienability(){System.out.println("THIS TILE IS NOT A CABIN");}
 
+    public boolean isBooked() {
+        return booked;
+    }
+
+    public void setBooked(boolean booked) {
+        this.booked = booked;
+    }
 }
