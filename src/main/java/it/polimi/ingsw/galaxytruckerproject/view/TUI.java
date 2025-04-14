@@ -1,46 +1,21 @@
-package it.polimi.ingsw.galaxytruckerproject.network.RMI.Client;
+package it.polimi.ingsw.galaxytruckerproject.view;
 
-import it.polimi.ingsw.galaxytruckerproject.client.ClientController;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
-import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
-import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Scanner;
 
-public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
-    private final ClientController clientController;
-    private final ViewInterface view;
-
-    public VirtualViewRMI(ClientController clientController, ViewInterface view) throws RemoteException {
-        super();
-        this.clientController = clientController;
-        this.view = view;
-    }
-
-    public void runCli() throws RemoteException {
-        Scanner scan=new Scanner(System.in);
-        while (true) {
-            System.out.print(">  ");
-            int command = scan.nextInt();
-            //da adattare al comando in ingresso
-        }
-    }
-
+public class TUI implements ViewInterface{
     @Override
     public void askNickname() throws IOException {
-        view.askNickname();
+        System.out.println("enter your nickname");
     }
 
     @Override
@@ -50,10 +25,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
 
     @Override
     public void showLoginResponse(boolean success) {
-       view.showLoginResponse(success);
-       if (success) {
-           clientController.set
-       }
+
     }
 
     @Override

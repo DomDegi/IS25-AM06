@@ -6,4 +6,5 @@ import java.rmi.Remote;
 
 public interface VirtualView extends ViewInterface {
 
+
 }
