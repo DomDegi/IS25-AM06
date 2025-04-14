@@ -142,6 +142,12 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
     }
 
 
+    public void showCardsRequest(String playerName, int deckToLookAt) throws RemoteException {
+        ShowCardsRequest message = new ShowCardsRequest(playerName, deckToLookAt);
+        clients.get(playerName).playerChoiceThroughMessage(message);
+    }
+
+    public void putDownCards() tho
 
 
 
