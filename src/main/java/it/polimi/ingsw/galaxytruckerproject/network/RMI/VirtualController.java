@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.network.RMI;
 
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
@@ -25,24 +26,11 @@ public interface VirtualController extends Remote, Serializable {
     void notifySetTile( String playerName, Coordinates coordinates, Tile tile) throws RemoteException;
     void sendYes( String playerName) throws RemoteException;
     void sendNo( String playerName) throws RemoteException;
-
-
-    //DONE
-    void sendEndShipboardCreation(String playerName) throws RemoteException;
-
-    //DONE
+    void sendEndShipBoardCreation(String playerName) throws RemoteException;
     void sendTurnHourGlass(String playerName) throws RemoteException;
-
-    //DONE
     void reqDrawTileFromPile(String playerName) throws RemoteException;
-
-    //DONE
     void reqDrawTileFromTable(String playerName, int index) throws RemoteException;//pescaggio tile scoperte
-
-    //DONE
     void notifyTileBooking(String playerName) throws RemoteException;//per ora metto key però forse è meglio tile
-
-    //DONE
     void notifyRefusedTile(String playerName) throws RemoteException;
 
     /*BOOLEAN
@@ -50,4 +38,10 @@ public interface VirtualController extends Remote, Serializable {
      */
     void notifyEarlyLanding(String playerName) throws RemoteException;
 
+    void notifyNewGoodsArrangement(String playerName,int clientGoodsValue, ArrayList<CargoHold> modifiedCargoHold) throws RemoteException;
+    //pescaggio carta durante shipboard
+    //notifica fine lettura carte
+    //scelta pianeta
+    //invio array di tile con i nuovi good sendNewGoodsSetUp
+    //
 }
