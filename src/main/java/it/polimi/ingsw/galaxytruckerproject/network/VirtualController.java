@@ -1,4 +1,4 @@
-package it.polimi.ingsw.galaxytruckerproject.network.RMI;
+package it.polimi.ingsw.galaxytruckerproject.network;
 
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
@@ -12,13 +12,13 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public interface VirtualController extends Remote, Serializable {
+
     void connect(ViewInterface client, String playerName) throws RemoteException;
     void createGame(String gameName, int playerCount, GameMode chooseMode, String playerName) throws RemoteException;
-    public void joinGame(String gameName, String playerName) throws RemoteException;
-    public void leaveGame(String playerName) throws RemoteException;
-    public void leave(String playerName) throws RemoteException;
-    public void chooseColor(String playerName, String color) throws RemoteException;
-
+    void joinGame(String gameName, String playerName) throws RemoteException;
+    void leaveGame(String playerName) throws RemoteException;
+    void leave(String playerName) throws RemoteException;
+    void chooseColor(String playerName, String color) throws RemoteException;
 
     void sendCoordinates(   String playerName,ArrayList<Coordinates> coordinates) throws RemoteException;
     void sendDoubleCannonUsed(String playerName , float Strength, ArrayList<Coordinates> coordinates) throws RemoteException;

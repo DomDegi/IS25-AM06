@@ -7,7 +7,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.GoodsPenalty;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsChecker;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 

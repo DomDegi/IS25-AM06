@@ -6,7 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
-import it.polimi.ingsw.galaxytruckerproject.network.RMI.VirtualController;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
@@ -14,7 +14,6 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class VirtualControllerRMI extends UnicastRemoteObject implements VirtualController{
 
@@ -23,12 +22,11 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
     //final List<ViewInterface> clients = new ArrayList<>();
     private final HashMap <String, Controller> clients;
 
-    protected VirtualControllerRMI(MultiGameController multiController) throws RemoteException {
+    protected VirtualControllerRMI(MultiGameController multiController, HashMap<String, Controller> clients) throws RemoteException {
         super();
         this.multiController = multiController;
-        clients = new HashMap();
+        clients = new HashMap<String, Controller>();
     }
-
 
     public void connect(ViewInterface client, String playerName) throws RemoteException {
 

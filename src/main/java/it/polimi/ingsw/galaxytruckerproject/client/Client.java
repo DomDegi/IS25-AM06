@@ -3,10 +3,9 @@ package it.polimi.ingsw.galaxytruckerproject.client;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.*;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Timer;
 
 public class Client {
@@ -21,6 +20,7 @@ public class Client {
     public LightPlayer getMe() {
         return me;
     }
+
     public String getName() {
         return me.getPlayerName();
     }
