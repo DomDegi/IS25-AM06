@@ -3,8 +3,8 @@ package it.polimi.ingsw.galaxytruckerproject.client;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,7 +16,7 @@ public class GoodsManager {
     private final LightPlayer currentPlayer;
     private int state;
     private int goodsToGet;
-    private final HashSet<Tile> changes;
+    private final HashSet<CargoHold> changes;
 
     public GoodsManager(LightPlayer currentPlayer, ArrayList<Goods> possibleGoodsGain) {
         this.currentPlayer=currentPlayer;
@@ -27,7 +27,7 @@ public class GoodsManager {
         this.coordinatesToPut=new Coordinates(0,0);
     }
 
-    public HashSet<Tile> getReward(String[] input){
+    public HashSet<CargoHold> getReward(String[] input){
         if(state==0) {
             int CoordinatesX;
             int CoordinatesY;
@@ -63,7 +63,7 @@ public class GoodsManager {
                 }
                 goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
                 System.out.println("Input witch good to pick:");
-                changes.add(currentPlayer.getShipBoard().getTile(coordinatesToPut));
+                changes.add((CargoHold)currentPlayer.getShipBoard().getTile(coordinatesToPut));
                 state = -1;
                 return null;
             }
@@ -77,7 +77,7 @@ public class GoodsManager {
             if (goodsToGet > 0 && goodsToGet <=possibleGoodsGain.size()) {
                 int positioned = currentPlayer.getShipBoard().gainGoods(possibleGoodsGain.get(goodsToGet - 1), coordinatesToPut);
                 if (positioned == 0) {
-                    changes.add(currentPlayer.getShipBoard().getTile(coordinatesToPut));
+                    changes.add((CargoHold)currentPlayer.getShipBoard().getTile(coordinatesToPut));
                     possibleGoodsGain.remove(goodsToGet - 1);
                     if(possibleGoodsGain.isEmpty()) {
                         System.out.println("\nGoods stock is empty, input 'done' to stop,'pick  x y' to pick one good from your cargo: ");
@@ -90,7 +90,7 @@ public class GoodsManager {
                 } else if (positioned == 1) {
                     System.out.printf("\nSorry, you can't put the %s good in the %d,%d cargo, it is full, chose what good to remove (input 'no' to select an other good and cargo coordinates)\n", possibleGoodsGain.get(goodsToGet - 1).getColor(), coordinatesToPut.getX(), coordinatesToPut.getY());
                     goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
-                    changes.add(currentPlayer.getShipBoard().getTile(coordinatesToPut));
+                    changes.add((CargoHold)currentPlayer.getShipBoard().getTile(coordinatesToPut));
                     state = 1;
                     return null;
                 } else if (positioned == -1) {

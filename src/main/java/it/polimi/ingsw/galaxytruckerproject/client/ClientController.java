@@ -7,19 +7,13 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
-import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 
 import java.rmi.RemoteException;
 import java.util.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Optional;
 
 public class ClientController {
 
@@ -29,16 +23,16 @@ public class ClientController {
     private LightFlightboard flightBoard;
     private HashMap<Integer, Tile> drawnTiles;
     private Tile tileInHand;
-    private Timer timer;
     private ClientState state;
     private int turns;
-    private VirtualController virtualController;
+    private final VirtualController virtualController;
     private ArrayList<Goods> goodsList;
     private int indexDeckInHandOrPlanet;
     private int indexCard;
     private final CoordInputManager coordInputManager;
     private LightShipBoard lightShipBoard;
     private String name;
+    private Card displayedCard;
 
     public ClientController(VirtualController virtualController) {
         this.indexCard = 0;
@@ -67,9 +61,9 @@ public class ClientController {
             case CHOOSE_UI->{
                 switch(words[0]) {
                     case "gui"->
-                        //gui
+                    //gui
                     case "tui"->
-                        //tui
+                    //tui
                     default->{
                         System.out.println("Wrong input");
                         return;
@@ -83,7 +77,7 @@ public class ClientController {
                     case "rmi"->
                     //rmi
                     case "socket"->
-                    //soket
+                    //socket
                     default->{
                         System.out.println("Wrong input");
                         return;
@@ -108,11 +102,11 @@ public class ClientController {
                             System.out.println("\nInvalid input format. Please provide a different number of players.");
                         }
                         if(words[3].equals("TrialMode")){
-                            virtualController.createGame(gameName,NumberOFPlayers, GameMode.TRIAL, client.getName());
+                            virtualController.createGame(gameName,NumberOFPlayers, GameMode.TRIAL, getName());
                             state = ClientState.LOGIN;
                             return;
                         } else if (words[3].equals("Level2Mode")){
-                            virtualController.createGame(gameName,NumberOFPlayers,GameMode.LEVEL2, client.getName());
+                            virtualController.createGame(gameName,NumberOFPlayers,GameMode.LEVEL2, getName());
                             state = ClientState.LOGIN;
                             return;
                         }
@@ -128,8 +122,8 @@ public class ClientController {
             case LOGIN->{
                 switch (words[0]) {
                     case "done" -> {
-                        if(!Objects.equals(client.getName(), ""))
-                            virtualController.joinGame(words[1],client.getName());
+                        if(!Objects.equals(getName(), ""))
+                            virtualController.joinGame(words[1],getName());
                     }
                     case "redo"->
                             setName("");
@@ -164,9 +158,9 @@ public class ClientController {
                     return;
                 switch (words[0]){
                     case "yes" ->
-                        virtualController.sendYes(this.name);
+                            virtualController.sendYes(this.name);
                     case "no" ->
-                        virtualController.sendNo(this.name);
+                            virtualController.sendNo(this.name);
                 }
             }
 
@@ -190,7 +184,6 @@ public class ClientController {
                     state = ClientState.MANAGE_GOODS;
                     indexDeckInHandOrPlanet = chose;
                     //notify choose planet
-                    return;
                 }
             }
 
@@ -200,7 +193,7 @@ public class ClientController {
                     return;
                 if (checkShipBoards(words))
                     return;
-                HashSet newTilesGoods = goodsManager.getReward(words);
+                HashSet<CargoHold> newTilesGoods = goodsManager.getReward(words);
                 ArrayList<CargoHold> newTiles;
                 if (!newTilesGoods.isEmpty()) {
                     newTiles = new ArrayList<>(newTilesGoods);
@@ -210,7 +203,6 @@ public class ClientController {
                 }
                 int goodsVal = lightShipBoard.convertGoodsToCredit();
                 virtualController.notifyNewGoodsArrangement(this.name,goodsVal, newTiles);
-
             }
 
             case COORD_REQUEST->{
@@ -229,13 +221,13 @@ public class ClientController {
                         indexCard=indexCard-1;
                         if(indexCard<0)
                             indexCard=2;
-                        getDeck().get(indexDeckInHandOrPlanet).get(indexCard);
-                       }
+                        displayedCard = getDeck().get(indexDeckInHandOrPlanet).get(indexCard);
+                    }
                     case "next" -> {
                         indexCard=indexCard+1;
                         if(indexCard>2)
                             indexCard=0;
-                        getDeck().get(indexDeckInHandOrPlanet).get(indexCard);
+                        displayedCard = getDeck().get(indexDeckInHandOrPlanet).get(indexCard);
                     }
                     case "done" -> {
 
@@ -254,7 +246,6 @@ public class ClientController {
                     case"done" -> {
                         state = ClientState.S_FINISHED;
                         virtualController.sendEndShipBoardCreation(this.name);
-                        return;
                     }
                     case "draw" -> {
                         switch (words[1]) {
@@ -275,17 +266,15 @@ public class ClientController {
                                     indexDeckInHandOrPlanet = chose;
                                     //notify drawn card
                                     virtualController;
-                                    ArrayList<Card> displayedCards = getDeck().get(indexDeckInHandOrPlanet);
-                                    return;
+                                    displayedCard = getDeck().get(indexDeckInHandOrPlanet).getFirst();
                                 }
-                                return;
                             }
                             case "tile" -> {
                                 state = ClientState.S_MANAGE_DRAWN_TILE;
                                 Tile newTile;
                                 switch (words[2]){
                                     case "new"->{
-                                        virtualController.reqDrawTileFromPile(client.getName());
+                                        virtualController.reqDrawTileFromPile(getName());
                                         newTile=/*drawn tile*/;
                                     }
                                     case "b1" ->{
@@ -319,7 +308,6 @@ public class ClientController {
                                     }
                                 }
                                 setTileInHand(newTile);
-                                return;
                             }
                         }
                     }
@@ -332,9 +320,8 @@ public class ClientController {
                 if (checkShipBoards(words))
                     return;
                 switch (words[0]) {
-                    case "rotate" -> {
+                    case "rotate" ->
                         getTileInHand().rotate();
-                    }
                     case "position" -> {
                         for (int i = 0; i < words.length - 1; i++) {
                             words[i] = words[i + 1];
@@ -344,7 +331,6 @@ public class ClientController {
                             getMe().getShipBoard().positionTile(Optional.ofNullable(getTileInHand()),coordinates);
                             virtualController.notifySetTile(getName(),coordinates,getTileInHand());
                         }
-                        return;
                     }
                     case "refuse" -> {
                         state = ClientState.S_END_DRAW_TILE_CARD;
@@ -354,14 +340,12 @@ public class ClientController {
                         }
                         getDrawnTiles().put( getTileInHand().getKey(),getTileInHand());
                         virtualController.notifyRefusedTile(getName());
-                        return;
                     }
                     case "book" -> {
                         state = ClientState.S_END_DRAW_TILE_CARD;
                         getTileInHand().setBooked(true);
                         getMe().getShipBoard().addBookedTile(getTileInHand());
                         virtualController.notifyTileBooking(getName());
-                        return;
                     }
                 }
             }
@@ -377,32 +361,34 @@ public class ClientController {
                         }
                     }
                     case "1"->{
-                        if (playerlist.leght>1){
-                            //add to fligthboard
+                        if (playersList.size()>1){
+                            //add to flightBoard
                         }
                     }
                     case "2"->{
-                        if (playerlist.leght>2){
-                            //add to fligthboard
+                        if (playersList.size()>2){
+                            //add to flightBoard
                         }
                     }
                     case "3"->{
-                        if (playerlist.leght>3){
-                            //add to fligthboard
+                        if (playersList.size()>3){
+                            //add to flightBoard
                         }
                     }
                     case "4"->{
-                        if (playerlist.leght>4){
-                            //add to fligthboard
+                        if (playersList.size()>4){
+                            //add to flightBoard
                         }
+                    }
+                    default-> {
+                        System.out.println("\nInvalid input format");
                     }
                 }
             }
             case WAIT_OTHER_PLAYER_ACTION->{
                 if (land(words))
                     return;
-                if (checkShipBoards(words))
-                    return;
+                checkShipBoards(words);
             }
         }
     }
