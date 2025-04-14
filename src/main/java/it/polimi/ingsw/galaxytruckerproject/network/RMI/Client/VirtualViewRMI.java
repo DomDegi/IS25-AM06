@@ -2,10 +2,13 @@ package it.polimi.ingsw.galaxytruckerproject.network.RMI.Client;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.network.RMI.VirtualController;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.io.IOException;
@@ -15,19 +18,13 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 
-public class RMIclient extends UnicastRemoteObject implements ViewInterface {
-    final VirtualController server;
-    public RMIclient(VirtualController server) throws RemoteException {
+public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
+    private final VirtualController server;
+
+    public VirtualViewRMI(VirtualController server) throws RemoteException {
         super();
         this.server = server;
     }
-
-    /*
-    public void run() throws RemoteException {
-        this.server.connect(this);
-        this.runCli();
-    }
-    */
 
     public void runCli() throws RemoteException {
         Scanner scan=new Scanner(System.in);
@@ -36,10 +33,6 @@ public class RMIclient extends UnicastRemoteObject implements ViewInterface {
             int command = scan.nextInt();
             //da adattare al comando in ingresso
         }
-
-    }
-    public void showUpdate () throws RemoteException {
-
     }
 
     @Override
@@ -153,12 +146,57 @@ public class RMIclient extends UnicastRemoteObject implements ViewInterface {
     }
 
     @Override
+    public void asksToMakeAChoice() {
+
+    }
+
+    @Override
+    public void asksPlanetChoice() {
+
+    }
+
+    @Override
+    public void asksToManageGoods(ArrayList<Goods> goods) {
+
+    }
+
+    @Override
+    public void asksToUseEngines() {
+
+    }
+
+    @Override
+    public void asksToUseCannons() {
+
+    }
+
+    @Override
+    public void asksToUseBatteries() {
+
+    }
+
+    @Override
+    public void asksToRemoveGoods() {
+
+    }
+
+    @Override
+    public void asksToRemoveCrew() {
+
+    }
+
+    @Override
     public void showScores() {
 
     }
 
     @Override
     public void asksChosenMode() {
+
+    }
+
+    @Override
+    public void updateLightModel(Message message) {
 
     }
 }

@@ -5,7 +5,7 @@ import it.polimi.ingsw.galaxytruckerproject.controller.MultiGameController;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
-import it.polimi.ingsw.galaxytruckerproject.network.RMI.VirtualController;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
@@ -13,20 +13,17 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class VirtualControllerRMI extends UnicastRemoteObject implements VirtualController{
-
-
-    final MultiGameController multiController;
+    private final MultiGameController multiController;
     //final List<ViewInterface> clients = new ArrayList<>();
-    private HashMap <String, Controller> clients;
+    private final HashMap <String, Controller> clients;
 
-    protected VirtualControllerRMI(MultiGameController multiController) throws RemoteException {
+    protected VirtualControllerRMI(MultiGameController multiController, HashMap<String, Controller> clients) throws RemoteException {
         super();
         this.multiController = multiController;
+        this.clients = clients;
     }
-
 
     public void connect(ViewInterface client, String playerName) throws RemoteException {
 
@@ -59,15 +56,6 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).chooseColor(color);
     }
 
-    public
-    /*
-    public void reset () throws RemoteException {
-        System.err.println("RMI server reset ");
-        synchronized (this.clients) {
-
-        }
-    }*/
-
     public void sendCoordinates(String playerName, ArrayList<Coordinates> coordinates) throws RemoteException{
         Message message = new SendCoordinatesResponse(playerName, coordinates);
         clients.get(playerName).playerChoiceThroughMessage(message);
@@ -82,7 +70,6 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).playerChoiceThroughMessage(message);
 
     }
-
 
     public void sendYes( String playerName) throws RemoteException{
         Message message = new AcceptMessage(playerName);
@@ -120,7 +107,6 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).playerChoiceThroughMessage(message);
     }
 
-
     public void reqDrawTileFromPile(String playerName) throws RemoteException {
         DrawTileFromStackRequest message = new DrawTileFromStackRequest(playerName);
         clients.get(playerName).playerChoiceThroughMessage(message);
@@ -140,9 +126,5 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         EarlyLandingRequest message = new EarlyLandingRequest(playerName);
         clients.get(playerName).playerChoiceThroughMessage(message);
     }
-
-
-
-
 
 }

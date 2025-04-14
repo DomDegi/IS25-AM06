@@ -4,7 +4,8 @@ import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
-import it.polimi.ingsw.galaxytruckerproject.network.RMI.VirtualController;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
@@ -30,7 +31,10 @@ public class ClientController {
         this.indexCard = 0;
         this.indexDeckInHandOrPlanet = 0;
         this.turns = 0;
-        state = ClientState.LOBBY;
+        this.virtualController = new VirtualController();
+        this.goodsList = new ArrayList<>();
+        this.lightShipBoard = new LightShipBoard(new ShipBoard(client.getMe()));
+        state = ClientState.CHOOSE_UI;
         this.coordInputManager=new CoordInputManager(lightShipBoard,this);
     }
 
@@ -42,16 +46,28 @@ public class ClientController {
         input = input.toLowerCase();
         input = input.replaceAll("\\s+", " ");
         String[] words = input.split(" ");
-        if (words.length == 0) {
-            System.out.println("\nInvalid input format. Please provide integer values.");
-            return;
-        }
-        if(words[0].isEmpty()){
+        if (words.length == 0||words[0].isEmpty()) {
             System.out.println("Empty input");
             return;
         }
+
         switch (state) {
-            case LOBBY: {
+            case CHOOSE_UI->{
+                switch(words[0]) {
+                    case "gui"->
+                        //gui
+                    case "tui"->
+                        //tui
+                    default->
+                        System.ot
+                }
+            }
+
+            case CHOOSE_CONNECTION_TYPE->{
+
+            }
+
+            case LOBBY-> {
                 //CHOOSE TUI OR GUI
                 switch(words[0]) {
                     case "createGame"-> {
@@ -63,17 +79,16 @@ public class ClientController {
                             System.out.println("\nInvalid input format. Please provide integer values.");
                             return;
                         }
-
-                        if(NumberOFPlayers<2||NumberOFPlayers>4)
-                        {
+                        if(NumberOFPlayers<2||NumberOFPlayers>4){
                             System.out.println("\nInvalid input format. Please provide a different number of players.");
                         }
                         if(words[3].equals("TrialMode")){
                             virtualController.createGame(gameName,NumberOFPlayers, GameMode.TRIAL, client.getName());
+                            state = ClientState.COLOR_CHOICE;
                             return;
-                        }
-                        else if (words[3].equals("Level2Mode")){
+                        } else if (words[3].equals("Level2Mode")){
                             virtualController.createGame(gameName,NumberOFPlayers,GameMode.LEVEL2, client.getName());
+                            state = ClientState.COLOR_CHOICE;
                             return;
                         }
                         System.out.println("\nInvalid input format. Please provide correct game mode.");
@@ -83,10 +98,35 @@ public class ClientController {
                         virtualController.joinGame(gameName,client.getName());
                     }
                 }
+            }
+
+            case LOGIN->{
+                switch (words[0]) {
+                    case "done"->
+                    if()
+                        state = ClientState.LOBBY;
+                    case "redo"->
+                            client.getMe().setPlayerName("");
+                    default->
+                            client.getMe().setPlayerName(words[0]);
+
+                }
 
             }
 
-            case ACTION: {
+            case COLOR_CHOICE->{
+                switch (words[0]){
+                    case "createGame"->{
+                        String gameName = words[1];
+                    }
+                    case "joinGame"->{
+                        String gameName = words[1];
+
+                    }
+                }
+            }
+
+            case ACTION-> {
                 if (checkShipBoards(words))
                     return;
                 if (land(words))
@@ -99,7 +139,7 @@ public class ClientController {
                 }
             }
 
-            case PLANET_CHOICE: {
+            case PLANET_CHOICE-> {
                 int chose;
                 if (checkShipBoards(words))
                     return;
@@ -123,7 +163,7 @@ public class ClientController {
                 }
             }
 
-            case MANAGE_GOODS: {
+            case MANAGE_GOODS-> {
                 GoodsManager goodsManager = new GoodsManager(client.getMe(), goodsList);
                 if(land(words))
                     return;
@@ -137,7 +177,7 @@ public class ClientController {
                 }
             }
 
-            case COORD_REQUEST:{
+            case COORD_REQUEST->{
                 if (land(words))
                     return;
                 if(words[0].equals("done")) {
@@ -147,7 +187,7 @@ public class ClientController {
                     coordInputManager.checkCoord(transformCoordinates(words));
             }
 
-            case MANAGE_CARDS: {
+            case MANAGE_CARDS-> {
                 switch (words[0]) {
                     case "previous" -> {
                         indexCard=indexCard-1;
@@ -166,13 +206,13 @@ public class ClientController {
                     case "done" -> {
 
                         //done action
-                        virtualController.
+                        virtualController;
                         return;
                     }
                 }
             }
 
-            case S_END_DRAW_TILE_CARD: {
+            case S_END_DRAW_TILE_CARD-> {
                 if(firstTurn(words))
                     return;
                 if (checkShipBoards(words))
@@ -180,7 +220,7 @@ public class ClientController {
                 switch (words[0]) {
                     case"done" -> {
                         state = ClientState.S_FINISHED;
-                        virtualController.sendEndShipboardCreation(client.getName());
+                        virtualController.sendEndShipBoardCreation(client.getName());
                         return;
                     }
                     case "draw" -> {
@@ -253,7 +293,7 @@ public class ClientController {
                 }
             }
 
-            case S_MANAGE_DRAWN_TILE: {
+            case S_MANAGE_DRAWN_TILE-> {
                 if(firstTurn(words))
                     return;
                 if (checkShipBoards(words))
@@ -293,7 +333,7 @@ public class ClientController {
                 }
             }
 
-            case S_FINISHED: {
+            case S_FINISHED-> {
                 if (checkShipBoards(words))
                     return;
                 if (words[0].equals("turn") && turns < 2) {
@@ -301,7 +341,7 @@ public class ClientController {
                     virtualController.sendTurnHourGlass(client.getName());
                 }
             }
-            case WAIT_OTHER_PLAYER_ACTION:{
+            case WAIT_OTHER_PLAYER_ACTION->{
                 if (land(words))
                     return;
                 if (checkShipBoards(words))

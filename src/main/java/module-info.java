@@ -29,4 +29,5 @@ module it.polimi.ingsw.galaxytruckerproject {
     opens it.polimi.ingsw.galaxytruckerproject.model.goods to com.fasterxml.jackson.databind;
     exports it.polimi.ingsw.galaxytruckerproject.clientController;
     opens it.polimi.ingsw.galaxytruckerproject.clientController to com.fasterxml.jackson.databind;
+    exports it.polimi.ingsw.galaxytruckerproject.network;
 }

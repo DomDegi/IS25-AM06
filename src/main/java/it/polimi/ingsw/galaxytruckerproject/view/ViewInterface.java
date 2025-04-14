@@ -16,7 +16,6 @@ import java.util.Map;
 
 public interface ViewInterface extends Remote, Serializable {
 
-
     /**
      * asks the player to set a nickname
      * @throws IOException

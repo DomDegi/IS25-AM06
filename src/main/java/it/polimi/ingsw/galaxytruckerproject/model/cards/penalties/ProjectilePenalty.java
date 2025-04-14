@@ -2,7 +2,6 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards.penalties;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Defense;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
