@@ -27,6 +27,7 @@ public enum MessageType {
     TURN_HOURGLASS_REQUEST,
     SHOW_CARDS_REQUEST,
     END_SHIP_CREATION,
+    ADD_TO_FLIGHTBOARD_REQUEST,
 
     //DRAW_CARD phase messages
     DRAW_CARD_REQUEST,
@@ -45,8 +46,6 @@ public enum MessageType {
 
     //Messages used in multiples phases
     SEND_COORDINATES_RESPONSE,
-    USE_CANNON_RESPONSE,
-    USE_ENGINE_RESPONSE,
     REFUSE_MESSAGE,
     ACCEPT_MESSAGE,
     SHOW_PLAYERS_SHIPBOARD_REQUEST,
