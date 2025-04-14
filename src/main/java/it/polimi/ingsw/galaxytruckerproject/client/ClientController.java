@@ -4,6 +4,7 @@ import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
@@ -12,6 +13,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Optional;
 
 public class ClientController {
@@ -58,13 +60,26 @@ public class ClientController {
                         //gui
                     case "tui"->
                         //tui
-                    default->
-                        System.ot
+                    default->{
+                        System.out.println("Wrong input");
+                        return;
+                    }
                 }
+                state = ClientState.CHOOSE_CONNECTION_TYPE;
             }
 
             case CHOOSE_CONNECTION_TYPE->{
-
+                switch(words[0]) {
+                    case "rmi"->
+                    //rmi
+                    case "socket"->
+                    //soket
+                    default->{
+                        System.out.println("Wrong input");
+                        return;
+                    }
+                }
+                state = ClientState.LOBBY;
             }
 
             case LOBBY-> {
@@ -84,11 +99,11 @@ public class ClientController {
                         }
                         if(words[3].equals("TrialMode")){
                             virtualController.createGame(gameName,NumberOFPlayers, GameMode.TRIAL, client.getName());
-                            state = ClientState.COLOR_CHOICE;
+                            state = ClientState.LOGIN;
                             return;
                         } else if (words[3].equals("Level2Mode")){
                             virtualController.createGame(gameName,NumberOFPlayers,GameMode.LEVEL2, client.getName());
-                            state = ClientState.COLOR_CHOICE;
+                            state = ClientState.LOGIN;
                             return;
                         }
                         System.out.println("\nInvalid input format. Please provide correct game mode.");
@@ -102,26 +117,31 @@ public class ClientController {
 
             case LOGIN->{
                 switch (words[0]) {
-                    case "done"->
-                    if()
-                        state = ClientState.LOBBY;
+                    case "done" -> {
+                        if(!Objects.equals(client.getName(), ""))
+                            virtualController.joinGame(words[1],client.getName());
+                    }
                     case "redo"->
                             client.getMe().setPlayerName("");
                     default->
                             client.getMe().setPlayerName(words[0]);
-
                 }
-
             }
 
             case COLOR_CHOICE->{
+                PlayersColor color;
                 switch (words[0]){
-                    case "createGame"->{
-                        String gameName = words[1];
+                    case "red"->{
+                        color = PlayersColor.RED;
                     }
-                    case "joinGame"->{
-                        String gameName = words[1];
-
+                    case "yellow"->{
+                        color = PlayersColor.YELLOW;
+                    }
+                    case "green"->{
+                        color = PlayersColor.GREEN;
+                    }
+                    case "blue"->{
+                        color = PlayersColor.BLUE;
                     }
                 }
             }
@@ -194,20 +214,17 @@ public class ClientController {
                         if(indexCard<0)
                             indexCard=2;
                         client.getDeck().get(indexDeckInHandOrPlanet).get(indexCard);
-                        return;
                     }
                     case "next" -> {
                         indexCard=indexCard+1;
                         if(indexCard>2)
                             indexCard=0;
                         client.getDeck().get(indexDeckInHandOrPlanet).get(indexCard);
-                        return;
                     }
                     case "done" -> {
 
                         //done action
                         virtualController;
-                        return;
                     }
                 }
             }
@@ -336,9 +353,33 @@ public class ClientController {
             case S_FINISHED-> {
                 if (checkShipBoards(words))
                     return;
-                if (words[0].equals("turn") && turns < 2) {
-                    turns++;
-                    virtualController.sendTurnHourGlass(client.getName());
+                switch (words[0]) {
+                    case "turn" -> {
+                        if (turns<2){
+                            turns++;
+                            virtualController.sendTurnHourGlass(client.getName());
+                        }
+                    }
+                    case "1"->{
+                        if (playerlist.leght>1){
+                            //add to fligthboard
+                        }
+                    }
+                    case "2"->{
+                        if (playerlist.leght>2){
+                            //add to fligthboard
+                        }
+                    }
+                    case "3"->{
+                        if (playerlist.leght>3){
+                            //add to fligthboard
+                        }
+                    }
+                    case "4"->{
+                        if (playerlist.leght>4){
+                            //add to fligthboard
+                        }
+                    }
                 }
             }
             case WAIT_OTHER_PLAYER_ACTION->{
