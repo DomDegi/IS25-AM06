@@ -18,5 +18,7 @@ public class ManageGoodsResponse extends Message{
         return clientGoodsValue;
     }
 
-    public ArrayList<CargoHold> getCargoHoldsToUpdate() {}
+    public ArrayList<CargoHold> getCargoHoldsToUpdate() {
+
+    }
 }

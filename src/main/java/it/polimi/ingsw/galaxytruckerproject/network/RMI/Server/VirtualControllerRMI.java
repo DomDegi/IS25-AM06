@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.network.RMI.Server;
 import it.polimi.ingsw.galaxytruckerproject.controller.Controller;
 import it.polimi.ingsw.galaxytruckerproject.controller.MultiGameController;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.network.RMI.VirtualController;
@@ -18,13 +19,14 @@ import java.util.HashMap;
 public class VirtualControllerRMI extends UnicastRemoteObject implements VirtualController{
 
 
-    final MultiGameController multiController;
+    private final MultiGameController multiController;
     //final List<ViewInterface> clients = new ArrayList<>();
-    private HashMap <String, Controller> clients;
+    private final HashMap <String, Controller> clients;
 
     protected VirtualControllerRMI(MultiGameController multiController) throws RemoteException {
         super();
         this.multiController = multiController;
+        clients = new HashMap();
     }
 
 
@@ -59,14 +61,6 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).chooseColor(color);
     }
 
-    public
-    /*
-    public void reset () throws RemoteException {
-        System.err.println("RMI server reset ");
-        synchronized (this.clients) {
-
-        }
-    }*/
 
     public void sendCoordinates(String playerName, ArrayList<Coordinates> coordinates) throws RemoteException{
         Message message = new SendCoordinatesResponse(playerName, coordinates);
@@ -141,6 +135,11 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).playerChoiceThroughMessage(message);
     }
 
+    public void notifyNewGoodsArrangement(String playerName,int clientGoodsValue, ArrayList<CargoHold> modifiedCargoHold) throws RemoteException{
+        Message message = new ManageGoodsResponse(playerName,clientGoodsValue, modifiedCargoHold);
+        clients.get(playerName).playerChoiceThroughMessage(message);
+
+    }
 
     public void showCardsRequest(String playerName, int deckToLookAt) throws RemoteException {
         ShowCardsRequest message = new ShowCardsRequest(playerName, deckToLookAt);
