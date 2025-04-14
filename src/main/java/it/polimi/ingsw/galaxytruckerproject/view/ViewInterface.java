@@ -34,7 +34,7 @@ public interface ViewInterface extends Remote, Serializable {
      * @param success
      * @param connected
      */
-    void showLoginResponse(boolean success, boolean connected);
+    void showLoginResponse(boolean success);
 
     /**
      * asks the player to decide if he wants to join a game in startig phase
