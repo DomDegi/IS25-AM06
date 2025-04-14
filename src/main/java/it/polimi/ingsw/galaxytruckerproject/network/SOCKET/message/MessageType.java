@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message;
 
+import java.util.ArrayList;
+
 public enum MessageType {
 
     //START_GAME phase messages
@@ -25,6 +27,9 @@ public enum MessageType {
     SHOW_BOOKED_TILES_REQUEST,
     TURN_HOURGLASS_REQUEST,
     SHOW_CARDS_REQUEST,
+    STOP_LOOKING_AT_CARDS_REQUEST,
+    SET_POSITION_REQUEST,
+    SET_POSITION_RESPONSE,
 
     //DRAW_CARD phase messages
     DRAW_CARD_REQUEST,

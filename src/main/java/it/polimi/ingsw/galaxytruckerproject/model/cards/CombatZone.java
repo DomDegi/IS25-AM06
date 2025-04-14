@@ -38,12 +38,14 @@ public class CombatZone extends Card {
 
     @Override
     public void initializeCard(GameInterface game, Map<String, ViewInterface> viewsMap) {
-        //if there is only one player still flying, combat>one cards get skipped
+        this.game = game;
+        this.viewsMap = viewsMap;
+        //if there is only one player still flying, combatZone cards get skipped
         if (game.getNumberOfPlayers() <= 1) {
             game.endCardEvent();
         }
         if (listOfChallenges.isEmpty()) {
-            System.out.println("You have completed all the challenges of the combat zone\n");
+            broadcastMessage("You have completed all the challenges of the combat zone\n");
             game.endCardEvent();
             return;
         }
@@ -56,7 +58,7 @@ public class CombatZone extends Card {
             //this means the losing player still has to get chosen
             System.out.println("loosing player decision\n");
             currentPlayer = Collections.min(savedValues.entrySet(), Comparator.comparingDouble(Map.Entry::getValue)).getKey();
-            minvalue= valueOf(savedValues.get(currentPlayer));
+            minvalue= savedValues.get(currentPlayer);
             for (Map.Entry<Player, Float> entry : savedValues.entrySet()) {
                 if (entry.getValue().equals(minvalue)) {
                     minPlayers.add(entry.getKey());
@@ -107,6 +109,7 @@ public class CombatZone extends Card {
 
     @Override
     public void executeCard(Message message) {
+        String playerName = message.getNickname();
         if (losingPlayerDecided && currentPlayer != null && playerName.equalsIgnoreCase(currentPlayer.getPlayerName())) {
             int penaltyReturn = listOfChallenges.get(currentChallenge).applyPenalty(game, currentPlayer, , input, );
             if (penaltyReturn == 1) {

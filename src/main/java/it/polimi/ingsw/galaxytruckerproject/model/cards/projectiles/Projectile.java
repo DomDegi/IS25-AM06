@@ -1,5 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
@@ -40,7 +41,7 @@ public abstract class Projectile {
      * @param game
      * @return
      */
-    public Defense throwProjectile(Player player, int DiceRoll, Game game) {
+    public Defense throwProjectile(Player player, int DiceRoll, GameInterface game) {
         return Defense.PROTECTED;
     }
 

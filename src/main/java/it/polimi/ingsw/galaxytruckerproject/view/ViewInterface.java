@@ -4,6 +4,7 @@ import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
@@ -11,6 +12,7 @@ import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 
 public interface ViewInterface {
 
@@ -128,6 +130,8 @@ public interface ViewInterface {
      */
     void asksToRollTheDices();
 
+    void showDiceRoll(int diceRoll);
+
     /**
      * asks the player to choose a starting position from 1 to playerCount
      */
@@ -143,6 +147,12 @@ public interface ViewInterface {
     /**
      * asks the player to input yes or no to decide and sends a Accept or a Refuse Message
      */
+
+    /**
+     * asks to set position on the flightboard
+     */
+    void asksToSetPosition();
+
     void asksToMakeAChoice ();
 
     void asksPlanetChoice();
@@ -158,6 +168,8 @@ public interface ViewInterface {
     void asksToRemoveGoods();
 
     void asksToRemoveCrew();
+
+    void asksWhichBranchToKeep(ArrayList<Set<Coordinates>> branch);
 
     /**
      * at the end of the game shows every players score on the view
