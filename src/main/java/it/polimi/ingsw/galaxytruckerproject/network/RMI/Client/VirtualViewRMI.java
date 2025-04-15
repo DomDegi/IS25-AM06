@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.network.RMI.Client;
 
 import it.polimi.ingsw.galaxytruckerproject.client.ClientController;
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
@@ -21,7 +22,6 @@ import java.util.Scanner;
 
 public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     private final VirtualController server;
-    public ViewInterface view;
     private final ClientController clientController;
     private final ViewInterface view;
 
@@ -40,37 +40,41 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
         }
     }
 
+    //DONE
     @Override
     public void askNickname() throws IOException {
         view.askNickname();
     }
 
+    //DONE
     @Override
     public void askColor() {
         view.askColor();
     }
 
+    //DONE
     @Override
     public void showLoginResponse(boolean success) {
        view.showLoginResponse(success);
        if (success) {
-           clientController.set
+           clientController.setState(ClientState.LOBBY);
        }
     }
 
     @Override
+    //A CHE SERVE?
     public void asksJoinOrCreate() {
         view.asksJoinOrCreate();
-
-
     }
 
+    //DONE
     @Override
     public void showJoinableGamesList(Map<String, GameController> joinableGames) {
         view.showJoinableGamesList(joinableGames);
 
     }
 
+    //A CHE SERVE
     @Override
     public void askPlayerCount() throws IOException {
         view.askPlayerCount();
@@ -96,6 +100,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
         view.showErrorMessage(errorMessage);
     }
 
+    //DONE
     @Override
     public void showInGamePlayers(ArrayList<Player> players) {
         view.showInGamePlayers(players);
@@ -111,11 +116,13 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
         view.showShipsErrors();
     }
 
+    //DONE
     @Override
     public void showPlayersBoard(String player, ShipBoard shipBoard) {
         view.showPlayersBoard(player, shipBoard);
     }
 
+    //DONE
     @Override
     public void showDrawnTile(Tile drawnTile) {
         view.showDrawnTile(drawnTile);
@@ -126,71 +133,85 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
         view.showTurnedTiles(turnedTiles);
     }
 
+    //DONE
     @Override
     public void showBookedTiles(ArrayList<Tile> bookedTiles) {
         view.showBookedTiles(bookedTiles);
     }
 
+    //DONE
     @Override
     public void showInGameCards(ArrayList<Card> inGameCards) {
         view.showInGameCards(inGameCards);
     }
 
+    //DONE
     @Override
     public void asksToRollTheDices() {
         view.asksToRollTheDices();
     }
 
+    //DONE
     @Override
     public void asksToChooseStartingPosition() {
         view.asksToChooseStartingPosition();
     }
 
+    //DONE
     @Override
     public void asksToInputCoordinates() {
         view.asksToInputCoordinates();
     }
 
+    //DONE
     @Override
     public void asksToTurnTheHourglass() {
         view.asksToTurnTheHourglass();
     }
 
+    //D0NE
     @Override
     public void asksToMakeAChoice() {
         view.asksToMakeAChoice();
     }
 
+    //DONE
     @Override
     public void asksPlanetChoice() {
         view.asksPlanetChoice();
     }
+
 
     @Override
     public void asksToManageGoods(ArrayList<Goods> goods) {
         view.asksToManageGoods(goods);
     }
 
+    //DONE
     @Override
     public void asksToUseEngines() {
         view.asksToUseEngines();
     }
 
+    //DONE
     @Override
     public void asksToUseCannons() {
         view.asksToUseCannons();
     }
 
+    //DONE
     @Override
     public void asksToUseBatteries() {
         view.asksToUseBatteries();
     }
 
+    //DONE
     @Override
     public void asksToRemoveGoods() {
         view.asksToRemoveGoods();
     }
 
+    //DONE
     @Override
     public void asksToRemoveCrew() {
         view.asksToRemoveCrew();
@@ -201,11 +222,13 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
         view.showScores();
     }
 
+    //DONE
     @Override
     public void asksChosenMode() {
         view.asksChosenMode();
     }
 
+    //DONE
     @Override
     public void updateLightModel(Message message) {
         view.updateLightModel(message);
