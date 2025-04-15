@@ -30,6 +30,9 @@ public class ClientController {
     private LightFlightboard flightBoard;
     private HashMap<Integer, Tile> turnedTiles;
     private Tile tileInHand;
+    private Map<Integer,Tile> TurnedTiles;
+    private Tile tileInHand; // tile appena raccolta
+    private Timer timer;
     private ClientState state;
     private int turns;
     private final VirtualController virtualController;
@@ -474,6 +477,57 @@ public class ClientController {
 
     public void setState(ClientState state) {
         this.state = state;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public LightPlayer getMe() {
+        return me;
+    }
+
+    public void setMe(LightPlayer me) {
+        this.me = me;
+    }
+
+    public ArrayList<LightPlayer> getPlayersList() {
+        return playersList;
+    }
+
+    public void setPlayersList(ArrayList<LightPlayer> playersList) {
+        this.playersList = playersList;
+    }
+
+    public ArrayList<ArrayList<Card>> getDeck() {
+        return deck;
+    }
+
+    public void setDeck(ArrayList<ArrayList<Card>> deck) {
+        this.deck = deck;
+    }
+
+    public HashMap<Integer, Tile> getDrawnTiles() {
+        return drawnTiles;
+    }
+
+    public void setDrawnTiles(HashMap<Integer, Tile> drawnTiles) {
+        this.drawnTiles = drawnTiles;
+    }
+
+    public LightFlightboard getFlightBoard() {
+        return flightBoard;
+    }
+
+    public void setFlightBoard(LightFlightboard flightBoard) {
+        this.flightBoard = flightBoard;
+    }
+
+    public void addTurnedTile(Tile tile) {
+        TurnedTiles.put(tile.getKey(), tile);
+    }
+    public void removeTurnedTile(Tile tile) {
+        TurnedTiles.remove(tile.getKey());
     }
 }
 
