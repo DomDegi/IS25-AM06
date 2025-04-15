@@ -10,18 +10,25 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.network.RMI.Server.VirtualControllerRMI;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
+import it.polimi.ingsw.galaxytruckerproject.view.GUI;
+import it.polimi.ingsw.galaxytruckerproject.view.TUI;
+import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.rmi.RemoteException;
+import java.sql.Connection;
 import java.util.*;
 
 public class ClientController {
 
     private LightPlayer me;
+    private ViewInterface view;
+    private VirtualController controller;
     private ArrayList<LightPlayer> playersList;
     private ArrayList<ArrayList<Card>> deck;
     private LightFlightboard flightBoard;
-    private HashMap<Integer, Tile> drawnTiles;
+    private HashMap<Integer, Tile> turnedTiles;
     private Tile tileInHand;
     private ClientState state;
     private int turns;
@@ -61,9 +68,9 @@ public class ClientController {
             case CHOOSE_UI->{
                 switch(words[0]) {
                     case "gui"->
-                    //gui
+                        this.view=new GUI();
                     case "tui"->
-                    //tui
+                        this.view=new TUI();
                     default->{
                         System.out.println("Wrong input");
                         return;
@@ -75,7 +82,7 @@ public class ClientController {
             case CHOOSE_CONNECTION_TYPE->{
                 switch(words[0]) {
                     case "rmi"->
-                    //rmi
+                        //rmi
                     case "socket"->
                     //socket
                     default->{
@@ -91,22 +98,15 @@ public class ClientController {
                 switch(words[0]) {
                     case "createGame"-> {
                         String gameName = words[1];
-                        int NumberOFPlayers;
-                        try {
-                            NumberOFPlayers = Integer.parseInt(words[2]);
-                        } catch (NumberFormatException e) {
-                            System.out.println("\nInvalid input format. Please provide integer values.");
+                        int NumberOfPlayers=numerate(scroll(words,2));
+                        if(NumberOfPlayers==-1)
                             return;
-                        }
-                        if(NumberOFPlayers<2||NumberOFPlayers>4){
-                            System.out.println("\nInvalid input format. Please provide a different number of players.");
-                        }
                         if(words[3].equals("TrialMode")){
-                            virtualController.createGame(gameName,NumberOFPlayers, GameMode.TRIAL, getName());
+                            virtualController.createGame(gameName,NumberOfPlayers, GameMode.TRIAL, this.name);
                             state = ClientState.LOGIN;
                             return;
                         } else if (words[3].equals("Level2Mode")){
-                            virtualController.createGame(gameName,NumberOFPlayers,GameMode.LEVEL2, getName());
+                            virtualController.createGame(gameName,NumberOfPlayers,GameMode.LEVEL2, this.name);
                             state = ClientState.LOGIN;
                             return;
                         }
@@ -122,14 +122,13 @@ public class ClientController {
             case LOGIN->{
                 switch (words[0]) {
                     case "done" -> {
-                        if(!Objects.equals(getName(), ""))
-                            virtualController.joinGame(words[1],getName());
+                        if(!Objects.equals(this.name, ""))
+                            virtualController.joinGame(words[1],this.name);
                     }
                     case "redo"->
-                            setName("");
+                            this.name=("");
                     default->
-                            setName(words[0]);
-
+                            this.name=(words[0]);
                 }
             }
 
@@ -165,7 +164,6 @@ public class ClientController {
             }
 
             case PLANET_CHOICE-> {
-                int chose;
                 if (checkShipBoards(words))
                     return;
                 if (land(words))
@@ -174,12 +172,9 @@ public class ClientController {
                     virtualController.sendNo(this.name);
                     return;
                 }
-                try {
-                    chose = Integer.parseInt(words[0]);
-                } catch (NumberFormatException e) {
-                    System.out.println("\nInvalid input format. Please provide integer values.");
+                int chose=numerate(words);
+                if(chose==-1)
                     return;
-                }
                 if (chose > 0 && chose </*num pianeti*/) {
                     state = ClientState.MANAGE_GOODS;
                     indexDeckInHandOrPlanet = chose;
@@ -197,12 +192,12 @@ public class ClientController {
                 ArrayList<CargoHold> newTiles;
                 if (!newTilesGoods.isEmpty()) {
                     newTiles = new ArrayList<>(newTilesGoods);
+                    if (newTiles.getFirst().getTotSpaces()==-1 ){
+                        newTiles.clear();
+                    }
+                    int goodsVal = lightShipBoard.convertGoodsToCredit();
+                    virtualController.notifyNewGoodsArrangement(this.name,goodsVal, newTiles);
                 }
-                else{
-                    newTiles= new ArrayList<>();
-                }
-                int goodsVal = lightShipBoard.convertGoodsToCredit();
-                virtualController.notifyNewGoodsArrangement(this.name,goodsVal, newTiles);
             }
 
             case COORD_REQUEST->{
@@ -221,16 +216,15 @@ public class ClientController {
                         indexCard=indexCard-1;
                         if(indexCard<0)
                             indexCard=2;
-                        displayedCard = getDeck().get(indexDeckInHandOrPlanet).get(indexCard);
+                        displayedCard = this.deck.get(indexDeckInHandOrPlanet).get(indexCard);
                     }
                     case "next" -> {
                         indexCard=indexCard+1;
                         if(indexCard>2)
                             indexCard=0;
-                        displayedCard = getDeck().get(indexDeckInHandOrPlanet).get(indexCard);
+                        displayedCard = this.deck.get(indexDeckInHandOrPlanet).get(indexCard);
                     }
                     case "done" -> {
-
                         //done action
                         virtualController;
                     }
@@ -238,6 +232,7 @@ public class ClientController {
             }
 
             case S_END_DRAW_TILE_CARD-> {
+                virtualController.show
                 if(firstTurn(words))
                     return;
                 if (checkShipBoards(words))
@@ -250,23 +245,15 @@ public class ClientController {
                     case "draw" -> {
                         switch (words[1]) {
                             case "card" -> {
-                                int chose;
-                                if (words[2].isEmpty()) {
-                                    System.out.println("Choose one of the decks");
+                                int chose=numerate(scroll(words,2));
+                                if (chose==-1)
                                     return;
-                                }
-                                try {
-                                    chose = Integer.parseInt(words[2]);
-                                } catch (NumberFormatException e) {
-                                    System.out.println("\nInvalid input format. Please provide integer values.");
-                                    return;
-                                }
                                 if (chose > 0 && chose < 4) {
                                     state = ClientState.MANAGE_CARDS;
                                     indexDeckInHandOrPlanet = chose;
                                     //notify drawn card
                                     virtualController;
-                                    displayedCard = getDeck().get(indexDeckInHandOrPlanet).getFirst();
+                                    displayedCard = this.deck.get(indexDeckInHandOrPlanet).getFirst();
                                 }
                             }
                             case "tile" -> {
@@ -274,40 +261,32 @@ public class ClientController {
                                 Tile newTile;
                                 switch (words[2]){
                                     case "new"->{
-                                        virtualController.reqDrawTileFromPile(getName());
+                                        virtualController.reqDrawTileFromPile(this.name);
                                         newTile=/*drawn tile*/;
                                     }
                                     case "b1" ->{
-                                        newTile=getMe().getShipBoard().getBookedTiles().getFirst();
-                                        getMe().getShipBoard().removeBookedTile(0);
+                                        newTile=this.me.getShipBoard().getBookedTiles().getFirst();
+                                        this.me.getShipBoard().removeBookedTile(0);
                                     }
                                     case "b2" ->{
-                                        newTile=getMe().getShipBoard().getBookedTiles().get(1);
-                                        getMe().getShipBoard().removeBookedTile(1);
+                                        newTile=this.me.getShipBoard().getBookedTiles().get(1);
+                                        this.me.getShipBoard().removeBookedTile(1);
                                     }
                                     default-> {
-                                        int chose;
-                                        if (words[2].isEmpty()) {
-                                            System.out.println("Choose one of the decks");
+                                        int chose=numerate(scroll(words,2));
+                                        if (chose==-1)
                                             return;
-                                        }
-                                        try {
-                                            chose = Integer.parseInt(words[2]);
-                                        } catch (NumberFormatException e) {
-                                            System.out.println("\nInvalid input format. Please provide integer values.");
-                                            return;
-                                        }
-                                        if (chose>0&&chose<getDrawnTiles().size()) {
+                                        if (chose>0&&chose<this.turnedTiles.size()) {
                                             indexDeckInHandOrPlanet = chose;
-                                            virtualController.reqDrawTileFromTable(getName(),chose);
-                                            newTile=getDrawnTiles().get(indexDeckInHandOrPlanet);
+                                            virtualController.reqDrawTileFromTable(this.name,chose);
+                                            newTile=this.turnedTiles.get(indexDeckInHandOrPlanet);
                                         }else {
                                             System.out.println("\nInvalid input format. Please provide integer values.");
                                             return;
                                         }
                                     }
                                 }
-                                setTileInHand(newTile);
+                                this.tileInHand=(newTile);
                             }
                         }
                     }
@@ -321,31 +300,28 @@ public class ClientController {
                     return;
                 switch (words[0]) {
                     case "rotate" ->
-                        getTileInHand().rotate();
+                        this.tileInHand.rotate();
                     case "position" -> {
-                        for (int i = 0; i < words.length - 1; i++) {
-                            words[i] = words[i + 1];
-                        }
-                        Coordinates coordinates=transformCoordinates(words);
+                        Coordinates coordinates=transformCoordinates(scroll(words,1));
                         if(coordinates!=null){
-                            getMe().getShipBoard().positionTile(Optional.ofNullable(getTileInHand()),coordinates);
-                            virtualController.notifySetTile(getName(),coordinates,getTileInHand());
+                            this.me.getShipBoard().positionTile(Optional.ofNullable(this.tileInHand),coordinates);
+                            virtualController.notifySetTile(this.name,coordinates,this.tileInHand);
                         }
                     }
                     case "refuse" -> {
                         state = ClientState.S_END_DRAW_TILE_CARD;
-                        if(getTileInHand().isBooked()){
-                            getMe().getShipBoard().addBookedTile(getTileInHand());
+                        if(this.tileInHand.isBooked()){
+                            this.me.getShipBoard().addBookedTile(this.tileInHand);
                             return;
                         }
-                        getDrawnTiles().put( getTileInHand().getKey(),getTileInHand());
-                        virtualController.notifyRefusedTile(getName());
+                        this.turnedTiles.put(this.tileInHand.getKey(),this.tileInHand);
+                        virtualController.notifyRefusedTile(this.name);
                     }
                     case "book" -> {
                         state = ClientState.S_END_DRAW_TILE_CARD;
-                        getTileInHand().setBooked(true);
-                        getMe().getShipBoard().addBookedTile(getTileInHand());
-                        virtualController.notifyTileBooking(getName());
+                        this.tileInHand.setBooked(true);
+                        this.me.getShipBoard().addBookedTile(this.tileInHand);
+                        virtualController.notifyTileBooking(this.name);
                     }
                 }
             }
@@ -357,7 +333,7 @@ public class ClientController {
                     case "turn" -> {
                         if (turns<2){
                             turns++;
-                            virtualController.sendTurnHourGlass(getName());
+                            virtualController.sendTurnHourGlass(this.name);
                         }
                     }
                     case "1"->{
@@ -391,18 +367,6 @@ public class ClientController {
                 checkShipBoards(words);
             }
         }
-    }
-
-    private Tile getTileInHand() {
-        return tileInHand;
-    }
-
-    private void setTileInHand(Tile newTile) {
-        tileInHand=newTile;
-    }
-
-    public String getName() {
-        return this.name;
     }
 
     public Coordinates transformCoordinates(String[] input) {
@@ -449,10 +413,10 @@ public class ClientController {
                 return false;
             }
             if (chose == 0) {
-                System.out.println(getMe().getShipBoard());
+                System.out.println(this.me.getShipBoard());
             }
             if (chose >= 1 && chose <= 4) {
-                System.out.println(getPlayersList().get(indexDeckInHandOrPlanet).getShipBoard());
+                System.out.println(this.playersList.get(indexDeckInHandOrPlanet).getShipBoard());
             }
             return true;
         }
@@ -462,69 +426,54 @@ public class ClientController {
     private boolean firstTurn(String[] input) throws RemoteException {
         if (input[0].equals("turn") && turns==0) {
             turns++;
-            virtualController.sendTurnHourGlass(getName());
+            virtualController.sendTurnHourGlass(this.name);
             return true;
         }
         return false;
     }
 
     private boolean land(String[] input) throws RemoteException {
-        if (input[0].equals("earlyland")&&!getMe().isLanded()){
-            virtualController.notifyEarlyLanding(getName());
+        if (input[0].equals("earlyland")&&!this.me.isLanded()){
+            virtualController.notifyEarlyLanding(this.name);
             return true;
         }
         return false;
     }
+
+    private int numerate(String[] input){
+        int chose;
+        if (input[0].isEmpty()) {
+            System.out.println("Choose one of the decks");
+            return -1;
+        }
+        try {
+            chose = Integer.parseInt(input[0]);
+            return chose;
+        } catch (NumberFormatException e) {
+            System.out.println("\nInvalid input format. Please provide integer values.");
+            return -1;
+        }
+    }
+
+    private String[] scroll(String[] input ,int times){
+        String[] copiedInput = Arrays.copyOf(input, input.length);
+        for (int i = 0; i < times; i++) {
+            for (int j = 0; j < copiedInput.length - 1; j++) {
+                copiedInput[j] = copiedInput[j + 1];
+            }
+            if (copiedInput.length > 0) {
+                copiedInput[copiedInput.length - 1] = null;
+            }
+        }
+        return copiedInput;
+    }
+
     public void setGoodsList(ArrayList<Goods> goodsList) {
         this.goodsList = goodsList;
     }
 
     public void setState(ClientState state) {
         this.state = state;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public LightPlayer getMe() {
-        return me;
-    }
-
-    public void setMe(LightPlayer me) {
-        this.me = me;
-    }
-
-    public ArrayList<LightPlayer> getPlayersList() {
-        return playersList;
-    }
-
-    public void setPlayersList(ArrayList<LightPlayer> playersList) {
-        this.playersList = playersList;
-    }
-
-    public ArrayList<ArrayList<Card>> getDeck() {
-        return deck;
-    }
-
-    public void setDeck(ArrayList<ArrayList<Card>> deck) {
-        this.deck = deck;
-    }
-
-    public HashMap<Integer, Tile> getDrawnTiles() {
-        return drawnTiles;
-    }
-
-    public void setDrawnTiles(HashMap<Integer, Tile> drawnTiles) {
-        this.drawnTiles = drawnTiles;
-    }
-
-    public LightFlightboard getFlightBoard() {
-        return flightBoard;
-    }
-
-    public void setFlightBoard(LightFlightboard flightBoard) {
-        this.flightBoard = flightBoard;
     }
 }
 

@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public abstract class CargoHold extends Tile{
-    final int totSpaces;
-    boolean hazard;
-    ArrayList<Goods> cargo;
+    private final int totSpaces;
+    protected boolean hazard;
+    protected ArrayList<Goods> cargo;
 
     public CargoHold(int totSpaces, Link north, Link east, Link south, Link west,int key) {
         super(north, east, south, west, key);
@@ -40,6 +40,10 @@ public abstract class CargoHold extends Tile{
 
     public void getStat(){
         shipBoard.getCargoHoldCoordinates().add(this.coordinates);
+    }
+
+    public int getTotSpaces() {
+        return totSpaces;
     }
 
     public int addGood(Goods good){

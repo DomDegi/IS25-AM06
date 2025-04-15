@@ -4,6 +4,7 @@ import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoRed;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 
 import java.util.ArrayList;
@@ -37,6 +38,9 @@ public class GoodsManager {
             }
             if (input[0].equalsIgnoreCase("done") || input[0].equalsIgnoreCase("0")) {
                 System.out.println("\nYou stopped positioning your cargo\n");
+                if (changes.isEmpty()) {
+                    changes.add(new CargoRed(-1,null,null,null,null));
+                }
                 return changes;
             }
             if (input.length < 3) {
