@@ -29,8 +29,6 @@ public class TUI implements ViewInterface{
             System.out.println("You are logged in");
             System.out.println("");
         }
-
-        }
         else {
             System.out.println("login failed, retry");
         }
