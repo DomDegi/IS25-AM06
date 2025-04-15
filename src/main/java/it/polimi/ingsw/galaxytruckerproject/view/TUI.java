@@ -177,8 +177,10 @@ public class TUI implements ViewInterface{
     }
 
     @Override
-    public void showScores() {
-        System.out.println("Your score is:");
+    public void showScores(ArrayList<Player> players) {
+        for(Player player : players){
+            System.out.println(player.getPlayerName() + ": " + player.getCredit() );
+        }
     }
 
     @Override

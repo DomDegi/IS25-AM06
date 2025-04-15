@@ -218,8 +218,8 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
-    public void showScores() {
-        view.showScores();
+    public void showScores(ArrayList<Player> players) {
+        view.showScores(players);
     }
 
     //DONE
