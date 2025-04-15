@@ -43,7 +43,7 @@ public interface GameInterface {
     ArrayList<Card> getInGameCards (int number);
     boolean getHourglassState();
     int getHourglassTurns();
-    ArrayList<Tile> getTurnedTiles();
+    Map<Integer,Tile> getTurnedTiles();
     boolean playerSetTile(String playerName, Coordinates coordinates);
     boolean playerBookTile(String playerName);
 

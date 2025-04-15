@@ -22,7 +22,7 @@ public class Game implements GameInterface {
     private int playerCount;
     private final ArrayList<Card> inGameCards;
     private final ArrayDeque<Tile> tileStack;
-    private final ArrayList<Tile> turnedTiles;
+    private final Map<Integer,Tile> turnedTiles;
     private final FlightBoard flightBoard;
     private Card drawnCard;
     private int hourglassTurns;
@@ -33,7 +33,7 @@ public class Game implements GameInterface {
     public Game(GameMode mode, int playerCount) {
         this.mode = mode;
         this.gameState = START_GAME;
-        this.turnedTiles = new ArrayList<>();
+        this.turnedTiles = new HashMap<>();
         this.flightBoard = new FlightBoard(mode);
         this.hourglassTurns = 0;
         this.tileStack = new TileFactory().getStack(TileFactory.loadTilesFromJson("Tiles.json"));
@@ -113,11 +113,11 @@ public class Game implements GameInterface {
     public void refuseTile(String playerName) {
         Player player = identifyPlayerByName(playerName);
         Tile removedTile = player.removeDrawnTile();
-        turnedTiles.add(removedTile);
+        turnedTiles.put(removedTile.getKey(), removedTile);
     }
 
     public void printTurnedTiles() {
-        for (int i = 0; i < turnedTiles.size(); i++) {
+        for (int i: turnedTiles.keySet()) {
             System.out.printf("%s (%d), ", turnedTiles.get(i).toString(), i);
             if (i % 5 == 0) {
                 System.out.println("\n");
@@ -125,7 +125,7 @@ public class Game implements GameInterface {
         }
     }
 
-    public ArrayList<Tile> getTurnedTiles() {
+    public Map<Integer, Tile> getTurnedTiles() {
         return turnedTiles;
     }
 

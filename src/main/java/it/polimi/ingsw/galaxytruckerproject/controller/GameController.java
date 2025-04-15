@@ -28,6 +28,10 @@ public class GameController {
     private final Map<String, Player> disconnectedPlayers;
     private final ArrayList<Player> playersToEarlyLand = new ArrayList<>();
 
+    public String toString(){
+        return gameName+"\ngame state:"+game.getGameState().toString()+"\nplayer needed: "+game.getPlayerCount()+"\nplatyer in game: "+game.getNumberOfPlayers();
+    }
+
     public GameController(GameInterface game, String gameName) {
         this.gameName = gameName;
         this.game = game;

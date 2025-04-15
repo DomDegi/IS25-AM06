@@ -110,7 +110,7 @@ public interface ViewInterface extends Remote, Serializable {
      * shows the player the tiles that got turned from player refusing them
      * @param turnedTiles the current array in the model
      */
-    void showTurnedTiles (ArrayList<Tile> turnedTiles);
+    void showTurnedTiles (Map<Integer,Tile> turnedTiles);
 
     /**
      * shows the tiles that the player booked on their shipboard

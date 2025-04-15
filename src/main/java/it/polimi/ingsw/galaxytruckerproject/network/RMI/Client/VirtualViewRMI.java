@@ -64,7 +64,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
 
     @Override
     public void showJoinableGamesList(Map<String, GameController> joinableGames) {
-
+        view.showJoinableGamesList(joinableGames);
     }
 
     @Override
@@ -84,12 +84,12 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
 
     @Override
     public void showGenericMessage(String genericMessage) {
-
+        view.showGenericMessage(genericMessage);
     }
 
     @Override
     public void showErrorMessage(String errorMessage) {
-
+        view.showGenericMessage(errorMessage);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
 
     @Override
     public void showShipsErrors() {
-
+        //non dovrebbe esistere
     }
 
     @Override
@@ -118,8 +118,15 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
-    public void showTurnedTiles(ArrayList<Tile> turnedTiles) {
+    public void showTurnedTiles(Map<Integer,Tile> turnedTiles) {
+        view.showTurnedTiles(turnedTiles);
+    }
 
+    public void notifyNewTurnedTile(Tile tile) throws RemoteException{
+        clientController.addTurnedTile(tile);
+    }
+    public void notfyRemmoveTurnedTile(Tile tile) throws RemoteException{
+        clientController.removeTurnedTile(tile);
     }
 
     @Override
