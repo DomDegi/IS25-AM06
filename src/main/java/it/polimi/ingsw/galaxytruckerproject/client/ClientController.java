@@ -39,6 +39,7 @@ public class ClientController {
     private LightShipBoard lightShipBoard;
     private String name;
     private Card displayedCard;
+    private boolean inGame = false;
 
     public ClientController(VirtualController virtualController) {
         this.indexCard = 0;
@@ -494,7 +495,11 @@ public class ClientController {
 
     public void setTile(String playerName,Tile tile) {
         LightShipBoard lightShipboard= flightBoard.getIngamePlayer(playerName).getShipBoard();
-        LightShipBoard.setTile()
+        lightShipBoard.positionTile(Optional.of(tile),tile.getCoordinates());
+    }
+
+    public CoordInputManager getCoordInputManager() {
+        return coordInputManager;
     }
 }
 
