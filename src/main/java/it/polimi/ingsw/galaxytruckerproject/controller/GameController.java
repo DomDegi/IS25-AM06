@@ -317,7 +317,7 @@ public class GameController {
         }
     }
 
-    public  void drawTile(VirtualView playersView, String playerName, int index, boolean turned) {
+    public void drawTile(VirtualView playersView, String playerName, int index, boolean turned) {
 
         // Can't draw if the shipboard is completed or there is already a tile to place/book/refuse
         if (playerStateIs(playerName, ClientState.S_MANAGE_DRAWN_TILE)
@@ -332,15 +332,14 @@ public class GameController {
                 return;
             }
             playersView.showDrawnTile(drawnTile);
-        }
-        else {
+        } else {
             drawnTile = game.drawTurnedTile(playerName, index);
-                if (drawnTile == null) {
-                    playersView.showErrorMessage("drawn tile is null: turned tile is empty or index out of bounds");
-                    return;
-                }
-                playersView.showDrawnTile(drawnTile);
-                notifyRemoveTurnedTile(drawnTile);
+            if (drawnTile == null) {
+                playersView.showErrorMessage("drawn tile is null: turned tile is empty or index out of bounds");
+                return;
+            }
+            playersView.showDrawnTile(drawnTile);
+            notifyRemoveTurnedTile(drawnTile);
         }
         clientsStatesMap.put(playerName, ClientState.S_MANAGE_DRAWN_TILE);
     }
@@ -555,7 +554,23 @@ public class GameController {
         checkIfAllPlayersReady();
     }
 
-    public void setPosition (ViewInterface playersView, Message message) {
+    public void setPosition (String playerName, ViewInterface playersView, int position) {
+        if (!playerStateIs(playerName, ClientState.S_FINISHED)) {
+            return;
+        }
+        FlightBoard flightBoard = game.getFlightBoard();
+        Player player = game.identifyPlayerByName(playerName);
+
+        if (flightBoard.addToFlightBoard(player, position)) {
+            updatePlayerView(ClientState.WAIT_OTHER_PLAYER_ACTION, playerName);
+        }
+        else {
+            playersView.showErrorMessage("Position is taken or input is wrong");
+            playersView.asksToSetPosition();
+        }
+        checkIfAllPlayersReady();
+    }
+    /*public void setPosition (ViewInterface playersView, Message message) {
         if (!playerInputs.get(message.getNickname()).getMessageType().equals(ACCEPT_MESSAGE)) {
             return;
         }
@@ -617,7 +632,7 @@ public class GameController {
                 throw new IllegalStateException("Unexpected value: " + game.getHourglassTurns() + "\n");
         }
     }
-
+    */
     public void startTimer() {
         Timer hourglass = new Timer();
         this.hourglassTurns++;

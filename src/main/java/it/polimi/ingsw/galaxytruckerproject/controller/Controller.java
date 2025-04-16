@@ -123,4 +123,12 @@ public class Controller implements ControllerInterface {
         gameController.bookTile(view, nickname);
     }
 
+    public void completed(){
+        gameController.completed(nickname, view);
+    }
+
+    public void setPosition(int position){
+        gameController.setPosition(nickname, view, position);
+    }
+
 }

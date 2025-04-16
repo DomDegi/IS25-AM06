@@ -85,6 +85,7 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).playerChoiceThroughMessage(message);
     }
 
+    //DONE
     public void notifySetTile(String playerName, Coordinates coordinates, boolean booked, int key) throws RemoteException {
         clients.get(playerName).setTile(coordinates, booked, key);
     }
@@ -151,6 +152,23 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
     }
 
     //DONE
+    public void notifyCompleted(String playerName) throws RemoteException {
+        clients.get(playerName).completed();
+    }
+
+    //DONE
+    public void notifySetPosition(String playerName, int position) throws RemoteException {
+        clients.get(playerName).setPosition(position);
+    }
+
+
+
+
+
+
+
+
+
     public void PlanetChoiceRequest(String playerName) throws RemoteException {
         PlanetChoiceRequest message = new PlanetChoiceRequest();
         clients.get(playerName).playerChoiceThroughMessage(message);

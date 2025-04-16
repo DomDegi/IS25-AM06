@@ -20,11 +20,14 @@ public interface VirtualController extends Remote, Serializable {
     void leave(String playerName) throws RemoteException;
     void chooseColor(String playerName, String color) throws RemoteException;
 
-    void reqDrawTileRequest(String playerName) throws RemoteException;
-    void reqDrawTileFromTurned(String playerName) throws RemoteException;
+    void notifySetTile(String playerName, Coordinates coordinates, boolean booked, int key) throws RemoteException;
+    void reqDrawTileRequest(String playerName, int index) throws RemoteException;
+    void reqDrawTileFromTurned(String playerName, int index) throws RemoteException;
     void refuseTile(int index) throws RemoteException;
-    void lookGameCards(int index) throws RemoteException;
-    void stopLookingAtCards(int index) throws RemoteException;
+    void showCardsRequest(int index) throws RemoteException;
+    void stopLookingAtCardsRequest(String playerName) throws RemoteException;
+    void notifyCompleted(String playerName) throws RemoteException;
+    void notifySetPosition(String playerName, int position) throws RemoteException;
 
 
     void sendCoordinates(   String playerName,ArrayList<Coordinates> coordinates) throws RemoteException;
@@ -34,11 +37,13 @@ public interface VirtualController extends Remote, Serializable {
     void sendYes( String playerName) throws RemoteException;
     void sendNo( String playerName) throws RemoteException;
     void sendEndShipBoardCreation(String playerName) throws RemoteException;
+
     void sendTurnHourGlass(String playerName) throws RemoteException;
     void reqDrawTileFromPile(String playerName) throws RemoteException;
     void reqDrawTileFromTable(String playerName, int index) throws RemoteException;//pescaggio tile scoperte
     void notifyTileBooking(String playerName) throws RemoteException;//per ora metto key però forse è meglio tile
     void notifyRefusedTile(String playerName) throws RemoteException;
+
 
     /*BOOLEAN
     boolean checkCorrectionShipboard(String playerName) throws RemoteException;
