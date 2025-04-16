@@ -13,10 +13,7 @@ import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.*;
 import static it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.MessageType.*;
@@ -32,6 +29,8 @@ public class GameController {
     private final Map<String, Player> disconnectedPlayers;
     private final ArrayList<Player> playersToEarlyLand = new ArrayList<>();
     private Map<String, Integer> lockedSmallDecks = new HashMap<>();
+    private int hourglassTurns = 0;
+    private boolean hourglassON = false;
 
 
     public String toString(){
@@ -54,7 +53,7 @@ public class GameController {
                 break;
             }
             case GameState.SHIPS_CREATION: {
-                if (game.getHourglassTurns() > 0){
+                if (hourglassTurns > 0){
                     shipsCreation(message);
                 }
                 else
@@ -180,7 +179,7 @@ public class GameController {
                 playersViewMap.get(playerName).showErrorMessage("Can't join a game that's already started");
             } // if the count has been reached starts the game
             if (game.getNumberOfPlayers() == game.getPlayerCount()) {
-                this.startGame(new GenericMessage("whatever"));
+                this.startGame();
                 game.startGame();
             }
         }
@@ -224,9 +223,8 @@ public class GameController {
     }
 
     /**
-     * Starts the game as soon as one of the players sends a turn hourglass request message
-     * @param message received message that can start the game or makes the controller ask for
-     * the turn hourglass request message
+     * Starts the game as soon as one of the players turns the hourglass if LEVEL2 game
+     * if TRIAL starts the game without hourglass
      */
     public synchronized void startGame() {
         if (game.getMode() == TRIAL) {
@@ -325,41 +323,34 @@ public class GameController {
         }
     }
 
-    public  void drawTile(DrawTileRequest message) {
-
-        String playerName = message.getNickname();
-        MessageType drawFromWhere = message.DrawFromWhere();
-        ViewInterface playersView = this.playersViewMap.get(playerName);
+    public  void drawTile(VirtualView playersView, String playerName, int index, int type) {
 
         // Can't draw if the shipboard is completed or there is already a tile to place/book/refuse
-        if (Objects.equals(playerInputs.get(playerName).getMessageType(), DRAW_TILE_REQUEST) ||
-                Objects.equals(playerInputs.get(playerName).getMessageType(), ACCEPT_MESSAGE)||
-                Objects.equals(playerInputs.get(playerName).getMessageType(), SHOW_CARDS_REQUEST)) {
+        if (clientsStatesMap.get(playerName).equals(ClientState.S_MANAGE_DRAWN_TILE)
+            || clientsStatesMap.get(playerName).equals(ClientState.S_FINISHED)) {
             return;
         }
-        switch (drawFromWhere) {
-            case DRAW_TILE_FROM_STACK_REQUEST: {
+        switch (type) {
+            case 0 -> {
                 Tile drawnTile = game.drawTile(playerName);
                 if (drawnTile == null) {
                     playersView.showErrorMessage("drawn tile is null: stack is empty");
                     return;
                 }
                 playersView.showDrawnTile(drawnTile);
-                playerInputs.put(playerName, message);
-                break;
+                clientsStatesMap.put(playerName, ClientState.S_MANAGE_DRAWN_TILE);
             }
-            case DRAW_TILE_FROM_TURNED_REQUEST: {
-                Tile drawnTile = game.drawTurnedTile(playerName, message.getTileIndex());
+            case 1 -> {
+                Tile drawnTile = game.drawTurnedTile(playerName, index);
                 if (drawnTile == null) {
                     playersView.showErrorMessage("drawn tile is null: turned tile is empty or index out of bounds");
                     return;
                 }
                 playersView.showDrawnTile(drawnTile);
-                playerInputs.put(playerName, message);
-                break;
+                clientsStatesMap.put(playerName, ClientState.S_MANAGE_DRAWN_TILE);
             }
-            case DRAW_TILE_FROM_BOOKED_REQUEST : {
-                Tile drawnTile = game.drawBookedTile (playerName, message.getTileIndex());
+            case 2 : {
+                Tile drawnTile = game.drawBookedTile (playerName, index);
 
                 //the index has to be either 0 or 1
                 if (drawnTile == null) {
@@ -367,7 +358,7 @@ public class GameController {
                     return;
                 }
                 playersView.showDrawnTile(drawnTile);
-                playerInputs.put(playerName, message);
+                clientsStatesMap.put(playerName, ClientState.S_MANAGE_DRAWN_TILE);
             }
         }
     }
@@ -560,7 +551,7 @@ public class GameController {
         switch (game.getHourglassTurns()) {
             case 0:
                 broadcastMessage(playerName + " starts the game: GO!");
-
+                updateEveryView(ClientState.S_END_DRAW_TILE_CARD);
                 game.startTimer();
                 break;
             case 1:
@@ -568,8 +559,7 @@ public class GameController {
                 game.startTimer();
                 break;
             case 2:
-                if (playerInputs.get(playerName).getMessageType().equals(ACCEPT_MESSAGE) ||
-                playerInputs.get(playerName).getMessageType().equals(SET_POSITION_RESPONSE)) {
+                if (clientsStatesMap.get(playerName).equals(ClientState.S_FINISHED)) {
                     game.startTimer();
                 }
                 else {
@@ -579,6 +569,23 @@ public class GameController {
             default:
                 throw new IllegalStateException("Unexpected value: " + game.getHourglassTurns() + "\n");
         }
+    }
+
+    public void startTimer() {
+        Timer hourglass = new Timer();
+        this.hourglassTurns++;
+        hourglass.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                hourglassON = false;
+                System.out.println("hourglass is exhausted\n");
+                hourglass.cancel();
+                if (hourglassTurns == 3) {
+                    endShipCreation();
+                    System.out.println("The time is up, ship creation is over\n");
+                }
+            }
+        }, 95000); //95 seconds
     }
 
     //Number 1 player can draw
@@ -768,7 +775,15 @@ public class GameController {
     }
 
     public void updateEveryView(ClientState newState) {
-        playersViewMap.values().forEach(player -> {player.setClientState(newState);});
+        for (String playerName:  playersViewMap.keySet()) {
+            playersViewMap.get(playerName).setClientState(newState);
+            clientsStatesMap.put(playerName, newState);
+        }
+    }
+
+    public void updatePlayerView (ClientState newState, String playerName) {
+        playersViewMap.get(playerName).setClientState(newState);
+        clientsStatesMap.put(playerName, newState);
     }
 
     /**

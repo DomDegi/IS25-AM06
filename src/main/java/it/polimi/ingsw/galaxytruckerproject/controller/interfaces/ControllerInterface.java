@@ -73,11 +73,19 @@ public interface ControllerInterface {
      */
     void playerChoiceThroughMessage (Message message) throws Exception;
 
-    void turnHourglass (String playerName) throws Exception;
+    void turnHourglass () throws Exception;
+
+    void drawTileFromStack ()  throws Exception;
+
+    void drawTileFromTurned (int index) throws Exception;
+
+    void drawTileFromBooked (int index)  throws Exception;
 
     /**
      * this method binds the GameController of the joined game to the player's personal controller
      * @param gameController gameController to set
      */
-    public void setGameController(GameController gameController);
+    void setGameController(GameController gameController);
+
+
 }

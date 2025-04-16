@@ -35,14 +35,11 @@ public interface GameInterface {
     Tile drawTurnedTile(String playerName, int index);
     Tile drawBookedTile(String playerName, int index);
     void refuseTile(String playerName);
-    void startTimer();
     void endShipCreation();
     void drawCard(Map<String, VirtualView> playersView);
     void endCardPhase();
     void endCardEvent();
     ArrayList<Card> getInGameCards (int number);
-    boolean getHourglassState();
-    int getHourglassTurns();
     Map<Integer,Tile> getTurnedTiles();
     boolean playerSetTile(String playerName, Coordinates coordinates);
     boolean playerBookTile(String playerName);

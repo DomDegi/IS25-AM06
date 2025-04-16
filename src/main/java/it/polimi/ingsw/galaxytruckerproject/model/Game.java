@@ -25,8 +25,6 @@ public class Game implements GameInterface {
     private final Map<Integer,Tile> turnedTiles;
     private final FlightBoard flightBoard;
     private Card drawnCard;
-    private int hourglassTurns;
-    private boolean hourglassON;
 
 
     //instances a new game starting in the state START_GAME
@@ -35,7 +33,6 @@ public class Game implements GameInterface {
         this.gameState = START_GAME;
         this.turnedTiles = new HashMap<>();
         this.flightBoard = new FlightBoard(mode);
-        this.hourglassTurns = 0;
         this.tileStack = new TileFactory().getStack(TileFactory.loadTilesFromJson("Tiles.json"));
 
         if (this.mode == GameMode.LEVEL2) {
@@ -45,7 +42,6 @@ public class Game implements GameInterface {
         else {
             this.inGameCards = new TrialCardDeck("trialFlightCards.json").getTrialDeck();
         }
-        this.hourglassON = false;
         this.playerCount = playerCount;
         this.drawnCard = null;
     }
@@ -190,22 +186,6 @@ public class Game implements GameInterface {
         }
     }
 
-    public void startTimer() {
-        Timer hourglass = new Timer();
-        this.hourglassTurns++;
-        hourglass.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                hourglassON = false;
-                System.out.println("hourglass is exhausted\n");
-                hourglass.cancel();
-                if (hourglassTurns == 3) {
-                    endShipCreation();
-                    System.out.println("The time is up, ship creation is over\n");
-                }
-            }
-        }, 95000); //95 seconds
-    }
 
     public void endShipCreation() {
         this.gameState = VERIFY_SHIP_CORRECTNESS;
@@ -293,14 +273,6 @@ public class Game implements GameInterface {
             return null;
         }
         return player.getShipBoard();
-    }
-
-    public int getHourglassTurns() {
-        return hourglassTurns;
-    }
-
-    public boolean getHourglassState() {
-        return hourglassON;
     }
 
     public FlightBoard getFlightBoard() {

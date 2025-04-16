@@ -4,7 +4,7 @@ import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.ControllerInte
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.SetColorRequest;
-import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
 /*
  * This controller class is the one that each client
@@ -21,12 +21,12 @@ public class Controller implements ControllerInterface {
 
     private final MultiGameController multiGameController;
 
-    private final ViewInterface view;
+    private final VirtualView view;
 
     private GameController gameController;
 
 
-    public Controller(MultiGameController multiGameController, ViewInterface view) {
+    public Controller(MultiGameController multiGameController, VirtualView view) {
         this.multiGameController = multiGameController;
         this.view = view;
     }
@@ -93,6 +93,17 @@ public class Controller implements ControllerInterface {
         gameController.turnHourglass(this.nickname);
     }
 
+    public void drawTileFromStack () {
+        gameController.drawTile(view ,nickname,0, 0);
+    }
+
+    public void drawTileFromTurned (int index) {
+        gameController.drawTile(view, nickname, index, 1);
+    }
+
+    public void drawTileFromBooked (int index) {
+        gameController.drawTile(view, nickname,index, 2);
+    }
 
 
 }
