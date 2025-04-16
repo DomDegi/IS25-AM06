@@ -145,7 +145,7 @@ public class ProjectilePenalty extends Penalty {
         while (branch.size()>1 && i==0) {
             for (Set<Coordinates> set : branch) {
                 if (set.contains(received.getFirst())) {
-                    player.getPlayerShip().SetNewShip(set);
+                    player.getShipBoard().SetNewShip(set);
                     i=1;
                 }
             }

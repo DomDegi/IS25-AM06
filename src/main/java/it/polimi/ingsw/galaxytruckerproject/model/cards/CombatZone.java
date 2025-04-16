@@ -2,27 +2,28 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.Penalty;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.MessageType;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.UseCannonResponse;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.UseEngineResponse;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.*;
 
-import static java.lang.Float.valueOf;
 
 public class CombatZone extends Card {
     private final LinkedHashMap<ChallengeType, Penalty> listOfChallenges ;
-    private int playerIndex;
-    private Player currentPlayer = null;
     private final LinkedHashMap<Player, Float> savedValues;
-    float minvalue;
-    List<Player> minPlayers = new ArrayList<>();
+    private Player minPlayer = null;
+    private ViewInterface minPlayerView = null;
+    private int playerIndex = -1;
+    private Player currentPlayer =  null;
+    private ViewInterface currentView = null;
     private ChallengeType currentChallenge = null;
-    private boolean losingPlayerDecided = false;
+    private Penalty currentPenalty = null;
 
 
     @JsonCreator
@@ -32,7 +33,6 @@ public class CombatZone extends Card {
     ) {
         super(level, 0);
         this.listOfChallenges = listOfChallenges;
-        this.playerIndex = 0;
         this.savedValues = new LinkedHashMap<>();
     }
 
@@ -40,172 +40,157 @@ public class CombatZone extends Card {
     public void initializeCard(GameInterface game, Map<String, ViewInterface> viewsMap) {
         this.game = game;
         this.viewsMap = viewsMap;
-        //if there is only one player still flying, combatZone cards get skipped
-        if (game.getNumberOfPlayers() <= 1) {
-            game.endCardEvent();
-        }
-        if (listOfChallenges.isEmpty()) {
-            broadcastMessage("You have completed all the challenges of the combat zone\n");
-            game.endCardEvent();
-            return;
-        }
-
-        if (currentChallenge == null) {
-            currentChallenge = listOfChallenges.entrySet().iterator().next().getKey();
-        }
-
-        if (playerIndex > game.getNumberOfPlayers() - 1 && !losingPlayerDecided) {
-            //this means the losing player still has to get chosen
-            System.out.println("loosing player decision\n");
-            currentPlayer = Collections.min(savedValues.entrySet(), Comparator.comparingDouble(Map.Entry::getValue)).getKey();
-            minvalue= savedValues.get(currentPlayer);
-            for (Map.Entry<Player, Float> entry : savedValues.entrySet()) {
-                if (entry.getValue().equals(minvalue)) {
-                    minPlayers.add(entry.getKey());
-                }
-            }
-            for (Player player : minPlayers) {
-                if(currentPlayer.getPlayerPosition() > player.getPlayerPosition()) {
-                    currentPlayer = player;
-                }
-            }
-            losingPlayerDecided = true;
-            savedValues.clear();
-            listOfChallenges.get(currentChallenge).initializePenalty(, currentPlayer);
-            playerIndex=0;
-            return;
-        }
-
-
-        if(playerIndex <= game.getNumberOfPlayers() - 1) {
-            currentPlayer = game.getListOfInFlightPlayers().get(playerIndex);
-        }
-        if(!losingPlayerDecided) {
-            switch (currentChallenge) {
-                case MINIMUM_CANNON_STRENGTH: {
-                    System.out.println("You can decide to try the challenge with the single cannon strength or activate the double cannons\n");
-                    currentPlayer.printCurrentInfoCannons();
-                    currentPlayer.printCurrentInfoBatteries();
-                    break;
-                }
-
-                //This case is automatically saves the values because it doesn't need inputs
-                case MINIMUM_CREW_NUMBER: {
-                    System.out.println("You have this many crew members" + currentPlayer.getTotalCrew());
-                    savedValues.put(currentPlayer, (float) currentPlayer.getTotalCrew());
-                    playerIndex++;
-                    initializeCard(game, );
-                    break;
-                }
-                case MINIMUM_ENGINE_POWER: {
-                    System.out.println("You can decide to try the challenge with the single engine power or activate the double engines\n");
-                    currentPlayer.printCurrentInfoEngines();
-                    currentPlayer.printCurrentInfoBatteries();
-                    break;
-                }
-            }
-        }
+        nextPlayer();
     }
 
-    @Override
-    public void executeCard(Message message) {
-        String playerName = message.getNickname();
-        if (losingPlayerDecided && currentPlayer != null && playerName.equalsIgnoreCase(currentPlayer.getPlayerName())) {
-            int penaltyReturn = listOfChallenges.get(currentChallenge).applyPenalty(game, currentPlayer, , input, );
-            if (penaltyReturn == 1) {
-                System.out.println("Penalty has been applied to " + currentPlayer.getPlayerName() + "\n");
-                losingPlayerDecided = false;
-                playerIndex = 0;
-                listOfChallenges.remove(currentChallenge);
-                currentChallenge = listOfChallenges.entrySet().iterator().next().getKey();
-                currentPlayer=null;
-                initializeCard(game, );
+    public void nextChallenge () {
+        if (listOfChallenges.isEmpty()) {
+            game.endCardEvent();
+        }
+        if (currentChallenge == null) {
+            currentChallenge = listOfChallenges.sequencedKeySet().getFirst();
+            currentPenalty = listOfChallenges.get(currentChallenge);
+            playerIndex = 0;
+            minPlayer = null;
+        }
+        switch (currentChallenge) {
+            case ChallengeType.MINIMUM_CANNON_STRENGTH -> {
+                cannonStrengthCheck();
+            }
+            case ChallengeType.MINIMUM_CREW_NUMBER -> {
+                crewNumberCheck();
+            }
+            case ChallengeType.MINIMUM_ENGINE_POWER ->{
+                enginePowerCheck();
+            }
+        }
+        findMinPlayer();
+    }
+
+    public void nextPlayer() {
+        playerIndex++;
+        this.currentPlayer = game.getListOfInFlightPlayers().get(playerIndex);
+        this.currentView = viewsMap.get(currentPlayer.getPlayerName());
+        nextChallenge();
+    }
+
+    public void cannonStrengthCheck () {
+        if (currentPlayer != null) {
+            if (currentPlayer.IsDisconnected()) {
+                float power = currentPlayer.getShipBoard().getSingleCannonPower();
+                if (power == 0) {
+                    power += currentPlayer.getShipBoard().getNumPurpleAliens();
+                }
+                savedValues.put(currentPlayer, power);
             }
             else {
-                System.out.println("Penalty needs more input to get completed\n");
+                currentView.asksToUseCannons();
             }
-        } else if (currentPlayer != null && playerName.equalsIgnoreCase(currentPlayer.getPlayerName())) {
+        }
+    }
+
+    public void enginePowerCheck () {
+        if (currentPlayer != null) {
+            if (currentPlayer.IsDisconnected()) {
+                float power = currentPlayer.getShipBoard().getNumSingleEngine();
+                if (power == 0) {
+                    power += currentPlayer.getShipBoard().getNumBrownAliens();
+                }
+                savedValues.put(currentPlayer, power);
+            }
+            else {
+                currentView.asksToUseEngines();
+            }
+        }
+    }
+
+    public void crewNumberCheck () {
+        for (Player player: game.getListOfInFlightPlayers()) {
+            savedValues.put(player, (float) player.getTotalCrew());
+        }
+    }
+
+    public void findMinPlayer() {
+        if (savedValues.size() != game.getNumberOfPlayers())
+            return;
+        float minValue = 150; //big number
+        float currentValue = -1;
+        for (Player player: savedValues.keySet()) {
+            currentValue = savedValues.get(player);
+            if (currentValue < minValue) {
+                minValue = currentValue;
+                minPlayer = player;
+            }
+        }
+        minPlayerView = viewsMap.get(minPlayer.getPlayerName());
+        if (!currentPenalty.initializePenalty(minPlayerView, minPlayer)) {
+            resetForNextPenalty();
+        }
+    }
+
+    public void executeCard (Message message) {
+        String playerName = message.getNickname();
+        if (!playerName.equals(currentPlayer.getPlayerName())) {
+            return;
+        }
+        if (minPlayer == null) {
             switch (currentChallenge) {
-                case ChallengeType.MINIMUM_ENGINE_POWER: {
-                    minimumEngineStrength(game, currentPlayer, input);
-                    break;
-                }
-                case ChallengeType.MINIMUM_CREW_NUMBER: {
-                    System.out.println("you shouldn't get here because finding the loser doesn't require inputs\n");
-                    break;
-                }
-                case ChallengeType.MINIMUM_CANNON_STRENGTH: {
-                    minimumCannonStrength(game, currentPlayer, input);
-                    break;
-                }
+                case MINIMUM_CANNON_STRENGTH -> saveCannonValue(message);
+                case MINIMUM_ENGINE_POWER -> saveEngineValue(message);
+                case MINIMUM_CREW_NUMBER -> saveCrewValue();
+            }
+        }
+        else {
+            if (currentPenalty.applyPenalty(game, minPlayer, minPlayerView,  message) == 1) {
+                resetForNextPenalty();
             }
         }
     }
 
-    public void minimumEngineStrength (Game game, Player playerToPlay, String[] input) {
-        if (input[0].equalsIgnoreCase("no")) {
-            int engineStrength = playerToPlay.useDoubleEngines(new ArrayList<>());
-            savedValues.put(playerToPlay, (float) engineStrength);
-            playerIndex++;
-            initializeCard(game, );
-            return;
-        }
-        ArrayList<Coordinates> coordinates = new ArrayList<>(playerToPlay.parseCoordinates(input));
-
-        //wasn't able to parse the input to coordinates correctly
-        if (coordinates.isEmpty()) {
-            System.out.println("try typing the input again\n");
-            return;
-        }
-
-        //next input will actually give us the engine strength
-        int engineStrength = playerToPlay.useDoubleEngines(coordinates);
-        if (engineStrength == - 2){
-            System.out.println("input another set of coordinates to choose batteries\n");
-            return;
-        }
-
-        //coordinates didn't correspond to doubleCEngines or batteries
-        if (engineStrength == -1){
-            System.out.println("you picked wrong coordinates, re-enter both engines and batteries\n");
-            return;
-        }
-        //saves the engine strength of current player and goes to the next one
-        savedValues.put(playerToPlay, (float) engineStrength);
-        playerIndex++;
-        initializeCard(game, );
+    public void resetForNextPenalty() {
+        savedValues.clear();
+        playerIndex = -1;
+        currentChallenge = null;
+        minPlayer = null;
+        minPlayerView = null;
+        currentPlayer = null;
+        listOfChallenges.sequencedKeySet().removeFirst();
+        nextPlayer();
     }
 
-    public void minimumCannonStrength (Game game, Player playerToPlay, String[] input) {
-        if (input[0].equalsIgnoreCase("no")) {
-            float cannonStrength = playerToPlay.useDoubleCannons(new ArrayList<>());
-            savedValues.put(playerToPlay, cannonStrength);
-            playerIndex++;
-            initializeCard(game, );
-            return;
+    public void saveCannonValue (Message message) {
+        if (message.getMessageType().equals(MessageType.USE_CANNON_RESPONSE)) {
+            UseCannonResponse  useCannonResponse = (UseCannonResponse) message;
+            float strength = currentPlayer.useCannons(useCannonResponse.getStrength(), useCannonResponse.getCoordinates());
+            if (strength != -1) {
+                savedValues.put(currentPlayer, strength);
+                nextPlayer();
+            }
+            else {
+                currentView.asksToUseCannons();
+            }
         }
-        ArrayList<Coordinates> coordinates = new ArrayList<>(playerToPlay.parseCoordinates(input));
+    }
 
-        if (coordinates.isEmpty()) {
-            System.out.println("try typing the input again\n");
-            return;
+    public void saveEngineValue (Message message) {
+        if (message.getMessageType().equals(MessageType.USE_ENGINE_RESPONSE)) {
+            UseEngineResponse  useEngineResponse = (UseEngineResponse) message;
+            float strength = currentPlayer.useEngines(useEngineResponse.getNumEngine(), useEngineResponse.getCoordinates());
+            if (strength != -1) {
+                savedValues.put(currentPlayer, strength);
+                nextPlayer();
+            }
+            else {
+                currentView.asksToUseEngines();
+            }
         }
+    }
 
-        //next input will actually give us the cannon strength
-        float cannonStrength = playerToPlay.useDoubleCannons(coordinates);
-        if (cannonStrength == - 2){
-            System.out.println("input another set of coordinates to choose batteries\n");
-            return;
+    public void saveCrewValue () {
+        if (!savedValues.containsKey(currentPlayer)) {
+            savedValues.put(currentPlayer, (float) currentPlayer.getTotalCrew());
         }
-
-        //coordinates didn't correspond to cannons or batteries
-        if (cannonStrength == -1) {
-            System.out.println("you picked wrong coordinates, re-enter both cannons and batteries\n");
-        }
-        //saves the engine strength of current player and goes to the next one
-        savedValues.put(playerToPlay, cannonStrength);
-        playerIndex++;
-        initializeCard(game, );
+        nextPlayer();
     }
 
     @Override
@@ -215,9 +200,5 @@ public class CombatZone extends Card {
             string.append(challengeType).append(" ").append(listOfChallenges.get(challengeType).toString()).append(" ");;
             }
         return string.toString();
-    }
-
-    public int getPlayerIndex() {
-        return playerIndex;
     }
 }

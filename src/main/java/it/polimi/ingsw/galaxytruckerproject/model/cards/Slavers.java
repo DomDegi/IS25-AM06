@@ -144,8 +144,8 @@ public class Slavers extends Enemies{
                         " to claim the rewards or not");
                 playersView.asksToMakeAChoice();
             }
-            else if (currentPlayer.getPlayerShip().getDoubleCannon().isEmpty() ||
-                    currentPlayer.getPlayerShip().getBatteryCoordinates().isEmpty()) {
+            else if (currentPlayer.getShipBoard().getDoubleCannon().isEmpty() ||
+                    currentPlayer.getShipBoard().getBatteryCoordinates().isEmpty()) {
                 if (singleCannonPower == cannonStrength) {
                     nextPlayer();
                 }

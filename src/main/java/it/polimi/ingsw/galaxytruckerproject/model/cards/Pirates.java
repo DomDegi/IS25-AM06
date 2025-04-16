@@ -151,8 +151,8 @@ public class Pirates extends Enemies {
                         " to claim the rewards or not");
                 currentView.asksToMakeAChoice();
             }
-            else if (currentPlayer.getPlayerShip().getDoubleCannon().isEmpty() ||
-                    currentPlayer.getPlayerShip().getBatteryCoordinates().isEmpty()) {
+            else if (currentPlayer.getShipBoard().getDoubleCannon().isEmpty() ||
+                    currentPlayer.getShipBoard().getBatteryCoordinates().isEmpty()) {
                 if (singleCannonPower == cannonStrength) {
                     nextPlayer();
                 }

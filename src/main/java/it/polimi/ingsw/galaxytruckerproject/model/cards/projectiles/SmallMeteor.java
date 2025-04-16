@@ -42,7 +42,7 @@ public class SmallMeteor extends Projectile {
      * @return
      */
     private Defense checkNorth(Player player, int diceRoll) {
-        ShipBoard ship = player.getPlayerShip();
+        ShipBoard ship = player.getShipBoard();
         Optional<Tile> Temp = Optional.empty();
         Optional<Tile>[][] tileTable= ship.getTilesTable();
 
@@ -55,7 +55,7 @@ public class SmallMeteor extends Projectile {
         return Defense.HIT;
     }
     private Defense checkSouth(Player player, int diceRoll) {
-        ShipBoard ship = player.getPlayerShip();
+        ShipBoard ship = player.getShipBoard();
         Optional<Tile> Temp = Optional.empty();
         Optional<Tile>[][] tileTable= ship.getTilesTable();
         if(ship.getTile(coordinatesToDestroy.get()).getSouth().getConnectorsType()==Connectors.SMOOTH){
@@ -67,7 +67,7 @@ public class SmallMeteor extends Projectile {
         return Defense.HIT;
     }
     private Defense checkEast(Player player, int diceRoll) {
-        ShipBoard ship = player.getPlayerShip();
+        ShipBoard ship = player.getShipBoard();
         Optional<Tile> Temp = Optional.empty();
         Optional<Tile>[][] tileTable= ship.getTilesTable();
         if(ship.getTile(coordinatesToDestroy.get()).getEast().getConnectorsType()==Connectors.SMOOTH){
@@ -79,7 +79,7 @@ public class SmallMeteor extends Projectile {
         return Defense.HIT;
     }
     private Defense checkWest(Player player, int diceRoll) {
-        ShipBoard ship = player.getPlayerShip();
+        ShipBoard ship = player.getShipBoard();
         Optional<Tile> Temp = Optional.empty();
         Optional<Tile>[][] tileTable= ship.getTilesTable();
         if(ship.getTile(coordinatesToDestroy.get()).getWest().getConnectorsType()==Connectors.SMOOTH){

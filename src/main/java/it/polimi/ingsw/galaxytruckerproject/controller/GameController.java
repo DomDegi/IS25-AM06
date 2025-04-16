@@ -2,7 +2,6 @@ package it.polimi.ingsw.galaxytruckerproject.controller;
 
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
-import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
@@ -247,7 +246,7 @@ public class GameController {
                 playersView.showBookedTiles
                         (activePlayers
                                 .get(playerName).
-                                getPlayerShip().
+                                getShipBoard().
                                 getBookedTiles());
                 break;
 
