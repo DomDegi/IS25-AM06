@@ -1,5 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.network;
 
+import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
@@ -13,5 +14,6 @@ public interface VirtualView extends ViewInterface {
     void notifyPlayerMovement(String playerName, int playerPosition, int playerRanking) throws RemoteException;
     void notifyPositionedTile(String playerName,Tile tile) throws RemoteException;//notify that a tile was placed by a player
     void notifyBookedTile (String playerName, Tile tile) throws RemoteException;
-    void notifyAvailableCardDeck(Map<String,Integer> lockedSmallDecks) throws RemoteException;
+    void notifyAvailableCardDeck(Map<String,Integer> lockedSmallDecks) throws RemoteException; //notify which cards deck are not looked at
+    void notifyDrawnCard(Card card) throws RemoteException; //tell the players which card has been drawn
 }

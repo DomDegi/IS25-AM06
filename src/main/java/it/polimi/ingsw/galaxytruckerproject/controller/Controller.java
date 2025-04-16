@@ -4,7 +4,6 @@ import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.ControllerInte
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.SetColorRequest;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
@@ -89,10 +88,6 @@ public class Controller implements ControllerInterface {
         }
     }
 
-    public void playerChoiceThroughMessage (Message message) {
-        gameController.processPlayerInput(message);
-    }
-
     public void turnHourglass () {
         gameController.turnHourglass(this.nickname);
     }
@@ -106,7 +101,7 @@ public class Controller implements ControllerInterface {
     }
 
     public void refuseTile(){
-        gameController.refuseTile(view, nickname);
+        gameController.refuseTile(nickname);
     }
 
     public void lookGameCards(int index) {
@@ -128,4 +123,15 @@ public class Controller implements ControllerInterface {
         gameController.shipErrorManagement(nickname, view, toRemove);
     }
 
+    public void completedShip() {
+        gameController.completed(nickname, view);
+    }
+
+    public void drawCard() {
+        gameController.drawCard(nickname, view);
+    }
+
+    public void earlyLanding () {
+        gameController.earlyLanding(nickname, view);
+    }
 }

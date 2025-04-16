@@ -39,11 +39,11 @@ public class CoordInputManager {
             return false;
         }
         switch (coordReqType) {
-            case CHOOSE_TO_BREACK:{
+            case CHOOSE_TO_BREAK:{
                 coordinates.add(coordinate);
                 return true;
             }
-            case CHOOSE_TO_MANTAIN:{
+            case CHOOSE_TO_MAINTAIN:{
                 if(coordinates.isEmpty()) {
                     coordinates.add(coordinate);
                     return true;

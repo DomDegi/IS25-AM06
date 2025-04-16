@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.controller;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.HashMap;
@@ -13,7 +14,7 @@ public class MultiGameController {
 
     private final Map<String, GameController> gamesMap = new HashMap<>();
 
-    private final Map<String, ViewInterface> viewsMap = new HashMap<>();
+    private final Map<String, VirtualView> viewsMap = new HashMap<>();
 
     public MultiGameController() {}
 
@@ -26,7 +27,7 @@ public class MultiGameController {
      * @param controller player's personal controller to interact with the model
      * @return boolean value to tell if the login was successful
      */
-    public boolean login(String nickname, ViewInterface view, Controller controller) {
+    public boolean login(String nickname, VirtualView view, Controller controller) {
         boolean wasSuccessful;
         if (view != null && controller != null) {
             //check if the nickname is unique
@@ -58,7 +59,7 @@ public class MultiGameController {
     }
 
     public void createGame (String creator, String gameName, int playerCount, Controller controller, GameMode chosenMode) {
-        ViewInterface creatorView = viewsMap.get(creator);
+        VirtualView creatorView = viewsMap.get(creator);
 
         if (creator != null && creatorView != null && controller != null && !isAlreadyInAGame(gameName)) {
             if (gamesMap.get(gameName) != null) {
@@ -81,7 +82,7 @@ public class MultiGameController {
 
     public void joinGame (String joiner, String gameName, Controller controller) {
         GameController gameToJoin = gamesMap.get(gameName);
-        ViewInterface joinerView = viewsMap.get(joiner);
+        VirtualView joinerView = viewsMap.get(joiner);
 
         if (joinerView != null && controller != null) {
             if (gameToJoin == null) {
@@ -104,7 +105,7 @@ public class MultiGameController {
         GameController gameToLeave = this.gameFromNickname(leaver);
 
         if (gameToLeave != null) {
-            ViewInterface leaverView = gameToLeave.removePlayer(leaver);
+             VirtualView leaverView = gameToLeave.removePlayer(leaver);
 
             if (gameToLeave.isGameEmpty()) {
                 gamesMap.remove(gameToLeave.getGameName());
@@ -173,7 +174,7 @@ public class MultiGameController {
      * @param nickname nickname of the player to add the viewsMap
      * @param view view of the player to call the method that shows the joinable games on
      */
-    public void joinableGamesList(String nickname, ViewInterface view) {
+    public void joinableGamesList(String nickname, VirtualView view) {
         Map<String, GameController> joinableGames;
         joinableGames = gamesMap.entrySet().stream().filter(entry -> entry.getValue().getGameState().equals(GameState.START_GAME))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));

@@ -62,20 +62,6 @@ public interface ControllerInterface {
      */
     void chooseColor (String chosenColor) throws Exception;
 
-    /**
-     * Used by the player to draw an event card
-     * If the cards are over or
-     * the player isn't the in the lead notifies player.
-     * @throws Exception
-     */
-
-    /**
-     * this method is used for game phases where the input player input
-     * has to be processed internally by the game model and can't be said
-     * which type of input is required, so it all gets sent through messages.
-     */
-    void playerChoiceThroughMessage (Message message) throws Exception;
-
     void turnHourglass () throws Exception;
 
     void drawTileFromStack ()  throws Exception;
@@ -86,6 +72,9 @@ public interface ControllerInterface {
 
     void shipErrorManagement(ArrayList<Coordinates> toRemove) throws Exception;
 
+    void drawCard () throws Exception;
+
+    void earlyLanding () throws Exception;
 
     /**
      * this method binds the GameController of the joined game to the player's personal controller
@@ -93,5 +82,6 @@ public interface ControllerInterface {
      */
     void setGameController(GameController gameController);
 
+    void completedShip() throws Exception;
 
 }

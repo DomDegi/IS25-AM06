@@ -8,6 +8,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.rmi.RemoteException;
@@ -28,7 +29,7 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         this.clients = new HashMap<String, Controller>();
     }
 
-    public void connect(ViewInterface client, String playerName) throws RemoteException {
+    public void connect(VirtualView client, String playerName) throws RemoteException {
 
         Controller controllerPlayer = new Controller(multiController, client);
 
@@ -85,8 +86,8 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).playerChoiceThroughMessage(message);
     }
 
-    public void notifySetTile(String playerName, Coordinates coordinates, boolean booked, int key) throws RemoteException {
-        clients.get(playerName).setTile(coordinates, booked, key);
+    public void notifySetTile(String playerName, Tile tile) throws RemoteException {
+        clients.get(playerName).setTile(tile);
     }
 
     public void sendEndShipBoardCreation(String playerName) throws RemoteException {
@@ -119,10 +120,6 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).drawTileFromTurned(index);
     }
 
-    //DONE(in teoria non serve dato che vengono gestite in locale)
-    public void reqDrawTileFromBooked(String playerName, int index) throws RemoteException {
-        clients.get(playerName).drawTileFromBooked(index);
-    }
 
     //DONE
     public void sendTurnHourGlass(String playerName) throws RemoteException {
