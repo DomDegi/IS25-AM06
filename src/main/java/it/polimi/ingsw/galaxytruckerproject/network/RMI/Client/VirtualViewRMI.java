@@ -125,7 +125,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     public void notifyNewTurnedTile(Tile tile) throws RemoteException{
         clientController.addTurnedTile(tile);
     }
-    public void notfyRemmoveTurnedTile(Tile tile) throws RemoteException{
+    public void notfyRemoveTurnedTile(Tile tile) throws RemoteException{
         clientController.removeTurnedTile(tile);
     }
 

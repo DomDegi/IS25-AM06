@@ -7,13 +7,16 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
+import java.rmi.RemoteException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.*;
 import static it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.MessageType.*;
@@ -28,7 +31,7 @@ public class GameController {
     private final Map<String, Player> activePlayers;
     private final Map<String, Player> disconnectedPlayers;
     private final ArrayList<Player> playersToEarlyLand = new ArrayList<>();
-    private Map<String, Integer> lockedSmallDecks = new HashMap<>();
+    private final ConcurrentHashMap<String, Integer> lockedSmallDecks = new ConcurrentHashMap<>();
     private int hourglassTurns = 0;
     private boolean hourglassON = false;
 
@@ -57,7 +60,7 @@ public class GameController {
                     shipsCreation(message);
                 }
                 else
-                    startGame(message);
+                    startGame();
                 break;
             }
             case GameState.VERIFY_SHIP_CORRECTNESS: {
@@ -241,10 +244,6 @@ public class GameController {
         switch (message.getMessageType()) {
 
             //draws either from stack or from turned depending on words[1], if turned words[3] is the index of turnedTiles
-            case DRAW_TILE_REQUEST:
-                drawTile((DrawTileRequest) message);
-                break;
-
             //prints the turned tiles ArrayList
             case SHOW_TURNED_TILES_REQUEST:
                 playersView.showTurnedTiles(game.getTurnedTiles());
@@ -281,13 +280,13 @@ public class GameController {
             //shows deck of 3 cards 1, 2, 3. Can only be called when no card is drawn.
             case SHOW_CARDS_REQUEST:
                 if (game.getMode() != TRIAL)
-                    lookGameCards(playersView, message);
+                    lookGameCards(playersView, playerName, cardsToLookAt);
                 else
                     playersView.showErrorMessage("You can't look at cards in TRIAL FLIGHT MODE");
                 break;
 
             case STOP_LOOKING_AT_CARDS_REQUEST:
-                stopLookingAtCards(playersView, message);
+                stopLookingAtCards(playersView, playerName);
                 break;
 
 
@@ -299,11 +298,6 @@ public class GameController {
             //all other player inputs get refused afterward except for turnHourglass
             case ACCEPT_MESSAGE:
                 completed(playerName, playersView);
-                break;
-
-            //looks at other player ship, if no second word, looks at yours
-            case SHOW_PLAYERS_SHIPBOARD_REQUEST:
-                checkShipBoard(playersView, message);
                 break;
 
             //player with completed ships have to position their ships on the flightboard
@@ -323,44 +317,59 @@ public class GameController {
         }
     }
 
-    public  void drawTile(VirtualView playersView, String playerName, int index, int type) {
+    public  void drawTile(VirtualView playersView, String playerName, int index, boolean turned) {
 
         // Can't draw if the shipboard is completed or there is already a tile to place/book/refuse
-        if (clientsStatesMap.get(playerName).equals(ClientState.S_MANAGE_DRAWN_TILE)
-            || clientsStatesMap.get(playerName).equals(ClientState.S_FINISHED)) {
+        if (playerStateIs(playerName, ClientState.S_MANAGE_DRAWN_TILE)
+                || playerStateIs(playerName, ClientState.S_FINISHED)) {
             return;
         }
-        switch (type) {
-            case 0 -> {
-                Tile drawnTile = game.drawTile(playerName);
-                if (drawnTile == null) {
-                    playersView.showErrorMessage("drawn tile is null: stack is empty");
-                    return;
-                }
-                playersView.showDrawnTile(drawnTile);
-                clientsStatesMap.put(playerName, ClientState.S_MANAGE_DRAWN_TILE);
+        Tile drawnTile;
+        if (!turned) {
+            drawnTile = game.drawTile(playerName);
+            if (drawnTile == null) {
+                playersView.showErrorMessage("drawn tile is null: stack is empty");
+                return;
             }
-            case 1 -> {
-                Tile drawnTile = game.drawTurnedTile(playerName, index);
+            playersView.showDrawnTile(drawnTile);
+        }
+        else {
+            drawnTile = game.drawTurnedTile(playerName, index);
                 if (drawnTile == null) {
                     playersView.showErrorMessage("drawn tile is null: turned tile is empty or index out of bounds");
                     return;
                 }
                 playersView.showDrawnTile(drawnTile);
-                clientsStatesMap.put(playerName, ClientState.S_MANAGE_DRAWN_TILE);
-            }
-            case 2 : {
-                Tile drawnTile = game.drawBookedTile (playerName, index);
-
-                //the index has to be either 0 or 1
-                if (drawnTile == null) {
-                    playersView.showErrorMessage("drawn tile is null: booked tile is empty or index out of bounds");
-                    return;
-                }
-                playersView.showDrawnTile(drawnTile);
-                clientsStatesMap.put(playerName, ClientState.S_MANAGE_DRAWN_TILE);
-            }
+                notifyRemoveTurnedTile(drawnTile);
         }
+        clientsStatesMap.put(playerName, ClientState.S_MANAGE_DRAWN_TILE);
+    }
+
+    public void notifyRemoveTurnedTile(Tile tile) {
+        playersViewMap.values().forEach(virtualView -> {
+            try {
+                virtualView.notifyRemoveTurnedTile(tile);
+            } catch (Exception ignored) { //unhandled exception
+            }
+        });
+    }
+
+    public void notifyBookedTile (String playerName, Tile tile) {
+        playersViewMap.values().forEach(virtualView -> {
+            try {
+                virtualView.notifyBookedTile(playerName, tile);
+            } catch (Exception ignored) {//unhandled exception
+            }
+        });
+    }
+
+    public void notifyNewTurnedTile(Tile tile) {
+        playersViewMap.values().forEach(virtualView -> {
+            try {
+                virtualView.notifyNewTurnedTile(tile);
+            } catch (Exception ignored) { //unhandled exception
+            }
+        });
     }
 
     //errors check and management
@@ -377,6 +386,7 @@ public class GameController {
             }
         }
     }
+
     public void shipErrorManagement(Message message){
         String playerName =  message.getNickname();
         Player player = game.identifyPlayerByName(playerName);
@@ -406,72 +416,106 @@ public class GameController {
     }
 
     public void refuseTile(String playerName) {
-        if (Objects.equals(playerInputs.get(playerName).getMessageType(), DRAW_TILE_REQUEST)) {
-            DrawTileRequest drawTileRequest = (DrawTileRequest) playerInputs.get(playerName);
-            if (drawTileRequest.DrawFromWhere().equals(DRAW_TILE_FROM_BOOKED_REQUEST)) {
-                game.playerBookTile(playerName);
-            }
-            else {
-                game.refuseTile(playerName);
-            }
-            playerInputs.put(playerName, new RefuseMessage(playerName));
-        }
-        else {
-            ViewInterface playersView = this.getViewFromNickname(playerName);
-            playersView.showErrorMessage("can't refuse tile when still have to draw one");
-        }
-    }
-
-    public synchronized void lookGameCards(ViewInterface playersView, Message message) {
-        String playerName = message.getNickname();
-        ShowCardsRequest messageReceived = (ShowCardsRequest) message;
-        if (Objects.equals(playerInputs.get(playerName).getMessageType(), DRAW_TILE_REQUEST)
-                || Objects.equals(playerInputs.get(playerName).getMessageType(), ACCEPT_MESSAGE)
-                || Objects.equals(playerInputs.get(playerName).getMessageType(), SHOW_CARDS_REQUEST)) {
-            playersView.showErrorMessage("can't look at the event cards while you still have your drawn tile, " +
-                    "you completed your ship or you are already looking at cards");
+        if (playerStateIs(playerName, ClientState.S_MANAGE_DRAWN_TILE)) {
             return;
         }
-        for (Integer integer: lockedSmallDecks.values()) {
-            if (integer == messageReceived.getCardsToLookAt()) {
-                playersView.showErrorMessage("Error: deck is already been looked at by another player");
-                return;
-            }
-        }
-        playersView.showInGameCards(game.getInGameCards(messageReceived.getCardsToLookAt()));
-        playerInputs.put(playerName, message);
+        Tile refused = game.refuseTile(playerName);
+        notifyNewTurnedTile(refused);
+        updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
     }
 
-    public void stopLookingAtCards(ViewInterface playersView, Message message) {
-        String playerName = message.getNickname();
-        if (!Objects.equals(playerInputs.get(playerName).getMessageType(), SHOW_CARDS_REQUEST)) {
+    public synchronized void lookGameCards(String playerName, ViewInterface playersView, int cardsToLookAt) {
+        if (playerStateIs(playerName, ClientState.S_END_DRAW_TILE_CARD)) {
+            for (Integer integer: lockedSmallDecks.values()) {
+                if (integer == cardsToLookAt) {
+                    playersView.showErrorMessage("Error: deck is already been looked at by another player");
+                    return;
+                }
+            }
+            lockedSmallDecks.put(playerName, cardsToLookAt);
+            playersView.showInGameCards(game.getInGameCards(cardsToLookAt));
+            updatePlayerView(ClientState.MANAGE_CARDS, playerName);
+            notifyAvailableCardDeck(lockedSmallDecks);
+        }
+        else {
+            playersView.showErrorMessage("can't look at the event cards while you still have your drawn tile, " +
+                    "you completed your ship or you are already looking at cards");
+        }
+    }
+
+    private void notifyAvailableCardDeck(ConcurrentHashMap<String, Integer> lockedSmallDecks) {
+        for (VirtualView view: playersViewMap.values()) {
+            try {
+                view.notifyAvailableCardDeck(lockedSmallDecks);
+            }
+            catch (Exception ignored) {
+            }
+        }
+    }
+
+    public void stopLookingAtCards(ViewInterface playersView, String playerName) {
+        if (clientsStatesMap.get(playerName) != ClientState.MANAGE_CARDS) {
             playersView.showErrorMessage("You are not looking at cards");
             return;
         }
         lockedSmallDecks.remove(playerName);
-        playerInputs.put(playerName, message);
+        updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
+        notifyAvailableCardDeck(lockedSmallDecks);
     }
 
     //set drawn tile on the player's shipboard
-    public void setTile (ViewInterface playersView, SendCoordinatesResponse message) {
-        String playerName = message.getNickname();
-        if (Objects.equals(playerInputs.get(playerName).getMessageType(), DRAW_TILE_REQUEST)) {
-            if (!game.playerSetTile(playerName, message.getFirst())) {
-                playersView.showErrorMessage("coordinates input weren't valid");
+    public void setTile (ViewInterface playersView, String playerName, Coordinates coordinates, boolean booked, int key) {
+        Tile tile;
+        if (!booked) {
+            if (clientsStatesMap.get(playerName) != ClientState.S_MANAGE_DRAWN_TILE) {
+                playersView.showErrorMessage("error: no drawn tile");
                 return;
             }
-            playerInputs.put(playerName, message);
+        }
+        else {
+            tile = game.drawBookedTile(playerName, coordinates, key);
+            if (tile == null) {
+                playersView.showErrorMessage("error: tile isn't in booked tile");
+                return;
+            }
+        }
+        tile = game.playerSetTile(playerName, coordinates, key);
+
+        if (tile != null) {
+            updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
+            notifyPositionedTile(tile);
+        }
+        else {
+            playersView.showErrorMessage("was not able to set tile");
+        }
+    }
+
+    private void notifyPositionedTile(Tile tile) {
+        for (VirtualView view: playersViewMap.values()) {
+            view.notifyPositionedTile(tile);
         }
     }
 
     //set currently drawn tile as booked for the player
-    public void bookTile(ViewInterface playersView, Message message) {
-        if (Objects.equals(playerInputs.get(message.getNickname()).getMessageType(), DRAW_TILE_REQUEST)) {
-            if (!game.playerBookTile (message.getNickname())) {
-                playersView.showErrorMessage("either your booked tiles are full or your input was out of bounds");
-                return;
+    public void bookTile(ViewInterface playersView, String playerName) {
+        if (playerStateIs(playerName,  ClientState.S_MANAGE_DRAWN_TILE)) {
+            Tile toBook = game.playerBookTile(playerName);
+            if (toBook != null) {
+                updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
+                for (VirtualView view: playersViewMap.values()) {
+                    try {
+                        view.notifyBookedTile(playerName, toBook);
+                    }
+                    catch(Exception ignored) {
+                    }
+                }
             }
-            playerInputs.put(message.getNickname(), message);
+            else {
+                playersView.showErrorMessage("no drawn tile or booked tile is already full!");
+            }
+        }
+        else  {
+            playersView.showErrorMessage("can't book tile, no drawn tile");
         }
     }
 
@@ -784,6 +828,10 @@ public class GameController {
     public void updatePlayerView (ClientState newState, String playerName) {
         playersViewMap.get(playerName).setClientState(newState);
         clientsStatesMap.put(playerName, newState);
+    }
+
+    public boolean playerStateIs(String playerName,ClientState stateToVerify) {
+        return clientsStatesMap.get(playerName) == stateToVerify;
     }
 
     /**

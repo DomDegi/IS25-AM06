@@ -33,16 +33,16 @@ public interface GameInterface {
     //Methods for ships creation phase
     Tile drawTile(String playerName);
     Tile drawTurnedTile(String playerName, int index);
-    Tile drawBookedTile(String playerName, int index);
-    void refuseTile(String playerName);
+    Tile drawBookedTile(String playerName, Coordinates coordinates, int key);
+    Tile refuseTile(String playerName);
     void endShipCreation();
     void drawCard(Map<String, VirtualView> playersView);
     void endCardPhase();
     void endCardEvent();
     ArrayList<Card> getInGameCards (int number);
     Map<Integer,Tile> getTurnedTiles();
-    boolean playerSetTile(String playerName, Coordinates coordinates);
-    boolean playerBookTile(String playerName);
+    Tile playerSetTile(String playerName, Coordinates coordinates, int key);
+    Tile playerBookTile(String playerName);
 
     //Card phase cards
     int getCardsLeft();

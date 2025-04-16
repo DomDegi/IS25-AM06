@@ -86,7 +86,9 @@ public class Game implements GameInterface {
             System.out.println("Tile stack empty\n");
             return null;
         }
-        player.hasDrawnTile(drawnTile);
+        if (drawnTile != null) {
+            player.hasDrawnTile(drawnTile);
+        }
         return drawnTile;
     }
 
@@ -94,24 +96,31 @@ public class Game implements GameInterface {
         Player player = identifyPlayerByName(playerName);
         if (player == null || (index < 0 || index >= turnedTiles.size())) { return null;}
         Tile drawnTile = turnedTiles.remove(index);
-        player.hasDrawnTile(drawnTile);
+        if (drawnTile != null) {
+            player.hasDrawnTile(drawnTile);
+        }
         return drawnTile;
     }
 
     //sets the booked tile at index 0 or 1 as the drawn tile for player: playerName
-    public Tile drawBookedTile (String playerName, int index) {
+    public Tile drawBookedTile (String playerName, Coordinates coordinates, int key) {
         Player player = identifyPlayerByName(playerName);
-        if ((player == null) || ((index != 0) && (index != 1))) { return null;}
-        Tile drawnTile = player.getShipBoard().removeBookedTile(index);
-        if (drawnTile == null) { return null;}
-        player.hasDrawnTile(drawnTile);
+        ArrayList<Tile> bookedTiles = player.getShipBoard().getBookedTiles();
+        Tile drawnTile = null;
+        for (int i = 0; i < bookedTiles.size(); i++) {
+            if (bookedTiles.get(i).getKey() == key) {
+                drawnTile = player.getShipBoard().removeBookedTile(i);
+                player.hasDrawnTile(drawnTile);
+            }
+        }
         return drawnTile;
     }
 
-    public void refuseTile(String playerName) {
+    public Tile refuseTile(String playerName) {
         Player player = identifyPlayerByName(playerName);
         Tile removedTile = player.removeDrawnTile();
         turnedTiles.put(removedTile.getKey(), removedTile);
+        return removedTile;
     }
 
     public void printTurnedTiles() {
@@ -170,21 +179,29 @@ public class Game implements GameInterface {
         return bunch3;
     }
 
-    public boolean playerSetTile (String playerName, Coordinates coordinates) {
+    public Tile playerSetTile (String playerName, Coordinates coordinates, int key) {
         Player player = identifyPlayerByName(playerName);
-        return player.getShipBoard().positionTile(Optional.ofNullable(player.getDrawnTile()), coordinates);
+        Tile settedTile = player.getDrawnTile();
+        if (settedTile.getKey() != key) {
+            return null;
+        }
+        if (player.getShipBoard().positionTile(Optional.ofNullable(player.getDrawnTile()), coordinates))
+            return settedTile;
+        else
+            return null;
     }
 
-    public boolean playerBookTile (String playerName) {
+    public Tile playerBookTile (String playerName) {
         Player player = identifyPlayerByName(playerName);
-        if (player.getDrawnTile() == null) {
-            return false;
+        Tile drawnTile = player.getDrawnTile();
+        if (drawnTile == null) {
+            return null;
         }
         if (player.getShipBoard().addBookedTile(player.removeDrawnTile()))
-            return true;
+            return drawnTile;
         else {
             System.out.println("Booked tiles are full\n");
-            return false;
+            return null;
         }
     }
 
