@@ -2,6 +2,8 @@ package it.polimi.ingsw.galaxytruckerproject.controller;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.ControllerInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.SetColorRequest;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
@@ -94,16 +96,31 @@ public class Controller implements ControllerInterface {
     }
 
     public void drawTileFromStack () {
-        gameController.drawTile(view ,nickname,0, 0);
+        gameController.drawTile(view ,nickname,0, false);
     }
 
     public void drawTileFromTurned (int index) {
-        gameController.drawTile(view, nickname, index, 1);
+        gameController.drawTile(view, nickname, index, true);
     }
 
-    public void drawTileFromBooked (int index) {
-        gameController.drawTile(view, nickname,index, 2);
+    public void refuseTile(){
+        gameController.refuseTile(view, nickname);
+
     }
 
+    public void lookGameCards(int index) {
+        gameController.lookGameCards( view, nickname,  index);
+    }
+
+    public void stopLookingAtCards(){
+        gameController.stopLookingAtCards(view, nickname);
+    }
+
+    public void setTile(Coordinates coordinates, boolean booked, int key) {
+        gameController.setTile(view,nickname,coordinates,booked,key);
+    }
+    public void bookTile(){
+        gameController.bookTile(view, nickname);
+    }
 
 }

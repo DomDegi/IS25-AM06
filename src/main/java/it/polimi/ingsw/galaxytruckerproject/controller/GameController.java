@@ -7,12 +7,14 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
+import java.rmi.RemoteException;
 import java.util.*;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.*;
@@ -323,7 +325,7 @@ public class GameController {
         }
     }
 
-    public  void drawTile(VirtualView playersView, String playerName, int index, int type) {
+    public  void drawTile(VirtualView playersView, String playerName, int index, boolean type) {
 
         // Can't draw if the shipboard is completed or there is already a tile to place/book/refuse
         if (clientsStatesMap.get(playerName).equals(ClientState.S_MANAGE_DRAWN_TILE)
@@ -422,9 +424,10 @@ public class GameController {
         }
     }
 
-    public synchronized void lookGameCards(ViewInterface playersView, Message message) {
+    public synchronized void lookGameCards(ViewInterface playersView, String playerName, int deckToLookAt) {
         String playerName = message.getNickname();
         ShowCardsRequest messageReceived = (ShowCardsRequest) message;
+        if(clientsStatesMap.get(playerName) == ClientState.S_MANAGE_DRAWN_TILE || ){}
         if (Objects.equals(playerInputs.get(playerName).getMessageType(), DRAW_TILE_REQUEST)
                 || Objects.equals(playerInputs.get(playerName).getMessageType(), ACCEPT_MESSAGE)
                 || Objects.equals(playerInputs.get(playerName).getMessageType(), SHOW_CARDS_REQUEST)) {
@@ -442,7 +445,8 @@ public class GameController {
         playerInputs.put(playerName, message);
     }
 
-    public void stopLookingAtCards(ViewInterface playersView, Message message) {
+    public void stopLookingAtCards(ViewInterface playersView,  String playerName) {
+        if(clientsStatesMap.get(playerName) == )
         String playerName = message.getNickname();
         if (!Objects.equals(playerInputs.get(playerName).getMessageType(), SHOW_CARDS_REQUEST)) {
             playersView.showErrorMessage("You are not looking at cards");
@@ -453,7 +457,7 @@ public class GameController {
     }
 
     //set drawn tile on the player's shipboard
-    public void setTile (ViewInterface playersView, SendCoordinatesResponse message) {
+    public void setTile (ViewInterface playersView, String playerName, Coordinates coordinates, boolean booked, int key) {
         String playerName = message.getNickname();
         if (Objects.equals(playerInputs.get(playerName).getMessageType(), DRAW_TILE_REQUEST)) {
             if (!game.playerSetTile(playerName, message.getFirst())) {
@@ -465,13 +469,12 @@ public class GameController {
     }
 
     //set currently drawn tile as booked for the player
-    public void bookTile(ViewInterface playersView, Message message) {
-        if (Objects.equals(playerInputs.get(message.getNickname()).getMessageType(), DRAW_TILE_REQUEST)) {
-            if (!game.playerBookTile (message.getNickname())) {
-                playersView.showErrorMessage("either your booked tiles are full or your input was out of bounds");
-                return;
-            }
-            playerInputs.put(message.getNickname(), message);
+    public void bookTile(ViewInterface playersView, String playerName) {
+        if(clientsStatesMap.get(playerName) == ClientState.S_MANAGE_DRAWN_TILE){
+            game.playerBookTile(playerName);
+        }else{
+            playersView.showErrorMessage("either your booked tiles are full or your input was out of bounds");
+            return;
         }
     }
 

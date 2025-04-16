@@ -14,6 +14,7 @@ public enum ClientState {
     MANAGE_CARDS,
     S_MANAGE_DRAWN_TILE,
     S_FINISHED,
+    S_POSITION,
     WAIT_OTHER_PLAYER_ACTION,
     START_SHIP_CREATION
 }

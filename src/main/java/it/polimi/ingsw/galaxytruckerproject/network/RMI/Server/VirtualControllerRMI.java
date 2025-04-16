@@ -59,11 +59,11 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).chooseColor(color);
     }
 
-
     public void sendCoordinates(String playerName, ArrayList<Coordinates> coordinates) throws RemoteException{
         Message message = new SendCoordinatesResponse(playerName, coordinates);
         clients.get(playerName).playerChoiceThroughMessage(message);
     }
+
     public void sendDoubleCannonUsed( String playerName ,float Strength, ArrayList<Coordinates> coordinates) throws RemoteException {
         Message message = new UseCannonResponse(playerName, Strength, coordinates);
         clients.get(playerName).playerChoiceThroughMessage(message);
@@ -75,7 +75,6 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
 
     }
 
-
     public void sendYes( String playerName) throws RemoteException{
         Message message = new AcceptMessage(playerName);
         clients.get(playerName).playerChoiceThroughMessage(message);
@@ -86,9 +85,8 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).playerChoiceThroughMessage(message);
     }
 
-    public void notifySetTile(String playerName, Coordinates coordinates, Tile tile) throws RemoteException {
-        Message message= new SetTileRequest(playerName, coordinates, tile);
-        clients.get(playerName).playerChoiceThroughMessage(message);
+    public void notifySetTile(String playerName, Coordinates coordinates, boolean booked, int key) throws RemoteException {
+        clients.get(playerName).setTile(coordinates, booked, key);
     }
 
     public void sendEndShipBoardCreation(String playerName) throws RemoteException {
@@ -102,30 +100,33 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
     }
 
     public void notifyRefusedTile(String playerName) throws RemoteException {
-        RefuseMessage message = new RefuseMessage(playerName);
-        clients.get(playerName).playerChoiceThroughMessage(message);
+        clients.get(playerName).refuseTile();
     }
 
-
+    //è inutile(?)
     public void drawTileRequest(String playerName) throws RemoteException {
         DrawTileFromStackRequest message = new DrawTileFromStackRequest(playerName);
         clients.get(playerName).playerChoiceThroughMessage(message);
     }
 
-
-    public void reqDrawTileFromPile(String playerName) throws RemoteException {
-        DrawTileFromStackRequest message = new DrawTileFromStackRequest(playerName);
-        clients.get(playerName).playerChoiceThroughMessage(message);
+    //DONE
+    public void reqDrawTileFromStack(String playerName) throws RemoteException {
+        clients.get(playerName).drawTileFromStack();
     }
 
-    public void reqDrawTileFromTable(String playerName, int index) throws RemoteException {
-        DrawTileFromTurnedRequest message = new DrawTileFromTurnedRequest(playerName, index);
-        clients.get(playerName).playerChoiceThroughMessage(message);
+    //DONE
+    public void reqDrawTileFromTurned(String playerName, int index) throws RemoteException {
+        clients.get(playerName).drawTileFromTurned(index);
     }
 
+    //DONE(in teoria non serve dato che vengono gestite in locale)
+    public void reqDrawTileFromBooked(String playerName, int index) throws RemoteException {
+        clients.get(playerName).drawTileFromBooked(index);
+    }
+
+    //DONE
     public void sendTurnHourGlass(String playerName) throws RemoteException {
-        TurnHourglassRequest message = new TurnHourglassRequest(playerName);
-        clients.get(playerName).playerChoiceThroughMessage(message);
+        clients.get(playerName).turnHourglass();
     }
 
     public void notifyEarlyLanding(String playerName) throws RemoteException {
@@ -139,20 +140,23 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
 
     }
 
+    //DONE
     public void showCardsRequest(String playerName, int deckToLookAt) throws RemoteException {
-        ShowCardsRequest message = new ShowCardsRequest(playerName, deckToLookAt);
-        clients.get(playerName).playerChoiceThroughMessage(message);
+        clients.get(playerName).lookGameCards(deckToLookAt);
     }
 
+    //DONE
     public void StopLookingAtCardsRequest(String playerName) throws RemoteException {
-        StopLookingAtCardsRequest message = new StopLookingAtCardsRequest(playerName);
-        clients.get(playerName).playerChoiceThroughMessage(message);
+        clients.get(playerName).stopLookingAtCards();
     }
 
+    //DONE
     public void PlanetChoiceRequest(String playerName) throws RemoteException {
         PlanetChoiceRequest message = new PlanetChoiceRequest();
         clients.get(playerName).playerChoiceThroughMessage(message);
     }
+
+
 
 
 

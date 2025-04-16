@@ -79,7 +79,8 @@ public interface ControllerInterface {
 
     void drawTileFromTurned (int index) throws Exception;
 
-    void drawTileFromBooked (int index)  throws Exception;
+    void refuseTile(int index) throws Exception;
+
 
     /**
      * this method binds the GameController of the joined game to the player's personal controller

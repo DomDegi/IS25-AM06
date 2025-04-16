@@ -20,6 +20,13 @@ public interface VirtualController extends Remote, Serializable {
     void leave(String playerName) throws RemoteException;
     void chooseColor(String playerName, String color) throws RemoteException;
 
+    void reqDrawTileRequest(String playerName) throws RemoteException;
+    void reqDrawTileFromTurned(String playerName) throws RemoteException;
+    void refuseTile(int index) throws RemoteException;
+    void lookGameCards(int index) throws RemoteException;
+    void stopLookingAtCards(int index) throws RemoteException;
+
+
     void sendCoordinates(   String playerName,ArrayList<Coordinates> coordinates) throws RemoteException;
     void sendDoubleCannonUsed(String playerName , float Strength, ArrayList<Coordinates> coordinates) throws RemoteException;
     void sendNumDoubleEngineUsed(String playerName , int NumEngine, ArrayList<Coordinates> coordinates) throws RemoteException;
