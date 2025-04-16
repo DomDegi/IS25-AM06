@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
 
 public class TUI implements ViewInterface{
     @Override
@@ -147,14 +148,20 @@ public class TUI implements ViewInterface{
     }
 
     @Override
+    public void showDiceRoll(int diceRoll) {
+
+    }
+
+    @Override
+    public void showWrongInputMessage (){
+        System.out.println("you entered a wrong input");
+    }
+
+    @Override
     public void asksToRollTheDices() {
         System.out.println("Roll the dices");
     }
 
-    @Override
-    public void showDiceRoll(int diceRoll) {
-
-    }
 
     @Override
     public void asksToChooseStartingPosition() {
@@ -239,4 +246,6 @@ public class TUI implements ViewInterface{
     public void updateLightModel(Message message) {
         System.out.println(message.toString());
     }
+
+
 }

@@ -171,13 +171,20 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
-    public void asksToRollTheDices() {
-        view.asksToRollTheDices();
+    public void showDiceRoll(int diceRoll) {
+
     }
 
     @Override
-    public void showDiceRoll(int diceRoll) {
+    public void showWrongInputMessage (){
+        view.showWrongInputMessage();
 
+    }
+
+
+    @Override
+    public void asksToRollTheDices() {
+        view.asksToRollTheDices();
     }
 
     @Override
@@ -259,4 +266,6 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     public void updateLightModel(Message message) {
         view.updateLightModel(message);
     }
+
+
 }

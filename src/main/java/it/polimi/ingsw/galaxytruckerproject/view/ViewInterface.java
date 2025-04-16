@@ -122,6 +122,8 @@ public interface ViewInterface extends Remote, Serializable {
      */
     void showBookedTiles (ArrayList<Tile> bookedTiles);
 
+    void showWrongInputMessage ();
+
     /**
      * prints on the view the cards that are on the shipboard to be seen during
      * ship building phase
