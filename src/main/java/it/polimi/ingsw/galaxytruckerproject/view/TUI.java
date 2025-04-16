@@ -2,6 +2,8 @@ package it.polimi.ingsw.galaxytruckerproject.view;
 
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.*;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
@@ -238,5 +240,13 @@ public class TUI implements ViewInterface{
     @Override
     public void updateLightModel(Message message) {
         System.out.println(message.toString());
+    }
+
+    @Override
+    public void printFlightboard(LightFlightboard lightFlightboard) {
+        for(LightPlayer player: lightFlightboard.getIngamePlayers())
+        {
+            System.out.println("Player: " + player.toString());
+        }
     }
 }
