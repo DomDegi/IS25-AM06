@@ -3,7 +3,6 @@ package it.polimi.ingsw.galaxytruckerproject.controller;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
-import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
@@ -14,7 +13,6 @@ import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
-import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -183,7 +181,6 @@ public class GameController {
             } // if the count has been reached starts the game
             if (game.getNumberOfPlayers() == game.getPlayerCount()) {
                 this.startGame();
-                game.startGame();
             }
         }
     }
@@ -230,6 +227,7 @@ public class GameController {
      * if TRIAL starts the game without hourglass
      */
     public synchronized void startGame() {
+        game.startGame();
         if (game.getMode() == TRIAL) {
             updateEveryView(ClientState.S_END_DRAW_TILE_CARD);
         }
@@ -303,7 +301,7 @@ public class GameController {
             //player with completed ships have to position their ships on the flightboard
             case SET_POSITION_RESPONSE:
                 if (game.getMode() != TRIAL) {
-                    setPosition(playersView, message);
+                    setPosition(, playersView);
                 }
                 break;
 
@@ -495,7 +493,9 @@ public class GameController {
 
     private void notifyPositionedTile(Tile tile) {
         for (VirtualView view: playersViewMap.values()) {
-            view.notifyPositionedTile(tile);
+            try {
+                view.notifyPositionedTile(tile);
+            } catch (Exception ignored) {}
         }
     }
 
@@ -534,18 +534,17 @@ public class GameController {
 
     //now no input except hourglass and checkShipboard work and checks if the other player have completed
     public void completed (String playerName, ViewInterface playersView) {
-        if (Objects.equals(playerInputs.get(playerName).getMessageType(), DRAW_TILE_REQUEST)) {
+        if (playerStateIs(playerName, ClientState.S_MANAGE_DRAWN_TILE)) {
             refuseTile(playerName);
         }
-        AcceptMessage acceptMessage = new AcceptMessage(playerName);
-        playerInputs.put(playerName, acceptMessage);
+        updatePlayerView(ClientState.S_FINISHED, playerName);
 
         if(game.getMode() == TRIAL) {
             for (Player player : game.getFlightBoard().getInGamePlayers()) {
                 if (player.getPlayerName().equals(playerName)) {
                     game.getFlightBoard().addToTrialFlightBoard(player);
                     //It's not important for trial flight, so 0 is a placeholder value
-                    playerInputs.put(playerName, new SetPositionResponse(playerName, 0));
+                    updatePlayerView(ClientState.WAIT_OTHER_PLAYER_ACTION, playerName);
                     break;
                 }
             }
@@ -555,30 +554,34 @@ public class GameController {
         checkIfAllPlayersReady();
     }
 
-    public void setPosition (ViewInterface playersView, Message message) {
-        if (!playerInputs.get(message.getNickname()).getMessageType().equals(ACCEPT_MESSAGE)) {
+    public void setPosition (String playerName, ViewInterface playersView, int position) {
+        if (!playerStateIs(playerName, ClientState.S_FINISHED)) {
             return;
         }
         FlightBoard flightBoard = game.getFlightBoard();
-        Player player = game.identifyPlayerByName(message.getNickname());
-        if (message.getMessageType().equals(SET_POSITION_RESPONSE)) {
-            SetPositionResponse setPositionResponse = (SetPositionResponse) message;
-            if (flightBoard.addToFlightBoard(player, setPositionResponse.getPosition())) {
-                playerInputs.put(message.getNickname(), setPositionResponse);
-            }
-            else {
-                playersView.showErrorMessage("Position is taken or input is wrong");
-                playersView.asksToSetPosition();
-            }
+        Player player = game.identifyPlayerByName(playerName);
+
+        if (flightBoard.addToFlightBoard(player, position)) {
+            updatePlayerView(ClientState.WAIT_OTHER_PLAYER_ACTION, playerName);
+        }
+        else {
+            playersView.showErrorMessage("Position is taken or input is wrong");
+            playersView.asksToSetPosition();
         }
         checkIfAllPlayersReady();
     }
 
     private void checkIfAllPlayersReady() {
         for (String playerName : activePlayers.keySet()) {
-            Message input = playerInputs.get(playerName);
-            if (input == null || !input.getMessageType().equals(SET_POSITION_RESPONSE)) {
-                return;
+            Player player = game.identifyPlayerByName(playerName);
+            ClientState state = clientsStatesMap.get(playerName);
+            if (state == null || !state.equals(ClientState.WAIT_OTHER_PLAYER_ACTION)) {
+                if (!player.IsDisconnected()) {
+                    return;
+                }
+                else {
+                    removePlayer(playerName);
+                }
             }
         }
         game.endShipCreation();
@@ -591,30 +594,31 @@ public class GameController {
     public synchronized void turnHourglass(String playerName) {
         ViewInterface playersView = this.getViewFromNickname(playerName);
 
-        if (!game.getHourglassState()) {
+        if (!hourglassON) {
             playersView.showErrorMessage("hourglass is already trickling");
             return;
         }
-        switch (game.getHourglassTurns()) {
+        switch (hourglassTurns) {
             case 0:
                 broadcastMessage(playerName + " starts the game: GO!");
                 updateEveryView(ClientState.S_END_DRAW_TILE_CARD);
-                game.startTimer();
+                startTimer();
                 break;
             case 1:
                 broadcastMessage(playerName + " has flipped the hourglass");
-                game.startTimer();
+                startTimer();
                 break;
             case 2:
-                if (clientsStatesMap.get(playerName).equals(ClientState.S_FINISHED)) {
-                    game.startTimer();
+                if (playerStateIs(playerName, ClientState.S_FINISHED)
+                    || playerStateIs(playerName, ClientState.WAIT_OTHER_PLAYER_ACTION)) {
+                    startTimer();
                 }
                 else {
                     playersView.showErrorMessage("Can't make the last hourglass turn when your shipBoard isn't complete");
                 }
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + game.getHourglassTurns() + "\n");
+                throw new IllegalStateException("Unexpected value: " + hourglassTurns + "\n");
         }
     }
 
@@ -628,7 +632,9 @@ public class GameController {
                 System.out.println("hourglass is exhausted\n");
                 hourglass.cancel();
                 if (hourglassTurns == 3) {
-                    endShipCreation();
+                    updateEveryView(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                    broadcastMessage("Time is up!");
+                    checkIfAllPlayersReady();
                     System.out.println("The time is up, ship creation is over\n");
                 }
             }
