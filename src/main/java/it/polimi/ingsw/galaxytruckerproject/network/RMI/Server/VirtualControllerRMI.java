@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.network.RMI.Server;
 import it.polimi.ingsw.galaxytruckerproject.controller.Controller;
 import it.polimi.ingsw.galaxytruckerproject.controller.MultiGameController;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
@@ -55,10 +56,9 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).leave();
     }
 
-    public void chooseColor(String playerName, String color) throws RemoteException {
+    public void chooseColor(String playerName, PlayersColor color) throws RemoteException {
         clients.get(playerName).chooseColor(color);
     }
-
 
     public void sendCoordinates(String playerName, ArrayList<Coordinates> coordinates) throws RemoteException{
         Message message = new SendCoordinatesResponse(playerName, coordinates);
@@ -74,7 +74,6 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).playerChoiceThroughMessage(message);
 
     }
-
 
     public void sendYes( String playerName) throws RemoteException{
         Message message = new AcceptMessage(playerName);
@@ -144,12 +143,12 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).playerChoiceThroughMessage(message);
     }
 
-    public void StopLookingAtCardsRequest(String playerName) throws RemoteException {
-        StopLookingAtCardsRequest message = new StopLookingAtCardsRequest(playerName);
-        clients.get(playerName).playerChoiceThroughMessage(message);
+    public void stopLookingAtCardsRequest(String playerName) throws RemoteException {
+        /*StopLookingAtCardsRequest message = new StopLookingAtCardsRequest(playerName);
+        clients.get(playerName).playerChoiceThroughMessage(message);*/
     }
 
-    public void PlanetChoiceRequest(String playerName) throws RemoteException {
+    public void planetChoiceRequest(String playerName,int chose) throws RemoteException {
         PlanetChoiceRequest message = new PlanetChoiceRequest();
         clients.get(playerName).playerChoiceThroughMessage(message);
     }

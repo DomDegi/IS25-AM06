@@ -1,14 +1,16 @@
 package it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message;
 
-public class SetColorRequest extends Message{
-    private final String color;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 
-    public SetColorRequest(String playerName, String color) {
+public class SetColorRequest extends Message{
+    private final PlayersColor color;
+
+    public SetColorRequest(String playerName, PlayersColor color) {
         super(playerName, MessageType.SET_COLOR_REQUEST);
         this.color = color;
     }
 
-    public String getColor() {
+    public PlayersColor getColor() {
         return color;
     }
 }

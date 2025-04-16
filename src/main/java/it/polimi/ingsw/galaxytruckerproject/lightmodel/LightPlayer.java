@@ -2,10 +2,10 @@ package it.polimi.ingsw.galaxytruckerproject.lightmodel;
 
 public class LightPlayer {
     private int position; //position on the board
-    private LightShipBoard shipboard;
     private int rank;
     private String playerName;
     private boolean landed = false;
+    private LightShipBoard shipboard;
 
     public String getPlayerName() {
         return playerName;
