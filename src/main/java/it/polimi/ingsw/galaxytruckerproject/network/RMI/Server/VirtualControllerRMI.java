@@ -152,11 +152,4 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         PlanetChoiceRequest message = new PlanetChoiceRequest();
         clients.get(playerName).playerChoiceThroughMessage(message);
     }
-
-
-
-
-
-
-
 }

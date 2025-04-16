@@ -9,8 +9,6 @@ import java.util.ArrayList;
 
 public class CoordInputManager {
     private final LightShipBoard lightShipBoard;
-    private final ClientController client;
-    private final LightShipBoard lightShipBoard;
     private final ClientController clientController;
     private CoordReqType coordReqType;
     private float fireStrength =0;
