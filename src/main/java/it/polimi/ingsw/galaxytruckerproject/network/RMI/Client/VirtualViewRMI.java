@@ -6,6 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
@@ -19,8 +20,10 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
+    //private final VirtualController server;
     private final ClientController clientController;
     private final ViewInterface view;
 
@@ -46,7 +49,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
 
     @Override
     public void askColor() {
-
+        view.askColor();
     }
 
     @Override
@@ -58,28 +61,37 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
-    public void asksJoinOrCreate() {
+    public void setClientState(ClientState newState) {
+        view.setClientState(newState);
+        clientController.setState(newState);
+    }
 
+    @Override
+    //A CHE SERVE?
+    public void asksJoinOrCreate() {
+        view.asksJoinOrCreate();
     }
 
     @Override
     public void showJoinableGamesList(Map<String, GameController> joinableGames) {
         view.showJoinableGamesList(joinableGames);
+
     }
 
+    //A CHE SERVE
     @Override
     public void askPlayerCount() throws IOException {
-
+        view.askPlayerCount();
     }
 
     @Override
     public void createGame() throws IOException {
-
+        view.createGame();
     }
 
     @Override
     public void joinGame() throws IOException {
-
+        view.joinGame();
     }
 
     @Override
@@ -89,32 +101,35 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
 
     @Override
     public void showErrorMessage(String errorMessage) {
-        view.showGenericMessage(errorMessage);
+        view.showErrorMessage(errorMessage);
     }
 
     @Override
     public void showInGamePlayers(ArrayList<Player> players) {
-
+        view.showInGamePlayers(players);
     }
 
     @Override
     public void asksPlayersInfo() {
-
+        view.asksPlayersInfo();
     }
 
     @Override
     public void showShipsErrors() {
+        view.showShipsErrors();
         //non dovrebbe esistere
     }
 
     @Override
     public void showPlayersBoard(String player, ShipBoard shipBoard) {
-
+        view.showPlayersBoard(player, shipBoard);
     }
 
     @Override
     public void showDrawnTile(Tile drawnTile) {
-
+        view.showDrawnTile(drawnTile);
+        clientController.setState(ClientState.S_MANAGE_DRAWN_TILE);
+        clientController.setTileInHand(drawnTile);
     }
 
     @Override
@@ -131,86 +146,101 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
 
     @Override
     public void showBookedTiles(ArrayList<Tile> bookedTiles) {
-
+        view.showBookedTiles(bookedTiles);
     }
 
     @Override
     public void showInGameCards(ArrayList<Card> inGameCards) {
-
+        view.showInGameCards(inGameCards);
     }
 
     @Override
     public void asksToRollTheDices() {
+        view.asksToRollTheDices();
+    }
+
+    @Override
+    public void showDiceRoll(int diceRoll) {
 
     }
 
     @Override
     public void asksToChooseStartingPosition() {
-
+        view.asksToChooseStartingPosition();
     }
 
     @Override
     public void asksToInputCoordinates() {
-
+        view.asksToInputCoordinates();
     }
 
     @Override
     public void asksToTurnTheHourglass() {
+        view.asksToTurnTheHourglass();
+    }
+
+    @Override
+    public void asksToSetPosition() {
 
     }
 
     @Override
     public void asksToMakeAChoice() {
-
+        view.asksToMakeAChoice();
     }
 
     @Override
     public void asksPlanetChoice() {
-
+        view.asksPlanetChoice();
     }
 
     @Override
     public void asksToManageGoods(ArrayList<Goods> goods) {
-
+        view.asksToManageGoods(goods);
     }
 
     @Override
     public void asksToUseEngines() {
-
+        view.asksToUseEngines();
     }
 
     @Override
     public void asksToUseCannons() {
-
+        view.asksToUseCannons();
     }
 
     @Override
     public void asksToUseBatteries() {
-
+        view.asksToUseBatteries();
     }
 
     @Override
     public void asksToRemoveGoods() {
-
+        view.asksToRemoveGoods();
     }
 
     @Override
     public void asksToRemoveCrew() {
+        view.asksToRemoveCrew();
+    }
+
+    @Override
+    public void asksWhichBranchToKeep(ArrayList<Set<Coordinates>> branch) {
 
     }
 
     @Override
-    public void showScores() {
-
+    public void showScores(ArrayList<Player> players) {
+        view.showScores(players);
     }
 
     @Override
     public void asksChosenMode() {
-
+        view.asksChosenMode();
     }
 
     @Override
     public void updateLightModel(Message message) {
-
+        view.updateLightModel(message);
     }
 }

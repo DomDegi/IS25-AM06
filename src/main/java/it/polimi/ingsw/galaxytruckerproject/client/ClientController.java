@@ -31,7 +31,6 @@ public class ClientController {
     private HashMap<Integer, Tile> turnedTiles;
     private Tile tileInHand;
     private Map<Integer,Tile> TurnedTiles;
-    private Timer timer;
     private ClientState state;
     private int turns;
     private final VirtualController virtualController;
@@ -358,9 +357,8 @@ public class ClientController {
                             //add to flightBoard
                         }
                     }
-                    default-> {
+                    default->
                         System.out.println("\nInvalid input format");
-                    }
                 }
             }
             case WAIT_OTHER_PLAYER_ACTION->{
@@ -491,6 +489,9 @@ public class ClientController {
     }
     public void removeTurnedTile(Tile tile) {
         TurnedTiles.remove(tile.getKey());
+    }
+    public void setTileInHand(Tile tile) {
+        tileInHand = tile;
     }
 }
 

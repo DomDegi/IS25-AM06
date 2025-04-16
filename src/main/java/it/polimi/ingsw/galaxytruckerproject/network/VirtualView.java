@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.network;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.Map;
 
