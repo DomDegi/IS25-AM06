@@ -7,6 +7,12 @@ public class LightPlayer {
     private String playerName;
     private boolean landed = false;
 
+    @Override
+    public String toString() {
+        return playerName+" position:"+position+" rank:"+rank;
+    }
+
+
     public String getPlayerName() {
         return playerName;
     }

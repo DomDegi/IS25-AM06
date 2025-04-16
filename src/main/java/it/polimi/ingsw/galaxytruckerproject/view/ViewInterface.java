@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.view;
 
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
@@ -186,4 +187,6 @@ public interface ViewInterface extends Remote, Serializable {
     void asksChosenMode ();
 
     void updateLightModel (Message message);
+
+    void printFlightboard(LightFlightboard lightFlightboard)
 }
