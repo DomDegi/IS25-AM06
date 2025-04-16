@@ -8,8 +8,10 @@ import java.rmi.RemoteException;
 
 public interface VirtualView extends ViewInterface {
 
-    void notifyNewTurnedTile(Tile tile) throws RemoteException;
-    void notfyRemmoveTurnedTile(Tile tile) throws RemoteException;
+    void notifyNewTurnedTile(Tile tile) throws RemoteException;//add a new turned tile to the map in the clients
+
+    void notfyRemmoveTurnedTile(Tile tile) throws RemoteException;//remove a turned tile to the map in the clients
+
 
 
 }

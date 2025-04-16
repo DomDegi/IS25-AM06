@@ -490,5 +490,8 @@ public class ClientController {
     public void removeTurnedTile(Tile tile) {
         TurnedTiles.remove(tile.getKey());
     }
+    public void setTileInHand(Tile tile) {
+        tileInHand = tile;
+    }
 }
 

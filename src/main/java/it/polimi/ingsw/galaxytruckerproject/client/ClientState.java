@@ -3,8 +3,8 @@ package it.polimi.ingsw.galaxytruckerproject.client;
 public enum ClientState {
     CHOOSE_UI,
     CHOOSE_CONNECTION_TYPE,
-    LOBBY,//choose name
-    LOGIN,//choose game
+    LOBBY,//choose game
+    LOGIN,//choose name
     COLOR_CHOICE,
     ACTION,// yes or no
     COORD_REQUEST,//usare askCoordinates in modo da settare per la richiesta di coordinata corretta

@@ -6,6 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
@@ -19,9 +20,10 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
-    private final VirtualController server;
+    //private final VirtualController server;
     private final ClientController clientController;
     private final ViewInterface view;
 
@@ -56,6 +58,12 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
        if (success) {
            clientController.setState(ClientState.LOBBY);
        }
+    }
+
+    @Override
+    public void setClientState(ClientState newState) {
+        view.setClientState(newState);
+        clientController.setState(newState);
     }
 
     @Override
@@ -120,6 +128,8 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     @Override
     public void showDrawnTile(Tile drawnTile) {
         view.showDrawnTile(drawnTile);
+        clientController.setState(ClientState.S_MANAGE_DRAWN_TILE);
+        clientController.setTileInHand(drawnTile);
     }
 
     @Override
@@ -150,6 +160,11 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
+    public void showDiceRoll(int diceRoll) {
+
+    }
+
+    @Override
     public void asksToChooseStartingPosition() {
         view.asksToChooseStartingPosition();
     }
@@ -162,6 +177,11 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     @Override
     public void asksToTurnTheHourglass() {
         view.asksToTurnTheHourglass();
+    }
+
+    @Override
+    public void asksToSetPosition() {
+
     }
 
     @Override
@@ -202,6 +222,11 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     @Override
     public void asksToRemoveCrew() {
         view.asksToRemoveCrew();
+    }
+
+    @Override
+    public void asksWhichBranchToKeep(ArrayList<Set<Coordinates>> branch) {
+
     }
 
     @Override
