@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.controller;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
+import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
@@ -25,12 +26,12 @@ public class GameController {
     private final String gameName;
     private final GameInterface game;
     private final ArrayList<String> playersWithErrors;
-    private final Map<String, Message> playerInputs;
+    private final Map<String, ClientState> clientsStatesMap = new HashMap<>();
     private final Map<String, VirtualView> playersViewMap;
     private final Map<String, Player> activePlayers;
     private final Map<String, Player> disconnectedPlayers;
     private final ArrayList<Player> playersToEarlyLand = new ArrayList<>();
-    private Map<String, Integer> lockedSmallDecks;
+    private Map<String, Integer> lockedSmallDecks = new HashMap<>();
 
 
     public String toString(){
@@ -40,7 +41,6 @@ public class GameController {
     public GameController(GameInterface game, String gameName) {
         this.gameName = gameName;
         this.game = game;
-        playerInputs = new HashMap<>();
         this.playersWithErrors = new ArrayList<>();
         this.playersViewMap = new HashMap<>();
         this.activePlayers = new HashMap<>();
@@ -228,12 +228,12 @@ public class GameController {
      * @param message received message that can start the game or makes the controller ask for
      * the turn hourglass request message
      */
-    public synchronized void startGame(Message message) {
-        if (message.getMessageType() == TURN_HOURGLASS_REQUEST) {
-            turnHourglass(message.getNickname());
+    public synchronized void startGame() {
+        if (game.getMode() == TRIAL) {
+            updateEveryView(ClientState.S_END_DRAW_TILE_CARD);
         }
         else {
-            playersViewMap.values().forEach(ViewInterface::asksToTurnTheHourglass);
+            updateEveryView(ClientState.START_SHIP_CREATION);
         }
     }
 
@@ -550,7 +550,7 @@ public class GameController {
 
     //Turns hourglass isn't on and adds 1 to the turn count,
     // if it's already been turned twice, player that turns it needs to have completed his ship
-    public void turnHourglass(String playerName) {
+    public synchronized void turnHourglass(String playerName) {
         ViewInterface playersView = this.getViewFromNickname(playerName);
 
         if (!game.getHourglassState()) {

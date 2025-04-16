@@ -73,6 +73,8 @@ public interface ControllerInterface {
      */
     void playerChoiceThroughMessage (Message message) throws Exception;
 
+    void turnHourglass (String playerName) throws Exception;
+
     /**
      * this method binds the GameController of the joined game to the player's personal controller
      * @param gameController gameController to set
