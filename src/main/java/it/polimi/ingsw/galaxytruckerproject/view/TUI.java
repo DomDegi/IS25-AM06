@@ -2,6 +2,8 @@ package it.polimi.ingsw.galaxytruckerproject.view;
 
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.*;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
@@ -52,7 +54,7 @@ public class TUI implements ViewInterface{
             case MANAGE_GOODS -> System.out.println("going to manage goods of the planet ");
             case PLANET_CHOICE -> System.out.println("choose one of the planets");
             case S_END_DRAW_TILE_CARD -> System.out.println("now you can draw a tile ore a tile ");
-            case MANAGE_CARDS -> System.out.println("you're seeing the cards");
+            case S_MANAGE_CARDS -> System.out.println("you're seeing the cards");
             case S_MANAGE_DRAWN_TILE -> System.out.println("you can rotate, position, book or refuse this tile ");
             case S_FINISHED -> System.out.println("you've finished the ship creation, wait to know if your ship is correct");
             case WAIT_OTHER_PLAYER_ACTION -> System.out.println("another player turn");
@@ -162,6 +164,10 @@ public class TUI implements ViewInterface{
         System.out.println("Roll the dices");
     }
 
+    @Override
+    public void showDiceRoll(int diceRoll) {
+
+    }
 
     @Override
     public void asksToChooseStartingPosition() {
@@ -247,5 +253,11 @@ public class TUI implements ViewInterface{
         System.out.println(message.toString());
     }
 
-
+    @Override
+    public void printFlightboard(LightFlightboard lightFlightboard) {
+        for(LightPlayer player: lightFlightboard.getIngamePlayers())
+        {
+            System.out.println("Player: " + player.toString());
+        }
+    }
 }

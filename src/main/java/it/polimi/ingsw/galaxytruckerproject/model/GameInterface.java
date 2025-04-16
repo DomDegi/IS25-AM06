@@ -33,7 +33,7 @@ public interface GameInterface {
     //Methods for ships creation phase
     Tile drawTile(String playerName);
     Tile drawTurnedTile(String playerName, int index);
-    Tile drawBookedTile(String playerName, Coordinates coordinates, int key);
+    Tile drawAndPositionBookedTile(String playerName, Tile tile);
     Tile refuseTile(String playerName);
     void endShipCreation();
     void drawCard(Map<String, VirtualView> playersView);
@@ -41,7 +41,7 @@ public interface GameInterface {
     void endCardEvent();
     ArrayList<Card> getInGameCards (int number);
     Map<Integer,Tile> getTurnedTiles();
-    Tile playerSetTile(String playerName, Coordinates coordinates, int key);
+    Tile playerSetTile(String playerName, Tile tile);
     Tile playerBookTile(String playerName);
 
     //Card phase cards

@@ -209,7 +209,7 @@ public class ClientController {
                     coordInputManager.checkCoord(transformCoordinates(words));
             }
 
-            case MANAGE_CARDS-> {
+            case S_MANAGE_CARDS -> {
                 switch (words[0]) {
                     case "previous" -> {
                         indexCard=indexCard-1;
@@ -248,7 +248,7 @@ public class ClientController {
                                 if (chose==-1)
                                     return;
                                 if (chose > 0 && chose < 4) {
-                                    state = ClientState.MANAGE_CARDS;
+                                    state = ClientState.S_MANAGE_CARDS;
                                     indexDeckInHandOrPlanet = chose;
                                     //notify drawn card
                                     virtualController;

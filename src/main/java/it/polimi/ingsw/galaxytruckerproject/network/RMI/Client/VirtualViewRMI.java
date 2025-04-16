@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.network.RMI.Client;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientController;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
@@ -140,8 +141,9 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
         clientController.addTurnedTile(tile);
     }
 
+
     @Override
-    public void notifyRemoveTurnedTile(Tile tile) throws RemoteException {
+    public void notifyRemoveTurnedTile(Tile tile) throws RemoteException{
         clientController.removeTurnedTile(tile);
     }
 
@@ -158,6 +160,11 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     @Override
     public void notifyAvailableCardDeck(Map<String, Integer> lockedSmallDecks) throws RemoteException {
 
+    }
+
+    @Override
+    public void notifyPlayerMovement(String playerName, int playerPosition, int playerRanking) throws RemoteException {
+        clientController.updateFlightboard(playerName,playerPosition,playerRanking);
     }
 
     @Override
@@ -267,4 +274,9 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
 
+
+    @Override
+    public void printFlightboard(LightFlightboard lightFlightboard) {
+
+    }
 }
