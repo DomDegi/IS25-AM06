@@ -178,7 +178,7 @@ public interface ViewInterface extends Remote, Serializable {
     /**
      * at the end of the game shows every players score on the view
      */
-    void showScores();
+    void showScores(ArrayList<Player> players);
 
     /**
      * asks the player to choose the mode of the game to be created
