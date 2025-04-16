@@ -473,6 +473,9 @@ public class GameController {
             }
         }
         else {
+            if (clientsStatesMap.get(playerName) != ClientState.MANAGE_CARDS) {
+                playersView.showErrorMessage("can't set a booked tile when you have drawn a tile");
+            }
             tile = game.drawBookedTile(playerName, coordinates, key);
             if (tile == null) {
                 playersView.showErrorMessage("error: tile isn't in booked tile");
