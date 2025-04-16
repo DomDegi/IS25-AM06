@@ -280,7 +280,7 @@ public class GameController {
             //shows deck of 3 cards 1, 2, 3. Can only be called when no card is drawn.
             case SHOW_CARDS_REQUEST:
                 if (game.getMode() != TRIAL)
-                    lookGameCards(playerName, playersView,cardsToLookAt);
+                    lookGameCards(playerName, playersView, cardsToLookAt);
                 else
                     playersView.showErrorMessage("You can't look at cards in TRIAL FLIGHT MODE");
                 break;
@@ -892,5 +892,10 @@ public class GameController {
      */
     public ViewInterface getViewFromNickname(String playerName) {
         return playersViewMap.get(playerName);
+    }
+
+    public void setFlightBoard(String playerName, int chosen) {
+
+
     }
 }

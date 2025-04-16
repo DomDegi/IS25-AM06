@@ -4,7 +4,6 @@ import it.polimi.ingsw.galaxytruckerproject.controller.Controller;
 import it.polimi.ingsw.galaxytruckerproject.controller.MultiGameController;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
@@ -59,6 +58,9 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).chooseColor(color);
     }
 
+    public void setFlightBoard(String playerName, int chosen) throws RemoteException {
+        clients.get(playerName).
+    }
     public void sendCoordinates(String playerName, ArrayList<Coordinates> coordinates) throws RemoteException{
         Message message = new SendCoordinatesResponse(playerName, coordinates);
         clients.get(playerName).playerChoiceThroughMessage(message);
@@ -142,7 +144,7 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
     }
 
     //DONE
-    public void showCardsRequest(String playerName, int deckToLookAt) throws RemoteException {
+    public void lookCardsRequest(String playerName, int deckToLookAt) throws RemoteException {
         clients.get(playerName).lookGameCards(deckToLookAt);
     }
 
@@ -161,6 +163,8 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).setPosition(position);
     }
 
+    //DONE
+    public
 
 
 
@@ -168,8 +172,7 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
 
 
 
-
-    public void PlanetChoiceRequest(String playerName) throws RemoteException {
+    public void PlanetChoiceRequest(String playerName,int chose) throws RemoteException {
         PlanetChoiceRequest message = new PlanetChoiceRequest();
         clients.get(playerName).playerChoiceThroughMessage(message);
     }

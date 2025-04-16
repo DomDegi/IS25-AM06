@@ -8,6 +8,8 @@ import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.SetColorRequest;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
+import java.rmi.RemoteException;
+
 /*
  * This controller class is the one that each client
  * is linked to. It handles the interactions between
@@ -132,7 +134,9 @@ public class Controller implements ControllerInterface {
         gameController.setPosition(nickname, view, position);
     }
 
+    public void setFlightBoard(String playerName, int chosen) throws RemoteException {
 
+    }
 
 
 
