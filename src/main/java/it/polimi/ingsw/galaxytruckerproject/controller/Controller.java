@@ -8,6 +8,8 @@ import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.SetColorRequest;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
+import java.util.ArrayList;
+
 /*
  * This controller class is the one that each client
  * is linked to. It handles the interactions between
@@ -120,6 +122,10 @@ public class Controller implements ControllerInterface {
     }
     public void bookTile(){
         gameController.bookTile(view, nickname);
+    }
+
+    public void shipErrorManagement(ArrayList<Coordinates> toRemove) {
+        gameController.shipErrorManagement(nickname, view, toRemove);
     }
 
 }

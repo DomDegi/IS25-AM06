@@ -1,11 +1,13 @@
 package it.polimi.ingsw.galaxytruckerproject.controller;
 
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
+import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
@@ -237,7 +239,7 @@ public class GameController {
 
     public void shipsCreation(Message message) {
         String playerName = message.getNickname();
-        ViewInterface playersView = this.playersViewMap.get(playerName);
+        VirtualView playersView = this.playersViewMap.get(playerName);
         switch (message.getMessageType()) {
 
             //draws either from stack or from turned depending on words[1], if turned words[3] is the index of turnedTiles
@@ -257,7 +259,7 @@ public class GameController {
 
             //player refuses currently drawnTile
             case REFUSE_MESSAGE:
-                refuseTile(playerName);
+                refuseTile(playersView, playerName);
                 break;
 
             //player sets currently drawnTile at coordinates passed with input
@@ -375,29 +377,36 @@ public class GameController {
             boolean correctness = player.getShipBoard().verifyCorrectness();
             ViewInterface playersView = this.getViewFromNickname(player.getPlayerName());
             if (correctness){
-                playersView.showGenericMessage("player's ship is correct");
+                playersView.notifyYourShipIsCorrect();
             } else {
-                playersView.showGenericMessage("player's ship has errors: input coordinates to remove mistakes");
-                playersView.asksToInputCoordinates();
+                playersView.asksToInputCoordinates(CoordReqType.CHOOSE_TO_BREACK);
                 playersWithErrors.add(player.getPlayerName());
             }
         }
+        if (playersWithErrors.isEmpty()) {
+            this.endShipVerification();
+        }
     }
 
-    public void shipErrorManagement(Message message){
-        String playerName =  message.getNickname();
+    public void endShipVerification() {
+        game.endShipVerification();
+        updateEveryView(ClientState.WAIT_OTHER_PLAYER_ACTION);
+        initializeDrawCard();
+    }
+
+    public void shipErrorManagement(String playerName, VirtualView playersView, ArrayList<Coordinates> toRemove) {
         Player player = game.identifyPlayerByName(playerName);
-        ViewInterface playersView = this.getViewFromNickname(playerName);
-        SendCoordinatesResponse coordinates = (SendCoordinatesResponse) message;
 
         if(player==null){
             return;
         }
         if(!playersWithErrors.contains(playerName)){
-            playersView.showErrorMessage("player's ship is already correct");
+            playersView.showInputErrorMessage();
             return;
         }
-        player.getShipBoard().destroyTile(coordinates.getFirst());
+        for (Coordinates coord: toRemove) {
+            player.getShipBoard().destroyForCorrection(coord);
+        }
 
         boolean correctness = player.getShipBoard().verifyCorrectness();
         if (correctness) {
@@ -407,9 +416,7 @@ public class GameController {
             playersWithErrors.remove(playerName);
             return;
         }
-
-        playersView.showGenericMessage("player's ship is still incorrect: input coordinates to remove tile from");
-        playersView.asksToInputCoordinates();
+        playersView.asksToInputCoordinates(CoordReqType.CHOOSE_TO_BREACK);
     }
 
     public void refuseTile(VirtualView playersView,String playerName) {
@@ -462,30 +469,32 @@ public class GameController {
 
     //set drawn tile on the player's shipboard
     public void setTile (ViewInterface playersView, String playerName, Tile tile) {
+        Tile settedTile;
         if (!tile.isBooked()) {
             if (clientsStatesMap.get(playerName) != ClientState.S_MANAGE_DRAWN_TILE) {
-                playersView.showErrorMessage("error: no drawn tile");
+                playersView.showWrongInputMessage();
                 return;
             }
         }
         else {
             if (clientsStatesMap.get(playerName) != ClientState.S_MANAGE_CARDS) {
-                playersView.showErrorMessage("can't set a booked tile when you have drawn a tile");
+                playersView.showWrongInputMessage();
+                return;
             }
-            tile = game.drawAndPositionBookedTile(playerName, tile);
-            if (tile == null) {
-                playersView.showErrorMessage("error: tile isn't in booked tile");
+            settedTile = game.drawAndPositionBookedTile(playerName, tile);
+            if (settedTile == null) {
+                playersView.showWrongInputMessage;
                 return;
             }
         }
-        tile = game.playerSetTile(playerName, tile);
+        settedTile = game.playerSetTile(playerName, tile);
 
-        if (tile != null) {
+        if (settedTile != null) {
             updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
-            notifyPositionedTile(playerName, tile);
+            notifyPositionedTile(playerName, settedTile);
         }
         else {
-            playersView.showErrorMessage("was not able to set tile");
+            playersView.showWrongInputMessage();
         }
     }
 
@@ -574,7 +583,7 @@ public class GameController {
     private void checkIfAllPlayersReady() {
         if (game.getListOfAllPlayer().size() == game.getListOfInFlightPlayers().size()) {
             broadcastMessage("All the players have completed the ship creation and positioned themselves\n");
-            game.endShipCreation();
+            this.endShipCreation();
         }
         else if (hourglassTurns == 3 && !hourglassON) {
             for (Player player : game.getListOfAllPlayer()) {
@@ -586,6 +595,11 @@ public class GameController {
                 }
             }
         }
+    }
+
+    private void endShipCreation () {
+        game.endShipCreation();
+        verifyShipCorrectness();
     }
 
 
@@ -641,13 +655,15 @@ public class GameController {
         }, 95000); //95 seconds
     }
 
+    public void initializeDrawCard () {
+
+    }
+
     //Number 1 player can draw
     //Every player can check others shipboard
     //Every player can do an early landing
     //When cards are over go to CONCLUDE_GAME state
-    public void drawCard (Message message){
-        String playerName = message.getNickname();
-        ViewInterface playersView = this.getViewFromNickname(playerName);
+    public void drawCard (){
 
         if (game.getCardsLeft() == 0) {
             game.endCardPhase();

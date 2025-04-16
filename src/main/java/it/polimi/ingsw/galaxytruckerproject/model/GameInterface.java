@@ -28,6 +28,7 @@ public interface GameInterface {
     ShipBoard getPlayerShipBoard(String s);
     FlightBoard getFlightBoard();
     GameMode getMode();
+    Player getFirstRankedPlayer();
 
 
     //Methods for ships creation phase
@@ -36,6 +37,7 @@ public interface GameInterface {
     Tile drawAndPositionBookedTile(String playerName, Tile tile);
     Tile refuseTile(String playerName);
     void endShipCreation();
+    void endShipVerification();
     void drawCard(Map<String, VirtualView> playersView);
     void endCardPhase();
     void endCardEvent();

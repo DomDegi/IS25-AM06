@@ -2,7 +2,10 @@ package it.polimi.ingsw.galaxytruckerproject.controller.interfaces;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+
+import java.util.ArrayList;
 
 /** this interface is used to define the methods that
  * the player can call to interact with the server
@@ -79,7 +82,9 @@ public interface ControllerInterface {
 
     void drawTileFromTurned (int index) throws Exception;
 
-    void refuseTile(int index) throws Exception;
+    void refuseTile() throws Exception;
+
+    void shipErrorManagement(ArrayList<Coordinates> toRemove) throws Exception;
 
 
     /**
