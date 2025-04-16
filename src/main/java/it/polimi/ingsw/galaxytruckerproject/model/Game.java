@@ -13,6 +13,8 @@ import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.GameState.*;
 
@@ -21,8 +23,8 @@ public class Game implements GameInterface {
     private GameState gameState;
     private int playerCount;
     private final ArrayList<Card> inGameCards;
-    private final ArrayDeque<Tile> tileStack;
-    private final Map<Integer,Tile> turnedTiles;
+    private final ConcurrentLinkedDeque<Tile> tileStack;
+    private final ConcurrentHashMap<Integer,Tile> turnedTiles;
     private final FlightBoard flightBoard;
     private Card drawnCard;
 
@@ -31,7 +33,7 @@ public class Game implements GameInterface {
     public Game(GameMode mode, int playerCount) {
         this.mode = mode;
         this.gameState = START_GAME;
-        this.turnedTiles = new HashMap<>();
+        this.turnedTiles = new ConcurrentHashMap<>();
         this.flightBoard = new FlightBoard(mode);
         this.tileStack = new TileFactory().getStack(TileFactory.loadTilesFromJson("Tiles.json"));
 

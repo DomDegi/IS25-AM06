@@ -8,6 +8,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class TileFactory {
 
@@ -73,9 +74,9 @@ public class TileFactory {
         }
     }
 
-    public ArrayDeque<Tile> getStack(ArrayList<Tile> tiles) {
+    public ConcurrentLinkedDeque<Tile> getStack(ArrayList<Tile> tiles) {
         Collections.shuffle(tiles);
-        return new ArrayDeque<>(tiles);
+        return new ConcurrentLinkedDeque<>(tiles);
     }
 
     // Classe JSON per il mapping dei dati
