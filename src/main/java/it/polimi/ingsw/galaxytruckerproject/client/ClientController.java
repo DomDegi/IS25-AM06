@@ -39,7 +39,6 @@ public class ClientController {
     private LightShipBoard lightShipBoard;
     private String name;
     private Card displayedCard;
-    private boolean inGame = false;
 
     public ClientController(VirtualController virtualController) {
         this.indexCard = 0;
@@ -501,5 +500,7 @@ public class ClientController {
     public CoordInputManager getCoordInputManager() {
         return coordInputManager;
     }
+
+
 }
 
