@@ -10,6 +10,7 @@
 
 ## Currently Uploaded:
   - GameModelUML
+  - Cards FSM
   - Card abstract class and its subclasses: CombatZone, Planets, AbandonedShip, AbandonedStation, StarDust, OpenSpace, MeteorSwarm, Enemies subclasses (Pirates, Smugglers, Slavers), Epidemic.
   - Auxiliary classes needed to make the previous work (Projectiles and Subclasses, Penalty and subclasses, Planet)
   - CardDeck, CardCollection, TrialCardDeck and the json needed to make the CardDeck and the TrialFlightCardDeck
@@ -22,3 +23,6 @@
   - FlightBoard
   - Game and the interface it implements: GameInterface
   - GameController and the interface it implements: GameObserver
+  - Network: VirtualControllerRMI,VirtualViewRMI, VirtualInterface
+  - Client: ClientController, GoodsManager, CoordInputManager
+  - Tested: all model classes
