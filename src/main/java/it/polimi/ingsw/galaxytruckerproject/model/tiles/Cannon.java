@@ -5,8 +5,14 @@ import java.util.Optional;
 public abstract class Cannon extends Tile {
     protected Direction direction;
 
+    public Cannon(Link north, Link east, Link south, Link west, int key) {
+        super(north, east, south, west,key);
+        this.direction = Direction.NORTH;
+    }
+
+    //METODO COSTRUTTORE PER IL TESTING
     public Cannon(Link north, Link east, Link south, Link west) {
-        super(north, east, south, west);
+        super(north, east, south, west,0);
         this.direction = Direction.NORTH;
     }
 

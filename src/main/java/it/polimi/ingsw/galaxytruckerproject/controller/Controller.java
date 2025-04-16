@@ -12,6 +12,9 @@ import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
  * each player and the multiGame server
  */
 
+
+
+
 public class Controller implements ControllerInterface {
 
     private String nickname;
@@ -21,6 +24,7 @@ public class Controller implements ControllerInterface {
     private final ViewInterface view;
 
     private GameController gameController;
+
 
     public Controller(MultiGameController multiGameController, ViewInterface view) {
         this.multiGameController = multiGameController;
@@ -84,5 +88,7 @@ public class Controller implements ControllerInterface {
     public void playerChoiceThroughMessage (Message message) {
         gameController.processPlayerInput(message);
     }
+
+
 
 }

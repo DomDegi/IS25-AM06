@@ -31,6 +31,10 @@ public class GameController {
     private Map<String, Integer> lockedSmallDecks;
 
 
+    public String toString(){
+        return gameName+"\ngame state:"+game.getGameState().toString()+"\nplayer needed: "+game.getPlayerCount()+"\nplatyer in game: "+game.getNumberOfPlayers();
+    }
+
     public GameController(GameInterface game, String gameName) {
         this.gameName = gameName;
         this.game = game;
@@ -56,6 +60,7 @@ public class GameController {
                 break;
             }
             case GameState.VERIFY_SHIP_CORRECTNESS: {
+                //potremmo toglierla e lasciare le shipboard nel client o il contrario
                 if (message.getMessageType().equals(SHOW_PLAYERS_SHIPBOARD_REQUEST)) {
                     checkShipBoard(this.getViewFromNickname(message.getNickname()) ,message);
                 } else if  (message.getMessageType().equals(SEND_COORDINATES_RESPONSE)) {
@@ -88,6 +93,8 @@ public class GameController {
      * @param view player's view
      * @param reconnecting true if player used to be in the lobby
      */
+
+    //ASSOCIA IL PLAYER ALLA VIEW
     public void addToPlayersViewMap(String playerName, ViewInterface view, boolean reconnecting) {
         if (reconnecting) {
             reconnectPlayer(playerName, view);
@@ -110,6 +117,8 @@ public class GameController {
      * @param playerName reconnecting player
      * @param view their view
      */
+
+    //RICONNETTE IL PLAYER SE DISCONNESSO
     public void reconnectPlayer(String playerName, ViewInterface view) {
         if (disconnectedPlayers.containsKey(playerName)) {
             //If player disconnected during ships verification without fixing the ship
@@ -280,6 +289,7 @@ public class GameController {
             case STOP_LOOKING_AT_CARDS_REQUEST:
                 stopLookingAtCards(playersView, message);
                 break;
+
 
             //turns the hourglass, if hourglass at last possible turn, the player last input has to be completed
             case TURN_HOURGLASS_REQUEST:

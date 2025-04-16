@@ -13,15 +13,32 @@ public abstract class Tile {
     protected Link west;
     protected Coordinates coordinates;
     protected ShipBoard shipBoard;
+    protected final int key;
+    protected boolean booked;
 
+    public Tile(Link north, Link east, Link south, Link west, int key) {
+        this.north =north;
+        this.east=east;
+        this.south=south;
+        this.west=west;
+        this.coordinates = new Coordinates(0,0);
+        this.key = key;
+        this.booked = false;
+    }
+    //CONSTRUCTOR METHOD FOR THE TESTING
     public Tile(Link north, Link east, Link south, Link west) {
         this.north =north;
         this.east=east;
         this.south=south;
         this.west=west;
         this.coordinates = new Coordinates(0,0);
+        this.key = 0;
+        this.booked = false;
     }
 
+    public int getKey() {
+        return key;
+    }
     @Override
     public String toString() {
         return "Tile north:"+north.toString() + " east:" + east.toString() + " south:" + south.toString() + " west:" + west.toString()+"\n"
@@ -115,7 +132,6 @@ public abstract class Tile {
     }
     //
     public ArrayList<Goods> getCargo(){System.out.println("THIS TILE IS NOT A CARGO_HOLD");return null;}
-    public boolean Placeable(){return true;}
     public int getNumBatteries() {
         System.out.println("THIS TILE IS NOT A BATTERY_COMPONENT");
         return 0;
@@ -126,8 +142,11 @@ public abstract class Tile {
         return null;
     }
 
+    //negative return in case of single cannon--positive return in case of double cannon
     public int getStrength(){
-        //System.out.println("THIS TILE IS NOT A DOUBLE CANNON");
+        return 0;
+    }
+    public int getEngineStrength(){
         return 0;
     }
     public boolean fillable(){return true;}
@@ -135,10 +154,17 @@ public abstract class Tile {
         //System.out.println("THIS TILE IS NOT A ALIEN LIFE SUPPORT SYSTEM");
         return CrewType.NotSupportSystem;
     }
-    public ArrayList<Coordinates> adjacentLifeSupport(){System.out.println("THIS TILE IS NOT A CABIN"); return new ArrayList<Coordinates>();}
+    public ArrayList<Coordinates> adjacentLifeSupport(){System.out.println("THIS TILE IS NOT A CABIN"); return new ArrayList<>();}
 
 
     public CrewType getCrewType(){System.out.println("THIS TILE IS NOT A CABIN"); return CrewType.NotAcabin;}
     public void checkAlienability(){System.out.println("THIS TILE IS NOT A CABIN");}
 
+    public boolean isBooked() {
+        return booked;
+    }
+
+    public void setBooked(boolean booked) {
+        this.booked = booked;
+    }
 }

@@ -10,12 +10,13 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.rmi.Remote;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
-public interface ViewInterface {
-
+public interface ViewInterface extends Remote, Serializable {
 
     /**
      * asks the player to set a nickname
@@ -35,7 +36,7 @@ public interface ViewInterface {
      * @param success
      * @param connected
      */
-    void showLoginResponse(boolean success, boolean connected);
+    void showLoginResponse(boolean success);
 
     /**
      * asks the player to decide if he wants to join a game in startig phase
@@ -104,13 +105,14 @@ public interface ViewInterface {
      * show the drawnTile to the player
      * @param drawnTile
      */
+    //DEVE ANCHE MANDARLA AL CLIENT
     void showDrawnTile (Tile drawnTile);
 
     /**
      * shows the player the tiles that got turned from player refusing them
      * @param turnedTiles the current array in the model
      */
-    void showTurnedTiles (ArrayList<Tile> turnedTiles);
+    void showTurnedTiles (Map<Integer,Tile> turnedTiles);
 
     /**
      * shows the tiles that the player booked on their shipboard
