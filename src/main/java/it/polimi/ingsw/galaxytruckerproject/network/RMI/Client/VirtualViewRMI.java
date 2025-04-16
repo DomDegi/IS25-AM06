@@ -178,7 +178,6 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     @Override
     public void showWrongInputMessage (){
         view.showWrongInputMessage();
-
     }
 
 
