@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.view;
 
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
+import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
@@ -123,6 +124,8 @@ public interface ViewInterface extends Remote, Serializable {
      */
     void showBookedTiles (ArrayList<Tile> bookedTiles);
 
+    void showWrongInputMessage ();
+
     /**
      * prints on the view the cards that are on the shipboard to be seen during
      * ship building phase
@@ -143,11 +146,18 @@ public interface ViewInterface extends Remote, Serializable {
     void asksToChooseStartingPosition ();
 
     /**
-     * asks the player to input a series of coordinates
+     * asks the player to input a series of coordinates of coord
      */
-    void asksToInputCoordinates ();
+    void asksToInputCoordinates (CoordReqType coordReqType);
+
+
+    void notifyBrokenTile(Coordinates coordinates);
 
     void asksToTurnTheHourglass ();
+
+    void notifyYouCanDrawThisCardDeck();
+
+    void notifyYourShipIsCorrect();
 
     /**
      * asks the player to input yes or no to decide and sends a Accept or a Refuse Message
@@ -163,12 +173,6 @@ public interface ViewInterface extends Remote, Serializable {
     void asksPlanetChoice();
 
     void asksToManageGoods(ArrayList<Goods> goods);
-
-    void asksToUseEngines();
-
-    void asksToUseCannons();
-
-    void asksToUseBatteries();
 
     void asksToRemoveGoods();
 
@@ -188,5 +192,8 @@ public interface ViewInterface extends Remote, Serializable {
 
     void updateLightModel (Message message);
 
-    void printFlightboard(LightFlightboard lightFlightboard)
+    void printFlightboard(LightFlightboard lightFlightboard);
+
+
+
 }

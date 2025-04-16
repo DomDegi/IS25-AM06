@@ -288,6 +288,10 @@ public class ShipBoard {
     }
 
 
+    public void destroyForCorrection(Coordinates coordinates) {
+        tilesTable[coordinates.x][coordinates.y].get().destroy();
+        tilesTable[coordinates.getX()][coordinates.getY()] = Optional.empty();
+    }
 
     //destroy tile+ return set of new possible shipboard coordinates
     public ArrayList<Set<Coordinates>> destroyTile(Coordinates coordinates) {

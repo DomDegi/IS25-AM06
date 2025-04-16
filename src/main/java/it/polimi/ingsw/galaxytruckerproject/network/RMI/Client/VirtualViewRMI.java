@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.network.RMI.Client;
 
 import it.polimi.ingsw.galaxytruckerproject.client.ClientController;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
+import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
@@ -10,7 +11,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
@@ -141,8 +141,26 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     public void notifyNewTurnedTile(Tile tile) throws RemoteException{
         clientController.addTurnedTile(tile);
     }
+
+
+    @Override
     public void notifyRemoveTurnedTile(Tile tile) throws RemoteException{
         clientController.removeTurnedTile(tile);
+    }
+
+    @Override
+    public void notifyPositionedTile(String playerName, Tile tile) throws RemoteException {
+        clientController.setTile(playerName, tile);
+    }
+
+    @Override
+    public void notifyBookedTile(String playerName, Tile tile) throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyAvailableCardDeck(Map<String, Integer> lockedSmallDecks) throws RemoteException {
+
     }
 
     @Override
@@ -161,13 +179,20 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
-    public void asksToRollTheDices() {
-        view.asksToRollTheDices();
+    public void showDiceRoll(int diceRoll) {
+
     }
 
     @Override
-    public void showDiceRoll(int diceRoll) {
+    public void showWrongInputMessage (){
+        view.showWrongInputMessage();
+        clientController.rollBackState();
+    }
 
+
+    @Override
+    public void asksToRollTheDices() {
+        view.asksToRollTheDices();
     }
 
     @Override
@@ -176,9 +201,17 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
-    public void asksToInputCoordinates() {
-        view.asksToInputCoordinates();
+    public void asksToInputCoordinates(CoordReqType coordReqType) {
+        clientController.setState(ClientState.COORD_REQUEST);
+        clientController.getCoordInputManager().setCoordReqType(coordReqType);
+        view.asksToInputCoordinates(coordReqType);
     }
+
+    @Override
+    public void notifyBrokenTile(Coordinates coordinates) {
+
+    }
+
 
     @Override
     public void asksToTurnTheHourglass() {
@@ -186,72 +219,55 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
+    public void notifyYourShipIsCorrect() {
+        view.notifyYourShipIsCorrect();
+        clientController.setPhase(GamePhases.CARDS);
+    }
+
+    @Override
     public void asksToSetPosition() {
 
     }
-
     @Override
     public void asksToMakeAChoice() {
         view.asksToMakeAChoice();
     }
-
     @Override
     public void asksPlanetChoice() {
         view.asksPlanetChoice();
     }
-
     @Override
     public void asksToManageGoods(ArrayList<Goods> goods) {
         view.asksToManageGoods(goods);
     }
-
-    @Override
-    public void asksToUseEngines() {
-        view.asksToUseEngines();
-    }
-
-    @Override
-    public void asksToUseCannons() {
-        view.asksToUseCannons();
-    }
-
-    @Override
-    public void asksToUseBatteries() {
-        view.asksToUseBatteries();
-    }
-
     @Override
     public void asksToRemoveGoods() {
         view.asksToRemoveGoods();
     }
-
     @Override
     public void asksToRemoveCrew() {
         view.asksToRemoveCrew();
     }
-
     @Override
     public void asksWhichBranchToKeep(ArrayList<Set<Coordinates>> branch) {
 
     }
-
     @Override
     public void showScores(ArrayList<Player> players) {
         view.showScores(players);
     }
-
     @Override
     public void asksChosenMode() {
         view.asksChosenMode();
     }
-
     @Override
     public void updateLightModel(Message message) {
         view.updateLightModel(message);
     }
-
     @Override
     public void printFlightboard(LightFlightboard lightFlightboard) {
-
+        view.printFlightboard(lightFlightboard);
     }
+
+
 }

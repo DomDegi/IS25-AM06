@@ -491,5 +491,16 @@ public class ClientController {
     public void setTileInHand(Tile tile) {
         tileInHand = tile;
     }
+
+    public void setTile(String playerName,Tile tile) {
+        LightShipBoard lightShipboard= flightBoard.getIngamePlayer(playerName).getShipBoard();
+        lightShipBoard.positionTile(Optional.of(tile),tile.getCoordinates());
+    }
+
+    public CoordInputManager getCoordInputManager() {
+        return coordInputManager;
+    }
+
+
 }
 
