@@ -79,7 +79,7 @@ public interface ControllerInterface {
 
     void drawTileFromTurned (int index) throws Exception;
 
-    void refuseTile(int index) throws Exception;
+    void refuseTile() throws Exception;
 
 
     /**

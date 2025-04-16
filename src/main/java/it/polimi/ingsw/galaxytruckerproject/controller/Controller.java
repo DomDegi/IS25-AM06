@@ -91,6 +91,7 @@ public class Controller implements ControllerInterface {
         gameController.processPlayerInput(message);
     }
 
+    //TURN HOURGLASS ??
     public void turnHourglass () {
         gameController.turnHourglass(this.nickname);
     }
@@ -104,12 +105,12 @@ public class Controller implements ControllerInterface {
     }
 
     public void refuseTile(){
-        gameController.refuseTile(view, nickname);
+        gameController.refuseTile(nickname);
 
     }
 
     public void lookGameCards(int index) {
-        gameController.lookGameCards( view, nickname,  index);
+        gameController.lookGameCards(nickname, view, index);
     }
 
     public void stopLookingAtCards(){
@@ -130,5 +131,9 @@ public class Controller implements ControllerInterface {
     public void setPosition(int position){
         gameController.setPosition(nickname, view, position);
     }
+
+
+
+
 
 }

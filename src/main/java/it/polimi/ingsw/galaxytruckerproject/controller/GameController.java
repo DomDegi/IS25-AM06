@@ -280,7 +280,7 @@ public class GameController {
             //shows deck of 3 cards 1, 2, 3. Can only be called when no card is drawn.
             case SHOW_CARDS_REQUEST:
                 if (game.getMode() != TRIAL)
-                    lookGameCards(playersView, playerName, cardsToLookAt);
+                    lookGameCards(playerName, playersView,cardsToLookAt);
                 else
                     playersView.showErrorMessage("You can't look at cards in TRIAL FLIGHT MODE");
                 break;
@@ -633,6 +633,39 @@ public class GameController {
         }
     }
     */
+
+    //Turns hourglass isn't on and adds 1 to the turn count,
+    // if it's already been turned twice, player that turns it needs to have completed his ship
+    public synchronized void turnHourglass(String playerName) {
+        ViewInterface playersView = this.getViewFromNickname(playerName);
+
+        if (hourglassON) {
+            playersView.showErrorMessage("hourglass is already trickling");
+            return;
+        }
+        switch (hourglassTurns) {
+            case 0:
+                broadcastMessage(playerName + " starts the game: GO!");
+                updateEveryView(ClientState.S_END_DRAW_TILE_CARD);
+                startTimer();
+                break;
+            case 1:
+                broadcastMessage(playerName + " has flipped the hourglass");
+                startTimer();
+                break;
+            case 2:
+                if (playerStateIs(playerName, ClientState.S_FINISHED)) {
+                    startTimer();
+                }
+                else {
+                    playersView.showErrorMessage("Can't make the last hourglass turn when your shipBoard isn't complete");
+                }
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + hourglassTurns + "\n");
+        }
+    }
+
     public void startTimer() {
         Timer hourglass = new Timer();
         this.hourglassTurns++;

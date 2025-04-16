@@ -121,9 +121,9 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
     }
 
     //DONE(in teoria non serve dato che vengono gestite in locale)
-    public void reqDrawTileFromBooked(String playerName, int index) throws RemoteException {
+    /*public void reqDrawTileFromBooked(String playerName, int index) throws RemoteException {
         clients.get(playerName).drawTileFromBooked(index);
-    }
+    }*/
 
     //DONE
     public void sendTurnHourGlass(String playerName) throws RemoteException {

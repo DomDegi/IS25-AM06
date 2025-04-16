@@ -21,7 +21,7 @@ public interface VirtualController extends Remote, Serializable {
     void chooseColor(String playerName, String color) throws RemoteException;
 
     void notifySetTile(String playerName, Coordinates coordinates, boolean booked, int key) throws RemoteException;
-    void reqDrawTileRequest(String playerName, int index) throws RemoteException;
+    //void reqDrawTileRequest(String playerName, int index) throws RemoteException;
     void reqDrawTileFromTurned(String playerName, int index) throws RemoteException;
     void refuseTile(int index) throws RemoteException;
     void showCardsRequest(int index) throws RemoteException;
@@ -30,7 +30,7 @@ public interface VirtualController extends Remote, Serializable {
     void notifySetPosition(String playerName, int position) throws RemoteException;
 
 
-    void sendCoordinates(   String playerName,ArrayList<Coordinates> coordinates) throws RemoteException;
+    void sendCoordinates(String playerName,ArrayList<Coordinates> coordinates) throws RemoteException;
     void sendDoubleCannonUsed(String playerName , float Strength, ArrayList<Coordinates> coordinates) throws RemoteException;
     void sendNumDoubleEngineUsed(String playerName , int NumEngine, ArrayList<Coordinates> coordinates) throws RemoteException;
     void notifySetTile( String playerName, Coordinates coordinates, Tile tile) throws RemoteException;
