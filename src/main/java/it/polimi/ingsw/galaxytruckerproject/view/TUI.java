@@ -53,7 +53,7 @@ public class TUI implements ViewInterface{
             case MANAGE_GOODS -> System.out.println("going to manage goods of the planet ");
             case PLANET_CHOICE -> System.out.println("choose one of the planets");
             case S_END_DRAW_TILE_CARD -> System.out.println("now you can draw a tile ore a tile ");
-            case MANAGE_CARDS -> System.out.println("you're seeing the cards");
+            case S_MANAGE_CARDS -> System.out.println("you're seeing the cards");
             case S_MANAGE_DRAWN_TILE -> System.out.println("you can rotate, position, book or refuse this tile ");
             case S_FINISHED -> System.out.println("you've finished the ship creation, wait to know if your ship is correct");
             case WAIT_OTHER_PLAYER_ACTION -> System.out.println("another player turn");

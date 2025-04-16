@@ -10,14 +10,12 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.network.RMI.Server.VirtualControllerRMI;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import it.polimi.ingsw.galaxytruckerproject.view.TUI;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.rmi.RemoteException;
-import java.sql.Connection;
 import java.util.*;
 
 public class ClientController {
@@ -211,7 +209,7 @@ public class ClientController {
                     coordInputManager.checkCoord(transformCoordinates(words));
             }
 
-            case MANAGE_CARDS-> {
+            case S_MANAGE_CARDS -> {
                 switch (words[0]) {
                     case "previous" -> {
                         indexCard=indexCard-1;
@@ -250,7 +248,7 @@ public class ClientController {
                                 if (chose==-1)
                                     return;
                                 if (chose > 0 && chose < 4) {
-                                    state = ClientState.MANAGE_CARDS;
+                                    state = ClientState.S_MANAGE_CARDS;
                                     indexDeckInHandOrPlanet = chose;
                                     //notify drawn card
                                     virtualController;

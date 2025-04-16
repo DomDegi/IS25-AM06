@@ -5,7 +5,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.cards.CardDeck;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.TrialCardDeck;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.TileFactory;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
@@ -103,7 +102,7 @@ public class Game implements GameInterface {
     }
 
     //sets the booked tile at index 0 or 1 as the drawn tile for player: playerName
-    public Tile drawBookedTile (String playerName, Coordinates coordinates, int key) {
+    public Tile drawAndPositionBookedTile (String playerName, Tile tile) {
         Player player = identifyPlayerByName(playerName);
         ArrayList<Tile> bookedTiles = player.getShipBoard().getBookedTiles();
         Tile drawnTile = null;
@@ -179,16 +178,16 @@ public class Game implements GameInterface {
         return bunch3;
     }
 
-    public Tile playerSetTile (String playerName, Coordinates coordinates, int key) {
+    public Tile playerSetTile (String playerName, Tile tile) {
         Player player = identifyPlayerByName(playerName);
-        Tile settedTile = player.getDrawnTile();
-        if (settedTile.getKey() != key) {
-            return null;
+        if (player.getDrawnTile() != null && tile.getKey() == player.getDrawnTile().getKey()) {
+            if (player.getShipBoard().positionTile(Optional.of(tile), tile.getCoordinates())) {
+                player.removeDrawnTile();
+                return tile;
+            }
+            else
+                return null;
         }
-        if (player.getShipBoard().positionTile(Optional.ofNullable(player.getDrawnTile()), coordinates))
-            return settedTile;
-        else
-            return null;
     }
 
     public Tile playerBookTile (String playerName) {

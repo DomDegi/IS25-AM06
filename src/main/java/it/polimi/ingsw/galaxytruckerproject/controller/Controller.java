@@ -105,19 +105,18 @@ public class Controller implements ControllerInterface {
 
     public void refuseTile(){
         gameController.refuseTile(view, nickname);
-
     }
 
     public void lookGameCards(int index) {
-        gameController.lookGameCards( view, nickname,  index);
+        gameController.lookGameCards(nickname, view, index);
     }
 
     public void stopLookingAtCards(){
         gameController.stopLookingAtCards(view, nickname);
     }
 
-    public void setTile(Coordinates coordinates, boolean booked, int key) {
-        gameController.setTile(view,nickname,coordinates,booked,key);
+    public void setTile(Tile tile) {
+        gameController.setTile(view,nickname,tile);
     }
     public void bookTile(){
         gameController.bookTile(view, nickname);
