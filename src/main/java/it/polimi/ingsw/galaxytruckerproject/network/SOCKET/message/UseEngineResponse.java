@@ -19,7 +19,7 @@ public class UseEngineResponse extends Message{
         return playerName;
     }
 
-    public float getNumEngine() {
+    public int getNumEngine() {
         return numEngine;
     }
 

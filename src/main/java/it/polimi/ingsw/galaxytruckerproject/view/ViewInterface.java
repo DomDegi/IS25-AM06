@@ -42,7 +42,7 @@ public interface ViewInterface extends Remote, Serializable {
      * asks the player to decide if he wants to join a game in startig phase
      * or if player prefers to create a new game
      */
-    void asksJoinOrCreate();
+    void asksJoin   OrCreate();
 
     /**
      * Shows on the view the list of the games that are in starting phase.
