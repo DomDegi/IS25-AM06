@@ -9,7 +9,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
@@ -140,8 +139,25 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     public void notifyNewTurnedTile(Tile tile) throws RemoteException{
         clientController.addTurnedTile(tile);
     }
-    public void notfyRemoveTurnedTile(Tile tile) throws RemoteException{
+
+    @Override
+    public void notifyRemoveTurnedTile(Tile tile) throws RemoteException {
         clientController.removeTurnedTile(tile);
+    }
+
+    @Override
+    public void notifyPositionedTile(String playerName, Tile tile) throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyBookedTile(String playerName, Tile tile) throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyAvailableCardDeck(Map<String, Integer> lockedSmallDecks) throws RemoteException {
+
     }
 
     @Override

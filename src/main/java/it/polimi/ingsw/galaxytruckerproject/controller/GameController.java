@@ -494,7 +494,7 @@ public class GameController {
     private void notifyPositionedTile(Tile tile) {
         for (VirtualView view: playersViewMap.values()) {
             try {
-                view.notifyPositionedTile(tile);
+                view.notifyPositionedTile(, tile);
             } catch (Exception ignored) {}
         }
     }

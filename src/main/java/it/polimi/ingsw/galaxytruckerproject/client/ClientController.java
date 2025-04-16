@@ -10,14 +10,12 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.network.RMI.Server.VirtualControllerRMI;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import it.polimi.ingsw.galaxytruckerproject.view.TUI;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.rmi.RemoteException;
-import java.sql.Connection;
 import java.util.*;
 
 public class ClientController {
@@ -492,6 +490,11 @@ public class ClientController {
     }
     public void setTileInHand(Tile tile) {
         tileInHand = tile;
+    }
+
+    public void setTile(String playerName,Tile tile) {
+        LightShipBoard lightShipboard= flightBoard.getIngamePlayer(playerName).getShipBoard();
+        LightShipBoard.setTile()
     }
 }
 
