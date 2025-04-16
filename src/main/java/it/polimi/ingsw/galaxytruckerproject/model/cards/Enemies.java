@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
-import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
 import java.util.Map;
 
@@ -29,7 +29,7 @@ public abstract class Enemies extends Card {
     }
 
     @Override
-    public abstract void initializeCard(GameInterface game, Map<String, ViewInterface> viewsMap);
+    public abstract void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap);
 
     @Override
     public abstract void executeCard(Message message);

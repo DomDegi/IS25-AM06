@@ -1,5 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.controller;
 
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
@@ -8,6 +9,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ public class GameController {
     private final GameInterface game;
     private final ArrayList<String> playersWithErrors;
     private final Map<String, Message> playerInputs;
-    private final Map<String, ViewInterface> playersViewMap;
+    private final Map<String, VirtualView> playersViewMap;
     private final Map<String, Player> activePlayers;
     private final Map<String, Player> disconnectedPlayers;
     private final ArrayList<Player> playersToEarlyLand = new ArrayList<>();
@@ -95,7 +97,7 @@ public class GameController {
      */
 
     //ASSOCIA IL PLAYER ALLA VIEW
-    public void addToPlayersViewMap(String playerName, ViewInterface view, boolean reconnecting) {
+    public void addToPlayersViewMap(String playerName, VirtualView view, boolean reconnecting) {
         if (reconnecting) {
             reconnectPlayer(playerName, view);
         }
@@ -119,7 +121,7 @@ public class GameController {
      */
 
     //RICONNETTE IL PLAYER SE DISCONNESSO
-    public void reconnectPlayer(String playerName, ViewInterface view) {
+    public void reconnectPlayer(String playerName, VirtualView view) {
         if (disconnectedPlayers.containsKey(playerName)) {
             //If player disconnected during ships verification without fixing the ship
             if (playersWithErrors.contains(playerName)) {
@@ -558,6 +560,7 @@ public class GameController {
         switch (game.getHourglassTurns()) {
             case 0:
                 broadcastMessage(playerName + " starts the game: GO!");
+
                 game.startTimer();
                 break;
             case 1:
@@ -729,7 +732,7 @@ public class GameController {
         return game.getGameState();
     }
 
-    public Map<String, ViewInterface> getPlayersViewMap() {
+    public Map<String, VirtualView> getPlayersViewMap() {
         return playersViewMap;
     }
 
@@ -762,6 +765,10 @@ public class GameController {
         for (ViewInterface view : playersViewMap.values()) {
             view.updateLightModel(message);
         }
+    }
+
+    public void updateEveryView(ClientState newState) {
+        playersViewMap.values().forEach(player -> {player.setClientState(newState);});
     }
 
     /**

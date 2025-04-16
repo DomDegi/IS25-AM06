@@ -6,7 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.GenericMessage;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
-import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
 import java.util.Map;
 
@@ -18,7 +18,7 @@ public class Epidemic extends Card {
     }
 
     @Override
-    public void initializeCard(GameInterface game, Map<String, ViewInterface> viewsMap) {
+    public void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap) {
         this.game = game;
         this.viewsMap = viewsMap;
         broadcastMessage("Epidemic:\n All the players will lose one crew member from every populated cabin that's " +

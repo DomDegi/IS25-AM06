@@ -9,6 +9,7 @@ import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.MessageType;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.UseCannonResponse;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.UseEngineResponse;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.*;
@@ -37,7 +38,7 @@ public class CombatZone extends Card {
     }
 
     @Override
-    public void initializeCard(GameInterface game, Map<String, ViewInterface> viewsMap) {
+    public void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap) {
         this.game = game;
         this.viewsMap = viewsMap;
         nextPlayer();

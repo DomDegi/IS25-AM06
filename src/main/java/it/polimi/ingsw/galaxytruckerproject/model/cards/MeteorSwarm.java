@@ -8,6 +8,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.MessageType;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
@@ -24,7 +25,6 @@ public class MeteorSwarm extends Card {
     private final Map<Player, ProjectilePenalty> activePenalties = new HashMap<>();
     private int currentDiceRoll;
     private GameInterface game;
-    private Map<String, ViewInterface> viewsMap;
     private int currentMeteorIndex = 0;
 
     @JsonCreator
@@ -36,7 +36,7 @@ public class MeteorSwarm extends Card {
     }
 
     @Override
-    public void initializeCard(GameInterface game, Map<String, ViewInterface> viewsMap) {
+    public void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap) {
         this.game = game;
         this.viewsMap = viewsMap;
         this.inFlightPlayers = game.getListOfInFlightPlayers();

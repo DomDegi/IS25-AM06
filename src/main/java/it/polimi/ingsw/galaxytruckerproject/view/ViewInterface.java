@@ -1,5 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.view;
 
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
@@ -34,15 +35,16 @@ public interface ViewInterface extends Remote, Serializable {
     /**
      * show login response from server
      * @param success
-     * @param connected
-     */
+         */
     void showLoginResponse(boolean success);
+
+    void setClientState (ClientState newState);
 
     /**
      * asks the player to decide if he wants to join a game in startig phase
      * or if player prefers to create a new game
      */
-    void asksJoin   OrCreate();
+    void asksJoinOrCreate();
 
     /**
      * Shows on the view the list of the games that are in starting phase.
