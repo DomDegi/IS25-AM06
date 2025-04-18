@@ -73,6 +73,14 @@ public abstract class Card {
         }
     }
 
+    public void notifyGainedCredits (String playerName, int credits) {
+        for (VirtualView view : viewsMap.values()) {
+            try {
+                view.notifyGainedCredits(playerName, credits);
+            } catch (Exception ignored) {}
+        }
+    }
+
     public abstract void cannonChoice(String playerName, float doubleCannonPower, ArrayList<Coordinates> batteriesToUse);
 
     public abstract void engineChoice(String playerName, int numDoubleEngine, ArrayList<Coordinates> batteriesToUse);

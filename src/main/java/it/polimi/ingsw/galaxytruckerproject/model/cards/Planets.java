@@ -50,6 +50,10 @@ public class Planets extends Card{
     public void engineChoice(String playerName, int numDoubleEngine, ArrayList<Coordinates> batteriesToUse) {}
 
     public void manageGoods (String playerName, int clientCredits, ArrayList<CargoHold> updatedCargos) {
+        if (!playerName.equals(currentPlayer.getPlayerName()) || !chosen) {
+            viewsMap.get(playerName).showWrongInputMessage();
+            return;
+        }
         if (goodsChecker.check(clientCredits, updatedCargos)) {
             game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
             notifyMovement(currentPlayer);
