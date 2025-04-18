@@ -8,8 +8,8 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
@@ -88,6 +88,7 @@ public class GameController {
             if (playersWithErrors.contains(playerName)) {
                 if (!this.getGameState().equals(GameState.VERIFY_SHIP_CORRECTNESS)) {
                     view.showErrorMessage("Can't connect because didn't finish ship creation");
+                    return;
                 }
                 else{
                     view.asksToInputCoordinates(CoordReqType.CHOOSE_TO_BREAK);
@@ -100,6 +101,7 @@ public class GameController {
 
                 if (this.getGameState() != GameState.VERIFY_SHIP_CORRECTNESS) {
                     view.showErrorMessage("Can't reconnect because player didn't complete starting position choosing");
+                    return;
                 }
                 else {
                     view.asksToChooseStartingPosition();
@@ -404,16 +406,6 @@ public class GameController {
         }
     }
 
-    public void checkShipBoard(ViewInterface playersView, Message message) {
-        ShowPlayersShipboardRequest messageReceived = (ShowPlayersShipboardRequest) message;
-        ShipBoard shipBoardToCheck = game.getPlayerShipBoard(messageReceived.getPlayerName());
-        if (shipBoardToCheck == null) {
-            playersView.showErrorMessage("there is no player with the name " + messageReceived.getNickname());
-            return;
-        }
-        playersView.showPlayersBoard(messageReceived.getPlayerName(), shipBoardToCheck);
-    }
-
     //now no input except hourglass and checkShipboard work and checks if the other player have completed
     public void completed (String playerName, ViewInterface playersView) {
         if (!playerStateIs(playerName, ClientState.S_END_DRAW_TILE_CARD)) {
@@ -583,6 +575,26 @@ public class GameController {
             playersToEarlyLand.add(player);
         }
         updatePlayerView(ClientState.WAIT_OTHER_PLAYER_ACTION, playerName);
+    }
+
+    /**
+     * Card specific methods for player's choices
+     */
+
+    public void playerUsesEngines (String playerName, int numDoubleEngines, ArrayList<Coordinates>  coordinates) {
+        game.getDrawnCard().engineChoice(playerName, numDoubleEngines, coordinates);
+    }
+
+    public void playerUsesCannons (String playerName, float doubleCannonPower, ArrayList<Coordinates>  coordinates) {
+        game.getDrawnCard().cannonChoice(playerName, doubleCannonPower, coordinates);
+    }
+
+    public void playerManagesGoods (String playerName, int clientCredits, ArrayList<CargoHold> updatedCargos) {
+        game.getDrawnCard().manageGoods(playerName, clientCredits, updatedCargos);
+    }
+
+    public void playerMakesAChoice (String playerName, boolean choice) {
+        game.getDrawnCard().choice(playerName, choice);
     }
 
 

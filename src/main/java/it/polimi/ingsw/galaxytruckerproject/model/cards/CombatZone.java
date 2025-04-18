@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.Penalty;
@@ -168,7 +169,7 @@ public class CombatZone extends Card {
                 nextPlayer();
             }
             else {
-                currentView.asksToUseCannons();
+                currentView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_CANNON);
             }
         }
     }
@@ -182,7 +183,7 @@ public class CombatZone extends Card {
                 nextPlayer();
             }
             else {
-                currentView.asksToUseEngines();
+                currentView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_ENGINE);
             }
         }
     }
