@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.client;
 
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Planets;
@@ -505,9 +506,8 @@ public class ClientController {
         return copiedInput;
     }
     public void setState(ClientState newState){
-        view.setClientState();
         previousState=state;
-        state=newState;
+        view.setClientState(newState);
     }
     public boolean rollBackState(){
         view.setClientState();
@@ -537,14 +537,15 @@ public class ClientController {
     }
 
     public void setTile(String playerName,Tile tile) {
-        LightShipBoard lightShipboard= flightBoard.getIngamePlayer(playerName).getShipBoard();
+        LightShipBoard lightShipBoard= flightBoard.getIngamePlayer(playerName).getShipBoard();
         lightShipBoard.positionTile(Optional.of(tile),tile.getCoordinates());
     }
 
     public CoordInputManager getCoordInputManager() {
         return coordInputManager;
     }
-
-
+    public void setPhase(GamePhases phase) {
+        this.phase = phase;
+    }
 }
 

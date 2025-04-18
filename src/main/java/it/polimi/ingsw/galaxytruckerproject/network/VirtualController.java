@@ -28,7 +28,8 @@ public interface VirtualController extends Remote, Serializable {
     void stopLookingAtCards(int index) throws RemoteException;
 
 
-    void sendCoordinates(   String playerName,ArrayList<Coordinates> coordinates) throws RemoteException;
+    void
+    sendCoordinates(   String playerName,ArrayList<Coordinates> coordinates) throws RemoteException;
     void sendDoubleCannonUsed(String playerName , float Strength, ArrayList<Coordinates> coordinates) throws RemoteException;
     void sendNumDoubleEngineUsed(String playerName , int NumEngine, ArrayList<Coordinates> coordinates) throws RemoteException;
     void notifySetTile( String playerName, Coordinates coordinates, Tile tile) throws RemoteException;

@@ -183,8 +183,23 @@ public class TUI implements ViewInterface{
     }
 
     @Override
+    public void notifyBrokenTile(Coordinates coordinates) {
+
+    }
+
+    @Override
     public void asksToTurnTheHourglass() {
         System.out.println("Turn the hourglass");
+    }
+
+    @Override
+    public void notifyYouCanDrawThisCardDeck() {
+
+    }
+
+    @Override
+    public void notifyYourShipIsCorrect() {
+
     }
 
     @Override
