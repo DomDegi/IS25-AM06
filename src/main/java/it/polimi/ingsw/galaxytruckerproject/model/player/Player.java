@@ -256,6 +256,23 @@ public class Player {
         }
     }
 
+    public boolean verifyCrew (ArrayList<Tile>  cabins) {
+        for (Tile cabin: cabins) {
+            if (cabin.getCrewType().equals(CrewType.PURPLE) &&
+                    !(cabin.getAlienability().equals(AlienOptions.PURPLE) || cabin.getAlienability().equals(AlienOptions.BOTH)))
+                return false;
+            if (cabin.getCrewType().equals(CrewType.BROWN) &&
+                    !(cabin.getAlienability().equals(AlienOptions.BROWN) || cabin.getAlienability().equals(AlienOptions.BOTH)))
+                return false;
+            if (!cabin.getAlienability().equals(playerShip.getTile(cabin.getCoordinates()).getAlienability()))
+                return false;
+        }
+        for (Tile cabin: cabins) {
+            playerShip.updateTile(cabin.getCoordinates(), cabin);
+        }
+        return true;
+    }
+
     //IT ADDS CREDIT
     public void gainCredit(int credit) {
         this.credit += credit;

@@ -6,7 +6,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.SetColorRequest;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
 import java.util.ArrayList;
@@ -178,7 +177,12 @@ public class Controller implements ControllerInterface {
     }
 
     @Override
-    public void playerChoosesPlanet(int planet) {
+    public void choosePlanet(int planet) {
         gameController.playerChoosesPlanet(nickname, planet);
+    }
+
+    @Override
+    public void pickCrewMembers(ArrayList<Tile> cabins) {
+        gameController.playerPicksCrewMembers(nickname, view, cabins);
     }
 }

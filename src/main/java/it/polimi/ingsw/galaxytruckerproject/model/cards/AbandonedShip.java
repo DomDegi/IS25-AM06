@@ -2,6 +2,8 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
+import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.CrewPenalty;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
@@ -72,6 +74,16 @@ public class AbandonedShip extends Card {
         }
     }
 
+    public void choice (String playerName, boolean choice) {
+        if (!playerName.equals(playerToPlay.getPlayerName())) {
+            viewsMap.get(playerName).showWrongInputMessage();
+            return;
+        }
+        if (choice) {
+            playersView.asksToInputCoordinates(CoordReqType.CHOOSE_CREW);
+        }
+    }
+
     public void nextPlayer() {
         if (playerToPlay != null) {
             playerIndex++;
@@ -94,12 +106,7 @@ public class AbandonedShip extends Card {
             this.nextPlayer();
         }
         else if (playerToPlay.getTotalCrew() >= crewNumberRequired) {
-            sendMessageToPlayer(playersView,
-                    playerToPlay.getPlayerName() + " do you wish to trade" +
-                            crewNumberRequired + " for " + possibleCreditGains + " cosmic credits and lose " +
-                            requiredDays + " flight days?");
-            sendMessageToPlayer(playersView ,"input yes or no");
-            playersView.asksToMakeAChoice();
+            playersView.setClientState(ClientState.ACTION);
         }
     }
 

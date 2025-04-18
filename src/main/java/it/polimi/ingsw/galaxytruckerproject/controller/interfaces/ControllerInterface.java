@@ -6,7 +6,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 
 import java.util.ArrayList;
 
@@ -103,5 +102,7 @@ public interface ControllerInterface {
 
     void makeAChoice(boolean choice) throws Exception;
 
-    void playerChoosesPlanet(int planet) throws  Exception;
+    void choosePlanet(int planet) throws  Exception;
+
+    void pickCrewMembers(ArrayList<Tile> cabins);
 }

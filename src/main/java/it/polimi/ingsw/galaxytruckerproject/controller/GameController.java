@@ -11,6 +11,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.EquipCabin;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
@@ -255,14 +256,11 @@ public class GameController implements Observer {
             boolean correctness = player.getShipBoard().verifyCorrectness();
             ViewInterface playersView = this.getViewFromNickname(player.getPlayerName());
             if (correctness){
-                playersView.notifyYourShipIsCorrect();
+                playersView.setClientState(ClientState.MANAGE_CABINS);
             } else {
                 playersView.asksToInputCoordinates(CoordReqType.CHOOSE_TO_BREAK);
                 playersWithErrors.add(player.getPlayerName());
             }
-        }
-        if (playersWithErrors.isEmpty()) {
-            this.endShipVerification();
         }
     }
 
@@ -290,9 +288,14 @@ public class GameController implements Observer {
                 game.getFlightBoard().setPlayerToLast(player);
             }
             playersWithErrors.remove(playerName);
+            playersView.setClientState(ClientState.MANAGE_CABINS);
             return;
         }
         playersView.asksToInputCoordinates(CoordReqType.CHOOSE_TO_BREAK);
+    }
+
+    public void playerPicksCrewMembers(String playerName, VirtualView playersView ,ArrayList<Tile> cabins) {
+        
     }
 
     public void refuseTile(String playerName) {

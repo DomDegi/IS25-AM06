@@ -5,5 +5,6 @@ public enum CoordReqType {
     CHOOSE_TO_MAINTAIN,//for destroy
     CHOOSE_BATTERY ,
     CHOOSE_DOUBLE_CANNON,
-    CHOOSE_DOUBLE_ENGINE
+    CHOOSE_DOUBLE_ENGINE,
+    CHOOSE_CREW
 }
