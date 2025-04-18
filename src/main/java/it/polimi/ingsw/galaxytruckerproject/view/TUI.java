@@ -11,7 +11,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -19,12 +18,11 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
-public class TUI implements ViewInterface{
+public class TUI implements DisplayableView{
     @Override
-        public void askNickname() throws IOException {
+    public void askNickname() throws IOException {
             System.out.println("enter your nickname");
         }
-
         @Override
         public void askColor() {
             System.out.println("enter your color");
@@ -63,44 +61,36 @@ public class TUI implements ViewInterface{
 
         }
     }
-
     @Override
     public void asksJoinOrCreate() {
         System.out.println("You want to join a game or create a new game");
     }
-
     @Override
     public void showJoinableGamesList(Map<String, GameController> joinableGames) {
         for(String nameGame : joinableGames.keySet()){
             System.out.println(joinableGames.get(nameGame).toString());
         }
     }
-
     @Override
     public void askPlayerCount() throws IOException {
         System.out.println("How many players does the game have?");
     }
-
     @Override
     public void createGame() throws IOException {
 
     }
-
     @Override
     public void joinGame() throws IOException {
 
     }
-
     @Override
     public void showGenericMessage(String genericMessage) {
         System.out.println(genericMessage);
     }
-
     @Override
     public void showErrorMessage(String errorMessage) {
         System.out.println(errorMessage);
     }
-
     @Override
     public void showInGamePlayers(ArrayList<Player> players) {
         for(Player player : players){
@@ -117,17 +107,14 @@ public class TUI implements ViewInterface{
     public void showShipsErrors() {
 
     }
-
     @Override
     public void showPlayersBoard(String player, ShipBoard shipBoard) {
         System.out.println(player + "'s ShipBoard: " + shipBoard.toString());
     }
-
     @Override
     public void showDrawnTile(Tile drawnTile) {
         System.out.println(drawnTile.toString());
     }
-
     @Override
     public void showTurnedTiles(Map<Integer,Tile> turnedTiles) {
         for(int i: turnedTiles.keySet()) {
@@ -135,32 +122,26 @@ public class TUI implements ViewInterface{
             System.out.println("\n");
         }
     }
-
     @Override
     public void showBookedTiles(ArrayList<Tile> bookedTiles) {
         for(Tile bookedTile : bookedTiles){
             System.out.println(bookedTile.toString());
         }
     }
-
     @Override
     public void showInGameCards(ArrayList<Card> inGameCards) {
         for(Card card : inGameCards){
             System.out.println(card.toString());
         }
     }
-
-
     @Override
     public void showWrongInputMessage (){
         System.out.println("you entered a wrong input");
     }
-
     @Override
     public void asksToRollTheDices() {
         System.out.println("Roll the dices");
     }
-
     @Override
     public void showDiceRoll(int diceRoll) {
         System.out.println("the dice roll is: " + diceRoll);
@@ -180,11 +161,6 @@ public class TUI implements ViewInterface{
             case CHOOSE_DOUBLE_CANNON -> System.out.println("choose the double cannons you want to use, and they're batteries");
             case CHOOSE_DOUBLE_ENGINE -> System.out.println("choose the double engine you want to use, and they're batteries");
         }
-    }
-
-    @Override
-    public void notifyBrokenTile(Coordinates coordinates) {
-
     }
 
     @Override
@@ -210,11 +186,6 @@ public class TUI implements ViewInterface{
     @Override
     public void asksToMakeAChoice() {
         System.out.println("Please, make a choice");
-    }
-
-    @Override
-    public void asksPlanetChoice() {
-        System.out.println("Choose a planet");
     }
 
     @Override
@@ -258,11 +229,16 @@ public class TUI implements ViewInterface{
         }
     }
     @Override
+    public void printShipboard(LightShipBoard lightShipBoard) {
+        System.out.println("this is your shipboard now:\n"+lightShipBoard.toString());
+    }
+
+    @Override
     public void notifyDrawnCard(Card card) throws RemoteException {
         System.out.println("a new card has been drawn\n "+card.toString());
     }
     @Override
-    public void notifyPLayerLandedOnPlanet(String playerName, int planet) throws RemoteException {
+    public void notifyPlayerLandedOnPlanet(String playerName, int planet) throws RemoteException {
         System.out.println(playerName + "landed on planet " + planet);
     }
 

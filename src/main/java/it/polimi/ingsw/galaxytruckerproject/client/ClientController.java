@@ -550,6 +550,32 @@ public class ClientController {
     public String getName() {
         return this.name;
     }
+    public LightShipBoard getLightShipBoard() {
+        return me.getShipBoard();
+    }
+
+    //deve copiare e incollare quelle tiles nelle loro coordinate per il player corrispondente
+    //verrà usato in caso di batterie usate, goods o crewmate dispersi
+    public void modifyTiles(String playerName,ArrayList<Tile> tiles){
+
+    }
+
+    //rompe le tile nelle coordinate corrispondenti per il player selezionato
+    public void brokenTiles(String playerName, ArrayList<Coordinates> coordinates){
+
+    }
+
+    //aggiungi booked tile al player (dalla light shipboard) con check sul senso dell'invocazione
+    public void addBookedTile(String playerName, Tile tile){
+
+    }
+    //rimuovi booked tile al player (dalla light shipboard) con check sul senso dell'invocazione
+    public void removeBookedTile(String playerName, Tile tile){
+
+    }
+
+
+
 
 }
 

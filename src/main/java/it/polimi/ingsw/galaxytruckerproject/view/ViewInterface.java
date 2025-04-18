@@ -3,14 +3,12 @@ package it.polimi.ingsw.galaxytruckerproject.view;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
-import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -131,7 +129,6 @@ public interface ViewInterface extends Remote, Serializable {
      * asks the player to input a series of coordinates of coord
      */
     void asksToInputCoordinates (CoordReqType coordReqType);
-    void notifyBrokenTile(Coordinates coordinates);
     void asksToTurnTheHourglass ();
     void notifyYouCanDrawThisCardDeck();
     void notifyYourShipIsCorrect();
@@ -152,8 +149,7 @@ public interface ViewInterface extends Remote, Serializable {
      * asks the player to choose the mode of the game to be created
      */
     void asksChosenMode ();
-    void printFlightboard(LightFlightboard lightFlightboard);
     void notifyDrawnCard(Card card) throws RemoteException; //tell the players which card has been drawn
-    void notifyPLayerLandedOnPlanet (String playerName, int planet)  throws RemoteException;
+    void notifyPlayerLandedOnPlanet(String playerName, int planet)  throws RemoteException;
 
 }
