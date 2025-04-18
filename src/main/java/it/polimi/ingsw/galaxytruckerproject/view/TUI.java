@@ -14,6 +14,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
@@ -52,7 +53,7 @@ public class TUI implements ViewInterface{
             case ACTION -> System.out.println("you can accept or deny");
             case COORD_REQUEST -> System.out.println("coordinates requested");
             case MANAGE_GOODS -> System.out.println("going to manage goods of the planet ");
-            case PLANET_CHOICE -> System.out.println("choose one of the planets");
+            case PLANET_CHOICE -> System.out.println("choose one of the planets to land");
             case S_END_DRAW_TILE_CARD -> System.out.println("now you can draw a tile ore a tile ");
             case S_MANAGE_CARDS -> System.out.println("you're seeing the cards");
             case S_MANAGE_DRAWN_TILE -> System.out.println("you can rotate, position, book or refuse this tile ");
@@ -249,18 +250,20 @@ public class TUI implements ViewInterface{
     public void asksChosenMode() {
         System.out.println("Choose a mode");
     }
-
-    @Override
-    public void updateLightModel(Message message) {
-        System.out.println(message.toString());
-    }
-
     @Override
     public void printFlightboard(LightFlightboard lightFlightboard) {
-        for(LightPlayer player: lightFlightboard.getIngamePlayers())
+        for(LightPlayer player: lightFlightboard.getInGamePlayers())
         {
             System.out.println("Player: " + player.toString());
         }
+    }
+    @Override
+    public void notifyDrawnCard(Card card) throws RemoteException {
+        System.out.println("a new card has been drawn\n "+card.toString());
+    }
+    @Override
+    public void notifyPLayerLandedOnPlanet(String playerName, int planet) throws RemoteException {
+        System.out.println(playerName + "landed on planet " + planet);
     }
 
 

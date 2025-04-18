@@ -547,5 +547,9 @@ public class ClientController {
     public void setPhase(GamePhases phase) {
         this.phase = phase;
     }
+    public String getName() {
+        return this.name;
+    }
+
 }
 

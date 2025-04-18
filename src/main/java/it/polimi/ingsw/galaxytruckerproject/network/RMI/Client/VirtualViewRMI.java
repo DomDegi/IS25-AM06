@@ -165,6 +165,19 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
+    public void notifyDrawnCard(Card card) throws RemoteException {
+        view.notifyDrawnCard(card);
+        clientController.setState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+    }
+
+    @Override
+    public void notifyPLayerLandedOnPlanet(String playerName, int planet) throws RemoteException {
+        if(playerName.equals(clientController.getName())){
+            clientController.setState(ClientState.MANAGE_GOODS);
+        }
+        view.notifyPLayerLandedOnPlanet(playerName, planet);
+    }
+    @Override
     public void notifyPlayerMovement(String playerName, int playerPosition, int playerRanking) throws RemoteException {
         clientController.updateFlightboard(playerName,playerPosition,playerRanking);
     }
@@ -237,10 +250,6 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
         view.asksToMakeAChoice();
     }
     @Override
-    public void asksPlanetChoice() {
-        view.asksPlanetChoice();
-    }
-    @Override
     public void asksToManageGoods(ArrayList<Goods> goods) {
         view.asksToManageGoods(goods);
     }
@@ -263,10 +272,6 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     @Override
     public void asksChosenMode() {
         view.asksChosenMode();
-    }
-    @Override
-    public void updateLightModel(Message message) {
-        view.updateLightModel(message);
     }
     @Override
     public void printFlightboard(LightFlightboard lightFlightboard) {
