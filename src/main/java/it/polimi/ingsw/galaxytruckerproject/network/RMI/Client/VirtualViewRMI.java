@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
-
+        ww()
 public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     //private final VirtualController server;
     private final ClientController clientController;
@@ -183,6 +183,11 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
+    public void wrongLocalInput() {
+
+    }
+
+    @Override
     public void notifyModifiedTiles(String playerName, ArrayList<Tile> tiles) throws RemoteException {
         clientController.modifyTiles(playerName, tiles);
         if(playerName.equals(clientController.getName())){
@@ -287,7 +292,6 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     public void asksChosenMode() {
         view.asksChosenMode();
     }
-
 
 
 }

@@ -151,5 +151,5 @@ public interface ViewInterface extends Remote, Serializable {
     void asksChosenMode ();
     void notifyDrawnCard(Card card) throws RemoteException; //tell the players which card has been drawn
     void notifyPlayerLandedOnPlanet(String playerName, int planet)  throws RemoteException;
-
+    void wrongLocalInput();
 }
