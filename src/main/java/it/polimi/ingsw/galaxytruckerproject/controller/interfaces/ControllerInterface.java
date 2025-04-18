@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.controller.interfaces;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 
@@ -84,6 +85,11 @@ public interface ControllerInterface {
 
     void completedShip() throws Exception;
 
+    void useCannons(float doublePower, ArrayList<Coordinates> batteries) throws Exception;
 
+    void useEngines(int numberOfDoubleEngines, ArrayList<Coordinates> batteries) throws Exception;
 
+    void manageGoods(int clientCreditsToVerify, ArrayList<CargoHold> cargosToUpdate) throws Exception;
+
+    void makeAChoice(boolean choice) throws Exception;
 }

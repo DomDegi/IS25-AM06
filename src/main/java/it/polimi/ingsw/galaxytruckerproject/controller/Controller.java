@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.controller;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.ControllerInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.SetColorRequest;
@@ -115,6 +116,7 @@ public class Controller implements ControllerInterface {
     public void setTile(Tile tile) {
         gameController.setTile(view,nickname,tile);
     }
+
     public void bookTile(){
         gameController.bookTile(view, nickname);
     }
@@ -133,5 +135,24 @@ public class Controller implements ControllerInterface {
 
     public void earlyLanding () {
         gameController.earlyLanding(nickname, view);
+    }
+
+    @Override
+    public void useCannons(float doublePower, ArrayList<Coordinates> batteries) throws Exception {
+        gameController.playerUsesCannons(nickname, doublePower, batteries);
+    }
+
+    @Override
+    public void useEngines(int numberOfDoubleEngines, ArrayList<Coordinates> batteries) throws Exception {
+        gameController.playerUsesEngines(nickname, numberOfDoubleEngines, batteries);
+    }
+
+    @Override
+    public void manageGoods(int clientCreditsToVerify, ArrayList<CargoHold> cargosToUpdate) throws Exception {
+        gameController.playerManagesGoods(nickname, clientCreditsToVerify, cargosToUpdate);
+    }
+
+    public void makeAChoice(boolean choice) {
+        gameController.playerMakesAChoice(nickname, choice);
     }
 }
