@@ -42,8 +42,6 @@ public abstract class Card {
 
     public abstract void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap);
 
-    public abstract void executeCard(Message message);
-
     public int getLevel() {
         return level;
     }
@@ -65,7 +63,6 @@ public abstract class Card {
     public abstract void manageGoods(String playerName, int clientCredits,  ArrayList<CargoHold> updatedCargos);
 
     public abstract void choice(String playerName, boolean decision);
-
 
 
     @Override
