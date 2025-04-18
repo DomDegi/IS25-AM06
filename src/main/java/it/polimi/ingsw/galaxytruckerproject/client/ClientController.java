@@ -225,6 +225,10 @@ public class ClientController {
                 }
             }
 
+            case MANAGE_CABINS ->{
+
+            }
+
             case COORD_REQUEST->{
                 if (checkShipBoards(words))
                     return;
@@ -369,7 +373,7 @@ public class ClientController {
                 if (chose==-1)
                     return;
                 if (chose>0&&flightBoard.getInGamePlayers().size()>chose) {
-                    virtualController.setFlightboard(name,chose);
+                    virtualController.notifySetPosition(name,chose);
                 }else
                     System.out.println("\nWrong input");
             }
@@ -509,7 +513,7 @@ public class ClientController {
         state=newState;
     }
     public boolean rollBackState(){
-        view.setClientState();
+        view.setClientState(previousState);
         if (state==previousState)
             return false;
         state=previousState;
@@ -531,7 +535,6 @@ public class ClientController {
     public void removeTurnedTile(Tile tile) {
         turnedTiles.remove(tile.getKey());
     }
-
     public String getName() {
         return name;
     }

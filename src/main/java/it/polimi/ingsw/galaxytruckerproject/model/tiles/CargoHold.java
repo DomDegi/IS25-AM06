@@ -84,9 +84,4 @@ public abstract class CargoHold extends Tile{
     public boolean getHazard() {
         return hazard;
     }
-
-    public int getTotSpaces() {
-        return totSpaces;
-    }
-
 }

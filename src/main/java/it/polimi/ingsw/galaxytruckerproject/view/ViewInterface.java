@@ -188,5 +188,5 @@ public interface ViewInterface extends Remote, Serializable {
 
     void updateLightModel (Message message);
 
-    void printFlightboard(LightFlightboard lightFlightboard)
+    void printFlightboard(LightFlightboard lightFlightboard);
 }
