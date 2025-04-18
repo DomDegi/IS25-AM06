@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
 
 public class TUI implements ViewInterface{
     @Override
@@ -175,8 +174,8 @@ public class TUI implements ViewInterface{
     public void asksToInputCoordinates(CoordReqType coordReqType) {
         switch (coordReqType){
             case CHOOSE_BATTERY -> System.out.println("choose your battery to use");
-            case CHOOSE_TO_MANTAIN -> System.out.println("choose a tile of the branch you want to keep");
-            case CHOOSE_TO_BREACK -> System.out.println("choose the tiles you want to destroy");
+            case CHOOSE_TO_MAINTAIN -> System.out.println("choose a tile of the branch you want to keep");
+            case CHOOSE_TO_BREAK -> System.out.println("choose the tiles you want to destroy");
             case CHOOSE_DOUBLE_CANNON -> System.out.println("choose the double cannons you want to use, and they're batteries");
             case CHOOSE_DOUBLE_ENGINE -> System.out.println("choose the double engine you want to use, and they're batteries");
         }

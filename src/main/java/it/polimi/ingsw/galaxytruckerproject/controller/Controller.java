@@ -4,10 +4,10 @@ import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.ControllerInte
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.SetColorRequest;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
+
+import java.util.ArrayList;
 
 /*
  * This controller class is the one that each client
@@ -82,19 +82,10 @@ public class Controller implements ControllerInterface {
         multiGameController.leave(nickname);
     }
 
-    @Override
-    public void chooseColor(String chosenColor) throws Exception {
-
-    }
-
-    public void chooseColor(PlayersColor color) {
+    public void chooseColor(String color) {
         if (gameController.checkColorAvailable(nickname, view, color)) {
             gameController.playerAddition(new SetColorRequest(nickname, color));
         }
-    }
-
-    public void playerChoiceThroughMessage (Message message) {
-        gameController.processPlayerInput(message);
     }
 
     public void turnHourglass () {
@@ -110,7 +101,7 @@ public class Controller implements ControllerInterface {
     }
 
     public void refuseTile(){
-        gameController.refuseTile(view, nickname);
+        gameController.refuseTile(nickname);
     }
 
     public void lookGameCards(int index) {
@@ -128,4 +119,19 @@ public class Controller implements ControllerInterface {
         gameController.bookTile(view, nickname);
     }
 
+    public void shipErrorManagement(ArrayList<Coordinates> toRemove) {
+        gameController.shipErrorManagement(nickname, view, toRemove);
+    }
+
+    public void completedShip() {
+        gameController.completed(nickname, view);
+    }
+
+    public void drawCard() {
+        gameController.drawCard(nickname, view);
+    }
+
+    public void earlyLanding () {
+        gameController.earlyLanding(nickname, view);
+    }
 }

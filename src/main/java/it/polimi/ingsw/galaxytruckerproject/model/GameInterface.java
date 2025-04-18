@@ -3,7 +3,6 @@ package it.polimi.ingsw.galaxytruckerproject.model;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
@@ -28,6 +27,7 @@ public interface GameInterface {
     ShipBoard getPlayerShipBoard(String s);
     FlightBoard getFlightBoard();
     GameMode getMode();
+    Player getFirstRankedPlayer();
 
 
     //Methods for ships creation phase
@@ -36,6 +36,7 @@ public interface GameInterface {
     Tile drawAndPositionBookedTile(String playerName, Tile tile);
     Tile refuseTile(String playerName);
     void endShipCreation();
+    void endShipVerification();
     void drawCard(Map<String, VirtualView> playersView);
     void endCardPhase();
     void endCardEvent();
@@ -46,6 +47,5 @@ public interface GameInterface {
 
     //Card phase cards
     int getCardsLeft();
-    void cardEvent(Message message);
     Card getDrawnCard();
 }

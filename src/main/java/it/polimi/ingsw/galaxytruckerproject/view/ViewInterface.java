@@ -195,5 +195,4 @@ public interface ViewInterface extends Remote, Serializable {
     void printFlightboard(LightFlightboard lightFlightboard);
 
 
-
 }

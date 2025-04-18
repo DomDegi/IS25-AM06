@@ -3,10 +3,13 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,6 +57,16 @@ public abstract class Card {
             view.showGenericMessage(message);
         }
     }
+
+    public abstract void cannonChoice(String playerName, float doubleCannonPower, ArrayList<Coordinates> batteriesToUse);
+
+    public abstract void engineChoice(String playerName, int numDoubleEngine, ArrayList<Coordinates> batteriesToUse);
+
+    public abstract void manageGoods(String playerName, int clientCredits,  ArrayList<CargoHold> updatedCargos);
+
+    public abstract void choice(String playerName, boolean decision);
+
+
 
     @Override
     public String toString() {

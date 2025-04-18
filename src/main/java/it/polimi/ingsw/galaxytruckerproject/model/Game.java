@@ -105,14 +105,13 @@ public class Game implements GameInterface {
     public Tile drawAndPositionBookedTile (String playerName, Tile tile) {
         Player player = identifyPlayerByName(playerName);
         ArrayList<Tile> bookedTiles = player.getShipBoard().getBookedTiles();
-        Tile drawnTile = null;
         for (int i = 0; i < bookedTiles.size(); i++) {
-            if (bookedTiles.get(i).getKey() == key) {
-                drawnTile = player.getShipBoard().removeBookedTile(i);
-                player.hasDrawnTile(drawnTile);
+            if (bookedTiles.get(i).getKey() == tile.getKey()) {
+                player.getShipBoard().removeBookedTile(i);
+                player.hasDrawnTile(tile);
             }
         }
-        return drawnTile;
+        return tile;
     }
 
     public Tile refuseTile(String playerName) {
@@ -188,6 +187,7 @@ public class Game implements GameInterface {
             else
                 return null;
         }
+        return null;
     }
 
     public Tile playerBookTile (String playerName) {
@@ -210,6 +210,9 @@ public class Game implements GameInterface {
     }
 
     //VERIFY_SHIP_CORRECTNESS METHODS
+    public void endShipVerification() {
+        this.gameState = DRAW_CARD;
+    }
 
     //DRAW_CARD METHODS
 
@@ -291,6 +294,10 @@ public class Game implements GameInterface {
             return null;
         }
         return player.getShipBoard();
+    }
+
+    public Player getFirstRankedPlayer () {
+        return getListOfInFlightPlayers().getFirst();
     }
 
     public FlightBoard getFlightBoard() {
