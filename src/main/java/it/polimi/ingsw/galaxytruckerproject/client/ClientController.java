@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.client;
 
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Planets;
@@ -510,7 +511,7 @@ public class ClientController {
     }
     public void setState(ClientState newState){
         previousState=state;
-        state=newState;
+        view.setClientState(newState);
     }
     public boolean rollBackState(){
         view.setClientState(previousState);
@@ -541,5 +542,47 @@ public class ClientController {
     public void setTileInHand(Tile tile) {
         tileInHand = tile;
     }
+
+    public void setTile(String playerName,Tile tile) {
+        LightShipBoard lightShipBoard= flightBoard.getIngamePlayer(playerName).getShipBoard();
+        lightShipBoard.positionTile(Optional.of(tile),tile.getCoordinates());
+    }
+
+    public CoordInputManager getCoordInputManager() {
+        return coordInputManager;
+    }
+    public void setPhase(GamePhases phase) {
+        this.phase = phase;
+    }
+    public String getName() {
+        return this.name;
+    }
+    public LightShipBoard getLightShipBoard() {
+        return me.getShipBoard();
+    }
+
+    //deve copiare e incollare quelle tiles nelle loro coordinate per il player corrispondente
+    //verrà usato in caso di batterie usate, goods o crewmate dispersi
+    public void modifyTiles(String playerName,ArrayList<Tile> tiles){
+
+    }
+
+    //rompe le tile nelle coordinate corrispondenti per il player selezionato
+    public void brokenTiles(String playerName, ArrayList<Coordinates> coordinates){
+
+    }
+
+    //aggiungi booked tile al player (dalla light shipboard) con check sul senso dell'invocazione
+    public void addBookedTile(String playerName, Tile tile){
+
+    }
+    //rimuovi booked tile al player (dalla light shipboard) con check sul senso dell'invocazione
+    public void removeBookedTile(String playerName, Tile tile){
+
+    }
+
+
+
+
 }
 

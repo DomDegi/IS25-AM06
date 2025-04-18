@@ -1,32 +1,29 @@
 package it.polimi.ingsw.galaxytruckerproject.view;
 
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
+import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
-import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
 public interface ViewInterface extends Remote, Serializable {
-
     /**
      * asks the player to set a nickname
      * @throws IOException
      */
     void askNickname () throws IOException;
-
-
     /**
      * asks player to set a color for the starting cabin
      * @throws IOException
@@ -82,111 +79,77 @@ public interface ViewInterface extends Remote, Serializable {
      * @param errorMessage the message to be shown.
      */
     void showErrorMessage (String errorMessage);
-
-
     /**
      * shows on the view the list of players in the game with their status (in flight or landed)
      * @param players in game players
      */
     void showInGamePlayers (ArrayList<Player> players);
-
     /**
      * asks for the inputted player's shipboard
      */
     void asksPlayersInfo ();
-
     void showShipsErrors ();
-
     /**
      * shows the chosen players shipboard
      * @param player
      * @param shipBoard
      */
     void showPlayersBoard(String player, ShipBoard shipBoard);
-
     /**
      * show the drawnTile to the player
      * @param drawnTile
      */
     //DEVE ANCHE MANDARLA AL CLIENT
     void showDrawnTile (Tile drawnTile);
-
     /**
      * shows the player the tiles that got turned from player refusing them
      * @param turnedTiles the current array in the model
      */
     void showTurnedTiles (Map<Integer,Tile> turnedTiles);
-
     /**
      * shows the tiles that the player booked on their shipboard
      * @param bookedTiles the booked tiles
      */
     void showBookedTiles (ArrayList<Tile> bookedTiles);
-
+    void showWrongInputMessage ();
     /**
      * prints on the view the cards that are on the shipboard to be seen during
      * ship building phase
      * @param inGameCards the cards returned by the model
      */
     void showInGameCards (ArrayList<Card> inGameCards);
-
-    /**
-     * asks the player to confirm he wants to roll the dices
-     */
-    void asksToRollTheDices();
-
+    void asksToRollTheDices();//asks the player to confirm he wants to roll the dices
     void showDiceRoll(int diceRoll);
-
     /**
      * asks the player to choose a starting position from 1 to playerCount
      */
     void asksToChooseStartingPosition ();
 
     /**
-     * asks the player to input a series of coordinates
+     * asks the player to input a series of coordinates of coord
      */
-    void asksToInputCoordinates ();
-
+    void asksToInputCoordinates (CoordReqType coordReqType);
     void asksToTurnTheHourglass ();
-
-    /**
-     * asks the player to input yes or no to decide and sends a Accept or a Refuse Message
-     */
-
+    void notifyYouCanDrawThisCardDeck();
+    void notifyYourShipIsCorrect();
     /**
      * asks to set position on the flightboard
      */
     void asksToSetPosition();
-
     void asksToMakeAChoice ();
-
-    void asksPlanetChoice();
-
     void asksToManageGoods(ArrayList<Goods> goods);
-
-    void asksToUseEngines();
-
-    void asksToUseCannons();
-
-    void asksToUseBatteries();
-
     void asksToRemoveGoods();
-
     void asksToRemoveCrew();
-
     void asksWhichBranchToKeep(ArrayList<Set<Coordinates>> branch);
-
     /**
      * at the end of the game shows every players score on the view
      */
     void showScores(ArrayList<Player> players);
-
     /**
      * asks the player to choose the mode of the game to be created
      */
     void asksChosenMode ();
-
-    void updateLightModel (Message message);
-
-    void printFlightboard(LightFlightboard lightFlightboard);
+    void notifyDrawnCard(Card card) throws RemoteException; //tell the players which card has been drawn
+    void notifyPlayerLandedOnPlanet(String playerName, int planet)  throws RemoteException;
+    void wrongLocalInput();
 }

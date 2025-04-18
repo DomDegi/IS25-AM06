@@ -1,16 +1,20 @@
 package it.polimi.ingsw.galaxytruckerproject.view;
 
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
+import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 
 public class GUI implements ViewInterface {
 
@@ -26,6 +30,11 @@ public class GUI implements ViewInterface {
 
     @Override
     public void showLoginResponse(boolean success) {
+
+    }
+
+    @Override
+    public void setClientState(ClientState newState) {
 
     }
 
@@ -90,12 +99,22 @@ public class GUI implements ViewInterface {
     }
 
     @Override
+    public void showTurnedTiles(Map<Integer, Tile> turnedTiles) {
+
+    }
+
+    @Override
     public void showTurnedTiles(ArrayList<Tile> turnedTiles) {
 
     }
 
     @Override
     public void showBookedTiles(ArrayList<Tile> bookedTiles) {
+
+    }
+
+    @Override
+    public void showWrongInputMessage() {
 
     }
 
@@ -110,7 +129,17 @@ public class GUI implements ViewInterface {
     }
 
     @Override
+    public void showDiceRoll(int diceRoll) {
+
+    }
+
+    @Override
     public void asksToChooseStartingPosition() {
+
+    }
+
+    @Override
+    public void asksToInputCoordinates(CoordReqType coordReqType) {
 
     }
 
@@ -121,6 +150,21 @@ public class GUI implements ViewInterface {
 
     @Override
     public void asksToTurnTheHourglass() {
+
+    }
+
+    @Override
+    public void notifyYouCanDrawThisCardDeck() {
+
+    }
+
+    @Override
+    public void notifyYourShipIsCorrect() {
+
+    }
+
+    @Override
+    public void asksToSetPosition() {
 
     }
 
@@ -165,6 +209,16 @@ public class GUI implements ViewInterface {
     }
 
     @Override
+    public void asksWhichBranchToKeep(ArrayList<Set<Coordinates>> branch) {
+
+    }
+
+    @Override
+    public void showScores(ArrayList<Player> players) {
+
+    }
+
+    @Override
     public void showScores() {
 
     }
@@ -175,7 +229,13 @@ public class GUI implements ViewInterface {
     }
 
     @Override
-    public void updateLightModel(Message message) {
+    public void notifyDrawnCard(Card card) throws RemoteException {
 
     }
+
+    @Override
+    public void notifyPlayerLandedOnPlanet(String playerName, int planet) throws RemoteException {
+
+    }
+
 }

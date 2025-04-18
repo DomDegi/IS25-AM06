@@ -3,7 +3,6 @@ package it.polimi.ingsw.galaxytruckerproject.model;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
@@ -28,27 +27,25 @@ public interface GameInterface {
     ShipBoard getPlayerShipBoard(String s);
     FlightBoard getFlightBoard();
     GameMode getMode();
+    Player getFirstRankedPlayer();
 
 
     //Methods for ships creation phase
     Tile drawTile(String playerName);
     Tile drawTurnedTile(String playerName, int index);
-    Tile drawBookedTile(String playerName, int index);
-    void refuseTile(String playerName);
-    void startTimer();
+    Tile drawAndPositionBookedTile(String playerName, Tile tile);
+    Tile refuseTile(String playerName);
     void endShipCreation();
+    void endShipVerification();
     void drawCard(Map<String, VirtualView> playersView);
     void endCardPhase();
     void endCardEvent();
     ArrayList<Card> getInGameCards (int number);
-    boolean getHourglassState();
-    int getHourglassTurns();
     Map<Integer,Tile> getTurnedTiles();
-    boolean playerSetTile(String playerName, Coordinates coordinates);
-    boolean playerBookTile(String playerName);
+    Tile playerSetTile(String playerName, Tile tile);
+    Tile playerBookTile(String playerName);
 
     //Card phase cards
     int getCardsLeft();
-    void cardEvent(Message message);
     Card getDrawnCard();
 }

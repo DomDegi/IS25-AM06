@@ -2,7 +2,11 @@ package it.polimi.ingsw.galaxytruckerproject.controller.interfaces;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+
+import java.util.ArrayList;
 
 /** this interface is used to define the methods that
  * the player can call to interact with the server
@@ -59,25 +63,33 @@ public interface ControllerInterface {
      */
     void chooseColor (String chosenColor) throws Exception;
 
-    /**
-     * Used by the player to draw an event card
-     * If the cards are over or
-     * the player isn't the in the lead notifies player.
-     * @throws Exception
-     */
+    void turnHourglass () throws Exception;
 
-    /**
-     * this method is used for game phases where the input player input
-     * has to be processed internally by the game model and can't be said
-     * which type of input is required, so it all gets sent through messages.
-     */
-    void playerChoiceThroughMessage (Message message) throws Exception;
+    void drawTileFromStack ()  throws Exception;
 
-    void turnHourglass (String playerName) throws Exception;
+    void drawTileFromTurned (int index) throws Exception;
+
+    void refuseTile() throws Exception;
+
+    void shipErrorManagement(ArrayList<Coordinates> toRemove) throws Exception;
+
+    void drawCard () throws Exception;
+
+    void earlyLanding () throws Exception;
 
     /**
      * this method binds the GameController of the joined game to the player's personal controller
      * @param gameController gameController to set
      */
-    public void setGameController(GameController gameController);
+    void setGameController(GameController gameController);
+
+    void completedShip() throws Exception;
+
+    void useCannons(float doublePower, ArrayList<Coordinates> batteries) throws Exception;
+
+    void useEngines(int numberOfDoubleEngines, ArrayList<Coordinates> batteries) throws Exception;
+
+    void manageGoods(int clientCreditsToVerify, ArrayList<CargoHold> cargosToUpdate) throws Exception;
+
+    void makeAChoice(boolean choice) throws Exception;
 }

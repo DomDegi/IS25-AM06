@@ -2,17 +2,18 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.MessageType;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.UseEngineResponse;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Objects;
 
 public class OpenSpace extends Card {
     private Player currentPlayer = null;
@@ -35,35 +36,41 @@ public class OpenSpace extends Card {
         this.nextPlayer();
     }
 
-    //makes so that the player gain as many days as their engineStrength
     @Override
-    public void executeCard(Message message) {
-        String playerName = message.getNickname();
-        if (!Objects.equals(playerName, currentPlayer.getPlayerName()) || currentPlayer == null) {
+    public void cannonChoice(String playerName, float doubleCannonPower, ArrayList<Coordinates> batteriesToUse) {}
+    @Override
+    public void manageGoods(String playerName, int clientCredits, ArrayList<CargoHold> updatedCargos) {}
+    @Override
+    public void choice(String playerName, boolean decision) {}
+
+    @Override
+    public void engineChoice(String playerName, int numDoubleEngines, ArrayList<Coordinates> batteriesToUse) {
+        if (!playerName.equals(currentPlayer.getPlayerName())) {
+            viewsMap.get(playerName).showWrongInputMessage();
             return;
         }
-        if (message.getMessageType().equals(MessageType.USE_ENGINE_RESPONSE)) {
-            UseEngineResponse messageReceived = (UseEngineResponse) message;
-            int engineStrength = currentPlayer.useEngines(messageReceived.getNumEngine(), messageReceived.getCoordinates());
-            if (engineStrength == -1) {
-                return;
-            }
-            else {
-                this.moveOrEarlyLand(engineStrength);
-                this.nextPlayer();
-            }
+        int engineStrength =  currentPlayer.useEngines(numDoubleEngines, batteriesToUse);
+        if (engineStrength == -1) {
+            currentPlayerView.showWrongInputMessage();
+            return;
         }
+        this.moveOrEarlyLand(engineStrength);
+        this.nextPlayer();
     }
 
     //moves player forward; early lands if engineStrength == 0
     private void moveOrEarlyLand(int engineStrength) {
-        System.out.println("\n");
         if (engineStrength == 0) {
             playersToEarlyLand.add(currentPlayer);
             nextPlayer();
             return;
         }
         game.getFlightBoard().moveForward(currentPlayer, engineStrength);
+        for (VirtualView view: viewsMap.values()) {
+            try {
+                view.notifyPlayerMovement(currentPlayer.getPlayerName(), currentPlayer.getPlayerPosition(), currentPlayer.getPlayerRanking());
+            } catch (Exception ignored) {}
+        }
         nextPlayer();
     }
 
@@ -80,10 +87,10 @@ public class OpenSpace extends Card {
         this.currentPlayer = game.getListOfInFlightPlayers().get(playerIndex);
         this.currentPlayerView = viewsMap.get(currentPlayer.getPlayerName());
         if (currentPlayer.IsDisconnected()) {
-            executeCard(new UseEngineResponse(currentPlayer.getPlayerName(), 0, new ArrayList<>()));
+            engineChoice(currentPlayer.getPlayerName(), 0, new ArrayList<>());
             return;
         }
-        currentPlayerView.asksToUseEngines();
+        currentPlayerView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_ENGINE);
     }
 
     public String toString() {
