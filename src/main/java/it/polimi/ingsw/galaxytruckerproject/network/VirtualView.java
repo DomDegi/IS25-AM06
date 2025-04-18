@@ -5,6 +5,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Map;
 
 public interface VirtualView extends ViewInterface {
@@ -17,4 +18,5 @@ public interface VirtualView extends ViewInterface {
     void notifyAvailableCardDeck(Map<String,Integer> lockedSmallDecks) throws RemoteException; //notify which cards deck are not looked at
     void notifyDrawnCard(Card card) throws RemoteException; //tell the players which card has been drawn
     void notifyPLayerLandedOnPlanet (String playerName, int planet)  throws RemoteException;
+    void notifyModifiedTiles(String playerName, ArrayList<Tile> cabins) throws RemoteException;
 }
