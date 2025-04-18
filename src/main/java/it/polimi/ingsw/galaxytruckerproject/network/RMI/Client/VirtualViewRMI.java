@@ -208,7 +208,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
-    public void notifyBrokenTile(Coordinates coordinates) {
+    public void notifyBrokenTile(String playerName, Coordinates coordinates) {
 
     }
 

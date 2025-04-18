@@ -151,7 +151,7 @@ public interface ViewInterface extends Remote, Serializable {
     void asksToInputCoordinates (CoordReqType coordReqType);
 
 
-    void notifyBrokenTile(Coordinates coordinates);
+    void notifyBrokenTile(String playerName, Coordinates coordinates);
 
     void asksToTurnTheHourglass ();
 

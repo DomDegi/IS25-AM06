@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.controller;
 
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
+import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.Observer;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
@@ -11,7 +12,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
@@ -19,10 +19,9 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.*;
-import static it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.MessageType.*;
 
 
-public class GameController {
+public class GameController implements Observer {
     private final String gameName;
     private final GameInterface game;
     private final ArrayList<String> playersWithErrors;
@@ -40,9 +39,21 @@ public class GameController {
         return gameName+"\ngame state:"+game.getGameState().toString()+"\nplayer needed: "+game.getPlayerCount()+"\nplatyer in game: "+game.getNumberOfPlayers();
     }
 
+    @Override
+    public void update(GameState newState) {
+        switch (newState) {
+            case START_GAME -> startGame();
+            case VERIFY_SHIP_CORRECTNESS ->  verifyShipCorrectness();
+            case DRAW_CARD -> askFirstRankedPlayerToDraw();
+            case CARD_EVENT -> initializeDrawnCard();
+            case CONCLUDE_GAME -> concludeGame();
+        }
+    }
+
     public GameController(GameInterface game, String gameName) {
         this.gameName = gameName;
         this.game = game;
+        game.addObserver(this);
         this.playersWithErrors = new ArrayList<>();
         this.playersViewMap = new HashMap<>();
         this.activePlayers = new HashMap<>();
@@ -119,16 +130,10 @@ public class GameController {
 
     /**
      * adds player to the gameModel after they enter a valid color for their starting cabin
-     * @param message a message that has to be of type Set_color_request so that it contains
-     * both nickname and color String.
+     * both nickname and color.
      * If players number reaches the initial setted count, starts game.
      */
-    public void playerAddition(Message message) {
-        if (message.getMessageType() == SET_COLOR_REQUEST) {
-            SetColorRequest messageReceived = (SetColorRequest) message;
-            String playerName = message.getNickname();
-            String color = messageReceived.getColor();
-            PlayersColor playersColor = PlayersColor.valueOf(color);
+    public void playerAddition(String playerName, PlayersColor playersColor) {
             if (this.getGameState() == GameState.START_GAME && playersViewMap.containsKey(playerName)) {
                 //if playerCount is still to be reached, add player to the game model
                 if (game.getNumberOfPlayers() < game.getPlayerCount()) {
@@ -140,12 +145,8 @@ public class GameController {
                 }
                 //if game is already out of lobby phase
             } else if (playersViewMap.containsKey(playerName)) {
-                playersViewMap.get(playerName).showErrorMessage("Can't join a game that's already started");
+                playersViewMap.get(playerName).showWrongInputMessage();
             } // if the count has been reached starts the game
-            if (game.getListOfAllPlayer().size() == game.getPlayerCount()) {
-                this.startGame();
-            }
-        }
     }
 
     public VirtualView removePlayer (String playerName) {
@@ -162,25 +163,19 @@ public class GameController {
      * checks if the color chosen by the player is già taken or not
      * @param playerName player that asked the check
      * @param view player's view
-     * @param color chosen color
+     * @param playersColor chosen color
      * @return true if color is available, false otherwise
      */
-    public boolean checkColorAvailable (String playerName, ViewInterface view, String color) {
+    public boolean checkColorAvailable (String playerName, ViewInterface view, PlayersColor playersColor) {
         if (! playersViewMap.containsKey(playerName)) {
             view.showErrorMessage("can't choose a color without logging in");
             return false;
         }
-        try {
-            PlayersColor chosenColor = PlayersColor.valueOf(color);
-            for (Player player : activePlayers.values()) {
-                if (player.getPlayerColor().equals(chosenColor)) {
-                    view.showErrorMessage("color for starting cabin is already taken");
-                    return false;
-                }
+        for (Player player : activePlayers.values()) {
+            if (player.getPlayerColor().equals(playersColor)) {
+                view.showWrongInputMessage();
+                return false;
             }
-        } catch (IllegalArgumentException e) {
-            view.showErrorMessage("invalid color for the game");
-            return false;
         }
         return true;
     }
@@ -190,7 +185,7 @@ public class GameController {
      * if TRIAL starts the game without hourglass
      */
     public synchronized void startGame() {
-        game.startGame();
+        game.startShipCreation();
         if (game.getMode() == TRIAL) {
             updateEveryView(ClientState.S_END_DRAW_TILE_CARD);
         }
@@ -273,8 +268,6 @@ public class GameController {
 
     public void endShipVerification() {
         game.endShipVerification();
-        updateEveryView(ClientState.WAIT_OTHER_PLAYER_ACTION);
-        initializeDrawCard();
     }
 
     public void shipErrorManagement(String playerName, VirtualView playersView, ArrayList<Coordinates> toRemove) {
@@ -369,6 +362,7 @@ public class GameController {
                 playersView.showWrongInputMessage();
                 return;
             }
+            notifyRemovedBookedTile(playerName, settedTile);
         }
         settedTile = game.playerSetTile(playerName, tile);
 
@@ -385,6 +379,14 @@ public class GameController {
         for (VirtualView view: playersViewMap.values()) {
             try {
                 view.notifyPositionedTile(playerName, tile);
+            } catch (Exception ignored) {}
+        }
+    }
+
+    private void notifyRemovedBookedTile (String playerName, Tile tile) {
+        for (VirtualView view: playersViewMap.values()) {
+            try {
+                view.notifyRemovedBookedTile(playerName, tile);
             } catch (Exception ignored) {}
         }
     }
@@ -471,7 +473,6 @@ public class GameController {
 
     private void endShipCreation () {
         game.endShipCreation();
-        verifyShipCorrectness();
     }
 
 
@@ -524,8 +525,12 @@ public class GameController {
         }, 95000); //95 seconds
     }
 
-    public void initializeDrawCard () {
-        this.askFirstRankedPlayerToDraw();
+    public void askFirstRankedPlayerToDraw() {
+        updatePlayerView(ClientState.DRAW_CARD,game.getFirstRankedPlayer().getPlayerName());
+    }
+
+    public void initializeDrawnCard () {
+        game.getDrawnCard().initializeCard(game, playersViewMap);
     }
 
     //Number 1 player can draw
@@ -552,7 +557,7 @@ public class GameController {
             playersView.showWrongInputMessage();
         }
         else {
-            game.drawCard(playersViewMap);
+            game.drawCard();
             notifyDrawnCard(game.getDrawnCard());
         }
     }
@@ -735,10 +740,6 @@ public class GameController {
     public void updatePlayerView (ClientState newState, String playerName) {
         playersViewMap.get(playerName).setClientState(newState);
         clientsStatesMap.put(playerName, newState);
-    }
-
-    public void askFirstRankedPlayerToDraw() {
-        updatePlayerView(ClientState.DRAW_CARD,game.getFirstRankedPlayer().getPlayerName());
     }
 
     public boolean playerStateIs(String playerName,ClientState stateToVerify) {

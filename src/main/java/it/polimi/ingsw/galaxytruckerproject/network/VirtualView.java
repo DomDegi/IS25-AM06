@@ -20,4 +20,5 @@ public interface VirtualView extends ViewInterface {
     void notifyPlayerLandedOnPlanet(String playerName, int planet)  throws RemoteException;
     void notifyModifiedTiles(String playerName, ArrayList<Tile> tiles) throws RemoteException;
     void notifyGainedCredits (String playerName, int totalCredits) throws RemoteException;
+    void notifyRemovedBookedTile(String playerName, Tile tile) throws RemoteException;
 }

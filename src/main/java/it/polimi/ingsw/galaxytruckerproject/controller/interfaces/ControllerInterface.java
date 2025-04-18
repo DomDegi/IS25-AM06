@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.controller.interfaces;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
@@ -59,10 +60,10 @@ public interface ControllerInterface {
      * this method is used by the player to choose a color after entering a game
      * Its view is updated with the available colors.
      * if the chosenColor is not available or wrong, player is notified
-     * @param chosenColor string of the color player has chosen between RED, YELLOW, GREEN, BLUE
+     * @param color enumeration of the chosen color by the player
      * @throws Exception
      */
-    void chooseColor (String chosenColor) throws Exception;
+    void chooseColor (PlayersColor color) throws Exception;
 
     void turnHourglass () throws Exception;
 

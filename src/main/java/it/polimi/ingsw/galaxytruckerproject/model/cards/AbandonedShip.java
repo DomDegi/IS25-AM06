@@ -39,8 +39,8 @@ public class AbandonedShip extends Card {
     @Override
     public void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap) {
         this.game = game;
+        this.viewsMap = viewsMap;
         this.nextPlayer();
-        this.viewsMap.putAll(viewsMap);
     }
 
     @Override

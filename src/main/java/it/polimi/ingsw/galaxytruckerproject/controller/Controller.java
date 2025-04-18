@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.controller;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.ControllerInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
@@ -90,9 +91,9 @@ public class Controller implements ControllerInterface {
     }
 
     @Override
-    public void chooseColor(String color) {
+    public void chooseColor(PlayersColor color) {
         if (gameController.checkColorAvailable(nickname, view, color)) {
-            gameController.playerAddition(new SetColorRequest(nickname, color));
+            gameController.playerAddition(nickname, color);
         }
     }
 

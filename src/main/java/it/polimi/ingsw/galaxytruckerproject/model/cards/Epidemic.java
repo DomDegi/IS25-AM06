@@ -35,20 +35,15 @@ public class Epidemic extends Card {
     @Override
     public void choice(String playerName, boolean decision) {}
 
+    @Override
+    public void planetChoice(String playerName, int planet) {}
+
     public void executeCard() {
         for(Player player: game.getListOfInFlightPlayers()){
             ArrayList<Tile> modifiedCabins = player.getShipBoard().epidemic();
-            notifyRemovedCrew(player.getPlayerName(),modifiedCabins);
+            notifyModifiedTiles(player.getPlayerName(),  modifiedCabins);
         }
         game.endCardEvent();
-    }
-
-    public void notifyRemovedCrew (String playerName, ArrayList<Tile> modifiedCabins) {
-        for (VirtualView view: viewsMap.values()) {
-            try {
-                view.notifyModifiedTiles(playerName, modifiedCabins);
-            } catch (Exception ignored) {}
-        }
     }
 
     @Override

@@ -67,11 +67,7 @@ public class OpenSpace extends Card {
             return;
         }
         game.getFlightBoard().moveForward(currentPlayer, engineStrength);
-        for (VirtualView view: viewsMap.values()) {
-            try {
-                view.notifyPlayerMovement(currentPlayer.getPlayerName(), currentPlayer.getPlayerPosition(), currentPlayer.getPlayerRanking());
-            } catch (Exception ignored) {}
-        }
+        notifyMovement(currentPlayer);
         nextPlayer();
     }
 

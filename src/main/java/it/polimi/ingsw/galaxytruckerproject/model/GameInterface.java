@@ -1,22 +1,25 @@
 package it.polimi.ingsw.galaxytruckerproject.model;
 
+import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.Observer;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
-import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-public interface GameInterface {
+public interface GameInterface{
+
+    //observer methods
+    void addObserver(Observer o);
+    void removeObserver(Observer o);
 
     //Methods that add player and setups the game + other getter and setter methods for the player list
     void setPlayerCount(int playerCount);
     void addPlayer(String playerName, PlayersColor color);
-    void startGame();
+    void startShipCreation();
     int getPlayerCount();
     Player identifyPlayerByName(String playerName);
     ArrayList<Player> getListOfInFlightPlayers();
@@ -37,7 +40,7 @@ public interface GameInterface {
     Tile refuseTile(String playerName);
     void endShipCreation();
     void endShipVerification();
-    void drawCard(Map<String, VirtualView> playersView);
+    void drawCard();
     void endCardPhase();
     void endCardEvent();
     ArrayList<Card> getInGameCards (int number);

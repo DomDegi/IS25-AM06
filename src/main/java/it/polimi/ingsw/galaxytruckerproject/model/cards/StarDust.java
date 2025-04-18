@@ -35,6 +35,9 @@ public class StarDust extends Card {
     @Override
     public void choice(String playerName, boolean decision) {}
 
+    @Override
+    public void planetChoice(String playerName, int planet) {}
+
     //makes so that the player loses as many days as their exposedConnectors
     public void executeCard() {
         ArrayList<Player> players = game.getListOfInFlightPlayers();
@@ -46,15 +49,7 @@ public class StarDust extends Card {
             int playerExposedConnectors = players.get(i).getShipBoard().countExposedConnectors();
 
             if (playerExposedConnectors > 0) {
-                game.getFlightBoard().moveBackward(currentPlayer, playerExposedConnectors);
-                for (VirtualView view : viewsMap.values()) {
-                    try {
-                        view.notifyPlayerMovement(currentPlayer.getPlayerName(), currentPlayer.getPlayerPosition(), currentPlayer.getPlayerRanking());
-                    } catch (Exception ignored) {}
-                }
-            }
-            else {
-                broadcastMessage(players.get(i).getPlayerName() + " has no exposed connectors. StarDust doesn't affect them\n");
+                notifyMovement(currentPlayer);
             }
         }
         game.endCardEvent();

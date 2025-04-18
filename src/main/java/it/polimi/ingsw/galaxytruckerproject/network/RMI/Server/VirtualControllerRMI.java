@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.network.RMI.Server;
 import it.polimi.ingsw.galaxytruckerproject.controller.Controller;
 import it.polimi.ingsw.galaxytruckerproject.controller.MultiGameController;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
@@ -56,7 +57,7 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).leave();
     }
 
-    public void chooseColor(String playerName, String color) throws RemoteException {
+    public void chooseColor(String playerName, PlayersColor color) throws RemoteException {
         clients.get(playerName).chooseColor(color);
     }
 
