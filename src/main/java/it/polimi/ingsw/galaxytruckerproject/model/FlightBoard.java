@@ -64,19 +64,19 @@ public class FlightBoard {
         inGamePlayers.get(occupiedPos.getFirst()).setPlayerRanking(occupiedPos.getFirst()+1);
     }
 
-    public void addToFlightBoard(Player newPlayer, int pos) {
+    public boolean addToFlightBoard(Player newPlayer, int pos) {
         pos = pos - 1; // offsets to match position to arraylist indexes
         if (!podium.contains(newPlayer)) {
             System.out.println("Player not found");
-            return;
+            return false;
         }
         if (pos < 0 || pos >= podium.size()) {
             System.out.println("Position out of bounds or playerRanking is greater than numPlayer+1");
-            return;
+            return false;
         }
         if (occupiedPos.contains(pos)) {
             System.out.println("Position occupied");
-            return;
+            return false;
         }
         //removes only if the player is already present in inGamePlayers
         inGamePlayers.remove(newPlayer);
@@ -100,7 +100,8 @@ public class FlightBoard {
                 inGamePlayers.get(pos).setPlayerPosition(0);
                 break;
             default:
-                throw new IllegalArgumentException("Invalid position: " + occupiedPos.getFirst());
+                //throw new IllegalArgumentException("Invalid position: " + occupiedPos.getFirst());
+                return false;
         }
         // makes sure that occupied pos has enough spaces just like we did with inGamePlayers with the null values
 
@@ -108,6 +109,7 @@ public class FlightBoard {
 
         // gives player a ranking
         inGamePlayers.get(pos).setPlayerRanking(pos + 1);
+        return true;
     }
 
     public void removePlayer(Player player) {

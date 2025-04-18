@@ -37,13 +37,12 @@ public class Player {
     public void setPlayerPosition(int playerPosition) {this.playerPosition = playerPosition;}
     public PlayersColor getPlayerColor() {return playerColor;}
     public int getCredit() {return credit;}
-    public ShipBoard getShipBoard() {return playerShip;}
     public Tile getDrawnTile() { return drawnTile; }
     public boolean isLanded() {return landed;}
     public void setLanded(boolean landed) {this.landed = landed;}
     public void addCredit(int credit) {this.credit += credit;}
     public void removeCredit(int credit) {this.credit -= credit;}
-    public ShipBoard getPlayerShip() {return playerShip;}
+    public ShipBoard getShipBoard() {return playerShip;}
     public int getTotalCrew() { return playerShip.getNumHumanCrew() + playerShip.getNumBrownAliens() +  playerShip.getNumPurpleAliens(); }
 
 

@@ -17,7 +17,7 @@ public class GoodsChecker {
     public GoodsChecker(Player currentPlayer, ArrayList<Goods> possibleGoodsGain) {
         this.currentPlayer=currentPlayer;
         this.possibleGoodsGain=possibleGoodsGain;
-        this.playersCargo= currentPlayer.getPlayerShip().getCargoHoldCoordinates();
+        this.playersCargo= currentPlayer.getShipBoard().getCargoHoldCoordinates();
         this.setMaximumValue();
     }
 
@@ -42,11 +42,11 @@ public class GoodsChecker {
             if (!playersCargo.contains(updatedCargoCoordinates)) {
                 return false;
             }
-            CargoHold oldCargo = (CargoHold) currentPlayer.getPlayerShip().getTile(updatedCargoCoordinates.getX(), updatedCargoCoordinates.getY());
+            CargoHold oldCargo = (CargoHold) currentPlayer.getShipBoard().getTile(updatedCargoCoordinates.getX(), updatedCargoCoordinates.getY());
             if (newCargo.getHazard() != oldCargo.getHazard()) {
                 return false;
             }
-            if (newCargo.getCargo().size() != oldCargo.getCargo().size()) {
+            if (newCargo.getTotSpaces() != oldCargo.getTotSpaces()) {
                 return false;
             }
             if (!newCargo.getHazard()) {
@@ -62,7 +62,7 @@ public class GoodsChecker {
     }
 
     public void swapGoods(ArrayList<CargoHold> updatedCargo) {
-        ShipBoard playerShip = currentPlayer.getPlayerShip();
+        ShipBoard playerShip = currentPlayer.getShipBoard();
         for (CargoHold newCargo : updatedCargo) {
             Coordinates updatedCargoCoordinates = newCargo.getCoordinates();
             playerShip.updateTile(updatedCargoCoordinates, newCargo);

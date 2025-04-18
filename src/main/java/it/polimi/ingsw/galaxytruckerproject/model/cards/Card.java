@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.HashMap;
@@ -29,14 +30,14 @@ public abstract class Card {
     protected GameInterface game = null;
 
     //This attribute is null until the card is initialized
-    protected Map<String, ViewInterface> viewsMap = new HashMap<>();
+    protected Map<String, VirtualView> viewsMap = new HashMap<>();
 
     public Card(int level, int requiredDays) {
         this.level = level;
         this.requiredDays = requiredDays;
     }
 
-    public abstract void initializeCard(GameInterface game, Map<String, ViewInterface> viewsMap);
+    public abstract void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap);
 
     public abstract void executeCard(Message message);
 

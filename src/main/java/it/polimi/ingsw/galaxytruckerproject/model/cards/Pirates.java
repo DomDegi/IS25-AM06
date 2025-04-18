@@ -10,6 +10,7 @@ import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.MessageType;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.RefuseMessage;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.UseCannonResponse;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class Pirates extends Enemies {
     }
 
     @Override
-    public void initializeCard(GameInterface game, Map<String, ViewInterface> viewsMap) {
+    public void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap) {
         this.game = game;
         this.viewsMap = viewsMap;
         nextPlayer();
@@ -151,8 +152,8 @@ public class Pirates extends Enemies {
                         " to claim the rewards or not");
                 currentView.asksToMakeAChoice();
             }
-            else if (currentPlayer.getPlayerShip().getDoubleCannon().isEmpty() ||
-                    currentPlayer.getPlayerShip().getBatteryCoordinates().isEmpty()) {
+            else if (currentPlayer.getShipBoard().getDoubleCannon().isEmpty() ||
+                    currentPlayer.getShipBoard().getBatteryCoordinates().isEmpty()) {
                 if (singleCannonPower == cannonStrength) {
                     nextPlayer();
                 }

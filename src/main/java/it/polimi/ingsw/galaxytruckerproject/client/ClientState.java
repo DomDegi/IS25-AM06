@@ -1,5 +1,20 @@
 package it.polimi.ingsw.galaxytruckerproject.client;
 
 public enum ClientState {
-    CHOOSE_UI,CHOOSE_CONNECTION_TYPE,LOBBY,LOGIN,COLOR_CHOICE,ACTION,COORD_REQUEST,MANAGE_GOODS,PLANET_CHOICE,START_SHIP_CREATION,S_END_DRAW_TILE_CARD,S_MANAGE_CARDS,S_MANAGE_DRAWN_TILE,S_FINISHED,WAIT_OTHER_PLAYER_ACTION,MANAGE_CABINS
+    CHOOSE_UI,
+    CHOOSE_CONNECTION_TYPE,
+    LOBBY,//choose game
+    LOGIN,//choose name
+    COLOR_CHOICE,
+    ACTION,// yes or no
+    COORD_REQUEST,//usare askCoordinates in modo da settare per la richiesta di coordinata corretta
+    MANAGE_GOODS,
+    MANAGE_CABINS,
+    PLANET_CHOICE,//scelta su quale pianteta atterrare
+    START_SHIP_CREATION,
+    S_END_DRAW_TILE_CARD,//può scegliere se finire la costruzione o pescale una tle/carta
+    S_MANAGE_CARDS,//scorre le carte che ha in mano durante la fase di costruzione
+    S_MANAGE_DRAWN_TILE,//ruota, posiziona o scarta
+    S_FINISHED,//costruzione della shipboard finita, attesa della verifica correttezza
+    WAIT_OTHER_PLAYER_ACTION
 }

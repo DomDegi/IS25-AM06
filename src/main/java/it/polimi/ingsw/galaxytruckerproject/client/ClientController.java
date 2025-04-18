@@ -535,5 +535,8 @@ public class ClientController {
     public String getName() {
         return name;
     }
+    public void setTileInHand(Tile tile) {
+        tileInHand = tile;
+    }
 }
 

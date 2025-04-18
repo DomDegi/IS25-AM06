@@ -10,7 +10,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.TileFactory;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
-import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
 import java.util.*;
 
@@ -215,7 +215,7 @@ public class Game implements GameInterface {
 
     //DRAW_CARD METHODS
 
-    public void drawCard(Map<String, ViewInterface> viewsMap) {
+    public void drawCard(Map<String, VirtualView> viewsMap) {
         this.drawnCard = inGameCards.removeFirst();
         drawnCard.initializeCard(this, viewsMap);
         this.gameState = CARD_EVENT;

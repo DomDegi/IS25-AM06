@@ -11,6 +11,7 @@ import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.ManageGoodsRe
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.MessageType;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.PlanetChoiceResponse;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class Planets extends Card{
         this.won = false;
     }
     @Override
-    public void initializeCard(GameInterface game, Map<String, ViewInterface> viewsMap) {
+    public void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap) {
         this.game = game;
         this.viewsMap = viewsMap;
         broadcastMessage(printListOfPlanets());

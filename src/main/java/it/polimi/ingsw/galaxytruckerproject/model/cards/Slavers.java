@@ -9,6 +9,7 @@ import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.MessageType;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.RefuseMessage;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.UseCannonResponse;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.Map;
@@ -42,7 +43,7 @@ public class Slavers extends Enemies{
     }
 
     @Override
-    public void initializeCard(GameInterface game, Map<String, ViewInterface> viewsMap) {
+    public void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap) {
         if (playerIndex > game.getNumberOfPlayers() - 1){
             System.out.println("No player beat the slavers\n");
             game.endCardEvent();
@@ -144,8 +145,8 @@ public class Slavers extends Enemies{
                         " to claim the rewards or not");
                 playersView.asksToMakeAChoice();
             }
-            else if (currentPlayer.getPlayerShip().getDoubleCannon().isEmpty() ||
-                    currentPlayer.getPlayerShip().getBatteryCoordinates().isEmpty()) {
+            else if (currentPlayer.getShipBoard().getDoubleCannon().isEmpty() ||
+                    currentPlayer.getShipBoard().getBatteryCoordinates().isEmpty()) {
                 if (singleCannonPower == cannonStrength) {
                     nextPlayer();
                 }

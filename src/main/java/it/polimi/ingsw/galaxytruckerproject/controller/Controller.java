@@ -95,6 +95,10 @@ public class Controller implements ControllerInterface {
         gameController.processPlayerInput(message);
     }
 
+    public void turnHourglass () {
+        gameController.turnHourglass(this.nickname);
+    }
+
 
 
 }
