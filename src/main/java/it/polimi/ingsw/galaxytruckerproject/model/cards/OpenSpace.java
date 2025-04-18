@@ -8,7 +8,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.UseEngineResponse;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
@@ -42,6 +41,8 @@ public class OpenSpace extends Card {
     public void manageGoods(String playerName, int clientCredits, ArrayList<CargoHold> updatedCargos) {}
     @Override
     public void choice(String playerName, boolean decision) {}
+    @Override
+    public void planetChoice(String playerName, int planet) {}
 
     @Override
     public void engineChoice(String playerName, int numDoubleEngines, ArrayList<Coordinates> batteriesToUse) {

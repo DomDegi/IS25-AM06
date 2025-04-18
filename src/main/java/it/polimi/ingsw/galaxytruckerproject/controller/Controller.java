@@ -40,6 +40,7 @@ public class Controller implements ControllerInterface {
      * useful method to set the gameController for the joined game
      * @param gameController gameController to set
      */
+    @Override
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
     }
@@ -48,6 +49,7 @@ public class Controller implements ControllerInterface {
      * this method calls on the multiGameController to login with the chosen nickname
      * @param nickname nickname of player to login
      */
+    @Override
     public void login (String nickname) {
         if (multiGameController.login(nickname, view, this)) {
             this.nickname = nickname;
@@ -60,6 +62,7 @@ public class Controller implements ControllerInterface {
      * @param playerCount chosen playerCount to reach
      * @param chosenMode chosen gameMode between LVL2 flight and trialFlight
      */
+    @Override
     public void createGame (String gameName ,int playerCount, GameMode chosenMode) {
         multiGameController.createGame(nickname, gameName, playerCount, this, chosenMode);
     }
@@ -68,6 +71,7 @@ public class Controller implements ControllerInterface {
      * this method calls on the multiGameController for the joinGame method
      * @param gameName name of the game to enter
      */
+    @Override
     public void joinGame (String gameName) {
         multiGameController.joinGame(nickname, gameName, this);
     }
@@ -75,64 +79,79 @@ public class Controller implements ControllerInterface {
     /**
      * this method calls on the multiGameController for the leave game method
      */
+    @Override
     public void leaveGame () {
         multiGameController.leaveGame(nickname);
     }
 
+    @Override
     public void leave() {
         multiGameController.leave(nickname);
     }
 
+    @Override
     public void chooseColor(String color) {
         if (gameController.checkColorAvailable(nickname, view, color)) {
             gameController.playerAddition(new SetColorRequest(nickname, color));
         }
     }
 
+    @Override
     public void turnHourglass () {
         gameController.turnHourglass(this.nickname);
     }
 
+    @Override
     public void drawTileFromStack () {
         gameController.drawTile(view ,nickname,0, false);
     }
 
+    @Override
     public void drawTileFromTurned (int index) {
         gameController.drawTile(view, nickname, index, true);
     }
 
+    @Override
     public void refuseTile(){
         gameController.refuseTile(nickname);
     }
 
+    @Override
     public void lookGameCards(int index) {
         gameController.lookGameCards(nickname, view, index);
     }
 
+    @Override
     public void stopLookingAtCards(){
         gameController.stopLookingAtCards(view, nickname);
     }
 
+    @Override
     public void setTile(Tile tile) {
         gameController.setTile(view,nickname,tile);
     }
 
+    @Override
     public void bookTile(){
         gameController.bookTile(view, nickname);
     }
 
+    @Override
     public void shipErrorManagement(ArrayList<Coordinates> toRemove) {
         gameController.shipErrorManagement(nickname, view, toRemove);
     }
 
+    @Override
     public void completedShip() {
         gameController.completed(nickname, view);
     }
 
+    @Override
     public void drawCard() {
         gameController.drawCard(nickname, view);
     }
 
+    @Override
     public void earlyLanding () {
         gameController.earlyLanding(nickname, view);
     }
@@ -152,7 +171,13 @@ public class Controller implements ControllerInterface {
         gameController.playerManagesGoods(nickname, clientCreditsToVerify, cargosToUpdate);
     }
 
+    @Override
     public void makeAChoice(boolean choice) {
         gameController.playerMakesAChoice(nickname, choice);
+    }
+
+    @Override
+    public void playerChoosesPlanet(int planet) {
+        gameController.playerChoosesPlanet(nickname, planet);
     }
 }

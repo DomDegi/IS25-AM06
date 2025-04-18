@@ -3,9 +3,10 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
@@ -53,6 +54,22 @@ public abstract class Card {
     public void broadcastMessage (String message) {
         for (ViewInterface view : viewsMap.values()) {
             view.showGenericMessage(message);
+        }
+    }
+
+    public void notifyModifiedTiles (String playerName, ArrayList<Tile> tiles) {
+        for (VirtualView view : viewsMap.values()) {
+            try {
+                view.notifyModifiedTiles(playerName, tiles);
+            } catch (Exception ignored) {}
+        }
+    }
+
+    public void notifyMovement (Player player) {
+        for (VirtualView view : viewsMap.values()) {
+            try {
+                view.notifyPlayerMovement(player.getPlayerName(), player.getPlayerPosition(), player.getPlayerRanking());
+            } catch (Exception ignored) {}
         }
     }
 

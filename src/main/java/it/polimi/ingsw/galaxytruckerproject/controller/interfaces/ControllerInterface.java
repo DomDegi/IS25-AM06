@@ -4,6 +4,7 @@ import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 
 import java.util.ArrayList;
@@ -71,6 +72,14 @@ public interface ControllerInterface {
 
     void refuseTile() throws Exception;
 
+    void lookGameCards(int index) throws Exception;
+
+    void stopLookingAtCards() throws Exception;
+
+    void setTile(Tile tile) throws Exception;
+
+    void bookTile() throws Exception;
+
     void shipErrorManagement(ArrayList<Coordinates> toRemove) throws Exception;
 
     void drawCard () throws Exception;
@@ -92,4 +101,6 @@ public interface ControllerInterface {
     void manageGoods(int clientCreditsToVerify, ArrayList<CargoHold> cargosToUpdate) throws Exception;
 
     void makeAChoice(boolean choice) throws Exception;
+
+    void playerChoosesPlanet(int planet) throws  Exception;
 }

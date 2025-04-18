@@ -17,6 +17,7 @@ public interface VirtualView extends ViewInterface {
     void notifyBookedTile (String playerName, Tile tile) throws RemoteException;
     void notifyAvailableCardDeck(Map<String,Integer> lockedSmallDecks) throws RemoteException; //notify which cards deck are not looked at
     void notifyDrawnCard(Card card) throws RemoteException; //tell the players which card has been drawn
-    void notifyPLayerLandedOnPlanet (String playerName, int planet)  throws RemoteException;
-    void notifyModifiedTiles(String playerName, ArrayList<Tile> cabins) throws RemoteException;
+    void notifyPlayerLandedOnPlanet(String playerName, int planet)  throws RemoteException;
+    void notifyModifiedTiles(String playerName, ArrayList<Tile> tiles) throws RemoteException;
+    void notifyGainedCredits (String playerName, int totalCredits) throws RemoteException;
 }

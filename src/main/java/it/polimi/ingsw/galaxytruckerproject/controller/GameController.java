@@ -676,6 +676,9 @@ public class GameController {
         for (Player player : game.getFlightBoard().getAllPlayers()) {
             player.removeCredit(player.getShipBoard().getPenalty());
         }
+        for (String playerName: playersViewMap.keySet()) {
+            notifyPlayerCredits(playerName, activePlayers.get(playerName).getCredit());
+        }
         // Sort players based on their credits in descending order
         game.setPodium();
         showScores();
@@ -684,6 +687,14 @@ public class GameController {
     public void showScores() {
         for (VirtualView view: playersViewMap.values()) {
             view.showScores(game.getListOfAllPlayer());
+        }
+    }
+
+    public void notifyPlayerCredits (String playerName, int credits) {
+        for (VirtualView view: playersViewMap.values()) {
+            try {
+                view.notifyGainedCredits(playerName, credits);
+            } catch (Exception ignored) {}
         }
     }
 
