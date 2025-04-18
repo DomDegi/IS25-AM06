@@ -505,7 +505,6 @@ public class ClientController {
         return copiedInput;
     }
     public void setState(ClientState newState){
-        view.setClientState();
         previousState=state;
         state=newState;
     }
@@ -531,6 +530,10 @@ public class ClientController {
     }
     public void removeTurnedTile(Tile tile) {
         turnedTiles.remove(tile.getKey());
+    }
+
+    public String getName() {
+        return name;
     }
 }
 
