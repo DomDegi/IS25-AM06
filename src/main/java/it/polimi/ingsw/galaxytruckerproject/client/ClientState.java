@@ -11,9 +11,10 @@ public enum ClientState {
     MANAGE_GOODS,
     PLANET_CHOICE,//scelta su quale pianteta atterrare
     S_END_DRAW_TILE_CARD,//può scegliere se finire la costruzione o pescale una tle/carta
-    MANAGE_CARDS,//scorre le carte che ha in mano durante la fase di costruzione
+    S_MANAGE_CARDS,//scorre le carte che ha in mano durante la fase di costruzione
     S_MANAGE_DRAWN_TILE,//ruota, posiziona o scarta
     S_FINISHED,//costruzione della shipboard finita, attesa della verifica correttezza
     WAIT_OTHER_PLAYER_ACTION,
     START_SHIP_CREATION
+
 }

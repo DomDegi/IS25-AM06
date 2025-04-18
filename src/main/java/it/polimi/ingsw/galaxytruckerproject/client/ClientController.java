@@ -2,14 +2,15 @@ package it.polimi.ingsw.galaxytruckerproject.client;
 
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
-import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.Planets;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.network.RMI.Server.VirtualControllerRMI;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import it.polimi.ingsw.galaxytruckerproject.view.TUI;
@@ -19,35 +20,46 @@ import java.rmi.RemoteException;
 import java.util.*;
 
 public class ClientController {
-
-    private LightPlayer me;
-    private ViewInterface view;
-    private VirtualController controller;
-    private ArrayList<LightPlayer> playersList;
-    private ArrayList<ArrayList<Card>> deck;
-    private LightFlightboard flightBoard;
-    private HashMap<Integer, Tile> turnedTiles;
-    private Tile tileInHand;
-    private Map<Integer,Tile> TurnedTiles;
     private ClientState state;
-    private int turns;
-    private final VirtualController virtualController;
+    private ClientState previousState;
+    private String name;
+    private final LightPlayer me;
+    private final LightFlightboard flightBoard;
+    private boolean inManager;
+    private boolean connected;
+    private GamePhases phase;
+
+    private GameMode gameMode;
+    private ViewInterface view;
+    private VirtualController virtualController;
+    private final CoordInputManager coordInputManager;
+    private GoodsManager goodsManager;
+    private final Map<Integer,Tile> turnedTiles;
+    private final ArrayList<ArrayList<Card>> deck;
     private ArrayList<Goods> goodsList;
+
+    private Tile tileInHand;
+    private Card displayedCard;
     private int indexDeckInHandOrPlanet;
     private int indexCard;
-    private final CoordInputManager coordInputManager;
-    private LightShipBoard lightShipBoard;
-    private String name;
-    private Card displayedCard;
+    private int hourglassTurns;
 
     public ClientController(VirtualController virtualController) {
+        this.deck = new ArrayList<>();
+        this.me = new LightPlayer();
+        this.flightBoard = new LightFlightboard();
+        this.inManager = false;
+        this.connected = false;
+        this.turnedTiles = new HashMap<>();
+        this.phase = GamePhases.LOGIN;
         this.indexCard = 0;
         this.virtualController = virtualController;
         this.indexDeckInHandOrPlanet = 0;
-        this.turns = 0;
+        this.hourglassTurns = 0;
         this.goodsList = new ArrayList<>();
+        previousState=ClientState.CHOOSE_UI;
         state = ClientState.CHOOSE_UI;
-        this.coordInputManager=new CoordInputManager(lightShipBoard,this);
+        this.coordInputManager=new CoordInputManager(me.getShipBoard(),this);
     }
 
     public VirtualController getVirtualController() {
@@ -75,78 +87,83 @@ public class ClientController {
                         return;
                     }
                 }
-                state = ClientState.CHOOSE_CONNECTION_TYPE;
+                setState(ClientState.CHOOSE_CONNECTION_TYPE);
             }
 
             case CHOOSE_CONNECTION_TYPE->{
                 switch(words[0]) {
-                    case "rmi"->
-                        //rmi
-                    case "socket"->
-                    //socket
+                    case "rmi"->virtualController=new VirtualControllerRMI(null);
+                        //Da sistemare
+                    case "socket"->virtualController= new VirtualControllerRMI(null);
+                    //Da sistemare
                     default->{
                         System.out.println("Wrong input");
                         return;
                     }
                 }
-                state = ClientState.LOBBY;
-            }
-
-            case LOBBY-> {
-                //CHOOSE TUI OR GUI
-                switch(words[0]) {
-                    case "createGame"-> {
-                        String gameName = words[1];
-                        int NumberOfPlayers=numerate(scroll(words,2));
-                        if(NumberOfPlayers==-1)
-                            return;
-                        if(words[3].equals("TrialMode")){
-                            virtualController.createGame(gameName,NumberOfPlayers, GameMode.TRIAL, this.name);
-                            state = ClientState.LOGIN;
-                            return;
-                        } else if (words[3].equals("Level2Mode")){
-                            virtualController.createGame(gameName,NumberOfPlayers,GameMode.LEVEL2, this.name);
-                            state = ClientState.LOGIN;
-                            return;
-                        }
-                        System.out.println("\nInvalid input format. Please provide correct game mode.");
-                    }
-                    case "joinGame"-> {
-                        String gameName = words[1];
-                        virtualController.joinGame(gameName,this.name);
-                    }
-                }
+                setState(ClientState.LOGIN);
             }
 
             case LOGIN->{
                 switch (words[0]) {
                     case "done" -> {
-                        if(!Objects.equals(this.name, ""))
-                            virtualController.joinGame(words[1],this.name);
+                        if(!connected){
+                            //start connection
+                        }
+                        virtualController.login(name);
+                        setState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                     }
-                    case "redo"->
-                            this.name=("");
+                    case "redo"-> this.name=("");
+                    default-> this.name=(words[0]);
+                }
+            }
+
+            case LOBBY-> {
+                //CHOOSE TUI OR GUI
+                switch(words[0]) {
+                    case "creategame"-> {
+                        String gameName = words[1];
+                        int NumberOfPlayers=numerate(scroll(words,2));
+                        if(NumberOfPlayers==-1)
+                            return;
+                        switch(words[3]) {
+                            case "trialmode"->gameMode=GameMode.TRIAL;
+                            case "level2mode"->gameMode=GameMode.LEVEL2;
+                            default->{
+                                System.out.println("Wrong input");
+                                return;
+                            }
+                        }
+                        virtualController.createGame(gameName,NumberOfPlayers,gameMode,name);
+                        setState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                    }
+                    case "joingame"-> {
+                        String gameName = words[1];
+                        virtualController.joinGame(gameName,name);
+                    }
                     default->
-                            this.name=(words[0]);
+                        System.out.println("Wrong input");
                 }
             }
 
             case COLOR_CHOICE->{
                 PlayersColor color;
                 switch (words[0]){
-                    case "red"->{
+                    case "red"->
                         color = PlayersColor.RED;
-                    }
-                    case "yellow"->{
+                    case "yellow"->
                         color = PlayersColor.YELLOW;
-                    }
-                    case "green"->{
+                    case "green"->
                         color = PlayersColor.GREEN;
-                    }
-                    case "blue"->{
+                    case "blue"->
                         color = PlayersColor.BLUE;
+                    default->{
+                        System.out.println("\nWrong input");
+                        return;
                     }
                 }
+                virtualController.chooseColor(this.name,color);
+                setState(ClientState.WAIT_OTHER_PLAYER_ACTION);
             }
 
             case ACTION-> {
@@ -156,10 +173,15 @@ public class ClientController {
                     return;
                 switch (words[0]){
                     case "yes" ->
-                            virtualController.sendYes(this.name);
+                        virtualController.sendYes(this.name);
                     case "no" ->
-                            virtualController.sendNo(this.name);
+                        virtualController.sendNo(this.name);
+                    default->{
+                        System.out.println("Wrong input");
+                        return;
+                    }
                 }
+                setState(ClientState.WAIT_OTHER_PLAYER_ACTION);
             }
 
             case PLANET_CHOICE-> {
@@ -167,79 +189,68 @@ public class ClientController {
                     return;
                 if (land(words))
                     return;
-                if (words[0].equals("no")) {
-                    virtualController.sendNo(this.name);
-                    return;
-                }
+                if (words[0].equals("no"))
+                    words[0]="0";
                 int chose=numerate(words);
                 if(chose==-1)
                     return;
-                if (chose > 0 && chose </*num pianeti*/) {
-                    state = ClientState.MANAGE_GOODS;
+                Planets planet=(Planets) displayedCard;
+                if (chose >= 0 && chose <planet.getListOfPlanets().size()) {
                     indexDeckInHandOrPlanet = chose;
-                    //notify choose planet
+                    virtualController.planetChoiceRequest(this.name,chose);
+                    setState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                 }
             }
 
             case MANAGE_GOODS-> {
-                GoodsManager goodsManager = new GoodsManager(this.me, goodsList);
-                if(land(words))
-                    return;
+                if(!inManager){
+                    goodsManager = new GoodsManager(me, goodsList);
+                    inManager=true;
+                }
                 if (checkShipBoards(words))
+                    return;
+                if (land(words))
                     return;
                 HashSet<CargoHold> newTilesGoods = goodsManager.getReward(words);
                 ArrayList<CargoHold> newTiles;
                 if (!newTilesGoods.isEmpty()) {
                     newTiles = new ArrayList<>(newTilesGoods);
-                    if (newTiles.getFirst().getTotSpaces()==-1 ){
+                    if (newTiles.getFirst().getTotSpaces() == -1){
                         newTiles.clear();
                     }
-                    int goodsVal = lightShipBoard.convertGoodsToCredit();
-                    virtualController.notifyNewGoodsArrangement(this.name,goodsVal, newTiles);
+                    int goodsVal = me.getShipBoard().convertGoodsToCredit();
+                    virtualController.notifyNewGoodsArrangement(this.name,goodsVal,newTiles);
+                    inManager=false;
+                    setState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                 }
             }
 
             case COORD_REQUEST->{
-                if (land(words))
+                if (checkShipBoards(words))
                     return;
-                if(words[0].equals("done")) {
-                    coordInputManager.endCheckingFase();
+                if(phase!=GamePhases.CARDS){
+                    if (land(words))
+                        return;
                 }
+                if(words[0].equals("done"))
+                    coordInputManager.endCheckingFase();
                 else
                     coordInputManager.checkCoord(transformCoordinates(words));
             }
 
-            case S_MANAGE_CARDS -> {
-                switch (words[0]) {
-                    case "previous" -> {
-                        indexCard=indexCard-1;
-                        if(indexCard<0)
-                            indexCard=2;
-                        displayedCard = this.deck.get(indexDeckInHandOrPlanet).get(indexCard);
-                    }
-                    case "next" -> {
-                        indexCard=indexCard+1;
-                        if(indexCard>2)
-                            indexCard=0;
-                        displayedCard = this.deck.get(indexDeckInHandOrPlanet).get(indexCard);
-                    }
-                    case "done" -> {
-                        //done action
-                        virtualController;
-                    }
-                }
-            }
+            case START_SHIP_CREATION ->
+                firstHourglassTurn(words);
 
             case S_END_DRAW_TILE_CARD-> {
-                virtualController.show
-                if(firstTurn(words))
+                view.showTurnedTiles(turnedTiles);
+                if (secondHourglassTurn(words))
                     return;
                 if (checkShipBoards(words))
                     return;
                 switch (words[0]) {
                     case"done" -> {
-                        state = ClientState.S_FINISHED;
                         virtualController.sendEndShipBoardCreation(this.name);
+                        setState(ClientState.S_FINISHED);
                     }
                     case "draw" -> {
                         switch (words[1]) {
@@ -248,52 +259,70 @@ public class ClientController {
                                 if (chose==-1)
                                     return;
                                 if (chose > 0 && chose < 4) {
-                                    state = ClientState.S_MANAGE_CARDS;
+                                    virtualController.lookCardRequest(name,chose);
                                     indexDeckInHandOrPlanet = chose;
-                                    //notify drawn card
-                                    virtualController;
                                     displayedCard = this.deck.get(indexDeckInHandOrPlanet).getFirst();
+                                    setState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                                 }
                             }
                             case "tile" -> {
-                                state = ClientState.S_MANAGE_DRAWN_TILE;
-                                Tile newTile;
                                 switch (words[2]){
                                     case "new"->{
                                         virtualController.reqDrawTileFromPile(this.name);
-                                        newTile=/*drawn tile*/;
+                                        setState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                                     }
                                     case "b1" ->{
-                                        newTile=this.me.getShipBoard().getBookedTiles().getFirst();
-                                        this.me.getShipBoard().removeBookedTile(0);
+                                        tileInHand=me.getShipBoard().getBookedTiles().getFirst();
+                                        me.getShipBoard().removeBookedTile(0);
+                                        setState(ClientState.S_MANAGE_DRAWN_TILE);
                                     }
                                     case "b2" ->{
-                                        newTile=this.me.getShipBoard().getBookedTiles().get(1);
-                                        this.me.getShipBoard().removeBookedTile(1);
+                                        tileInHand=me.getShipBoard().getBookedTiles().get(1);
+                                        me.getShipBoard().removeBookedTile(1);
+                                        setState(ClientState.S_MANAGE_DRAWN_TILE);
                                     }
                                     default-> {
                                         int chose=numerate(scroll(words,2));
                                         if (chose==-1)
                                             return;
-                                        if (chose>0&&chose<this.turnedTiles.size()) {
-                                            indexDeckInHandOrPlanet = chose;
+                                        if (chose>0&&chose<turnedTiles.size()) {
                                             virtualController.reqDrawTileFromTable(this.name,chose);
-                                            newTile=this.turnedTiles.get(indexDeckInHandOrPlanet);
+                                            setState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                                         }else {
                                             System.out.println("\nInvalid input format. Please provide integer values.");
-                                            return;
                                         }
                                     }
                                 }
-                                this.tileInHand=(newTile);
                             }
                         }
                     }
                 }
             }
 
+            case S_MANAGE_CARDS-> {
+                switch (words[0]) {
+                    case "previous" -> {
+                        indexCard--;
+                        if(indexCard<0)
+                            indexCard=2;
+                        displayedCard = this.deck.get(indexDeckInHandOrPlanet).get(indexCard);
+                    }
+                    case "next" -> {
+                        indexCard++;
+                        if(indexCard>2)
+                            indexCard=0;
+                        displayedCard = this.deck.get(indexDeckInHandOrPlanet).get(indexCard);
+                    }
+                    case "done" -> {
+                        //done action
+                        virtualController.stopLookingAtCardsRequest(this.name);
+                        setState(ClientState.S_END_DRAW_TILE_CARD);
+                    }
+                }
+            }
+
             case S_MANAGE_DRAWN_TILE-> {
-                if(firstTurn(words))
+                if (secondHourglassTurn(words))
                     return;
                 if (checkShipBoards(words))
                     return;
@@ -303,24 +332,30 @@ public class ClientController {
                     case "position" -> {
                         Coordinates coordinates=transformCoordinates(scroll(words,1));
                         if(coordinates!=null){
-                            this.me.getShipBoard().positionTile(Optional.ofNullable(this.tileInHand),coordinates);
+                            me.getShipBoard().positionTile(Optional.ofNullable(this.tileInHand),coordinates);
                             virtualController.notifySetTile(this.name,coordinates,this.tileInHand);
+                            setState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                         }
                     }
                     case "refuse" -> {
                         state = ClientState.S_END_DRAW_TILE_CARD;
                         if(this.tileInHand.isBooked()){
-                            this.me.getShipBoard().addBookedTile(this.tileInHand);
+                            me.getShipBoard().addBookedTile(this.tileInHand);
                             return;
                         }
                         this.turnedTiles.put(this.tileInHand.getKey(),this.tileInHand);
                         virtualController.notifyRefusedTile(this.name);
+                        setState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                     }
                     case "book" -> {
                         state = ClientState.S_END_DRAW_TILE_CARD;
+                        if(!me.getShipBoard().addBookedTile(this.tileInHand)){
+                            System.out.println("\nInvalid input format. Please provide integer values.");
+                            return;
+                        }
                         this.tileInHand.setBooked(true);
-                        this.me.getShipBoard().addBookedTile(this.tileInHand);
                         virtualController.notifyTileBooking(this.name);
+                        setState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                     }
                 }
             }
@@ -328,41 +363,29 @@ public class ClientController {
             case S_FINISHED-> {
                 if (checkShipBoards(words))
                     return;
-                switch (words[0]) {
-                    case "turn" -> {
-                        if (turns<2){
-                            turns++;
-                            virtualController.sendTurnHourGlass(this.name);
-                        }
-                    }
-                    case "1"->{
-                        if (playersList.size()>1){
-                            //add to flightBoard
-                        }
-                    }
-                    case "2"->{
-                        if (playersList.size()>2){
-                            //add to flightBoard
-                        }
-                    }
-                    case "3"->{
-                        if (playersList.size()>3){
-                            //add to flightBoard
-                        }
-                    }
-                    case "4"->{
-                        if (playersList.size()>4){
-                            //add to flightBoard
-                        }
-                    }
-                    default->
-                        System.out.println("\nInvalid input format");
-                }
+                if (thirdHourglassTurn(words))
+                    return;
+                int chose=numerate(scroll(words,0));
+                if (chose==-1)
+                    return;
+                if (chose>0&&flightBoard.getInGamePlayers().size()>chose) {
+                    virtualController.setFlightboard(name,chose);
+                }else
+                    System.out.println("\nWrong input");
             }
             case WAIT_OTHER_PLAYER_ACTION->{
-                if (land(words))
-                    return;
-                checkShipBoards(words);
+                switch(phase){
+                    case LOGIN -> {
+
+                    }
+                    case SHIPBOARD ->
+                        checkShipBoards(words);
+                    case CARDS -> {
+                        if (checkShipBoards(words))
+                            return;
+                        land(words);
+                    }
+                }
             }
         }
     }
@@ -411,27 +434,43 @@ public class ClientController {
                 return false;
             }
             if (chose == 0) {
-                System.out.println(this.me.getShipBoard());
+                System.out.println(me.getShipBoard());
             }
             if (chose >= 1 && chose <= 4) {
-                System.out.println(this.playersList.get(indexDeckInHandOrPlanet).getShipBoard());
+                System.out.println(flightBoard.getInGamePlayers().get(indexDeckInHandOrPlanet).getShipBoard());
             }
             return true;
         }
         return false;
     }
 
-    private boolean firstTurn(String[] input) throws RemoteException {
-        if (input[0].equals("turn") && turns==0) {
-            turns++;
+    private void firstHourglassTurn(String[] input) throws RemoteException {
+        if (input[0].equals("turn") && hourglassTurns == 0) {
+            hourglassTurns=1;
             virtualController.sendTurnHourGlass(this.name);
+            setState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+        }
+    }
+    private boolean secondHourglassTurn(String[] input) throws RemoteException {
+        if (input[0].equals("turn") && hourglassTurns == 1) {
+            hourglassTurns=2;
+            virtualController.sendTurnHourGlass(this.name);
+            return true;
+        }
+        return false;
+    }
+    private boolean thirdHourglassTurn(String[] input) throws RemoteException {
+        if (input[0].equals("turn") && hourglassTurns >= 1 && hourglassTurns < 3) {
+            hourglassTurns=3;
+            virtualController.sendTurnHourGlass(this.name);
+            setState(ClientState.S_FINISHED);
             return true;
         }
         return false;
     }
 
     private boolean land(String[] input) throws RemoteException {
-        if (input[0].equals("earlyland")&&!this.me.isLanded()){
+        if (input[0].equals("earlyland")&&!me.isLanded()){
             virtualController.notifyEarlyLanding(this.name);
             return true;
         }
@@ -465,28 +504,33 @@ public class ClientController {
         }
         return copiedInput;
     }
-
-    public void setState(ClientState state) {
-        this.state = state;
+    public void setState(ClientState newState){
+        view.setClientState();
+        previousState=state;
+        state=newState;
     }
-
-    public void setName(String name) {
-        this.name = name;
+    public boolean rollBackState(){
+        view.setClientState();
+        if (state==previousState)
+            return false;
+        state=previousState;
+        return true;
     }
-
+    public void updateFlightboard(String name,int pos, int ranking) {
+        for(LightPlayer player:flightBoard.getInGamePlayers())
+            if (player.getPlayerName().equals(name)){
+                player.setPosition(pos);
+                player.setRank(ranking);
+            }
+    }
     public LightFlightboard getFlightBoard() {
         return flightBoard;
     }
-
-    public void setFlightBoard(LightFlightboard flightBoard) {
-        this.flightBoard = flightBoard;
-    }
-
     public void addTurnedTile(Tile tile) {
-        TurnedTiles.put(tile.getKey(), tile);
+        turnedTiles.put(tile.getKey(), tile);
     }
     public void removeTurnedTile(Tile tile) {
-        TurnedTiles.remove(tile.getKey());
+        turnedTiles.remove(tile.getKey());
     }
     public void setTileInHand(Tile tile) {
         tileInHand = tile;

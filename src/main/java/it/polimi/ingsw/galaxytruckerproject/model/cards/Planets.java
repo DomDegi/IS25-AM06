@@ -159,6 +159,10 @@ public class Planets extends Card{
         currentPlayerView.asksPlanetChoice();
     }
 
+    public ArrayList<Planet> getListOfPlanets() {
+        return listOfPlanets;
+    }
+
     @Override
     public String toString() {
         StringBuilder string = new StringBuilder();

@@ -6,10 +6,10 @@ import java.rmi.RemoteException;
 
 public class LightPlayer {
     private int position; //position on the board
-    private LightShipBoard shipboard;
     private int rank;
     private String playerName;
     private boolean landed = false;
+    private LightShipBoard shipboard;
 
     @Override
     public String toString() {

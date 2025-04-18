@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 public class LightFlightboard {
 
-    private ArrayList<LightPlayer> ingamePlayers;
+    private ArrayList<LightPlayer> inGamePlayers;
 
     public LightFlightboard() {
 
     }
-    public ArrayList<LightPlayer> getIngamePlayers() {
-        return ingamePlayers;
+    public ArrayList<LightPlayer> getInGamePlayers() {
+        return inGamePlayers;
 
     }
 

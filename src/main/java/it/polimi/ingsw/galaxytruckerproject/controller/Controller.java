@@ -4,6 +4,7 @@ import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.ControllerInte
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.SetColorRequest;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
@@ -81,7 +82,12 @@ public class Controller implements ControllerInterface {
         multiGameController.leave(nickname);
     }
 
-    public void chooseColor(String color) {
+    @Override
+    public void chooseColor(String chosenColor) throws Exception {
+
+    }
+
+    public void chooseColor(PlayersColor color) {
         if (gameController.checkColorAvailable(nickname, view, color)) {
             gameController.playerAddition(new SetColorRequest(nickname, color));
         }
