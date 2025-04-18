@@ -170,8 +170,6 @@ public interface ViewInterface extends Remote, Serializable {
 
     void asksToMakeAChoice ();
 
-    void asksPlanetChoice();
-
     void asksToManageGoods(ArrayList<Goods> goods);
 
     void asksToRemoveGoods();

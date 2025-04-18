@@ -597,6 +597,10 @@ public class GameController {
         game.getDrawnCard().choice(playerName, choice);
     }
 
+    public void playerChoosesPlanet (String playerName, int planet) {
+        game.getDrawnCard().planetChoice(playerName, planet);
+    }
+
 
     //PlayerPoint calculation
     public synchronized void concludeGame() {

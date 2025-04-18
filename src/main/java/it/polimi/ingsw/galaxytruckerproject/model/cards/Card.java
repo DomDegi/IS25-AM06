@@ -64,6 +64,8 @@ public abstract class Card {
 
     public abstract void choice(String playerName, boolean decision);
 
+    public abstract void planetChoice(String playerName, int planet);
+
 
     @Override
     public String toString() {

@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
@@ -40,8 +41,6 @@ public class Planets extends Card{
     public void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap) {
         this.game = game;
         this.viewsMap = viewsMap;
-        broadcastMessage(printListOfPlanets());
-        broadcastMessage(" input from 1 to " + listOfPlanets.size() + " to pick which to land on, input 'no' to ignore\n");
         this.nextPlayer();
     }
     //for each player asks if they want to spend the required days to occupy the planet they choose
@@ -89,6 +88,55 @@ public class Planets extends Card{
         }
     }
 
+    //planet choice is from 1 to total planets, but the array indexes start from 0
+    public void planetChoice(String playerName, int planet) {
+        listOfPlanets.get(planet - 1).setOccupationStatus();
+    }
+
+    public void nextPlayer() {
+        if (!initialized) {
+            playerToInteract = new ArrayList<>(game.getListOfInFlightPlayers());
+            initialized=true;
+        }
+        else {
+            if (playerToInteract.isEmpty()) {
+                game.endCardEvent();
+                return;
+            }
+            playerToInteract.removeFirst();
+        }
+        won = false;
+        AtomicInteger i = new AtomicInteger();
+        listOfPlanets.forEach(planet -> {
+            if (planet.getOccupationStatus())
+                i.getAndIncrement();
+        });
+        if (i.get() == listOfPlanets.size()) {
+            game.endCardEvent();
+            return;
+        }
+        currentPlayer= playerToInteract.getFirst();
+        currentPlayerView=viewsMap.get(currentPlayer.getPlayerName());
+
+        if (currentPlayer.IsDisconnected()) {
+            nextPlayer();
+            return;
+        }
+        currentPlayerView.setClientState(ClientState.PLANET_CHOICE);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder string = new StringBuilder();
+        string.append("Planets: "). append(super.toString()).append(" ");
+        int i = 0;
+        for (Planet planet : listOfPlanets) {
+            i++;
+            string.append("planet ").append(i).append(" - ").append(planet.toString());
+        }
+        return string.toString();
+    }
+
     public String printListOfPlanets() {
         int index = 1;
         String ANSI_RESET = "\u001B[0m";
@@ -125,49 +173,5 @@ public class Planets extends Card{
             index++;
         }
         return sb.toString();
-    }
-
-    public void nextPlayer() {
-        if (!initialized) {
-            playerToInteract = new ArrayList<>(game.getListOfInFlightPlayers());
-            initialized=true;
-        }
-        else {
-            if (playerToInteract.isEmpty()) {
-                game.endCardEvent();
-                return;
-            }
-            playerToInteract.removeFirst();
-        }
-        won = false;
-        AtomicInteger i = new AtomicInteger();
-        listOfPlanets.forEach(planet -> {
-            if (planet.getOccupationStatus())
-                i.getAndIncrement();
-        });
-        if (i.get() == listOfPlanets.size()) {
-            game.endCardEvent();
-            return;
-        }
-        currentPlayer= playerToInteract.getFirst();
-        currentPlayerView=viewsMap.get(currentPlayer.getPlayerName());
-
-        if (currentPlayer.IsDisconnected()) {
-            nextPlayer();
-            return;
-        }
-        currentPlayerView.asksPlanetChoice();
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder string = new StringBuilder();
-        string.append("Planets: "). append(super.toString()).append(" ");
-        int i = 0;
-        for (Planet planet : listOfPlanets) {
-            i++;
-            string.append("planet ").append(i).append(" - ").append(planet.toString());
-        }
-        return string.toString();
     }
 }
