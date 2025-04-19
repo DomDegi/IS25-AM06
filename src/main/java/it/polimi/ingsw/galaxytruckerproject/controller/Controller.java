@@ -2,15 +2,12 @@ package it.polimi.ingsw.galaxytruckerproject.controller;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.ControllerInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
-import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.SetColorRequest;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 /*
@@ -86,22 +83,12 @@ public class Controller implements ControllerInterface {
         multiGameController.leave(nickname);
     }
 
-    @Override
-    public void chooseColor(String chosenColor) throws Exception {
-
-    }
-
-    public void chooseColor(PlayersColor color) {
+    public void chooseColor(String color) {
         if (gameController.checkColorAvailable(nickname, view, color)) {
             gameController.playerAddition(new SetColorRequest(nickname, color));
         }
     }
 
-    public void playerChoiceThroughMessage (Message message) {
-        gameController.processPlayerInput(message);
-    }
-
-    //TURN HOURGLASS ??
     public void turnHourglass () {
         gameController.turnHourglass(this.nickname);
     }
@@ -116,7 +103,6 @@ public class Controller implements ControllerInterface {
 
     public void refuseTile(){
         gameController.refuseTile(nickname);
-
     }
 
     public void lookGameCards(int index) {
@@ -127,26 +113,13 @@ public class Controller implements ControllerInterface {
         gameController.stopLookingAtCards(view, nickname);
     }
 
-    public void setTile(Coordinates coordinates, boolean booked, int key) {
-        gameController.setTile(view,nickname,coordinates,booked,key);
+    public void setTile(Tile tile) {
+        gameController.setTile(view,nickname,tile);
     }
+
     public void bookTile(){
         gameController.bookTile(view, nickname);
     }
-
-    public void completed(){
-        gameController.completed(nickname, view);
-    }
-
-    public void setPosition(int position){
-        gameController.setPosition(nickname, view, position);
-    }
-
-    public void setFlightBoard(String playerName, int chosen) throws RemoteException {
-
-    }
-
-
 
     public void shipErrorManagement(ArrayList<Coordinates> toRemove) {
         gameController.shipErrorManagement(nickname, view, toRemove);
