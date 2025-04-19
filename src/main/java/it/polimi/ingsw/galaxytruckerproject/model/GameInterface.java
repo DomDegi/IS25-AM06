@@ -30,7 +30,6 @@ public interface GameInterface{
     ShipBoard getPlayerShipBoard(String s);
     FlightBoard getFlightBoard();
     GameMode getMode();
-    Player getFirstRankedPlayer();
 
 
     //Methods for ships creation phase

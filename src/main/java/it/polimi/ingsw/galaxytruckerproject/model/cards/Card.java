@@ -9,7 +9,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
-import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,6 +79,8 @@ public abstract class Card {
 
     public void removeCrew(String playerName, ArrayList<Coordinates> crewToRemove){}
 
+    public void removeGoods(String playerName, ArrayList<Coordinates> goodsToRemove){}
+
     //Getter methods needed for view
     public int getLevel() {
         return level;
@@ -88,6 +89,7 @@ public abstract class Card {
     public int getGainedCredits() { return 0; }
     public int getCrewNumber(){return 0;}
     public ArrayList<Goods> getGoodsList(String playerName){return null;}
+    public int getGoodsPenalty(){return 0;}
 
 
     @Override

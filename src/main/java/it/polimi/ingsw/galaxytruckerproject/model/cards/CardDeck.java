@@ -63,9 +63,11 @@ public class CardDeck {
         Collections.shuffle(this.deckLvl1);
         Collections.shuffle(this.deckLvl2);
         ArrayList<Card> tier2FlightCards = new ArrayList<>();
-        for (int i = 0; i < 8; i++) tier2FlightCards.add(drawCardLvl2());
-        for (int i = 0; i < 4; i++) tier2FlightCards.add(drawCardLvl1());
-        Collections.shuffle(tier2FlightCards);
+        for (int i = 0; i < 4; i++) {
+            tier2FlightCards.add(drawCardLvl1());
+            tier2FlightCards.add(drawCardLvl2());
+            tier2FlightCards.add(drawCardLvl2());
+        }
         return tier2FlightCards;
     }
 }
