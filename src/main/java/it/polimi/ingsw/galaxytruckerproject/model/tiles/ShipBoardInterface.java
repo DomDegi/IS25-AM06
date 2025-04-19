@@ -14,39 +14,40 @@ public interface ShipBoardInterface {
     public Tile getTile(int x, int y);
 
 
-    public void setHumanCrew(int humanCrew);
 
-    public int getPenalty();
+    //public void setHumanCrew(int humanCrew);
 
-    public Player getPlayer();
+    //public int getPenalty();
 
-    public int getNumBatteries();
+    //public Player getPlayer();
 
-    public float getSingleCannonPower();
+   // public int getNumBatteries();
 
-    public ArrayList<Coordinates> getDoubleCannon();
+   // public float getSingleCannonPower();
 
-    public int getNumSingleEngine();
+   // public ArrayList<Coordinates> getDoubleCannon();
 
-    public ArrayList<Coordinates> getDoubleEngine();
+    //public int getNumSingleEngine();
 
-    public int getNumPurpleAliens();
+   // public ArrayList<Coordinates> getDoubleEngine();
 
-    public int getNumHumanCrew();
+    //public int getNumPurpleAliens();
 
-    public int getNumExposedConnectors();
+   // public int getNumHumanCrew();
 
-    public int getDoubleCannonPower(Coordinates coordinates);
+  //  public int getNumExposedConnectors();
 
-    public ArrayList<Coordinates> getBatteryCoordinates();
+   // public int getDoubleCannonPower(Coordinates coordinates);
 
-    public ArrayList<Coverage> getCoverageShields();
+   // public ArrayList<Coordinates> getBatteryCoordinates();
 
-    public ArrayList<Coordinates> getCargoHoldCoordinates();
+   // public ArrayList<Coverage> getCoverageShields();
 
-    public ArrayList<Coordinates> getCabinsCoordinates();
+    //public ArrayList<Coordinates> getCargoHoldCoordinates();
 
-    public Optional<Tile>[][] getTilesTable();
+    //public ArrayList<Coordinates> getCabinsCoordinates();
+
+    //public Optional<Tile>[][] getTilesTable();
 
     public void addBreakSingleCannonPower(float power);
 
@@ -74,9 +75,9 @@ public interface ShipBoardInterface {
 
     public boolean positionTile(Optional<Tile> tile, Coordinates coordinates);
 
-    public void destroyForCorrection(Coordinates coordinates);
+    //public void destroyForCorrection(Coordinates coordinates);
 
-    public ArrayList<Set<Coordinates>> destroyTile(Coordinates coordinates);
+    //public ArrayList<Set<Coordinates>> destroyTile(Coordinates coordinates);
 
     public boolean checkEarlyLanding();
 

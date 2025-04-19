@@ -16,9 +16,21 @@ public class LightShipBoard implements ShipBoardInterface{
     private Optional<Tile>[][] tilesTable;
     private int penalty;
     private ArrayList<Tile> bookedTiles;
-    //SERVE UN METODO CHE PASSA AL CLIENT TUTTE LE COORDINATE DEI CARGOHOLD
+    private int numExposedConnectors;;
+    private int numBatteries;
+    private float singleCannonPower;
+    private ArrayList<Coordinates> DoubleCannon;
     private ArrayList<Coordinates> cargoHoldCoordinates;
 
+    private int numSingleEngine;
+    private ArrayList<Coordinates> DoubleEngine;
+    private ArrayList<Coverage> shields;
+    private ArrayList<Coordinates> batteryCoordinates;
+    private ArrayList<Coordinates> crewCoordinates;
+
+    private int numBrownAliens;
+    private int numPurpleAliens;
+    private int numHumanCrew;
 
     public LightShipBoard(ShipBoard shipBoard) {
         this. player = new LightPlayer(shipBoard.getPlayer());
@@ -79,6 +91,50 @@ public class LightShipBoard implements ShipBoardInterface{
         positionTile(Optional.of(tile), new Coordinates(2, 3));
     }
 
+    public void addBreakSingleCannonPower(float num) {
+        this.singleCannonPower += num;
+    }
+
+    public void addBreakSingleEngine(boolean ab) {
+        if (ab) numSingleEngine++;
+        else numSingleEngine--;
+    }
+
+    public void addBreakDoubleEngine(boolean ab, Coordinates coordinates) {
+        if (ab) {
+            DoubleEngine.add(coordinates);
+        } else DoubleEngine.remove(coordinates);
+    }
+
+    public void addBreakDoubleCannon(boolean ab, Coordinates coordinates) {
+        if (ab) {
+            DoubleCannon.add(coordinates);
+        } else DoubleCannon.remove(coordinates);
+    }
+
+    public void addBreakBrownAliens(boolean ab) {
+        if (ab) numBrownAliens++;
+        else numBrownAliens--;
+    }
+
+    public void addBreakPurpleAliens(boolean ab) {
+        if (ab) numPurpleAliens++;
+        else numPurpleAliens--;
+    }
+
+    public void addBreakHumanCrew(int num) {
+        numHumanCrew += num;
+        //Decide which crew to eliminate
+    }
+
+    public void addBreakBatteries(int num) {
+        numBatteries += num;
+        //if (num<0) -> Decide which Battery to use
+    }
+
+    public void addPenalty() {
+        penalty++;
+    }
     public Tile getTile(Coordinates coordinates){
         return tilesTable[coordinates.getX()][coordinates.getY()].get();
     }
@@ -361,6 +417,79 @@ public class LightShipBoard implements ShipBoardInterface{
         for (Coordinates coordinates : coordinatesDestroyed) {
             getTile(coordinates).destroy();
         }
+    }
+
+
+    public boolean checkEarlyLanding() {
+        return numHumanCrew == 0;
+    }
+
+    public void SetNewShip(Set<Coordinates> set) {
+        Coordinates c = new Coordinates(0, 0);
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 7; j++) {
+                if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable()) {
+                    c.set(i, j);
+                    if (!set.contains(c)) {
+                        tilesTable[i][j].get().destroy();
+                        tilesTable[i][j] = Optional.empty();
+                    }
+                }
+            }
+        }
+    }
+
+    //RETURN THE SET OF TILES LINKED WITH THE STARTING ONE
+    //i assume that the correctness of the links has already been verified
+    //in the case of construction errors this method will be played for each error
+    public Set<Coordinates> brokenGraph(Coordinates start) {
+        Set<Coordinates> set = new HashSet<Coordinates>();
+        return connectedSet(start, set);
+    }
+
+
+    public Set<Coordinates> connectedSet(Coordinates start, Set<Coordinates> set) {
+        int x = start.x;
+        int y = start.y;
+        set.add(new Coordinates(x, y));
+        //south
+        if (x<4 && tilesTable[x][y].get().south.getConnectorsType() != Connectors.SMOOTH && tilesTable[x + 1][y].isPresent() && tilesTable[x + 1][y].get().fillable() && !set.contains(tilesTable[x + 1][y].get().getCoordinates())) {
+            connectedSet(new Coordinates(x + 1, y), set);
+        }
+        //east
+        if (y<6 && tilesTable[x][y].get().east.getConnectorsType() != Connectors.SMOOTH && tilesTable[x][y + 1].isPresent() && tilesTable[x][y + 1].get().fillable() && !set.contains(tilesTable[x][y + 1].get().getCoordinates())) {
+            connectedSet(new Coordinates(x, y + 1), set);
+        }
+        //north
+        if (x>0 && tilesTable[x][y].get().north.getConnectorsType() != Connectors.SMOOTH && tilesTable[x - 1][y].isPresent() && tilesTable[x - 1][y].get().fillable() && !set.contains(tilesTable[x - 1][y].get().getCoordinates())) {
+            connectedSet(new Coordinates(x - 1, y), set);
+        }
+        //west
+        if (y>0 && tilesTable[x][y].get().west.getConnectorsType() != Connectors.SMOOTH && tilesTable[x][y - 1].isPresent() && tilesTable[x][y - 1].get().fillable() && !set.contains(tilesTable[x][y - 1].get().getCoordinates())) {
+            connectedSet(new Coordinates(x, y - 1), set);
+        }
+        return set;
+    }
+
+    public boolean verifyCorrectness() {
+        Set<Coordinates> set = new HashSet<Coordinates>();
+        set=this.connectedSet( new Coordinates(2,3), set);
+        // da controllare che tutte le caselle non vuote siano nel set per la correttezza (no caso delle due navi separate)
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 7; j++) {
+                if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable() )
+                    if(!tilesTable[i][j].get().isCorrect() ||! set.contains(tilesTable[i][j].get().getCoordinates()) ) return false;
+            }
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 7; j++) {
+                if (tilesTable[i][j].isPresent())
+                    tilesTable[i][j].get().getStat();
+            }
+        int i=bookedTiles.size();
+        for(int j=0;j<i;j++) {
+            addPenalty();
+        }
+        return true;
     }
 
 
