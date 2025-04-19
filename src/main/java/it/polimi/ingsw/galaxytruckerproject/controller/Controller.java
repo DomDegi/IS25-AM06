@@ -2,13 +2,13 @@ package it.polimi.ingsw.galaxytruckerproject.controller;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.ControllerInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.SetColorRequest;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
-import java.util.ArrayList;
+import java.rmi.RemoteException;
 
 /*
  * This controller class is the one that each client
@@ -89,6 +89,11 @@ public class Controller implements ControllerInterface {
         }
     }
 
+    public void playerChoiceThroughMessage (Message message) {
+        gameController.processPlayerInput(message);
+    }
+
+    //TURN HOURGLASS ??
     public void turnHourglass () {
         gameController.turnHourglass(this.nickname);
     }
@@ -103,6 +108,7 @@ public class Controller implements ControllerInterface {
 
     public void refuseTile(){
         gameController.refuseTile(nickname);
+
     }
 
     public void lookGameCards(int index) {
@@ -113,13 +119,26 @@ public class Controller implements ControllerInterface {
         gameController.stopLookingAtCards(view, nickname);
     }
 
-    public void setTile(Tile tile) {
-        gameController.setTile(view,nickname,tile);
+    public void setTile(Coordinates coordinates, boolean booked, int key) {
+        gameController.setTile(view,nickname,coordinates,booked,key);
     }
-
     public void bookTile(){
         gameController.bookTile(view, nickname);
     }
+
+    public void completed(){
+        gameController.completed(nickname, view);
+    }
+
+    public void setPosition(int position){
+        gameController.setPosition(nickname, view, position);
+    }
+
+    public void setFlightBoard(String playerName, int chosen) throws RemoteException {
+
+    }
+
+
 
     public void shipErrorManagement(ArrayList<Coordinates> toRemove) {
         gameController.shipErrorManagement(nickname, view, toRemove);
