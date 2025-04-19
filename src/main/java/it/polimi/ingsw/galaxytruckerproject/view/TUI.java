@@ -187,7 +187,7 @@ public class TUI implements ViewInterface{
     }
 
     @Override
-    public void asksToSetPosition() {
+    public void asksToChooseStartingPosition() {
 
     }
 

@@ -185,4 +185,9 @@ public class Controller implements ControllerInterface {
     public void pickCrewMembers(ArrayList<Tile> cabins) {
         gameController.playerPicksCrewMembers(nickname, view, cabins);
     }
+
+    @Override
+    public void setPosition(int position) {
+        gameController.setPosition(nickname, view, position);
+    }
 }

@@ -256,7 +256,7 @@ public class Player {
         }
     }
 
-    public boolean verifyCrew (ArrayList<Tile>  cabins) {
+    public boolean verifyAndSetupCrew(ArrayList<Tile>  cabins) {
         for (Tile cabin: cabins) {
             if (cabin.getCrewType().equals(CrewType.PURPLE) &&
                     !(cabin.getAlienability().equals(AlienOptions.PURPLE) || cabin.getAlienability().equals(AlienOptions.BOTH)))
@@ -271,6 +271,16 @@ public class Player {
             playerShip.updateTile(cabin.getCoordinates(), cabin);
         }
         return true;
+    }
+
+    public ArrayList<Tile> setAllCrewToHuman () {
+        ArrayList<Coordinates> cabins = playerShip.getCabinsCoordinates();
+        ArrayList<Tile> updatedTiles = new ArrayList<>();
+        for (Coordinates coord: cabins) {
+            playerShip.getTile(coord).setCrewType(CrewType.HUMAN);
+            updatedTiles.add(playerShip.getTile(coord));
+        }
+        return updatedTiles;
     }
 
     //IT ADDS CREDIT

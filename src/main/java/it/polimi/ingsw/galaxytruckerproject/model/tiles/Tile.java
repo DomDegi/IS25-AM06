@@ -160,6 +160,7 @@ public abstract class Tile {
     public CrewType getCrewType(){System.out.println("THIS TILE IS NOT A CABIN"); return CrewType.NotAcabin;}
     public AlienOptions getAlienability() { return AlienOptions.NO;}
     public void checkAlienability(){System.out.println("THIS TILE IS NOT A CABIN");}
+    public int getCrew() {return 0;}
 
     public boolean isBooked() {
         return booked;

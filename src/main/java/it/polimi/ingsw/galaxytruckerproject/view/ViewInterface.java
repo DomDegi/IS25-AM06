@@ -163,11 +163,6 @@ public interface ViewInterface extends Remote, Serializable {
      * asks the player to input yes or no to decide and sends a Accept or a Refuse Message
      */
 
-    /**
-     * asks to set position on the flightboard
-     */
-    void asksToSetPosition();
-
     void asksToMakeAChoice ();
 
     void asksToManageGoods(ArrayList<Goods> goods);

@@ -105,4 +105,11 @@ public interface ControllerInterface {
     void choosePlanet(int planet) throws  Exception;
 
     void pickCrewMembers(ArrayList<Tile> cabins);
+
+    /**
+     * this method sets the player on the flightBoard on LEVEL2 flight mode
+     * @param position the position on the flightBoard (from 1 to max playerCount)
+     * @throws Exception
+     */
+    void setPosition(int position) throws Exception;
 }

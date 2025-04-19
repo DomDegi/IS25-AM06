@@ -225,7 +225,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
-    public void asksToSetPosition() {
+    public void asksToChooseStartingPosition() {
 
     }
     @Override

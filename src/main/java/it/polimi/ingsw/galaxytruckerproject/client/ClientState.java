@@ -16,5 +16,6 @@ public enum ClientState {
     S_FINISHED,//costruzione della shipboard finita, attesa della verifica correttezza
     WAIT_OTHER_PLAYER_ACTION,
     START_SHIP_CREATION,
-    DRAW_CARD
+    DRAW_CARD,
+    MANAGE_CABINS
 }

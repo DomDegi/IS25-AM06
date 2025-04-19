@@ -293,9 +293,6 @@ public class Game implements GameInterface{
         return player.getShipBoard();
     }
 
-    public Player getFirstRankedPlayer () {
-        return getListOfInFlightPlayers().getFirst();
-    }
 
     public FlightBoard getFlightBoard() {
         return flightBoard;
