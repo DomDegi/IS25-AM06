@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.GenericMessage;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
 import java.util.ArrayList;
@@ -23,24 +23,21 @@ public class StarDust extends Card {
         this.game = game;
         this.viewsMap = viewsMap;
         broadcastMessage("StarDust: every player will move backward one step for every exposed connector");
-        executeCard(new GenericMessage("w/e"));
+        executeCard();
     }
 
     //makes so that the player loses as many days as their exposedConnectors
-    @Override
-    public void executeCard(Message message) {
+    public void executeCard() {
         ArrayList<Player> players = game.getListOfInFlightPlayers();
+        Player currentPlayer;
 
         //when moving backward starts from the last
         for (int i = players.size() - 1; i >= 0; i--) {
+            currentPlayer = players.get(i);
             int playerExposedConnectors = players.get(i).getShipBoard().countExposedConnectors();
 
             if (playerExposedConnectors > 0) {
-                game.getFlightBoard().moveBackward(players.get(i), playerExposedConnectors);
-                broadcastMessage(players.get(i).getPlayerName() + " moved backward as many steps as their exposed connectors: " + playerExposedConnectors + "\n");
-            }
-            else {
-                broadcastMessage(players.get(i).getPlayerName() + " has no exposed connectors. StarDust doesn't affect them\n");
+                notifyMovement(currentPlayer);
             }
         }
         game.endCardEvent();

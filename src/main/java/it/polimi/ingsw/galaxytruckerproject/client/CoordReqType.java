@@ -1,5 +1,10 @@
 package it.polimi.ingsw.galaxytruckerproject.client;
 
 public enum CoordReqType {
-    CHOOSE_TO_BREACK, CHOOSE_TO_MANTAIN, CHOOSE_BATTERY , CHOOSE_DOUBLE_CANNON, CHOOSE_DOUBLE_ENGINE
+    CHOOSE_TO_BREAK,// for correctness
+    CHOOSE_TO_MAINTAIN,//for destroy
+    CHOOSE_BATTERY ,
+    CHOOSE_DOUBLE_CANNON,
+    CHOOSE_DOUBLE_ENGINE,
+    CHOOSE_CREW
 }

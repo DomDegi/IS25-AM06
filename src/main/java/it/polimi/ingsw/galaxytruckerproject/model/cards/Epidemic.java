@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.GenericMessage;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class Epidemic extends Card {
@@ -21,17 +23,13 @@ public class Epidemic extends Card {
     public void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap) {
         this.game = game;
         this.viewsMap = viewsMap;
-        broadcastMessage("Epidemic:\n All the players will lose one crew member from every populated cabin that's " +
-                "connected to others populated cabins");
-        executeCard(new GenericMessage("w/e"));
+        executeCard();
     }
 
-    @Override
-    public void executeCard(Message message) {
+    public void executeCard() {
         for(Player player: game.getListOfInFlightPlayers()){
-            if (!player.IsDisconnected()) {
-                player.getShipBoard().epidemic();
-            }
+            ArrayList<Tile> modifiedCabins = player.getShipBoard().epidemic();
+            notifyModifiedTiles(player.getPlayerName(),  modifiedCabins);
         }
         game.endCardEvent();
     }

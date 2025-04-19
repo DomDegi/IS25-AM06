@@ -2,15 +2,14 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsChecker;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.ManageGoodsResponse;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.MessageType;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.PlanetChoiceResponse;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
@@ -24,8 +23,9 @@ public class Planets extends Card{
     private Player currentPlayer;
     private ViewInterface currentPlayerView = null;
     private boolean initialized;
-    private boolean won;
+    private boolean chosen;
     private GoodsChecker goodsChecker;
+    public Map<String,Planet> playerChosenPlanets = null;
 
     @JsonCreator
     public Planets(@JsonProperty("level") int level, @JsonProperty("requiredDays") int requiredDays, @JsonProperty("listOfPlanets") ArrayList<Planet> listOfPlanets) {
@@ -34,59 +34,108 @@ public class Planets extends Card{
         this.initialized = false;
         this.currentPlayer = null;
         this.playerToInteract = new ArrayList<>();
-        this.won = false;
+        this.chosen = false;
     }
     @Override
     public void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap) {
         this.game = game;
         this.viewsMap = viewsMap;
-        broadcastMessage(printListOfPlanets());
-        broadcastMessage(" input from 1 to " + listOfPlanets.size() + " to pick which to land on, input 'no' to ignore\n");
         this.nextPlayer();
     }
-    //for each player asks if they want to spend the required days to occupy the planet they choose
-    @Override
-    public void executeCard(Message message) {
-        String playerName = message.getNickname();
 
-        if (!playerName.equals(currentPlayer.getPlayerName()))
+    @Override
+    public void manageGoods (String playerName, int clientCredits, ArrayList<CargoHold> updatedCargos) {
+        if (!playerName.equals(currentPlayer.getPlayerName()) || !chosen) {
+            viewsMap.get(playerName).showWrongInputMessage();
             return;
-        if (!won) {
-            int choice;
-            if (message.getMessageType().equals(MessageType.PLANET_CHOICE_RESPONSE)) {
-                PlanetChoiceResponse messageReceived = (PlanetChoiceResponse) message;
-                choice = messageReceived.getChoosenPlanet();
-            }
-            else {
+        }
+        if (goodsChecker.check(clientCredits, updatedCargos)) {
+            game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
+            notifyMovement(currentPlayer);
+            ArrayList<Tile> updatedTiles = new ArrayList<>(updatedCargos);
+            notifyModifiedTiles(playerName, updatedTiles);
+            nextPlayer();
+        }
+        else {
+            currentPlayerView.showWrongInputMessage();
+        }
+    }
+
+
+    //planet choice is from 1 to total planets, but the array indexes start from 0
+    @Override
+    public void planetChoice(String playerName, int planet) {
+        if (!playerName.equals(currentPlayer.getPlayerName())) {
+            viewsMap.get(playerName).showWrongInputMessage();
+            return;
+        }
+        if (listOfPlanets.get(planet - 1).getOccupationStatus() || chosen) {
+            currentPlayerView.showWrongInputMessage();
+            return;
+        }
+        listOfPlanets.get(planet - 1).setOccupationStatus();
+        playerChosenPlanets.put(playerName, listOfPlanets.get(planet - 1));
+        notifyPlayerLanded(playerName, planet);
+        this.goodsChecker = new GoodsChecker(currentPlayer, listOfPlanets.get(planet-1).getListOfGoods());
+        chosen = true;
+    }
+
+    public void notifyPlayerLanded(String playerName, int planet) {
+        for (VirtualView view:  viewsMap.values()) {
+            try {
+                view.notifyPlayerLandedOnPlanet(playerName, planet);
+            } catch (Exception ignored) {}
+        }
+    }
+
+    public void nextPlayer() {
+        if (!initialized) {
+            playerToInteract = new ArrayList<>(game.getListOfInFlightPlayers());
+            initialized=true;
+        }
+        else {
+            if (playerToInteract.isEmpty()) {
+                game.endCardEvent();
                 return;
             }
-            if (choice > 0 && choice <= listOfPlanets.size() && !listOfPlanets.get(choice - 1).getOccupationStatus()) {
-                listOfPlanets.get(choice - 1).setOccupationStatus();
-                game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
-                goodsChecker =new GoodsChecker(currentPlayer,listOfPlanets.get(choice - 1).getListOfGoods());
-                won=true;
-                sendMessageToPlayer(currentPlayerView, goodsChecker.goodsPrinter(listOfPlanets.get(choice - 1).getListOfGoods()));
-                sendMessageToPlayer(currentPlayerView, "Choose for each good where to put it, " +
-                        "input 'done' to stop,'pick x y' to pick one good from your cargo");
-            } else if (choice > 0 && choice <= listOfPlanets.size() && listOfPlanets.get(choice - 1).getOccupationStatus()) {
-                sendMessageToPlayer(currentPlayerView, "Error, planet "+ choice +" is already taken");
-                sendMessageToPlayer(currentPlayerView, printListOfPlanets());
-                sendMessageToPlayer(currentPlayerView, currentPlayer.getPlayerName()+" " +
-                        "input from 1 to "+ listOfPlanets.size() +" to pick which to land on, input 'no' to ignore\n");
-            } else if (choice == 0) {
-                sendMessageToPlayer(currentPlayerView, "No action performed");
-                nextPlayer();
-            } else {
-                sendMessageToPlayer(currentPlayerView,"Invalid choice: " + choice);
-            }
-        }else{
-            if (message.getMessageType().equals(MessageType.MANAGE_GOODS_REQUEST)) {
-                ManageGoodsResponse messageReceived = (ManageGoodsResponse) message;
-                if (goodsChecker.check(messageReceived.getClientGoodsValue(), messageReceived.getCargoHoldsToUpdate())) {
-                    nextPlayer();
-                }
-            }
+            playerToInteract.removeFirst();
         }
+        chosen = false;
+        AtomicInteger i = new AtomicInteger();
+        listOfPlanets.forEach(planet -> {
+            if (planet.getOccupationStatus())
+                i.getAndIncrement();
+        });
+        if (i.get() == listOfPlanets.size()) {
+            game.endCardEvent();
+            return;
+        }
+        currentPlayer= playerToInteract.getFirst();
+        currentPlayerView=viewsMap.get(currentPlayer.getPlayerName());
+        this.goodsChecker = null;
+
+        if (currentPlayer.IsDisconnected()) {
+            nextPlayer();
+            return;
+        }
+        currentPlayerView.setClientState(ClientState.PLANET_CHOICE);
+    }
+
+    @Override
+    public ArrayList<Goods> getGoodsList(String playerName) {
+        return playerChosenPlanets.get(playerName).getListOfGoods();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder string = new StringBuilder();
+        string.append("Planets: "). append(super.toString()).append(" ");
+        int i = 0;
+        for (Planet planet : listOfPlanets) {
+            i++;
+            string.append("planet ").append(i).append(" - ").append(planet.toString());
+        }
+        return string.toString();
     }
 
     public String printListOfPlanets() {
@@ -125,49 +174,5 @@ public class Planets extends Card{
             index++;
         }
         return sb.toString();
-    }
-
-    public void nextPlayer() {
-        if (!initialized) {
-            playerToInteract = new ArrayList<>(game.getListOfInFlightPlayers());
-            initialized=true;
-        }
-        else {
-            if (playerToInteract.isEmpty()) {
-                game.endCardEvent();
-                return;
-            }
-            playerToInteract.removeFirst();
-        }
-        won = false;
-        AtomicInteger i = new AtomicInteger();
-        listOfPlanets.forEach(planet -> {
-            if (planet.getOccupationStatus())
-                i.getAndIncrement();
-        });
-        if (i.get() == listOfPlanets.size()) {
-            game.endCardEvent();
-            return;
-        }
-        currentPlayer= playerToInteract.getFirst();
-        currentPlayerView=viewsMap.get(currentPlayer.getPlayerName());
-
-        if (currentPlayer.IsDisconnected()) {
-            nextPlayer();
-            return;
-        }
-        currentPlayerView.asksPlanetChoice();
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder string = new StringBuilder();
-        string.append("Planets: "). append(super.toString()).append(" ");
-        int i = 0;
-        for (Planet planet : listOfPlanets) {
-            i++;
-            string.append("planet ").append(i).append(" - ").append(planet.toString());
-        }
-        return string.toString();
     }
 }

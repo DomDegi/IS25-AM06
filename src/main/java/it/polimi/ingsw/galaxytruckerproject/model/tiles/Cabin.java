@@ -9,6 +9,7 @@ public abstract class Cabin extends Tile {
     public Cabin(Link north, Link east, Link south, Link west) {
         super(north, east, south, west,0);
     }
+    @Override
     public int getCrew() {
         return crew;
     }

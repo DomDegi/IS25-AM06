@@ -288,6 +288,10 @@ public class ShipBoard {
     }
 
 
+    public void destroyForCorrection(Coordinates coordinates) {
+        tilesTable[coordinates.x][coordinates.y].get().destroy();
+        tilesTable[coordinates.getX()][coordinates.getY()] = Optional.empty();
+    }
 
     //destroy tile+ return set of new possible shipboard coordinates
     public ArrayList<Set<Coordinates>> destroyTile(Coordinates coordinates) {
@@ -465,7 +469,7 @@ public class ShipBoard {
         return false;
     }
 
-    public void epidemic(){
+    public ArrayList<Tile> epidemic(){
         HashSet<Coordinates> InfectedCabin = new HashSet<>();
         for(Coordinates coordinates : crewCoordinates){
             for(Coordinates coordinates2 : crewCoordinates){
@@ -482,6 +486,11 @@ public class ShipBoard {
         for(Coordinates coordinates : InfectedCabin){
             tilesTable[coordinates.getX()][coordinates.getY()].get().removeCrew();
         }
+        ArrayList<Tile> modifiedCabin = new ArrayList<>();
+        for (Coordinates coordinates: InfectedCabin) {
+            modifiedCabin.add(this.getTile(coordinates));
+        }
+        return modifiedCabin;
     }
 
     //BATTERY METHODS

@@ -10,14 +10,12 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.network.RMI.Server.VirtualControllerRMI;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import it.polimi.ingsw.galaxytruckerproject.view.TUI;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.rmi.RemoteException;
-import java.sql.Connection;
 import java.util.*;
 
 public class ClientController {
@@ -31,7 +29,6 @@ public class ClientController {
     private HashMap<Integer, Tile> turnedTiles;
     private Tile tileInHand;
     private Map<Integer,Tile> TurnedTiles;
-    private Timer timer;
     private ClientState state;
     private int turns;
     private final VirtualController virtualController;
@@ -212,7 +209,7 @@ public class ClientController {
                     coordInputManager.checkCoord(transformCoordinates(words));
             }
 
-            case MANAGE_CARDS-> {
+            case S_MANAGE_CARDS -> {
                 switch (words[0]) {
                     case "previous" -> {
                         indexCard=indexCard-1;
@@ -251,7 +248,7 @@ public class ClientController {
                                 if (chose==-1)
                                     return;
                                 if (chose > 0 && chose < 4) {
-                                    state = ClientState.MANAGE_CARDS;
+                                    state = ClientState.S_MANAGE_CARDS;
                                     indexDeckInHandOrPlanet = chose;
                                     //notify drawn card
                                     virtualController;
@@ -358,9 +355,8 @@ public class ClientController {
                             //add to flightBoard
                         }
                     }
-                    default-> {
+                    default->
                         System.out.println("\nInvalid input format");
-                    }
                 }
             }
             case WAIT_OTHER_PLAYER_ACTION->{
@@ -492,5 +488,19 @@ public class ClientController {
     public void removeTurnedTile(Tile tile) {
         TurnedTiles.remove(tile.getKey());
     }
+    public void setTileInHand(Tile tile) {
+        tileInHand = tile;
+    }
+
+    public void setTile(String playerName,Tile tile) {
+        LightShipBoard lightShipboard= flightBoard.getIngamePlayer(playerName).getShipBoard();
+        lightShipBoard.positionTile(Optional.of(tile),tile.getCoordinates());
+    }
+
+    public CoordInputManager getCoordInputManager() {
+        return coordInputManager;
+    }
+
+
 }
 

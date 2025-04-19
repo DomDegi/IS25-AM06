@@ -3,10 +3,12 @@ package it.polimi.ingsw.galaxytruckerproject.network.RMI.Server;
 import it.polimi.ingsw.galaxytruckerproject.controller.Controller;
 import it.polimi.ingsw.galaxytruckerproject.controller.MultiGameController;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.rmi.RemoteException;
@@ -27,7 +29,7 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         this.clients = new HashMap<String, Controller>();
     }
 
-    public void connect(ViewInterface client, String playerName) throws RemoteException {
+    public void connect(VirtualView client, String playerName) throws RemoteException {
 
         Controller controllerPlayer = new Controller(multiController, client);
 
@@ -54,7 +56,7 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).leave();
     }
 
-    public void chooseColor(String playerName, String color) throws RemoteException {
+    public void chooseColor(String playerName, PlayersColor color) throws RemoteException {
         clients.get(playerName).chooseColor(color);
     }
 
@@ -88,9 +90,8 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).playerChoiceThroughMessage(message);
     }
 
-    //DONE
-    public void notifySetTile(String playerName, Coordinates coordinates, boolean booked, int key) throws RemoteException {
-        clients.get(playerName).setTile(coordinates, booked, key);
+    public void notifySetTile(String playerName, Tile tile) throws RemoteException {
+        clients.get(playerName).setTile(tile);
     }
 
     public void sendEndShipBoardCreation(String playerName) throws RemoteException {
