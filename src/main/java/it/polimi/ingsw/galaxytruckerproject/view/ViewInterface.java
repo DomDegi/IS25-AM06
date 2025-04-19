@@ -29,21 +29,12 @@ public interface ViewInterface extends Remote, Serializable {
      * @throws IOException
      */
     void askColor ();
-
     /**
      * show login response from server
      * @param success
          */
     void showLoginResponse(boolean success);
-
     void setClientState (ClientState newState);
-
-    /**
-     * asks the player to decide if he wants to join a game in startig phase
-     * or if player prefers to create a new game
-     */
-    void asksJoinOrCreate();
-
     /**
      * Shows on the view the list of the games that are in starting phase.
      * Also asks player calls for the function asksJoinOrCreate().

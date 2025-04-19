@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
-        ww()
 public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     //private final VirtualController server;
     private final ClientController clientController;
@@ -41,17 +40,14 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
             //da adattare al comando in ingresso
         }
     }
-
     @Override
     public void askNickname() throws IOException {
         view.askNickname();
     }
-
     @Override
     public void askColor() {
         view.askColor();
     }
-
     @Override
     public void showLoginResponse(boolean success) {
        view.showLoginResponse(success);
@@ -59,31 +55,20 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
            clientController.setState(ClientState.LOBBY);
        }
     }
-
     @Override
     public void setClientState(ClientState newState) {
         view.setClientState(newState);
         clientController.setState(newState);
     }
-
-    @Override
-    //A CHE SERVE?
-    public void asksJoinOrCreate() {
-        view.asksJoinOrCreate();
-    }
-
     @Override
     public void showJoinableGamesList(Map<String, GameController> joinableGames) {
         view.showJoinableGamesList(joinableGames);
-
     }
-
     //A CHE SERVE
     @Override
     public void askPlayerCount() throws IOException {
         view.askPlayerCount();
     }
-
     @Override
     public void createGame() throws IOException {
         view.createGame();

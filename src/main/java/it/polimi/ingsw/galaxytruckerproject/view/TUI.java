@@ -73,7 +73,7 @@ public class TUI implements DisplayableView{
     }
     @Override
     public void askPlayerCount() throws IOException {
-        System.out.println("How many players does the game have?");
+        System.out.println("How many players will the game contain?");
     }
     @Override
     public void createGame() throws IOException {
@@ -240,6 +240,11 @@ public class TUI implements DisplayableView{
     @Override
     public void notifyPlayerLandedOnPlanet(String playerName, int planet) throws RemoteException {
         System.out.println(playerName + "landed on planet " + planet);
+    }
+
+    @Override
+    public void wrongLocalInput() {
+        System.out.println("You entered a wrong input");
     }
 
 
