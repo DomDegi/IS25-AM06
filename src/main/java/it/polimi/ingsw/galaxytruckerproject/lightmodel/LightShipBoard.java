@@ -19,12 +19,14 @@ public class LightShipBoard {
     //SERVE UN METODO CHE PASSA AL CLIENT TUTTE LE COORDINATE DEI CARGOHOLD
     private ArrayList<Coordinates> cargoHoldCoordinates;
     private int credit;
+    private ArrayList<Coordinates> crewCoordinates;
 
     public LightShipBoard(ShipBoard shipBoard,LightPlayer player) {
         this.player = player;
         this.shipBoard = shipBoard;
         this.bookedTiles = new ArrayList<>();
         this.cargoHoldCoordinates = new ArrayList<>();
+        this.crewCoordinates = new ArrayList<>();
         this.credit = 0;
     }
 
@@ -240,6 +242,9 @@ public class LightShipBoard {
         return tile;
     }
 
+    public ArrayList<Coordinates> getCabinsCoordinates() {
+        return crewCoordinates;
+    }
     /*
     public void swapGoods(Coordinates coordinatesFrom,Coordinates coordinatesTo, Goods goodToSwap ){
         //Check if the coordinates are of a CargoHolder
