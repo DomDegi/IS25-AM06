@@ -113,7 +113,7 @@ public class FlightBoard {
     }
 
     public void removePlayer(Player player) {
-        if (!inGamePlayers.contains(player)) {
+        if (!podium.contains(player)) {
             throw new IllegalArgumentException("Invalid Player:" + player);
         }
         int playerRank = player.getPlayerRanking() - 1;
