@@ -135,10 +135,12 @@ public class GameController implements Observer {
     public void updateReconnectedPlayer(VirtualView view) {
         Map<String, LightShipBoard> updatedShipBoards = new HashMap<>();
         for (Player player: game.getListOfAllPlayer()) {
-            updatedShipBoards.put(player.getPlayerName(), new LightShipBoard(player.getShipBoard());
+            updatedShipBoards.put(player.getPlayerName(), new LightShipBoard(player.getShipBoard()));
         }
-        view.notifyChangesWhileGone(updatedShipBoards, new LightFlightboard(game.getFlightBoard()),
-                game.getDrawnCard(), hourglassTurns, game.getTurnedTiles(), notAvailableCardDecks());
+        try {
+            view.notifyChangesWhileGone(updatedShipBoards, new LightFlightboard(game.getFlightBoard()),
+                    game.getDrawnCard(), hourglassTurns, game.getTurnedTiles(), notAvailableCardDecks());
+        } catch(Exception ignored) {}
     }
 
     /**
