@@ -25,6 +25,7 @@ public class Planets extends Card{
     private boolean initialized;
     private boolean chosen;
     private GoodsChecker goodsChecker;
+    public Map<String,Planet> playerChosenPlanets = null;
 
     @JsonCreator
     public Planets(@JsonProperty("level") int level, @JsonProperty("requiredDays") int requiredDays, @JsonProperty("listOfPlanets") ArrayList<Planet> listOfPlanets) {
@@ -73,6 +74,7 @@ public class Planets extends Card{
             return;
         }
         listOfPlanets.get(planet - 1).setOccupationStatus();
+        playerChosenPlanets.put(playerName, listOfPlanets.get(planet - 1));
         notifyPlayerLanded(playerName, planet);
         this.goodsChecker = new GoodsChecker(currentPlayer, listOfPlanets.get(planet-1).getListOfGoods());
         chosen = true;
@@ -117,6 +119,11 @@ public class Planets extends Card{
             return;
         }
         currentPlayerView.setClientState(ClientState.PLANET_CHOICE);
+    }
+
+    @Override
+    public ArrayList<Goods> getGoodsList(String playerName) {
+        return playerChosenPlanets.get(playerName).getListOfGoods();
     }
 
     @Override

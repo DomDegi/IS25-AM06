@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
@@ -42,10 +43,6 @@ public abstract class Card {
     }
 
     public abstract void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap);
-
-    public int getLevel() {
-        return level;
-    }
 
     public void sendMessageToPlayer (ViewInterface playersView, String message) {
         playersView.showGenericMessage(message);
@@ -92,6 +89,15 @@ public abstract class Card {
     public void planetChoice(String playerName, int planet){}
 
     public void removeCrew(String playerName, ArrayList<Coordinates> crewToRemove){}
+
+    //Getter methods needed for view
+    public int getLevel() {
+        return level;
+    }
+    public int getRequiredDays() { return requiredDays; }
+    public int getGainedCredits() { return 0; }
+    public int getCrewNumber(){return 0;}
+    public ArrayList<Goods> getGoodsList(String playerName){return null;}
 
 
     @Override
