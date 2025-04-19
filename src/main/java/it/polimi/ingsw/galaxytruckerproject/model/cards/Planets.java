@@ -9,7 +9,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsChecker;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
@@ -44,11 +43,6 @@ public class Planets extends Card{
     }
 
     @Override
-    public void cannonChoice(String playerName, float doubleCannonPower, ArrayList<Coordinates> batteriesToUse) {}
-
-    @Override
-    public void engineChoice(String playerName, int numDoubleEngine, ArrayList<Coordinates> batteriesToUse) {}
-
     public void manageGoods (String playerName, int clientCredits, ArrayList<CargoHold> updatedCargos) {
         if (!playerName.equals(currentPlayer.getPlayerName()) || !chosen) {
             viewsMap.get(playerName).showWrongInputMessage();
@@ -66,10 +60,9 @@ public class Planets extends Card{
         }
     }
 
-    @Override
-    public void choice(String playerName, boolean decision) {}
 
     //planet choice is from 1 to total planets, but the array indexes start from 0
+    @Override
     public void planetChoice(String playerName, int planet) {
         if (!playerName.equals(currentPlayer.getPlayerName())) {
             viewsMap.get(playerName).showWrongInputMessage();

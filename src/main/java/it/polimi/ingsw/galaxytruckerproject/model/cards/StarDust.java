@@ -26,18 +26,6 @@ public class StarDust extends Card {
         executeCard();
     }
 
-    @Override
-    public void cannonChoice(String playerName, float doubleCannonPower, ArrayList<Coordinates> batteriesToUse) {}
-    @Override
-    public void engineChoice(String playerName, int numDoubleEngine, ArrayList<Coordinates> batteriesToUse) {}
-    @Override
-    public void manageGoods(String playerName, int clientCredits, ArrayList<CargoHold> updatedCargos) {}
-    @Override
-    public void choice(String playerName, boolean decision) {}
-
-    @Override
-    public void planetChoice(String playerName, int planet) {}
-
     //makes so that the player loses as many days as their exposedConnectors
     public void executeCard() {
         ArrayList<Player> players = game.getListOfInFlightPlayers();

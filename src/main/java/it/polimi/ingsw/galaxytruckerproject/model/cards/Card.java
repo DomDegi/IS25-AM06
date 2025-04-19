@@ -81,15 +81,17 @@ public abstract class Card {
         }
     }
 
-    public abstract void cannonChoice(String playerName, float doubleCannonPower, ArrayList<Coordinates> batteriesToUse);
+    public void cannonChoice(String playerName, float doubleCannonPower, ArrayList<Coordinates> batteriesToUse){}
 
-    public abstract void engineChoice(String playerName, int numDoubleEngine, ArrayList<Coordinates> batteriesToUse);
+    public void engineChoice(String playerName, int numDoubleEngine, ArrayList<Coordinates> batteriesToUse){}
 
-    public abstract void manageGoods(String playerName, int clientCredits,  ArrayList<CargoHold> updatedCargos);
+    public void manageGoods(String playerName, int clientCredits,  ArrayList<CargoHold> updatedCargos){}
 
-    public abstract void choice(String playerName, boolean decision);
+    public void choice(String playerName, boolean decision){}
 
-    public abstract void planetChoice(String playerName, int planet);
+    public void planetChoice(String playerName, int planet){}
+
+    public void removeCrew(String playerName, ArrayList<Coordinates> crewToRemove){}
 
 
     @Override

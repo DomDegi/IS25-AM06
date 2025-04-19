@@ -7,11 +7,14 @@ import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.CrewPenalty;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.MessageType;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class AbandonedShip extends Card {
@@ -74,6 +77,25 @@ public class AbandonedShip extends Card {
         }
     }
 
+    @Override
+    public void removeCrew(String playerName, ArrayList<Coordinates> crewToRemove){
+        Player player = game.identifyPlayerByName(playerName);
+        if (!playerAccepted || !player.equals(playerToPlay)) {
+            viewsMap.get(playerName).showWrongInputMessage();
+            return;
+        }
+        ArrayList<Tile> updatedTile = player.removeCrew(crewToRemove);
+        if (updatedTile !=  null) {
+            notifyModifiedTiles(playerName,updatedTile);
+            game.getFlightBoard().moveBackward(playerToPlay, requiredDays);
+            notifyMovement(player);
+            game.endCardEvent();
+        }
+        else {
+            playersView.showWrongInputMessage();
+        }
+    }
+
     public void choice (String playerName, boolean choice) {
         if (!playerName.equals(playerToPlay.getPlayerName())) {
             viewsMap.get(playerName).showWrongInputMessage();
@@ -81,6 +103,10 @@ public class AbandonedShip extends Card {
         }
         if (choice) {
             playersView.asksToInputCoordinates(CoordReqType.CHOOSE_CREW);
+            playerAccepted = true;
+        }
+        else {
+            nextPlayer();
         }
     }
 

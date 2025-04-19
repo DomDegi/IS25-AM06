@@ -104,7 +104,7 @@ public class GameController implements Observer {
                 }
             }
             // if player disconnected during ships verification without choosing a starting position
-            if (disconnectedPlayers.get(playerName).getPlayerPosition() == 0 &&
+            if (disconnectedPlayers.get(playerName).getPlayerPosition() == 0 && disconnectedPlayers.get(playerName).getPlayerRanking() == 0 &&
                     !this.getGameState().equals(GameState.START_GAME) ||
                     !this.getGameState().equals(GameState.SHIPS_CREATION)) {
 
@@ -535,7 +535,7 @@ public class GameController implements Observer {
         }
         else if (hourglassTurns == 3 && !hourglassON) {
             for (Player player : game.getListOfAllPlayer()) {
-                if (player.getPlayerRanking() == 0) {
+                if (player.getPlayerRanking() == 0 && player.getPlayerPosition() == 0) {
                     if (player.IsDisconnected()) {
                         removePlayer(player.getPlayerName());
                     }

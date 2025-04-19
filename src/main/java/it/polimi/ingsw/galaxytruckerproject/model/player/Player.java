@@ -238,16 +238,18 @@ public class Player {
     }
 
     //CREW METHODS
-    public boolean removeCrew(ArrayList<Coordinates> coordinates) {
+    public ArrayList<Tile> removeCrew(ArrayList<Coordinates> coordinates) {
         for (Coordinates coord: coordinates) {
             if (!playerShip.getCabinsCoordinates().contains(coord)) {
-                return false;
+                return null;
             }
         }
+        ArrayList<Tile> updated = new ArrayList<>();
         for (Coordinates coord: coordinates) {
             playerShip.chooseCrewToRemove(coord);
+            updated.add(playerShip.getTile(coord));
         }
-        return true;
+        return updated;
     }
 
     public void printCurrentInfoCabins() {

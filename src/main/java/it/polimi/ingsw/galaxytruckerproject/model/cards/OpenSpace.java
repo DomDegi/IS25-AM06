@@ -36,15 +36,6 @@ public class OpenSpace extends Card {
     }
 
     @Override
-    public void cannonChoice(String playerName, float doubleCannonPower, ArrayList<Coordinates> batteriesToUse) {}
-    @Override
-    public void manageGoods(String playerName, int clientCredits, ArrayList<CargoHold> updatedCargos) {}
-    @Override
-    public void choice(String playerName, boolean decision) {}
-    @Override
-    public void planetChoice(String playerName, int planet) {}
-
-    @Override
     public void engineChoice(String playerName, int numDoubleEngines, ArrayList<Coordinates> batteriesToUse) {
         if (!playerName.equals(currentPlayer.getPlayerName())) {
             viewsMap.get(playerName).showWrongInputMessage();
