@@ -29,6 +29,10 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         this.clients = new HashMap<String, Controller>();
     }
 
+    public void login(String playerName) throws RemoteException {
+        clients.get(playerName).login(playerName);
+    }
+
     public void connect(VirtualView client, String playerName) throws RemoteException {
 
         Controller controllerPlayer = new Controller(multiController, client);
@@ -166,9 +170,8 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
     }
 
     //DONE
-    public void PlanetChoiceRequest(String playerName,int choose) throws RemoteException {
-        PlanetChoiceRequest message = new PlanetChoiceRequest();
-        clients.get(playerName).playerChoiceThroughMessage(message);
+    public void PlanetChoiceRequest(String playerName,int planet) throws RemoteException {
+        clients.get(playerName).choosePlanet(planet);
     }
 
     public void notifyNewCrewArrangement(String playerName, int creditsToVerify, ArrayList<CargoHold> cargosToUpdate) throws RemoteException {
