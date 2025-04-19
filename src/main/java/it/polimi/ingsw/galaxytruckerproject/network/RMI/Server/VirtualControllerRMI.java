@@ -165,7 +165,7 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
     }
 
     //DONE
-    public void PlanetChoiceRequest(String playerName,int chose) throws RemoteException {
+    public void PlanetChoiceRequest(String playerName,int choose) throws RemoteException {
         PlanetChoiceRequest message = new PlanetChoiceRequest();
         clients.get(playerName).playerChoiceThroughMessage(message);
     }
