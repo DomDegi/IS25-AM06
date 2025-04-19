@@ -12,7 +12,8 @@ public abstract class Tile {
     protected Link south;
     protected Link west;
     protected Coordinates coordinates;
-    protected ShipBoard shipBoard;
+
+    protected ShipBoardInterface shipBoard;
     protected final int key;
     protected boolean booked;
 
@@ -116,7 +117,7 @@ public abstract class Tile {
         return this.coordinates;
     }
 
-    public void setShipBoard(ShipBoard shipBoard) {
+    public void setShipBoard(ShipBoardInterface shipBoard) {
         this.shipBoard = shipBoard;
     }
 

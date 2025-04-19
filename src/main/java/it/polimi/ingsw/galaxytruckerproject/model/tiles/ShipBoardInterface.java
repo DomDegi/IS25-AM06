@@ -1,9 +1,10 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 
 import java.util.*;
 
-public interface Board {
+public interface ShipBoardInterface {
 
     public void initializeTestFlight();
     public void initializeLevel2();
@@ -17,7 +18,7 @@ public interface Board {
 
     public int getPenalty();
 
-    public int getPlayer();
+    public Player getPlayer();
 
     public int getNumBatteries();
 
@@ -25,7 +26,7 @@ public interface Board {
 
     public ArrayList<Coordinates> getDoubleCannon();
 
-    public ArrayList<Coordinates> getNumSingleEngine();
+    public int getNumSingleEngine();
 
     public ArrayList<Coordinates> getDoubleEngine();
 
@@ -33,7 +34,7 @@ public interface Board {
 
     public int getNumHumanCrew();
 
-    public int getNumExsposedConnectors();
+    public int getNumExposedConnectors();
 
     public int getDoubleCannonPower(Coordinates coordinates);
 
@@ -42,8 +43,6 @@ public interface Board {
     public ArrayList<Coverage> getCoverageShields();
 
     public ArrayList<Coordinates> getCargoHoldCoordinates();
-
-    public ArrayList<Coordinates> getCargoShieldCoordinates();
 
     public ArrayList<Coordinates> getCabinsCoordinates();
 
@@ -95,7 +94,13 @@ public interface Board {
 
     public void removeGood(Goods good, Coordinates coordinates);
 
+    public boolean isCargoEmpty();
 
+    public void checkBeforeAsking(int goodsToRemove);
+
+    public ArrayList<Goods> getAllGoods();
+
+    public void addBattery(Coordinates coordinates);
 
 
 }
