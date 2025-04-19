@@ -170,6 +170,10 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).playerChoiceThroughMessage(message);
     }
 
+    public void notifyNewCrewArrangement(String playerName, int creditsToVerify, ArrayList<CargoHold> cargosToUpdate) throws RemoteException {
+        clients.get(playerName).manageGoods(creditsToVerify, cargosToUpdate);
+    }
+
 
 
 

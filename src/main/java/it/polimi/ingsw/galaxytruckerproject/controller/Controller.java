@@ -126,7 +126,7 @@ public class Controller implements ControllerInterface {
         gameController.bookTile(view, nickname);
     }
 
-    public void completed(){
+    public void completedShip(){
         gameController.completed(nickname, view);
     }
 
@@ -134,8 +134,48 @@ public class Controller implements ControllerInterface {
         gameController.setPosition(nickname, view, position);
     }
 
-    public void setFlightBoard(String playerName, int chosen) throws RemoteException {
+    public void drawCard() {
+        gameController.drawCard(nickname, view);
+    }
 
+    @Override
+    public void earlyLanding () {
+        gameController.earlyLanding(nickname, view);
+    }
+
+    @Override
+    public void useCannons(float doublePower, ArrayList<Coordinates> batteries) throws Exception {
+        gameController.playerUsesCannons(nickname, doublePower, batteries);
+    }
+
+    @Override
+    public void useEngines(int numberOfDoubleEngines, ArrayList<Coordinates> batteries) throws Exception {
+        gameController.playerUsesEngines(nickname, numberOfDoubleEngines, batteries);
+    }
+
+    @Override
+    public void manageGoods(int clientCreditsToVerify, ArrayList<CargoHold> cargosToUpdate) throws Exception {
+        gameController.playerManagesGoods(nickname, clientCreditsToVerify, cargosToUpdate);
+    }
+
+    @Override
+    public void makeAChoice(boolean choice) {
+        gameController.playerMakesAChoice(nickname, choice);
+    }
+
+    @Override
+    public void choosePlanet(int planet) {
+        gameController.playerChoosesPlanet(nickname, planet);
+    }
+
+    @Override
+    public void pickCrewMembers(ArrayList<Tile> cabins) {
+        gameController.playerPicksCrewMembers(nickname, view, cabins);
+    }
+
+    @Override
+    public void setPosition(int position) {
+        gameController.setPosition(nickname, view, position);
     }
 
 
