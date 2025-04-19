@@ -2,6 +2,8 @@ package it.polimi.ingsw.galaxytruckerproject.controller;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.ControllerInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
@@ -9,6 +11,7 @@ import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.SetColorReque
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 /*
  * This controller class is the one that each client
@@ -83,7 +86,12 @@ public class Controller implements ControllerInterface {
         multiGameController.leave(nickname);
     }
 
-    public void chooseColor(String color) {
+    @Override
+    public void chooseColor(String chosenColor) throws Exception {
+
+    }
+
+    public void chooseColor(PlayersColor color) {
         if (gameController.checkColorAvailable(nickname, view, color)) {
             gameController.playerAddition(new SetColorRequest(nickname, color));
         }

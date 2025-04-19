@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.network;
 
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
@@ -18,7 +19,7 @@ public interface VirtualController extends Remote, Serializable {
     void joinGame(String gameName, String playerName) throws RemoteException;
     void leaveGame(String playerName) throws RemoteException;
     void leave(String playerName) throws RemoteException;
-    void chooseColor(String playerName, String color) throws RemoteException;
+    void chooseColor(String playerName, PlayersColor color) throws RemoteException;
 
     void notifySetTile(String playerName, Coordinates coordinates, boolean booked, int key) throws RemoteException;
     //void reqDrawTileRequest(String playerName, int index) throws RemoteException;

@@ -3,11 +3,13 @@ package it.polimi.ingsw.galaxytruckerproject.network.RMI.Server;
 import it.polimi.ingsw.galaxytruckerproject.controller.Controller;
 import it.polimi.ingsw.galaxytruckerproject.controller.MultiGameController;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.rmi.RemoteException;
@@ -30,7 +32,7 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
 
     public void connect(ViewInterface client, String playerName) throws RemoteException {
 
-        Controller controllerPlayer = new Controller(multiController, client);
+        Controller controllerPlayer = new Controller(multiController,(VirtualView) client);
 
         synchronized (this.clients) {
             this.clients.put(playerName, controllerPlayer);
@@ -55,17 +57,13 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).leave();
     }
 
-    @Override
-    public void chooseColor(String playerName, String color) throws RemoteException {
-
-    }
 
     public void chooseColor(String playerName, PlayersColor color) throws RemoteException {
         clients.get(playerName).chooseColor(color);
     }
 
     public void setFlightBoard(String playerName, int chosen) throws RemoteException {
-        clients.get(playerName).setFlightBoard(chosen);
+        clients.get(playerName).setFlightBoard(playerName,chosen);
     }
 
     public void sendCoordinates(String playerName, ArrayList<Coordinates> coordinates) throws RemoteException{

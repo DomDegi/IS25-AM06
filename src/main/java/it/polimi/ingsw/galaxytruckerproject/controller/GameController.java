@@ -205,23 +205,16 @@ public class GameController {
      * @param color chosen color
      * @return true if color is available, false otherwise
      */
-    public boolean checkColorAvailable (String playerName, ViewInterface view, String color) {
+    public boolean checkColorAvailable (String playerName, ViewInterface view, PlayersColor color) {
         if (! playersViewMap.containsKey(playerName)) {
             view.showErrorMessage("can't choose a color without logging in");
             return false;
         }
-        try {
-            PlayersColor chosenColor = PlayersColor.valueOf(color);
-            for (Player player : activePlayers.values()) {
-                if (player.getPlayerColor().equals(chosenColor)) {
-                    view.showErrorMessage("color for starting cabin is already taken");
-                    return false;
-                }
+        for (Player player : activePlayers.values())
+            if (player.getPlayerColor().equals(color)) {
+                view.showErrorMessage("color for starting cabin is already taken");
+                return false;
             }
-        } catch (IllegalArgumentException e) {
-            view.showErrorMessage("invalid color for the game");
-            return false;
-        }
         return true;
     }
 
