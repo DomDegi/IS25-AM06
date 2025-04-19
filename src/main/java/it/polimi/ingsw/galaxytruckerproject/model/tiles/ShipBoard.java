@@ -6,7 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 
 
-public class ShipBoard {
+public class ShipBoard implements ShipBoardInterface{
     protected final Player player; //protected because it need to be called in StartingCabin (Tiles)
     private Optional<Tile>[][] tilesTable;
     private int numExposedConnectors;

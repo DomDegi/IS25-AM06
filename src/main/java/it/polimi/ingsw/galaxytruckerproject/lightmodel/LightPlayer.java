@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.lightmodel;
 
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
 import java.rmi.RemoteException;
@@ -10,12 +12,21 @@ public class LightPlayer {
     private int rank;
     private String playerName;
     private boolean landed = false;
+    private PlayersColor color;
 
+
+    public LightPlayer(String playerName, PlayersColor color) {
+        this.playerName = playerName;
+        this.color = color;
+    }
+    public LightPlayer(Player player){
+        this.playerName = player.getPlayerName();
+        this.color = player.getPlayerColor();
+    }
     @Override
     public String toString() {
         return playerName+" position:"+position+" rank:"+rank;
     }
-
 
     public String getPlayerName() {
         return playerName;

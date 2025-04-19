@@ -7,7 +7,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 
 import java.util.*;
 
-public class LightShipBoard {
+public class LightShipBoard implements ShipBoardInterface{
 
     //Variable that saves the reference to the ShipBoard present in the model along with all the game logic
     private ShipBoard shipBoard;
@@ -20,9 +20,13 @@ public class LightShipBoard {
     private ArrayList<Coordinates> cargoHoldCoordinates;
 
 
-    public LightShipBoard(ShipBoard shipBoard,LightPlayer player) {
-        this.player = player;
+    public LightShipBoard(ShipBoard shipBoard) {
+        this. player = new LightPlayer(shipBoard.getPlayer());
         this.shipBoard = shipBoard;
+    }
+
+    public LightShipBoard(LightPlayer player) {
+        this.player = player;
     }
 
     //the Client will intialize which level he wants to play. Then he's going to comunicate it to ShipBoard in the
