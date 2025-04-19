@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
-
+        ww()
 public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     //private final VirtualController server;
     private final ClientController clientController;
