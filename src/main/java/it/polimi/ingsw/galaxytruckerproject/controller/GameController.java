@@ -676,6 +676,10 @@ public class GameController implements Observer {
         game.getDrawnCard().planetChoice(playerName, planet);
     }
 
+    public void playerRemovesCrew (String playerName, ArrayList<Coordinates> toRemoveFrom) {
+        game.getDrawnCard().removeCrew(playerName, toRemoveFrom);
+    }
+
 
     //PlayerPoint calculation
     public synchronized void concludeGame() {
