@@ -554,6 +554,14 @@ public class ClientController {
         return me.getShipBoard();
     }
 
+    public Card getDisplayedCard() {
+        return displayedCard;
+    }
+
+    public void setDisplayedCard(Card displayedCard) {
+        this.displayedCard = displayedCard;
+    }
+
     //deve copiare e incollare quelle tiles nelle loro coordinate per il player corrispondente
     //verrà usato in caso di batterie usate, goods o crewmate dispersi
     public void modifyTiles(String playerName,ArrayList<Tile> tiles){
@@ -573,7 +581,19 @@ public class ClientController {
     public void removeBookedTile(String playerName, Tile tile){
 
     }
+    //aggiorna il valore totale dei credit del player(no display)
+    public void gainCredit(String playerName, int totalCredits){
 
+    }
+    //aggiorna il model interno al client nel caso in cui sia avvenuta una riconnessione
+    public void updateModel(Map<String,LightShipBoard> lightShipBoardMap, LightFlightboard flightBoard,Card card, int hourglassTurns, Map<Integer,Tile> newTurnedTiles, ArrayList<Integer> available) {
+
+    }
+
+    //aggiorna quali deck sono non utilizzabili
+    public void decksNotAvailable (Map<String, Integer> lockedSmallDecks){
+
+    }
 
 
 

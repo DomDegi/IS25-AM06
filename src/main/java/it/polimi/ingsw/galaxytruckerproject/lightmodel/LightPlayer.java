@@ -11,6 +11,10 @@ public class LightPlayer {
     private boolean landed = false;
     private LightShipBoard shipboard;
 
+    public LightShipBoard getShipboard() {
+        return shipboard;
+    }
+
     @Override
     public String toString() {
         return playerName+" position:"+position+" rank:"+rank;

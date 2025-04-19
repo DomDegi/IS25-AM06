@@ -42,39 +42,21 @@ public class TUI implements DisplayableView{
 
     @Override
     public void setClientState(ClientState newState) {
-        switch(newState) {
-            case CHOOSE_UI -> System.out.println("you want to use TUI or GUI?");
-            case CHOOSE_CONNECTION_TYPE -> System.out.println("you want to use RMI connection or Socket connection?");
-            case LOBBY -> System.out.println("you're in the lobby");
-            case LOGIN -> System.out.println("choose your nickname");
-            case COLOR_CHOICE -> System.out.println("choose your color");
-            case ACTION -> System.out.println("you can accept or deny");
-            case COORD_REQUEST -> System.out.println("coordinates requested");
-            case MANAGE_GOODS -> System.out.println("going to manage goods of the planet ");
-            case PLANET_CHOICE -> System.out.println("choose one of the planets to land");
-            case S_END_DRAW_TILE_CARD -> System.out.println("now you can draw a tile ore a tile ");
-            case S_MANAGE_CARDS -> System.out.println("you're seeing the cards");
-            case S_MANAGE_DRAWN_TILE -> System.out.println("you can rotate, position, book or refuse this tile ");
-            case S_FINISHED -> System.out.println("you've finished the ship creation, wait to know if your ship is correct");
-            case WAIT_OTHER_PLAYER_ACTION -> System.out.println("another player turn");
-            case START_SHIP_CREATION -> System.out.println("turn the hourglass to start the ship creation");
+        System.out.println(newState.toString());
+    }
 
-        }
-    }
-    @Override
-    public void asksJoinOrCreate() {
-        System.out.println("You want to join a game or create a new game");
-    }
     @Override
     public void showJoinableGamesList(Map<String, GameController> joinableGames) {
         for(String nameGame : joinableGames.keySet()){
             System.out.println(joinableGames.get(nameGame).toString());
         }
     }
+
     @Override
     public void askPlayerCount() throws IOException {
         System.out.println("How many players will the game contain?");
     }
+
     @Override
     public void createGame() throws IOException {
 
@@ -154,13 +136,7 @@ public class TUI implements DisplayableView{
 
     @Override
     public void asksToInputCoordinates(CoordReqType coordReqType) {
-        switch (coordReqType){
-            case CHOOSE_BATTERY -> System.out.println("choose your battery to use");
-            case CHOOSE_TO_MAINTAIN -> System.out.println("choose a tile of the branch you want to keep");
-            case CHOOSE_TO_BREAK -> System.out.println("choose the tiles you want to destroy");
-            case CHOOSE_DOUBLE_CANNON -> System.out.println("choose the double cannons you want to use, and they're batteries");
-            case CHOOSE_DOUBLE_ENGINE -> System.out.println("choose the double engine you want to use, and they're batteries");
-        }
+        System.out.println(coordReqType.toString());
     }
 
     @Override
@@ -172,17 +148,10 @@ public class TUI implements DisplayableView{
     public void notifyYouCanDrawThisCardDeck() {
 
     }
-
     @Override
     public void notifyYourShipIsCorrect() {
-
+        System.out.println("Your ship is correct");
     }
-
-    @Override
-    public void asksToChooseStartingPosition() {
-
-    }
-
     @Override
     public void asksToMakeAChoice() {
         System.out.println("Please, make a choice");
@@ -245,6 +214,11 @@ public class TUI implements DisplayableView{
     @Override
     public void wrongLocalInput() {
         System.out.println("You entered a wrong input");
+    }
+
+    @Override
+    public void showCard(Card card) {
+        System.out.println(card.toString());
     }
 
 

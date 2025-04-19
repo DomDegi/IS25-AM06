@@ -126,12 +126,10 @@ public interface ViewInterface extends Remote, Serializable {
     /**
      * asks to set position on the flightboard
      */
-    void asksToSetPosition();
     void asksToMakeAChoice ();
     void asksToManageGoods(ArrayList<Goods> goods);
     void asksToRemoveGoods();
     void asksToRemoveCrew();
-    void asksWhichBranchToKeep(ArrayList<Set<Coordinates>> branch);
     /**
      * at the end of the game shows every players score on the view
      */
@@ -139,8 +137,8 @@ public interface ViewInterface extends Remote, Serializable {
     /**
      * asks the player to choose the mode of the game to be created
      */
-    void asksChosenMode ();
     void notifyDrawnCard(Card card) throws RemoteException; //tell the players which card has been drawn
     void notifyPlayerLandedOnPlanet(String playerName, int planet)  throws RemoteException;
     void wrongLocalInput();
+    void showCard(Card card);
 }

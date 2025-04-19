@@ -5,6 +5,8 @@ import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.client.GamePhases;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+
 public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     //private final VirtualController server;
     private final ClientController clientController;
@@ -33,42 +36,49 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     public void runCli() throws RemoteException {
-        Scanner scan=new Scanner(System.in);
+        Scanner scan = new Scanner(System.in);
         while (true) {
             System.out.print(">  ");
             int command = scan.nextInt();
             //da adattare al comando in ingresso
         }
     }
+
     @Override
     public void askNickname() throws IOException {
         view.askNickname();
     }
+
     @Override
     public void askColor() {
         view.askColor();
     }
+
     @Override
     public void showLoginResponse(boolean success) {
-       view.showLoginResponse(success);
-       if (success) {
-           clientController.setState(ClientState.LOBBY);
-       }
+        view.showLoginResponse(success);
+        if (success) {
+            clientController.setState(ClientState.LOBBY);
+        }
     }
+
     @Override
     public void setClientState(ClientState newState) {
         view.setClientState(newState);
         clientController.setState(newState);
     }
+
     @Override
     public void showJoinableGamesList(Map<String, GameController> joinableGames) {
         view.showJoinableGamesList(joinableGames);
     }
+
     //A CHE SERVE
     @Override
     public void askPlayerCount() throws IOException {
         view.askPlayerCount();
     }
+
     @Override
     public void createGame() throws IOException {
         view.createGame();
@@ -85,25 +95,16 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
-    public void showErrorMessage(String errorMessage) {
-        view.showErrorMessage(errorMessage);
-    }
+    public void showErrorMessage(String errorMessage) {view.showErrorMessage(errorMessage);}
 
     @Override
-    public void showInGamePlayers(ArrayList<Player> players) {
-        view.showInGamePlayers(players);
-    }
+    public void showInGamePlayers(ArrayList<Player> players) {view.showInGamePlayers(players);}
 
     @Override
-    public void asksPlayersInfo() {
-        view.asksPlayersInfo();
-    }
+    public void asksPlayersInfo() {view.asksPlayersInfo();}
 
     @Override
-    public void showShipsErrors() {
-        view.showShipsErrors();
-        //non dovrebbe esistere
-    }
+    public void showShipsErrors() {view.showShipsErrors();}//non dovrebbe esistere
 
     @Override
     public void showPlayersBoard(String player, ShipBoard shipBoard) {
@@ -118,17 +119,16 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
-    public void showTurnedTiles(Map<Integer,Tile> turnedTiles) {
+    public void showTurnedTiles(Map<Integer, Tile> turnedTiles) {
         view.showTurnedTiles(turnedTiles);
     }
 
-    public void notifyNewTurnedTile(Tile tile) throws RemoteException{
+    public void notifyNewTurnedTile(Tile tile) throws RemoteException {
         clientController.addTurnedTile(tile);
     }
 
-
     @Override
-    public void notifyRemoveTurnedTile(Tile tile) throws RemoteException{
+    public void notifyRemoveTurnedTile(Tile tile) throws RemoteException {
         clientController.removeTurnedTile(tile);
     }
 
@@ -144,24 +144,24 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
 
     @Override
     public void notifyRemovedBookedTile(String playerName, Tile tile) throws RemoteException {
-        clientController.removeBookedTile(playerName,tile);
+        clientController.removeBookedTile(playerName, tile);
     }
-
 
     @Override
     public void notifyAvailableCardDeck(Map<String, Integer> lockedSmallDecks) throws RemoteException {
-
+        clientController.decksNotAvailable(lockedSmallDecks);
     }
 
     @Override
     public void notifyDrawnCard(Card card) throws RemoteException {
         view.notifyDrawnCard(card);
         clientController.setState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+        clientController.setDisplayedCard(card);
     }
 
     @Override
     public void notifyPlayerLandedOnPlanet(String playerName, int planet) throws RemoteException {
-        if(playerName.equals(clientController.getName())){
+        if (playerName.equals(clientController.getName())) {
             clientController.setState(ClientState.MANAGE_GOODS);
         }
         view.notifyPlayerLandedOnPlanet(playerName, planet);
@@ -169,20 +169,30 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
 
     @Override
     public void wrongLocalInput() {
+        view.wrongLocalInput();
+    }
 
+    @Override
+    public void showCard(Card card) {
+        view.showCard(card);
     }
 
     @Override
     public void notifyModifiedTiles(String playerName, ArrayList<Tile> tiles) throws RemoteException {
         clientController.modifyTiles(playerName, tiles);
-        if(playerName.equals(clientController.getName())){
+        if (playerName.equals(clientController.getName())) {
             view.printShipboard(clientController.getLightShipBoard());
         }
     }
 
     @Override
+    public void notifyGainedCredits(String playerName, int totalCredits) throws RemoteException {
+        clientController.gainCredit(playerName, totalCredits);
+    }
+
+    @Override
     public void notifyPlayerMovement(String playerName, int playerPosition, int playerRanking) throws RemoteException {
-        clientController.updateFlightboard(playerName,playerPosition,playerRanking);
+        clientController.updateFlightboard(playerName, playerPosition, playerRanking);
     }
 
     @Override
@@ -197,14 +207,15 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
 
     @Override
     public void showDiceRoll(int diceRoll) {
-
+        view.showDiceRoll(diceRoll);
     }
 
     @Override
-    public void showWrongInputMessage (){
+    public void showWrongInputMessage() {
         view.showWrongInputMessage();
         clientController.rollBackState();
     }
+
     @Override
     public void asksToRollTheDices() {
         view.asksToRollTheDices();
@@ -223,13 +234,17 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
-    public void  notifyBrokenTile(String playerName, ArrayList<Coordinates> coordinates){
-        clientController.brokenTiles(playerName,coordinates);
-        if(playerName.equals(clientController.getName())){
+    public void notifyBrokenTile(String playerName, ArrayList<Coordinates> coordinates) {
+        clientController.brokenTiles(playerName, coordinates);
+        if (playerName.equals(clientController.getName())) {
             view.printShipboard(clientController.getLightShipBoard());
         }
     }
 
+    @Override
+    public void notifyChangesWhileGone(Map<String, LightShipBoard> updatedShipBoards, LightFlightboard updatedFlightBoard, Card drawnCard, int hourglassTurns, Map<Integer, Tile> turnedTiles, ArrayList<Integer> notAvailable) throws RemoteException {
+        clientController.updateModel(updatedShipBoards, updatedFlightBoard, drawnCard, hourglassTurns, turnedTiles, notAvailable);
+    }
 
     @Override
     public void asksToTurnTheHourglass() {
@@ -237,46 +252,39 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
-    public void notifyYouCanDrawThisCardDeck() {
+    public void notifyYouCanDrawThisCardDeck() {view.showCard(clientController.getDisplayedCard());}
 
-    }
     @Override
     public void notifyYourShipIsCorrect() {
         view.notifyYourShipIsCorrect();
         clientController.setPhase(GamePhases.CARDS);
     }
-    @Override
-    public void asksToChooseStartingPosition() {
 
-    }
     @Override
     public void asksToMakeAChoice() {
         view.asksToMakeAChoice();
+        setClientState(ClientState.ACTION);
     }
+
     @Override
     public void asksToManageGoods(ArrayList<Goods> goods) {
         view.asksToManageGoods(goods);
+        setClientState(ClientState.MANAGE_GOODS);
     }
-    @Override
-    public void asksToRemoveGoods() {
-        view.asksToRemoveGoods();
-    }
-    @Override
-    public void asksToRemoveCrew() {
-        view.asksToRemoveCrew();
-    }
-    @Override
-    public void asksWhichBranchToKeep(ArrayList<Set<Coordinates>> branch) {
 
-    }
     @Override
     public void showScores(ArrayList<Player> players) {
         view.showScores(players);
     }
+
     @Override
-    public void asksChosenMode() {
-        view.asksChosenMode();
-    }
+    public void asksToRemoveGoods() {
+        view.asksToRemoveGoods();
 
+    }// aggiorna: deve chiamare il nuovo rimuovitore di goods dal coordinate request handler
 
+    @Override
+    public void asksToRemoveCrew() {
+        view.asksToRemoveCrew();
+    }// aggiorna: deve chiamare il nuovo rimuovitore di crew dal coordinate request handler
 }
