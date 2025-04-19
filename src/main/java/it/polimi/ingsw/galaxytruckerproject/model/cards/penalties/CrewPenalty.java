@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards.penalties;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
@@ -54,11 +55,9 @@ public class CrewPenalty extends Penalty {
 
     public boolean initializePenalty(ViewInterface view, Player player) {
         if (player.getTotalCrew() == 0) {
-            view.showGenericMessage("No crew found to remove!");
             return false;
         }
-        view.showGenericMessage("You have to remove " + numberOfLostCrew + " crew members!");
-        view.asksToRemoveCrew();
+        view.asksToInputCoordinates(CoordReqType.CHOOSE_CREW);
         return true;
     }
 

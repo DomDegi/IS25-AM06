@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.model;
 
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
+import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.Observer;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.CardDeck;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.TrialCardDeck;
@@ -17,7 +19,8 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.GameState.*;
 
-public class Game implements GameInterface {
+public class Game implements GameInterface{
+    private final ArrayList<Observer> observers = new ArrayList<>();
     private final GameMode mode;
     private GameState gameState;
     private int playerCount;
@@ -31,7 +34,7 @@ public class Game implements GameInterface {
     //instances a new game starting in the state START_GAME
     public Game(GameMode mode, int playerCount) {
         this.mode = mode;
-        this.gameState = START_GAME;
+        this.gameState = null;
         this.turnedTiles = new ConcurrentHashMap<>();
         this.flightBoard = new FlightBoard(mode);
         this.tileStack = new TileFactory().getStack(TileFactory.loadTilesFromJson("Tiles.json"));
@@ -45,6 +48,30 @@ public class Game implements GameInterface {
         }
         this.playerCount = playerCount;
         this.drawnCard = null;
+    }
+
+    //returns the current GameState
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(GameState newState) {
+        this.gameState = newState;
+        notifyObservers(newState);
+    }
+
+    public void notifyObservers(GameState newState) {
+        for (Observer observer : observers) {
+            observer.update(newState);
+        }
+    }
+
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
     }
 
     //set player count for the game
@@ -67,11 +94,14 @@ public class Game implements GameInterface {
         }
         Player player = new Player(playerName, color);
         flightBoard.addPlayerToGame(player);
+        if (this.getListOfAllPlayer().size() == playerCount) {
+            setGameState(START_GAME);
+        }
     }
 
     //changes game state to SHIPS_CREATION and notifies observers of it (GUI, TUI, Log)
-    public void startGame(){
-        this.gameState = SHIPS_CREATION;
+    public void startShipCreation(){
+        setGameState(SHIPS_CREATION);
     }
 
     //SHIPS_CREATION METHODS
@@ -121,28 +151,10 @@ public class Game implements GameInterface {
         return removedTile;
     }
 
-    public void printTurnedTiles() {
-        for (int i: turnedTiles.keySet()) {
-            System.out.printf("%s (%d), ", turnedTiles.get(i).toString(), i);
-            if (i % 5 == 0) {
-                System.out.println("\n");
-            }
-        }
-    }
-
     public Map<Integer, Tile> getTurnedTiles() {
         return turnedTiles;
     }
 
-    public void printBookedTiles(String playerName) {
-        Player player = identifyPlayerByName(playerName);
-        ArrayList<Tile> bookedTiles = player.getShipBoard().getBookedTiles();
-        int i = 0;
-        for (Tile bookedTile : bookedTiles) {
-            System.out.printf("%s (%d), ", bookedTile.toString(), i);
-        }
-        System.out.println("\n");
-    }
 
     public ArrayList<Card> getInGameCards(int bunchNumber) {
         return switch (bunchNumber) {
@@ -206,20 +218,20 @@ public class Game implements GameInterface {
 
 
     public void endShipCreation() {
-        this.gameState = VERIFY_SHIP_CORRECTNESS;
+        Collections.shuffle(inGameCards);
+        setGameState(VERIFY_SHIP_CORRECTNESS);
     }
 
     //VERIFY_SHIP_CORRECTNESS METHODS
     public void endShipVerification() {
-        this.gameState = DRAW_CARD;
+        setGameState(DRAW_CARD);
     }
 
     //DRAW_CARD METHODS
 
-    public void drawCard(Map<String, VirtualView> viewsMap) {
+    public void drawCard() {
         this.drawnCard = inGameCards.removeFirst();
-        drawnCard.initializeCard(this, viewsMap);
-        this.gameState = CARD_EVENT;
+        setGameState(CARD_EVENT);
     }
 
     public void endCardPhase() {
@@ -228,14 +240,9 @@ public class Game implements GameInterface {
 
     //CARD_EVENT METHODS
 
-    public void cardEvent(Message message) {
-        drawnCard.executeCard(message);
-    }
-
     public void endCardEvent() {
-        System.out.print("Card Finished\n");
         this.getFlightBoard().concludeMovement();
-        this.gameState = DRAW_CARD;
+        setGameState(DRAW_CARD);
     }
 
 
@@ -245,10 +252,6 @@ public class Game implements GameInterface {
     //This flag is needed from some game functions
     public GameMode getMode() {
         return mode;
-    }
-
-    public void setGameState(GameState gameState) {
-        this.gameState = gameState;
     }
 
     public int getPlayerCount() {
@@ -278,11 +281,6 @@ public class Game implements GameInterface {
         return getListOfInFlightPlayers().size();
     }
 
-    //returns the current GameState
-    public GameState getGameState() {
-        return gameState;
-    }
-
     //returns the player's name at playerIndex (0 to 3) as a string
     public String getPlayerName(int playerIndex) {
         return getListOfInFlightPlayers().get(playerIndex).getPlayerName();
@@ -296,9 +294,6 @@ public class Game implements GameInterface {
         return player.getShipBoard();
     }
 
-    public Player getFirstRankedPlayer () {
-        return getListOfInFlightPlayers().getFirst();
-    }
 
     public FlightBoard getFlightBoard() {
         return flightBoard;

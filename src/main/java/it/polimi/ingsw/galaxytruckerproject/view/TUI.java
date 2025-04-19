@@ -179,7 +179,7 @@ public class TUI implements DisplayableView{
     }
 
     @Override
-    public void asksToSetPosition() {
+    public void asksToChooseStartingPosition() {
 
     }
 

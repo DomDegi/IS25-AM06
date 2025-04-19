@@ -8,7 +8,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.UseEngineResponse;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
@@ -37,13 +36,6 @@ public class OpenSpace extends Card {
     }
 
     @Override
-    public void cannonChoice(String playerName, float doubleCannonPower, ArrayList<Coordinates> batteriesToUse) {}
-    @Override
-    public void manageGoods(String playerName, int clientCredits, ArrayList<CargoHold> updatedCargos) {}
-    @Override
-    public void choice(String playerName, boolean decision) {}
-
-    @Override
     public void engineChoice(String playerName, int numDoubleEngines, ArrayList<Coordinates> batteriesToUse) {
         if (!playerName.equals(currentPlayer.getPlayerName())) {
             viewsMap.get(playerName).showWrongInputMessage();
@@ -66,11 +58,7 @@ public class OpenSpace extends Card {
             return;
         }
         game.getFlightBoard().moveForward(currentPlayer, engineStrength);
-        for (VirtualView view: viewsMap.values()) {
-            try {
-                view.notifyPlayerMovement(currentPlayer.getPlayerName(), currentPlayer.getPlayerPosition(), currentPlayer.getPlayerRanking());
-            } catch (Exception ignored) {}
-        }
+        notifyMovement(currentPlayer);
         nextPlayer();
     }
 

@@ -210,6 +210,7 @@ public class EquipCabin extends Cabin {
     }
 
     //METHODS FOR TESTING
+    @Override
     public AlienOptions getAlienability() {
         return alienability;
     }

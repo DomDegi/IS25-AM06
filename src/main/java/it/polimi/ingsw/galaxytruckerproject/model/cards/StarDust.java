@@ -6,11 +6,8 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.GenericMessage;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -29,15 +26,6 @@ public class StarDust extends Card {
         executeCard();
     }
 
-    @Override
-    public void cannonChoice(String playerName, float doubleCannonPower, ArrayList<Coordinates> batteriesToUse) {}
-    @Override
-    public void engineChoice(String playerName, int numDoubleEngine, ArrayList<Coordinates> batteriesToUse) {}
-    @Override
-    public void manageGoods(String playerName, int clientCredits, ArrayList<CargoHold> updatedCargos) {}
-    @Override
-    public void choice(String playerName, boolean decision) {}
-
     //makes so that the player loses as many days as their exposedConnectors
     public void executeCard() {
         ArrayList<Player> players = game.getListOfInFlightPlayers();
@@ -49,15 +37,7 @@ public class StarDust extends Card {
             int playerExposedConnectors = players.get(i).getShipBoard().countExposedConnectors();
 
             if (playerExposedConnectors > 0) {
-                game.getFlightBoard().moveBackward(currentPlayer, playerExposedConnectors);
-                for (VirtualView view : viewsMap.values()) {
-                    try {
-                        view.notifyPlayerMovement(currentPlayer.getPlayerName(), currentPlayer.getPlayerPosition(), currentPlayer.getPlayerRanking());
-                    } catch (Exception ignored) {}
-                }
-            }
-            else {
-                broadcastMessage(players.get(i).getPlayerName() + " has no exposed connectors. StarDust doesn't affect them\n");
+                notifyMovement(currentPlayer);
             }
         }
         game.endCardEvent();

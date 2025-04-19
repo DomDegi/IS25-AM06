@@ -2,9 +2,10 @@ package it.polimi.ingsw.galaxytruckerproject.controller.interfaces;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
 import java.util.ArrayList;
 
@@ -58,10 +59,10 @@ public interface ControllerInterface {
      * this method is used by the player to choose a color after entering a game
      * Its view is updated with the available colors.
      * if the chosenColor is not available or wrong, player is notified
-     * @param chosenColor string of the color player has chosen between RED, YELLOW, GREEN, BLUE
+     * @param color enumeration of the chosen color by the player
      * @throws Exception
      */
-    void chooseColor (String chosenColor) throws Exception;
+    void chooseColor (PlayersColor color) throws Exception;
 
     void turnHourglass () throws Exception;
 
@@ -70,6 +71,14 @@ public interface ControllerInterface {
     void drawTileFromTurned (int index) throws Exception;
 
     void refuseTile() throws Exception;
+
+    void lookGameCards(int index) throws Exception;
+
+    void stopLookingAtCards() throws Exception;
+
+    void setTile(Tile tile) throws Exception;
+
+    void bookTile() throws Exception;
 
     void shipErrorManagement(ArrayList<Coordinates> toRemove) throws Exception;
 
@@ -92,4 +101,15 @@ public interface ControllerInterface {
     void manageGoods(int clientCreditsToVerify, ArrayList<CargoHold> cargosToUpdate) throws Exception;
 
     void makeAChoice(boolean choice) throws Exception;
+
+    void choosePlanet(int planet) throws  Exception;
+
+    void pickCrewMembers(ArrayList<Tile> cabins);
+
+    /**
+     * this method sets the player on the flightBoard on LEVEL2 flight mode
+     * @param position the position on the flightBoard (from 1 to max playerCount)
+     * @throws Exception
+     */
+    void setPosition(int position) throws Exception;
 }

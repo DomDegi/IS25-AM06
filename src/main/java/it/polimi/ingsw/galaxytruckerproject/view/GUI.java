@@ -220,7 +220,6 @@ public class GUI implements ViewInterface {
 
     @Override
     public void showScores() {
-
     }
 
     @Override

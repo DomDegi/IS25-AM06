@@ -246,7 +246,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
         clientController.setPhase(GamePhases.CARDS);
     }
     @Override
-    public void asksToSetPosition() {
+    public void asksToChooseStartingPosition() {
 
     }
     @Override
