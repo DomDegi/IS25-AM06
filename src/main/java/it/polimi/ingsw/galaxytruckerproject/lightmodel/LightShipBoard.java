@@ -25,6 +25,10 @@ public class LightShipBoard {
         this.shipBoard = shipBoard;
     }
 
+    public LightShipBoard(LightPlayer player) {
+        this.player = player;
+    }
+
     //the Client will intialize which level he wants to play. Then he's going to comunicate it to ShipBoard in the
     //Server, which is also going to call the same method
     public void initializeTestFlight() {

@@ -6,6 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
@@ -64,59 +65,54 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).chooseColor(color);
     }
 
-    public void setFlightBoard(String playerName, int chosen) throws RemoteException {
+    /*public void setFlightBoard(String playerName, int chosen) throws RemoteException {
         clients.get(playerName).setFlightBoard(chosen);
-    }
+    }*/
 
     public void sendCoordinates(String playerName, ArrayList<Coordinates> coordinates) throws RemoteException{
-        Message message = new SendCoordinatesResponse(playerName, coordinates);
-        clients.get(playerName).playerChoiceThroughMessage(message);
+
     }
 
-    public void sendDoubleCannonUsed( String playerName ,float Strength, ArrayList<Coordinates> coordinates) throws RemoteException {
-        Message message = new UseCannonResponse(playerName, Strength, coordinates);
-        clients.get(playerName).playerChoiceThroughMessage(message);
+    public void sendDoubleCannonUsed( String playerName ,float doublePower, ArrayList<Coordinates> batteries) throws Exception {
+        clients.get(playerName).useCannons(doublePower, batteries);
     }
 
-    public void sendNumDoubleEngineUsed(String playerName , int NumEngine, ArrayList<Coordinates> coordinates) throws RemoteException{
-        Message message = new UseEngineResponse(playerName, NumEngine, coordinates);
-        clients.get(playerName).playerChoiceThroughMessage(message);
+    public void sendNumDoubleEngineUsed(String playerName , int numEngine, ArrayList<Coordinates> batteries) throws Exception {
+        clients.get(playerName).useEngines(numEngine, batteries);
 
     }
 
     public void sendYes( String playerName) throws RemoteException{
-        Message message = new AcceptMessage(playerName);
-        clients.get(playerName).playerChoiceThroughMessage(message);
+        clients.get(playerName).makeAChoice(true);
     }
 
     public void sendNo(String playerName) throws RemoteException{
-        Message message = new RefuseMessage(playerName);
-        clients.get(playerName).playerChoiceThroughMessage(message);
+        clients.get(playerName).makeAChoice(false);
     }
 
     public void notifySetTile(String playerName, Tile tile) throws RemoteException {
         clients.get(playerName).setTile(tile);
     }
 
-    public void sendEndShipBoardCreation(String playerName) throws RemoteException {
+    /*public void sendEndShipBoardCreation(String playerName) throws RemoteException {
         AcceptMessage message = new AcceptMessage(playerName);
         clients.get(playerName).playerChoiceThroughMessage(message);
-    }
+    }*/
 
     public void notifyTileBooking(String playerName) throws RemoteException {
-        BookTileRequest message = new BookTileRequest(playerName);
-        clients.get(playerName).playerChoiceThroughMessage(message);
+        clients.get(playerName).bookTile();
     }
 
     public void notifyRefusedTile(String playerName) throws RemoteException {
         clients.get(playerName).refuseTile();
     }
 
-    //è inutile(?)
+    //è inutile(sì)
+    /*
     public void drawTileRequest(String playerName) throws RemoteException {
         DrawTileFromStackRequest message = new DrawTileFromStackRequest(playerName);
         clients.get(playerName).playerChoiceThroughMessage(message);
-    }
+    }*/
 
     //DONE
     public void reqDrawTileFromStack(String playerName) throws RemoteException {
@@ -139,15 +135,9 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
     }
 
     public void notifyEarlyLanding(String playerName) throws RemoteException {
-        EarlyLandingRequest message = new EarlyLandingRequest(playerName);
-        clients.get(playerName).playerChoiceThroughMessage(message);
-    }
-
-    public void notifyNewGoodsArrangement(String playerName,int clientGoodsValue, ArrayList<CargoHold> modifiedCargoHold) throws RemoteException{
-        Message message = new ManageGoodsResponse(playerName,clientGoodsValue, modifiedCargoHold);
-        clients.get(playerName).playerChoiceThroughMessage(message);
 
     }
+
 
     //DONE
     public void lookCardsRequest(String playerName, int deckToLookAt) throws RemoteException {
@@ -161,7 +151,7 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
 
     //DONE
     public void notifyCompleted(String playerName) throws RemoteException {
-        clients.get(playerName).completed();
+        clients.get(playerName).completedShip();
     }
 
     //DONE
@@ -174,12 +164,9 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).choosePlanet(planet);
     }
 
-    public void notifyNewCrewArrangement(String playerName, int creditsToVerify, ArrayList<CargoHold> cargosToUpdate) throws RemoteException {
+    public void newGoodsArrangement(String playerName, int creditsToVerify, ArrayList<CargoHold> cargosToUpdate) throws Exception {
         clients.get(playerName).manageGoods(creditsToVerify, cargosToUpdate);
     }
-
-
-
 
 
 

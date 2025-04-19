@@ -31,8 +31,8 @@ public interface VirtualController extends Remote, Serializable {
 
 
     void sendCoordinates(String playerName,ArrayList<Coordinates> coordinates) throws RemoteException;
-    void sendDoubleCannonUsed(String playerName , float Strength, ArrayList<Coordinates> coordinates) throws RemoteException;
-    void sendNumDoubleEngineUsed(String playerName , int NumEngine, ArrayList<Coordinates> coordinates) throws RemoteException;
+    void sendDoubleCannonUsed(String playerName , float Strength, ArrayList<Coordinates> coordinates) throws Exception;
+    void sendNumDoubleEngineUsed(String playerName , int NumEngine, ArrayList<Coordinates> coordinates) throws Exception;
     void notifySetTile( String playerName, Coordinates coordinates, Tile tile) throws RemoteException;
     void sendYes( String playerName) throws RemoteException;
     void sendNo( String playerName) throws RemoteException;
@@ -50,7 +50,7 @@ public interface VirtualController extends Remote, Serializable {
      */
     void notifyEarlyLanding(String playerName) throws RemoteException;
 
-    void notifyNewGoodsArrangement(String playerName,int clientGoodsValue, ArrayList<CargoHold> modifiedCargoHold) throws RemoteException;
+    void notifyNewGoodsArrangement(String playerName,int clientGoodsValue, ArrayList<CargoHold> modifiedCargoHold) throws Exception;
     //pescaggio carta durante shipboard
     //notifica fine lettura carte
     //scelta pianeta
