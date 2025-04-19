@@ -44,16 +44,6 @@ public abstract class Card {
 
     public abstract void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap);
 
-    public void sendMessageToPlayer (ViewInterface playersView, String message) {
-        playersView.showGenericMessage(message);
-    }
-
-    public void broadcastMessage (String message) {
-        for (ViewInterface view : viewsMap.values()) {
-            view.showGenericMessage(message);
-        }
-    }
-
     public void notifyModifiedTiles (String playerName, ArrayList<Tile> tiles) {
         for (VirtualView view : viewsMap.values()) {
             try {
