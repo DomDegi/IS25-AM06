@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.controller;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.ControllerInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
@@ -194,5 +195,15 @@ public class Controller implements ControllerInterface {
     @Override
     public void removeCrew (ArrayList<Coordinates> toRemoveFrom) {
         gameController.playerRemovesCrew(nickname, toRemoveFrom);
+    }
+
+    @Override
+    public void removeGoods(ArrayList<Coordinates> fromHere) throws Exception {
+        gameController.playerRemovesGoods(nickname, fromHere);
+    }
+
+    @Override
+    public void useBatteries(ArrayList<Coordinates> batteries) throws Exception {
+        gameController.playerUsesBatteries(nickname, batteries);
     }
 }

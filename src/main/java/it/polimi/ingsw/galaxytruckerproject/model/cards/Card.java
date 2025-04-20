@@ -81,6 +81,8 @@ public abstract class Card {
 
     public void removeGoods(String playerName, ArrayList<Coordinates> goodsToRemove){}
 
+    public void useBatteries(String playerName, ArrayList<Coordinates> batteries){}
+
     //Getter methods needed for view
     public int getLevel() {
         return level;

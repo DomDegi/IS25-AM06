@@ -101,7 +101,7 @@ public class GoodsPenalty extends Penalty {
         ArrayList<Tile> updatedTiles = new ArrayList<>();
         Coordinates currentTile;
         ArrayList<Coordinates> batteryComponents = disconnectedPlayer.getShipBoard().getBatteryCoordinates();
-        for (int i = 0; i < batteryComponents.size(); i++) {
+        for (int i = 0; i < number; i++) {
             currentTile = batteryComponents.getFirst();
             disconnectedPlayer.getShipBoard().chooseBatteryUse(currentTile);
             if (!updatedTiles.contains(disconnectedPlayer.getShipBoard().getTile(currentTile))) {

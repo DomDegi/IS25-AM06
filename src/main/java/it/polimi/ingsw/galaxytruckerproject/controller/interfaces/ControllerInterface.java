@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.controller.interfaces;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
@@ -107,6 +108,10 @@ public interface ControllerInterface {
     void pickCrewMembers(ArrayList<Tile> cabins) throws Exception;
 
     void removeCrew(ArrayList<Coordinates> fromHere) throws Exception;
+
+    void removeGoods(ArrayList<Coordinates> fromHere) throws Exception;
+
+    void useBatteries(ArrayList<Coordinates> batteries) throws Exception;
 
     /**
      * this method sets the player on the flightBoard on LEVEL2 flight mode
