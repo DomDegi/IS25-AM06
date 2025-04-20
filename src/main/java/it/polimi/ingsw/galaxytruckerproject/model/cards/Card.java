@@ -3,9 +3,11 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
@@ -42,10 +44,6 @@ public abstract class Card {
 
     public abstract void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap);
 
-    public int getLevel() {
-        return level;
-    }
-
     public void sendMessageToPlayer (ViewInterface playersView, String message) {
         playersView.showGenericMessage(message);
     }
@@ -56,13 +54,50 @@ public abstract class Card {
         }
     }
 
-    public abstract void cannonChoice(String playerName, float doubleCannonPower, ArrayList<Coordinates> batteriesToUse);
+    public void notifyModifiedTiles (String playerName, ArrayList<Tile> tiles) {
+        for (VirtualView view : viewsMap.values()) {
+            try {
+                view.notifyModifiedTiles(playerName, tiles);
+            } catch (Exception ignored) {}
+        }
+    }
 
-    public abstract void engineChoice(String playerName, int numDoubleEngine, ArrayList<Coordinates> batteriesToUse);
+    public void notifyMovement (Player player) {
+        for (VirtualView view : viewsMap.values()) {
+            try {
+                view.notifyPlayerMovement(player.getPlayerName(), player.getPlayerPosition(), player.getPlayerRanking());
+            } catch (Exception ignored) {}
+        }
+    }
 
-    public abstract void manageGoods(String playerName, int clientCredits,  ArrayList<CargoHold> updatedCargos);
+    public void notifyGainedCredits (String playerName, int credits) {
+        for (VirtualView view : viewsMap.values()) {
+            try {
+                view.notifyGainedCredits(playerName, credits);
+            } catch (Exception ignored) {}
+        }
+    }
 
-    public abstract void choice(String playerName, boolean decision);
+    public void cannonChoice(String playerName, float doubleCannonPower, ArrayList<Coordinates> batteriesToUse){}
+
+    public void engineChoice(String playerName, int numDoubleEngine, ArrayList<Coordinates> batteriesToUse){}
+
+    public void manageGoods(String playerName, int clientCredits,  ArrayList<CargoHold> updatedCargos){}
+
+    public void choice(String playerName, boolean decision){}
+
+    public void planetChoice(String playerName, int planet){}
+
+    public void removeCrew(String playerName, ArrayList<Coordinates> crewToRemove){}
+
+    //Getter methods needed for view
+    public int getLevel() {
+        return level;
+    }
+    public int getRequiredDays() { return requiredDays; }
+    public int getGainedCredits() { return 0; }
+    public int getCrewNumber(){return 0;}
+    public ArrayList<Goods> getGoodsList(String playerName){return null;}
 
 
     @Override

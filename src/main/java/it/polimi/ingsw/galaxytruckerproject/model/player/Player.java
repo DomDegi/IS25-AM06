@@ -238,22 +238,51 @@ public class Player {
     }
 
     //CREW METHODS
-    public boolean removeCrew(ArrayList<Coordinates> coordinates) {
+    public ArrayList<Tile> removeCrew(ArrayList<Coordinates> coordinates) {
         for (Coordinates coord: coordinates) {
             if (!playerShip.getCabinsCoordinates().contains(coord)) {
-                return false;
+                return null;
             }
         }
+        ArrayList<Tile> updated = new ArrayList<>();
         for (Coordinates coord: coordinates) {
             playerShip.chooseCrewToRemove(coord);
+            updated.add(playerShip.getTile(coord));
         }
-        return true;
+        return updated;
     }
 
     public void printCurrentInfoCabins() {
         for (Coordinates Coordinates : playerShip.getCabinsCoordinates()) {
             System.out.println(playerShip.getTilesTable()[Coordinates.getX()][ Coordinates.getY()].get() + "\n");
         }
+    }
+
+    public boolean verifyAndSetupCrew(ArrayList<Tile>  cabins) {
+        for (Tile cabin: cabins) {
+            if (cabin.getCrewType().equals(CrewType.PURPLE) &&
+                    !(cabin.getAlienability().equals(AlienOptions.PURPLE) || cabin.getAlienability().equals(AlienOptions.BOTH)))
+                return false;
+            if (cabin.getCrewType().equals(CrewType.BROWN) &&
+                    !(cabin.getAlienability().equals(AlienOptions.BROWN) || cabin.getAlienability().equals(AlienOptions.BOTH)))
+                return false;
+            if (!cabin.getAlienability().equals(playerShip.getTile(cabin.getCoordinates()).getAlienability()))
+                return false;
+        }
+        for (Tile cabin: cabins) {
+            playerShip.updateTile(cabin.getCoordinates(), cabin);
+        }
+        return true;
+    }
+
+    public ArrayList<Tile> setAllCrewToHuman () {
+        ArrayList<Coordinates> cabins = playerShip.getCabinsCoordinates();
+        ArrayList<Tile> updatedTiles = new ArrayList<>();
+        for (Coordinates coord: cabins) {
+            playerShip.getTile(coord).setCrewType(CrewType.HUMAN);
+            updatedTiles.add(playerShip.getTile(coord));
+        }
+        return updatedTiles;
     }
 
     //IT ADDS CREDIT
