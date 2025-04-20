@@ -449,8 +449,8 @@ public class LightShipBoard implements ShipBoardInterface{
 
 
     public Set<Coordinates> connectedSet(Coordinates start, Set<Coordinates> set) {
-        int x = start.x;
-        int y = start.y;
+        int x = start.getX();
+        int y = start.getY();
         set.add(new Coordinates(x, y));
         //south
         if (x<4 && tilesTable[x][y].get().south.getConnectorsType() != Connectors.SMOOTH && tilesTable[x + 1][y].isPresent() && tilesTable[x + 1][y].get().fillable() && !set.contains(tilesTable[x + 1][y].get().getCoordinates())) {
@@ -492,7 +492,17 @@ public class LightShipBoard implements ShipBoardInterface{
         return true;
     }
 
+    public ArrayList<Coordinates> getBatteryCoordinates() {
+        return batteryCoordinates;
+    }
 
+    public ArrayList<Coordinates> getCargoHoldCoordinates() {
+        return cargoHoldCoordinates;
+    }
+
+    public ArrayList<Coordinates> getCabinsCoordinates() {
+        return crewCoordinates;
+    }
 
 
 

@@ -10,10 +10,13 @@ public interface ShipBoardInterface {
     public void initializeLevel2();
 
     public Tile getTile(Coordinates coordinates);
+    public ArrayList<Coordinates> getCargoHoldCoordinates();
+
+    public ArrayList<Coordinates> getBatteryCoordinates();
 
     public Tile getTile(int x, int y);
 
-
+    public Optional<Tile>[][] getTilesTable();
 
     //public void setHumanCrew(int humanCrew);
 
