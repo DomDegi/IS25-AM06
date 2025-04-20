@@ -2,11 +2,12 @@ package it.polimi.ingsw.galaxytruckerproject.lightmodel;
 
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.PlayerInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
 import java.rmi.RemoteException;
 
-public class LightPlayer {
+public class LightPlayer implements PlayerInterface {
     private int position; //position on the board
     private LightShipBoard shipboard;
     private int rank;
@@ -65,4 +66,8 @@ public class LightPlayer {
        }
     }
 
+    @Override
+    public PlayersColor getPlayerColor() {
+        return color;
+    }
 }

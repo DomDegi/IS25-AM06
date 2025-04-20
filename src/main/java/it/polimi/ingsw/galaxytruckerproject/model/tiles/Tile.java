@@ -49,15 +49,19 @@ public abstract class Tile {
 
     //GETTER METHODS LINKS
     public Link getNorth(){
+
         return north;
     }
     public Link getEast(){
+
         return east;
     }
     public Link getSouth(){
+
         return south;
     }
     public Link getWest(){
+
         return west;
     }
 

@@ -74,7 +74,7 @@ public class ShipBoard implements ShipBoardInterface{
         return penalty;
     }
 
-    public Player getPlayer() {
+    public PLAYER getPlayer() {
         return player;
     }
 

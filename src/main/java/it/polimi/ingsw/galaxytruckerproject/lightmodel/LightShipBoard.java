@@ -33,8 +33,9 @@ public class LightShipBoard implements ShipBoardInterface{
     private int numHumanCrew;
 
     public LightShipBoard(ShipBoard shipBoard) {
-        this. player = new LightPlayer(shipBoard.getPlayer());
         this.shipBoard = shipBoard;
+        this. player = new LightPlayer(this.shipBoard.getPlayer());
+
     }
 
     public LightShipBoard(LightPlayer player) {
@@ -89,6 +90,10 @@ public class LightShipBoard implements ShipBoardInterface{
         }
         Tile tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL), 0);
         positionTile(Optional.of(tile), new Coordinates(2, 3));
+    }
+
+    public LightPlayer getPlayer() {
+        return player;
     }
 
     public void addBreakSingleCannonPower(float num) {
@@ -162,6 +167,9 @@ public class LightShipBoard implements ShipBoardInterface{
         this.cargoHoldCoordinates = cargoHoldCoordinates;
     }
 
+    public ArrayList<Coverage> getCoverageShields(){
+        return shields;
+    }
     //New ChooseCrew METHOD
     public boolean chooseCrewToRemove(Coordinates coordinates) {
         return tilesTable[coordinates.getX()][coordinates.getY()].get().removeCrew();
@@ -442,55 +450,33 @@ public class LightShipBoard implements ShipBoardInterface{
     //RETURN THE SET OF TILES LINKED WITH THE STARTING ONE
     //i assume that the correctness of the links has already been verified
     //in the case of construction errors this method will be played for each error
-    public Set<Coordinates> brokenGraph(Coordinates start) {
-        Set<Coordinates> set = new HashSet<Coordinates>();
-        return connectedSet(start, set);
-    }
 
 
-    public Set<Coordinates> connectedSet(Coordinates start, Set<Coordinates> set) {
-        int x = start.getX();
-        int y = start.getY();
-        set.add(new Coordinates(x, y));
-        //south
-        if (x<4 && tilesTable[x][y].get().south.getConnectorsType() != Connectors.SMOOTH && tilesTable[x + 1][y].isPresent() && tilesTable[x + 1][y].get().fillable() && !set.contains(tilesTable[x + 1][y].get().getCoordinates())) {
-            connectedSet(new Coordinates(x + 1, y), set);
-        }
-        //east
-        if (y<6 && tilesTable[x][y].get().east.getConnectorsType() != Connectors.SMOOTH && tilesTable[x][y + 1].isPresent() && tilesTable[x][y + 1].get().fillable() && !set.contains(tilesTable[x][y + 1].get().getCoordinates())) {
-            connectedSet(new Coordinates(x, y + 1), set);
-        }
-        //north
-        if (x>0 && tilesTable[x][y].get().north.getConnectorsType() != Connectors.SMOOTH && tilesTable[x - 1][y].isPresent() && tilesTable[x - 1][y].get().fillable() && !set.contains(tilesTable[x - 1][y].get().getCoordinates())) {
-            connectedSet(new Coordinates(x - 1, y), set);
-        }
-        //west
-        if (y>0 && tilesTable[x][y].get().west.getConnectorsType() != Connectors.SMOOTH && tilesTable[x][y - 1].isPresent() && tilesTable[x][y - 1].get().fillable() && !set.contains(tilesTable[x][y - 1].get().getCoordinates())) {
-            connectedSet(new Coordinates(x, y - 1), set);
-        }
-        return set;
-    }
 
-    public boolean verifyCorrectness() {
-        Set<Coordinates> set = new HashSet<Coordinates>();
-        set=this.connectedSet( new Coordinates(2,3), set);
-        // da controllare che tutte le caselle non vuote siano nel set per la correttezza (no caso delle due navi separate)
-        for (int i = 0; i < 5; i++)
-            for (int j = 0; j < 7; j++) {
-                if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable() )
-                    if(!tilesTable[i][j].get().isCorrect() ||! set.contains(tilesTable[i][j].get().getCoordinates()) ) return false;
+    public ArrayList<Tile> epidemic(){
+        HashSet<Coordinates> InfectedCabin = new HashSet<>();
+        for(Coordinates coordinates : crewCoordinates){
+            for(Coordinates coordinates2 : crewCoordinates){
+                if ((coordinates.getX() == coordinates2.getX() && coordinates.getY() - 1 == coordinates2.getY() && !this.getTile(coordinates).getWest().getConnectorsType().equals(Connectors.SMOOTH))
+                        || (coordinates.getX() == coordinates2.getX() && coordinates.getY() + 1 == coordinates2.getY() && !this.getTile(coordinates).getEast().getConnectorsType().equals(Connectors.SMOOTH))
+                        || (coordinates.getX() - 1 == coordinates2.getX() && coordinates.getY() == coordinates2.getY() && !this.getTile(coordinates).getNorth().getConnectorsType().equals(Connectors.SMOOTH))
+                        || coordinates.getX() + 1 == coordinates2.getX() && coordinates.getY() == coordinates2.getY() && !this.getTile(coordinates).getSouth().getConnectorsType().equals(Connectors.SMOOTH)
+                ) {
+                    //(Math.abs(coordinates.getX() - coordinates2.getX())==1 ^ Math.abs(coordinates.getY() - coordinates2.getY())==1)&& !coordinates.equals(coordinates2)
+                    InfectedCabin.add(coordinates2);
+                }
             }
-        for (int i = 0; i < 5; i++)
-            for (int j = 0; j < 7; j++) {
-                if (tilesTable[i][j].isPresent())
-                    tilesTable[i][j].get().getStat();
-            }
-        int i=bookedTiles.size();
-        for(int j=0;j<i;j++) {
-            addPenalty();
         }
-        return true;
+        for(Coordinates coordinates : InfectedCabin){
+            tilesTable[coordinates.getX()][coordinates.getY()].get().removeCrew();
+        }
+        ArrayList<Tile> modifiedCabin = new ArrayList<>();
+        for (Coordinates coordinates: InfectedCabin) {
+            modifiedCabin.add(this.getTile(coordinates));
+        }
+        return modifiedCabin;
     }
+
 
     public ArrayList<Coordinates> getBatteryCoordinates() {
         return batteryCoordinates;
@@ -504,7 +490,9 @@ public class LightShipBoard implements ShipBoardInterface{
         return crewCoordinates;
     }
 
-
+    public Optional<Tile>[][] getTilesTable() {
+        return tilesTable;
+    }
 
     /*
     public void setTilesTable(Coordinates coordinates) {

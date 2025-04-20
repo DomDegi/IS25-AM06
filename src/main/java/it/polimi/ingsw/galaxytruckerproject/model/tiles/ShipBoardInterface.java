@@ -10,9 +10,16 @@ public interface ShipBoardInterface {
     public void initializeLevel2();
 
     public Tile getTile(Coordinates coordinates);
+
     public ArrayList<Coordinates> getCargoHoldCoordinates();
 
     public ArrayList<Coordinates> getBatteryCoordinates();
+
+    public ArrayList<Coordinates> getCabinsCoordinates();
+
+    public ArrayList<Coverage> getCoverageShields();
+
+    public PlayerInterface getPlayer();
 
     public Tile getTile(int x, int y);
 
@@ -84,7 +91,7 @@ public interface ShipBoardInterface {
 
     public boolean checkEarlyLanding();
 
-    public boolean verifyCorrectness();
+
 
     public boolean chooseCrewToRemove(Coordinates coordinates);
 
@@ -100,7 +107,7 @@ public interface ShipBoardInterface {
 
     public boolean isCargoEmpty();
 
-    public void checkBeforeAsking(int goodsToRemove);
+
 
     public ArrayList<Goods> getAllGoods();
 
