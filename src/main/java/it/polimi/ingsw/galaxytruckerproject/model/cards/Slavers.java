@@ -134,7 +134,7 @@ public class Slavers extends Enemies{
             }
             else {
                 won = -1;
-                penaltyIfLose.automaticPenalty(game, currentPlayer, playersView);
+                penaltyIfLose.automaticCrewPenalty(game, currentPlayer, playersView);
                 nextPlayer();
             }
         }

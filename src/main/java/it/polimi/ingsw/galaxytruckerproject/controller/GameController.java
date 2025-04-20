@@ -3,6 +3,8 @@ package it.polimi.ingsw.galaxytruckerproject.controller;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.Observer;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
@@ -42,7 +44,7 @@ public class GameController implements Observer {
         switch (newState) {
             case START_GAME -> startGame();
             case VERIFY_SHIP_CORRECTNESS ->  verifyShipCorrectness();
-            case DRAW_CARD -> updateEveryView(ClientState.DRAW_CARD);
+            case DRAW_CARD -> askFirstPlayerToDraw();
             case CARD_EVENT -> initializeDrawnCard();
             case CONCLUDE_GAME -> concludeGame();
         }
@@ -121,17 +123,24 @@ public class GameController implements Observer {
             activePlayers.put (playerName, reconnectingPlayer);
             reconnectingPlayer.playerReconnects();
             if (GameState.SHIPS_CREATION.equals(this.getGameState())) {
-                if (reconnectingPlayer.getDrawnTile() != null) {
-                    updatePlayerView(ClientState.S_MANAGE_DRAWN_TILE, reconnectingPlayer.getPlayerName());
-                }
-                else {
-                    updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, reconnectingPlayer.getPlayerName());
-                }
+                updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
             }
+            updateReconnectedPlayer(view);
         }
         else {
             view.showErrorMessage("player was never connected to this game");
         }
+    }
+
+    public void updateReconnectedPlayer(VirtualView view) {
+        Map<String, LightShipBoard> updatedShipBoards = new HashMap<>();
+        for (Player player: game.getListOfAllPlayer()) {
+            updatedShipBoards.put(player.getPlayerName(), new LightShipBoard(player.getShipBoard()));
+        }
+        try {
+            view.notifyChangesWhileGone(updatedShipBoards, new LightFlightboard(game.getFlightBoard()),
+                    game.getDrawnCard(), hourglassTurns, game.getTurnedTiles(), notAvailableCardDecks());
+        } catch(Exception ignored) {}
     }
 
     /**
@@ -158,6 +167,9 @@ public class GameController implements Observer {
     public VirtualView removePlayer (String playerName) {
         if (activePlayers.containsKey(playerName)) {
             Player removedPlayer = activePlayers.get(playerName);
+            if (removedPlayer.getDrawnTile() != null) {
+                removedPlayer.removeDrawnTile();
+            }
             disconnectedPlayers.put(playerName, removedPlayer);
             activePlayers.remove(playerName);
             removedPlayer.playerDisconnects();
@@ -197,13 +209,26 @@ public class GameController implements Observer {
      * Starts the game as soon as one of the players turns the hourglass if LEVEL2 game
      * if TRIAL starts the game without hourglass
      */
-    public synchronized void startGame() {
+    public void startGame() {
         game.startShipCreation();
         if (game.getMode() == TRIAL) {
             updateEveryView(ClientState.S_END_DRAW_TILE_CARD);
         }
         else {
             updateEveryView(ClientState.START_SHIP_CREATION);
+            notifyFlightBoardCards();
+        }
+    }
+
+    public void notifyFlightBoardCards() {
+        Map<Integer,ArrayList<Card>> flightBoardCards = new HashMap<>();
+        for (int i = 1; i <= 3; i++) {
+            flightBoardCards.put(i,game.getInGameCards(i));
+        }
+        for (VirtualView view: playersViewMap.values()) {
+            try {
+                view.notifyFlightBoardCards(flightBoardCards);
+            } catch (Exception ignored) {}
         }
     }
 
@@ -374,14 +399,14 @@ public class GameController implements Observer {
         if (playerStateIs(playerName, ClientState.S_END_DRAW_TILE_CARD)) {
             for (Integer integer: lockedSmallDecks.values()) {
                 if (integer == cardsToLookAt) {
-                    playersView.showErrorMessage("Error: deck is already been looked at by another player");
+                    playersView.showWrongInputMessage();
                     return;
                 }
             }
             lockedSmallDecks.put(playerName, cardsToLookAt);
             playersView.showInGameCards(game.getInGameCards(cardsToLookAt));
             updatePlayerView(ClientState.S_MANAGE_CARDS, playerName);
-            notifyAvailableCardDeck(lockedSmallDecks);
+            notifyNotAvailableCardDeck();
         }
         else {
             playersView.showErrorMessage("can't look at the event cards while you still have your drawn tile, " +
@@ -389,14 +414,18 @@ public class GameController implements Observer {
         }
     }
 
-    private void notifyAvailableCardDeck(ConcurrentHashMap<String, Integer> lockedSmallDecks) {
+    private void notifyNotAvailableCardDeck() {
         for (VirtualView view: playersViewMap.values()) {
             try {
-                view.notifyAvailableCardDeck(lockedSmallDecks);
+                view.notifyNotAvailableCardDeck(notAvailableCardDecks());
             }
             catch (Exception ignored) {
             }
         }
+    }
+
+    private ArrayList<Integer> notAvailableCardDecks() {
+        return new ArrayList<>(lockedSmallDecks.values());
     }
 
     public void stopLookingAtCards(ViewInterface playersView, String playerName) {
@@ -406,7 +435,7 @@ public class GameController implements Observer {
         }
         lockedSmallDecks.remove(playerName);
         updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
-        notifyAvailableCardDeck(lockedSmallDecks);
+        notifyNotAvailableCardDeck();
     }
 
     //set drawn tile on the player's shipboard
@@ -599,6 +628,10 @@ public class GameController implements Observer {
         }, 95000); //95 seconds
     }
 
+    public void askFirstPlayerToDraw() {
+        updatePlayerView(ClientState.DRAW_CARD,game.getListOfInFlightPlayers().getFirst().getPlayerName());
+    }
+
     public void initializeDrawnCard () {
         game.getDrawnCard().initializeCard(game, playersViewMap);
     }
@@ -674,6 +707,10 @@ public class GameController implements Observer {
 
     public void playerChoosesPlanet (String playerName, int planet) {
         game.getDrawnCard().planetChoice(playerName, planet);
+    }
+
+    public void playerRemovesCrew (String playerName, ArrayList<Coordinates> toRemoveFrom) {
+        game.getDrawnCard().removeCrew(playerName, toRemoveFrom);
     }
 
 

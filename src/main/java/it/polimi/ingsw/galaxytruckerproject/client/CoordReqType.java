@@ -6,5 +6,6 @@ public enum CoordReqType {
     CHOOSE_BATTERY ,
     CHOOSE_DOUBLE_CANNON,
     CHOOSE_DOUBLE_ENGINE,
-    CHOOSE_CREW
+    CHOOSE_CREW,
+    REMOVE_GOODS
 }
