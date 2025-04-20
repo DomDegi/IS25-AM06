@@ -10,6 +10,7 @@ public class LightPlayer {
     private String playerName;
     private boolean landed = false;
     private LightShipBoard shipboard;
+    private int credits;
 
     @Override
     public String toString() {
@@ -54,4 +55,10 @@ public class LightPlayer {
        }
     }
 
+    public void gainCredits(int credits) {
+        this.credits+=credits;
+    }
+    public int getCredits() {
+        return credits;
+    }
 }

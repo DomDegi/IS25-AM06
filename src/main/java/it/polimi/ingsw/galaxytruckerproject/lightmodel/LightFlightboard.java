@@ -14,11 +14,12 @@ public class LightFlightboard {
 
     }
 
-    public LightPlayer getIngamePlayer(String playerName) {
-        for (LightPlayer player : ingamePlayers) {
+    public LightPlayer getInGamePlayer(String playerName) {
+        for (LightPlayer player : inGamePlayers) {
             if (player.getPlayerName().equals(playerName)) {
                 return player;
             }
         }
+        return null;
     }
 }
