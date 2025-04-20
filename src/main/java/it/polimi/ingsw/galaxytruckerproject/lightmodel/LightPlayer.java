@@ -15,7 +15,6 @@ public class LightPlayer {
     private PlayersColor color;
     private int credits;
 
-
     public LightPlayer(String playerName, PlayersColor color) {
         this.playerName = playerName;
         this.color = color;
@@ -28,7 +27,6 @@ public class LightPlayer {
     public String toString() {
         return playerName+" position:"+position+" rank:"+rank;
     }
-
 
     public String getPlayerName() {
         return playerName;

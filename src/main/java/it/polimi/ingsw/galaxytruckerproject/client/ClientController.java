@@ -735,6 +735,12 @@ public class ClientController {
             return;
         player.gainCredits(credits);
     }
+    //aggiorna il valore totale dei credit del player(no display)
+    public void gainCredit(String playerName, int totalCredits){
+
+    }
+    //aggiorna il model interno al client nel caso in cui sia avvenuta una riconnessione
+    public void updateModel(Map<String,LightShipBoard> lightShipBoardMap, LightFlightboard flightBoard,Card card, int hourglassTurns, Map<Integer,Tile> newTurnedTiles, ArrayList<Integer> available) {
 
     public void updateModel(Map<String,LightShipBoard> lightShipBoardMap, LightFlightboard flightBoard,Card card, int hourglassTurns, Map<Integer,Tile> newTurnedTiles, ArrayList<Integer>notAvailableDecks) {
         this.flightBoard=flightBoard;
