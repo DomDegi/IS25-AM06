@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
@@ -83,6 +84,8 @@ public abstract class Card {
 
     public void useBatteries(String playerName, ArrayList<Coordinates> batteries){}
 
+    public void rollTheDices(String playerName) {}
+
     //Getter methods needed for view
     public int getLevel() {
         return level;
@@ -92,6 +95,7 @@ public abstract class Card {
     public int getCrewNumber(){return 0;}
     public ArrayList<Goods> getGoodsList(String playerName){return null;}
     public int getGoodsPenalty(){return 0;}
+    public ArrayList<Projectile> getListOfProjectiles() { return null;}
 
 
     @Override

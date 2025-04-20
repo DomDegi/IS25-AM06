@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards.penalties;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Defense;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
@@ -11,6 +12,7 @@ import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.GenericMessag
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.MessageType;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.SendCoordinatesResponse;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
@@ -92,18 +94,23 @@ public class ProjectilePenalty extends Penalty {
         return string.toString();
     }
 
+    //asks the player to roll the dices
     @Override
+    public boolean initializePenalty(VirtualView view, Player player) {
+        view.setClientState(ClientState.ACTION);
+        return true;
+    }
+
+
+
     //prints next cannon shot coming and sets the defense status for it (HIT, CHOOSESHIELD or PROTECTED)
-    public boolean initializePenalty(ViewInterface view, Player player){
-        view.showGenericMessage(listOfProjectiles.getFirst().toString() + "\n");
-        view.asksToRollTheDices();
+    public boolean hitMissOrShield(ViewInterface view, Player player){
         if (diceRoll != 0) {
             this.defenseStatus = listOfProjectiles.getFirst().throwProjectile(player, diceRoll, game);
-            view.showGenericMessage(defenseStatus.toString());
             if (defenseStatus == Defense.PROTECTED) {
                 view.showGenericMessage("Protected from projectile");
                 resetForNextProjectile();
-                return this.applyPenalty(game, player, view, new GenericMessage("w/e")) != 1;
+                return true;
             }
             else if (defenseStatus == Defense.CHOOSETOUSEBATTERY) {
                 if (player.getShipBoard().getNumBatteries() == 0) {
@@ -182,9 +189,10 @@ public class ProjectilePenalty extends Penalty {
             return 1;
     }
 
-    public void randomRoll () {
+    public void randomRollForOne (VirtualView view, Player player) {
         Random rand = new Random();
         this.diceRoll = 2 + rand.nextInt(11);
+        hitMissOrShield(view, player);
     }
 
         
@@ -197,7 +205,7 @@ public class ProjectilePenalty extends Penalty {
         this.listOfProjectiles.add(projectile);
     }
 
-    public void automaticPenalty (GameInterface game, Player player, ViewInterface view) {
+    public void automaticProjectilePenalty(GameInterface game, Player player, ViewInterface view) {
         ArrayList<Coordinates> startingCabinBranch = new ArrayList<>();
         startingCabinBranch.add(new Coordinates(2, 3));
         ArrayList<Coordinates> firstBranchCoordinates = new ArrayList<>();

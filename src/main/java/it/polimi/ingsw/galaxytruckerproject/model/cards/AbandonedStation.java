@@ -144,4 +144,15 @@ public class AbandonedStation extends Card {
             sb.append(good.toString()).append(" ");
         return sb.toString();
     }
+
+    @Override
+    public ArrayList<Goods> getGoodsList(String playerName) {
+        return possibleGoodsGain;
+    }
+
+    @Override
+    public int getCrewNumber() {
+        return crewNumberRequired;
+    }
+
 }

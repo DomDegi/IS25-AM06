@@ -141,7 +141,7 @@ public class Slavers extends Enemies{
     @Override
     public void choice(String playerName, boolean decision) {
         if (!playerName.equals(currentPlayer.getPlayerName()) || won != 1) {
-            viewsMap.get(playerName).setClientState(ClientState.ACTION);
+            viewsMap.get(playerName).showWrongInputMessage();
             return;
         }
         if (decision) {
@@ -170,5 +170,15 @@ public class Slavers extends Enemies{
         }
         else
             playersView.showWrongInputMessage();
+    }
+
+    @Override
+    public int getCrewNumber() {
+        return lostCrew;
+    }
+
+    @Override
+    public int getGainedCredits() {
+        return rewardCredits;
     }
 }

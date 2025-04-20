@@ -206,4 +206,9 @@ public class Controller implements ControllerInterface {
     public void useBatteries(ArrayList<Coordinates> batteries) throws Exception {
         gameController.playerUsesBatteries(nickname, batteries);
     }
+
+    @Override
+    public void rollTheDices() throws Exception {
+        gameController.playerRollsTheDices(nickname);
+    }
 }

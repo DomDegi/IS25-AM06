@@ -113,6 +113,8 @@ public interface ControllerInterface {
 
     void useBatteries(ArrayList<Coordinates> batteries) throws Exception;
 
+    void rollTheDices() throws Exception;
+
     /**
      * this method sets the player on the flightBoard on LEVEL2 flight mode
      * @param position the position on the flightBoard (from 1 to max playerCount)

@@ -721,6 +721,10 @@ public class GameController implements Observer {
         game.getDrawnCard().useBatteries(playerName, batteries);
     }
 
+    public void playerRollsTheDices(String playerName) {
+        game.getDrawnCard().rollTheDices(playerName);
+    }
+
 
     //PlayerPoint calculation
     public synchronized void concludeGame() {

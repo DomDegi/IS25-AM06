@@ -2,16 +2,15 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
+import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.ProjectilePenalty;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.MessageType;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.RefuseMessage;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.UseCannonResponse;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
-import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -20,7 +19,7 @@ public class Pirates extends Enemies {
     private final int rewardCredits;
     private int playerIndex;
     private Player currentPlayer = null;
-    private ViewInterface currentView = null;
+    private VirtualView currentView = null;
     private final ProjectilePenalty penaltyIfLose;
     private int won = 0;
 
@@ -64,58 +63,7 @@ public class Pirates extends Enemies {
         currentPlayer.printCurrentInfoCannons();
         currentPlayer.printCurrentInfoBatteries();
     }
-
-
-    //pay crew penalty
-    @Override
-    public void executeCard(Message message) {
-        String playerName = message.getNickname();
-        if (currentPlayer == null || !playerName.equalsIgnoreCase(currentPlayer.getPlayerName())) {
-            return;
-        }
-        if (won == 0) {
-            if (message.getMessageType().equals(MessageType.USE_CANNON_RESPONSE)) {
-                UseCannonResponse messageReceived = (UseCannonResponse) message;
-                float totalStrength = currentPlayer.useCannons(messageReceived.getStrength(), messageReceived.getCoordinates());
-                if (totalStrength != -1) {
-                    if (totalStrength > cannonStrength) {
-                        won = 1;
-                        broadcastMessage(playerName + "has beaten the pirates!");
-                        sendMessageToPlayer(currentView, "Input yes or no to decide if you want the reward");
-                        currentView.asksToMakeAChoice();
-                    }
-                    else if (totalStrength == cannonStrength) {
-                        nextPlayer();
-                    }
-                    else {
-                        won = -1;
-                        sendMessageToPlayer(currentView, "You've lost the pirates, prepare for the cannon shots");
-                        if (!penaltyIfLose.initializePenalty(currentView, currentPlayer)) {
-                            nextPlayer();
-                        }
-                    }
-                }
-            }
-        }
-        else if (won == 1){
-            if (message.getMessageType().equals(MessageType.REFUSE_MESSAGE)) {
-                game.endCardEvent();
-            }
-            else if (message.getMessageType().equals(MessageType.ACCEPT_MESSAGE)) {
-                game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
-                currentPlayer.gainCredit(rewardCredits);
-                game.endCardEvent();
-            }
-        }
-        else if (won == -1){
-            if (penaltyIfLose.applyPenalty(game, currentPlayer, currentView, message) == 1) {
-                nextPlayer();
-            }
-            else {
-                penaltyIfLose.initializePenalty(currentView, currentPlayer);
-            }
-        }
-    }
+    
 
     public void nextPlayer() {
         if (currentPlayer != null){
@@ -126,31 +74,30 @@ public class Pirates extends Enemies {
             game.endCardEvent();
             return;
         }
-        this.currentPlayer = game.getListOfInFlightPlayers().get(playerIndex);
+        currentPlayer = game.getListOfInFlightPlayers().get(playerIndex);
         String playerName = currentPlayer.getPlayerName();
         this.currentView = viewsMap.get(playerName);
         float singleCannonPower = currentPlayer.getShipBoard().getSingleCannonPower();
 
+        won = 0;
         if (currentPlayer.IsDisconnected()) {
             if (singleCannonPower > cannonStrength) {
                 won = 1;
-                executeCard(new RefuseMessage(playerName));
+                cannonChoice(playerName, 0, new ArrayList<>());
             }
             else if (singleCannonPower == cannonStrength) {
                 nextPlayer();
             }
             else {
                 won = -1;
-                penaltyIfLose.automaticPenalty(game, currentPlayer, currentView);
+                notifyModifiedTiles(currentPlayer.getPlayerName(), penaltyIfLose.automaticProjectilePenalty(game, currentPlayer, currentView));
                 nextPlayer();
             }
         }
         else {
             if (singleCannonPower > cannonStrength) {
                 won = 1;
-                sendMessageToPlayer(currentView, "You've beaten the pirates, input yes or no" +
-                        " to claim the rewards or not");
-                currentView.asksToMakeAChoice();
+                currentView.setClientState(ClientState.ACTION);
             }
             else if (currentPlayer.getShipBoard().getDoubleCannon().isEmpty() ||
                     currentPlayer.getShipBoard().getBatteryCoordinates().isEmpty()) {
@@ -159,18 +106,80 @@ public class Pirates extends Enemies {
                 }
                 else {
                     won = -1;
-                    sendMessageToPlayer(currentView,"You've lost to the pirates:\n");
-                    sendMessageToPlayer(currentView,"Prepare for the cannon shots\n");
-                    if (!penaltyIfLose.initializePenalty(currentView, currentPlayer)) {
-                        nextPlayer();
-                    }
+                    penaltyIfLose.initializePenalty(currentView, currentPlayer);
+                    currentView.asksToInputCoordinates(CoordReqType.CHOOSE_TO_MAINTAIN);
                 }
             }
             else {
-                sendMessageToPlayer(currentView, "You can't beat the pirates with only your single cannons, " +
-                        "use your double cannons in exchange for batteries?");
-                currentView.asksToUseCannons();
+                currentView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_ENGINE);
             }
         }
+    }
+
+    @Override
+    public void choice(String playerName, boolean decision) {
+        if (!playerName.equals(currentPlayer.getPlayerName()) || won != 1) {
+            viewsMap.get(playerName).showWrongInputMessage();
+            return;
+        }
+        if (decision) {
+            currentPlayer.gainCredit(rewardCredits);
+            notifyGainedCredits(currentPlayer.getPlayerName(), currentPlayer.getCredit());
+            game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
+            notifyMovement(currentPlayer);
+            game.endCardEvent();
+        }
+        else {
+            game.endCardEvent();
+        }
+    }
+
+    @Override
+    public void cannonChoice(String playerName, float doubleCannonPower, ArrayList<Coordinates> batteriesToUse) {
+        Player player = game.identifyPlayerByName(playerName);
+        if (!player.getPlayerName().equals(currentPlayer.getPlayerName())) {
+            viewsMap.get(playerName).setClientState(ClientState.ACTION);
+            return;
+        }
+        Map<Float,ArrayList<Tile>> returned = player.useCannons(doubleCannonPower, batteriesToUse);
+        if (returned == null) {
+            currentView.setClientState(ClientState.ACTION);
+            return;
+        }
+        notifyModifiedTiles(playerName, returned.values().iterator().next());
+        float cannonPower = returned.keySet().iterator().next();
+        if (cannonPower > cannonStrength) {
+            won = 1;
+            if (currentPlayer.IsDisconnected()) {
+                choice(playerName, false);
+            }
+            else{
+                currentView.setClientState(ClientState.ACTION);
+            }
+        }
+        else if (cannonPower == cannonStrength) {
+            nextPlayer();
+        }
+        else {
+            won = -1;
+            if(!penaltyIfLose.initializePenalty(currentView, currentPlayer)) {
+                nextPlayer();
+            }
+            currentView.asksToInputCoordinates(CoordReqType.CHOOSE_CREW);
+        }
+    }
+
+    @Override
+    public void rollTheDices(String playerName) {
+        if (!playerName.equals(currentPlayer.getPlayerName())) {
+            viewsMap.get(playerName).showWrongInputMessage();
+            return;
+        }
+        penaltyIfLose.randomRollForOne(currentView, currentPlayer);
+    }
+
+    @Override
+    public ArrayList<Projectile> getListOfProjectiles() {
+        return penaltyIfLose.getListOfProjectiles();
     }
 }
