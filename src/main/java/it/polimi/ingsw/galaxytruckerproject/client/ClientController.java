@@ -47,8 +47,8 @@ public class ClientController {
 
     public ClientController(VirtualController virtualController) {
         this.deck = new HashMap<>();
-        this.me = new LightPlayer();
-        this.flightBoard = new LightFlightboard();
+        this.me = new LightPlayer("",null);
+        this.flightBoard = new LightFlightboard(null);
         this.inManager = false;
         this.connected = false;
         this.turnedTiles = new HashMap<>();
@@ -304,7 +304,7 @@ public class ClientController {
                                         return;
                                     if (chose > 0 && chose < 4) {
                                         if (availabledeck.get(chose)) {
-                                            virtualController.lookCardRequest(name, chose);
+                                            virtualController.lookCardsRequest(name, chose);
                                             indexDeckInHandOrPlanet = chose;
                                             displayedCard = this.deck.get(indexDeckInHandOrPlanet).getFirst();
                                             view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
@@ -574,7 +574,7 @@ public class ClientController {
         return copiedInput;
     }
 
-    public void setState(ClientState newState){
+    public void setState(ClientState newState) throws RemoteException {
         previousState=state;
         view.setClientState(newState);
         switch(newState){
@@ -585,13 +585,6 @@ public class ClientController {
                 if(me.getRank()!=1){
                     view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                 }
-            }
-            case MANAGE_CABINS -> {
-                if(!inManager){
-                    cabinsManager = new CabinsManager(me);
-                    inManager=true;
-                }
-                System.out.println(me.getShipBoard().getCabinsCoordinates().getFirst());
             }
             case MANAGE_GOODS -> {
                 if(!inManager){
@@ -735,12 +728,6 @@ public class ClientController {
             return;
         player.gainCredits(credits);
     }
-    //aggiorna il valore totale dei credit del player(no display)
-    public void gainCredit(String playerName, int totalCredits){
-
-    }
-    //aggiorna il model interno al client nel caso in cui sia avvenuta una riconnessione
-    public void updateModel(Map<String,LightShipBoard> lightShipBoardMap, LightFlightboard flightBoard,Card card, int hourglassTurns, Map<Integer,Tile> newTurnedTiles, ArrayList<Integer> available) {
 
     public void updateModel(Map<String,LightShipBoard> lightShipBoardMap, LightFlightboard flightBoard,Card card, int hourglassTurns, Map<Integer,Tile> newTurnedTiles, ArrayList<Integer>notAvailableDecks) {
         this.flightBoard=flightBoard;

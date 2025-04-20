@@ -73,11 +73,11 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
 
     }
 
-    public void sendDoubleCannonUsed( String playerName ,float doublePower, ArrayList<Coordinates> batteries) throws Exception {
+    public void sendDoubleCannonUsed( String playerName ,float doublePower, ArrayList<Coordinates> batteries) throws RemoteException {
         clients.get(playerName).useCannons(doublePower, batteries);
     }
 
-    public void sendNumDoubleEngineUsed(String playerName , int numEngine, ArrayList<Coordinates> batteries) throws Exception {
+    public void sendNumDoubleEngineUsed(String playerName , int numEngine, ArrayList<Coordinates> batteries) throws RemoteException {
         clients.get(playerName).useEngines(numEngine, batteries);
 
     }
@@ -160,7 +160,7 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
     }
 
     //DONE
-    public void PlanetChoiceRequest(String playerName,int planet) throws RemoteException {
+    public void planetChoiceRequest(String playerName,int planet) throws RemoteException {
         clients.get(playerName).choosePlanet(planet);
     }
 

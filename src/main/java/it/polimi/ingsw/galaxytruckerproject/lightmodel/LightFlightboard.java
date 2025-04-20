@@ -18,17 +18,17 @@ public class LightFlightboard {
         }
     }
 
-    public ArrayList<LightPlayer> getIngamePlayers() {
+    public ArrayList<LightPlayer> getInGamePlayers() {
         return inGamePlayers;
 
     }
 
-    public LightPlayer getIngamePlayer(String playerName) {
+    public LightPlayer getInGamePlayer(String playerName) {
         for (LightPlayer player : inGamePlayers) {
             if (player.getPlayerName().equals(playerName)) {
                 return player;
             }
         }
-
+        return null;
     }
 }
