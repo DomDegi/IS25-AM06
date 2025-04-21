@@ -167,8 +167,8 @@ public class Controller implements ControllerInterface {
     }
 
     @Override
-    public void manageGoods(int clientCreditsToVerify, ArrayList<CargoHold> cargosToUpdate) throws Exception {
-        gameController.playerManagesGoods(nickname, clientCreditsToVerify, cargosToUpdate);
+    public void manageGoods(int clientCreditsToVerify, ArrayList<CargoHold> updatedCargos) throws Exception {
+        gameController.playerManagesGoods(nickname, clientCreditsToVerify, updatedCargos);
     }
 
     @Override

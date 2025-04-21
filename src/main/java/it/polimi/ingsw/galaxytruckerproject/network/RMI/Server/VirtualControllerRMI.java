@@ -30,6 +30,7 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         this.clients = new HashMap<String, Controller>();
     }
 
+    //PHASE OF LOGIN/CREATION OF MATCHES METHODS
     public void login(String playerName) throws RemoteException {
         clients.get(playerName).login(playerName);
     }
@@ -65,10 +66,8 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).chooseColor(color);
     }
 
-    /*public void setFlightBoard(String playerName, int chosen) throws RemoteException {
-        clients.get(playerName).setFlightBoard(chosen);
-    }*/
 
+    //COORDINATES MANAGMENT METHODS
     public void sendCoordinates(String playerName, ArrayList<Coordinates> coordinates) throws RemoteException{
 
     }
@@ -90,14 +89,12 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).makeAChoice(false);
     }
 
+
+
+    //TILE METHODS
     public void notifySetTile(String playerName, Tile tile) throws RemoteException {
         clients.get(playerName).setTile(tile);
     }
-
-    /*public void sendEndShipBoardCreation(String playerName) throws RemoteException {
-        AcceptMessage message = new AcceptMessage(playerName);
-        clients.get(playerName).playerChoiceThroughMessage(message);
-    }*/
 
     public void notifyTileBooking(String playerName) throws RemoteException {
         clients.get(playerName).bookTile();
@@ -107,27 +104,23 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).refuseTile();
     }
 
-    //è inutile(sì)
-    /*
-    public void drawTileRequest(String playerName) throws RemoteException {
-        DrawTileFromStackRequest message = new DrawTileFromStackRequest(playerName);
-        clients.get(playerName).playerChoiceThroughMessage(message);
-    }*/
-
-    //DONE
     public void reqDrawTileFromStack(String playerName) throws RemoteException {
         clients.get(playerName).drawTileFromStack();
     }
 
-    //DONE
     public void reqDrawTileFromTurned(String playerName, int index) throws RemoteException {
         clients.get(playerName).drawTileFromTurned(index);
     }
 
-    //DONE(in teoria non serve dato che vengono gestite in locale)
-    /*public void reqDrawTileFromBooked(String playerName, int index) throws RemoteException {
-        clients.get(playerName).drawTileFromBooked(index);
-    }*/
+    //CARD METHODS
+    public void lookCardsRequest(String playerName, int deckToLookAt) throws RemoteException {
+        clients.get(playerName).lookGameCards(deckToLookAt);
+    }
+
+    public void stopLookingAtCardsRequest(String playerName) throws RemoteException {
+        clients.get(playerName).stopLookingAtCards();
+    }
+
 
     //DONE
     public void sendTurnHourGlass(String playerName) throws RemoteException {
@@ -139,15 +132,7 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
     }
 
 
-    //DONE
-    public void lookCardsRequest(String playerName, int deckToLookAt) throws RemoteException {
-        clients.get(playerName).lookGameCards(deckToLookAt);
-    }
 
-    //DONE
-    public void StopLookingAtCardsRequest(String playerName) throws RemoteException {
-        clients.get(playerName).stopLookingAtCards();
-    }
 
     //DONE
     public void notifyCompleted(String playerName) throws RemoteException {
@@ -164,8 +149,8 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).choosePlanet(planet);
     }
 
-    public void newGoodsArrangement(String playerName, int creditsToVerify, ArrayList<CargoHold> cargosToUpdate) throws Exception {
-        clients.get(playerName).manageGoods(creditsToVerify, cargosToUpdate);
+    public void notifyNewGoodsArrangement(String playerName, int creditsToVerify, ArrayList<CargoHold> updatedCargos) throws Exception {
+        clients.get(playerName).manageGoods(creditsToVerify, updatedCargos);
     }
 
 
