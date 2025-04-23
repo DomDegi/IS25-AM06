@@ -4,8 +4,12 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
+
+import java.util.ArrayList;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
@@ -17,10 +21,24 @@ import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 public abstract class Penalty {
 
-    public abstract int applyPenalty(GameInterface game, Player player, ViewInterface playersView, Message message);
-
     @Override
     public abstract String toString();
 
-    public abstract boolean initializePenalty(ViewInterface view, Player player);
+    public abstract boolean initializePenalty(VirtualView view, Player player);
+
+    public ArrayList<Tile> removeGoods(Player player, VirtualView view, ArrayList<Coordinates> toRemove) {
+        return null;
+    }
+    public ArrayList<Tile> removeCrew(Player player, VirtualView view, ArrayList<Coordinates> toRemove) {
+        return null;
+    }
+
+    public ArrayList<Tile> automaticGoodsPenalty(GameInterface game, Player disconnectedPlayer, ViewInterface view) {
+        return null;
+    }
+
+    public ArrayList<Tile> automaticCrewPenalty(GameInterface game, Player disconnectedPlayer, ViewInterface view) {
+        return null;
+    }
+
 }

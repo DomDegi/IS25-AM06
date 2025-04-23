@@ -2,14 +2,17 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
+import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.GoodsPenalty;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsChecker;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
-import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -19,7 +22,7 @@ public class Smugglers extends Enemies{
     private final ArrayList<Goods> rewardGoods;
     private ArrayList<Player> playerToInteract;
     private Player currentPlayer;
-    private ViewInterface playersView;
+    private VirtualView playersView;
     private boolean initialized;
     private int won;
     private GoodsChecker goodsChecker;
@@ -42,63 +45,6 @@ public class Smugglers extends Enemies{
         nextPlayer();
     }
 
-    @Override
-    public void executeCard(Message message) {
-        String playerName = message.getNickname();
-        if (!playerName.equals(currentPlayer.getPlayerName()) || currentPlayer == null)
-            return;
-
-        if (won == 0) {
-            if (message.getMessageType().equals(MessageType.USE_CANNON_RESPONSE)) {
-                UseCannonResponse messageReceived = (UseCannonResponse) message;
-                float totalStrength = currentPlayer.useCannons(messageReceived.getStrength(), messageReceived.getCoordinates());
-                if (totalStrength != -1) {
-                    if (totalStrength > cannonStrength) {
-                        won = 1;
-                        broadcastMessage(playerName + "has beaten the smugglers!");
-                        sendMessageToPlayer(playersView, "Input yes or no to decide if you want the reward");
-                        playersView.asksToMakeAChoice();
-                    }
-                    else if (totalStrength == cannonStrength) {
-                        nextPlayer();
-                    }
-                    else {
-                        won = -1;
-                        sendMessageToPlayer(playersView, "You've lost the smugglers, decide which goods to lose");
-                        if (!lostGoods.initializePenalty(playersView, currentPlayer)) {
-                            nextPlayer();
-                        }
-                    }
-                }
-            }
-        }
-        else if (won == 1){
-            if (message.getMessageType().equals(MessageType.REFUSE_MESSAGE)) {
-                game.endCardEvent();
-            }
-            else if (message.getMessageType().equals(MessageType.ACCEPT_MESSAGE)) {
-                game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
-                playersView.asksToManageGoods(rewardGoods);
-                won = 2;
-            }
-        }
-        else if (won == 2) {
-            if (message.getMessageType().equals(MessageType.MANAGE_GOODS_RESPONSE)) {
-                ManageGoodsResponse manageGoodsResponse = (ManageGoodsResponse) message;
-                if (goodsChecker.check(manageGoodsResponse.getClientGoodsValue(), manageGoodsResponse.getCargoHoldsToUpdate()))
-                    game.endCardEvent();
-            }
-        }
-        else if (won == -1){
-            if (lostGoods.applyPenalty(game, currentPlayer, playersView, message) == 1) {
-                nextPlayer();
-            }
-            else {
-                lostGoods.initializePenalty(playersView, currentPlayer);
-            }
-        }
-    }
-
     public void nextPlayer() {
         if (!initialized) {
             this.initialized = true;
@@ -114,32 +60,25 @@ public class Smugglers extends Enemies{
         String playerName = currentPlayer.getPlayerName();
         this.playersView = viewsMap.get(playerName);
         float singleCannonPower = currentPlayer.getShipBoard().getSingleCannonPower();
-        sendMessageToPlayer(playersView, "WATCH OUT, SMUGGLERS!! \nIf you don't have at least a Cannon Strength of "
-                +cannonStrength+" you will loose "+lostGoods+ "\nDESTROY THEM and you will loose"+requiredDays+
-                "to fill your cargo with the following goods:\n");
-        goodsChecker =new GoodsChecker(currentPlayer,rewardGoods);
-        sendMessageToPlayer(playersView, goodsChecker.goodsPrinter(rewardGoods));
-
+        won = 0;
         if (currentPlayer.IsDisconnected()) {
             if (singleCannonPower > cannonStrength) {
                 won = 1;
-                executeCard(new RefuseMessage(playerName));
+                cannonChoice(playerName, 0, new ArrayList<>());
             }
             else if (singleCannonPower == cannonStrength) {
                 nextPlayer();
             }
             else {
                 won = -1;
-                lostGoods.automaticPenalty(game, currentPlayer, playersView);
+                notifyModifiedTiles(currentPlayer.getPlayerName(), lostGoods.automaticGoodsPenalty(game, currentPlayer, playersView));
                 nextPlayer();
             }
         }
         else {
             if (singleCannonPower > cannonStrength) {
                 won = 1;
-                sendMessageToPlayer(playersView, "You've beaten the smugglers, input yes or no" +
-                        " to claim the rewards or not");
-                playersView.asksToMakeAChoice();
+                playersView.setClientState(ClientState.ACTION);
             }
             else if (currentPlayer.getShipBoard().getDoubleCannon().isEmpty() ||
                     currentPlayer.getShipBoard().getBatteryCoordinates().isEmpty()) {
@@ -148,17 +87,107 @@ public class Smugglers extends Enemies{
                 }
                 else {
                     won = -1;
-                    sendMessageToPlayer(playersView,"You've lost to the smugglers:\n");
-                    sendMessageToPlayer(playersView,"input a pair of number x y for every good to remove\n");
                     lostGoods.initializePenalty(playersView, currentPlayer);
+                    playersView.asksToInputCoordinates(CoordReqType.REMOVE_GOODS);
                 }
             }
             else {
-                sendMessageToPlayer(playersView, "You can't beat the slavers with only your single cannons, " +
-                        "use your double cannons in exchange for batteries?");
-                playersView.asksToUseCannons();
+                playersView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_ENGINE);
             }
         }
+    }
+
+    @Override
+    public void cannonChoice(String playerName, float doubleCannonPower, ArrayList<Coordinates> batteriesToUse) {
+        Player player = game.identifyPlayerByName(playerName);
+        if (!player.getPlayerName().equals(currentPlayer.getPlayerName())) {
+            viewsMap.get(playerName).setClientState(ClientState.ACTION);
+            return;
+        }
+        Map<Float,ArrayList<Tile>> returned = player.useCannons(doubleCannonPower, batteriesToUse);
+        if (returned == null) {
+            playersView.setClientState(ClientState.ACTION);
+            return;
+        }
+        notifyModifiedTiles(playerName, returned.values().iterator().next());
+        float cannonPower = returned.keySet().iterator().next();
+        if (cannonPower > cannonStrength) {
+            won = 1;
+            if (currentPlayer.IsDisconnected()) {
+                choice(playerName, false);
+            }
+            else{
+            playersView.setClientState(ClientState.ACTION);
+            }
+        }
+        else if (cannonPower == cannonStrength) {
+            nextPlayer();
+        }
+        else {
+            won = -1;
+            lostGoods.initializePenalty(playersView, currentPlayer);
+            playersView.asksToInputCoordinates(CoordReqType.REMOVE_GOODS);
+        }
+    }
+
+    @Override
+    public void choice(String playerName, boolean decision) {
+        if (!playerName.equals(currentPlayer.getPlayerName()) || won != 1) {
+            viewsMap.get(playerName).setClientState(ClientState.ACTION);
+            return;
+        }
+        if (decision) {
+            goodsChecker =new GoodsChecker(currentPlayer,rewardGoods);
+            playersView.setClientState(ClientState.MANAGE_GOODS);
+        }
+        else {
+            game.endCardEvent();
+        }
+    }
+
+    @Override
+    public void manageGoods(String playerName, int clientCredits, ArrayList<CargoHold> updatedCargos) {
+        if (!playerName.equals(currentPlayer.getPlayerName())) {
+            viewsMap.get(playerName).showWrongInputMessage();
+            return;
+        }
+        if (goodsChecker.check(clientCredits, updatedCargos)) {
+            game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
+            notifyMovement(currentPlayer);
+            ArrayList<Tile> updatedTiles = new ArrayList<>(updatedCargos);
+            notifyModifiedTiles(playerName, updatedTiles);
+            game.endCardEvent();
+        }
+        else {
+            playersView.showWrongInputMessage();
+        }
+    }
+
+    @Override
+    public void removeGoods(String playerName, ArrayList<Coordinates> goodsToRemove) {
+        Player player = game.identifyPlayerByName(playerName);
+        if (!player.getPlayerName().equals(currentPlayer.getPlayerName()) || won != -1) {
+            viewsMap.get(playerName).showWrongInputMessage();
+            return;
+        }
+        ArrayList<Tile> updatedTiles = lostGoods.removeGoods(currentPlayer,playersView, goodsToRemove);
+        if (updatedTiles == null) {
+            playersView.showWrongInputMessage();
+        }
+        else {
+            notifyModifiedTiles(playerName, updatedTiles);
+            nextPlayer();
+        }
+    }
+
+    @Override
+    public ArrayList<Goods> getGoodsList(String playerName) {
+        return rewardGoods;
+    }
+
+    @Override
+    public int getGoodsPenalty() {
+        return lostGoods.getNumberOfLostGoods();
     }
 
     @Override

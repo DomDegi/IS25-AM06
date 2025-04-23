@@ -4,6 +4,8 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Player implements PlayerInterface {
     private int playerRanking;
@@ -80,23 +82,26 @@ public class Player implements PlayerInterface {
     }
 
     //ENGINE METHODS
-    public int useEngines (int numberOfDoubleEngines, ArrayList<Coordinates> batteries) {
+    public Map<Integer,ArrayList<Tile>> useEngines (int numberOfDoubleEngines, ArrayList<Coordinates> batteries) {
         if (numberOfDoubleEngines != playerShip.getDoubleEngine().size()) {
-            return -1;
+            return null;
         }
         if (batteries.size() != numberOfDoubleEngines) {
-            return -1;
+            return null;
         }
-        if (! chooseBatteriesUse(batteries)) {
-            return -1;
+        ArrayList<Tile> updatedTiles = chooseBatteriesUse(batteries);
+        Map<Integer,ArrayList<Tile>> value = new HashMap<>();
+        if (chooseBatteriesUse(batteries) == null) {
+            return null;
         }
         else {
             if (numberOfDoubleEngines == 0 && playerShip.getNumSingleEngine() == 0) {
-                return 0;
+                value.put(0,updatedTiles);
             }
             else {
-                return playerShip.getNumSingleEngine() + 2*numberOfDoubleEngines + 2*playerShip.getNumBrownAliens();
+                value.put(playerShip.getNumSingleEngine() + 2*numberOfDoubleEngines + 2*playerShip.getNumBrownAliens(),updatedTiles);
             }
+            return value;
         }
     }
 
@@ -110,7 +115,7 @@ public class Player implements PlayerInterface {
     }
 
     //CANNON METHODS
-    public float useCannons (float doubleFireStrength, ArrayList<Coordinates> batteries) {
+    public Map<Float,ArrayList<Tile>> useCannons (float doubleFireStrength, ArrayList<Coordinates> batteries) {
         float possibleDoubleFireStrength = 0;
         int batteriesCounter = 0;
         ArrayList<Coordinates> doubleCannons = new ArrayList<>(playerShip.getDoubleCannon());
@@ -120,18 +125,21 @@ public class Player implements PlayerInterface {
             doubleCannons.removeFirst();
         }
         if (batteriesCounter > batteries.size() || possibleDoubleFireStrength < doubleFireStrength) {
-            return -1;
+            return null;
         }
-        if (! chooseBatteriesUse(batteries)) {
-            return -1;
+        ArrayList<Tile> updatedTiles = chooseBatteriesUse(batteries);
+        Map<Float,ArrayList<Tile>> value = new HashMap<>();
+        if (updatedTiles == null) {
+            return null;
         }
         else {
             if (doubleFireStrength == 0 && playerShip.getSingleCannonPower() == 0) {
-                return 0;
+                value.put(0F,updatedTiles);
             }
             else {
-                return playerShip.getSingleCannonPower() + doubleFireStrength + 2 * playerShip.getNumPurpleAliens();
+                value.put(playerShip.getSingleCannonPower() + doubleFireStrength + 2 * playerShip.getNumPurpleAliens(),updatedTiles);
             }
+            return value;
         }
     }
     public void printCurrentInfoCannons(){
@@ -151,18 +159,22 @@ public class Player implements PlayerInterface {
     }
 
     //BATTERIES METHODS
-    public boolean chooseBatteriesUse(ArrayList<Coordinates> BatteriesToConsume){
+    public ArrayList<Tile> chooseBatteriesUse(ArrayList<Coordinates> BatteriesToConsume){
         ArrayList<Coordinates> used = new ArrayList<>();
         for (Coordinates Coordinates : BatteriesToConsume) {
             if(!playerShip.chooseBatteryUse(Coordinates)) {
                 for(Coordinates coordinates : used){
                     playerShip.addBattery(coordinates);
                 }
-                return false;
+                return null;
             }
             used.add(Coordinates);
         }
-        return true;
+        ArrayList<Tile> updatedTiles = new ArrayList<>();
+        for (Coordinates coordinates : BatteriesToConsume) {
+            updatedTiles.add(playerShip.getTile(coordinates));
+        }
+        return updatedTiles;
     }
 
     public void printCurrentInfoBatteries(){
@@ -171,7 +183,7 @@ public class Player implements PlayerInterface {
         }
     }
 
-    public boolean removeGoods(ArrayList<Coordinates> goodsCoordinates) {
+    public ArrayList<Tile> removeGoods(ArrayList<Coordinates> goodsCoordinates) {
         ArrayList<Coordinates> goodsToCheck = new ArrayList<>(goodsCoordinates);
         ArrayList<Coordinates> redCargo = playerShip.cargoHoldContainsGood(new Goods(GoodsColor.RED));
         ArrayList<Coordinates> yellowCargo = playerShip.cargoHoldContainsGood(new Goods(GoodsColor.YELLOW));
@@ -180,30 +192,32 @@ public class Player implements PlayerInterface {
         while (!goodsToCheck.isEmpty()) {
             if (!redCargo.isEmpty()) {
                 if (!redCargo.contains(goodsToCheck.getFirst())) {
-                    return false;
+                    return null;
                 }
                 redCargo.remove(goodsToCheck.getFirst());
             }
             else if (!yellowCargo.isEmpty()) {
                 if (!yellowCargo.contains(goodsToCheck.getFirst())) {
-                    return false;
+                    return null;
                 }
                 yellowCargo.remove(goodsToCheck.getFirst());
             }
             else if (!greenCargo.isEmpty()) {
                 if (!greenCargo.contains(goodsToCheck.getFirst())) {
-                    return false;
+                    return null;
                 }
                 greenCargo.remove(goodsToCheck.getFirst());
             }
             else if (!blueCargo.isEmpty()) {
                 if (!blueCargo.contains(goodsToCheck.getFirst())) {
-                    return false;
+                    return null;
                 }
                 blueCargo.remove(goodsToCheck.getFirst());
             }
             goodsToCheck.remove(goodsToCheck.getFirst());
         }
+
+        ArrayList<Tile> updated = new ArrayList<>();
         for (Coordinates coordinates : goodsCoordinates) {
             ArrayList<Goods> singleCargoGoods = playerShip.getSingleCargoGoods(coordinates);
             if (singleCargoGoods.contains(new Goods(GoodsColor.RED))) {
@@ -218,8 +232,14 @@ public class Player implements PlayerInterface {
             else if (singleCargoGoods.contains(new Goods(GoodsColor.BLUE))) {
                 playerShip.removeGood(new Goods(GoodsColor.BLUE), coordinates);
             }
+            else {
+                return null;
+            }
+            if (!updated.contains(playerShip.getTile(coordinates))) {
+                updated.add(playerShip.getTile(coordinates));
+            }
         }
-        return true;
+        return updated;
     }
 
     public void printCurrentInfoCargoHolds() {

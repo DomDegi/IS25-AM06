@@ -2,10 +2,15 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
+import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsChecker;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.ManageGoodsResponse;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.MessageType;
@@ -23,7 +28,7 @@ public class AbandonedStation extends Card {
     private ViewInterface currentPlayersView = null;
     private boolean initialized;
     private boolean won;
-    private GoodsChecker goodsChecker;
+    private GoodsChecker goodsChecker = null;
 
     @JsonCreator
     public AbandonedStation(@JsonProperty("level") int level, @JsonProperty("requiredDays") int requiredDays, @JsonProperty("crewNumberRequired") int crewNumberRequired, @JsonProperty("possibleGoodsGain") ArrayList<Goods> possibleGoodsGain) {
@@ -44,59 +49,59 @@ public class AbandonedStation extends Card {
     }
 
     @Override
-    public void executeCard(Message message) {
-        String playerName = message.getNickname();
-
-        if (!playerName.equals(currentPlayer.getPlayerName()))
+    public void choice(String playerName, boolean decision) {
+        if (!playerName.equals(currentPlayer.getPlayerName()) || won) {
+            viewsMap.get(playerName).showWrongInputMessage();
             return;
-
-        if (!won) {
-            int choice = -1;
-            if (message.getMessageType().equals(MessageType.ACCEPT_MESSAGE)) {
-                choice = 1;
-            }
-            else if (message.getMessageType().equals(MessageType.REFUSE_MESSAGE)) {
-                choice = 0;
-            }
-            if (currentPlayer.getTotalCrew() >= crewNumberRequired) {
-                if (choice == 1) {
-                    game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
-                    goodsChecker =new GoodsChecker(currentPlayer,possibleGoodsGain);
-                    won=true;
-                    goodsChecker.goodsPrinter(possibleGoodsGain);
-                    currentPlayersView.showGenericMessage("Choose for each good where to put it, " +
-                            "input 'done' to stop,'pick x y' to pick one good from your cargo");
-                    currentPlayersView.asksToManageGoods(possibleGoodsGain);
-                    //exit for loop: the station has been claimed
-                } else if (choice == 0) {
-                    currentPlayersView.showGenericMessage("No action performed");
-                    nextPlayer();
-                } else {
-                    currentPlayersView.showGenericMessage("Invalid choice");
-                    currentPlayersView.asksToMakeAChoice();
-                }
-            } else {
-                System.out.printf("\nSorry" + currentPlayer + "you can't land on the station, you need at least %d crew members\n", crewNumberRequired);
-            }
-        }else{
-            if(message.getMessageType().equals(MessageType.MANAGE_GOODS_RESPONSE)){
-                ManageGoodsResponse messageReceived = (ManageGoodsResponse) message;
-                if (goodsChecker.check(messageReceived.getClientGoodsValue(), messageReceived.getCargoHoldsToUpdate())) {
-                    game.endCardEvent();
-                }
-            }
+        }
+        if (!decision) {
+            nextPlayer();
+        }
+        else {
+            currentPlayersView.asksToInputCoordinates(CoordReqType.CHOOSE_CREW);
+            won = true;
+            goodsChecker = new GoodsChecker(currentPlayer,possibleGoodsGain);
         }
     }
 
     @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("AbandonedStation: ").append(super.toString()).append(" ").
-                append("crewNumberRequired: ").append(crewNumberRequired).
-                append(" possibleGoodsGain: ");
-        for (Goods good: possibleGoodsGain)
-            sb.append(good.toString()).append(" ");
-        return sb.toString();
+    public void removeCrew(String playerName, ArrayList<Coordinates> toRemoveFrom) {
+        Player player = game.identifyPlayerByName(playerName);
+        if (!playerName.equals(currentPlayer.getPlayerName()) || won) {
+            viewsMap.get(playerName).showWrongInputMessage();
+            return;
+        }
+        if (toRemoveFrom.size() != this.crewNumberRequired) {
+            currentPlayersView.showWrongInputMessage();
+            return;
+        }
+        ArrayList<Tile> updatedTiles = player.removeCrew(toRemoveFrom);
+        if (updatedTiles != null) {
+            notifyModifiedTiles(playerName, updatedTiles);
+            currentPlayersView.setClientState(ClientState.MANAGE_GOODS);
+        }
+        else {
+            currentPlayersView.showWrongInputMessage();
+        }
+    }
+
+    @Override
+    public void manageGoods(String playerName, int clientCredits, ArrayList<CargoHold> updatedCargos) {
+        Player player = game.identifyPlayerByName(playerName);
+        if (!won || !player.equals(currentPlayer)) {
+            viewsMap.get(playerName).showWrongInputMessage();
+            return;
+        }
+        if (!goodsChecker.check(clientCredits, updatedCargos)) {
+            currentPlayersView.showWrongInputMessage();
+        }
+        else {
+            ArrayList<Tile> updatedTiles = new ArrayList<>(updatedCargos);
+            notifyModifiedTiles(playerName, updatedTiles);
+            game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
+            notifyMovement(currentPlayer);
+            game.endCardEvent();
+        }
     }
 
     /**
@@ -120,24 +125,23 @@ public class AbandonedStation extends Card {
             nextPlayer();
         }
         this.currentPlayersView = viewsMap.get(currentPlayer.getPlayerName());
-        currentPlayersView.showGenericMessage("Abandoned station: you will loose " +
-                requiredDays +
-                " flight days to gain the following goods:");
-        this.goodsChecker =new GoodsChecker(currentPlayer,possibleGoodsGain);
-        currentPlayersView.showGenericMessage(goodsChecker.goodsPrinter(possibleGoodsGain));
 
         if (currentPlayer.getTotalCrew() < crewNumberRequired) {
-            currentPlayersView.showGenericMessage("Sorry " + currentPlayer.getPlayerName() +
-                    " you can't land on the station, you need at least " + crewNumberRequired +
-                    " crew members and you have " + currentPlayer.getTotalCrew());
             nextPlayer();
         }
         else {
-            currentPlayersView.showGenericMessage(currentPlayer.getPlayerName()+" congratulation, you have "+
-                    currentPlayer.getTotalCrew() +
-                    " which is more than " + crewNumberRequired + " input 'yes' to land on the station, " +
-                    "input 'no' to ignore, you will loose " + requiredDays + " flight days\n");
-            currentPlayersView.asksToMakeAChoice();
+            currentPlayersView.setClientState(ClientState.ACTION);
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("AbandonedStation: ").append(super.toString()).append(" ").
+                append("crewNumberRequired: ").append(crewNumberRequired).
+                append(" possibleGoodsGain: ");
+        for (Goods good: possibleGoodsGain)
+            sb.append(good.toString()).append(" ");
+        return sb.toString();
     }
 }

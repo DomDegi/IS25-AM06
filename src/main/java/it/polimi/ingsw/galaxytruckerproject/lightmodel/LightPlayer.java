@@ -14,7 +14,7 @@ public class LightPlayer implements PlayerInterface {
     private String playerName;
     private boolean landed = false;
     private PlayersColor color;
-
+    private int credits;
 
     public LightPlayer(String playerName, PlayersColor color) {
         this.playerName = playerName;
@@ -69,5 +69,11 @@ public class LightPlayer implements PlayerInterface {
     @Override
     public PlayersColor getPlayerColor() {
         return color;
+    }
+    public void gainCredits(int credits) {
+        this.credits+=credits;
+    }
+    public int getCredits() {
+        return credits;
     }
 }

@@ -104,7 +104,9 @@ public interface ControllerInterface {
 
     void choosePlanet(int planet) throws  Exception;
 
-    void pickCrewMembers(ArrayList<Tile> cabins);
+    void pickCrewMembers(ArrayList<Tile> cabins) throws Exception;
+
+    void removeCrew(ArrayList<Coordinates> fromHere) throws Exception;
 
     /**
      * this method sets the player on the flightBoard on LEVEL2 flight mode

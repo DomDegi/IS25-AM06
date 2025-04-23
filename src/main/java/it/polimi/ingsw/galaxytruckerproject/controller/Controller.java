@@ -191,5 +191,13 @@ public class Controller implements ControllerInterface {
         gameController.setPosition(nickname, view, position);
     }
 
+    public void removeCrew (ArrayList<Coordinates> toRemoveFrom) {
+        gameController.playerRemovesCrew(nickname, toRemoveFrom);
+    }
+
+    public void removeGoods(ArrayList<Coordinates> fromHere) throws Exception {
+        gameController.playerRemovesGoods(nickname, fromHere);
+    }
+
 
 }

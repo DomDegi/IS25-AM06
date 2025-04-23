@@ -14,6 +14,7 @@ import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -174,5 +175,9 @@ public class Planets extends Card{
             index++;
         }
         return sb.toString();
+    }
+
+    public ArrayList<Planet> getListOfPlanets() {
+        return listOfPlanets;
     }
 }

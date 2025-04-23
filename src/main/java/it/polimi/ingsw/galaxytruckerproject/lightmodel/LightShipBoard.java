@@ -31,9 +31,15 @@ public class LightShipBoard implements ShipBoardInterface{
     private int numBrownAliens;
     private int numPurpleAliens;
     private int numHumanCrew;
+    private int credit;
+
 
     public LightShipBoard(ShipBoard shipBoard) {
         this.shipBoard = shipBoard;
+        this.bookedTiles = new ArrayList<>();
+        this.cargoHoldCoordinates = new ArrayList<>();
+        this.crewCoordinates = new ArrayList<>();
+        this.credit = 0;
         this. player = new LightPlayer(this.shipBoard.getPlayer());
 
     }
@@ -161,8 +167,6 @@ public class LightShipBoard implements ShipBoardInterface{
         }
         return false;
     }
-
-
     public void setCargoHoldCoordinates(ArrayList<Coordinates> cargoHoldCoordinates) {
         this.cargoHoldCoordinates = cargoHoldCoordinates;
     }
@@ -321,6 +325,9 @@ public class LightShipBoard implements ShipBoardInterface{
         return tile;
     }
 
+    public ArrayList<Coordinates> getCabinsCoordinates() {
+        return crewCoordinates;
+    }
     /*
     public void swapGoods(Coordinates coordinatesFrom,Coordinates coordinatesTo, Goods goodToSwap ){
         //Check if the coordinates are of a CargoHolder
@@ -427,7 +434,21 @@ public class LightShipBoard implements ShipBoardInterface{
         }
     }
 
+public String toString(){
 
+    StringBuilder s = new StringBuilder("Schipboard: ");
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 7; j++) {
+            if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable()) {
+                s.append(tilesTable[i][j].get().toString());
+                s.append("\n");
+            }
+        }
+        s.append("\n-\n");
+    }
+    s.append("\ncredit:"+credit + "\n");
+    return s.toString();
+}
     public boolean checkEarlyLanding() {
         return numHumanCrew == 0;
     }
