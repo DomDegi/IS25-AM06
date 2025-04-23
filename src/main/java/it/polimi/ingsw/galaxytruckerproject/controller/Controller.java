@@ -190,4 +190,6 @@ public class Controller implements ControllerInterface {
     public void setPosition(int position) {
         gameController.setPosition(nickname, view, position);
     }
+
+
 }
