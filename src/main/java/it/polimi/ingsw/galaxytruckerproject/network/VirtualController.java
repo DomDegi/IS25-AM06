@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.network;
 
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Cabin;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
@@ -34,8 +35,7 @@ public interface VirtualController extends Remote, Serializable {
     // CARDS RELATED METHODS
     void lookCardsRequest(String playerName, int deckToLookAt) throws RemoteException;
     void stopLookingAtCardsRequest(String playerName) throws RemoteException;
-    void notifyCompleted(String playerName) throws RemoteException;
-    void notifySetPosition(String playerName, int position) throws RemoteException;
+    void drawCards(String playerName) throws RemoteException;
 
 
     // COORDINATES RELATED METHODS
@@ -56,9 +56,12 @@ public interface VirtualController extends Remote, Serializable {
     boolean checkCorrectionShipboard(String playerName) throws RemoteException;
      */
     void notifyEarlyLanding(String playerName) throws RemoteException;
+    void notifyCompleted(String playerName) throws RemoteException;
+    void notifySetPosition(String playerName, int position) throws RemoteException;
+
 
     void notifyNewGoodsArrangement(String playerName, int clientGoodsValue, ArrayList<CargoHold> updatedCargos) throws Exception;
-
+    void notifyNewCrewArrangement(String playerName, ArrayList<Tile> updatedCabin) throws Exception;
 
 
 
