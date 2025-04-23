@@ -67,9 +67,9 @@ public class ClientController {
             case CHOOSE_UI->{
                 switch(words[0]) {
                     case "gui"->
-                        this.view=new GUI();
+                            this.view=new GUI();
                     case "tui"->
-                        this.view=new TUI();
+                            this.view=new TUI();
                     default->{
                         System.out.println("Wrong input");
                         return;
@@ -81,7 +81,7 @@ public class ClientController {
             case CHOOSE_CONNECTION_TYPE->{
                 switch(words[0]) {
                     case "rmi"->
-                        //rmi
+                    //rmi
                     case "socket"->
                     //socket
                     default->{
@@ -299,7 +299,7 @@ public class ClientController {
                     return;
                 switch (words[0]) {
                     case "rotate" ->
-                        this.tileInHand.rotate();
+                            this.tileInHand.rotate();
                     case "position" -> {
                         Coordinates coordinates=transformCoordinates(scroll(words,1));
                         if(coordinates!=null){
@@ -356,7 +356,7 @@ public class ClientController {
                         }
                     }
                     default->
-                        System.out.println("\nInvalid input format");
+                            System.out.println("\nInvalid input format");
                 }
             }
             case WAIT_OTHER_PLAYER_ACTION->{

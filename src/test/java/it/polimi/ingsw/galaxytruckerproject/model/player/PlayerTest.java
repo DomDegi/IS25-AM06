@@ -137,10 +137,10 @@ class PlayerTest {
     //basic test
     @Test
     void use_double_cannon_test1() {
-        float base_firepower = player1.useDoubleCannons(new ArrayList<>());
+        float base_firepower = player1.useCannons(new ArrayList<>());
         assertEquals(base_firepower, 3.5);
         int initial_batteries = player1.getShipBoard().getNumBatteries();
-        player1.useDoubleCannons(player1.parseCoordinates(new String []{"2", "0", "2", "6"}));
+        player1.useCannons(player1.parseCoordinates(new String []{"2", "0", "2", "6"}));
         float after_2_double_cannons = player1.useDoubleCannons(player1.parseCoordinates(new String[]{"3", "6", "3", "6"}));
         assertEquals(base_firepower + 4, after_2_double_cannons);
         assertEquals(initial_batteries - 2, player1.getShipBoard().getNumBatteries());
