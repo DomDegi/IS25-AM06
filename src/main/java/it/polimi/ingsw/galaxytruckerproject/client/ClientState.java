@@ -17,7 +17,8 @@ public enum ClientState {
     WAIT_OTHER_PLAYER_ACTION,
     START_SHIP_CREATION,
     DRAW_CARD,
-    MANAGE_CABINS;
+    MANAGE_CABINS,
+    ROLL_DICE;
 
     @Override
     public String toString() {
@@ -39,6 +40,7 @@ public enum ClientState {
             case START_SHIP_CREATION -> {return "turn the hourglass to start the ship creation";}
             case DRAW_CARD -> {return "draw a card";}
             case MANAGE_CABINS -> {return "select the crew type in yours equip cabins";}
+            case ROLL_DICE -> {return"roll the dice";}
         }
         return "error in client state to string";
     }

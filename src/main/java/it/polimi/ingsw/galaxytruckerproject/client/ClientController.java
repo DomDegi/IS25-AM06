@@ -428,6 +428,11 @@ public class ClientController {
                 }
             }
 
+            case ROLL_DICE->{
+                virtualController.rolldice(name);
+                view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+            }
+
             case WAIT_OTHER_PLAYER_ACTION->{
                 switch(phase){
                     case LOGIN -> {
