@@ -21,6 +21,8 @@ public interface ShipBoardInterface {
 
     public PlayerInterface getPlayer();
 
+    public
+
     public Tile getTile(int x, int y);
 
     public Optional<Tile>[][] getTilesTable();

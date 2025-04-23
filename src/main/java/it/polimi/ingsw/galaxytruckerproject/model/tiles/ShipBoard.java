@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 import java.util.*;
 
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
@@ -74,8 +75,12 @@ public class ShipBoard implements ShipBoardInterface{
         return penalty;
     }
 
-    public PLAYER getPlayer() {
+    public Player getPlayer() {
         return player;
+    }
+
+    public LightPlayer getLightPlayer() {
+        return null;
     }
 
     public int getNumBatteries() {

@@ -5,7 +5,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 
 import java.util.ArrayList;
 
-public class Player {
+public class Player implements PlayerInterface {
     private int playerRanking;
     private final String playerName;
     private int playerPosition;
