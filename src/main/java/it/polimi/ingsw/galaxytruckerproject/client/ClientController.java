@@ -595,7 +595,8 @@ public class ClientController {
 
     }
 
-
-
+    public ViewInterface getView() {
+        return view;
+    }
 }
 

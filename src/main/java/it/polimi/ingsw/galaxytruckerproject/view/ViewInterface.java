@@ -3,6 +3,8 @@ package it.polimi.ingsw.galaxytruckerproject.view;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
@@ -76,11 +78,6 @@ public interface ViewInterface extends Remote, Serializable {
      */
     void showInGamePlayers (ArrayList<Player> players);
     /**
-     * asks for the inputted player's shipboard
-     */
-    void asksPlayersInfo ();
-    void showShipsErrors ();
-    /**
      * shows the chosen players shipboard
      * @param player
      * @param shipBoard
@@ -141,4 +138,6 @@ public interface ViewInterface extends Remote, Serializable {
     void notifyPlayerLandedOnPlanet(String playerName, int planet)  throws RemoteException;
     void wrongLocalInput();
     void showCard(Card card);
+    void printFlightboard(LightFlightboard lightFlightboard);
+    void printShipboard(LightShipBoard lightShipBoard);
 }

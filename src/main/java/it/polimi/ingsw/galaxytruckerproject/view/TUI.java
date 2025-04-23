@@ -79,16 +79,6 @@ public class TUI implements DisplayableView{
             System.out.println(player);
         }
     }
-
-    @Override
-    public void asksPlayersInfo() {
-
-    }
-
-    @Override
-    public void showShipsErrors() {
-
-    }
     @Override
     public void showPlayersBoard(String player, ShipBoard shipBoard) {
         System.out.println(player + "'s ShipBoard: " + shipBoard.toString());
@@ -107,7 +97,7 @@ public class TUI implements DisplayableView{
     @Override
     public void showBookedTiles(ArrayList<Tile> bookedTiles) {
         for(Tile bookedTile : bookedTiles){
-            System.out.println(bookedTile.toString());
+            System.out.println(bookedTile.toString()+"\n-\n");
         }
     }
     @Override
@@ -146,7 +136,7 @@ public class TUI implements DisplayableView{
 
     @Override
     public void notifyYouCanDrawThisCardDeck() {
-
+        System.out.println("You can draw this card deck");
     }
     @Override
     public void notifyYourShipIsCorrect() {
@@ -175,20 +165,10 @@ public class TUI implements DisplayableView{
     }
 
     @Override
-    public void asksWhichBranchToKeep(ArrayList<Set<Coordinates>> branch) {
-
-    }
-
-    @Override
     public void showScores(ArrayList<Player> players) {
         for(Player player : players){
             System.out.println(player.getPlayerName() + ": " + player.getCredit() );
         }
-    }
-
-    @Override
-    public void asksChosenMode() {
-        System.out.println("Choose a mode");
     }
     @Override
     public void printFlightboard(LightFlightboard lightFlightboard) {
@@ -215,7 +195,6 @@ public class TUI implements DisplayableView{
     public void wrongLocalInput() {
         System.out.println("You entered a wrong input");
     }
-
     @Override
     public void showCard(Card card) {
         System.out.println(card.toString());

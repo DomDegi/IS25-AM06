@@ -101,12 +101,6 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     public void showInGamePlayers(ArrayList<Player> players) {view.showInGamePlayers(players);}
 
     @Override
-    public void asksPlayersInfo() {view.asksPlayersInfo();}
-
-    @Override
-    public void showShipsErrors() {view.showShipsErrors();}//non dovrebbe esistere
-
-    @Override
     public void showPlayersBoard(String player, ShipBoard shipBoard) {
         view.showPlayersBoard(player, shipBoard);
     }
@@ -175,6 +169,16 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     @Override
     public void showCard(Card card) {
         view.showCard(card);
+    }
+
+    @Override
+    public void printFlightboard(LightFlightboard lightFlightboard) {
+        view.printFlightboard(lightFlightboard);
+    }
+
+    @Override
+    public void printShipboard(LightShipBoard lightShipBoard) {
+        view.printShipboard(lightShipBoard);
     }
 
     @Override
