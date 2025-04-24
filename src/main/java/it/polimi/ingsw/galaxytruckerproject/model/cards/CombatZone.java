@@ -275,4 +275,9 @@ public class CombatZone extends Card {
             }
         return string.toString();
     }
+
+    @Override
+    public LinkedHashMap<ChallengeType, Penalty> getChallenges() {
+        return listOfChallenges;
+    }
 }

@@ -235,4 +235,9 @@ public class Pirates extends Enemies {
     public ArrayList<Projectile> getListOfProjectiles() {
         return penaltyIfLose.getListOfProjectiles();
     }
+
+    @Override
+    public int getGainedCredits() {
+        return rewardCredits;
+    }
 }

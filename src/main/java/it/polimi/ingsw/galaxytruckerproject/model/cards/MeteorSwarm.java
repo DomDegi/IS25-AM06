@@ -157,4 +157,9 @@ public class MeteorSwarm extends Card {
     public void setDiceRoll(int diceRoll) {
         this.currentDiceRoll = diceRoll;
     }
+
+    @Override
+    public ArrayList<Projectile> getListOfProjectiles() {
+        return listOfMeteors;
+    }
 }
