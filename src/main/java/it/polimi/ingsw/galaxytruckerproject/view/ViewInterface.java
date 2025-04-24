@@ -6,9 +6,9 @@ import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
@@ -18,7 +18,6 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Set;
 
 public interface ViewInterface extends Remote, Serializable {
     /**
@@ -140,4 +139,5 @@ public interface ViewInterface extends Remote, Serializable {
     void showCard(Card card);
     void printFlightboard(LightFlightboard lightFlightboard);
     void printShipboard(LightShipBoard lightShipBoard);
+    void printProjectile(Projectile projectile);
 }

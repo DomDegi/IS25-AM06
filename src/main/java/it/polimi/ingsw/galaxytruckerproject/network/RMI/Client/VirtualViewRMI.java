@@ -8,6 +8,7 @@ import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
@@ -22,7 +23,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 
 public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     //private final VirtualController server;
@@ -179,6 +179,11 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     @Override
     public void printShipboard(LightShipBoard lightShipBoard) {
         view.printShipboard(lightShipBoard);
+    }
+
+    @Override
+    public void printProjectile(Projectile projectile) {
+        view.printProjectile(projectile);
     }
 
     @Override

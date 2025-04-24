@@ -6,6 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.*;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
@@ -180,6 +181,11 @@ public class TUI implements DisplayableView{
     @Override
     public void printShipboard(LightShipBoard lightShipBoard) {
         System.out.println("this is your shipboard now:\n"+lightShipBoard.toString());
+    }
+
+    @Override
+    public void printProjectile(Projectile projectile) {
+        System.out.println("you're under attack from:\n"+projectile.toString());
     }
 
     @Override
