@@ -9,14 +9,14 @@ import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.SmallMeteor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
 class MeteorSwarmTest {
 
@@ -29,6 +29,10 @@ class MeteorSwarmTest {
     ShipBoard shipBoard3;
     FlightBoard flightBoard;
     MeteorSwarm meteorSwarm;
+    private final VirtualView mockView1 = mock(VirtualView.class);
+    private final VirtualView mockView2 = mock(VirtualView.class);
+    private final VirtualView mockView3 = mock(VirtualView.class);
+    Map<String,VirtualView> viewMap = new HashMap<>();
 
     @BeforeEach
     void setUp() {
@@ -49,6 +53,10 @@ class MeteorSwarmTest {
         player1 = new Player("MimmoPericoloso", PlayersColor.BLUE);
         player2 = new Player("FedeGalattico", PlayersColor.RED);
         player3 = new Player("EnnioVolante", PlayersColor.YELLOW);
+
+        viewMap.put("MimmoPericoloso", mockView1);
+        viewMap.put("FedeGalattico", mockView2);
+        viewMap.put("EnnioVolante", mockView3);
 
         //shipboard 5 to player1
         shipBoard1 = new ShipBoard(player1);
@@ -157,7 +165,7 @@ class MeteorSwarmTest {
     void testMeteorSwarm() {
         int player1_initialDays = player1.getPlayerPosition();
         game.setDrawnCard(meteorSwarm);
-        game.getDrawnCard().initializeCard(game, );
+        game.getDrawnCard().initializeCard(game, viewMap);
         game.setGameState(GameState.CARD_EVENT);
         assertEquals(meteorSwarm, game.getDrawnCard());
         //first player (2) to play doesn't have enough crew so should be skipped automatically whatever his input is

@@ -83,7 +83,7 @@ public class OpenSpace extends Card {
         }
         this.currentPlayer = game.getListOfInFlightPlayers().get(playerIndex);
         this.currentPlayerView = viewsMap.get(currentPlayer.getPlayerName());
-        if (currentPlayer.IsDisconnected()) {
+        if (currentPlayer.IsDisconnected() || currentPlayer.getShipBoard().getDoubleEngine().isEmpty() || currentPlayer.getShipBoard().getNumBatteries() == 0) {
             engineChoice(currentPlayer.getPlayerName(), 0, new ArrayList<>());
             return;
         }

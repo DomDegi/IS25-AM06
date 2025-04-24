@@ -6,12 +6,17 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 class OpenSpaceTest {
     private OpenSpace openSpace;
@@ -20,6 +25,10 @@ class OpenSpaceTest {
     private Player player2;
     private Player player3;
     private FlightBoard flightBoard;
+    private final VirtualView mockView1 = mock(VirtualView.class);
+    private final VirtualView mockView2 = mock(VirtualView.class);
+    private final VirtualView mockView3 = mock(VirtualView.class);
+    Map<String,VirtualView> viewMap = new HashMap<>();
 
     @BeforeEach
     void setUp() {
@@ -29,6 +38,10 @@ class OpenSpaceTest {
         player2 = new Player("FedeGalattico", PlayersColor.RED);
         player3 = new Player("EnnioVolante", PlayersColor.YELLOW);
         openSpace = new OpenSpace(1);
+
+        viewMap.put("MimmoPericoloso", mockView1);
+        viewMap.put("FedeGalattico", mockView2);
+        viewMap.put("EnnioVolante", mockView3);
 
         //shipboard 5 to player1
         ShipBoard shipBoard1 = new ShipBoard(player1);
@@ -137,22 +150,12 @@ class OpenSpaceTest {
     @Test
     void successfully_initialize_card_and_execute () {
         game.setDrawnCard(openSpace);
-        game.getDrawnCard().initializeCard(game, );
-        String input;
-        String[] words;
+        game.getDrawnCard().initializeCard(game, viewMap);
 
-        input= "no";
-        words= input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
-        input= "no";
-        words= input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
-        input= "no";
-        words= input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        input= "no";
-        words= input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"FedeGalattico");
+
+        game.getDrawnCard().engineChoice("EnnioVolante", 0, new ArrayList<>());
+        game.getDrawnCard().engineChoice("MimmoPericoloso", 0, new ArrayList<>());
+        game.getDrawnCard().engineChoice("FedeGalattico", 0, new ArrayList<>());
 
 
         assertEquals(6, player1.getPlayerPosition());
@@ -164,28 +167,13 @@ class OpenSpaceTest {
     @Test
     void successfully_initialize_card_and_execute_yes () {
         game.setDrawnCard(openSpace);
-        game.getDrawnCard().initializeCard(game, );
-        String input;
-        String[] words;
+        game.getDrawnCard().initializeCard(game, viewMap);
+        ArrayList<Coordinates> batteries = new ArrayList<>();
+        batteries.add(new Coordinates(3,3));
 
-        input= "no";
-        words= input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
-        input= "no";
-        words= input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
-        input= "no";
-        words= input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        input= "Yes";
-        words= input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"FedeGalattico");
-        input= "3 4";
-        words= input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"FedeGalattico");
-        input= "3 3";
-        words= input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"FedeGalattico");
+        game.getDrawnCard().engineChoice("EnnioVolante", 0, new ArrayList<>());
+        game.getDrawnCard().engineChoice("MimmoPericoloso", 0, new ArrayList<>());
+        game.getDrawnCard().cannonChoice("FedeGalattico", 1, batteries);
 
 
         assertEquals(6, player1.getPlayerPosition());

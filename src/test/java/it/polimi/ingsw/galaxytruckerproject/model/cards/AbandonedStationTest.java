@@ -3,19 +3,26 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 
 class AbandonedStationTest {
     private AbandonedStation abandonedStation;
@@ -23,15 +30,22 @@ class AbandonedStationTest {
     private Player player1;
     private Player player2;
     private Player player3;
+    private final VirtualView mockView1 = mock(VirtualView.class);
+    private final VirtualView mockView2 = mock(VirtualView.class);
+    private final VirtualView mockView3 = mock(VirtualView.class);
+    Map<String,VirtualView> viewMap = new HashMap<>();
     private FlightBoard flightBoard;
 
     @BeforeEach
     void setUp() {
-        game = new Game(GameMode.LEVEL2, 4);
+        game = new Game(GameMode.LEVEL2, 3);
         flightBoard = game.getFlightBoard();
         player1 = new Player("MimmoPericoloso", PlayersColor.BLUE);
         player2 = new Player("FedeGalattico", PlayersColor.RED);
         player3 = new Player("EnnioVolante", PlayersColor.YELLOW);
+        viewMap.put("MimmoPericoloso", mockView1);
+        viewMap.put("FedeGalattico", mockView2);
+        viewMap.put("EnnioVolante", mockView3);
         Goods good1=new Goods(BLUE);
         Goods good2=new Goods(RED);
         Goods good3=new Goods(GREEN);
@@ -156,36 +170,28 @@ class AbandonedStationTest {
     @Test
     void successfully_initialize_card () {
         game.setDrawnCard(abandonedStation);
-        game.getDrawnCard().initializeCard(game, );
+        game.getDrawnCard().initializeCard(game,viewMap);
     }
 
     @Test
     void successfully_execute_card_and_refused () {
         successfully_initialize_card();
-        String input="no pippo pasta";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
+        abandonedStation.choice(player1.getPlayerName(), false);
         assert(player1.getShipBoard().getAllGoods().isEmpty());
     }
 
     @Test
     void successfully_execute_card_and_error () {
         successfully_initialize_card();
-        String input="ni pippo pasta";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        input="1 1 3";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
+        abandonedStation.choice(player1.getPlayerName(), true);
+        abandonedStation.manageGoods(player1.getPlayerName(), 200, new ArrayList<>());
         assert(player1.getShipBoard().getAllGoods().isEmpty());
     }
 
     @Test
     void successfully_execute_card_and_accepted () {
         successfully_initialize_card();
-        String input="yes";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
+        abandonedStation.choice(player1.getPlayerName(), true);
         assertTrue(player1.getShipBoard().getAllGoods().isEmpty());
     }
 
@@ -193,116 +199,79 @@ class AbandonedStationTest {
     void successfully_execute_card_accepted_landed_putted () {
         successfully_initialize_card();
         successfully_execute_card_and_accepted();
-        String input="1 1 3";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
+        ArrayList<CargoHold> modifiedTiles = new ArrayList<>();
+        CargoHold newTile0 = new CargoBlue(3, new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),0);
+        newTile0.setCoordinates(new Coordinates(1,4));
+        newTile0.addGood(new Goods(BLUE));
+        modifiedTiles.add(newTile0);
+        abandonedStation.manageGoods(player1.getPlayerName(), 1, modifiedTiles);
         assertEquals(1,player1.getShipBoard().getAllGoods().size());
-    }
-
-    @Test
-    void successfully_execute_card_accepted_landed_error () {
-        successfully_execute_card_and_accepted();
-        String input="10 1 3";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        input="1 1 3";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        input="1 1 3";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        input="1 1 3";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        assertEquals(3,player1.getShipBoard().getAllGoods().size());
     }
 
     @Test
     void successfully_execute_card_accepted_landed_overloaded () {
         successfully_execute_card_and_accepted();
-        String input="1 1 3";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        input="1 1 3";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        input="1 1 3";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        input="1 1 3";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
+        ArrayList<CargoHold> modifiedTiles = new ArrayList<>();
+        CargoHold newTile0=new CargoRed(3, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),0);
+        newTile0.setCoordinates(new Coordinates(1,3));
+        newTile0.addGood(new Goods(BLUE));
+        newTile0.addGood(new Goods(RED));
+        newTile0.addGood(new Goods(RED));
+        //Shouldn't get added
+        newTile0.addGood(new Goods(BLUE));
+        modifiedTiles.add(newTile0);
+        abandonedStation.manageGoods(player1.getPlayerName(), 9, modifiedTiles);
         assertEquals(3,player1.getShipBoard().getAllGoods().size());
-
+        assertEquals(9, player1.getShipBoard().convertGoodsToCredit());
     }
 
     @Test
-    void managed_full_cargo(){
-        successfully_execute_card_accepted_landed_overloaded ();
-        String input="1";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        assertEquals(3,player1.getShipBoard().getAllGoods().size());
-    }
-
-    @Test
-    void managed_full_cargo_error(){
-        successfully_execute_card_accepted_landed_overloaded ();
-        String input="4";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        input="1";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        assertEquals(3,player1.getShipBoard().getAllGoods().size());
-    }
-
-    @Test
-    void successfully_execute_card_accepted_landed_overloaded_managed_error(){
-        managed_full_cargo();
-        String input="1";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        assertEquals(3,player1.getShipBoard().getAllGoods().size());
-    }
-
-    @Test
-    void successfully_execute_card_accepted_landed_overloaded_managed_resolved(){
-        managed_full_cargo();
-        String input="1 1 3";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        assertEquals(3,player1.getShipBoard().getAllGoods().size());
-    }
-
-    @Test
-    void successfully_execute_card_accepted_landed_pick(){
+    void successfully_execute_card_accepted_landed_not_hazard_cargo () {
         successfully_execute_card_and_accepted();
-        String input="pick 1 3";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
+        ArrayList<CargoHold> modifiedTiles = new ArrayList<>();
+        CargoHold newTile0 = new CargoBlue(3, new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),0);
+        newTile0.setCoordinates(new Coordinates(1,4));
+        newTile0.addGood(new Goods(RED));
+        abandonedStation.manageGoods(player1.getPlayerName(), 4, modifiedTiles);
         assertEquals(0,player1.getShipBoard().getAllGoods().size());
     }
 
     @Test
-    void successfully_execute_card_accepted_landed_overloaded_managed_pick(){
-        managed_full_cargo();
-        String input="pick 1 3";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        input="1";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        assertEquals(2,player1.getShipBoard().getAllGoods().size());
+    void wrong_type_of_cargo_hazard_for_notHazard_cargo () {
+        successfully_execute_card_and_accepted();
+        successfully_execute_card_and_accepted();
+        ArrayList<CargoHold> modifiedTiles = new ArrayList<>();
+        CargoHold newTile0=new CargoRed(3, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),0);
+        newTile0.setCoordinates(new Coordinates(1,4));
+        newTile0.addGood(new Goods(RED));
+        abandonedStation.manageGoods(player1.getPlayerName(), 4, modifiedTiles);
+        assertEquals(0,player1.getShipBoard().getAllGoods().size());
     }
 
     @Test
-    void successfully_execute_card_accepted_landed_overloaded_managed_pick_done(){
-        successfully_execute_card_accepted_landed_overloaded_managed_pick();
-        String input="done";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        assertEquals(2,player1.getShipBoard().getAllGoods().size());
+    void wrong_type_of_cargo_different_spaces () {
+        successfully_execute_card_and_accepted();
+        ArrayList<CargoHold> modifiedTiles = new ArrayList<>();
+        CargoHold newTile0 = new CargoBlue(1, new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),0);
+        newTile0.setCoordinates(new Coordinates(1,4));
+        newTile0.addGood(new Goods(BLUE));
+        abandonedStation.manageGoods(player1.getPlayerName(), 1, modifiedTiles);
+        assertEquals(0,player1.getShipBoard().getAllGoods().size());
     }
 
+    void refused_by_everyone() {
+        successfully_initialize_card();
+        abandonedStation.choice(player1.getPlayerName(), false);
+        abandonedStation.choice(player2.getPlayerName(), false);
+        abandonedStation.choice(player3.getPlayerName(), false);
+        assertEquals(GameState.DRAW_CARD, game.getGameState());
+    }
+
+    void wrong_player_chooses() {
+        successfully_initialize_card();
+        abandonedStation.choice(player1.getPlayerName(), false);
+        abandonedStation.choice(player3.getPlayerName(), false);
+        abandonedStation.choice(player2.getPlayerName(), false);
+        assertEquals(GameState.CARD_EVENT, game.getGameState());
+    }
 }

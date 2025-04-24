@@ -7,16 +7,26 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 class AbandonedShipTest {
     private AbandonedShip abandonedShip;
     private Game game;
+    private final VirtualView mockView1 = mock(VirtualView.class);
+    private final VirtualView mockView2 = mock(VirtualView.class);
+    private final VirtualView mockView3 = mock(VirtualView.class);
+    private final VirtualView mockView4 = mock(VirtualView.class);
+    Map<String,VirtualView> viewMap = new HashMap<>();
     private Player player1;
     private Player player2;
     private Player player3;
@@ -32,6 +42,10 @@ class AbandonedShipTest {
         player4 = new Player("pietro", PlayersColor.GREEN);
         abandonedShip = new AbandonedShip(1, 2, 3, 10);
         player1 = new Player("MimmoPericoloso", PlayersColor.BLUE);
+        viewMap.put(player1.getPlayerName(), mockView1);
+        viewMap.put(player2.getPlayerName(), mockView2);
+        viewMap.put(player3.getPlayerName(), mockView3);
+        viewMap.put(player4.getPlayerName(), mockView4);
         ShipBoard shipBoard1 = new ShipBoard(player1);
         player1.setPlayerShip(shipBoard1);
         shipBoard1.initializeLevel2();
@@ -102,23 +116,28 @@ class AbandonedShipTest {
 
     @Test
     void the_only_player_that_can_pass_is_player1_in_position_2_and_accepts_the_trade() {
-
+        player1.setAllCrewToHuman();
         int player1_initialDays = player1.getPlayerPosition();
         game.setDrawnCard(abandonedShip);
-        game.getDrawnCard().initializeCard(game, );
+        game.getDrawnCard().initializeCard(game, viewMap);
         game.setGameState(GameState.CARD_EVENT);
         assertEquals(abandonedShip, game.getDrawnCard());
         //first player (2) to play doesn't have enough crew so should be skipped automatically whatever his input is
         assertEquals(player2, abandonedShip.getPlayerToPlay());
-        abandonedShip.executeCard(game, , player2.getPlayerName());
         assertEquals(player1, abandonedShip.getPlayerToPlay());
         //player 1 is next and says yes
-        abandonedShip.executeCard(game, , player1.getPlayerName());
-        //now player 2 has to choose crew to remove
-        abandonedShip.executeCard(game, , player1.getPlayerName());
+        abandonedShip.choice(player1.getPlayerName(), true);
+        //now player 1 has to choose crew to remove
+        ArrayList<Coordinates> toRemove = new ArrayList<>();
+        toRemove.add(new Coordinates(1,1));
+        toRemove.add(new Coordinates(1,1));
+        toRemove.add(new Coordinates(2,0));
+        abandonedShip.removeCrew(player1.getPlayerName(), toRemove);
         //it's still his turn because he typed one of the coordinates wrong, now has to re input the last one
+        toRemove.removeLast();
+        toRemove.add(new Coordinates(2,1));
         assertEquals(player1, abandonedShip.getPlayerToPlay());
-        abandonedShip.executeCard(game, , player1.getPlayerName());
+        abandonedShip.removeCrew(player1.getPlayerName(), toRemove);
         assertEquals(GameState.DRAW_CARD, game.getGameState());
         assertEquals(10, player1.getCredit());
         assertEquals(player1.getPlayerPosition(), player1_initialDays - 2);
