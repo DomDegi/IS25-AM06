@@ -1,10 +1,9 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
-import it.polimi.ingsw.galaxytruckerproject.model.goods.*;
-
-import java.util.Optional;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public abstract class Tile {
     protected Link north;
@@ -12,16 +11,34 @@ public abstract class Tile {
     protected Link south;
     protected Link west;
     protected Coordinates coordinates;
-    protected ShipBoard shipBoard;
 
+    protected ShipBoardInterface shipBoard;
+    protected final int key;
+    protected boolean booked;
+
+    public Tile(Link north, Link east, Link south, Link west, int key) {
+        this.north =north;
+        this.east=east;
+        this.south=south;
+        this.west=west;
+        this.coordinates = new Coordinates(0,0);
+        this.key = key;
+        this.booked = false;
+    }
+    //CONSTRUCTOR METHOD FOR THE TESTING
     public Tile(Link north, Link east, Link south, Link west) {
         this.north =north;
         this.east=east;
         this.south=south;
         this.west=west;
         this.coordinates = new Coordinates(0,0);
+        this.key = 0;
+        this.booked = false;
     }
 
+    public int getKey() {
+        return key;
+    }
     @Override
     public String toString() {
         return "Tile north:"+north.toString() + " east:" + east.toString() + " south:" + south.toString() + " west:" + west.toString()+"\n"
@@ -99,7 +116,7 @@ public abstract class Tile {
         return this.coordinates;
     }
 
-    public void setShipBoard(ShipBoard shipBoard) {
+    public void setShipBoard(ShipBoardInterface shipBoard) {
         this.shipBoard = shipBoard;
     }
 
@@ -137,10 +154,19 @@ public abstract class Tile {
         //System.out.println("THIS TILE IS NOT A ALIEN LIFE SUPPORT SYSTEM");
         return CrewType.NotSupportSystem;
     }
-    public ArrayList<Coordinates> adjacentLifeSupport(){System.out.println("THIS TILE IS NOT A CABIN"); return new ArrayList<Coordinates>();}
+    public ArrayList<Coordinates> adjacentLifeSupport(){System.out.println("THIS TILE IS NOT A CABIN"); return new ArrayList<>();}
 
 
     public CrewType getCrewType(){System.out.println("THIS TILE IS NOT A CABIN"); return CrewType.NotAcabin;}
+    public AlienOptions getAlienability() { return AlienOptions.NO;}
     public void checkAlienability(){System.out.println("THIS TILE IS NOT A CABIN");}
+    public int getCrew() {return 0;}
 
+    public boolean isBooked() {
+        return booked;
+    }
+
+    public void setBooked(boolean booked) {
+        this.booked = booked;
+    }
 }

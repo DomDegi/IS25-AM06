@@ -1,11 +1,32 @@
 package it.polimi.ingsw.galaxytruckerproject.lightmodel;
 
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+
+import java.rmi.RemoteException;
+
 public class LightPlayer {
     private int position; //position on the board
     private LightShipBoard shipboard;
     private int rank;
     private String playerName;
     private boolean landed = false;
+    private PlayersColor color;
+    private int credits;
+
+    public LightPlayer(String playerName, PlayersColor color) {
+        this.playerName = playerName;
+        this.color = color;
+    }
+    public LightPlayer(Player player){
+        this.playerName = player.getPlayerName();
+        this.color = player.getPlayerColor();
+    }
+    @Override
+    public String toString() {
+        return playerName+" position:"+position+" rank:"+rank;
+    }
 
     public String getPlayerName() {
         return playerName;
@@ -36,5 +57,18 @@ public class LightPlayer {
     }
     public void setShipboard(LightShipBoard shipboard) {
         this.shipboard = shipboard;
+    }
+    public void bookTile(Tile tile) throws RemoteException {
+       boolean mustBeTrue= shipboard.addBookedTile(tile);
+       if(!mustBeTrue){
+           System.out.println("error in tile boooking "+tile);
+       }
+    }
+
+    public void gainCredits(int credits) {
+        this.credits+=credits;
+    }
+    public int getCredits() {
+        return credits;
     }
 }

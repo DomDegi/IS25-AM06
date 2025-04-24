@@ -1,12 +1,13 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
-import java.util.*;
 
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 
+import java.util.*;
 
-public class ShipBoard {
+
+public class ShipBoard implements ShipBoardInterface{
     protected final Player player; //protected because it need to be called in StartingCabin (Tiles)
     private Optional<Tile>[][] tilesTable;
     private int numExposedConnectors;
@@ -69,6 +70,7 @@ public class ShipBoard {
     public void setHumanCrew(int numHumanCrew) {
         this.numHumanCrew = numHumanCrew;
     }
+
     public int getPenalty() {
         return penalty;
     }
@@ -255,7 +257,7 @@ public class ShipBoard {
         for (int[] pos : voidPositions) {
             this.tilesTable[pos[0]][pos[1]] = Optional.of(new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH)));
         }
-        Tile tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL));
+        Tile tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL), 0);
         positionTile(Optional.of(tile), new Coordinates(2, 3));
     }
 
@@ -280,13 +282,17 @@ public class ShipBoard {
         for (int[] pos : voidPositions) {
             tilesTable[pos[0]][pos[1]] = Optional.of(new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH)));
         }
-        Tile tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL));
+        Tile tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),0);
         positionTile(Optional.of(tile), new Coordinates(2, 3));
 
         this.tilesTable = tilesTable;
     }
 
 
+    public void destroyForCorrection(Coordinates coordinates) {
+        tilesTable[coordinates.x][coordinates.y].get().destroy();
+        tilesTable[coordinates.getX()][coordinates.getY()] = Optional.empty();
+    }
 
     //destroy tile+ return set of new possible shipboard coordinates
     public ArrayList<Set<Coordinates>> destroyTile(Coordinates coordinates) {
@@ -464,7 +470,7 @@ public class ShipBoard {
         return false;
     }
 
-    public void epidemic(){
+    public ArrayList<Tile> epidemic(){
         HashSet<Coordinates> InfectedCabin = new HashSet<>();
         for(Coordinates coordinates : crewCoordinates){
             for(Coordinates coordinates2 : crewCoordinates){
@@ -481,6 +487,11 @@ public class ShipBoard {
         for(Coordinates coordinates : InfectedCabin){
             tilesTable[coordinates.getX()][coordinates.getY()].get().removeCrew();
         }
+        ArrayList<Tile> modifiedCabin = new ArrayList<>();
+        for (Coordinates coordinates: InfectedCabin) {
+            modifiedCabin.add(this.getTile(coordinates));
+        }
+        return modifiedCabin;
     }
 
     //BATTERY METHODS
@@ -609,25 +620,6 @@ public class ShipBoard {
         tilesTable[coordinates.getX()][coordinates.getY()].get().removeGood(good);
     }
 
-    /*
-    public void swapGoods(Coordinates coordinatesFrom,Coordinates coordinatesTo, Goods goodToSwap ){
-        //Check if the coordinates are of a CargoHolder
-        if(cargoHoldCoordinates.contains(coordinatesFrom) && cargoHoldCoordinates.contains(coordinatesTo)){
-            if(cargoHoldCoordinates.contains(goodToSwap)){
-               if(gainGoods(goodToSwap, coordinatesTo))
-                    removeGood(goodToSwap, coordinatesFrom);
-            }
-            else{
-                System.out.println("This Good is not present in the CargoHold you selected");
-            }
-            tilesTable[coordinatesFrom.getX()][coordinatesFrom.getY()].get().getCargo().contains(goodToSwap);
-        }
-        else{
-            System.out.println("ONE OR BOTH THE TWO TILES ARE NOT A CARGOHOLDER");
-        }
-    }
-    */
-
     public int convertGoodsToCredit(){
         int credit = 0;
         Goods good = new Goods(GoodsColor.RED);
@@ -722,5 +714,8 @@ public class ShipBoard {
         getTile(coordinates).addBattery();
     }
 
+    public void updateTile(Coordinates coordinates, Tile newTile){
+        tilesTable[coordinates.getX()][coordinates.getY()] = Optional.of(newTile);
+    }
 
 }

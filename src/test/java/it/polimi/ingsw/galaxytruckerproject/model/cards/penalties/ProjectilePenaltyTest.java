@@ -2,7 +2,6 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards.penalties;
 
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.ProjectilePenalty;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.LargeCannonShot;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.LargeMeteor;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
@@ -10,6 +9,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.SmallMeteor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -42,10 +42,10 @@ class ProjectilePenaltyTest {
         shipBoard = new ShipBoard(player);
         player.setPlayerShip(shipBoard);
         shipBoard.initializeLevel2();
-        SingleCannon singleCannonN = new SingleCannon(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.UNIVERSAL), new Link(Connectors.SMOOTH));
-        SingleCannon singleCannonE = new SingleCannon(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.UNIVERSAL));
-        SingleCannon singleCannonS = new SingleCannon(new Link(Connectors.UNIVERSAL), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH));
-        SingleCannon singleCannonW = new SingleCannon(new Link(Connectors.SMOOTH), new Link(Connectors.UNIVERSAL), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH));
+        SingleCannon singleCannonN = new SingleCannon(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.UNIVERSAL), new Link(Connectors.SMOOTH),0);
+        SingleCannon singleCannonE = new SingleCannon(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.UNIVERSAL),0);
+        SingleCannon singleCannonS = new SingleCannon(new Link(Connectors.UNIVERSAL), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH),0);
+        SingleCannon singleCannonW = new SingleCannon(new Link(Connectors.SMOOTH), new Link(Connectors.UNIVERSAL), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH),0);
 
         shipBoard.positionTile(Optional.of(singleCannonN), new Coordinates(3, 1));
         shipBoard.positionTile(Optional.of(singleCannonE), new Coordinates(4, 2));
@@ -56,20 +56,20 @@ class ProjectilePenaltyTest {
         player1= new  Player("MimmoPericoloso", PlayersColor.BLUE);
         shipBoard1=new ShipBoard(player1);
         shipBoard1.initializeLevel2();
-        Tile tile1=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
+        Tile tile1=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),0);
         shipBoard1.positionTile(Optional.of(tile1), new Coordinates(1,3));
-        Tile tile2=new CargoBlue(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE));
+        Tile tile2=new CargoBlue(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),0);
         shipBoard1.positionTile(Optional.of(tile2), new Coordinates(2,2));
-        Tile tile3=new EquipCabin( new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE));
+        Tile tile3=new EquipCabin( new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),0);
         shipBoard1.positionTile(Optional.of(tile3), new Coordinates(2,4));
         tile3.setCrewType(CrewType.HUMAN);
-        Tile tile4=new Shields( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL));
+        Tile tile4=new Shields( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),0);
         shipBoard1.positionTile(Optional.of(tile4), new Coordinates(2,5));
-        Tile tile5=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),3);
+        Tile tile5=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),0,3);
         shipBoard1.positionTile(Optional.of(tile5), new Coordinates(3,2));
-        Tile tile7=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),2);
+        Tile tile7=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),0,2);
         shipBoard1.positionTile(Optional.of(tile7), new Coordinates(3,3));
-        Tile tile6=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
+        Tile tile6=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),0);
         shipBoard1.positionTile(Optional.of(tile6), new Coordinates(3,4));
         boolean result=shipBoard1.verifyCorrectness();
 
@@ -97,7 +97,7 @@ class ProjectilePenaltyTest {
         penalty = new ProjectilePenalty(listOfMeteors1);
         penalty.setDiceRoll(1);
 
-        int returnValue = penalty.applyPenalty(gameLvl2, player, input);
+        int returnValue = penalty.applyPenalty(gameLvl2, player, , input, );
         assertEquals(1, returnValue);
     }
 
@@ -108,7 +108,7 @@ class ProjectilePenaltyTest {
         System.out.println("Lancio cannonShot");
         String[] input = {};
         penalty = new ProjectilePenalty(listOfLargeCannonShot1);
-        int returnValue = penalty.applyPenalty(gameLvl2, player, input);
+        int returnValue = penalty.applyPenalty(gameLvl2, player, , input, );
         assertEquals(1, returnValue);
         System.out.println(shipBoard.toString());
     }
@@ -119,7 +119,7 @@ class ProjectilePenaltyTest {
         System.out.println("Lancio cannonShot");
         String[] input = {};
         penalty = new ProjectilePenalty(listOfMeteorsFull);
-        int returnValue = penalty.applyPenalty(gameLvl2, player, input);
+        int returnValue = penalty.applyPenalty(gameLvl2, player, , input, );
         assertEquals(0, returnValue);
         System.out.println(shipBoard.toString());
     }
@@ -132,7 +132,7 @@ class ProjectilePenaltyTest {
         penalty = new ProjectilePenalty(listOfMeteors1);
         penalty.setDiceRoll(7);
         //modified input method to use battery in this test
-        int returnValue = penalty.applyPenalty(gameLvl2, player1, input);
+        int returnValue = penalty.applyPenalty(gameLvl2, player1, , input, );
         assertEquals(1, returnValue);
         assertEquals(shipBoard1.getTile(3,3).getNumBatteries(),1);
     }
@@ -145,7 +145,7 @@ class ProjectilePenaltyTest {
         penalty = new ProjectilePenalty(listOfMeteors1);
         penalty.setDiceRoll(8);
         //modified input method to use battery in this test
-        int returnValue = penalty.applyPenalty(gameLvl2, player1, input);
+        int returnValue = penalty.applyPenalty(gameLvl2, player1, , input, );
         assertEquals(1, returnValue);
         assertEquals(shipBoard1.getTilesTable()[2][4],Optional.empty());
         assertEquals(shipBoard1.getTilesTable()[2][5],Optional.empty());

@@ -2,11 +2,16 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards.penalties;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
+import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Defense;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
+import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -15,8 +20,10 @@ import java.util.Set;
 public class ProjectilePenalty extends Penalty {
     private final ArrayList<Projectile> listOfProjectiles;
     private int diceRoll = 0;
-    private Game game = null;
+    private GameInterface game = null;
     private Defense defenseStatus = null;
+    private ArrayList<Set<Coordinates>> branch = null;
+    private Coordinates destroyedTile = null;
 
     @JsonCreator
     public ProjectilePenalty(@JsonProperty("listOfShots") ArrayList<Projectile> listOfShots) {
@@ -28,57 +35,6 @@ public class ProjectilePenalty extends Penalty {
     }
 
     @Override
-    public int applyPenalty(Game game, Player player, String[] input) {
-        if (this.game == null) {
-            this.game = game;
-        }
-        if (diceRoll == 0) {
-            if (input!=null && input.length>0 && !input[0].equalsIgnoreCase("roll")) {
-                printInfo(player);
-                System.out.println("input roll to roll the dices and find out exactly what will be hit");
-            } else {
-                Random rand = new Random();
-                diceRoll = 2 + rand.nextInt(11);
-                System.out.println("diceRoll: " + diceRoll);
-                printInfo(player);
-            }
-            //return 0;
-        } else {
-            printInfo(player);
-        }
-        if (defenseStatus == Defense.PROTECTED) {
-            resetForNextProjectile();
-
-        } else if (defenseStatus == Defense.HIT) {
-            System.out.println("hit");
-            playerGetsHit(player, input );
-
-        } else if (defenseStatus == Defense.CHOOSETOUSEBATTERY) {
-            switch (playerUsesBatteryToDefend(player, input)) {
-                //there are no battery to be used: player gets hit and initialize next projectile
-                case 0: {
-                    playerGetsHit(player, input);
-                    resetForNextProjectile();
-                    break;
-                }
-                //player input is wrong
-                case 1: {
-                    System.out.println("wrong input");
-                    break;
-                }
-                //player successfully used a battery to defend
-                case 2: {
-                    resetForNextProjectile();
-                }
-            }
-        }
-        if (listOfProjectiles.isEmpty()) {
-            return 1;
-        }
-        return 0;
-    }
-
-    @Override
     public String toString () {
         StringBuilder string = new StringBuilder("Projectile Penalty: ");
         for (Projectile projectile: listOfProjectiles) {
@@ -87,14 +43,14 @@ public class ProjectilePenalty extends Penalty {
         return string.toString();
     }
 
+    //asks the player to roll the dices
     @Override
-    //prints next cannon shot coming and sets the defense status for it (HIT, CHOOSESHIELD or PROTECTED)
-    public void printInfo (Player player){
-        System.out.println(listOfProjectiles.getFirst().toString() + "\n");
-        if (diceRoll != 0) {
-            this.defenseStatus = listOfProjectiles.getFirst().throwProjectile(player, diceRoll, game);
-            System.out.println(defenseStatus);
+    public boolean initializePenalty(VirtualView view, Player player) {
+        if (getListOfProjectiles().isEmpty()) {
+            return false;
         }
+        view.setClientState(ClientState.ACTION);
+        return true;
     }
 
 
@@ -104,41 +60,96 @@ public class ProjectilePenalty extends Penalty {
         }
     }
 
-    public void playerGetsHit (Player player , String[]input){
-        ArrayList<Set<Coordinates>> branch = player.getShipBoard().destroyTile(listOfProjectiles.getFirst().getCoordinatesToDestroy());
-        int i=0;
-        while (branch.size()>1 && i==0) {
-            System.out.println("choose ShipBoard branch \n" + branch.toString());
-            ArrayList<Coordinates> coordinates=player.parseCoordinates(input);
-            for (Set<Coordinates> set : branch) {
-                if (set.contains(coordinates.getFirst())) {
-                    player.getShipBoard().SetNewShip(set);
-                    i=1;
-                }
-            }
-
-        }
-        resetForNextProjectile();
+    public Coordinates playerGetsHit (Player player, ViewInterface view) {
+        Coordinates toDestroy = this.getBrokenTile();
+        this.branch = player.getShipBoard().destroyTile(toDestroy);
+        return toDestroy;
     }
 
     public void resetForNextProjectile () {
         this.listOfProjectiles.removeFirst();
         diceRoll = 0;
         defenseStatus = null;
+        branch = null;
+        destroyedTile = null;
     }
-    
-    public int playerUsesBatteryToDefend (Player player, String[]input){
+
+    public Coordinates getBrokenTile () {
+        return listOfProjectiles.getFirst().getCoordinatesToDestroy();
+    }
+
+    public Coordinates randomRollForOne (VirtualView view, Player player, GameInterface game) {
+        if (game == null) {
+            this.game = game;
+        }
+        Random rand = new Random();
+        this.diceRoll = 2 + rand.nextInt(11);
+        this.defenseStatus = listOfProjectiles.getFirst().throwProjectile(player, diceRoll, game);
+        if (!player.IsDisconnected()) {
+            switch (defenseStatus) {
+                case PROTECTED -> resetForNextProjectile();
+                case HIT -> {
+                    this.destroyedTile = playerGetsHit(player, view);
+                    view.notifyBrokenTile(player.getPlayerName(), destroyedTile);
+                    if (branch == null) {
+                        resetForNextProjectile();
+                        return destroyedTile;
+                    } else {
+                        view.asksToInputCoordinates(CoordReqType.CHOOSE_TO_MAINTAIN);
+                    }
+                }
+                case CHOOSETOUSEBATTERY -> {
+                    if (player.getShipBoard().getNumBatteries() == 0) {
+                        playerGetsHit(player, view);
+                    } else {
+                        view.asksToInputCoordinates(CoordReqType.CHOOSE_BATTERY);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<Coordinates> chooseToMaintain(Player player, ArrayList<Coordinates> received) {
+        int i = 0;
+        ArrayList<Coordinates> toRemove = new ArrayList<>();
+
+        while (branch.size()>1 && i==0) {
+            for (Set<Coordinates> set : branch) {
+                if (set.contains(received.getFirst())) {
+                    player.getShipBoard().SetNewShip(set);
+                    i=1;
+                    branch.remove(set);
+                }
+            }
+        }
+        if (i == 1) {
+            for (Set<Coordinates> set : branch) {
+                toRemove.addAll(set);
+            }
+            toRemove.add(destroyedTile);
+            resetForNextProjectile();
+            return toRemove;
+        }
+        else {
+            return null;
+        }
+    }
+
+    public Tile playerUsesBatteryToDefend(Player player, ArrayList<Coordinates> batteries) {
         if (player.getShipBoard().getNumBatteries() < 1) {
-            return 0;
+            //shouldn't happen
+            return null;
         }
-        ArrayList<Coordinates> batteryToUse = player.parseCoordinates(input);
-        if (batteryToUse.isEmpty()) {
-            return 1;
+        if (batteries.isEmpty()) {
+            return null;
         }
-        if (player.getShipBoard().chooseBatteryUse(batteryToUse.getFirst()))
-            return 2;
+        if (player.getShipBoard().chooseBatteryUse(batteries.getFirst())) {
+            resetForNextProjectile();
+            return player.getShipBoard().getTile(batteries.getFirst());
+        }
         else
-            return 1;
+            return null;
     }
         
     //these methods are needed for meteor swarm
@@ -150,6 +161,37 @@ public class ProjectilePenalty extends Penalty {
         this.listOfProjectiles.add(projectile);
     }
 
+    public ArrayList<Coordinates> automaticProjectilePenalty(GameInterface game, Player player, VirtualView view) {
+        ArrayList<Coordinates> startingCabinBranch = new ArrayList<>();
+        startingCabinBranch.add(new Coordinates(2, 3));
+        ArrayList<Coordinates> firstBranchCoordinates = new ArrayList<>();
+        ArrayList<Coordinates> totalRemovedTiles = new ArrayList<>();
+        ArrayList<Coordinates> removedTiles;
 
+        while (!listOfProjectiles.isEmpty()) {
+            this.randomRollForOne(view, player, game);
+            if (defenseStatus == Defense.HIT || defenseStatus == Defense.CHOOSETOUSEBATTERY) {
+                // if true: kept the branch with the starting cabin, else kept the first branch
+                if (branch != null){
+                    removedTiles = chooseToMaintain(player, startingCabinBranch);
+                    if (removedTiles != null) {
+                        totalRemovedTiles.addAll(removedTiles);
+                    }
+                    else {
+                        firstBranchCoordinates.addAll(branch.getFirst());
+                        removedTiles = chooseToMaintain(player, firstBranchCoordinates);
+                        totalRemovedTiles.addAll(removedTiles);
+                    }
+                }
+                else {
+                    totalRemovedTiles.add(destroyedTile);
+                }
+            }
+            else {
+                resetForNextProjectile();
+            }
+        }
+        return totalRemovedTiles;
+    }
 }
 

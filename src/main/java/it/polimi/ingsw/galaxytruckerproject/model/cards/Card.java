@@ -2,7 +2,18 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
@@ -21,20 +32,81 @@ import it.polimi.ingsw.galaxytruckerproject.model.Game;
 public abstract class Card {
     protected final int level;
     protected final int requiredDays;
+    protected GameInterface game = null;
 
+    //This attribute is null until the card is initialized
+    protected Map<String, VirtualView> viewsMap = new HashMap<>();
 
     public Card(int level, int requiredDays) {
         this.level = level;
         this.requiredDays = requiredDays;
     }
 
-    public abstract void initializeCard(Game game);
+    public abstract void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap);
 
-    public abstract void executeCard(Game game, String playerName, String[] input);
+    public void notifyModifiedTiles (String playerName, ArrayList<Tile> tiles) {
+        for (VirtualView view : viewsMap.values()) {
+            try {
+                view.notifyModifiedTiles(playerName, tiles);
+            } catch (Exception ignored) {}
+        }
+    }
 
+    public void notifyBrokenTiles(String playerName, ArrayList<Coordinates> tiles) {
+        for (VirtualView view : viewsMap.values()) {
+            try {
+                view.notifyBrokenTile(playerName, tiles);
+            } catch (Exception ignored) {}
+        }
+    }
+
+    public void notifyMovement (Player player) {
+        for (VirtualView view : viewsMap.values()) {
+            try {
+                view.notifyPlayerMovement(player.getPlayerName(), player.getPlayerPosition(), player.getPlayerRanking());
+            } catch (Exception ignored) {}
+        }
+    }
+
+    public void notifyGainedCredits (String playerName, int credits) {
+        for (VirtualView view : viewsMap.values()) {
+            try {
+                view.notifyGainedCredits(playerName, credits);
+            } catch (Exception ignored) {}
+        }
+    }
+
+    public void cannonChoice(String playerName, float doubleCannonPower, ArrayList<Coordinates> batteriesToUse){}
+
+    public void engineChoice(String playerName, int numDoubleEngine, ArrayList<Coordinates> batteriesToUse){}
+
+    public void manageGoods(String playerName, int clientCredits,  ArrayList<CargoHold> updatedCargos){}
+
+    public void choice(String playerName, boolean decision){}
+
+    public void planetChoice(String playerName, int planet){}
+
+    public void removeCrew(String playerName, ArrayList<Coordinates> crewToRemove){}
+
+    public void removeGoods(String playerName, ArrayList<Coordinates> goodsToRemove){}
+
+    public void useBatteries(String playerName, ArrayList<Coordinates> batteries){}
+
+    public void rollTheDices(String playerName) {}
+
+    public void branchChoice(String playerName, ArrayList<Coordinates> branchChoices){}
+
+    //Getter methods needed for view
     public int getLevel() {
         return level;
     }
+    public int getRequiredDays() { return requiredDays; }
+    public int getGainedCredits() { return 0; }
+    public int getCrewNumber(){return 0;}
+    public ArrayList<Goods> getGoodsList(String playerName){return null;}
+    public int getGoodsPenalty(){return 0;}
+    public ArrayList<Projectile> getListOfProjectiles() { return null;}
+
 
     @Override
     public String toString() {

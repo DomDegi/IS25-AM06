@@ -2,21 +2,27 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards.penalties;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.polimi.ingsw.galaxytruckerproject.model.Game;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.Smugglers;
+import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
+import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
 
 public class GoodsPenalty extends Penalty {
     private final int numberOfLostGoods;
-    private int numberPlayerOfLostGoods;
+    private int numberOfGoods = 0;
+    private int numberOfBatteries = 0;
 
     @JsonCreator
     public GoodsPenalty(@JsonProperty("numberOfLostGoods") int numberOfLostGoods) {
         this.numberOfLostGoods = numberOfLostGoods;
-        this.numberPlayerOfLostGoods = numberOfLostGoods;
     }
 
     public int getNumberOfLostGoods() {
@@ -24,42 +30,120 @@ public class GoodsPenalty extends Penalty {
     }
 
     @Override
-    public int applyPenalty(Game game, Player player, String[] input){
-        ArrayList<Coordinates> coordinates = player.parseCoordinates(input);
-        if (coordinates.isEmpty()) {
-            return 0;
+    public ArrayList<Tile> removeGoods(Player player, VirtualView playersView, ArrayList<Coordinates> toRemove){
+        ArrayList<Tile> updatedTiles;
+        if (toRemove.size() != numberOfLostGoods && toRemove.size() != numberOfBatteries + numberOfGoods) {
+            playersView.showWrongInputMessage();
+            return null;
         }
-        while (coordinates.size() > numberPlayerOfLostGoods) {
-            coordinates.removeLast();
+        if (numberOfGoods == numberOfLostGoods) {
+            updatedTiles = player.removeGoods(toRemove);
         }
-        numberPlayerOfLostGoods -= player.removeGoods(coordinates);
-        if (numberPlayerOfLostGoods == 0){
-            numberPlayerOfLostGoods=numberOfLostGoods;
-            return 1;
+        else {
+            ArrayList<Coordinates> goodsToRemove = new ArrayList<>(toRemove.subList(0, numberOfLostGoods));
+            ArrayList<Coordinates> batteriesToRemove = new ArrayList<>(toRemove.subList(numberOfGoods, toRemove.size()));
+            updatedTiles = player.removeGoods(goodsToRemove);
+            updatedTiles.addAll(player.chooseBatteriesUse(batteriesToRemove));
         }
-        System.out.printf("You have %d more goods to remove\n", numberPlayerOfLostGoods);
-        printInfo(player);
-        return 0;
+        return updatedTiles;
     }
 
     @Override
+    public ArrayList<Tile> automaticGoodsPenalty(GameInterface game, Player disconnectedPlayer, ViewInterface view) {
+        if (numberOfGoods == numberOfLostGoods) {
+            return automaticRemoveGoods(disconnectedPlayer, numberOfLostGoods);
+        }
+        else {
+            ArrayList<Tile> updated = new ArrayList<>();
+            updated.addAll(automaticRemoveGoods(disconnectedPlayer, numberOfGoods));
+            updated.addAll(automaticRemoveBatteries(disconnectedPlayer, numberOfBatteries));
+            return updated;
+        }
+    }
+
+    public ArrayList<Tile> automaticRemoveGoods (Player disconnectedPlayer, int number) {
+        int counter = number;
+        ShipBoard playerShip = disconnectedPlayer.getShipBoard();
+
+        ArrayList<Coordinates> redGoods = playerShip.cargoHoldContainsGood(new Goods(GoodsColor.RED));
+        ArrayList<Coordinates> yellowGoods = playerShip.cargoHoldContainsGood(new Goods(GoodsColor.YELLOW));
+        ArrayList<Coordinates> greenGoods = playerShip.cargoHoldContainsGood(new Goods(GoodsColor.GREEN));
+        ArrayList<Coordinates> blueGoods = playerShip.cargoHoldContainsGood(new Goods(GoodsColor.BLUE));
+
+        Coordinates currentTile;
+        ArrayList<Tile> updatedTiles = new ArrayList<>();
+        while (counter > 0) {
+            if (!redGoods.isEmpty()) {
+                currentTile = redGoods.removeFirst();
+                playerShip.removeGood(new Goods(GoodsColor.RED), currentTile);
+            } else if (!yellowGoods.isEmpty()) {
+                currentTile = yellowGoods.removeFirst();
+                playerShip.removeGood(new Goods(GoodsColor.YELLOW), currentTile);
+            } else if (!greenGoods.isEmpty()) {
+                currentTile = greenGoods.removeFirst();
+                playerShip.removeGood(new Goods(GoodsColor.GREEN), currentTile);
+            } else if (!blueGoods.isEmpty()) {
+                currentTile = blueGoods.removeFirst();
+                playerShip.removeGood(new Goods(GoodsColor.BLUE), currentTile);
+            }
+            else {
+                return null;
+            }
+            if (!updatedTiles.contains(playerShip.getTile(currentTile))) {
+                updatedTiles.add(playerShip.getTile(currentTile));
+            }
+            counter--;
+        }
+        return updatedTiles;
+    }
+
+    public ArrayList<Tile> automaticRemoveBatteries (Player disconnectedPlayer, int number) {
+        ArrayList<Tile> updatedTiles = new ArrayList<>();
+        Coordinates currentTile;
+        ArrayList<Coordinates> batteryComponents = disconnectedPlayer.getShipBoard().getBatteryCoordinates();
+        for (int i = 0; i < number; i++) {
+            currentTile = batteryComponents.getFirst();
+            disconnectedPlayer.getShipBoard().chooseBatteryUse(currentTile);
+            if (!updatedTiles.contains(disconnectedPlayer.getShipBoard().getTile(currentTile))) {
+                updatedTiles.add(disconnectedPlayer.getShipBoard().getTile(currentTile));
+            }
+        }
+        return updatedTiles;
+    }
+
+
+
+    @Override
     public String toString() {
-        return "GoodsPenalty " +  numberPlayerOfLostGoods;
+        return "GoodsPenalty " +  numberOfLostGoods;
     }
 
     public int getNumber(){
         return numberOfLostGoods;
     }
 
-    public void printInfo(Player player) {
+    @Override
+    public boolean initializePenalty(VirtualView view, Player player) {
         if (player.getShipBoard().isCargoEmpty()) {
             if (player.getShipBoard().getNumBatteries() == 0) {
-                numberPlayerOfLostGoods = 0;
+                return false;
             }
-            else
-                player.printCurrentInfoBatteries();
-        } else {
-            player.printCurrentInfoCargoHolds();
+            this.numberOfBatteries = Math.min(player.getShipBoard().getNumBatteries(), numberOfLostGoods);
+            view.asksToInputCoordinates(CoordReqType.REMOVE_GOODS);
         }
+        else {
+            if (player.getShipBoard().getAllGoods().size() < numberOfLostGoods) {
+                this.numberOfGoods = player.getShipBoard().getAllGoods().size();
+                this.numberOfBatteries = numberOfLostGoods - player.getShipBoard().getAllGoods().size();
+                if (numberOfBatteries > player.getShipBoard().getNumBatteries()) {
+                    numberOfBatteries = player.getShipBoard().getNumBatteries();
+                }
+            }
+            else {
+                this.numberOfGoods = numberOfLostGoods;
+            }
+            view.asksToInputCoordinates(CoordReqType.REMOVE_GOODS);
+        }
+        return true;
     }
 }

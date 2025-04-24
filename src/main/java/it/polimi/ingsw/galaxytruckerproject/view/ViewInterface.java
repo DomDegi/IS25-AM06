@@ -1,7 +1,13 @@
 package it.polimi.ingsw.galaxytruckerproject.view;
 
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
+import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
@@ -9,38 +15,27 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
 
 public interface ViewInterface extends Remote, Serializable {
-
-
     /**
      * asks the player to set a nickname
      * @throws IOException
      */
     void askNickname () throws IOException;
-
-
     /**
      * asks player to set a color for the starting cabin
      * @throws IOException
      */
     void askColor ();
-
     /**
      * show login response from server
      * @param success
-     * @param connected
-     */
-    void showLoginResponse(boolean success, boolean connected);
-
-    /**
-     * asks the player to decide if he wants to join a game in startig phase
-     * or if player prefers to create a new game
-     */
-    void asksJoinOrCreate();
-
+         */
+    void showLoginResponse(boolean success);
+    void setClientState (ClientState newState);
     /**
      * Shows on the view the list of the games that are in starting phase.
      * Also asks player calls for the function asksJoinOrCreate().
@@ -76,78 +71,73 @@ public interface ViewInterface extends Remote, Serializable {
      * @param errorMessage the message to be shown.
      */
     void showErrorMessage (String errorMessage);
-
-
     /**
      * shows on the view the list of players in the game with their status (in flight or landed)
      * @param players in game players
      */
     void showInGamePlayers (ArrayList<Player> players);
-
-    /**
-     * asks for the inputted player's shipboard
-     */
-    void asksPlayersInfo ();
-
-    void showShipsErrors ();
-
     /**
      * shows the chosen players shipboard
      * @param player
      * @param shipBoard
      */
     void showPlayersBoard(String player, ShipBoard shipBoard);
-
     /**
      * show the drawnTile to the player
      * @param drawnTile
      */
     //DEVE ANCHE MANDARLA AL CLIENT
     void showDrawnTile (Tile drawnTile);
-
     /**
      * shows the player the tiles that got turned from player refusing them
      * @param turnedTiles the current array in the model
      */
-    void showTurnedTiles (ArrayList<Tile> turnedTiles);
-
+    void showTurnedTiles (Map<Integer,Tile> turnedTiles);
     /**
      * shows the tiles that the player booked on their shipboard
      * @param bookedTiles the booked tiles
      */
     void showBookedTiles (ArrayList<Tile> bookedTiles);
-
+    void showWrongInputMessage ();
     /**
      * prints on the view the cards that are on the shipboard to be seen during
      * ship building phase
      * @param inGameCards the cards returned by the model
      */
     void showInGameCards (ArrayList<Card> inGameCards);
-
-    /**
-     * asks the player to confirm he wants to roll the dices
-     */
-    void asksToRollTheDices();
-
+    void asksToRollTheDices();//asks the player to confirm he wants to roll the dices
+    void showDiceRoll(int diceRoll);
     /**
      * asks the player to choose a starting position from 1 to playerCount
      */
     void asksToChooseStartingPosition ();
 
     /**
-     * asks the player to input a serie of coordinates
+     * asks the player to input a series of coordinates of coord
      */
-    void asksToInputCoordinates ();
-
+    void asksToInputCoordinates (CoordReqType coordReqType);
     void asksToTurnTheHourglass ();
-
+    void notifyYouCanDrawThisCardDeck();
+    void notifyYourShipIsCorrect();
+    /**
+     * asks to set position on the flightboard
+     */
+    void asksToMakeAChoice ();
+    void asksToManageGoods(ArrayList<Goods> goods);
+    void asksToRemoveGoods();
+    void asksToRemoveCrew();
     /**
      * at the end of the game shows every players score on the view
      */
-    void showScores();
-
+    void showScores(ArrayList<Player> players);
     /**
      * asks the player to choose the mode of the game to be created
      */
-    void asksChosenMode ();
+    void notifyDrawnCard(Card card) throws RemoteException; //tell the players which card has been drawn
+    void notifyPlayerLandedOnPlanet(String playerName, int planet)  throws RemoteException;
+    void wrongLocalInput();
+    void showCard(Card card);
+    void printFlightboard(LightFlightboard lightFlightboard);
+    void printShipboard(LightShipBoard lightShipBoard);
+    void printProjectile(Projectile projectile);
 }

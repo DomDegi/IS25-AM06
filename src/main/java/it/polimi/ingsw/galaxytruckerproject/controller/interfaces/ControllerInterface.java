@@ -2,7 +2,14 @@ package it.polimi.ingsw.galaxytruckerproject.controller.interfaces;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+
+import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 /** this interface is used to define the methods that
  * the player can call to interact with the server
@@ -54,28 +61,67 @@ public interface ControllerInterface {
      * this method is used by the player to choose a color after entering a game
      * Its view is updated with the available colors.
      * if the chosenColor is not available or wrong, player is notified
-     * @param chosenColor string of the color player has chosen between RED, YELLOW, GREEN, BLUE
+     * @param color enumeration of the chosen color by the player
      * @throws Exception
      */
-    void chooseColor (String chosenColor) throws Exception;
+    void chooseColor (PlayersColor color) throws Exception;
 
-    /**
-     * Used by the player to draw an event card
-     * If the cards are over or
-     * the player isn't the in the lead notifies player.
-     * @throws Exception
-     */
+    void turnHourglass () throws Exception;
 
-    /**
-     * this method is used for game phases where the input player input
-     * has to be processed internally by the game model and can't be said
-     * which type of input is required, so it all gets sent through messages.
-     */
-    void playerChoiceThroughMessage (Message message) throws Exception;
+    void drawTileFromStack ()  throws Exception;
+
+    void drawTileFromTurned (int index) throws Exception;
+
+    void refuseTile() throws Exception;
+
+    void lookGameCards(int index) throws Exception;
+
+    void stopLookingAtCards() throws Exception;
+
+    void setTile(Tile tile) throws Exception;
+
+    void bookTile() throws Exception;
+
+    void shipErrorManagement(ArrayList<Coordinates> toRemove) throws Exception;
+
+    void drawCard () throws Exception;
+
+    void earlyLanding () throws Exception;
 
     /**
      * this method binds the GameController of the joined game to the player's personal controller
      * @param gameController gameController to set
      */
-    public void setGameController(GameController gameController);
+    void setGameController(GameController gameController);
+
+    void completedShip() throws Exception;
+
+    void useCannons(float doublePower, ArrayList<Coordinates> batteries) throws RemoteException;
+
+    void useEngines(int numberOfDoubleEngines, ArrayList<Coordinates> batteries) throws RemoteException;
+
+    void manageGoods(int clientCreditsToVerify, ArrayList<CargoHold> cargosToUpdate) throws RemoteException;
+
+    void makeAChoice(boolean choice) throws Exception;
+
+    void choosePlanet(int planet) throws  Exception;
+
+    void pickCrewMembers(ArrayList<Tile> cabins) throws Exception;
+
+    void removeCrew(ArrayList<Coordinates> fromHere) throws Exception;
+
+    void removeGoods(ArrayList<Coordinates> fromHere) throws Exception;
+
+    void useBatteries(ArrayList<Coordinates> batteries) throws Exception;
+
+    void rollTheDices() throws Exception;
+
+    void chooseBranch(ArrayList<Coordinates> thisOne) throws Exception;
+
+    /**
+     * this method sets the player on the flightBoard on LEVEL2 flight mode
+     * @param position the position on the flightBoard (from 1 to max playerCount)
+     * @throws Exception
+     */
+    void setPosition(int position) throws Exception;
 }

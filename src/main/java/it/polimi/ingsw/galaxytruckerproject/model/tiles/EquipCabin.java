@@ -8,9 +8,15 @@ public class EquipCabin extends Cabin {
     private AlienOptions    alienability;
     private CrewType crewType;
 
+    public EquipCabin(Link north, Link east, Link south, Link west, int key) {
+
+        super(north, east, south, west, key);
+        alienability=null;
+    }
+    //CONSTRUCTOR METHOD FOR THE TESTING
     public EquipCabin(Link north, Link east, Link south, Link west) {
 
-        super(north, east, south, west);
+        super(north, east, south, west, 0);
         alienability=null;
     }
 
@@ -204,6 +210,7 @@ public class EquipCabin extends Cabin {
     }
 
     //METHODS FOR TESTING
+    @Override
     public AlienOptions getAlienability() {
         return alienability;
     }

@@ -1,76 +1,66 @@
 package it.polimi.ingsw.galaxytruckerproject.controller;
 
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
+import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
+import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.Observer;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
-import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.*;
-import static it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.MessageType.*;
+import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.TRIAL;
 
 
-public class GameController {
+public class GameController implements Observer {
     private final String gameName;
     private final GameInterface game;
     private final ArrayList<String> playersWithErrors;
-    private final Map<String, Message> playerInputs;
-    private final Map<String, ViewInterface> playersViewMap;
+    private final Map<String, ClientState> clientsStatesMap = new HashMap<>();
+    private final Map<String, VirtualView> playersViewMap;
     private final Map<String, Player> activePlayers;
     private final Map<String, Player> disconnectedPlayers;
+    private final ArrayList<Player> playersToEarlyLand = new ArrayList<>();
+    private final ConcurrentHashMap<String, Integer> lockedSmallDecks = new ConcurrentHashMap<>();
+    private int hourglassTurns = 0;
+    private boolean hourglassON = false;
+
+
+    public String toString(){
+        return gameName+"\ngame state:"+game.getGameState().toString()+"\nplayer needed: "+game.getPlayerCount()+"\nplatyer in game: "+game.getNumberOfPlayers();
+    }
+
+    @Override
+    public void update(GameState newState) {
+        switch (newState) {
+            case START_GAME -> startGame();
+            case VERIFY_SHIP_CORRECTNESS ->  verifyShipCorrectness();
+            case DRAW_CARD -> askFirstPlayerToDraw();
+            case CARD_EVENT -> initializeDrawnCard();
+            case CONCLUDE_GAME -> concludeGame();
+        }
+    }
 
     public GameController(GameInterface game, String gameName) {
         this.gameName = gameName;
         this.game = game;
-        playerInputs = new HashMap<>();
+        game.addObserver(this);
         this.playersWithErrors = new ArrayList<>();
         this.playersViewMap = new HashMap<>();
         this.activePlayers = new HashMap<>();
         this.disconnectedPlayers = new HashMap<>();
-    }
-
-    public void processPlayerInput(Message message) {
-        switch (game.getGameState()) {
-            case GameState.START_GAME: {
-                playerAddition(message);
-            }
-            case GameState.SHIPS_CREATION: {
-                if (game.getHourglassTurns() > 0){
-                    shipsCreation(message);
-                }
-                else
-                    startGame(message);
-            }
-            case GameState.VERIFY_SHIP_CORRECTNESS: {
-                //potremmo toglierla e lasciare le shipboard nel client o il contrario
-                if (message.getMessageType().equals(SHOW_PLAYERS_SHIPBOARD_REQUEST)) {
-                    checkShipBoard(this.getViewFromNickname(message.getNickname()) ,message);
-                } else if  (message.getMessageType().equals(SEND_COORDINATES_RESPONSE)) {
-                    shipErrorManagement(message);
-                }
-                if(playersWithErrors.isEmpty()){
-                    verifyShipCorrectness();
-                }
-
-            }
-            case GameState.DRAW_CARD: {
-                drawCard(message);
-            }
-            case GameState.CARD_EVENT: {
-                cardEvent(message);
-            }
-            case GameState.CONCLUDE_GAME: {
-                concludeGame();
-            }
-        }
     }
 
     /**
@@ -82,7 +72,7 @@ public class GameController {
      */
 
     //ASSOCIA IL PLAYER ALLA VIEW
-    public void addToPlayersViewMap(String playerName, ViewInterface view, boolean reconnecting) {
+    public void addToPlayersViewMap(String playerName, VirtualView view, boolean reconnecting) {
         if (reconnecting) {
             reconnectPlayer(playerName, view);
         }
@@ -106,50 +96,62 @@ public class GameController {
      */
 
     //RICONNETTE IL PLAYER SE DISCONNESSO
-    public void reconnectPlayer(String playerName, ViewInterface view) {
+    public void reconnectPlayer(String playerName, VirtualView view) {
         if (disconnectedPlayers.containsKey(playerName)) {
             //If player disconnected during ships verification without fixing the ship
             if (playersWithErrors.contains(playerName)) {
                 if (!this.getGameState().equals(GameState.VERIFY_SHIP_CORRECTNESS)) {
                     view.showErrorMessage("Can't connect because didn't finish ship creation");
+                    return;
                 }
                 else{
-                    view.asksToInputCoordinates();
+                    view.asksToInputCoordinates(CoordReqType.CHOOSE_TO_BREAK);
                 }
             }
             // if player disconnected during ships verification without choosing a starting position
-            if (disconnectedPlayers.get(playerName).getPlayerPosition() == 0 &&
+            if (disconnectedPlayers.get(playerName).getPlayerPosition() == 0 && disconnectedPlayers.get(playerName).getPlayerRanking() == 0 &&
                     !this.getGameState().equals(GameState.START_GAME) ||
                     !this.getGameState().equals(GameState.SHIPS_CREATION)) {
 
                 if (this.getGameState() != GameState.VERIFY_SHIP_CORRECTNESS) {
                     view.showErrorMessage("Can't reconnect because player didn't complete starting position choosing");
+                    return;
                 }
                 else {
                     view.asksToChooseStartingPosition();
                 }
             }
+            Player reconnectingPlayer = disconnectedPlayers.get(playerName);
             playersViewMap.put(playerName, view);
-            activePlayers.put (playerName, disconnectedPlayers.remove(playerName));
-            game.getFlightBoard().setPlayerToLast(activePlayers.get(playerName));
+            activePlayers.put (playerName, reconnectingPlayer);
+            reconnectingPlayer.playerReconnects();
+            if (GameState.SHIPS_CREATION.equals(this.getGameState())) {
+                updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
+            }
+            updateReconnectedPlayer(view);
         }
         else {
             view.showErrorMessage("player was never connected to this game");
         }
     }
 
+    public void updateReconnectedPlayer(VirtualView view) {
+        Map<String, LightShipBoard> updatedShipBoards = new HashMap<>();
+        for (Player player: game.getListOfAllPlayer()) {
+            updatedShipBoards.put(player.getPlayerName(), new LightShipBoard(player.getShipBoard()));
+        }
+        try {
+            view.notifyChangesWhileGone(updatedShipBoards, new LightFlightboard(game.getFlightBoard()),
+                    game.getDrawnCard(), hourglassTurns, game.getTurnedTiles(), notAvailableCardDecks());
+        } catch(Exception ignored) {}
+    }
+
     /**
      * adds player to the gameModel after they enter a valid color for their starting cabin
-     * @param message a message that has to be of type Set_color_request so that it contains
-     * both nickname and color String.
+     * both nickname and color.
      * If players number reaches the initial setted count, starts game.
      */
-    public void playerAddition(Message message) {
-        if (message.getMessageType() == SET_COLOR_REQUEST) {
-            SetColorRequest messageReceived = (SetColorRequest) message;
-            String playerName = message.getNickname();
-            String color = messageReceived.getColor();
-            PlayersColor playersColor = PlayersColor.valueOf(color);
+    public void playerAddition(String playerName, PlayersColor playersColor) {
             if (this.getGameState() == GameState.START_GAME && playersViewMap.containsKey(playerName)) {
                 //if playerCount is still to be reached, add player to the game model
                 if (game.getNumberOfPlayers() < game.getPlayerCount()) {
@@ -161,19 +163,26 @@ public class GameController {
                 }
                 //if game is already out of lobby phase
             } else if (playersViewMap.containsKey(playerName)) {
-                playersViewMap.get(playerName).showErrorMessage("Can't join a game that's already started");
+                playersViewMap.get(playerName).showWrongInputMessage();
             } // if the count has been reached starts the game
-            if (game.getNumberOfPlayers() == game.getPlayerCount()) {
-                this.startGame(new GenericMessage("whatever"));
-                game.startGame();
-            }
-        }
     }
 
-    public ViewInterface removePlayer (String playerName) {
+    public VirtualView removePlayer (String playerName) {
         if (activePlayers.containsKey(playerName)) {
-            disconnectedPlayers.put(playerName, activePlayers.get(playerName));
+            Player removedPlayer = activePlayers.get(playerName);
+            if (removedPlayer.getDrawnTile() != null) {
+                removedPlayer.removeDrawnTile();
+            }
+            disconnectedPlayers.put(playerName, removedPlayer);
             activePlayers.remove(playerName);
+            removedPlayer.playerDisconnects();
+            if (clientsStatesMap.get(playerName).equals(ClientState.S_MANAGE_CARDS)) {
+                stopLookingAtCards(getViewFromNickname(playerName), playerName);
+            }
+            clientsStatesMap.remove(playerName);
+            if (game.getListOfAllPlayer().contains(removedPlayer)) {
+                game.getFlightBoard().removePlayer(removedPlayer);
+            }
         }
         return playersViewMap.remove(playerName);
     }
@@ -182,186 +191,137 @@ public class GameController {
      * checks if the color chosen by the player is già taken or not
      * @param playerName player that asked the check
      * @param view player's view
-     * @param color chosen color
+     * @param playersColor chosen color
      * @return true if color is available, false otherwise
      */
-    public boolean checkColorAvailable (String playerName, ViewInterface view, String color) {
+    public boolean checkColorAvailable (String playerName, ViewInterface view, PlayersColor playersColor) {
         if (! playersViewMap.containsKey(playerName)) {
             view.showErrorMessage("can't choose a color without logging in");
             return false;
         }
-        try {
-            PlayersColor chosenColor = PlayersColor.valueOf(color);
-            for (Player player : activePlayers.values()) {
-                if (player.getPlayerColor().equals(chosenColor)) {
-                    view.showErrorMessage("color for starting cabin is already taken");
-                    return false;
-                }
+        for (Player player : activePlayers.values()) {
+            if (player.getPlayerColor().equals(playersColor)) {
+                view.showWrongInputMessage();
+                return false;
             }
-        } catch (IllegalArgumentException e) {
-            view.showErrorMessage("invalid color for the game");
-            return false;
         }
         return true;
     }
 
     /**
-     * Starts the game as soon as one of the players sends a turn hourglass request message
-     * @param message received message that can start the game or makes the controller ask for
-     * the turn hourglass request message
+     * Starts the game as soon as one of the players turns the hourglass if LEVEL2 game
+     * if TRIAL starts the game without hourglass
      */
-    public synchronized void startGame(Message message) {
-        if (message.getMessageType() == TURN_HOURGLASS_REQUEST) {
-            turnHourglass(message.getNickname());
+    public void startGame() {
+        game.startShipCreation();
+        if (game.getMode() == TRIAL) {
+            updateEveryView(ClientState.S_END_DRAW_TILE_CARD);
         }
         else {
-            playersViewMap.values().forEach(ViewInterface::asksToTurnTheHourglass);
+            updateEveryView(ClientState.START_SHIP_CREATION);
+            notifyFlightBoardCards();
         }
     }
 
-    public void shipsCreation(Message message) {
-        String playerName = message.getNickname();
-        ViewInterface playersView = this.playersViewMap.get(playerName);
-        switch (message.getMessageType()) {
-
-            //draws either from stack or from turned depending on words[1], if turned words[3] is the index of turnedTiles
-            case DRAW_TILE_REQUEST:
-                drawTile((DrawTileRequest) message);
-                break;
-
-            //prints the turned tiles ArrayList
-            case SHOW_TURNED_TILES_REQUEST:
-                playersView.showTurnedTiles(game.getTurnedTiles());
-                break;
-
-            //prints the player's currently booked tiles
-            case SHOW_BOOKED_TILES_REQUEST:
-                playersView.showBookedTiles
-                        (activePlayers
-                                .get(playerName).
-                                getShipBoard().
-                                getBookedTiles());
-                break;
-
-            //player refuses currently drawnTile
-            case REFUSE_MESSAGE:
-                refuseTile(playerName);
-                break;
-
-            //player sets currently drawnTile at coordinates passed with input
-            case SEND_COORDINATES_RESPONSE:
-                SendCoordinatesResponse coordinates = (SendCoordinatesResponse) message;
-                setTile(playersView, coordinates);
-                break;
-
-            //player books currently drawnTile
-            case BOOK_TILE_REQUEST:
-                bookTile(playersView, message);
-                break;
-
-            //shows deck of 3 cards 1, 2, 3. Can only be called when no card is drawn.
-            case SHOW_CARDS_REQUEST:
-                lookGameCards(playersView, message);
-                break;
-
-            //turns the hourglass, if hourglass at last possible turn, the player last input has to be completed
-            case TURN_HOURGLASS_REQUEST:
-                turnHourglass(playerName);
-                break;
-
-            //all other player inputs get refused afterward except for turnHourglass
-            case ACCEPT_MESSAGE:
-                completed(playerName);
-                break;
-
-            //looks at other player ship, if no second word, looks at yours
-            case SHOW_PLAYERS_SHIPBOARD_REQUEST:
-                checkShipBoard(playersView, message);
-                break;
-
-            //if no case is met, ignore
-            default:
-                if (playersView != null) {
-                    playersView.showGenericMessage("input was incorrect");
-                }
-                break;
+    public void notifyFlightBoardCards() {
+        Map<Integer,ArrayList<Card>> flightBoardCards = new HashMap<>();
+        for (int i = 1; i <= 3; i++) {
+            flightBoardCards.put(i,game.getInGameCards(i));
+        }
+        for (VirtualView view: playersViewMap.values()) {
+            try {
+                view.notifyFlightBoardCards(flightBoardCards);
+            } catch (Exception ignored) {}
         }
     }
 
-    public  void drawTile(DrawTileRequest message) {
-
-        String playerName = message.getNickname();
-        MessageType drawFromWhere = message.DrawFromWhere();
-        ViewInterface playersView = this.playersViewMap.get(playerName);
+    public  void drawTile(VirtualView playersView, String playerName, int index, boolean turned) {
 
         // Can't draw if the shipboard is completed or there is already a tile to place/book/refuse
-        if (Objects.equals(playerInputs.get(playerName).getMessageType(), DRAW_TILE_REQUEST) ||
-                Objects.equals(playerInputs.get(playerName).getMessageType(), ACCEPT_MESSAGE)) {
+        if (playerStateIs(playerName, ClientState.S_MANAGE_DRAWN_TILE)
+                || playerStateIs(playerName, ClientState.S_FINISHED)) {
             return;
         }
-        switch (drawFromWhere) {
-            case DRAW_TILE_FROM_STACK_REQUEST: {
-                Tile drawnTile = game.drawTile(playerName);
-                if (drawnTile == null) {
-                    playersView.showErrorMessage("drawn tile is null: stack is empty");
-                    return;
-                }
-                playersView.showDrawnTile(drawnTile);
-                playerInputs.put(playerName, message);
-                break;
+        Tile drawnTile;
+        if (!turned) {
+            drawnTile = game.drawTile(playerName);
+            if (drawnTile == null) {
+                playersView.showErrorMessage("drawn tile is null: stack is empty");
+                return;
             }
-            case DRAW_TILE_FROM_TURNED_REQUEST: {
-                Tile drawnTile = game.drawTurnedTile(playerName, message.getTileIndex());
+            playersView.showDrawnTile(drawnTile);
+        }
+        else {
+            drawnTile = game.drawTurnedTile(playerName, index);
                 if (drawnTile == null) {
                     playersView.showErrorMessage("drawn tile is null: turned tile is empty or index out of bounds");
                     return;
                 }
                 playersView.showDrawnTile(drawnTile);
-                playerInputs.put(playerName, message);
-                break;
-            }
-            case DRAW_TILE_FROM_BOOKED_REQUEST : {
-                Tile drawnTile = game.drawBookedTile (playerName, message.getTileIndex());
-
-                //the index has to be either 0 or 1
-                if (drawnTile == null) {
-                    playersView.showErrorMessage("drawn tile is null: booked tile is empty or index out of bounds");
-                    return;
-                }
-                playersView.showDrawnTile(drawnTile);
-                playerInputs.put(playerName, message);
-            }
+                notifyRemoveTurnedTile(drawnTile);
         }
+        updatePlayerView(ClientState.S_MANAGE_CARDS, playerName);
+    }
+
+    public void notifyRemoveTurnedTile(Tile tile) {
+        playersViewMap.values().forEach(virtualView -> {
+            try {
+                virtualView.notifyRemoveTurnedTile(tile);
+            } catch (Exception ignored) { //unhandled exception
+            }
+        });
+    }
+
+    public void notifyBookedTile (String playerName, Tile tile) {
+        playersViewMap.values().forEach(virtualView -> {
+            try {
+                virtualView.notifyBookedTile(playerName, tile);
+            } catch (Exception ignored) {//unhandled exception
+            }
+        });
+    }
+
+    public void notifyNewTurnedTile(Tile tile) {
+        playersViewMap.values().forEach(virtualView -> {
+            try {
+                virtualView.notifyNewTurnedTile(tile);
+            } catch (Exception ignored) { //unhandled exception
+            }
+        });
     }
 
     //errors check and management
     public void verifyShipCorrectness() {
-        for (Player player : game.getListOfPlayers()) {
+        for (Player player : game.getListOfInFlightPlayers()) {
             boolean correctness = player.getShipBoard().verifyCorrectness();
             ViewInterface playersView = this.getViewFromNickname(player.getPlayerName());
             if (correctness){
-                playersView.showGenericMessage("player's ship is correct");
+                if (player.IsDisconnected()) {
+                    this.setCrewForDisconnectedPlayer(player);
+                }
+                else {
+                    playersView.setClientState(ClientState.MANAGE_CABINS);
+                }
             } else {
-                playersView.showGenericMessage("player's ship has errors: input coordinates to remove mistakes");
-                playersView.asksToInputCoordinates();
+                playersView.asksToInputCoordinates(CoordReqType.CHOOSE_TO_BREAK);
                 playersWithErrors.add(player.getPlayerName());
             }
         }
     }
-    public void shipErrorManagement(Message message){
-        String playerName =  message.getNickname();
+
+    public void shipErrorManagement(String playerName, VirtualView playersView, ArrayList<Coordinates> toRemove) {
         Player player = game.identifyPlayerByName(playerName);
-        ViewInterface playersView = this.getViewFromNickname(playerName);
-        SendCoordinatesResponse coordinates = (SendCoordinatesResponse) message;
 
         if(player==null){
             return;
         }
         if(!playersWithErrors.contains(playerName)){
-            playersView.showErrorMessage("player's ship is already correct");
+            playersView.showWrongInputMessage();
             return;
         }
-        player.getShipBoard().destroyTile(coordinates.getFirst());
+        for (Coordinates coord: toRemove) {
+            player.getShipBoard().destroyForCorrection(coord);
+        }
 
         boolean correctness = player.getShipBoard().verifyCorrectness();
         if (correctness) {
@@ -369,176 +329,407 @@ public class GameController {
                 game.getFlightBoard().setPlayerToLast(player);
             }
             playersWithErrors.remove(playerName);
+            if (player.IsDisconnected()) {
+                this.setCrewForDisconnectedPlayer(player);
+            }
+            else
+                playersView.setClientState(ClientState.MANAGE_CABINS);
             return;
         }
-
-        playersView.showGenericMessage("player's ship is still incorrect: input coordinates to remove tile from");
-        playersView.asksToInputCoordinates();
+        playersView.asksToInputCoordinates(CoordReqType.CHOOSE_TO_BREAK);
     }
 
-    public void refuseTile(String playerName) {
-        if (Objects.equals(playerInputs.get(playerName).getMessageType(), DRAW_TILE_REQUEST)) {
-            game.refuseTile(playerName);
-            playerInputs.put(playerName, new RefuseMessage(playerName));
+    public void setCrewForDisconnectedPlayer(Player player) {
+        notifyModifiedTiles(player.getPlayerName(), player.setAllCrewToHuman());
+        updatePlayerView(ClientState.WAIT_OTHER_PLAYER_ACTION, player.getPlayerName());
+    }
+
+    public void playerPicksCrewMembers(String playerName, VirtualView playersView ,ArrayList<Tile> cabins) {
+        Player player = game.identifyPlayerByName(playerName);
+        if (player == null) {
+            return;
+        }
+        if (player.verifyAndSetupCrew(cabins)) {
+            notifyModifiedTiles(playerName, cabins);
+            updatePlayerView(ClientState.WAIT_OTHER_PLAYER_ACTION, player.getPlayerName());
         }
         else {
-            ViewInterface playersView = this.getViewFromNickname(playerName);
-            playersView.showErrorMessage("can't refuse tile when still have to draw one");
+            playersView.showWrongInputMessage();
+        }
+
+        ArrayList<Coordinates> cabinsToCheck;
+        ShipBoard shipBoard;
+        for (Player p1: activePlayers.values()) {
+            shipBoard = p1.getShipBoard();
+            cabinsToCheck = shipBoard.getCabinsCoordinates();
+            for (Coordinates coord: cabinsToCheck) {
+                if (shipBoard.getTile(coord).getCrew() == 0)
+                    return;
+            }
+        }
+        for (Player p2: disconnectedPlayers.values()) {
+            shipBoard = p2.getShipBoard();
+            cabinsToCheck = shipBoard.getCabinsCoordinates();
+            for (Coordinates coord: cabinsToCheck) {
+                if (shipBoard.getTile(coord).getCrew() == 0) {
+                    if (playersWithErrors.contains(p2.getPlayerName())) {
+                        removePlayer(p2.getPlayerName());
+                    }
+                    else {
+                        p2.setAllCrewToHuman();
+                    }
+                }
+            }
+        }
+        this.endShipVerification();
+    }
+
+    public void endShipVerification() {
+        game.endShipVerification();
+    }
+
+
+    public void refuseTile(String playerName) {
+        if (playerStateIs(playerName, ClientState.S_MANAGE_DRAWN_TILE)) {
+            return;
+        }
+        Tile refused = game.refuseTile(playerName);
+        notifyNewTurnedTile(refused);
+        updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
+    }
+
+    public synchronized void lookGameCards(String playerName, ViewInterface playersView, int cardsToLookAt) {
+        if (playerStateIs(playerName, ClientState.S_END_DRAW_TILE_CARD)) {
+            for (Integer integer: lockedSmallDecks.values()) {
+                if (integer == cardsToLookAt) {
+                    playersView.showWrongInputMessage();
+                    return;
+                }
+            }
+            lockedSmallDecks.put(playerName, cardsToLookAt);
+            playersView.showInGameCards(game.getInGameCards(cardsToLookAt));
+            updatePlayerView(ClientState.S_MANAGE_CARDS, playerName);
+            notifyNotAvailableCardDeck();
+        }
+        else {
+            playersView.showErrorMessage("can't look at the event cards while you still have your drawn tile, " +
+                    "you completed your ship or you are already looking at cards");
         }
     }
 
-    public void lookGameCards(ViewInterface playersView, Message message) {
-        String playerName = message.getNickname();
-        ShowCardsRequest messageReceived = (ShowCardsRequest) message;
-        if (Objects.equals(playerInputs.get(playerName).getMessageType(), DRAW_TILE_REQUEST)
-                && Objects.equals(playerInputs.get(playerName).getMessageType(), ACCEPT_MESSAGE )) {
-            playersView.showErrorMessage("can't look at the event cards while you still have your drawn tile or you completed your ship");
+    private void notifyNotAvailableCardDeck() {
+        for (VirtualView view: playersViewMap.values()) {
+            try {
+                view.notifyNotAvailableCardDeck(notAvailableCardDecks());
+            }
+            catch (Exception ignored) {
+            }
+        }
+    }
+
+    private ArrayList<Integer> notAvailableCardDecks() {
+        return new ArrayList<>(lockedSmallDecks.values());
+    }
+
+    public void stopLookingAtCards(ViewInterface playersView, String playerName) {
+        if (clientsStatesMap.get(playerName) != ClientState.S_MANAGE_CARDS) {
+            playersView.showWrongInputMessage();
             return;
         }
-        playersView.showInGameCards(game.getInGameCards(messageReceived.getCardsToLookAt()));
+        lockedSmallDecks.remove(playerName);
+        updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
+        notifyNotAvailableCardDeck();
     }
 
     //set drawn tile on the player's shipboard
-    public void setTile (ViewInterface playersView, SendCoordinatesResponse message) {
-        String playerName = message.getNickname();
-        if (Objects.equals(playerInputs.get(playerName).getMessageType(), DRAW_TILE_REQUEST)) {
-            if (!game.playerSetTile(playerName, message.getFirst())) {
-                playersView.showErrorMessage("coordinates input weren't valid");
+    public void setTile (ViewInterface playersView, String playerName, Tile tile) {
+        Tile settedTile;
+        if (!tile.isBooked()) {
+            if (clientsStatesMap.get(playerName) != ClientState.S_MANAGE_DRAWN_TILE) {
+                playersView.showWrongInputMessage();
                 return;
             }
-            playerInputs.put(playerName, message);
+        }
+        else {
+            if (clientsStatesMap.get(playerName) != ClientState.S_MANAGE_CARDS) {
+                playersView.showWrongInputMessage();
+                return;
+            }
+            settedTile = game.drawAndPositionBookedTile(playerName, tile);
+            if (settedTile == null) {
+                playersView.showWrongInputMessage();
+                return;
+            }
+            notifyRemovedBookedTile(playerName, settedTile);
+        }
+        settedTile = game.playerSetTile(playerName, tile);
+
+        if (settedTile != null) {
+            updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
+            notifyPositionedTile(playerName, settedTile);
+        }
+        else {
+            playersView.showWrongInputMessage();
+        }
+    }
+
+    private void notifyPositionedTile(String playerName, Tile tile) {
+        for (VirtualView view: playersViewMap.values()) {
+            try {
+                view.notifyPositionedTile(playerName, tile);
+            } catch (Exception ignored) {}
+        }
+    }
+
+    private void notifyRemovedBookedTile (String playerName, Tile tile) {
+        for (VirtualView view: playersViewMap.values()) {
+            try {
+                view.notifyRemovedBookedTile(playerName, tile);
+            } catch (Exception ignored) {}
         }
     }
 
     //set currently drawn tile as booked for the player
-    public void bookTile(ViewInterface playersView, Message message) {
-        if (Objects.equals(playerInputs.get(message.getNickname()).getMessageType(), DRAW_TILE_REQUEST)) {
-            if (!game.playerBookTile (message.getNickname())) {
-                playersView.showErrorMessage("either your booked tiles are full or your input was out of bounds");
-                return;
+    public void bookTile(ViewInterface playersView, String playerName) {
+        if (playerStateIs(playerName,  ClientState.S_MANAGE_DRAWN_TILE)) {
+            Tile toBook = game.playerBookTile(playerName);
+            if (toBook != null) {
+                updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
+                notifyBookedTile(playerName, toBook);
             }
-            playerInputs.put(message.getNickname(), message);
+            else {
+                playersView.showWrongInputMessage();
+            }
         }
-    }
-
-    public void checkShipBoard(ViewInterface playersView, Message message) {
-        ShowPlayersShipboardRequest messageReceived = (ShowPlayersShipboardRequest) message;
-        ShipBoard shipBoardToCheck = game.getPlayerShipBoard(messageReceived.getPlayerName());
-        if (shipBoardToCheck == null) {
-            playersView.showErrorMessage("there is no player with the name " + messageReceived.getNickname());
-            return;
+        else  {
+            playersView.showWrongInputMessage();
         }
-        playersView.showPlayersBoard(messageReceived.getPlayerName(), shipBoardToCheck);
     }
 
     //now no input except hourglass and checkShipboard work and checks if the other player have completed
-    //if yes ends shipboard creation phase
-    public void completed (String playerName) {
-        if (Objects.equals(playerInputs.get(playerName).getMessageType(), DRAW_TILE_REQUEST)) {
-            refuseTile(playerName);
+    public void completed (String playerName, ViewInterface playersView) {
+        if (!playerStateIs(playerName, ClientState.S_END_DRAW_TILE_CARD)) {
+            playersView.showWrongInputMessage();
+            return;
         }
-        AcceptMessage acceptMessage = new AcceptMessage(playerName);
-        playerInputs.put(playerName, acceptMessage);
-        for (String string: playerInputs.keySet()) {
-            if (!Objects.equals(playerInputs.get(string).getMessageType(), ACCEPT_MESSAGE)) {
-                return;
-            }
-        }
+        updatePlayerView(ClientState.S_FINISHED, playerName);
+
         if(game.getMode() == TRIAL) {
             for (Player player : game.getFlightBoard().getInGamePlayers()) {
                 if (player.getPlayerName().equals(playerName)) {
                     game.getFlightBoard().addToTrialFlightBoard(player);
+                    //It's not important for trial flight, so 0 is a placeholder value
+                    updatePlayerView(ClientState.WAIT_OTHER_PLAYER_ACTION, playerName);
                     break;
                 }
             }
         }else{
-            for (Player player : game.getFlightBoard().getInGamePlayers()) {
-                if (player.getPlayerName().equals(playerName)) {
-                    addToFlightBoardProcess(player.getPlayerName(),"completed");
-                    break;
+            playersView.asksToChooseStartingPosition();
+        }
+        checkIfAllPlayersReady();
+    }
+
+    public void setPosition (String playerName, ViewInterface playersView, int position) {
+        if (!playerStateIs(playerName, ClientState.S_FINISHED)) {
+            return;
+        }
+        FlightBoard flightBoard = game.getFlightBoard();
+        Player player = game.identifyPlayerByName(playerName);
+
+        if (flightBoard.addToFlightBoard(player, position)) {
+            notifyPlayerMovement(playerName, player.getPlayerPosition(), player.getPlayerRanking());
+        }
+        else {
+            playersView.showWrongInputMessage();
+        }
+        checkIfAllPlayersReady();
+    }
+
+    private void notifyPlayerMovement(String playerName, int position, int ranking) {
+        for (VirtualView view: playersViewMap.values()) {
+            try {
+                view.notifyPlayerMovement(playerName, position, ranking);
+            } catch (Exception ignored) {}
+        }
+    }
+
+    private void notifyModifiedTiles(String playerName, ArrayList<Tile> modifiedTiles) {
+        for (VirtualView view: playersViewMap.values()) {
+            try {
+                view.notifyModifiedTiles(playerName, modifiedTiles);
+            } catch (Exception ignored) {}
+        }
+    }
+
+    private void checkIfAllPlayersReady() {
+        if (game.getListOfAllPlayer().size() == game.getListOfInFlightPlayers().size()) {
+            this.endShipCreation();
+        }
+        else if (hourglassTurns == 3 && !hourglassON) {
+            for (Player player : game.getListOfAllPlayer()) {
+                if (player.getPlayerRanking() == 0 && player.getPlayerPosition() == 0) {
+                    if (player.IsDisconnected()) {
+                        removePlayer(player.getPlayerName());
+                    }
+                    playersViewMap.get(player.getPlayerName()).asksToChooseStartingPosition();
                 }
             }
         }
-        game.endShipCreation();
-        System.out.println("All the players have completed the ship creation\n");
     }
 
-    public void addToFlightBoardProcess(String playerName,String input){
-        if(Objects.equals(playerInputs.get(playerName).getMessageType(), ACCEPT_MESSAGE))
-            return;
-        try {
-            int parsedInput = Integer.parseInt(input);
-            game.getFlightBoard().addToFlightBoard(game.identifyPlayerByName(playerName), parsedInput);
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Unable to parse to an integer.");
-        }
+    private void endShipCreation () {
+        game.endShipCreation();
     }
+
+
     //Turns hourglass isn't on and adds 1 to the turn count,
     // if it's already been turned twice, player that turns it needs to have completed his ship
-    public void turnHourglass(String playerName) {
+    public synchronized void turnHourglass(String playerName) {
         ViewInterface playersView = this.getViewFromNickname(playerName);
 
-        if (!game.getHourglassState()) {
+        if (hourglassON) {
             playersView.showErrorMessage("hourglass is already trickling");
             return;
         }
-        switch (game.getHourglassTurns()) {
+        switch (hourglassTurns) {
             case 0:
-                broadcastMessage(playerName + " starts the game: GO!");
-                game.startTimer();
+                updateEveryView(ClientState.S_END_DRAW_TILE_CARD);
+                startTimer();
                 break;
             case 1:
-                broadcastMessage(playerName + " has flipped the hourglass");
-                game.startTimer();
+                startTimer();
                 break;
             case 2:
-                if (playerInputs.get(playerName).getMessageType().equals(ACCEPT_MESSAGE)) {
-                    game.startTimer();
+                if (playerStateIs(playerName, ClientState.S_FINISHED)) {
+                    startTimer();
                 }
                 else {
-                    playersView.showErrorMessage("Can't make the last hourglass turn when your shipBoard isn't complete");
+                    playersView.showWrongInputMessage();
                 }
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + game.getHourglassTurns() + "\n");
+                throw new IllegalStateException("Unexpected value: " + hourglassTurns + "\n");
         }
+    }
+
+    public void startTimer() {
+        Timer hourglass = new Timer();
+        this.hourglassTurns++;
+        hourglassON = true;
+        hourglass.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                hourglassON = false;
+                System.out.println("hourglass is exhausted\n");
+                hourglass.cancel();
+                if (hourglassTurns == 3) {
+                    updateEveryView(ClientState.S_FINISHED);
+                    checkIfAllPlayersReady();
+                    System.out.println("The time is up, ship creation is over\n");
+                }
+            }
+        }, 95000); //95 seconds
+    }
+
+    public void askFirstPlayerToDraw() {
+        updatePlayerView(ClientState.DRAW_CARD,game.getListOfInFlightPlayers().getFirst().getPlayerName());
+    }
+
+    public void initializeDrawnCard () {
+        game.getDrawnCard().initializeCard(game, playersViewMap);
     }
 
     //Number 1 player can draw
     //Every player can check others shipboard
     //Every player can do an early landing
     //When cards are over go to CONCLUDE_GAME state
-    public void drawCard (Message message){
-        String playerName = message.getNickname();
-        ViewInterface playersView = this.getViewFromNickname(playerName);
-
+    public void drawCard (String playerName, VirtualView playersView) {
         if (game.getCardsLeft() == 0) {
             game.endCardPhase();
+            concludeGame();
+            return;
         }
 
-        switch(message.getMessageType()) {
-            case DRAW_CARD_REQUEST:
-                if (game.identifyPlayerByName(playerName).equals(game.getListOfPlayers().getFirst())){
-                    game.drawCard();
-                }
-                else {
-                    broadcastMessage("only the first ranked player can draw");
-                }
-                break;
-            case SHOW_PLAYERS_SHIPBOARD_REQUEST:
-                checkShipBoard(playersView, message);
-                break;
-            case EARLY_LANDING_REQUEST:
-                game.getFlightBoard().earlyLanding(game.identifyPlayerByName(playerName));
-                broadcastMessage(playerName + " made an early landing\n");
-                break;
-            default: break;
+        for (Player player: playersToEarlyLand) {
+            game.getFlightBoard().earlyLanding(player);
+        }
+        playersToEarlyLand.clear();
+
+        if (game.getListOfInFlightPlayers().isEmpty()) {
+            concludeGame();
+            return;
+        }
+        if (!game.identifyPlayerByName(playerName).equals(game.getListOfInFlightPlayers().getFirst())){
+            playersView.showWrongInputMessage();
+        }
+        else {
+            game.drawCard();
+            notifyDrawnCard(game.getDrawnCard());
         }
     }
 
-    //Gets the drawnCard from main and sends the input to each Card, depending on return value gives errors
-    public void cardEvent(Message message) {
-        game.cardEvent(message);
+    public void notifyDrawnCard (Card card) {
+        for (VirtualView view: playersViewMap.values()) {
+            try {
+                view.notifyDrawnCard(card);
+            } catch (Exception ignored) {}
+        }
+    }
+
+
+    public void earlyLanding (String playerName, VirtualView playersView) {
+        Player player = game.identifyPlayerByName(playerName);
+        if (game.getGameState() == GameState.DRAW_CARD) {
+            game.getFlightBoard().earlyLanding(player);
+        }
+        else if (game.getGameState() == GameState.CARD_EVENT) {
+            playersToEarlyLand.add(player);
+        }
+        updatePlayerView(ClientState.WAIT_OTHER_PLAYER_ACTION, playerName);
+    }
+
+    /**
+     * Card specific methods for player's choices
+     */
+
+    public void playerUsesEngines (String playerName, int numDoubleEngines, ArrayList<Coordinates>  coordinates) {
+        game.getDrawnCard().engineChoice(playerName, numDoubleEngines, coordinates);
+    }
+
+    public void playerUsesCannons (String playerName, float doubleCannonPower, ArrayList<Coordinates>  coordinates) {
+        game.getDrawnCard().cannonChoice(playerName, doubleCannonPower, coordinates);
+    }
+
+    public void playerManagesGoods (String playerName, int clientCredits, ArrayList<CargoHold> updatedCargos) {
+        game.getDrawnCard().manageGoods(playerName, clientCredits, updatedCargos);
+    }
+
+    public void playerMakesAChoice (String playerName, boolean choice) {
+        game.getDrawnCard().choice(playerName, choice);
+    }
+
+    public void playerChoosesPlanet (String playerName, int planet) {
+        game.getDrawnCard().planetChoice(playerName, planet);
+    }
+
+    public void playerRemovesCrew (String playerName, ArrayList<Coordinates> toRemoveFrom) {
+        game.getDrawnCard().removeCrew(playerName, toRemoveFrom);
+    }
+
+    public void playerRemovesGoods(String playerName, ArrayList<Coordinates> toRemoveFrom) {
+        game.getDrawnCard().removeGoods(playerName, toRemoveFrom);
+    }
+
+    public void playerUsesBatteries(String playerName, ArrayList<Coordinates> batteries) {
+        game.getDrawnCard().useBatteries(playerName, batteries);
+    }
+
+    public void playerRollsTheDices(String playerName) {
+        game.getDrawnCard().rollTheDices(playerName);
+    }
+
+    public void playerChoosesBranch(String playerName, ArrayList<Coordinates> branch) {
+        game.getDrawnCard().branchChoice(playerName, branch);
     }
 
 
@@ -616,12 +807,25 @@ public class GameController {
         for (Player player : game.getFlightBoard().getAllPlayers()) {
             player.removeCredit(player.getShipBoard().getPenalty());
         }
+        for (String playerName: playersViewMap.keySet()) {
+            notifyPlayerCredits(playerName, activePlayers.get(playerName).getCredit());
+        }
         // Sort players based on their credits in descending order
         game.setPodium();
-        System.out.println("Podium:");
-        for (int i = 0; i < game.getListOfAllPlayer().size(); i++) {
-            Player player = game.getListOfAllPlayer().get(i);
-            System.out.println((i + 1) + ". " + player.getPlayerName() + " - Credits: " + player.getCredit());
+        showScores();
+    }
+
+    public void showScores() {
+        for (VirtualView view: playersViewMap.values()) {
+            view.showScores(game.getListOfAllPlayer());
+        }
+    }
+
+    public void notifyPlayerCredits (String playerName, int credits) {
+        for (VirtualView view: playersViewMap.values()) {
+            try {
+                view.notifyGainedCredits(playerName, credits);
+            } catch (Exception ignored) {}
         }
     }
 
@@ -633,7 +837,7 @@ public class GameController {
         return game.getGameState();
     }
 
-    public Map<String, ViewInterface> getPlayersViewMap() {
+    public Map<String, VirtualView> getPlayersViewMap() {
         return playersViewMap;
     }
 
@@ -652,14 +856,20 @@ public class GameController {
         return (activePlayers.isEmpty());
     }
 
-    /**
-     * sends a string message to every player's view
-     * @param messageString what gets shown on the views
-     */
-    public void broadcastMessage(String messageString) {
-        for (ViewInterface view : playersViewMap.values()) {
-            view.showGenericMessage(messageString);
+    public void updateEveryView(ClientState newState) {
+        for (String playerName:  playersViewMap.keySet()) {
+            playersViewMap.get(playerName).setClientState(newState);
+            clientsStatesMap.put(playerName, newState);
         }
+    }
+
+    public void updatePlayerView (ClientState newState, String playerName) {
+        playersViewMap.get(playerName).setClientState(newState);
+        clientsStatesMap.put(playerName, newState);
+    }
+
+    public boolean playerStateIs(String playerName,ClientState stateToVerify) {
+        return clientsStatesMap.get(playerName) == stateToVerify;
     }
 
     /**

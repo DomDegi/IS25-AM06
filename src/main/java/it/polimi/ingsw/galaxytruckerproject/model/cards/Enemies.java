@@ -2,7 +2,10 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
+
+import java.util.Map;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
@@ -25,8 +28,7 @@ public abstract class Enemies extends Card {
     }
 
     @Override
-    public abstract void initializeCard(Game game);
+    public abstract void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap);
 
-    @Override
-    public abstract void executeCard(Game game, String playerName, String[] input);
+
 }

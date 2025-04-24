@@ -34,16 +34,16 @@ class EpidemicTest {
         ShipBoard shipBoard1 = new ShipBoard(player1);
         player1.setPlayerShip(shipBoard1);
         shipBoard1.initializeLevel2();
-        Tile tile1=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
+        Tile tile1=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),0);
         shipBoard1.positionTile(Optional.of(tile1), new Coordinates(0,4));
-        Tile tile2=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE));
+        Tile tile2=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),0);
         shipBoard1.positionTile(Optional.of(tile2), new Coordinates(1,1));
         tile2.setCrewType(CrewType.HUMAN);
-        Tile tile3=new AlienLifeSupportsSystem( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),CrewType.BROWN);
+        Tile tile3=new AlienLifeSupportsSystem( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),0,CrewType.BROWN);
         shipBoard1.positionTile(Optional.of(tile3), new Coordinates(1,2));
-        Tile tile4=new CargoBlue(3, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
+        Tile tile4=new CargoBlue(3, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),0);
         shipBoard1.positionTile(Optional.of(tile4), new Coordinates(1,3));
-        Tile tile5=new CargoBlue(3, new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
+        Tile tile5=new CargoBlue(3, new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),0);
         shipBoard1.positionTile(Optional.of(tile5), new Coordinates(1,4));
         Tile tile6=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE));
         shipBoard1.positionTile(Optional.of(tile6), new Coordinates(1,5));
@@ -137,7 +137,7 @@ class EpidemicTest {
     @Test
     void successfully_initialize_card_and_execute () {
         game.setDrawnCard(epidemic);
-        game.getDrawnCard().initializeCard(game);
+        game.getDrawnCard().initializeCard(game, );
 
         assertEquals(7, player1.getTotalCrew());
         assertEquals(2, player2.getTotalCrew());
@@ -196,7 +196,7 @@ class EpidemicTest {
         shipBoard1.positionTile(Optional.of(tile21), new Coordinates(4,2));
         shipBoard1.verifyCorrectness();
         game.setDrawnCard(epidemic);
-        game.getDrawnCard().initializeCard(game);
+        game.getDrawnCard().initializeCard(game, );
 
         assertEquals(7, player1.getTotalCrew());
         assertEquals(2, player2.getTotalCrew());

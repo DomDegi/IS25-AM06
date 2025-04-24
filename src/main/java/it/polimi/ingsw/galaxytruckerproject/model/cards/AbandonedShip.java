@@ -2,73 +2,118 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.polimi.ingsw.galaxytruckerproject.model.Game;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.CrewPenalty;
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
+import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
+import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
-public class AbandonedShip extends Card{
+import java.util.ArrayList;
+import java.util.Map;
+
+public class AbandonedShip extends Card {
     private final int crewNumberRequired;
     private final int possibleCreditGains;
     private int playerIndex;
-    private final CrewPenalty penaltyIfAccept;
-    private Player playerToPlay =  null;
+    private Player playerToPlay = null;
+    private ViewInterface playersView = null;
     private boolean playerAccepted;
 
     @JsonCreator
     public AbandonedShip(
             @JsonProperty("level") int level,
-            @JsonProperty("requiredDays")int requiredDays,
-            @JsonProperty("crewNumberRequired")int crewNumberRequired,
-            @JsonProperty("possibleCreditGains")int possibleCreditGains
+            @JsonProperty("requiredDays") int requiredDays,
+            @JsonProperty("crewNumberRequired") int crewNumberRequired,
+            @JsonProperty("possibleCreditGains") int possibleCreditGains
     ) {
         super(level, requiredDays);
         this.crewNumberRequired = crewNumberRequired;
         this.possibleCreditGains = possibleCreditGains;
         this.playerIndex = 0;
-        this.penaltyIfAccept = new CrewPenalty(crewNumberRequired);
         this.playerAccepted = false;
     }
 
     @Override
-    public void initializeCard(Game game) {
-        if (playerIndex > game.getNumberOfPlayers() - 1) {
-            System.out.println("Everyone refused to fix the abandoned ship\n");
-            game.endCardEvent();
-            return;
-        }
-        playerToPlay = game.getListOfPlayers().get(this.playerIndex);
+    public void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap) {
+        this.game = game;
+        this.viewsMap = viewsMap;
+        this.nextPlayer();
     }
 
     @Override
-    public void executeCard(Game game, String playerName, String[] input) {
-        if (playerToPlay != null && playerToPlay.getPlayerName().equalsIgnoreCase(playerName)) {
-            if (!playerAccepted) {
-                if (playerToPlay.getTotalCrew() >= crewNumberRequired){
-                    System.out.println(playerToPlay.getPlayerName() + " do you wish to trade" +
-                            crewNumberRequired + " for " + possibleCreditGains + " cosmic credits and lose " +
-                            requiredDays + " flight days?\n");
-                    System.out.println("Input yes or no");
-                    if (input[0].equalsIgnoreCase("yes")) {
-                        playerAccepted = true;
-                        System.out.println("input a pair of number x y for every crew to remove\n");
-                        penaltyIfAccept.printInfo(playerToPlay);
-                    } else if (input[0].equalsIgnoreCase("no")){
-                        playerIndex++;
-                        initializeCard(game);
-                    }
-                } else {
-                    playerIndex++;
-                    initializeCard(game);
-                }
-            } else {
-                if (penaltyIfAccept.applyPenalty(game, playerToPlay, input) == 1) {
-                    playerToPlay.gainCredit(possibleCreditGains);
-                    game.getFlightBoard().moveBackward(playerToPlay, requiredDays);
-                    game.endCardEvent();
-                } else
-                    System.out.println("need more inputs");
-            }
+    public void removeCrew(String playerName, ArrayList<Coordinates> crewToRemove){
+        Player player = game.identifyPlayerByName(playerName);
+        if (!playerAccepted || !player.equals(playerToPlay)) {
+            viewsMap.get(playerName).showWrongInputMessage();
+            return;
         }
+        if (crewToRemove.size() != this.crewNumberRequired) {
+            playersView.showWrongInputMessage();
+            return;
+        }
+        ArrayList<Tile> updatedTile = player.removeCrew(crewToRemove);
+        if (updatedTile !=  null) {
+            notifyModifiedTiles(playerName,updatedTile);
+            game.getFlightBoard().moveBackward(playerToPlay, requiredDays);
+            notifyMovement(player);
+            player.gainCredit(possibleCreditGains);
+            notifyGainedCredits(playerName, player.getCredit());
+            game.endCardEvent();
+        }
+        else {
+            playersView.showWrongInputMessage();
+        }
+    }
+
+    public void choice (String playerName, boolean choice) {
+        if (!playerName.equals(playerToPlay.getPlayerName())) {
+            viewsMap.get(playerName).showWrongInputMessage();
+            return;
+        }
+        if (choice) {
+            playersView.asksToInputCoordinates(CoordReqType.CHOOSE_CREW);
+            playerAccepted = true;
+        }
+        else {
+            nextPlayer();
+        }
+    }
+
+    public void nextPlayer() {
+        if (playerToPlay != null) {
+            playerIndex++;
+        }
+        if (playerIndex > game.getNumberOfPlayers() - 1) {
+            game.endCardEvent();
+            return;
+        }
+        this.playerToPlay = game.getListOfInFlightPlayers().get(playerIndex);
+        String playerName = playerToPlay.getPlayerName();
+        this.playersView = viewsMap.get(playerName);
+
+        if (playerToPlay.IsDisconnected()) {
+            this.nextPlayer();
+            return;
+        }
+        if (playerToPlay.getTotalCrew() < crewNumberRequired) {
+            this.nextPlayer();
+        }
+        else if (playerToPlay.getTotalCrew() >= crewNumberRequired) {
+            playersView.setClientState(ClientState.ACTION);
+        }
+    }
+
+    @Override
+    public int getCrewNumber() {
+        return crewNumberRequired;
+    }
+
+    @Override
+    public int getGainedCredits() {
+        return possibleCreditGains;
     }
 
     @Override

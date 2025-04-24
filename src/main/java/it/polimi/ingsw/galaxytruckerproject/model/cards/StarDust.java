@@ -2,10 +2,12 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class StarDust extends Card {
 
@@ -15,26 +17,24 @@ public class StarDust extends Card {
     }
 
     //This cards doesn't need any input, so it gets instantly executed when initialized
-    public void initializeCard(Game game) {
-        String[] input = {"any", "input"};
-        executeCard(game, game.getListOfPlayers().getFirst().getPlayerName(), input);
+    public void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap) {
+        this.game = game;
+        this.viewsMap = viewsMap;
+        executeCard();
     }
 
     //makes so that the player loses as many days as their exposedConnectors
-    @Override
-    public void executeCard(Game game, String playerName, String[] input) {
-        ArrayList<Player> players = game.getListOfPlayers();
+    public void executeCard() {
+        ArrayList<Player> players = game.getListOfInFlightPlayers();
+        Player currentPlayer;
 
         //when moving backward starts from the last
         for (int i = players.size() - 1; i >= 0; i--) {
+            currentPlayer = players.get(i);
             int playerExposedConnectors = players.get(i).getShipBoard().countExposedConnectors();
 
             if (playerExposedConnectors > 0) {
-                game.getFlightBoard().moveBackward(players.get(i), playerExposedConnectors);
-                System.out.println(players.get(i).getPlayerName() + " moved backward as many steps as their exposed connectors: " + playerExposedConnectors + "\n");
-            }
-            else {
-                System.out.println(players.get(i).getPlayerName() + " has no exposed connectors. StarDust doesn't affect them\n");
+                notifyMovement(currentPlayer);
             }
         }
         game.endCardEvent();

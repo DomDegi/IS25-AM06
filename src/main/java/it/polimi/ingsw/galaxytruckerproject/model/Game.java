@@ -1,40 +1,42 @@
 package it.polimi.ingsw.galaxytruckerproject.model;
 
+import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.Observer;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.CardDeck;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.TrialCardDeck;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.TileFactory;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.GameState.*;
 
-public class Game implements GameInterface {
+public class Game implements GameInterface{
+    private final ArrayList<Observer> observers = new ArrayList<>();
     private final GameMode mode;
     private GameState gameState;
     private int playerCount;
     private final ArrayList<Card> inGameCards;
-    private final ArrayDeque<Tile> tileStack;
-    private final ArrayList<Tile> turnedTiles;
+    private final ConcurrentLinkedDeque<Tile> tileStack;
+    private final ConcurrentHashMap<Integer,Tile> turnedTiles;
     private final FlightBoard flightBoard;
     private Card drawnCard;
-    private int hourglassTurns;
-    private boolean hourglassON;
 
 
     //instances a new game starting in the state START_GAME
     public Game(GameMode mode, int playerCount) {
         this.mode = mode;
-        this.gameState = START_GAME;
-        this.turnedTiles = new ArrayList<>();
+        this.gameState = null;
+        this.turnedTiles = new ConcurrentHashMap<>();
         this.flightBoard = new FlightBoard(mode);
-        this.hourglassTurns = 0;
         this.tileStack = new TileFactory().getStack(TileFactory.loadTilesFromJson("Tiles.json"));
 
         if (this.mode == GameMode.LEVEL2) {
@@ -44,9 +46,32 @@ public class Game implements GameInterface {
         else {
             this.inGameCards = new TrialCardDeck("trialFlightCards.json").getTrialDeck();
         }
-        this.hourglassON = false;
         this.playerCount = playerCount;
         this.drawnCard = null;
+    }
+
+    //returns the current GameState
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(GameState newState) {
+        this.gameState = newState;
+        notifyObservers(newState);
+    }
+
+    public void notifyObservers(GameState newState) {
+        for (Observer observer : observers) {
+            observer.update(newState);
+        }
+    }
+
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
     }
 
     //set player count for the game
@@ -69,11 +94,14 @@ public class Game implements GameInterface {
         }
         Player player = new Player(playerName, color);
         flightBoard.addPlayerToGame(player);
+        if (this.getListOfAllPlayer().size() == playerCount) {
+            setGameState(START_GAME);
+        }
     }
 
     //changes game state to SHIPS_CREATION and notifies observers of it (GUI, TUI, Log)
-    public void startGame(){
-        this.gameState = SHIPS_CREATION;
+    public void startShipCreation(){
+        setGameState(SHIPS_CREATION);
     }
 
     //SHIPS_CREATION METHODS
@@ -87,7 +115,9 @@ public class Game implements GameInterface {
             System.out.println("Tile stack empty\n");
             return null;
         }
-        player.hasDrawnTile(drawnTile);
+        if (drawnTile != null) {
+            player.hasDrawnTile(drawnTile);
+        }
         return drawnTile;
     }
 
@@ -95,48 +125,36 @@ public class Game implements GameInterface {
         Player player = identifyPlayerByName(playerName);
         if (player == null || (index < 0 || index >= turnedTiles.size())) { return null;}
         Tile drawnTile = turnedTiles.remove(index);
-        player.hasDrawnTile(drawnTile);
+        if (drawnTile != null) {
+            player.hasDrawnTile(drawnTile);
+        }
         return drawnTile;
     }
 
     //sets the booked tile at index 0 or 1 as the drawn tile for player: playerName
-    public Tile drawBookedTile (String playerName, int index) {
+    public Tile drawAndPositionBookedTile (String playerName, Tile tile) {
         Player player = identifyPlayerByName(playerName);
-        if ((player == null) || ((index != 0) && (index != 1))) { return null;}
-        Tile drawnTile = player.getShipBoard().removeBookedTile(index);
-        if (drawnTile == null) { return null;}
-        player.hasDrawnTile(drawnTile);
-        return drawnTile;
-    }
-
-    public void refuseTile(String playerName) {
-        Player player = identifyPlayerByName(playerName);
-        Tile removedTile = player.removeDrawnTile();
-        turnedTiles.add(removedTile);
-    }
-
-    public void printTurnedTiles() {
-        for (int i = 0; i < turnedTiles.size(); i++) {
-            System.out.printf("%s (%d), ", turnedTiles.get(i).toString(), i);
-            if (i % 5 == 0) {
-                System.out.println("\n");
+        ArrayList<Tile> bookedTiles = player.getShipBoard().getBookedTiles();
+        for (int i = 0; i < bookedTiles.size(); i++) {
+            if (bookedTiles.get(i).getKey() == tile.getKey()) {
+                player.getShipBoard().removeBookedTile(i);
+                player.hasDrawnTile(tile);
             }
         }
+        return tile;
     }
 
-    public ArrayList<Tile> getTurnedTiles() {
+    public Tile refuseTile(String playerName) {
+        Player player = identifyPlayerByName(playerName);
+        Tile removedTile = player.removeDrawnTile();
+        turnedTiles.put(removedTile.getKey(), removedTile);
+        return removedTile;
+    }
+
+    public Map<Integer, Tile> getTurnedTiles() {
         return turnedTiles;
     }
 
-    public void printBookedTiles(String playerName) {
-        Player player = identifyPlayerByName(playerName);
-        ArrayList<Tile> bookedTiles = player.getShipBoard().getBookedTiles();
-        int i = 0;
-        for (Tile bookedTile : bookedTiles) {
-            System.out.printf("%s (%d), ", bookedTile.toString(), i);
-        }
-        System.out.println("\n");
-    }
 
     public ArrayList<Card> getInGameCards(int bunchNumber) {
         return switch (bunchNumber) {
@@ -171,53 +189,49 @@ public class Game implements GameInterface {
         return bunch3;
     }
 
-    public boolean playerSetTile (String playerName, Coordinates coordinates) {
+    public Tile playerSetTile (String playerName, Tile tile) {
         Player player = identifyPlayerByName(playerName);
-        return player.getShipBoard().positionTile(Optional.ofNullable(player.getDrawnTile()), coordinates);
+        if (player.getDrawnTile() != null && tile.getKey() == player.getDrawnTile().getKey()) {
+            if (player.getShipBoard().positionTile(Optional.of(tile), tile.getCoordinates())) {
+                player.removeDrawnTile();
+                return tile;
+            }
+            else
+                return null;
+        }
+        return null;
     }
 
-    public boolean playerBookTile (String playerName) {
+    public Tile playerBookTile (String playerName) {
         Player player = identifyPlayerByName(playerName);
-        if (player.getDrawnTile() == null) {
-            return false;
+        Tile drawnTile = player.getDrawnTile();
+        if (drawnTile == null) {
+            return null;
         }
         if (player.getShipBoard().addBookedTile(player.removeDrawnTile()))
-            return true;
+            return drawnTile;
         else {
             System.out.println("Booked tiles are full\n");
-            return false;
+            return null;
         }
     }
 
-    public void startTimer() {
-        Timer hourglass = new Timer();
-        this.hourglassTurns++;
-        hourglass.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                hourglassON = false;
-                System.out.println("hourglass is exhausted\n");
-                hourglass.cancel();
-                if (hourglassTurns == 3) {
-                    endShipCreation();
-                    System.out.println("The time is up, ship creation is over\n");
-                }
-            }
-        }, 95000); //95 seconds
-    }
 
     public void endShipCreation() {
-        this.gameState = VERIFY_SHIP_CORRECTNESS;
+        Collections.shuffle(inGameCards);
+        setGameState(VERIFY_SHIP_CORRECTNESS);
     }
 
     //VERIFY_SHIP_CORRECTNESS METHODS
+    public void endShipVerification() {
+        setGameState(DRAW_CARD);
+    }
 
     //DRAW_CARD METHODS
 
     public void drawCard() {
         this.drawnCard = inGameCards.removeFirst();
-        drawnCard.initializeCard(this);
-        this.gameState = CARD_EVENT;
+        setGameState(CARD_EVENT);
     }
 
     public void endCardPhase() {
@@ -226,14 +240,9 @@ public class Game implements GameInterface {
 
     //CARD_EVENT METHODS
 
-    public void cardEvent(Message message) {
-        //drawnCard.executeCard(this, message);
-    }
-
     public void endCardEvent() {
-        System.out.print("Card Finished\n");
         this.getFlightBoard().concludeMovement();
-        this.gameState = DRAW_CARD;
+        setGameState(DRAW_CARD);
     }
 
 
@@ -243,10 +252,6 @@ public class Game implements GameInterface {
     //This flag is needed from some game functions
     public GameMode getMode() {
         return mode;
-    }
-
-    public void setGameState(GameState gameState) {
-        this.gameState = gameState;
     }
 
     public int getPlayerCount() {
@@ -267,23 +272,18 @@ public class Game implements GameInterface {
         return flightBoard.getAllPlayers();
     }
 
-    public ArrayList<Player> getListOfPlayers() {
+    public ArrayList<Player> getListOfInFlightPlayers() {
         return flightBoard.getInGamePlayers();
     }
 
     //returns the number of player in the game
     public int getNumberOfPlayers() {
-        return getListOfPlayers().size();
-    }
-
-    //returns the current GameState
-    public GameState getGameState() {
-        return gameState;
+        return getListOfInFlightPlayers().size();
     }
 
     //returns the player's name at playerIndex (0 to 3) as a string
     public String getPlayerName(int playerIndex) {
-        return getListOfPlayers().get(playerIndex).getPlayerName();
+        return getListOfInFlightPlayers().get(playerIndex).getPlayerName();
     }
 
     public ShipBoard getPlayerShipBoard (String playerName) {
@@ -294,13 +294,6 @@ public class Game implements GameInterface {
         return player.getShipBoard();
     }
 
-    public int getHourglassTurns() {
-        return hourglassTurns;
-    }
-
-    public boolean getHourglassState() {
-        return hourglassON;
-    }
 
     public FlightBoard getFlightBoard() {
         return flightBoard;

@@ -2,15 +2,19 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards.penalties;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
+import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
 
 public class CrewPenalty extends Penalty {
 
-    private int numberOfLostCrew;
+    private final int numberOfLostCrew;
+    private int numberOfCrew;
 
     @JsonCreator
     public CrewPenalty(@JsonProperty("numberOfLostCrew") int numberOfLostCrew) {
@@ -22,29 +26,44 @@ public class CrewPenalty extends Penalty {
     }
 
     @Override
-    public int applyPenalty(Game game, Player player, String[] input) {
-        System.out.printf("you have %d more crew member to remove\n", numberOfLostCrew);
-        ArrayList<Coordinates> coordinates = player.parseCoordinates(input);
-        if (coordinates.isEmpty()) {
-            return 0;
+    public ArrayList<Tile> removeCrew(Player player, VirtualView virtualView, ArrayList<Coordinates> toRemove) {
+        if (toRemove.size() < numberOfCrew) {
+            virtualView.showWrongInputMessage();
+            return null;
         }
-        while (coordinates.size() > numberOfLostCrew) {
-            coordinates.removeLast();
+        while (toRemove.size() > numberOfCrew) {
+            toRemove.removeLast();
         }
-        numberOfLostCrew -= player.removeCrew(coordinates);
-
-        if (numberOfLostCrew == 0) {
-            return 1;
+        ArrayList<Tile> updatedTiles = player.removeCrew(toRemove);
+        if (updatedTiles == null)  {
+            virtualView.showWrongInputMessage();
+            return null;
         }
-        printInfo(player);
-        return 0;
+        else {
+            return updatedTiles;
+        }
     }
 
+    @Override
+    public ArrayList<Tile> automaticCrewPenalty(GameInterface game, Player disconnectedPlayer, ViewInterface view) {
+        ArrayList<Tile> toUpdate= new ArrayList<>();
+        for (int i = 0; i < numberOfLostCrew && disconnectedPlayer.getTotalCrew() > 0; i++) {
+            Coordinates firstCabin = disconnectedPlayer.getShipBoard().getCabinsCoordinates().getFirst();
+            disconnectedPlayer.getShipBoard().chooseCrewToRemove(firstCabin);
+            if (!toUpdate.contains(disconnectedPlayer.getShipBoard().getTile(firstCabin))) {
+                toUpdate.add(disconnectedPlayer.getShipBoard().getTile(firstCabin));
+            }
+        }
+        return toUpdate;
+    }
 
-    public void printInfo(Player player) {
-        if (player.getTotalCrew() == 0)
-            numberOfLostCrew = 0;
-        player.printCurrentInfoCabins();
+    @Override
+    public boolean initializePenalty(VirtualView view, Player player) {
+        if (player.getTotalCrew() == 0) {
+            return false;
+        }
+        numberOfCrew = Math.min(player.getTotalCrew(), numberOfLostCrew);
+        return true;
     }
 
     @Override

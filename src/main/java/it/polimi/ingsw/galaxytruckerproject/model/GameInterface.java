@@ -1,24 +1,28 @@
 package it.polimi.ingsw.galaxytruckerproject.model;
 
+import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.Observer;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 
 import java.util.ArrayList;
+import java.util.Map;
 
-public interface GameInterface {
+public interface GameInterface{
+
+    //observer methods
+    void addObserver(Observer o);
+    void removeObserver(Observer o);
 
     //Methods that add player and setups the game + other getter and setter methods for the player list
     void setPlayerCount(int playerCount);
     void addPlayer(String playerName, PlayersColor color);
-    void startGame();
+    void startShipCreation();
     int getPlayerCount();
     Player identifyPlayerByName(String playerName);
-    ArrayList<Player> getListOfPlayers();
+    ArrayList<Player> getListOfInFlightPlayers();
     void setPodium();
     GameState getGameState();
     ArrayList<Player> getListOfAllPlayer();
@@ -31,21 +35,19 @@ public interface GameInterface {
     //Methods for ships creation phase
     Tile drawTile(String playerName);
     Tile drawTurnedTile(String playerName, int index);
-    Tile drawBookedTile(String playerName, int index);
-    void refuseTile(String playerName);
-    void startTimer();
+    Tile drawAndPositionBookedTile(String playerName, Tile tile);
+    Tile refuseTile(String playerName);
     void endShipCreation();
+    void endShipVerification();
     void drawCard();
     void endCardPhase();
     void endCardEvent();
     ArrayList<Card> getInGameCards (int number);
-    boolean getHourglassState();
-    int getHourglassTurns();
-    ArrayList<Tile> getTurnedTiles();
-    boolean playerSetTile(String playerName, Coordinates coordinates);
-    boolean playerBookTile(String playerName);
+    Map<Integer,Tile> getTurnedTiles();
+    Tile playerSetTile(String playerName, Tile tile);
+    Tile playerBookTile(String playerName);
 
     //Card phase cards
     int getCardsLeft();
-    void cardEvent(Message message);
+    Card getDrawnCard();
 }

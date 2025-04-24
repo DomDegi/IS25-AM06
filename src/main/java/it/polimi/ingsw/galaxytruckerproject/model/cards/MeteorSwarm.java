@@ -2,59 +2,98 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.ProjectilePenalty;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.MessageType;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
+import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
 
 public class MeteorSwarm extends Card {
-    private ArrayList<Projectile> listOfMeteors;
-    private Player currentPlayer;
-    private int playerIndex;
-    private ProjectilePenalty currentMeteor;
+    private final ArrayList<Projectile> listOfMeteors;
+    private Player currentPlayerRolling;
+    private ViewInterface currentView;
+    private List<Player> inFlightPlayers;
+    private final Map<Player, ProjectilePenalty> activePenalties = new HashMap<>();
     private int currentDiceRoll;
+    private GameInterface game;
+    private int currentMeteorIndex = 0;
 
     @JsonCreator
     public MeteorSwarm(@JsonProperty("level") int level,
                        @JsonProperty("listOfMeteors") ArrayList<Projectile> listOfMeteors) {
         super(level, 0);
         this.listOfMeteors = listOfMeteors;
-        this.currentMeteor = new ProjectilePenalty(new ArrayList<>());
-        this.playerIndex = 0;
         this.currentDiceRoll = 0;
-        diceRoll();
     }
 
     @Override
-    public void initializeCard(Game game){
-        if (listOfMeteors.isEmpty()){
+    public void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap) {
+        this.game = game;
+        this.viewsMap = viewsMap;
+        this.inFlightPlayers = game.getListOfInFlightPlayers();
+        this.currentMeteorIndex = 0;
+        startMeteorPhase();
+    }
+
+    private void startMeteorPhase() {
+        if (currentMeteorIndex >= listOfMeteors.size()) {
             game.endCardEvent();
             return;
         }
-        if (playerIndex > game.getNumberOfPlayers()-1 ){
-            listOfMeteors.removeFirst();
-            playerIndex = 0;
-            diceRoll();
-        }
 
-        currentPlayer = game.getListOfPlayers().get(playerIndex);
+        activePenalties.clear();
+        currentDiceRoll = 0;
+        currentPlayerRolling = inFlightPlayers.getFirst();
+        currentView = viewsMap.get(currentPlayerRolling.getPlayerName());
+        currentView.asksToRollTheDices();
+    }
 
-        if (currentMeteor.getListOfProjectiles().isEmpty()){
-            currentMeteor.addProjectile(listOfMeteors.getFirst());
-            currentMeteor.setDiceRoll(currentDiceRoll);
+    public void applyMeteorToPlayers() {
+        Projectile currentMeteor = listOfMeteors.get(currentMeteorIndex);
+        ArrayList<Projectile> singleMeteorList = new ArrayList<>();
+        singleMeteorList.add(currentMeteor);
+
+        for (Player player : inFlightPlayers) {
+            ProjectilePenalty newPenalty = new ProjectilePenalty(singleMeteorList);
+            newPenalty.setDiceRoll(currentDiceRoll);
+            if (!newPenalty.initializePenalty(viewsMap.get(player.getPlayerName()), player)) {
+                activePenalties.put(player, newPenalty);
+            }
         }
     }
 
     @Override
-    public void executeCard(Game game, String playerName, String[] input){
-        if (playerName.equalsIgnoreCase(currentPlayer.getPlayerName()) && currentPlayer != null) {
-            //when penalty is over on the current player
-            if (currentMeteor.applyPenalty(game, currentPlayer, input) == 1){
-                playerIndex++;
-                initializeCard(game);
+    public void executeCard(Message message) {
+        String playerName = message.getNickname();
+        Player player = game.identifyPlayerByName(playerName);
+
+        if (currentDiceRoll == 0) {
+            if (player == currentPlayerRolling && message.getMessageType() == MessageType.ROLL_THE_DICES_REQUEST) {
+                diceRoll();
+                currentView.showDiceRoll(currentDiceRoll);
+                applyMeteorToPlayers();
+                // If no active penalties, move to the next meteor immediately (edge case)
+                if (activePenalties.isEmpty()) {
+                    currentMeteorIndex++;
+                    startMeteorPhase();
+                }
+            }
+            return;
+        }
+
+        if (activePenalties.containsKey(player)) {
+            if (activePenalties.get(player).applyPenalty(game, player, viewsMap.get(playerName), message) == 1) {
+                activePenalties.remove(player);
+                // Check if all players have resolved their penalty for the current meteor
+                if (activePenalties.isEmpty()) {
+                    currentMeteorIndex++;
+                    startMeteorPhase();
+                }
             }
         }
     }
@@ -70,15 +109,12 @@ public class MeteorSwarm extends Card {
     }
 
     public void diceRoll() {
-        /*Random random = new Random();
+        Random random = new Random();
         this.currentDiceRoll = 2 + random.nextInt(11);
-
-         */
-        currentDiceRoll=8;
     }
 
-    //for testing
-    public int getPlayerIndex(){
-        return playerIndex;
+    // For testing purposes
+    public void setDiceRoll(int diceRoll) {
+        this.currentDiceRoll = diceRoll;
     }
 }

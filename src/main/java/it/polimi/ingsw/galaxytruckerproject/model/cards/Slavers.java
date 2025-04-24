@@ -2,18 +2,24 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
+import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.CrewPenalty;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Slavers extends Enemies{
     private final int rewardCredits;
     private final int lostCrew;
     private int playerIndex;
     private Player currentPlayer = null;
+    private VirtualView playersView = null;
     private final CrewPenalty penaltyIfLose;
     private int won = 0;
 
@@ -37,99 +43,142 @@ public class Slavers extends Enemies{
     }
 
     @Override
-    public void initializeCard(Game game) {
-        if (playerIndex > game.getNumberOfPlayers() - 1){
-            System.out.println("No player beat the slavers\n");
-            game.endCardEvent();
-            return;
-        }
-        currentPlayer = game.getListOfPlayers().get(playerIndex);
-        System.out.println(currentPlayer.getPlayerName() + ", you are face to face with a ship of Slavers\n");
-        System.out.println("their cannon strength is " + cannonStrength + "\n");
-        System.out.println("if yours is lower than theirs, you will lose "+ lostCrew + "crew members\n");
-        System.out.println("input if needed first the double cannons coordinates and after the batteries coordinates\n");
-        currentPlayer.printCurrentInfoCannons();
-        currentPlayer.printCurrentInfoBatteries();
+    public void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap) {
+        this.game = game;
+        this.viewsMap = viewsMap;
+        nextPlayer();
     }
 
 
-    //pay crew penalty
-    @Override
-    public void executeCard(Game game, String playerName, String[] input) {
-        if (currentPlayer != null && playerName.equalsIgnoreCase(currentPlayer.getPlayerName())) {
-            if (won == 0) {
-                if (input[0].equalsIgnoreCase("no")){
-                    if (currentPlayer.useDoubleCannons(new ArrayList<>()) > cannonStrength) {
-                        won = 1;
-                        System.out.println("input yes or no if you want to spend " + requiredDays + " flight days to gain" +
-                                rewardCredits + " cosmic credits for defeating the slavers\n");
-                    }
-                    else if (currentPlayer.useDoubleCannons(new ArrayList<>()) < cannonStrength){
-                        won = - 1;
-                        System.out.println("input the coordinates of the crew members to lose to the slavers\n");
-                        currentPlayer.printCurrentInfoCabins();
-                    }
-                    else {
-                        System.out.println(currentPlayer.getPlayerName() + " tied with the slavers\n");
-                        System.out.println("next player\n");
-                        playerIndex++;
-                        initializeCard(game);
-                    }
-                }
-                else {
-                    ArrayList<Coordinates> coordinates = new ArrayList<>(currentPlayer.parseCoordinates(input));
-                    if (coordinates.isEmpty()){
-                        System.out.println("Invalid input\n");
-                        return;
-                    }
-                    float playerStrength = currentPlayer.useDoubleCannons(coordinates);
-                    if (playerStrength == -2){
-                        System.out.println("Need the batteries coordinates\n");
-                        return;
-                    }
+    public void nextPlayer() {
+        if (currentPlayer != null){
+            playerIndex++;
+        }
+        won = 0;
+        if (playerIndex > game.getNumberOfPlayers() - 1) {
+            game.endCardEvent();
+            return;
+        }
+        currentPlayer = game.getListOfInFlightPlayers().get(playerIndex);
+        String playerName = currentPlayer.getPlayerName();
+        this.playersView = viewsMap.get(playerName);
+        float singleCannonPower = currentPlayer.getShipBoard().getSingleCannonPower();
 
-                    if (playerStrength == -1){
-                        System.out.println("Invalid input of batteries or cannons: input again cannons coordinates\n");
-                        return;
-                    }
-                    if (playerStrength > cannonStrength){
-                        won = 1;
-                        System.out.println("input yes or no if you want to spend " + requiredDays + " flight days to gain" +
-                                rewardCredits + " cosmic credits for defeating the slavers\n");
-                    }
-                    else if (playerStrength < cannonStrength){
-                        won = - 1;
-                        System.out.println("input the coordinates of the crew members to lose to the slavers\n");
-                        currentPlayer.printCurrentInfoCargoHolds();
-                    }
-                    else  {
-                        System.out.println(currentPlayer.getPlayerName() + " tied with the slavers\n");
-                        System.out.println("next player\n");
-                        playerIndex++;
-                        initializeCard(game);
-                    }
-                }
+        won = 0;
+        if (currentPlayer.IsDisconnected()) {
+            if (singleCannonPower > cannonStrength) {
+                won = 1;
+                cannonChoice(playerName, 0, new ArrayList<>());
             }
-            else if (won == 1){
-                if (input[0].equalsIgnoreCase("no")){
-                    game.endCardEvent();
-                }
-                else if (input[0].equalsIgnoreCase("yes")){
-                    game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
-                    currentPlayer.gainCredit(rewardCredits);
-                    game.endCardEvent();
-                }
+            else if (singleCannonPower == cannonStrength) {
+                nextPlayer();
             }
-            else if (won == -1){
-                if (penaltyIfLose.applyPenalty(game, currentPlayer, input) == 1) {
-                    playerIndex++;
-                    initializeCard(game);
-                }
-                else {
-                    System.out.println("input more correct coordinates\n");
-                    currentPlayer.printCurrentInfoCabins();
-                }
+            else {
+                won = -1;
+                notifyModifiedTiles(currentPlayer.getPlayerName(), penaltyIfLose.automaticCrewPenalty(game, currentPlayer, playersView));
+                nextPlayer();
             }
         }
+        else {
+            if (singleCannonPower > cannonStrength) {
+                won = 1;
+                playersView.setClientState(ClientState.ACTION);
+            }
+            else if (currentPlayer.getShipBoard().getDoubleCannon().isEmpty() ||
+                    currentPlayer.getShipBoard().getBatteryCoordinates().isEmpty()) {
+                if (singleCannonPower == cannonStrength) {
+                    nextPlayer();
+                }
+                else {
+                    won = -1;
+                    if(!penaltyIfLose.initializePenalty(playersView, currentPlayer)) {
+                        nextPlayer();
+                    }
+                    playersView.asksToInputCoordinates(CoordReqType.CHOOSE_CREW);
+                }
+            }
+            else {
+                playersView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_ENGINE);
+            }
+        }
+    }
+
+    @Override
+    public void cannonChoice(String playerName, float doubleCannonPower, ArrayList<Coordinates> batteriesToUse) {
+        Player player = game.identifyPlayerByName(playerName);
+        if (!player.getPlayerName().equals(currentPlayer.getPlayerName())) {
+            viewsMap.get(playerName).setClientState(ClientState.ACTION);
+            return;
+        }
+        Map<Float,ArrayList<Tile>> returned = player.useCannons(doubleCannonPower, batteriesToUse);
+        if (returned == null) {
+            playersView.setClientState(ClientState.ACTION);
+            return;
+        }
+        notifyModifiedTiles(playerName, returned.values().iterator().next());
+        float cannonPower = returned.keySet().iterator().next();
+        if (cannonPower > cannonStrength) {
+            won = 1;
+            if (currentPlayer.IsDisconnected()) {
+                choice(playerName, false);
+            }
+            else{
+                playersView.setClientState(ClientState.ACTION);
+            }
+        }
+        else if (cannonPower == cannonStrength) {
+            nextPlayer();
+        }
+        else {
+            won = -1;
+            if(!penaltyIfLose.initializePenalty(playersView, currentPlayer)) {
+                nextPlayer();
+            }
+            playersView.asksToInputCoordinates(CoordReqType.CHOOSE_CREW);
+        }
+    }
+
+    @Override
+    public void choice(String playerName, boolean decision) {
+        if (!playerName.equals(currentPlayer.getPlayerName()) || won != 1) {
+            viewsMap.get(playerName).showWrongInputMessage();
+            return;
+        }
+        if (decision) {
+            currentPlayer.gainCredit(rewardCredits);
+            notifyGainedCredits(currentPlayer.getPlayerName(), currentPlayer.getCredit());
+            game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
+            notifyMovement(currentPlayer);
+            game.endCardEvent();
+        }
+        else {
+            game.endCardEvent();
+        }
+    }
+
+    @Override
+    public void removeCrew(String playerName, ArrayList<Coordinates> crewToRemove) {
+        Player player = game.identifyPlayerByName(playerName);
+        if (!player.getPlayerName().equals(currentPlayer.getPlayerName()) || won != -1) {
+            viewsMap.get(playerName).showWrongInputMessage();
+            return;
+        }
+        ArrayList<Tile> updated = penaltyIfLose.removeCrew(player, playersView, crewToRemove);
+        if (updated != null) {
+            notifyModifiedTiles(playerName, updated);
+            nextPlayer();
+        }
+        else
+            playersView.showWrongInputMessage();
+    }
+
+    @Override
+    public int getCrewNumber() {
+        return lostCrew;
+    }
+
+    @Override
+    public int getGainedCredits() {
+        return rewardCredits;
     }
 }

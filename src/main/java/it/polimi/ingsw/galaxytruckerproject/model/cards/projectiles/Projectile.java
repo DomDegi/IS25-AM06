@@ -1,15 +1,15 @@
 package it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles;
-import it.polimi.ingsw.galaxytruckerproject.model.Game;
-import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import java.util.Optional;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Direction;
-
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Direction;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+
+import java.util.Optional;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = LargeMeteor.class, name = "LargeMeteor"),
@@ -40,7 +40,7 @@ public abstract class Projectile {
      * @param game
      * @return
      */
-    public Defense throwProjectile(Player player, int DiceRoll, Game game) {
+    public Defense throwProjectile(Player player, int DiceRoll, GameInterface game) {
         return Defense.PROTECTED;
     }
 
