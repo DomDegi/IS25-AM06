@@ -9,7 +9,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.Penalty;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
-import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.*;
 
@@ -21,7 +20,7 @@ public class CombatZone extends Card {
     private VirtualView minPlayerView = null;
     private int playerIndex = -1;
     private Player currentPlayer =  null;
-    private ViewInterface currentView = null;
+    private VirtualView currentView = null;
     private ChallengeType currentChallenge = null;
     private Penalty currentPenalty = null;
 
@@ -169,6 +168,99 @@ public class CombatZone extends Card {
             savedValues.put(currentPlayer, strength);
             notifyModifiedTiles(playerName,valueMap.values().iterator().next());
             nextPlayer();
+        }
+        else {
+            currentView.showWrongInputMessage();
+        }
+    }
+
+    @Override
+    public void removeCrew(String playerName, ArrayList<Coordinates> crewToRemove) {
+        Player player = game.identifyPlayerByName(playerName);
+        if (!player.getPlayerName().equals(minPlayer.getPlayerName())) {
+            viewsMap.get(playerName).showWrongInputMessage();
+            return;
+        }
+        ArrayList<Tile> updated = currentPenalty.removeCrew(minPlayer, minPlayerView, crewToRemove);
+        if (updated != null) {
+            notifyModifiedTiles(playerName, updated);
+            resetForNextPenalty();
+        }
+        else
+            currentView.showWrongInputMessage();
+    }
+
+    @Override
+    public void removeGoods(String playerName, ArrayList<Coordinates> goodsToRemove) {
+        Player player = game.identifyPlayerByName(playerName);
+        if (!player.getPlayerName().equals(minPlayer.getPlayerName())) {
+            viewsMap.get(playerName).showWrongInputMessage();
+            return;
+        }
+        ArrayList<Tile> updatedTiles = currentPenalty.removeGoods(minPlayer,minPlayerView, goodsToRemove);
+        if (updatedTiles == null) {
+            currentView.showWrongInputMessage();
+        }
+        else {
+            notifyModifiedTiles(playerName, updatedTiles);
+            resetForNextPenalty();
+        }
+    }
+
+    @Override
+    public void rollTheDices(String playerName) {
+        if (!playerName.equals(minPlayer.getPlayerName())) {
+            viewsMap.get(playerName).showWrongInputMessage();
+            return;
+        }
+        ArrayList<Coordinates> broken =  new ArrayList<>();
+        Coordinates firstBrokenTile = currentPenalty.randomRollForOne(minPlayerView, minPlayer);
+        try {
+            minPlayerView.showDiceRoll(currentPenalty.getDiceRoll());
+        } catch(Exception ignored) {}
+        if (firstBrokenTile != null) {
+            broken.add(firstBrokenTile);
+            notifyBrokenTiles(playerName, broken);
+            if (!currentPenalty.initializePenalty(game,minPlayerView, minPlayer)) {
+                resetForNextPenalty();
+            }
+        }
+    }
+
+    @Override
+    public void branchChoice(String playerName, ArrayList<Coordinates> branchChoices) {
+        Player player = game.identifyPlayerByName(playerName);
+        if (!player.getPlayerName().equals(minPlayer.getPlayerName())) {
+            viewsMap.get(playerName).showWrongInputMessage();
+            return;
+        }
+        ArrayList<Coordinates> removedTiles = currentPenalty.chooseToMaintain(player, branchChoices);
+        if (removedTiles == null) {
+            currentView.showWrongInputMessage();
+        }
+        else {
+            notifyBrokenTiles(playerName, removedTiles);
+            if (!currentPenalty.initializePenalty(game,minPlayerView, minPlayer)) {
+                resetForNextPenalty();
+            }
+        }
+    }
+
+    @Override
+    public void useBatteries(String playerName, ArrayList<Coordinates> batteries) {
+        Player player = game.identifyPlayerByName(playerName);
+        if (!player.getPlayerName().equals(minPlayer.getPlayerName())) {
+            viewsMap.get(playerName).showWrongInputMessage();
+            return;
+        }
+        Tile batteryComponent = currentPenalty.playerUsesBatteryToDefend(player,batteries);
+        ArrayList<Tile> modifiedTiles = new ArrayList<>();
+        modifiedTiles.add(batteryComponent);
+        if (batteryComponent != null) {
+            notifyModifiedTiles(playerName, modifiedTiles);
+            if (!currentPenalty.initializePenalty(game,minPlayerView,minPlayer)) {
+                resetForNextPenalty();
+            }
         }
         else {
             currentView.showWrongInputMessage();

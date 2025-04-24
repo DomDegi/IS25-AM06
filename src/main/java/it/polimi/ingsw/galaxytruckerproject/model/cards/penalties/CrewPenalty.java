@@ -45,7 +45,7 @@ public class CrewPenalty extends Penalty {
     }
 
     @Override
-    public ArrayList<Tile> automaticCrewPenalty(GameInterface game, Player disconnectedPlayer, ViewInterface view) {
+    public ArrayList<Tile> automaticCrewPenalty(Player disconnectedPlayer, ViewInterface view) {
         ArrayList<Tile> toUpdate= new ArrayList<>();
         for (int i = 0; i < numberOfLostCrew && disconnectedPlayer.getTotalCrew() > 0; i++) {
             Coordinates firstCabin = disconnectedPlayer.getShipBoard().getCabinsCoordinates().getFirst();
@@ -58,8 +58,12 @@ public class CrewPenalty extends Penalty {
     }
 
     @Override
-    public boolean initializePenalty(VirtualView view, Player player) {
+    public boolean initializePenalty(GameInterface game, VirtualView view, Player player) {
         if (player.getTotalCrew() == 0) {
+            return false;
+        }
+        if (player.IsDisconnected()) {
+            game.getDrawnCard().notifyModifiedTiles(player.getPlayerName(), automaticCrewPenalty(player, view));
             return false;
         }
         numberOfCrew = Math.min(player.getTotalCrew(), numberOfLostCrew);
