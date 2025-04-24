@@ -16,6 +16,7 @@ public class FlightDaysPenalty extends Penalty{
 
     @Override
     public String toString() {
+
         return "FlightDaysPenalty: " +  numberOfLostDays;
     }
 
