@@ -50,7 +50,7 @@ public class AbandonedShip extends Card {
             viewsMap.get(playerName).showWrongInputMessage();
             return;
         }
-        if (crewToRemove.size() < this.crewNumberRequired) {
+        if (crewToRemove.size() != this.crewNumberRequired) {
             playersView.showWrongInputMessage();
             return;
         }
@@ -99,8 +99,6 @@ public class AbandonedShip extends Card {
             return;
         }
         if (playerToPlay.getTotalCrew() < crewNumberRequired) {
-            sendMessageToPlayer(playersView, playerName + " you don't have enough crew members: " +
-                    "needed " + crewNumberRequired);
             this.nextPlayer();
         }
         else if (playerToPlay.getTotalCrew() >= crewNumberRequired) {

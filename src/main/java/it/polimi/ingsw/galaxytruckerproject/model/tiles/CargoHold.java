@@ -42,10 +42,6 @@ public abstract class CargoHold extends Tile{
         shipBoard.getCargoHoldCoordinates().add(this.coordinates);
     }
 
-    public int getTotSpaces() {
-        return totSpaces;
-    }
-
     public int addGood(Goods good){
         if(cargo.size() == totSpaces ){
             System.out.println("\nCargoHold is full");
@@ -88,5 +84,4 @@ public abstract class CargoHold extends Tile{
     public int getTotSpaces() {
         return totSpaces;
     }
-
 }

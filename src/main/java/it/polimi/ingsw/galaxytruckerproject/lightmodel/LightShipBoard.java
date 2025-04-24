@@ -7,7 +7,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 
 import java.util.*;
 
-public class LightShipBoard {
+public class LightShipBoard implements ShipBoardInterface{
 
     //Variable that saves the reference to the ShipBoard present in the model along with all the game logic
     private ShipBoard shipBoard;
@@ -19,13 +19,19 @@ public class LightShipBoard {
     //SERVE UN METODO CHE PASSA AL CLIENT TUTTE LE COORDINATE DEI CARGOHOLD
     private ArrayList<Coordinates> cargoHoldCoordinates;
     private int credit;
+    private ArrayList<Coordinates> crewCoordinates;
 
-    public LightShipBoard(ShipBoard shipBoard,LightPlayer player) {
-        this.player = player;
+    public LightShipBoard(ShipBoard shipBoard) {
+        this. player = new LightPlayer(shipBoard.getPlayer());
         this.shipBoard = shipBoard;
         this.bookedTiles = new ArrayList<>();
         this.cargoHoldCoordinates = new ArrayList<>();
+        this.crewCoordinates = new ArrayList<>();
         this.credit = 0;
+    }
+
+    public LightShipBoard(LightPlayer player) {
+        this.player = player;
     }
 
     //the Client will intialize which level he wants to play. Then he's going to comunicate it to ShipBoard in the
@@ -240,6 +246,9 @@ public class LightShipBoard {
         return tile;
     }
 
+    public ArrayList<Coordinates> getCabinsCoordinates() {
+        return crewCoordinates;
+    }
     /*
     public void swapGoods(Coordinates coordinatesFrom,Coordinates coordinatesTo, Goods goodToSwap ){
         //Check if the coordinates are of a CargoHolder

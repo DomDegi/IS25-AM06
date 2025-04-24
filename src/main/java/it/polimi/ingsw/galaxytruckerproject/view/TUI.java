@@ -45,19 +45,16 @@ public class TUI implements DisplayableView{
     public void setClientState(ClientState newState) {
         System.out.println(newState.toString());
     }
-
     @Override
     public void showJoinableGamesList(Map<String, GameController> joinableGames) {
         for(String nameGame : joinableGames.keySet()){
             System.out.println(joinableGames.get(nameGame).toString());
         }
     }
-
     @Override
     public void askPlayerCount() throws IOException {
         System.out.println("How many players will the game contain?");
     }
-
     @Override
     public void createGame() throws IOException {
 
@@ -138,6 +135,16 @@ public class TUI implements DisplayableView{
     @Override
     public void notifyYouCanDrawThisCardDeck() {
         System.out.println("You can draw this card deck");
+    }
+
+    @Override
+    public void notifyYourShipIsCorrect() {
+
+    }
+
+    @Override
+    public void asksToSetPosition() {
+
     }
     @Override
     public void notifyYourShipIsCorrect() {
