@@ -55,7 +55,13 @@ public class ProjectilePenalty extends Penalty {
         if (getListOfProjectiles().isEmpty()) {
             return false;
         }
-        view.setClientState(ClientState.ACTION);
+        if (this.diceRoll != 0) {
+            hitOrMiss(view, player);
+            return defenseStatus != Defense.PROTECTED;
+        }
+        else {
+            view.setClientState(ClientState.ACTION);
+        }
         return true;
     }
 
@@ -88,6 +94,10 @@ public class ProjectilePenalty extends Penalty {
     public Coordinates randomRollForOne (VirtualView view, Player player) {
         Random rand = new Random();
         this.diceRoll = 2 + rand.nextInt(11);
+        return hitOrMiss(view, player);
+    }
+
+    public Coordinates hitOrMiss(VirtualView view,Player player) {
         this.defenseStatus = listOfProjectiles.getFirst().throwProjectile(player, diceRoll, game);
         if (!player.IsDisconnected()) {
             switch (defenseStatus) {
@@ -182,7 +192,9 @@ public class ProjectilePenalty extends Penalty {
         ArrayList<Coordinates> removedTiles;
 
         while (!listOfProjectiles.isEmpty()) {
-            this.randomRollForOne(view, player);
+            if (this.diceRoll == 0) {
+                randomRollForOne(view, player);
+            }
             if (defenseStatus == Defense.HIT || defenseStatus == Defense.CHOOSETOUSEBATTERY) {
                 // if true: kept the branch with the starting cabin, else kept the first branch
                 if (branch != null){
