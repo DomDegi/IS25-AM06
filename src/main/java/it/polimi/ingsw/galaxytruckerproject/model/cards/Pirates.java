@@ -92,7 +92,7 @@ public class Pirates extends Enemies {
             }
             else {
                 won = -1;
-                notifyBrokenTiles(currentPlayer.getPlayerName(), penaltyIfLose.automaticProjectilePenalty(game, currentPlayer, currentView));
+                penaltyIfLose.initializePenalty(game, currentView, currentPlayer);
                 nextPlayer();
             }
         }
@@ -108,7 +108,7 @@ public class Pirates extends Enemies {
                 }
                 else {
                     won = -1;
-                    penaltyIfLose.initializePenalty(currentView, currentPlayer);
+                    penaltyIfLose.initializePenalty(game,currentView, currentPlayer);
                     currentView.asksToInputCoordinates(CoordReqType.CHOOSE_TO_MAINTAIN);
                 }
             }
@@ -164,7 +164,7 @@ public class Pirates extends Enemies {
         }
         else {
             won = -1;
-            if(!penaltyIfLose.initializePenalty(currentView, currentPlayer)) {
+            if(!penaltyIfLose.initializePenalty(game, currentView, currentPlayer)) {
                 nextPlayer();
             }
             currentView.asksToInputCoordinates(CoordReqType.CHOOSE_CREW);
@@ -178,14 +178,14 @@ public class Pirates extends Enemies {
             return;
         }
         ArrayList<Coordinates> broken =  new ArrayList<>();
-        Coordinates firstBrokenTile = penaltyIfLose.randomRollForOne(currentView, currentPlayer, game);
+        Coordinates firstBrokenTile = penaltyIfLose.randomRollForOne(currentView, currentPlayer);
         try {
-            currentView.notifyDiceRoll(playerName, penaltyIfLose.getDiceRoll());
+            currentView.showDiceRoll(penaltyIfLose.getDiceRoll());
         } catch(Exception ignored) {}
         if (firstBrokenTile != null) {
             broken.add(firstBrokenTile);
             notifyBrokenTiles(playerName, broken);
-            if (!penaltyIfLose.initializePenalty(currentView, currentPlayer)) {
+            if (!penaltyIfLose.initializePenalty(game,currentView, currentPlayer)) {
                 nextPlayer();
             }
         }
@@ -204,7 +204,9 @@ public class Pirates extends Enemies {
         }
         else {
             notifyBrokenTiles(playerName, removedTiles);
-            nextPlayer();
+            if (!penaltyIfLose.initializePenalty(game,currentView, currentPlayer)) {
+                nextPlayer();
+            }
         }
     }
 
@@ -220,7 +222,7 @@ public class Pirates extends Enemies {
         modifiedTiles.add(batteryComponent);
         if (batteryComponent != null) {
             notifyModifiedTiles(playerName, modifiedTiles);
-            if (!penaltyIfLose.initializePenalty(currentView, currentPlayer)) {
+            if (!penaltyIfLose.initializePenalty(game,currentView, currentPlayer)) {
                 nextPlayer();
             }
         }

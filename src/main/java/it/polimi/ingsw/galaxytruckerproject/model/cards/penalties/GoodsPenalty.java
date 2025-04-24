@@ -49,7 +49,7 @@ public class GoodsPenalty extends Penalty {
     }
 
     @Override
-    public ArrayList<Tile> automaticGoodsPenalty(GameInterface game, Player disconnectedPlayer, ViewInterface view) {
+    public ArrayList<Tile> automaticGoodsPenalty(Player disconnectedPlayer, ViewInterface view) {
         if (numberOfGoods == numberOfLostGoods) {
             return automaticRemoveGoods(disconnectedPlayer, numberOfLostGoods);
         }
@@ -123,7 +123,11 @@ public class GoodsPenalty extends Penalty {
     }
 
     @Override
-    public boolean initializePenalty(VirtualView view, Player player) {
+    public boolean initializePenalty(GameInterface game,VirtualView view, Player player) {
+        if (player.IsDisconnected()) {
+            game.getDrawnCard().notifyModifiedTiles(player.getPlayerName(), automaticGoodsPenalty(player, view));
+            return false;
+        }
         if (player.getShipBoard().isCargoEmpty()) {
             if (player.getShipBoard().getNumBatteries() == 0) {
                 return false;

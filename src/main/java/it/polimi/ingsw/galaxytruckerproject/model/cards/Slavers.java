@@ -75,7 +75,7 @@ public class Slavers extends Enemies{
             }
             else {
                 won = -1;
-                notifyModifiedTiles(currentPlayer.getPlayerName(), penaltyIfLose.automaticCrewPenalty(game, currentPlayer, playersView));
+                penaltyIfLose.initializePenalty(game,playersView, currentPlayer);
                 nextPlayer();
             }
         }
@@ -91,7 +91,7 @@ public class Slavers extends Enemies{
                 }
                 else {
                     won = -1;
-                    if(!penaltyIfLose.initializePenalty(playersView, currentPlayer)) {
+                    if(!penaltyIfLose.initializePenalty(game,playersView, currentPlayer)) {
                         nextPlayer();
                     }
                     playersView.asksToInputCoordinates(CoordReqType.CHOOSE_CREW);
@@ -131,7 +131,7 @@ public class Slavers extends Enemies{
         }
         else {
             won = -1;
-            if(!penaltyIfLose.initializePenalty(playersView, currentPlayer)) {
+            if(!penaltyIfLose.initializePenalty(game,playersView, currentPlayer)) {
                 nextPlayer();
             }
             playersView.asksToInputCoordinates(CoordReqType.CHOOSE_CREW);

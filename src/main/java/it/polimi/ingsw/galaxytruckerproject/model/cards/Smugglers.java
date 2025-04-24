@@ -71,7 +71,7 @@ public class Smugglers extends Enemies{
             }
             else {
                 won = -1;
-                notifyModifiedTiles(currentPlayer.getPlayerName(), lostGoods.automaticGoodsPenalty(game, currentPlayer, playersView));
+                lostGoods.initializePenalty(game, playersView, currentPlayer);
                 nextPlayer();
             }
         }
@@ -87,7 +87,7 @@ public class Smugglers extends Enemies{
                 }
                 else {
                     won = -1;
-                    if (!lostGoods.initializePenalty(playersView, currentPlayer)) {
+                    if (!lostGoods.initializePenalty(game,playersView, currentPlayer)) {
                         nextPlayer();
                     }
                     playersView.asksToInputCoordinates(CoordReqType.REMOVE_GOODS);
@@ -127,7 +127,7 @@ public class Smugglers extends Enemies{
         }
         else {
             won = -1;
-            if (lostGoods.initializePenalty(playersView, currentPlayer)) {
+            if (lostGoods.initializePenalty(game,playersView, currentPlayer)) {
                 nextPlayer();
             }
             playersView.asksToInputCoordinates(CoordReqType.REMOVE_GOODS);
