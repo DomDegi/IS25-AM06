@@ -157,6 +157,10 @@ public class ProjectilePenalty extends Penalty {
         this.diceRoll = diceRoll;
     }
 
+    public int getDiceRoll(){
+        return diceRoll;
+    }
+
     public void addProjectile (Projectile projectile) {
         this.listOfProjectiles.add(projectile);
     }
