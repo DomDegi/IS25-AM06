@@ -151,5 +151,4 @@ public class AbandonedStation extends Card {
     public int getCrewNumber() {
         return crewNumberRequired;
     }
-
 }

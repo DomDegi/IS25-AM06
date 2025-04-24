@@ -236,10 +236,8 @@ public class Pirates extends Enemies {
         return penaltyIfLose.getListOfProjectiles();
     }
 
-    //Method useful for client card
-
     @Override
-    public void removeProjectile() {
-        getListOfProjectiles().removeFirst();
+    public int getGainedCredits() {
+        return rewardCredits;
     }
 }
