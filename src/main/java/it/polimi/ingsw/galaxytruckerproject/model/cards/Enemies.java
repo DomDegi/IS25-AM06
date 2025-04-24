@@ -30,4 +30,5 @@ public abstract class Enemies extends Card {
     @Override
     public abstract void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap);
 
+
 }

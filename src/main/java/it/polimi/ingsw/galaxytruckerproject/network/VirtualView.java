@@ -24,4 +24,11 @@ public interface VirtualView extends ViewInterface {
     void notifyGainedCredits (String playerName, int totalCredits) throws RemoteException;
     void  notifyBrokenTile(String playerName, ArrayList<Coordinates> coordinates);
     void notifyChangesWhileGone(Map<String, LightShipBoard> updatedShipBoards, LightFlightboard updatedFlightBoard, Card drawnCard, int hourglassTurns, Map<Integer, Tile> turnedTiles, ArrayList<Integer> notAvailable) throws RemoteException;
+    void notifyRemovedBookedTile(String playerName, Tile tile) throws RemoteException;
+    void notifyFlightBoardCards(Map<Integer, ArrayList<Card>> cards) throws RemoteException;
+    void notifyChangesWhileGone(Map<String, LightShipBoard> updatedShipBoards,
+                                LightFlightboard updatedFlightBoard, Card drawnCard,
+                                int hourglassTurns, Map<Integer,Tile> turnedTiles,
+                                ArrayList<Integer> notAvailable)
+            throws RemoteException;
 }

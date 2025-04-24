@@ -716,6 +716,22 @@ public class GameController implements Observer {
         game.getDrawnCard().removeCrew(playerName, toRemoveFrom);
     }
 
+    public void playerRemovesGoods(String playerName, ArrayList<Coordinates> toRemoveFrom) {
+        game.getDrawnCard().removeGoods(playerName, toRemoveFrom);
+    }
+
+    public void playerUsesBatteries(String playerName, ArrayList<Coordinates> batteries) {
+        game.getDrawnCard().useBatteries(playerName, batteries);
+    }
+
+    public void playerRollsTheDices(String playerName) {
+        game.getDrawnCard().rollTheDices(playerName);
+    }
+
+    public void playerChoosesBranch(String playerName, ArrayList<Coordinates> branch) {
+        game.getDrawnCard().branchChoice(playerName, branch);
+    }
+
 
     //PlayerPoint calculation
     public synchronized void concludeGame() {

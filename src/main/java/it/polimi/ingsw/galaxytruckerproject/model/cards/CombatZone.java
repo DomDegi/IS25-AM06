@@ -21,7 +21,7 @@ public class CombatZone extends Card {
     private final LinkedHashMap<ChallengeType, Penalty> listOfChallenges ;
     private final LinkedHashMap<Player, Float> savedValues;
     private Player minPlayer = null;
-    private ViewInterface minPlayerView = null;
+    private VirtualView minPlayerView = null;
     private int playerIndex = -1;
     private Player currentPlayer =  null;
     private ViewInterface currentView = null;
