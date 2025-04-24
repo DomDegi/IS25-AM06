@@ -106,6 +106,7 @@ public abstract class Card {
     public ArrayList<Goods> getGoodsList(String playerName){return null;}
     public int getGoodsPenalty(){return 0;}
     public ArrayList<Projectile> getListOfProjectiles() { return null;}
+    public void removeProjectile() {}
 
 
     @Override

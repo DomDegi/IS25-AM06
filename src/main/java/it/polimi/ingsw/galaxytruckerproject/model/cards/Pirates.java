@@ -180,7 +180,7 @@ public class Pirates extends Enemies {
         ArrayList<Coordinates> broken =  new ArrayList<>();
         Coordinates firstBrokenTile = penaltyIfLose.randomRollForOne(currentView, currentPlayer, game);
         try {
-            currentView.notifyDiceRoll(playerName, penaltyIfLose.getDiceRoll());
+            currentView.showDiceRoll(penaltyIfLose.getDiceRoll());
         } catch(Exception ignored) {}
         if (firstBrokenTile != null) {
             broken.add(firstBrokenTile);
@@ -232,5 +232,12 @@ public class Pirates extends Enemies {
     @Override
     public ArrayList<Projectile> getListOfProjectiles() {
         return penaltyIfLose.getListOfProjectiles();
+    }
+
+    //Method useful for client card
+
+    @Override
+    public void removeProjectile() {
+        getListOfProjectiles().removeFirst();
     }
 }
