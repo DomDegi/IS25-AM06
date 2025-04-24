@@ -180,7 +180,7 @@ public class Pirates extends Enemies {
         ArrayList<Coordinates> broken =  new ArrayList<>();
         Coordinates firstBrokenTile = penaltyIfLose.randomRollForOne(currentView, currentPlayer, game);
         try {
-            currentView.notifyDiceRoll(playerName, penaltyIfLose.getDiceRoll());
+            currentView.showDiceRoll( penaltyIfLose.getDiceRoll());
         } catch(Exception ignored) {}
         if (firstBrokenTile != null) {
             broken.add(firstBrokenTile);
