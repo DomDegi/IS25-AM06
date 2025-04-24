@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.network;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
@@ -30,4 +31,5 @@ public interface VirtualView extends ViewInterface {
                                 ArrayList<Integer> notAvailable)
             throws RemoteException;
     void notifyDiceRoll(String playerName, int diceRoll) throws RemoteException;
+    void notifyBrokenTile(String playerName, ArrayList<Coordinates> coordinates) throws RemoteException;
 }

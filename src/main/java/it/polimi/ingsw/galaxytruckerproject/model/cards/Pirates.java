@@ -12,15 +12,17 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
+import javax.print.attribute.standard.PresentationDirection;
 import java.util.ArrayList;
 import java.util.Map;
 
 public class Pirates extends Enemies {
+    private final ArrayList<Projectile> listOfCannonShots;
     private final int rewardCredits;
     private int playerIndex;
     private Player currentPlayer = null;
     private VirtualView currentView = null;
-    private final ProjectilePenalty penaltyIfLose;
+    private ProjectilePenalty penaltyIfLose;
     private int won = 0;
 
     @JsonCreator
@@ -33,7 +35,7 @@ public class Pirates extends Enemies {
         super(level, requiredDays, cannonStrength);  // Chiamata al costruttore della classe base
         this.rewardCredits = rewardCredits;
         this.playerIndex = 0;
-        this.penaltyIfLose = new ProjectilePenalty(listOfShots);
+        this.listOfCannonShots = listOfShots;
     }
 
     public String toString() {
@@ -78,6 +80,7 @@ public class Pirates extends Enemies {
         String playerName = currentPlayer.getPlayerName();
         this.currentView = viewsMap.get(playerName);
         float singleCannonPower = currentPlayer.getShipBoard().getSingleCannonPower();
+        penaltyIfLose = new ProjectilePenalty(listOfCannonShots);
 
         won = 0;
         if (currentPlayer.IsDisconnected()) {
@@ -90,7 +93,7 @@ public class Pirates extends Enemies {
             }
             else {
                 won = -1;
-                notifyModifiedTiles(currentPlayer.getPlayerName(), penaltyIfLose.automaticProjectilePenalty(game, currentPlayer, currentView));
+                notifyBrokenTiles(currentPlayer.getPlayerName(), penaltyIfLose.automaticProjectilePenalty(game, currentPlayer, currentView));
                 nextPlayer();
             }
         }
@@ -175,7 +178,53 @@ public class Pirates extends Enemies {
             viewsMap.get(playerName).showWrongInputMessage();
             return;
         }
-        penaltyIfLose.randomRollForOne(currentView, currentPlayer);
+        ArrayList<Coordinates> broken =  new ArrayList<>();
+        Coordinates firstBrokenTile = penaltyIfLose.randomRollForOne(currentView, currentPlayer, game);
+        if (firstBrokenTile != null) {
+            broken.add(firstBrokenTile);
+            notifyBrokenTiles(playerName, broken);
+            if (!penaltyIfLose.initializePenalty(currentView, currentPlayer)) {
+                nextPlayer();
+            }
+        }
+    }
+
+    @Override
+    public void branchChoice(String playerName, ArrayList<Coordinates> branchChoices) {
+        Player player = game.identifyPlayerByName(playerName);
+        if (!player.getPlayerName().equals(currentPlayer.getPlayerName())) {
+            viewsMap.get(playerName).showWrongInputMessage();
+            return;
+        }
+        ArrayList<Coordinates> removedTiles = penaltyIfLose.chooseToMaintain(player, branchChoices);
+        if (removedTiles == null) {
+            currentView.showWrongInputMessage();
+        }
+        else {
+            notifyBrokenTiles(playerName, removedTiles);
+            nextPlayer();
+        }
+    }
+
+    @Override
+    public void useBatteries(String playerName, ArrayList<Coordinates> batteries) {
+        Player player = game.identifyPlayerByName(playerName);
+        if (!player.getPlayerName().equals(currentPlayer.getPlayerName())) {
+            viewsMap.get(playerName).showWrongInputMessage();
+            return;
+        }
+        Tile batteryComponent = penaltyIfLose.playerUsesBatteryToDefend(player,batteries);
+        ArrayList<Tile> modifiedTiles = new ArrayList<>();
+        modifiedTiles.add(batteryComponent);
+        if (batteryComponent != null) {
+            notifyModifiedTiles(playerName, modifiedTiles);
+            if (!penaltyIfLose.initializePenalty(currentView, currentPlayer)) {
+                nextPlayer();
+            }
+        }
+        else {
+            currentView.showWrongInputMessage();
+        }
     }
 
     @Override

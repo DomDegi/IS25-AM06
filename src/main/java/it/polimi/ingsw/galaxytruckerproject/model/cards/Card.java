@@ -52,6 +52,14 @@ public abstract class Card {
         }
     }
 
+    public void notifyBrokenTiles(String playerName, ArrayList<Coordinates> tiles) {
+        for (VirtualView view : viewsMap.values()) {
+            try {
+                view.notifyBrokenTile(playerName, tiles);
+            } catch (Exception ignored) {}
+        }
+    }
+
     public void notifyMovement (Player player) {
         for (VirtualView view : viewsMap.values()) {
             try {
@@ -85,6 +93,8 @@ public abstract class Card {
     public void useBatteries(String playerName, ArrayList<Coordinates> batteries){}
 
     public void rollTheDices(String playerName) {}
+
+    public void branchChoice(String playerName, ArrayList<Coordinates> branchChoices){}
 
     //Getter methods needed for view
     public int getLevel() {

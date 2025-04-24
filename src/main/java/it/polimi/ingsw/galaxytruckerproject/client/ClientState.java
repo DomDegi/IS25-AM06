@@ -17,5 +17,6 @@ public enum ClientState {
     WAIT_OTHER_PLAYER_ACTION,
     START_SHIP_CREATION,
     DRAW_CARD,
-    MANAGE_CABINS
+    MANAGE_CABINS,
+    ROLL_DICE
 }
