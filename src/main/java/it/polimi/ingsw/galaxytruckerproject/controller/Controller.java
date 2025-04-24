@@ -211,4 +211,9 @@ public class Controller implements ControllerInterface {
     public void rollTheDices() throws Exception {
         gameController.playerRollsTheDices(nickname);
     }
+
+    @Override
+    public void chooseBranch(ArrayList<Coordinates> thisOne) throws Exception {
+        gameController.playerChoosesBranch(nickname, thisOne);
+    }
 }

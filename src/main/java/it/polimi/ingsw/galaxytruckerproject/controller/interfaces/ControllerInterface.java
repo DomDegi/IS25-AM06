@@ -115,6 +115,8 @@ public interface ControllerInterface {
 
     void rollTheDices() throws Exception;
 
+    void chooseBranch(ArrayList<Coordinates> thisOne) throws Exception;
+
     /**
      * this method sets the player on the flightBoard on LEVEL2 flight mode
      * @param position the position on the flightBoard (from 1 to max playerCount)

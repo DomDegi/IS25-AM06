@@ -725,6 +725,10 @@ public class GameController implements Observer {
         game.getDrawnCard().rollTheDices(playerName);
     }
 
+    public void playerChoosesBranch(String playerName, ArrayList<Coordinates> branch) {
+        game.getDrawnCard().branchChoice(playerName, branch);
+    }
+
 
     //PlayerPoint calculation
     public synchronized void concludeGame() {
