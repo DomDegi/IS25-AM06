@@ -78,7 +78,9 @@ public class Smugglers extends Enemies{
         else {
             if (singleCannonPower > cannonStrength) {
                 won = 1;
-                playersView.setClientState(ClientState.ACTION);
+                try {
+                    playersView.setClientState(ClientState.ACTION);
+                }catch(Exception ignored) {}
             }
             else if (currentPlayer.getShipBoard().getDoubleCannon().isEmpty() ||
                     currentPlayer.getShipBoard().getBatteryCoordinates().isEmpty()) {
@@ -90,11 +92,15 @@ public class Smugglers extends Enemies{
                     if (!lostGoods.initializePenalty(game,playersView, currentPlayer)) {
                         nextPlayer();
                     }
-                    playersView.asksToInputCoordinates(CoordReqType.REMOVE_GOODS);
+                    try {
+                        playersView.asksToInputCoordinates(CoordReqType.REMOVE_GOODS);
+                    }catch(Exception ignored) {}
                 }
             }
             else {
-                playersView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_ENGINE);
+                try {
+                    playersView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_ENGINE);
+                }catch(Exception ignored) {}
             }
         }
     }
@@ -103,12 +109,16 @@ public class Smugglers extends Enemies{
     public void cannonChoice(String playerName, float doubleCannonPower, ArrayList<Coordinates> batteriesToUse) {
         Player player = game.identifyPlayerByName(playerName);
         if (!player.getPlayerName().equals(currentPlayer.getPlayerName())) {
-            viewsMap.get(playerName).setClientState(ClientState.ACTION);
+            try {
+                viewsMap.get(playerName).setClientState(ClientState.ACTION);
+            }catch(Exception ignored) {}
             return;
         }
         Map<Float,ArrayList<Tile>> returned = player.useCannons(doubleCannonPower, batteriesToUse);
         if (returned == null) {
-            playersView.setClientState(ClientState.ACTION);
+            try {
+                playersView.setClientState(ClientState.ACTION);
+            }catch(Exception ignored) {}
             return;
         }
         notifyModifiedTiles(playerName, returned.values().iterator().next());
@@ -119,7 +129,9 @@ public class Smugglers extends Enemies{
                 choice(playerName, false);
             }
             else{
-            playersView.setClientState(ClientState.ACTION);
+                try {
+                    playersView.setClientState(ClientState.ACTION);
+                }catch(Exception ignored) {}
             }
         }
         else if (cannonPower == cannonStrength) {
@@ -130,19 +142,25 @@ public class Smugglers extends Enemies{
             if (lostGoods.initializePenalty(game,playersView, currentPlayer)) {
                 nextPlayer();
             }
-            playersView.asksToInputCoordinates(CoordReqType.REMOVE_GOODS);
+            try {
+                playersView.asksToInputCoordinates(CoordReqType.REMOVE_GOODS);
+            }catch(Exception ignored) {}
         }
     }
 
     @Override
     public void choice(String playerName, boolean decision) {
         if (!playerName.equals(currentPlayer.getPlayerName()) || won != 1) {
-            viewsMap.get(playerName).showWrongInputMessage();
+            try {
+                viewsMap.get(playerName).showWrongInputMessage();
+            }catch(Exception ignored) {}
             return;
         }
         if (decision) {
             goodsChecker =new GoodsChecker(currentPlayer,rewardGoods);
-            playersView.setClientState(ClientState.MANAGE_GOODS);
+            try {
+                playersView.setClientState(ClientState.MANAGE_GOODS);
+            }catch(Exception ignored) {}
         }
         else {
             game.endCardEvent();
@@ -152,7 +170,9 @@ public class Smugglers extends Enemies{
     @Override
     public void manageGoods(String playerName, int clientCredits, ArrayList<CargoHold> updatedCargos) {
         if (!playerName.equals(currentPlayer.getPlayerName())) {
-            viewsMap.get(playerName).showWrongInputMessage();
+            try {
+                viewsMap.get(playerName).showWrongInputMessage();
+            }catch(Exception ignored) {}
             return;
         }
         if (goodsChecker.check(clientCredits, updatedCargos)) {
@@ -163,7 +183,9 @@ public class Smugglers extends Enemies{
             game.endCardEvent();
         }
         else {
-            playersView.showWrongInputMessage();
+            try {
+                playersView.showWrongInputMessage();
+            }catch(Exception ignored) {}
         }
     }
 
@@ -171,12 +193,16 @@ public class Smugglers extends Enemies{
     public void removeGoods(String playerName, ArrayList<Coordinates> goodsToRemove) {
         Player player = game.identifyPlayerByName(playerName);
         if (!player.getPlayerName().equals(currentPlayer.getPlayerName()) || won != -1) {
-            viewsMap.get(playerName).showWrongInputMessage();
+            try {
+                viewsMap.get(playerName).showWrongInputMessage();
+            }catch(Exception ignored) {}
             return;
         }
         ArrayList<Tile> updatedTiles = lostGoods.removeGoods(currentPlayer,playersView, goodsToRemove);
         if (updatedTiles == null) {
-            playersView.showWrongInputMessage();
+            try {
+                playersView.showWrongInputMessage();
+            }catch(Exception ignored) {}
         }
         else {
             notifyModifiedTiles(playerName, updatedTiles);
