@@ -6,10 +6,8 @@ import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.Penalty;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.MessageType;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.UseCannonResponse;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.UseEngineResponse;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
@@ -86,7 +84,7 @@ public class CombatZone extends Card {
                 savedValues.put(currentPlayer, power);
             }
             else {
-                currentView.asksToUseCannons();
+                currentView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_CANNON);
             }
         }
     }
@@ -101,7 +99,7 @@ public class CombatZone extends Card {
                 savedValues.put(currentPlayer, power);
             }
             else {
-                currentView.asksToUseEngines();
+                currentView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_ENGINE);
             }
         }
     }
@@ -125,29 +123,11 @@ public class CombatZone extends Card {
             }
         }
         minPlayerView = viewsMap.get(minPlayer.getPlayerName());
-        if (!currentPenalty.initializePenalty(minPlayerView, minPlayer)) {
+        if (!currentPenalty.initializePenalty(game,minPlayerView, minPlayer)) {
             resetForNextPenalty();
         }
     }
 
-    public void executeCard (Message message) {
-        String playerName = message.getNickname();
-        if (!playerName.equals(currentPlayer.getPlayerName())) {
-            return;
-        }
-        if (minPlayer == null) {
-            switch (currentChallenge) {
-                case MINIMUM_CANNON_STRENGTH -> saveCannonValue(message);
-                case MINIMUM_ENGINE_POWER -> saveEngineValue(message);
-                case MINIMUM_CREW_NUMBER -> saveCrewValue();
-            }
-        }
-        else {
-            if (currentPenalty.applyPenalty(game, minPlayer, minPlayerView,  message) == 1) {
-                resetForNextPenalty();
-            }
-        }
-    }
 
     public void resetForNextPenalty() {
         savedValues.clear();
@@ -160,39 +140,39 @@ public class CombatZone extends Card {
         nextPlayer();
     }
 
-    public void saveCannonValue (Message message) {
-        if (message.getMessageType().equals(MessageType.USE_CANNON_RESPONSE)) {
-            UseCannonResponse  useCannonResponse = (UseCannonResponse) message;
-            float strength = currentPlayer.useCannons(useCannonResponse.getStrength(), useCannonResponse.getCoordinates());
-            if (strength != -1) {
-                savedValues.put(currentPlayer, strength);
-                nextPlayer();
-            }
-            else {
-                currentView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_CANNON);
-            }
+    public void cannonChoice (String playerName, float doubleCannonPower, ArrayList<Coordinates> batteries) {
+        if (!playerName.equals(currentPlayer.getPlayerName())) {
+            viewsMap.get(playerName).showWrongInputMessage();
+            return;
+        }
+        Map<Float,ArrayList<Tile>> valueMap = currentPlayer.useCannons(doubleCannonPower, batteries);
+        float strength = valueMap.keySet().iterator().next();
+        if (strength != -1) {
+            savedValues.put(currentPlayer, strength);
+            notifyModifiedTiles(playerName,valueMap.values().iterator().next());
+            nextPlayer();
+        }
+        else {
+            currentView.showWrongInputMessage();
         }
     }
 
-    public void saveEngineValue (Message message) {
-        if (message.getMessageType().equals(MessageType.USE_ENGINE_RESPONSE)) {
-            UseEngineResponse  useEngineResponse = (UseEngineResponse) message;
-            float strength = currentPlayer.useEngines(useEngineResponse.getNumEngine(), useEngineResponse.getCoordinates());
-            if (strength != -1) {
-                savedValues.put(currentPlayer, strength);
-                nextPlayer();
-            }
-            else {
-                currentView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_ENGINE);
-            }
+    @Override
+    public void engineChoice(String playerName, int numDoubleEngine, ArrayList<Coordinates> batteriesToUse) {
+        if (!playerName.equals(currentPlayer.getPlayerName())) {
+            viewsMap.get(playerName).showWrongInputMessage();
+            return;
         }
-    }
-
-    public void saveCrewValue () {
-        if (!savedValues.containsKey(currentPlayer)) {
-            savedValues.put(currentPlayer, (float) currentPlayer.getTotalCrew());
+        Map<Integer,ArrayList<Tile>> valueMap = currentPlayer.useEngines(numDoubleEngine, batteriesToUse);
+        float strength = valueMap.keySet().iterator().next();
+        if (strength != -1) {
+            savedValues.put(currentPlayer, strength);
+            notifyModifiedTiles(playerName,valueMap.values().iterator().next());
+            nextPlayer();
         }
-        nextPlayer();
+        else {
+            currentView.showWrongInputMessage();
+        }
     }
 
     @Override
