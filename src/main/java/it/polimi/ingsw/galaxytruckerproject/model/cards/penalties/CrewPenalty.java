@@ -28,7 +28,9 @@ public class CrewPenalty extends Penalty {
     @Override
     public ArrayList<Tile> removeCrew(Player player, VirtualView virtualView, ArrayList<Coordinates> toRemove) {
         if (toRemove.size() < numberOfCrew) {
-            virtualView.showWrongInputMessage();
+            try {
+                virtualView.showWrongInputMessage();
+            }catch(Exception ignored) {}
             return null;
         }
         while (toRemove.size() > numberOfCrew) {
@@ -36,7 +38,9 @@ public class CrewPenalty extends Penalty {
         }
         ArrayList<Tile> updatedTiles = player.removeCrew(toRemove);
         if (updatedTiles == null)  {
-            virtualView.showWrongInputMessage();
+            try {
+                virtualView.showWrongInputMessage();
+            }catch(Exception ignored) {}
             return null;
         }
         else {

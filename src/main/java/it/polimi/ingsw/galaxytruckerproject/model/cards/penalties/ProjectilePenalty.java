@@ -60,7 +60,9 @@ public class ProjectilePenalty extends Penalty {
             return defenseStatus != Defense.PROTECTED;
         }
         else {
-            view.setClientState(ClientState.ACTION);
+            try {
+                view.setClientState(ClientState.ROLL_DICE);
+            }catch(Exception ignored) {}
         }
         return true;
     }
@@ -111,14 +113,18 @@ public class ProjectilePenalty extends Penalty {
                         resetForNextProjectile();
                         return destroyedTile;
                     } else {
-                        view.asksToInputCoordinates(CoordReqType.CHOOSE_TO_MAINTAIN);
+                        try {
+                            view.asksToInputCoordinates(CoordReqType.CHOOSE_TO_MAINTAIN);
+                        }catch(Exception ignored) {}
                     }
                 }
                 case CHOOSETOUSEBATTERY -> {
                     if (player.getShipBoard().getNumBatteries() == 0) {
                         playerGetsHit(player, view);
                     } else {
-                        view.asksToInputCoordinates(CoordReqType.CHOOSE_BATTERY);
+                        try {
+                            view.asksToInputCoordinates(CoordReqType.CHOOSE_BATTERY);
+                        }catch(Exception ignored) {}
                     }
                 }
             }

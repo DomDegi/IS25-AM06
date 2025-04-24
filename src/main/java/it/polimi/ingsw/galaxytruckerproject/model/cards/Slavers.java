@@ -82,7 +82,9 @@ public class Slavers extends Enemies{
         else {
             if (singleCannonPower > cannonStrength) {
                 won = 1;
-                playersView.setClientState(ClientState.ACTION);
+                try {
+                    playersView.setClientState(ClientState.ACTION);
+                }catch(Exception ignored) {}
             }
             else if (currentPlayer.getShipBoard().getDoubleCannon().isEmpty() ||
                     currentPlayer.getShipBoard().getBatteryCoordinates().isEmpty()) {
@@ -94,11 +96,15 @@ public class Slavers extends Enemies{
                     if(!penaltyIfLose.initializePenalty(game,playersView, currentPlayer)) {
                         nextPlayer();
                     }
-                    playersView.asksToInputCoordinates(CoordReqType.CHOOSE_CREW);
+                    try {
+                        playersView.asksToInputCoordinates(CoordReqType.CHOOSE_CREW);
+                    }catch(Exception ignored) {}
                 }
             }
             else {
-                playersView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_ENGINE);
+                try {
+                    playersView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_ENGINE);
+                }catch(Exception ignored) {}
             }
         }
     }
@@ -107,12 +113,16 @@ public class Slavers extends Enemies{
     public void cannonChoice(String playerName, float doubleCannonPower, ArrayList<Coordinates> batteriesToUse) {
         Player player = game.identifyPlayerByName(playerName);
         if (!player.getPlayerName().equals(currentPlayer.getPlayerName())) {
-            viewsMap.get(playerName).setClientState(ClientState.ACTION);
+            try {
+                viewsMap.get(playerName).setClientState(ClientState.ACTION);
+            }catch(Exception ignored) {}
             return;
         }
         Map<Float,ArrayList<Tile>> returned = player.useCannons(doubleCannonPower, batteriesToUse);
         if (returned == null) {
-            playersView.setClientState(ClientState.ACTION);
+            try {
+                playersView.setClientState(ClientState.ACTION);
+            }catch(Exception ignored) {}
             return;
         }
         notifyModifiedTiles(playerName, returned.values().iterator().next());
@@ -123,7 +133,9 @@ public class Slavers extends Enemies{
                 choice(playerName, false);
             }
             else{
-                playersView.setClientState(ClientState.ACTION);
+                try {
+                    playersView.setClientState(ClientState.ACTION);
+                }catch(Exception ignored) {}
             }
         }
         else if (cannonPower == cannonStrength) {
@@ -134,14 +146,18 @@ public class Slavers extends Enemies{
             if(!penaltyIfLose.initializePenalty(game,playersView, currentPlayer)) {
                 nextPlayer();
             }
-            playersView.asksToInputCoordinates(CoordReqType.CHOOSE_CREW);
+            try {
+                playersView.asksToInputCoordinates(CoordReqType.CHOOSE_CREW);
+            }catch(Exception ignored) {}
         }
     }
 
     @Override
     public void choice(String playerName, boolean decision) {
         if (!playerName.equals(currentPlayer.getPlayerName()) || won != 1) {
-            viewsMap.get(playerName).showWrongInputMessage();
+            try {
+                viewsMap.get(playerName).showWrongInputMessage();
+            }catch(Exception ignored) {}
             return;
         }
         if (decision) {
@@ -160,7 +176,9 @@ public class Slavers extends Enemies{
     public void removeCrew(String playerName, ArrayList<Coordinates> crewToRemove) {
         Player player = game.identifyPlayerByName(playerName);
         if (!player.getPlayerName().equals(currentPlayer.getPlayerName()) || won != -1) {
-            viewsMap.get(playerName).showWrongInputMessage();
+            try {
+                viewsMap.get(playerName).showWrongInputMessage();
+            }catch(Exception ignored) {}
             return;
         }
         ArrayList<Tile> updated = penaltyIfLose.removeCrew(player, playersView, crewToRemove);
@@ -168,8 +186,11 @@ public class Slavers extends Enemies{
             notifyModifiedTiles(playerName, updated);
             nextPlayer();
         }
-        else
-            playersView.showWrongInputMessage();
+        else {
+            try {
+                playersView.showWrongInputMessage();
+            }catch(Exception ignored) {}
+        }
     }
 
     @Override

@@ -35,7 +35,7 @@ public class ClientController {
     private GoodsManager goodsManager;
     private CabinsManager cabinsManager;
     private Map<Integer,Tile> turnedTiles;
-    private final Map<Integer, ArrayList<Card>> deck;
+    private Map<Integer, ArrayList<Card>> deck;
     private final Map<Integer,Boolean> availabledeck;
     private ArrayList<Goods> goodsList;
 
@@ -632,7 +632,7 @@ public class ClientController {
         }
     }
 
-    public boolean rollBackState(){
+    public boolean rollBackState() throws RemoteException {
         view.setClientState(previousState);
         if (state==previousState)
             return false;
@@ -758,6 +758,10 @@ public class ClientController {
 
     public ViewInterface getView() {
         return view;
+    }
+
+    public void setDeck(Map<Integer, ArrayList<Card>> deck) {
+        this.deck = deck;
     }
 }
 

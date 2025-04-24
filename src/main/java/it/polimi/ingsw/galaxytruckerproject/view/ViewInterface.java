@@ -34,8 +34,8 @@ public interface ViewInterface extends Remote, Serializable {
      * show login response from server
      * @param success
          */
-    void showLoginResponse(boolean success);
-    void setClientState (ClientState newState);
+    void showLoginResponse(boolean success) throws RemoteException;
+    void setClientState (ClientState newState) throws RemoteException;
     /**
      * Shows on the view the list of the games that are in starting phase.
      * Also asks player calls for the function asksJoinOrCreate().
@@ -87,7 +87,7 @@ public interface ViewInterface extends Remote, Serializable {
      * @param drawnTile
      */
     //DEVE ANCHE MANDARLA AL CLIENT
-    void showDrawnTile (Tile drawnTile);
+    void showDrawnTile (Tile drawnTile) throws RemoteException;
     /**
      * shows the player the tiles that got turned from player refusing them
      * @param turnedTiles the current array in the model
@@ -98,7 +98,7 @@ public interface ViewInterface extends Remote, Serializable {
      * @param bookedTiles the booked tiles
      */
     void showBookedTiles (ArrayList<Tile> bookedTiles);
-    void showWrongInputMessage ();
+    void showWrongInputMessage () throws RemoteException;
     /**
      * prints on the view the cards that are on the shipboard to be seen during
      * ship building phase
@@ -115,15 +115,15 @@ public interface ViewInterface extends Remote, Serializable {
     /**
      * asks the player to input a series of coordinates of coord
      */
-    void asksToInputCoordinates (CoordReqType coordReqType);
+    void asksToInputCoordinates (CoordReqType coordReqType) throws RemoteException;
     void asksToTurnTheHourglass ();
     void notifyYouCanDrawThisCardDeck();
     void notifyYourShipIsCorrect();
     /**
      * asks to set position on the flightboard
      */
-    void asksToMakeAChoice ();
-    void asksToManageGoods(ArrayList<Goods> goods);
+    void asksToMakeAChoice () throws RemoteException;
+    void asksToManageGoods(ArrayList<Goods> goods) throws RemoteException;
     void asksToRemoveGoods();
     void asksToRemoveCrew();
     /**
@@ -140,4 +140,5 @@ public interface ViewInterface extends Remote, Serializable {
     void printFlightboard(LightFlightboard lightFlightboard);
     void printShipboard(LightShipBoard lightShipBoard);
     void printProjectile(Projectile projectile);
+
 }

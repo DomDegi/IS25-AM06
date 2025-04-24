@@ -48,14 +48,18 @@ public class AbandonedStation extends Card {
     @Override
     public void choice(String playerName, boolean decision) {
         if (!playerName.equals(currentPlayer.getPlayerName()) || won) {
-            viewsMap.get(playerName).showWrongInputMessage();
+            try {
+                viewsMap.get(playerName).showWrongInputMessage();
+            } catch(Exception ignored) {}
             return;
         }
         if (!decision) {
             nextPlayer();
         }
         else {
-            currentPlayersView.asksToInputCoordinates(CoordReqType.CHOOSE_CREW);
+            try {
+                currentPlayersView.asksToInputCoordinates(CoordReqType.CHOOSE_CREW);
+            } catch(Exception ignored) {}
             won = true;
             goodsChecker = new GoodsChecker(currentPlayer,possibleGoodsGain);
         }
@@ -65,20 +69,28 @@ public class AbandonedStation extends Card {
     public void removeCrew(String playerName, ArrayList<Coordinates> toRemoveFrom) {
         Player player = game.identifyPlayerByName(playerName);
         if (!playerName.equals(currentPlayer.getPlayerName()) || won) {
-            viewsMap.get(playerName).showWrongInputMessage();
+            try {
+                viewsMap.get(playerName).showWrongInputMessage();
+            } catch(Exception ignored) {}
             return;
         }
         if (toRemoveFrom.size() != this.crewNumberRequired) {
-            currentPlayersView.showWrongInputMessage();
+            try{
+                currentPlayersView.showWrongInputMessage();
+            } catch(Exception ignored) {}
             return;
         }
         ArrayList<Tile> updatedTiles = player.removeCrew(toRemoveFrom);
         if (updatedTiles != null) {
             notifyModifiedTiles(playerName, updatedTiles);
-            currentPlayersView.setClientState(ClientState.MANAGE_GOODS);
+            try {
+                currentPlayersView.setClientState(ClientState.MANAGE_GOODS);
+            } catch(Exception ignored) {}
         }
         else {
-            currentPlayersView.showWrongInputMessage();
+            try {
+                currentPlayersView.showWrongInputMessage();
+            } catch(Exception ignored) {}
         }
     }
 
@@ -86,11 +98,15 @@ public class AbandonedStation extends Card {
     public void manageGoods(String playerName, int clientCredits, ArrayList<CargoHold> updatedCargos) {
         Player player = game.identifyPlayerByName(playerName);
         if (!won || !player.equals(currentPlayer)) {
-            viewsMap.get(playerName).showWrongInputMessage();
+            try{
+                viewsMap.get(playerName).showWrongInputMessage();
+            } catch(Exception ignored) {}
             return;
         }
         if (!goodsChecker.check(clientCredits, updatedCargos)) {
-            currentPlayersView.showWrongInputMessage();
+            try{
+                currentPlayersView.showWrongInputMessage();
+            } catch(Exception ignored) {}
         }
         else {
             ArrayList<Tile> updatedTiles = new ArrayList<>(updatedCargos);
@@ -127,7 +143,10 @@ public class AbandonedStation extends Card {
             nextPlayer();
         }
         else {
-            currentPlayersView.setClientState(ClientState.ACTION);
+            try {
+                currentPlayersView.setClientState(ClientState.ACTION);
+            } catch (Exception ignored) {
+            }
         }
     }
 

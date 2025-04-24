@@ -33,7 +33,9 @@ public class GoodsPenalty extends Penalty {
     public ArrayList<Tile> removeGoods(Player player, VirtualView playersView, ArrayList<Coordinates> toRemove){
         ArrayList<Tile> updatedTiles;
         if (toRemove.size() != numberOfLostGoods && toRemove.size() != numberOfBatteries + numberOfGoods) {
-            playersView.showWrongInputMessage();
+            try {
+                playersView.showWrongInputMessage();
+            }catch(Exception ignored) {}
             return null;
         }
         if (numberOfGoods == numberOfLostGoods) {
@@ -133,7 +135,9 @@ public class GoodsPenalty extends Penalty {
                 return false;
             }
             this.numberOfBatteries = Math.min(player.getShipBoard().getNumBatteries(), numberOfLostGoods);
-            view.asksToInputCoordinates(CoordReqType.REMOVE_GOODS);
+            try {
+                view.asksToInputCoordinates(CoordReqType.REMOVE_GOODS);
+            }catch(Exception ignored) {}
         }
         else {
             if (player.getShipBoard().getAllGoods().size() < numberOfLostGoods) {
@@ -146,7 +150,9 @@ public class GoodsPenalty extends Penalty {
             else {
                 this.numberOfGoods = numberOfLostGoods;
             }
-            view.asksToInputCoordinates(CoordReqType.REMOVE_GOODS);
+            try {
+                view.asksToInputCoordinates(CoordReqType.REMOVE_GOODS);
+            }catch(Exception ignored) {}
         }
         return true;
     }

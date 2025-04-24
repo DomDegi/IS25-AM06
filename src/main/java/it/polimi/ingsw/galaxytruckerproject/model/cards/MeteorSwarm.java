@@ -48,7 +48,9 @@ public class MeteorSwarm extends Card {
         currentDiceRoll = 0;
         Player currentPlayerRolling = inFlightPlayers.getFirst();
         VirtualView currentView = viewsMap.get(currentPlayerRolling.getPlayerName());
-        currentView.setClientState(ClientState.ROLL_DICE);
+        try {
+            currentView.setClientState(ClientState.ROLL_DICE);
+        }catch(Exception ignored) {}
     }
 
     public void applyMeteorToPlayers() {
@@ -70,7 +72,9 @@ public class MeteorSwarm extends Card {
     public void rollTheDices(String playerName) {
         Player player = game.identifyPlayerByName(playerName);
         if (!activePenalties.containsKey(player)) {
-            viewsMap.get(playerName).showWrongInputMessage();
+            try {
+                viewsMap.get(playerName).showWrongInputMessage();
+            }catch(Exception ignored) {}
             return;
         }
         diceRoll();
@@ -89,7 +93,9 @@ public class MeteorSwarm extends Card {
     public void useBatteries(String playerName, ArrayList<Coordinates> batteries) {
         Player player = game.identifyPlayerByName(playerName);
         if (!activePenalties.containsKey(player)) {
-            viewsMap.get(playerName).showWrongInputMessage();
+            try {
+                viewsMap.get(playerName).showWrongInputMessage();
+            }catch(Exception ignored) {}
             return;
         }
         Tile batteryComponent = activePenalties.get(player).playerUsesBatteryToDefend(player,batteries);
@@ -102,7 +108,9 @@ public class MeteorSwarm extends Card {
             }
         }
         else {
-            viewsMap.get(playerName).showWrongInputMessage();
+            try {
+                viewsMap.get(playerName).showWrongInputMessage();
+            }catch(Exception ignored) {}
         }
     }
 
@@ -110,12 +118,16 @@ public class MeteorSwarm extends Card {
     public void branchChoice(String playerName, ArrayList<Coordinates> branchChoices) {
         Player player = game.identifyPlayerByName(playerName);
         if (!activePenalties.containsKey(player)) {
-            viewsMap.get(playerName).showWrongInputMessage();
+            try {
+                viewsMap.get(playerName).showWrongInputMessage();
+            }catch(Exception ignored) {}
             return;
         }
         ArrayList<Coordinates> removedTiles = activePenalties.get(player).chooseToMaintain(player, branchChoices);
         if (removedTiles == null) {
-            viewsMap.get(playerName).showWrongInputMessage();
+            try {
+                viewsMap.get(playerName).showWrongInputMessage();
+            }catch(Exception ignored) {}
         }
         else {
             notifyBrokenTiles(playerName, removedTiles);
