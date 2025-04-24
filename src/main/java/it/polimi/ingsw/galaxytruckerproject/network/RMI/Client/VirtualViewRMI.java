@@ -142,7 +142,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
-    public void notifyAvailableCardDeck(ArrayList<Integer> lockedSmallDecks) throws RemoteException {
+    public void notifyNotAvailableCardDeck(ArrayList<Integer> lockedSmallDecks) throws RemoteException {
         clientController.decksNotAvailable(lockedSmallDecks);
     }
 

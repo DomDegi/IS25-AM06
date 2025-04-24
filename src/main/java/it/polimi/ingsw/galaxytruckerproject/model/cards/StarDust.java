@@ -20,7 +20,6 @@ public class StarDust extends Card {
     public void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap) {
         this.game = game;
         this.viewsMap = viewsMap;
-        broadcastMessage("StarDust: every player will move backward one step for every exposed connector");
         executeCard();
     }
 
