@@ -1,6 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.client;
 
-import it.polimi.ingsw.galaxytruckerproject.lightmodel.*;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
@@ -109,7 +111,8 @@ public class CoordInputManager {
                 }
             }
             case REMOVE_GOODS -> {
-                if(lightShipBoard.cargoHoldContainsGood()){
+                //DA GUARDARE
+                if(lightShipBoard.cargoHoldContainsGood(new Goods(GoodsColor.RED)).isEmpty()){
 
                 }
             }

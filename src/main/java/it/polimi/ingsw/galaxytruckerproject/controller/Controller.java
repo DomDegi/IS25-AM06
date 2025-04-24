@@ -8,6 +8,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 /*
@@ -157,17 +158,17 @@ public class Controller implements ControllerInterface {
     }
 
     @Override
-    public void useCannons(float doublePower, ArrayList<Coordinates> batteries) throws Exception {
+    public void useCannons(float doublePower, ArrayList<Coordinates> batteries) throws RemoteException {
         gameController.playerUsesCannons(nickname, doublePower, batteries);
     }
 
     @Override
-    public void useEngines(int numberOfDoubleEngines, ArrayList<Coordinates> batteries) throws Exception {
+    public void useEngines(int numberOfDoubleEngines, ArrayList<Coordinates> batteries) throws RemoteException {
         gameController.playerUsesEngines(nickname, numberOfDoubleEngines, batteries);
     }
 
     @Override
-    public void manageGoods(int clientCreditsToVerify, ArrayList<CargoHold> cargosToUpdate) throws Exception {
+    public void manageGoods(int clientCreditsToVerify, ArrayList<CargoHold> cargosToUpdate) throws RemoteException {
         gameController.playerManagesGoods(nickname, clientCreditsToVerify, cargosToUpdate);
     }
 

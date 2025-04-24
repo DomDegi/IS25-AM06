@@ -11,11 +11,7 @@ import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.MessageType;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class MeteorSwarm extends Card {
     private final ArrayList<Projectile> listOfMeteors;

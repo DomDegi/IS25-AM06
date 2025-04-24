@@ -1,10 +1,9 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
-import it.polimi.ingsw.galaxytruckerproject.model.goods.*;
-
-import java.util.Optional;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public abstract class Tile {
     protected Link north;

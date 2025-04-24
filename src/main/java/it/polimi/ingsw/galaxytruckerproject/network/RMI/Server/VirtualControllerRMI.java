@@ -4,18 +4,18 @@ import it.polimi.ingsw.galaxytruckerproject.controller.Controller;
 import it.polimi.ingsw.galaxytruckerproject.controller.MultiGameController;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Cabin;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class VirtualControllerRMI extends UnicastRemoteObject implements VirtualController{
 
@@ -34,6 +34,11 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).login(playerName);
     }
 
+    @Override
+    public void drawCards(String name) throws RemoteException {
+
+    }
+
     public void connect(VirtualView client, String playerName) throws RemoteException {
 
         Controller controllerPlayer = new Controller(multiController, client);
@@ -43,6 +48,11 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
             controllerPlayer.login(playerName);
 
         }
+    }
+
+    @Override
+    public void connect(ViewInterface client, String playerName) throws RemoteException {
+
     }
 
     public void createGame(String gameName, int playerCount, GameMode chooseMode, String playerName) throws RemoteException {
@@ -65,6 +75,11 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).chooseColor(color);
     }
 
+    @Override
+    public void notifySetTile(String playerName, Coordinates coordinates, boolean booked, int key) throws RemoteException {
+
+    }
+
     /*public void setFlightBoard(String playerName, int chosen) throws RemoteException {
         clients.get(playerName).setFlightBoard(chosen);
     }*/
@@ -82,12 +97,22 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
 
     }
 
+    @Override
+    public void notifySetTile(String playerName, Coordinates coordinates, Tile tile) throws RemoteException {
+
+    }
+
     public void sendYes( String playerName) throws RemoteException{
         clients.get(playerName).makeAChoice(true);
     }
 
     public void sendNo(String playerName) throws RemoteException{
         clients.get(playerName).makeAChoice(false);
+    }
+
+    @Override
+    public void sendEndShipBoardCreation(String playerName) throws RemoteException {
+
     }
 
     public void notifySetTile(String playerName, Tile tile) throws RemoteException {
@@ -124,6 +149,21 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).drawTileFromTurned(index);
     }
 
+    @Override
+    public void refuseTile(int index) throws RemoteException {
+
+    }
+
+    @Override
+    public void showCardsRequest(int index) throws RemoteException {
+
+    }
+
+    @Override
+    public void stopLookingAtCardsRequest(String playerName) throws RemoteException {
+
+    }
+
     //DONE(in teoria non serve dato che vengono gestite in locale)
     /*public void reqDrawTileFromBooked(String playerName, int index) throws RemoteException {
         clients.get(playerName).drawTileFromBooked(index);
@@ -134,7 +174,22 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).turnHourglass();
     }
 
+    @Override
+    public void reqDrawTileFromPile(String playerName) throws RemoteException {
+
+    }
+
+    @Override
+    public void reqDrawTileFromTable(String playerName, int index) throws RemoteException {
+
+    }
+
     public void notifyEarlyLanding(String playerName) throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyNewGoodsArrangement(String playerName, int clientGoodsValue, ArrayList<CargoHold> modifiedCargoHold) throws RemoteException {
 
     }
 
@@ -142,6 +197,11 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
     //DONE
     public void lookCardsRequest(String playerName, int deckToLookAt) throws RemoteException {
         clients.get(playerName).lookGameCards(deckToLookAt);
+    }
+
+    @Override
+    public void rolldice(String name) {
+
     }
 
     //DONE
@@ -162,6 +222,11 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
     //DONE
     public void planetChoiceRequest(String playerName,int planet) throws RemoteException {
         clients.get(playerName).choosePlanet(planet);
+    }
+
+    @Override
+    public void notifyNewCrewArrangement(String name, ArrayList<Cabin> newTiles) {
+
     }
 
     public void newGoodsArrangement(String playerName, int creditsToVerify, ArrayList<CargoHold> cargosToUpdate) throws Exception {

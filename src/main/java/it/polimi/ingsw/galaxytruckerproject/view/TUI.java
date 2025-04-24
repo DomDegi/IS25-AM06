@@ -4,12 +4,12 @@ import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
-import it.polimi.ingsw.galaxytruckerproject.lightmodel.*;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Set;
 
 public class TUI implements DisplayableView{
     @Override
@@ -137,15 +136,6 @@ public class TUI implements DisplayableView{
         System.out.println("You can draw this card deck");
     }
 
-    @Override
-    public void notifyYourShipIsCorrect() {
-
-    }
-
-    @Override
-    public void asksToSetPosition() {
-
-    }
     @Override
     public void notifyYourShipIsCorrect() {
         System.out.println("Your ship is correct");

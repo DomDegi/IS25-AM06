@@ -7,6 +7,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 /** this interface is used to define the methods that
@@ -94,11 +95,11 @@ public interface ControllerInterface {
 
     void completedShip() throws Exception;
 
-    void useCannons(float doublePower, ArrayList<Coordinates> batteries) throws Exception;
+    void useCannons(float doublePower, ArrayList<Coordinates> batteries) throws RemoteException;
 
-    void useEngines(int numberOfDoubleEngines, ArrayList<Coordinates> batteries) throws Exception;
+    void useEngines(int numberOfDoubleEngines, ArrayList<Coordinates> batteries) throws RemoteException;
 
-    void manageGoods(int clientCreditsToVerify, ArrayList<CargoHold> cargosToUpdate) throws Exception;
+    void manageGoods(int clientCreditsToVerify, ArrayList<CargoHold> cargosToUpdate) throws RemoteException;
 
     void makeAChoice(boolean choice) throws Exception;
 

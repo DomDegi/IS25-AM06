@@ -5,7 +5,9 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.Set;
 
 public class LightShipBoard implements ShipBoardInterface{
 
@@ -91,6 +93,81 @@ public class LightShipBoard implements ShipBoardInterface{
         return tilesTable[x][y].get();
     }
 
+    @Override
+    public void setHumanCrew(int humanCrew) {
+
+    }
+
+    @Override
+    public int getPenalty() {
+        return 0;
+    }
+
+    @Override
+    public Player getPlayer() {
+        return null;
+    }
+
+    @Override
+    public int getNumBatteries() {
+        return 0;
+    }
+
+    @Override
+    public float getSingleCannonPower() {
+        return 0;
+    }
+
+    @Override
+    public ArrayList<Coordinates> getDoubleCannon() {
+        return null;
+    }
+
+    @Override
+    public int getNumSingleEngine() {
+        return 0;
+    }
+
+    @Override
+    public ArrayList<Coordinates> getDoubleEngine() {
+        return null;
+    }
+
+    @Override
+    public int getNumPurpleAliens() {
+        return 0;
+    }
+
+    @Override
+    public int getNumHumanCrew() {
+        return 0;
+    }
+
+    @Override
+    public int getNumExposedConnectors() {
+        return 0;
+    }
+
+    @Override
+    public int getDoubleCannonPower(Coordinates coordinates) {
+        return 0;
+    }
+
+    @Override
+    public ArrayList<Coordinates> getBatteryCoordinates() {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Coverage> getCoverageShields() {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Coordinates> getCargoHoldCoordinates() {
+        return null;
+    }
+
     public boolean positionTile(Optional<Tile> tile, Coordinates coordinates) {
         if (tile.isPresent() && tilesTable[coordinates.getX()][coordinates.getY()].isEmpty()) {
             tilesTable[coordinates.getX()][coordinates.getY()] = tile;
@@ -105,6 +182,27 @@ public class LightShipBoard implements ShipBoardInterface{
         }
         return false;
     }
+
+    @Override
+    public void destroyForCorrection(Coordinates coordinates) {
+
+    }
+
+    @Override
+    public ArrayList<Set<Coordinates>> destroyTile(Coordinates coordinates) {
+        return null;
+    }
+
+    @Override
+    public boolean checkEarlyLanding() {
+        return false;
+    }
+
+    @Override
+    public boolean verifyCorrectness() {
+        return false;
+    }
+
     public void setCargoHoldCoordinates(ArrayList<Coordinates> cargoHoldCoordinates) {
         this.cargoHoldCoordinates = cargoHoldCoordinates;
     }
@@ -112,6 +210,12 @@ public class LightShipBoard implements ShipBoardInterface{
     public boolean chooseCrewToRemove(Coordinates coordinates) {
         return tilesTable[coordinates.getX()][coordinates.getY()].get().removeCrew();
     }
+
+    @Override
+    public ArrayList<Tile> epidemic() {
+        return null;
+    }
+
     //BATTERY METHODS
     public boolean chooseBatteryUse(Coordinates coordinates){
         tilesTable[coordinates.getX()][coordinates.getY()].get().consumeBattery();
@@ -149,11 +253,11 @@ public class LightShipBoard implements ShipBoardInterface{
     }
     //IT RETURNS THE COORDINATES OF EVERY CARGO_HOLD THAT CONTAINS A TYPE OF GOOD (RED, YELLOW, GREEN, BLU). IF
     //A CARGO_HOLD CONTAINS MORE THAN ONE GOOD WITH THE SAME COLOR IS GOING TO BE ADD TWICE.
-    public ArrayList<Coordinates> cargoHoldContainsGood(Goods goodColor){
+    public ArrayList<Coordinates> cargoHoldContainsGood(Goods good){
         ArrayList<Coordinates> cargoHoldContainsGood = new ArrayList<>();
         for(Coordinates coordinates : cargoHoldCoordinates){
             for(int i=0; i<tilesTable[coordinates.getX()][coordinates.getY()].get().getCargo().size(); i++){
-                if(tilesTable[coordinates.getX()][coordinates.getY()].get().getCargo().get(i).getColor()==goodColor.getColor()){
+                if(tilesTable[coordinates.getX()][coordinates.getY()].get().getCargo().get(i).getColor()==good.getColor()){
                     cargoHoldContainsGood.add(coordinates);
                 }
             }
@@ -249,6 +353,56 @@ public class LightShipBoard implements ShipBoardInterface{
     public ArrayList<Coordinates> getCabinsCoordinates() {
         return crewCoordinates;
     }
+
+    @Override
+    public Optional<Tile>[][] getTilesTable() {
+        return new Optional[0][];
+    }
+
+    @Override
+    public void addBreakSingleCannonPower(float power) {
+
+    }
+
+    @Override
+    public void addBreakSingleEngine(boolean ab) {
+
+    }
+
+    @Override
+    public void addBreakDoubleEngine(boolean ab, Coordinates coordinates) {
+
+    }
+
+    @Override
+    public void addBreakDoubleCannon(boolean ab, Coordinates coordinates) {
+
+    }
+
+    @Override
+    public void addBreakBrownAliens(boolean ab) {
+
+    }
+
+    @Override
+    public void addBreakPurpleAliens(boolean ab) {
+
+    }
+
+    @Override
+    public void addBreakHumanCrew(int num) {
+
+    }
+
+    @Override
+    public void addBreakBatteries(int num) {
+
+    }
+
+    @Override
+    public void addPenalty() {
+
+    }
     /*
     public void swapGoods(Coordinates coordinatesFrom,Coordinates coordinatesTo, Goods goodToSwap ){
         //Check if the coordinates are of a CargoHolder
@@ -288,6 +442,12 @@ public class LightShipBoard implements ShipBoardInterface{
         }
         return true;
     }
+
+    @Override
+    public void checkBeforeAsking(int goodsToRemove) {
+
+    }
+
     //give back all the player Goods
     public ArrayList<Goods> getAllGoods(){
         ArrayList<Goods> goods = new ArrayList<>();

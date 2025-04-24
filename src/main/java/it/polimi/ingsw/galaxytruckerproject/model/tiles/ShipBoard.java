@@ -1,9 +1,10 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
-import java.util.*;
 
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+
+import java.util.*;
 
 
 public class ShipBoard implements ShipBoardInterface{

@@ -278,7 +278,8 @@ public class ClientController {
                 if (words[0].equals("done"))
                     coordInputManager.endCheckingFase();
                 else
-                    coordInputManager.checkCoord(transformCoordinates(words));
+                    //gestire il -1 in base alla carta
+                    coordInputManager.checkCoord(transformCoordinates(words),-1);
             }
 
             case START_SHIP_CREATION ->

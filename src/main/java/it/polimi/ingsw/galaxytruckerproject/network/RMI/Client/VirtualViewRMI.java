@@ -15,7 +15,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
-import it.polimi.ingsw.galaxytruckerproject.view.*;
+import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -142,7 +142,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
-    public void notifyAvailableCardDeck(Map<String, Integer> lockedSmallDecks) throws RemoteException {
+    public void notifyAvailableCardDeck(ArrayList<Integer> lockedSmallDecks) throws RemoteException {
         clientController.decksNotAvailable(lockedSmallDecks);
     }
 
