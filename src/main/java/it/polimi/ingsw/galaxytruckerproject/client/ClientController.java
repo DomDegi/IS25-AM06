@@ -628,6 +628,10 @@ public class ClientController {
                     virtualController.notifySetPosition(name, 0);
                 }
             }
+            case ROLL_DICE -> {
+                view.printProjectile(displayedCard.getListOfProjectiles().getFirst());
+                displayedCard.getListOfProjectiles().removeFirst();
+            }
 
         }
     }
