@@ -83,7 +83,6 @@ class CrewPenaltyTest {
     }
     @Test
     void applyPenalty() {
-        player1.setAllCrewToHuman();
         penalty.initializePenalty(game,mockView1,player1);
         ArrayList<Coordinates> toRemove = new ArrayList<>();
         Coordinates coord0 =  new Coordinates(1,1);

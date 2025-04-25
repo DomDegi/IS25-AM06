@@ -3,18 +3,23 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
 class PlanetsTest {
     private Planets planetsToLand;
@@ -24,6 +29,11 @@ class PlanetsTest {
     private Player player3;
     private Player player4;
     private FlightBoard flightBoard;
+    private final VirtualView mockView1 = mock(VirtualView.class);
+    private final VirtualView mockView2 = mock(VirtualView.class);
+    private final VirtualView mockView3 = mock(VirtualView.class);
+    private final VirtualView mockView4 = mock(VirtualView.class);
+    Map<String,VirtualView> viewMap = new HashMap<>();
 
     @BeforeEach
     void setUp() {
@@ -33,6 +43,10 @@ class PlanetsTest {
         player2 = new Player("FedeGalattico", PlayersColor.RED);
         player3 = new Player("EnnioVolante", PlayersColor.YELLOW);
         player4 = new Player("pipo", PlayersColor.GREEN);
+        viewMap.put("MimmoPericoloso", mockView1);
+        viewMap.put("FedeGalattico", mockView2);
+        viewMap.put("EnnioVolante", mockView3);
+        viewMap.put("pipo", mockView4);
         Goods good1=new Goods(BLUE);
         Goods good2=new Goods(RED);
         Goods good3=new Goods(GREEN);
@@ -145,7 +159,7 @@ class PlanetsTest {
         ShipBoard shipBoard3 = new ShipBoard(player3);
         player3.setPlayerShip(shipBoard3);
         shipBoard3.initializeLevel2();
-        Tile tile30=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
+        Tile tile30=new CargoBlue(3, new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
         shipBoard3.positionTile(Optional.of(tile30), new Coordinates(1,3));
         Tile tile31=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH));
         shipBoard3.positionTile(Optional.of(tile31), new Coordinates(1,4));
@@ -176,83 +190,60 @@ class PlanetsTest {
     @Test
     void successfully_initialize_card () {
         game.setDrawnCard(planetsToLand);
-        game.getDrawnCard().initializeCard(game, );
+        game.getDrawnCard().initializeCard(game, viewMap);
     }
 
     @Test
     void successfully_initialize_card_first_player_land_on_first_planet() {
         successfully_initialize_card();
-        String input="1";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
-        input="1 1 3";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
-
-        input="done";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
-        assertEquals(0,player2.getShipBoard().getAllGoods().size());
-
+        int player3_initialGoodsCredit = player3.getShipBoard().convertGoodsToCredit();
+        game.getDrawnCard().planetChoice("EnnioVolante",1);
+        CargoHold cargo1 = new CargoBlue(3, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
+        cargo1.setCoordinates(new Coordinates(1,3));
+        cargo1.addGood(new Goods(BLUE));
+        ArrayList<CargoHold> modifiedTiles = new ArrayList<>();
+        modifiedTiles.add(cargo1);
+        game.getDrawnCard().manageGoods("EnnioVolante", player3_initialGoodsCredit + 7, modifiedTiles);
+        assertEquals(1,player3.getShipBoard().getAllGoods().size());
     }
 
     @Test
     void successfully_initialize_card_no_landing() {
         successfully_initialize_card();
-        String input="no";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
-        input="no";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        input="no";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"FedeGalattico");
+        game.getDrawnCard().planetChoice("EnnioVolante", 0);
+        game.getDrawnCard().planetChoice("MimmoPericoloso",0);
+        game.getDrawnCard().planetChoice("FedeGalattico",0);
+        game.getDrawnCard().planetChoice("pipo",0);
+        assertEquals(GameState.DRAW_CARD,game.getGameState());
     }
 
     @Test
     void successfully_initialize_card_all_player_land_on_first_planet() {
         successfully_initialize_card();
-        String input="1";
-        String[] words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
-        input="done";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
+        game.getDrawnCard().planetChoice("EnnioVolante",1);
+        game.getDrawnCard().manageGoods(player3.getPlayerName(),player3.getShipBoard().convertGoodsToCredit(), new ArrayList<>());
 
-        input="1";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        input="2";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        input="1 1 3";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        input="1 1 3";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        input="1 1 3";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        input="done";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
+        game.getDrawnCard().planetChoice("MimmoPericoloso",1);
+        game.getDrawnCard().planetChoice("MimmoPericoloso",2);
+        CargoHold cargo1 = new CargoRed(3, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
+        cargo1.setCoordinates(new Coordinates(1,3));
+        cargo1.addGood(new Goods(RED));
+        cargo1.addGood(new Goods(RED));
+        cargo1.addGood(new Goods(GREEN));
+        ArrayList<CargoHold> modifiedTiles = new ArrayList<>();
+        modifiedTiles.add(cargo1);
+        game.getDrawnCard().manageGoods(player1.getPlayerName(),player1.getShipBoard().convertGoodsToCredit()+10, modifiedTiles);
         assertEquals(3,player1.getShipBoard().getAllGoods().size());
 
-        input="3";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"FedeGalattico");
-        input="1 2 2";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"FedeGalattico");
-        input="1 2 2";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"FedeGalattico");
-        input="done";
-        words = input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"FedeGalattico");
-        assertEquals(2,player2.getShipBoard().getAllGoods().size());
 
+        CargoHold cargo2 = new CargoRed(2, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
+        cargo2.setCoordinates(new Coordinates(2,2));
+        cargo2.addGood(new Goods(RED));
+        cargo2.addGood(new Goods(RED));
+        ArrayList<CargoHold> modifiedTiles2 = new ArrayList<>();
+        modifiedTiles2.add(cargo1);
+        game.getDrawnCard().planetChoice("FedeGalattico",3);
+        game.getDrawnCard().manageGoods(player2.getPlayerName(),player2.getShipBoard().convertGoodsToCredit()+8, modifiedTiles2);
+        assertEquals(2,player2.getShipBoard().getAllGoods().size());
     }
 }

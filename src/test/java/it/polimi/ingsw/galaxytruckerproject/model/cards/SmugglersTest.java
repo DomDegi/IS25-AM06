@@ -7,15 +7,19 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor.*;
 import static it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor.YELLOW;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
 class SmugglersTest {
     private Smugglers smugglers;
@@ -23,8 +27,11 @@ class SmugglersTest {
     private Player player1;
     private Player player2;
     private Player player3;
-    private Player player4;
     private FlightBoard flightBoard;
+    private final VirtualView mockView1 = mock(VirtualView.class);
+    private final VirtualView mockView2 = mock(VirtualView.class);
+    private final VirtualView mockView3 = mock(VirtualView.class);
+    Map<String,VirtualView> viewMap = new HashMap<>();
 
     @BeforeEach
     void setUp() {
@@ -38,6 +45,10 @@ class SmugglersTest {
         Goods good3=new Goods(GREEN);
         Goods good4=new Goods(YELLOW);
         ArrayList<Goods> rewardGoods =new ArrayList<>();
+
+        viewMap.put("MimmoPericoloso", mockView1);
+        viewMap.put("FedeGalattico", mockView2);
+        viewMap.put("EnnioVolante", mockView3);
 
         rewardGoods.add(good2);
         rewardGoods.add(good3);
@@ -154,7 +165,7 @@ class SmugglersTest {
     @Test
     void successfully_initialize_card () {
         game.setDrawnCard(smugglers);
-        game.getDrawnCard().initializeCard(game, );
+        game.getDrawnCard().initializeCard(game, viewMap);
     }
 
     @Test

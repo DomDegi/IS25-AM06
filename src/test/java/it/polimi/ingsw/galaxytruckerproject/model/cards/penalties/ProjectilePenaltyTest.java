@@ -55,6 +55,7 @@ class ProjectilePenaltyTest {
         shipBoard.positionTile(Optional.of(singleCannonW), new Coordinates(2, 2));
 
 
+
         player1= new  Player("MimmoPericoloso", PlayersColor.BLUE);
         shipBoard1=new ShipBoard(player1);
         shipBoard1.initializeLevel2();
