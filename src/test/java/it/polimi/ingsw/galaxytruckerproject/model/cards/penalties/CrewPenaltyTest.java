@@ -5,16 +5,22 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+
 class CrewPenaltyTest {
     CrewPenalty penalty=new CrewPenalty(3);
     Player player1 = new Player("Andrea", PlayersColor.RED);
     Game game = new Game(GameMode.LEVEL2,4);
+    VirtualView mockView1 = mock(VirtualView.class);
+
     @BeforeEach
     void setUp() {
         ShipBoard shipBoard1 = new ShipBoard(player1);
@@ -77,26 +83,36 @@ class CrewPenaltyTest {
     }
     @Test
     void applyPenalty() {
-        String input;
-        String[] word;
-        input="1 1";
-        word=input.split(" ");
-        penalty.applyPenalty(game,player1, ,word, );
-
-        assertEquals(11,player1.getTotalCrew());
-
-        input="1 2";
-        word=input.split(" ");
-        penalty.applyPenalty(game,player1, ,word, );
-        assertEquals(11,player1.getTotalCrew());
-
-        input=" ";
-        word=input.split(" ");
-        penalty.applyPenalty(game,player1, ,word, );
-
-        input="2 2 2 3";
-        word=input.split(" ");
-        penalty.applyPenalty(game,player1, ,word, );
+        player1.setAllCrewToHuman();
+        penalty.initializePenalty(game,mockView1,player1);
+        ArrayList<Coordinates> toRemove = new ArrayList<>();
+        Coordinates coord0 =  new Coordinates(1,1);
+        Coordinates coord1 =  new Coordinates(1,2);
+        Coordinates coord2 =  new Coordinates(1,1);
+        Coordinates coord3 =  new Coordinates(2,2);
+        Coordinates coord4 =  new Coordinates(2,3);
+        toRemove.add(coord0);
+        toRemove.add(coord1);
+        toRemove.add(coord2);
+        toRemove.add(coord3);
+        toRemove.add(coord4);
+        penalty.removeCrew(player1, mockView1, toRemove);
         assertEquals(9,player1.getTotalCrew());
+        assertTrue (player1.getShipBoard().getTile(coord0).getCrew() == 0 && player1.getShipBoard().getTile(coord1).getCrew() == 1 &&
+        player1.getShipBoard().getTile(coord3).getCrew() == 2 && player1.getShipBoard().getTile(coord4).getCrew() == 2);
+    }
+
+    @Test
+    void applyPenalty_disconnected() {
+        player1.setAllCrewToHuman();
+        player1.playerDisconnects();
+        assertFalse(penalty.initializePenalty(game,mockView1,player1));
+        assertEquals(9,player1.getTotalCrew());
+    }
+
+    @Test
+    void applyPenalty_noCrew() {
+        assertEquals(0, player1.getTotalCrew());
+        assertFalse(penalty.initializePenalty(game,mockView1,player1));
     }
 }
