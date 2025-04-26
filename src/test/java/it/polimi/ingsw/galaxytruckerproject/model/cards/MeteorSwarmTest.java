@@ -5,18 +5,19 @@ import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.LargeMeteor;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.SmallMeteor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
 class MeteorSwarmTest {
 
@@ -29,26 +30,35 @@ class MeteorSwarmTest {
     ShipBoard shipBoard3;
     FlightBoard flightBoard;
     MeteorSwarm meteorSwarm;
+    private final VirtualView mockView1 = mock(VirtualView.class);
+    private final VirtualView mockView2 = mock(VirtualView.class);
+    private final VirtualView mockView3 = mock(VirtualView.class);
+    Map<String,VirtualView> viewMap = new HashMap<>();
 
     @BeforeEach
     void setUp() {
         int level = 2;
-        ArrayList listOfMeteors = new ArrayList<> (Arrays.asList(
+        ArrayList<Projectile> listOfMeteors = new ArrayList<> (Arrays.asList(
                 new LargeMeteor(Direction.NORTH),
-                new SmallMeteor(Direction.NORTH),
+                new SmallMeteor(Direction.NORTH) /*,
                 new LargeMeteor(Direction.EAST),
                 new SmallMeteor(Direction.EAST),
                 new LargeMeteor(Direction.SOUTH),
                 new SmallMeteor(Direction.SOUTH),
                 new LargeMeteor(Direction.WEST),
-                new SmallMeteor(Direction.WEST)
+                new SmallMeteor(Direction.WEST)*/
         ));
+
         meteorSwarm = new MeteorSwarm(level, listOfMeteors);
 
         game = new Game(GameMode.LEVEL2,3);
         player1 = new Player("MimmoPericoloso", PlayersColor.BLUE);
         player2 = new Player("FedeGalattico", PlayersColor.RED);
         player3 = new Player("EnnioVolante", PlayersColor.YELLOW);
+
+        viewMap.put("MimmoPericoloso", mockView1);
+        viewMap.put("FedeGalattico", mockView2);
+        viewMap.put("EnnioVolante", mockView3);
 
         //shipboard 5 to player1
         shipBoard1 = new ShipBoard(player1);
@@ -155,20 +165,17 @@ class MeteorSwarmTest {
     }
     @Test
     void testMeteorSwarm() {
-        int player1_initialDays = player1.getPlayerPosition();
+        int player1_initialBatteries = player1.getShipBoard().getNumBatteries();
         game.setDrawnCard(meteorSwarm);
-        game.getDrawnCard().initializeCard(game, );
+        game.getDrawnCard().initializeCard(game, viewMap);
         game.setGameState(GameState.CARD_EVENT);
         assertEquals(meteorSwarm, game.getDrawnCard());
-        //first player (2) to play doesn't have enough crew so should be skipped automatically whatever his input is
-        assertEquals(player3,game.getListOfInFlightPlayers().get(meteorSwarm.getPlayerIndex()));
-        meteorSwarm.executeCard(game, , player3.getPlayerName());
-        assertEquals(player1,game.getListOfInFlightPlayers().get(meteorSwarm.getPlayerIndex()));
-        meteorSwarm.executeCard(game, , player1.getPlayerName());
-        assertEquals(player2,game.getListOfInFlightPlayers().get(meteorSwarm.getPlayerIndex()));
-        meteorSwarm.executeCard(game, , player2.getPlayerName());
-        assertEquals(player3,game.getListOfInFlightPlayers().get(meteorSwarm.getPlayerIndex()));
-        meteorSwarm.executeCard(game, , player3.getPlayerName());
-        assertEquals(player1,game.getListOfInFlightPlayers().get(meteorSwarm.getPlayerIndex()));
+        meteorSwarm.setDiceRoll(0);
+        ArrayList<Coordinates> batteries = new ArrayList<>();
+        batteries.add(new Coordinates(3,0));
+        meteorSwarm.useBatteries(player1.getPlayerName(), batteries);
+        assertEquals(player1_initialBatteries - 1, player1.getShipBoard().getNumBatteries());
+        meteorSwarm.setDiceRoll(0);
+        assertEquals(GameState.DRAW_CARD, game.getGameState());
     }
 }

@@ -6,12 +6,16 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
 class StarDustTest {
     private StarDust starDust;
@@ -20,6 +24,10 @@ class StarDustTest {
     private Player player2;
     private Player player3;
     private FlightBoard flightBoard;
+    private final VirtualView mockView1 = mock(VirtualView.class);
+    private final VirtualView mockView2 = mock(VirtualView.class);
+    private final VirtualView mockView3 = mock(VirtualView.class);
+    Map<String,VirtualView> viewMap = new HashMap<>();
 
     @BeforeEach
     void setUp() {
@@ -29,6 +37,10 @@ class StarDustTest {
         player2 = new Player("FedeGalattico", PlayersColor.RED);
         player3 = new Player("EnnioVolante", PlayersColor.YELLOW);
         starDust = new StarDust(1);
+
+        viewMap.put("MimmoPericoloso", mockView1);
+        viewMap.put("FedeGalattico", mockView2);
+        viewMap.put("EnnioVolante", mockView3);
 
         //shipboard 5 to player1
         ShipBoard shipBoard1 = new ShipBoard(player1);
@@ -137,7 +149,7 @@ class StarDustTest {
     @Test
     void successfully_initialize_card_and_execute () {
         game.setDrawnCard(starDust);
-        game.getDrawnCard().initializeCard(game, );
+        game.getDrawnCard().initializeCard(game, viewMap);
 
         assertEquals(-2, player1.getPlayerPosition());
         assertEquals(-6, player2.getPlayerPosition());

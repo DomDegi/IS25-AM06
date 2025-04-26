@@ -450,16 +450,6 @@ public class ShipBoard implements ShipBoardInterface{
         return true;
     }
 
-    public void chooseHowToFillCabins() {
-        for (Coordinates coordinates : crewCoordinates) {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Insert crewType: ");
-            String user = scanner.nextLine();
-            CrewType crewType = CrewType.valueOf(user.toUpperCase());
-            tilesTable[coordinates.getX()][coordinates.getY()].get().setCrewType(crewType);
-        }
-    }
-
     //New ChooseCrew METHOD
     public boolean chooseCrewToRemove(Coordinates coordinates) {
         if (crewCoordinates.contains(coordinates)) {

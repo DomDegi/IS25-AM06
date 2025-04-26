@@ -67,6 +67,7 @@ public class Planets extends Card{
 
 
     //planet choice is from 1 to total planets, but the array indexes start from 0
+    //input 0 to not choose anything
     @Override
     public void planetChoice(String playerName, int planet) {
         if (!playerName.equals(currentPlayer.getPlayerName())) {
@@ -74,6 +75,9 @@ public class Planets extends Card{
                 viewsMap.get(playerName).showWrongInputMessage();
             }catch(Exception ignored) {}
             return;
+        }
+        if (planet <= 0) {
+            nextPlayer();
         }
         if (listOfPlanets.get(planet - 1).getOccupationStatus() || chosen) {
             try {
