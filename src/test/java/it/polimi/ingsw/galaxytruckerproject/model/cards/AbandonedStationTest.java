@@ -5,10 +5,10 @@ import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
-import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.network.MockVirtualView;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,8 +21,6 @@ import java.util.Optional;
 import static it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 
 class AbandonedStationTest {
     private AbandonedStation abandonedStation;
@@ -30,9 +28,9 @@ class AbandonedStationTest {
     private Player player1;
     private Player player2;
     private Player player3;
-    private final VirtualView mockView1 = mock(VirtualView.class);
-    private final VirtualView mockView2 = mock(VirtualView.class);
-    private final VirtualView mockView3 = mock(VirtualView.class);
+    private final VirtualView mockView1 = new MockVirtualView();
+    private final VirtualView mockView2 = new MockVirtualView();
+    private final VirtualView mockView3 = new MockVirtualView();
     Map<String,VirtualView> viewMap = new HashMap<>();
     private FlightBoard flightBoard;
 

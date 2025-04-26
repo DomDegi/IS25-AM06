@@ -5,6 +5,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.network.MockVirtualView;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,13 +14,12 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
 
 class CrewPenaltyTest {
     CrewPenalty penalty=new CrewPenalty(3);
     Player player1 = new Player("Andrea", PlayersColor.RED);
     Game game = new Game(GameMode.LEVEL2,4);
-    VirtualView mockView1 = mock(VirtualView.class);
+    VirtualView mockView1 = new MockVirtualView();
 
     @BeforeEach
     void setUp() {

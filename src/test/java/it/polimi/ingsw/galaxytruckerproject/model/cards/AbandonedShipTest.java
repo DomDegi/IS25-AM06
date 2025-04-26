@@ -7,6 +7,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.network.MockVirtualView;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,15 +18,14 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
 
 class AbandonedShipTest {
     private AbandonedShip abandonedShip;
     private Game game;
-    private final VirtualView mockView1 = mock(VirtualView.class);
-    private final VirtualView mockView2 = mock(VirtualView.class);
-    private final VirtualView mockView3 = mock(VirtualView.class);
-    private final VirtualView mockView4 = mock(VirtualView.class);
+    private final VirtualView mockView1 = new MockVirtualView();
+    private final VirtualView mockView2 = new MockVirtualView();
+    private final VirtualView mockView3 = new MockVirtualView();
+    private final VirtualView mockView4 = new MockVirtualView();
     Map<String,VirtualView> viewMap = new HashMap<>();
     private Player player1;
     private Player player2;

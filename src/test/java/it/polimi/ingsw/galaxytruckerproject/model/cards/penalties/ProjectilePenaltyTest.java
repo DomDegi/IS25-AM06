@@ -9,8 +9,8 @@ import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.SmallMeteor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.network.MockVirtualView;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
-import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
 
 class ProjectilePenaltyTest {
 
@@ -34,7 +33,7 @@ class ProjectilePenaltyTest {
     private Game gameTrial = new Game(GameMode.TRIAL, 3);
     private ShipBoard shipBoard1;
     private Player player1;
-    private VirtualView mockView = mock(VirtualView.class);
+    private VirtualView mockView = new MockVirtualView();
 
     @BeforeEach
     void setUp() {

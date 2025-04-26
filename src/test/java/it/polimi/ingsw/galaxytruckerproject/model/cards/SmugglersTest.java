@@ -7,6 +7,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.network.MockVirtualView;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,6 @@ import java.util.Optional;
 import static it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor.*;
 import static it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor.YELLOW;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
 
 class SmugglersTest {
     private Smugglers smugglers;
@@ -28,9 +28,9 @@ class SmugglersTest {
     private Player player2;
     private Player player3;
     private FlightBoard flightBoard;
-    private final VirtualView mockView1 = mock(VirtualView.class);
-    private final VirtualView mockView2 = mock(VirtualView.class);
-    private final VirtualView mockView3 = mock(VirtualView.class);
+    private final VirtualView mockView1 = new MockVirtualView();
+    private final VirtualView mockView2 = new MockVirtualView();
+    private final VirtualView mockView3 = new MockVirtualView();
     Map<String,VirtualView> viewMap = new HashMap<>();
 
     @BeforeEach
