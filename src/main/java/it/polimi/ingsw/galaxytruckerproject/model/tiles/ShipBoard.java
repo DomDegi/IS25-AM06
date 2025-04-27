@@ -700,6 +700,17 @@ public class ShipBoard implements ShipBoardInterface{
         }
         return goods;
     }
+
+    public boolean singleCargoContainsGood (GoodsColor color, Coordinates cargo) {
+        ArrayList<Goods> cargosGoods = getSingleCargoGoods(cargo);
+        for (Goods goods : cargosGoods) {
+            if (goods.getColor().equals(color)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void addBattery(Coordinates coordinates){
         getTile(coordinates).addBattery();
     }

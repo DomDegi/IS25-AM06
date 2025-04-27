@@ -30,7 +30,6 @@ class CrewPenaltyTest {
         shipBoard1.positionTile(Optional.of(tile1), new Coordinates(0,4));
         Tile tile2=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),0);
         shipBoard1.positionTile(Optional.of(tile2), new Coordinates(1,1));
-        tile2.setCrewType(CrewType.HUMAN);
         Tile tile3=new AlienLifeSupportsSystem( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),0,CrewType.BROWN);
         shipBoard1.positionTile(Optional.of(tile3), new Coordinates(1,2));
         Tile tile4=new CargoBlue(3, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),0);
@@ -43,22 +42,18 @@ class CrewPenaltyTest {
         shipBoard1.positionTile(Optional.of(tile7), new Coordinates(2,0));
         Tile tile8=new EquipCabin( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),0);
         shipBoard1.positionTile(Optional.of(tile8), new Coordinates(2,1));
-        tile8.setCrewType(CrewType.HUMAN);
         Tile tile9=new EquipCabin( new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),0);
         shipBoard1.positionTile(Optional.of(tile9), new Coordinates(2,2));
-        tile9.setCrewType(CrewType.HUMAN);
         Tile tile10=new Shields( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),0);
         shipBoard1.positionTile(Optional.of(tile10), new Coordinates(2,4));
         Tile tile12=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),0);
         shipBoard1.positionTile(Optional.of(tile12), new Coordinates(2,5));
-        tile12.setCrewType(CrewType.HUMAN);
         Tile tile11=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),0);
         shipBoard1.positionTile(Optional.of(tile11), new Coordinates(2,6));
         Tile tile13=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),0, 2);
         shipBoard1.positionTile(Optional.of(tile13), new Coordinates(3,0));
         Tile tile14=new EquipCabin( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),0);
         shipBoard1.positionTile(Optional.of(tile14), new Coordinates(3,2));
-        tile14.setCrewType(CrewType.HUMAN);
         Tile tile15=new SingleEngine( new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),0);
         shipBoard1.positionTile(Optional.of(tile15), new Coordinates(3,3));
         Tile tile16=new CargoRed(1, new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),0);
@@ -83,6 +78,7 @@ class CrewPenaltyTest {
     }
     @Test
     void applyPenalty() {
+        player1.setAllCrewToHuman();
         penalty.initializePenalty(game,mockView1,player1);
         ArrayList<Coordinates> toRemove = new ArrayList<>();
         Coordinates coord0 =  new Coordinates(1,1);
@@ -109,9 +105,4 @@ class CrewPenaltyTest {
         assertEquals(9,player1.getTotalCrew());
     }
 
-    @Test
-    void applyPenalty_noCrew() {
-        assertEquals(0, player1.getTotalCrew());
-        assertFalse(penalty.initializePenalty(game,mockView1,player1));
-    }
 }

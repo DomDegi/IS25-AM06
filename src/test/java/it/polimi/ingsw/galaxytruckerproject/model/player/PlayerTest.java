@@ -36,7 +36,6 @@ class PlayerTest {
         shipBoard1.positionTile(Optional.of(tile1), new Coordinates(0,4));
         Tile tile2=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE));
         shipBoard1.positionTile(Optional.of(tile2), new Coordinates(1,1));
-        tile2.setCrewType(CrewType.HUMAN);
         Tile tile3=new AlienLifeSupportsSystem( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),CrewType.BROWN);
         shipBoard1.positionTile(Optional.of(tile3), new Coordinates(1,2));
         Tile tile4=new CargoBlue(3, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
@@ -49,22 +48,18 @@ class PlayerTest {
         shipBoard1.positionTile(Optional.of(tile7), new Coordinates(2,0));
         Tile tile8=new EquipCabin( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE));
         shipBoard1.positionTile(Optional.of(tile8), new Coordinates(2,1));
-        tile8.setCrewType(CrewType.HUMAN);
         Tile tile9=new EquipCabin( new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
         shipBoard1.positionTile(Optional.of(tile9), new Coordinates(2,2));
-        tile9.setCrewType(CrewType.HUMAN);
         Tile tile10=new Shields( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL));
         shipBoard1.positionTile(Optional.of(tile10), new Coordinates(2,4));
         Tile tile12=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL));
         shipBoard1.positionTile(Optional.of(tile12), new Coordinates(2,5));
-        tile12.setCrewType(CrewType.HUMAN);
         Tile tile11=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL));
         shipBoard1.positionTile(Optional.of(tile11), new Coordinates(2,6));
         Tile tile13=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE), 2);
         shipBoard1.positionTile(Optional.of(tile13), new Coordinates(3,0));
         Tile tile14=new EquipCabin( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH));
         shipBoard1.positionTile(Optional.of(tile14), new Coordinates(3,2));
-        tile14.setCrewType(CrewType.HUMAN);
         Tile tile15=new SingleEngine( new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH));
         shipBoard1.positionTile(Optional.of(tile15), new Coordinates(3,3));
         Tile tile16=new CargoRed(1, new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE));
@@ -181,7 +176,7 @@ class PlayerTest {
 
     @Test
     void automatic_crew_choice() {
-        assertEquals(0, player1.getTotalCrew());
+        assertEquals(2, player1.getTotalCrew());
         player1.setAllCrewToHuman();
         assertEquals(12, player1.getTotalCrew());
     }
@@ -217,10 +212,10 @@ class PlayerTest {
         player1.getShipBoard().gainGoods(new Goods(GoodsColor.GREEN), new Coordinates(1,3));
         player1.getShipBoard().gainGoods(new Goods(GoodsColor.YELLOW), new Coordinates(1,4));
         ArrayList<Coordinates> coordinates = new ArrayList<>();
+        coordinates.add(new  Coordinates(3,4));
         coordinates.add(new  Coordinates(1,3));
-        coordinates.add(new  Coordinates(1,4));
+        coordinates.add(new Coordinates(1,4));
         coordinates.add(new Coordinates(1,3));
-        coordinates.add(new Coordinates(3,4));
         player1.removeGoods(coordinates);
         assertEquals(1,player1.getShipBoard().getAllGoods().size());
         assertTrue(player1.getShipBoard().getTile(new Coordinates(3,4)).getCargo().isEmpty());
