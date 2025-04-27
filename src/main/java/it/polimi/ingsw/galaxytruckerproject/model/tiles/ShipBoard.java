@@ -717,6 +717,7 @@ public class ShipBoard implements ShipBoardInterface{
 
     public void updateTile(Coordinates coordinates, Tile newTile){
         tilesTable[coordinates.getX()][coordinates.getY()] = Optional.of(newTile);
+        this.getTile(coordinates).setShipBoard(this);
     }
 
 }

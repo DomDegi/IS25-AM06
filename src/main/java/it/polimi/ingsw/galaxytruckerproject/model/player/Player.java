@@ -124,7 +124,7 @@ public class Player {
 
     //ENGINE METHODS
     public Map<Integer, ArrayList<Tile>> useEngines(int numberOfDoubleEngines, ArrayList<Coordinates> batteries) {
-        if (numberOfDoubleEngines != playerShip.getDoubleEngine().size()) {
+        if (numberOfDoubleEngines > playerShip.getDoubleEngine().size()) {
             return null;
         }
         if (batteries.size() != numberOfDoubleEngines) {
@@ -132,7 +132,7 @@ public class Player {
         }
         ArrayList<Tile> updatedTiles = chooseBatteriesUse(batteries);
         Map<Integer, ArrayList<Tile>> value = new HashMap<>();
-        if (chooseBatteriesUse(batteries) == null) {
+        if (updatedTiles == null) {
             return null;
         } else {
             if (numberOfDoubleEngines == 0 && playerShip.getNumSingleEngine() == 0) {
@@ -158,27 +158,34 @@ public class Player {
         float possibleDoubleFireStrength = 0;
         int batteriesCounter = 0;
         ArrayList<Coordinates> doubleCannons = new ArrayList<>(playerShip.getDoubleCannon());
-        while (possibleDoubleFireStrength < doubleFireStrength || !doubleCannons.isEmpty()) {
+
+        // Adjusted the condition to prevent infinite loop
+        while (possibleDoubleFireStrength < doubleFireStrength && !doubleCannons.isEmpty()) {
             possibleDoubleFireStrength += playerShip.getDoubleCannonPower(doubleCannons.getFirst());
             batteriesCounter++;
             doubleCannons.removeFirst();
         }
+
+        // Check if the required strength was reached
         if (batteriesCounter > batteries.size() || possibleDoubleFireStrength < doubleFireStrength) {
             return null;
         }
+
         ArrayList<Tile> updatedTiles = chooseBatteriesUse(batteries);
-        Map<Float, ArrayList<Tile>> value = new HashMap<>();
         if (updatedTiles == null) {
             return null;
-        } else {
-            if (doubleFireStrength == 0 && playerShip.getSingleCannonPower() == 0) {
-                value.put(0F, updatedTiles);
-            } else {
-                value.put(playerShip.getSingleCannonPower() + doubleFireStrength + 2 * playerShip.getNumPurpleAliens(), updatedTiles);
-            }
-            return value;
         }
+
+        Map<Float, ArrayList<Tile>> value = new HashMap<>();
+        if (doubleFireStrength == 0 && playerShip.getSingleCannonPower() == 0) {
+            value.put(0F, updatedTiles);
+        } else {
+            value.put(playerShip.getSingleCannonPower() + doubleFireStrength + 2 * playerShip.getNumPurpleAliens(), updatedTiles);
+        }
+
+        return value;
     }
+
 
     public void printCurrentInfoCannons() {
         System.out.println(playerName + ": Current number of Single Cannon Strength: " + playerShip.getSingleCannonPower());
@@ -331,16 +338,14 @@ public class Player {
     public boolean verifyAndSetupCrew(ArrayList<Tile>  cabins) {
         for (Tile cabin: cabins) {
             if (cabin.getCrewType().equals(CrewType.PURPLE) &&
-                    !(cabin.getAlienability().equals(AlienOptions.PURPLE) || cabin.getAlienability().equals(AlienOptions.BOTH)))
+                    !(playerShip.getTile(cabin.getCoordinates()).getAlienability().equals(AlienOptions.PURPLE) || playerShip.getTile(cabin.getCoordinates()).getAlienability().equals(AlienOptions.BOTH)))
                 return false;
             if (cabin.getCrewType().equals(CrewType.BROWN) &&
-                    !(cabin.getAlienability().equals(AlienOptions.BROWN) || cabin.getAlienability().equals(AlienOptions.BOTH)))
-                return false;
-            if (!cabin.getAlienability().equals(playerShip.getTile(cabin.getCoordinates()).getAlienability()))
+                    !(playerShip.getTile(cabin.getCoordinates()).getAlienability().equals(AlienOptions.BROWN) || playerShip.getTile(cabin.getCoordinates()).getAlienability().equals(AlienOptions.BOTH)))
                 return false;
         }
         for (Tile cabin: cabins) {
-            playerShip.updateTile(cabin.getCoordinates(), cabin);
+            playerShip.getTile(cabin.getCoordinates()).setCrewType(cabin.getCrewType());
         }
         return true;
     }

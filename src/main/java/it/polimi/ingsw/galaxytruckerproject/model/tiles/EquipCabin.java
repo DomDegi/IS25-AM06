@@ -2,10 +2,13 @@ package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
 
 import java.util.ArrayList;
+import java.util.Objects;
+
+import static it.polimi.ingsw.galaxytruckerproject.model.tiles.CrewType.HUMAN;
 
 public class EquipCabin extends Cabin {
 
-    private AlienOptions    alienability;
+    private AlienOptions alienability = AlienOptions.NO;
     private CrewType crewType;
 
     public EquipCabin(Link north, Link east, Link south, Link west, int key) {
@@ -118,7 +121,7 @@ public class EquipCabin extends Cabin {
         //checkAlienability();
         switch (crewType) {
             case HUMAN:
-                this.crewType = CrewType.HUMAN;
+                this.crewType = HUMAN;
                 this.crew = 2 ;
                 shipBoard.addBreakHumanCrew(+2);
             break;
@@ -215,5 +218,13 @@ public class EquipCabin extends Cabin {
         return alienability;
     }
 
-
+    public void setCrewTypeOfTestTile(CrewType type) {
+        this.crewType = type;
+        this.alienability = AlienOptions.BOTH;
+        if (Objects.requireNonNull(crewType) == HUMAN) {
+            this.crew = 2;
+        } else {
+            this.crew = 1;
+        }
+    }
 }
