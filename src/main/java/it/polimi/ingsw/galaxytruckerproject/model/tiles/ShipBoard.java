@@ -1,5 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
@@ -77,6 +78,10 @@ public class ShipBoard implements ShipBoardInterface{
 
     public Player getPlayer() {
         return player;
+    }
+
+    public LightPlayer getLightPlayer() {
+        return null;
     }
 
     public int getNumBatteries() {
@@ -448,16 +453,6 @@ public class ShipBoard implements ShipBoardInterface{
             addPenalty();
         }
         return true;
-    }
-
-    public void chooseHowToFillCabins() {
-        for (Coordinates coordinates : crewCoordinates) {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Insert crewType: ");
-            String user = scanner.nextLine();
-            CrewType crewType = CrewType.valueOf(user.toUpperCase());
-            tilesTable[coordinates.getX()][coordinates.getY()].get().setCrewType(crewType);
-        }
     }
 
     //New ChooseCrew METHOD

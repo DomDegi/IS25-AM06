@@ -27,20 +27,13 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
     public VirtualControllerRMI(MultiGameController multiController) throws RemoteException {
         super();
         this.multiController = multiController;
-        this.clients = new HashMap<>();
+        this.clients = new HashMap<String, Controller>();
     }
 
+    //PHASE OF LOGIN/CREATION OF MATCHES METHODS
     public void login(String playerName) throws RemoteException {
-            if (clients.containsKey(playerName)) {
-                clients.get(playerName).login(playerName);
-            }
+        clients.get(playerName).login(playerName);
     }
-
-    @Override
-    public void drawCards(String name) throws RemoteException {
-
-    }
-
     public void connect(VirtualView client, String playerName) throws RemoteException {
 
         Controller controllerPlayer = new Controller(multiController, client);
@@ -51,41 +44,24 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
 
         }
     }
-
-    @Override
-    public void connect(ViewInterface client, String playerName) throws RemoteException {
-
-    }
-
     public void createGame(String gameName, int playerCount, GameMode chooseMode, String playerName) throws RemoteException {
         clients.get(playerName).createGame(gameName, playerCount, chooseMode);
     }
-
     public void joinGame(String gameName, String playerName) throws RemoteException {
         clients.get(playerName).joinGame(gameName);
     }
-
     public void leaveGame(String playerName) throws RemoteException {
         clients.get(playerName).leaveGame();
     }
-
     public void leave(String playerName) throws RemoteException {
         clients.get(playerName).leave();
     }
-
     public void chooseColor(String playerName, PlayersColor color) throws RemoteException {
         clients.get(playerName).chooseColor(color);
     }
 
-    @Override
-    public void notifySetTile(String playerName, Coordinates coordinates, boolean booked, int key) throws RemoteException {
 
-    }
-
-    /*public void setFlightBoard(String playerName, int chosen) throws RemoteException {
-        clients.get(playerName).setFlightBoard(chosen);
-    }*/
-
+    //COORDINATES MANAGMENT METHODS
     public void sendCoordinates(String playerName, ArrayList<Coordinates> coordinates) throws RemoteException{
 
     }
@@ -99,11 +75,6 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
 
     }
 
-    @Override
-    public void notifySetTile(String playerName, Coordinates coordinates, Tile tile) throws RemoteException {
-
-    }
-
     public void sendYes( String playerName) throws RemoteException{
         clients.get(playerName).makeAChoice(true);
     }
@@ -112,104 +83,47 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).makeAChoice(false);
     }
 
-    @Override
-    public void sendEndShipBoardCreation(String playerName) throws RemoteException {
 
-    }
 
+    //TILE METHODS
     public void notifySetTile(String playerName, Tile tile) throws RemoteException {
         clients.get(playerName).setTile(tile);
     }
-
-    /*public void sendEndShipBoardCreation(String playerName) throws RemoteException {
-        AcceptMessage message = new AcceptMessage(playerName);
-        clients.get(playerName).playerChoiceThroughMessage(message);
-    }*/
-
     public void notifyTileBooking(String playerName) throws RemoteException {
         clients.get(playerName).bookTile();
     }
-
     public void notifyRefusedTile(String playerName) throws RemoteException {
         clients.get(playerName).refuseTile();
     }
-
-    //è inutile(sì)
-    /*
-    public void drawTileRequest(String playerName) throws RemoteException {
-        DrawTileFromStackRequest message = new DrawTileFromStackRequest(playerName);
-        clients.get(playerName).playerChoiceThroughMessage(message);
-    }*/
-
-    //DONE
     public void reqDrawTileFromStack(String playerName) throws RemoteException {
         clients.get(playerName).drawTileFromStack();
     }
-
-    //DONE
     public void reqDrawTileFromTurned(String playerName, int index) throws RemoteException {
         clients.get(playerName).drawTileFromTurned(index);
     }
 
-    @Override
-    public void refuseTile(int index) throws RemoteException {
-
+    //CARD METHODS
+    public void lookCardsRequest(String playerName, int deckToLookAt) throws RemoteException {
+        clients.get(playerName).lookGameCards(deckToLookAt);
     }
-
-    @Override
-    public void showCardsRequest(int index) throws RemoteException {
-
-    }
-
-    @Override
     public void stopLookingAtCardsRequest(String playerName) throws RemoteException {
-
+        clients.get(playerName).stopLookingAtCards();
     }
-
-    //DONE(in teoria non serve dato che vengono gestite in locale)
-    /*public void reqDrawTileFromBooked(String playerName, int index) throws RemoteException {
-        clients.get(playerName).drawTileFromBooked(index);
-    }*/
+    public void drawCards(String playerName) throws RemoteException {
+        clients.get(playerName).drawCard();
+    }
 
     //DONE
     public void sendTurnHourGlass(String playerName) throws RemoteException {
         clients.get(playerName).turnHourglass();
     }
 
-    @Override
-    public void reqDrawTileFromPile(String playerName) throws RemoteException {
-
-    }
-
-    @Override
-    public void reqDrawTileFromTable(String playerName, int index) throws RemoteException {
-
-    }
-
     public void notifyEarlyLanding(String playerName) throws RemoteException {
-
-    }
-
-    @Override
-    public void notifyNewGoodsArrangement(String playerName, int clientGoodsValue, ArrayList<CargoHold> modifiedCargoHold) throws RemoteException {
-
+        clients.get(playerName).earlyLanding();
     }
 
 
-    //DONE
-    public void lookCardsRequest(String playerName, int deckToLookAt) throws RemoteException {
-        clients.get(playerName).lookGameCards(deckToLookAt);
-    }
 
-    @Override
-    public void rolldice(String name) throws RemoteException {
-
-    }
-
-    //DONE
-    public void StopLookingAtCardsRequest(String playerName) throws RemoteException {
-        clients.get(playerName).stopLookingAtCards();
-    }
 
     //DONE
     public void notifyCompleted(String playerName) throws RemoteException {
@@ -226,13 +140,16 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).choosePlanet(planet);
     }
 
-    @Override
-    public void notifyNewCrewArrangement(String name, ArrayList<Cabin> newTiles) {
-
+    public void notifyNewGoodsArrangement(String playerName, int creditsToVerify, ArrayList<CargoHold> updatedCargos) throws RemoteException {
+        clients.get(playerName).manageGoods(creditsToVerify, updatedCargos);
     }
 
-    public void newGoodsArrangement(String playerName, int creditsToVerify, ArrayList<CargoHold> cargosToUpdate) throws Exception {
-        clients.get(playerName).manageGoods(creditsToVerify, cargosToUpdate);
+    public void notifyNewCrewArrangement(String playerName, ArrayList<Tile> cabins) throws RemoteException {
+        clients.get(playerName).pickCrewMembers(cabins);
+    }
+
+    public void rollTheDices(String playerName) throws RemoteException {
+        clients.get(playerName).rollTheDices();
     }
 
 

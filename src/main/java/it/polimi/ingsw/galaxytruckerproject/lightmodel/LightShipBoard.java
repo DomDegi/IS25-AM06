@@ -6,6 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -18,18 +19,32 @@ public class LightShipBoard implements ShipBoardInterface{
     private Optional<Tile>[][] tilesTable;
     private int penalty;
     private ArrayList<Tile> bookedTiles;
-    //SERVE UN METODO CHE PASSA AL CLIENT TUTTE LE COORDINATE DEI CARGOHOLD
+    private int numExposedConnectors;;
+    private int numBatteries;
+    private float singleCannonPower;
+    private ArrayList<Coordinates> DoubleCannon;
     private ArrayList<Coordinates> cargoHoldCoordinates;
-    private int credit;
+
+    private int numSingleEngine;
+    private ArrayList<Coordinates> DoubleEngine;
+    private ArrayList<Coverage> shields;
+    private ArrayList<Coordinates> batteryCoordinates;
     private ArrayList<Coordinates> crewCoordinates;
 
+    private int numBrownAliens;
+    private int numPurpleAliens;
+    private int numHumanCrew;
+    private int credit;
+
+
     public LightShipBoard(ShipBoard shipBoard) {
-        this. player = new LightPlayer(shipBoard.getPlayer());
         this.shipBoard = shipBoard;
         this.bookedTiles = new ArrayList<>();
         this.cargoHoldCoordinates = new ArrayList<>();
         this.crewCoordinates = new ArrayList<>();
         this.credit = 0;
+        this. player = new LightPlayer(this.shipBoard.getPlayer());
+
     }
 
     public LightShipBoard(LightPlayer player) {
@@ -86,86 +101,59 @@ public class LightShipBoard implements ShipBoardInterface{
         positionTile(Optional.of(tile), new Coordinates(2, 3));
     }
 
+    public LightPlayer getPlayer() {
+        return player;
+    }
+
+    public void addBreakSingleCannonPower(float num) {
+        this.singleCannonPower += num;
+    }
+
+    public void addBreakSingleEngine(boolean ab) {
+        if (ab) numSingleEngine++;
+        else numSingleEngine--;
+    }
+
+    public void addBreakDoubleEngine(boolean ab, Coordinates coordinates) {
+        if (ab) {
+            DoubleEngine.add(coordinates);
+        } else DoubleEngine.remove(coordinates);
+    }
+
+    public void addBreakDoubleCannon(boolean ab, Coordinates coordinates) {
+        if (ab) {
+            DoubleCannon.add(coordinates);
+        } else DoubleCannon.remove(coordinates);
+    }
+
+    public void addBreakBrownAliens(boolean ab) {
+        if (ab) numBrownAliens++;
+        else numBrownAliens--;
+    }
+
+    public void addBreakPurpleAliens(boolean ab) {
+        if (ab) numPurpleAliens++;
+        else numPurpleAliens--;
+    }
+
+    public void addBreakHumanCrew(int num) {
+        numHumanCrew += num;
+        //Decide which crew to eliminate
+    }
+
+    public void addBreakBatteries(int num) {
+        numBatteries += num;
+        //if (num<0) -> Decide which Battery to use
+    }
+
+    public void addPenalty() {
+        penalty++;
+    }
     public Tile getTile(Coordinates coordinates){
         return tilesTable[coordinates.getX()][coordinates.getY()].get();
     }
     public Tile getTile(int x, int y){
         return tilesTable[x][y].get();
-    }
-
-    @Override
-    public void setHumanCrew(int humanCrew) {
-
-    }
-
-    @Override
-    public int getPenalty() {
-        return 0;
-    }
-
-    @Override
-    public Player getPlayer() {
-        return null;
-    }
-
-    @Override
-    public int getNumBatteries() {
-        return 0;
-    }
-
-    @Override
-    public float getSingleCannonPower() {
-        return 0;
-    }
-
-    @Override
-    public ArrayList<Coordinates> getDoubleCannon() {
-        return null;
-    }
-
-    @Override
-    public int getNumSingleEngine() {
-        return 0;
-    }
-
-    @Override
-    public ArrayList<Coordinates> getDoubleEngine() {
-        return null;
-    }
-
-    @Override
-    public int getNumPurpleAliens() {
-        return 0;
-    }
-
-    @Override
-    public int getNumHumanCrew() {
-        return 0;
-    }
-
-    @Override
-    public int getNumExposedConnectors() {
-        return 0;
-    }
-
-    @Override
-    public int getDoubleCannonPower(Coordinates coordinates) {
-        return 0;
-    }
-
-    @Override
-    public ArrayList<Coordinates> getBatteryCoordinates() {
-        return null;
-    }
-
-    @Override
-    public ArrayList<Coverage> getCoverageShields() {
-        return null;
-    }
-
-    @Override
-    public ArrayList<Coordinates> getCargoHoldCoordinates() {
-        return null;
     }
 
     public boolean positionTile(Optional<Tile> tile, Coordinates coordinates) {
@@ -182,38 +170,16 @@ public class LightShipBoard implements ShipBoardInterface{
         }
         return false;
     }
-
-    @Override
-    public void destroyForCorrection(Coordinates coordinates) {
-
-    }
-
-    @Override
-    public ArrayList<Set<Coordinates>> destroyTile(Coordinates coordinates) {
-        return null;
-    }
-
-    @Override
-    public boolean checkEarlyLanding() {
-        return false;
-    }
-
-    @Override
-    public boolean verifyCorrectness() {
-        return false;
-    }
-
     public void setCargoHoldCoordinates(ArrayList<Coordinates> cargoHoldCoordinates) {
         this.cargoHoldCoordinates = cargoHoldCoordinates;
+    }
+
+    public ArrayList<Coverage> getCoverageShields(){
+        return shields;
     }
     //New ChooseCrew METHOD
     public boolean chooseCrewToRemove(Coordinates coordinates) {
         return tilesTable[coordinates.getX()][coordinates.getY()].get().removeCrew();
-    }
-
-    @Override
-    public ArrayList<Tile> epidemic() {
-        return null;
     }
 
     //BATTERY METHODS
@@ -221,6 +187,10 @@ public class LightShipBoard implements ShipBoardInterface{
         tilesTable[coordinates.getX()][coordinates.getY()].get().consumeBattery();
         return true;
     }
+
+    //forse non serve il batteryCoordinates perché tanto se non è una batteryTile stampo il fatto che non lo è
+
+
     //SHIELD METHODS
     //This method takes as input the coordinates of the Shield to be used and the coordinates of the BatteryComponents
     // from which it wants to consume the battery to activate the Shield.
@@ -233,7 +203,9 @@ public class LightShipBoard implements ShipBoardInterface{
         }
         return tilesTable[shieldCoordinates.getX()][shieldCoordinates.getY()].get().getCoveredArea();
     }
+
     //GOODS METHODS
+
     //Returns true if the adding of the Good is successfully, false otherwise ()
     public int gainGoods(Goods goods, Coordinates coordinates) {
         if(cargoHoldCoordinates.contains(coordinates)){
@@ -251,6 +223,7 @@ public class LightShipBoard implements ShipBoardInterface{
         }
         return 1;
     }
+
     //IT RETURNS THE COORDINATES OF EVERY CARGO_HOLD THAT CONTAINS A TYPE OF GOOD (RED, YELLOW, GREEN, BLU). IF
     //A CARGO_HOLD CONTAINS MORE THAN ONE GOOD WITH THE SAME COLOR IS GOING TO BE ADD TWICE.
     public ArrayList<Coordinates> cargoHoldContainsGood(Goods good){
@@ -264,6 +237,7 @@ public class LightShipBoard implements ShipBoardInterface{
         }
         return cargoHoldContainsGood;
     }
+
     public void chooseCargoStockToEmpty(Coordinates coordinates){
 
         Goods colorGoodToCheck = new Goods(GoodsColor.RED);
@@ -315,7 +289,7 @@ public class LightShipBoard implements ShipBoardInterface{
                     }
                     else{
                         System.out.println("YOU HAVE TO REMOVE A BLUE GOOD");
-                        chooseCargoStockToEmpty(coordinates);//THE METHOD GETS INVOKED UNITL THE COORDINATES CONTAINS
+                        chooseCargoStockToEmpty(coordinates);//THE METHOD GETS INVOKED UNTIL THE COORDINATES CONTAINS
                         //A BLUE GOOD
                     }
                     break;
@@ -327,9 +301,11 @@ public class LightShipBoard implements ShipBoardInterface{
         }
 
     }
+
     public void removeGood(Goods good, Coordinates coordinates){
         tilesTable[coordinates.getX()][coordinates.getY()].get().removeGood(good);
     }
+
     public boolean addBookedTile(Tile tile) {
         if (bookedTiles.size() == 2) {
             return false;
@@ -337,9 +313,11 @@ public class LightShipBoard implements ShipBoardInterface{
         bookedTiles.add(tile);
         return true;
     }
+
     public ArrayList<Tile> getBookedTiles() {
         return bookedTiles;
     }
+
     public Tile removeBookedTile(int num) {
         if (num > 1 || num < 0) {
             System.out.println("the tile do not exist");
@@ -350,59 +328,7 @@ public class LightShipBoard implements ShipBoardInterface{
         return tile;
     }
 
-    public ArrayList<Coordinates> getCabinsCoordinates() {
-        return crewCoordinates;
-    }
 
-    @Override
-    public Optional<Tile>[][] getTilesTable() {
-        return new Optional[0][];
-    }
-
-    @Override
-    public void addBreakSingleCannonPower(float power) {
-
-    }
-
-    @Override
-    public void addBreakSingleEngine(boolean ab) {
-
-    }
-
-    @Override
-    public void addBreakDoubleEngine(boolean ab, Coordinates coordinates) {
-
-    }
-
-    @Override
-    public void addBreakDoubleCannon(boolean ab, Coordinates coordinates) {
-
-    }
-
-    @Override
-    public void addBreakBrownAliens(boolean ab) {
-
-    }
-
-    @Override
-    public void addBreakPurpleAliens(boolean ab) {
-
-    }
-
-    @Override
-    public void addBreakHumanCrew(int num) {
-
-    }
-
-    @Override
-    public void addBreakBatteries(int num) {
-
-    }
-
-    @Override
-    public void addPenalty() {
-
-    }
     /*
     public void swapGoods(Coordinates coordinatesFrom,Coordinates coordinatesTo, Goods goodToSwap ){
         //Check if the coordinates are of a CargoHolder
@@ -434,6 +360,7 @@ public class LightShipBoard implements ShipBoardInterface{
         credit += cargoHoldContainsGood(good).size();
         return credit;
     }
+
     //if these methods finds no goods in cargo holds, returns false
     public boolean isCargoEmpty() {
         for (Coordinates coordinates : cargoHoldCoordinates) {
@@ -443,10 +370,7 @@ public class LightShipBoard implements ShipBoardInterface{
         return true;
     }
 
-    @Override
-    public void checkBeforeAsking(int goodsToRemove) {
 
-    }
 
     //give back all the player Goods
     public ArrayList<Goods> getAllGoods(){
@@ -498,6 +422,7 @@ public class LightShipBoard implements ShipBoardInterface{
     public void addBattery(Coordinates coordinates){
         getTile(coordinates).addBattery();
     }
+
     public void removeCrew(ArrayList<Coordinates> coordinatesEpidemic){
         for (Coordinates coordinates : coordinatesEpidemic) {
             getTile(coordinates).removeCrew();
@@ -512,7 +437,7 @@ public class LightShipBoard implements ShipBoardInterface{
 
 public String toString(){
 
-    StringBuilder s = new StringBuilder("Schipboard: ");
+    StringBuilder s = new StringBuilder("Shipboard: ");
     for (int i = 0; i < 5; i++) {
         for (int j = 0; j < 7; j++) {
             if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable()) {
@@ -525,8 +450,71 @@ public String toString(){
     s.append("\ncredit:"+credit + "\n");
     return s.toString();
 }
+    public boolean checkEarlyLanding() {
+        return numHumanCrew == 0;
+    }
+
+    public void SetNewShip(Set<Coordinates> set) {
+        Coordinates c = new Coordinates(0, 0);
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 7; j++) {
+                if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable()) {
+                    c.set(i, j);
+                    if (!set.contains(c)) {
+                        tilesTable[i][j].get().destroy();
+                        tilesTable[i][j] = Optional.empty();
+                    }
+                }
+            }
+        }
+    }
+
+    //RETURN THE SET OF TILES LINKED WITH THE STARTING ONE
+    //i assume that the correctness of the links has already been verified
+    //in the case of construction errors this method will be played for each error
 
 
+
+    public ArrayList<Tile> epidemic(){
+        HashSet<Coordinates> InfectedCabin = new HashSet<>();
+        for(Coordinates coordinates : crewCoordinates){
+            for(Coordinates coordinates2 : crewCoordinates){
+                if ((coordinates.getX() == coordinates2.getX() && coordinates.getY() - 1 == coordinates2.getY() && !this.getTile(coordinates).getWest().getConnectorsType().equals(Connectors.SMOOTH))
+                        || (coordinates.getX() == coordinates2.getX() && coordinates.getY() + 1 == coordinates2.getY() && !this.getTile(coordinates).getEast().getConnectorsType().equals(Connectors.SMOOTH))
+                        || (coordinates.getX() - 1 == coordinates2.getX() && coordinates.getY() == coordinates2.getY() && !this.getTile(coordinates).getNorth().getConnectorsType().equals(Connectors.SMOOTH))
+                        || coordinates.getX() + 1 == coordinates2.getX() && coordinates.getY() == coordinates2.getY() && !this.getTile(coordinates).getSouth().getConnectorsType().equals(Connectors.SMOOTH)
+                ) {
+                    //(Math.abs(coordinates.getX() - coordinates2.getX())==1 ^ Math.abs(coordinates.getY() - coordinates2.getY())==1)&& !coordinates.equals(coordinates2)
+                    InfectedCabin.add(coordinates2);
+                }
+            }
+        }
+        for(Coordinates coordinates : InfectedCabin){
+            tilesTable[coordinates.getX()][coordinates.getY()].get().removeCrew();
+        }
+        ArrayList<Tile> modifiedCabin = new ArrayList<>();
+        for (Coordinates coordinates: InfectedCabin) {
+            modifiedCabin.add(this.getTile(coordinates));
+        }
+        return modifiedCabin;
+    }
+
+
+    public ArrayList<Coordinates> getBatteryCoordinates() {
+        return batteryCoordinates;
+    }
+
+    public ArrayList<Coordinates> getCargoHoldCoordinates() {
+        return cargoHoldCoordinates;
+    }
+
+    public ArrayList<Coordinates> getCabinsCoordinates() {
+        return crewCoordinates;
+    }
+
+    public Optional<Tile>[][] getTilesTable() {
+        return tilesTable;
+    }
 
     /*
     public void setTilesTable(Coordinates coordinates) {

@@ -164,13 +164,13 @@ public class Controller implements ControllerInterface {
     }
 
     @Override
-    public void useEngines(int numberOfDoubleEngines, ArrayList<Coordinates> batteries) throws RemoteException {
+    public void useEngines(int numberOfDoubleEngines, ArrayList<Coordinates> batteries) throws RemoteException{
         gameController.playerUsesEngines(nickname, numberOfDoubleEngines, batteries);
     }
 
     @Override
-    public void manageGoods(int clientCreditsToVerify, ArrayList<CargoHold> cargosToUpdate) throws RemoteException {
-        gameController.playerManagesGoods(nickname, clientCreditsToVerify, cargosToUpdate);
+    public void manageGoods(int clientCreditsToVerify, ArrayList<CargoHold> updatedCargos) throws RemoteException{
+        gameController.playerManagesGoods(nickname, clientCreditsToVerify, updatedCargos);
     }
 
     @Override
@@ -193,7 +193,6 @@ public class Controller implements ControllerInterface {
         gameController.setPosition(nickname, view, position);
     }
 
-    @Override
     public void removeCrew (ArrayList<Coordinates> toRemoveFrom) {
         gameController.playerRemovesCrew(nickname, toRemoveFrom);
     }
@@ -209,7 +208,7 @@ public class Controller implements ControllerInterface {
     }
 
     @Override
-    public void rollTheDices() throws Exception {
+    public void rollTheDices() throws RemoteException {
         gameController.playerRollsTheDices(nickname);
     }
 

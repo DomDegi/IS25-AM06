@@ -20,6 +20,7 @@ public class MeteorSwarm extends Card {
     private int currentDiceRoll;
     private GameInterface game;
     private int currentMeteorIndex = 0;
+    Player currentPlayerRolling = null;
 
     @JsonCreator
     public MeteorSwarm(@JsonProperty("level") int level,
@@ -46,7 +47,7 @@ public class MeteorSwarm extends Card {
 
         activePenalties.clear();
         currentDiceRoll = 0;
-        Player currentPlayerRolling = inFlightPlayers.getFirst();
+        currentPlayerRolling = inFlightPlayers.getFirst();
         VirtualView currentView = viewsMap.get(currentPlayerRolling.getPlayerName());
         try {
             currentView.setClientState(ClientState.ROLL_DICE);
@@ -71,7 +72,7 @@ public class MeteorSwarm extends Card {
     @Override
     public void rollTheDices(String playerName) {
         Player player = game.identifyPlayerByName(playerName);
-        if (!activePenalties.containsKey(player)) {
+        if (!player.getPlayerName().equals(currentPlayerRolling.getPlayerName())) {
             try {
                 viewsMap.get(playerName).showWrongInputMessage();
             }catch(Exception ignored) {}
@@ -168,6 +169,7 @@ public class MeteorSwarm extends Card {
     // For testing purposes
     public void setDiceRoll(int diceRoll) {
         this.currentDiceRoll = diceRoll;
+        applyMeteorToPlayers();
     }
 
     @Override
