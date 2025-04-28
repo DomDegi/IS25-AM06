@@ -319,8 +319,9 @@ public class ShipBoard implements ShipBoardInterface{
             set1 = (brokenGraph(new Coordinates(x + 1, y)));
         }
         //east
-        if (tilesTable[x][y + 1].isPresent() && tilesTable[x][y + 1].get().fillable() && (set1 == null || !set1.contains(tilesTable[x][y + 1].get().getCoordinates()))) {
-            set2 = brokenGraph(new Coordinates(x, y + 1));
+        if (tilesTable[x][y + 1].isPresent())
+                if(tilesTable[x][y + 1].get().fillable() && (set1 == null || !set1.contains(tilesTable[x][y + 1].get().getCoordinates()))) {
+                    set2 = brokenGraph(new Coordinates(x, y + 1));
         }
         //north
         if (tilesTable[x - 1][y].isPresent() && tilesTable[x - 1][y].get().fillable() && (set1 == null || !set1.contains(tilesTable[x - 1][y].get().getCoordinates())) && (set2 == null || !set2.contains(tilesTable[x - 1][y].get().getCoordinates()))) {

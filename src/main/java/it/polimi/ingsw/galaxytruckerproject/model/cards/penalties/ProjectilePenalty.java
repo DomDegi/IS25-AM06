@@ -21,7 +21,7 @@ public class ProjectilePenalty extends Penalty {
     private final ArrayList<Projectile> listOfProjectiles;
     private int diceRoll = 0;
     private Defense defenseStatus = null;
-    private ArrayList<Set<Coordinates>> branch = null;
+    private ArrayList<Set<Coordinates>> branch;
     private Coordinates destroyedTile = null;
 
     @JsonCreator
@@ -42,70 +42,10 @@ public class ProjectilePenalty extends Penalty {
         return string.toString();
     }
 
-    //asks the player to roll the dices
-    @Override
-    public boolean initializePenalty(GameInterface game, VirtualView view, Player player) {
-        if (this.game == null) {
-            this.game = game;
-        }
-        /*
-        if (player.IsDisconnected()) {
-            game.getDrawnCard().notifyBrokenTiles(player.getPlayerName(), automaticProjectilePenalty(player, view));
-            return false;
-        }
-        */
-        if (getListOfProjectiles().isEmpty()) {
-            return false;
-        }
-        if (this.diceRoll != 0) {
-            hitOrMiss(view, player);
-            //System.out.println("gogo");
-            return defenseStatus != Defense.PROTECTED;
-
-        }
-        else {
-            try {
-                view.setClientState(ClientState.ROLL_DICE);
-            }catch(Exception ignored) {}
-        }
-        return true;
-    }
-
-
-    public void printInfoOnAllProjectiles() {
-        for (Projectile projectile : listOfProjectiles) {
-            System.out.println(projectile.toString() + "\n");
-        }
-    }
-
-    public Coordinates playerGetsHit (Player player, ViewInterface view) {
-        Coordinates toDestroy = this.getBrokenTile();
-        this.branch = player.getShipBoard().destroyTile(toDestroy);
-        return toDestroy;
-    }
-
-    public void resetForNextProjectile () {
-        this.listOfProjectiles.removeFirst();
-        diceRoll = 0;
-        defenseStatus = null;
-        branch = null;
-        destroyedTile = null;
-    }
-
-    public Coordinates getBrokenTile () {
-        return listOfProjectiles.getFirst().getCoordinatesToDestroy();
-    }
-
-    @Override
-    public Coordinates randomRollForOne (VirtualView view, Player player) {
-        Random rand = new Random();
-        this.diceRoll = 2 + rand.nextInt(11);
-        return hitOrMiss(view, player);
-    }
-
     public Coordinates hitOrMiss(VirtualView view,Player player) {
         this.defenseStatus = listOfProjectiles.getFirst().throwProjectile(player, diceRoll, game);
-        //System.out.println(this.defenseStatus);
+        System.out.println(this.defenseStatus);
+
         if (!player.IsDisconnected()) {
             switch (defenseStatus) {
                 case PROTECTED -> resetForNextProjectile();
@@ -136,6 +76,74 @@ public class ProjectilePenalty extends Penalty {
         }
         return null;
     }
+
+
+    //asks the player to roll the dices
+    @Override
+    public boolean initializePenalty(GameInterface game, VirtualView view, Player player) {
+        this.defenseStatus = null;
+        if (this.game == null) {
+            this.game = game;
+        }
+
+        if (player.IsDisconnected()) {
+            game.getDrawnCard().notifyBrokenTiles(player.getPlayerName(), automaticProjectilePenalty(player, view));
+            return false;
+        }
+
+        if (getListOfProjectiles().isEmpty()) {
+            return false;
+        }
+        if (this.diceRoll != 0) {
+            hitOrMiss(view, player);
+            //System.out.println("gogo");
+            System.out.println(defenseStatus);
+            //RETURNS TRUE IF THE SHIPBOARD GETS HIT,
+            // FALSE OTHERWISE.
+            return (defenseStatus != Defense.PROTECTED);
+
+        }
+        else {
+            try {
+                view.setClientState(ClientState.ROLL_DICE);
+            }catch(Exception ignored) {}
+        }
+        return true;
+    }
+
+
+    public void printInfoOnAllProjectiles() {
+        for (Projectile projectile : listOfProjectiles) {
+            System.out.println(projectile.toString() + "\n");
+        }
+    }
+
+    public Coordinates playerGetsHit (Player player, ViewInterface view) {
+        Coordinates toDestroy = this.getBrokenTile();
+        this.branch = player.getShipBoard().destroyTile(toDestroy);
+        return toDestroy;
+    }
+
+    public void resetForNextProjectile () {
+        this.listOfProjectiles.removeFirst();
+        diceRoll = 0;
+        //defenseStatus = null;
+        branch = null;
+        destroyedTile = null;
+    }
+
+    public Coordinates getBrokenTile () {
+        return listOfProjectiles.getFirst().getCoordinatesToDestroy();
+    }
+
+    @Override
+    public Coordinates randomRollForOne (VirtualView view, Player player) {
+        Random rand = new Random();
+        this.diceRoll = 2 + rand.nextInt(11);
+        return hitOrMiss(view, player);
+    }
+
+
 
     @Override
     public ArrayList<Coordinates> chooseToMaintain(Player player, ArrayList<Coordinates> received) {

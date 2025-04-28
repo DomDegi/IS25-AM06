@@ -22,7 +22,7 @@ public class LargeMeteor extends Projectile {
         Throw(player,diceRoll);
 
         if(coordinatesToDestroy.isEmpty()){
-            //miss
+            System.out.println("YOU WERE JUST LUCKY, SORRY MAN");
             return Defense.PROTECTED;
         }
         else if(game.getMode().equals(GameMode.TRIAL))

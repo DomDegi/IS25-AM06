@@ -45,7 +45,7 @@ class ProjectilePenaltyTest2 {
         SingleCannon singleCannonS = new SingleCannon(new Link(Connectors.UNIVERSAL), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH),0);
         SingleCannon singleCannonW = new SingleCannon(new Link(Connectors.SMOOTH), new Link(Connectors.UNIVERSAL), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH),0);
 
-        shipBoard.positionTile(Optional.of(singleCannonN), new Coordinates(3, 1));
+        shipBoard.positionTile(Optional.of(singleCannonN), new Coordinates(3, 6));
         shipBoard.positionTile(Optional.of(singleCannonE), new Coordinates(4, 2));
         shipBoard.positionTile(Optional.of(singleCannonS), new Coordinates(3, 3));
         shipBoard.positionTile(Optional.of(singleCannonW), new Coordinates(2, 2));
@@ -72,8 +72,11 @@ class ProjectilePenaltyTest2 {
         Tile tile6=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),0);
         shipBoard1.positionTile(Optional.of(tile6), new Coordinates(3,4));
         boolean result=shipBoard1.verifyCorrectness();
+        //verifyCorrectness is needed for the shipboard stats setting
 
-        listOfMeteors1 = new ArrayList<>(List.of(new LargeMeteor(Direction.NORTH)));
+
+        listOfMeteors1 = new ArrayList<Projectile>(List.of(new LargeMeteor(Direction.NORTH)));
+
 
         listOfMeteorsFull = new ArrayList<>(Arrays.asList(
                 new LargeMeteor(Direction.NORTH),
@@ -86,23 +89,36 @@ class ProjectilePenaltyTest2 {
                 new SmallMeteor(Direction.WEST)
         ));
 
-        listOfLargeCannonShot1 = new ArrayList<>(List.of(new SmallCannonShot(Direction.NORTH)));
+        listOfLargeCannonShot1 = new ArrayList<Projectile>(List.of(new LargeCannonShot(Direction.NORTH)));
     }
 
     @Test
-    void large_meteor_from_north_on_single_cannon() {
+    void largeMeteorFromNorthOnSingleCannon() {
         //System.out.println(shipBoard.toString());
         //System.out.println("Lancio meteore");
         String[] input = {};
 
         //Large Metors
         penalty = new ProjectilePenalty(listOfMeteors1);
-        penalty.setDiceRoll(1);
+        penalty.setDiceRoll(10);
         boolean returnValue = penalty.initializePenalty(gameLvl2, mockView, player);
         assertFalse(returnValue);
-
-
     }
+
+
+    @Test
+    void largeCannonShotFromNorthOnSmallCannon() {
+        //System.out.println(shipBoard.toString());
+        //System.out.println("Lancio cannonShot");
+        penalty = new ProjectilePenalty(listOfLargeCannonShot1);
+        penalty.setDiceRoll(10);
+        boolean returnValue = penalty.initializePenalty(gameLvl2, mockView, player);
+        //THE SHIPBOARD GETS EFFECTIVLY HIT
+        assertTrue(returnValue);
+        //System.out.println(shipBoard.toString());
+    }
+
+
 
 
 
