@@ -118,6 +118,16 @@ class ProjectilePenaltyTest2 {
         //System.out.println(shipBoard.toString());
     }
 
+    void ListOfMeteorsFull_test() {
+        System.out.println(shipBoard.toString());
+        System.out.println("Lancio cannonShot");
+        penalty = new ProjectilePenalty(listOfMeteorsFull);
+        boolean returnValue = penalty.initializePenalty(gameLvl2, mockView, player);
+        penalty.randomRollForOne(mockView, player);
+        System.out.println(shipBoard.toString());
+        penalty.printInfoOnAllProjectiles();
+    }
+
 
 
 

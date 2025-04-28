@@ -178,7 +178,7 @@ public class LargeMeteor extends Projectile {
             if (temp == Defense.CHOOSETOUSEBATTERY)
                 defense = temp;
         }
-        if(diceRoll!=0) {
+        if(diceRoll!=5) {
             temp = checkEastLev1(player, diceRoll - 1);
             if (temp == Defense.PROTECTED)
                 return temp;
@@ -202,7 +202,7 @@ public class LargeMeteor extends Projectile {
             if (temp == Defense.CHOOSETOUSEBATTERY)
                 defense = temp;
         }
-        if(diceRoll!=0) {
+        if(diceRoll!=5) {
             temp = checkWestLev1(player, diceRoll - 1);
             if (temp == Defense.PROTECTED)
                 return temp;
