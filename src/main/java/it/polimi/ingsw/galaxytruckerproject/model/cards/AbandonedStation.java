@@ -20,10 +20,9 @@ import java.util.Map;
 public class AbandonedStation extends Card {
     private final int crewNumberRequired;
     private final ArrayList<Goods> possibleGoodsGain;
-    private ArrayList<Player> playerToInteract;
+    private int playerIndex = -1;
     private Player currentPlayer;
     private ViewInterface currentPlayersView = null;
-    private boolean initialized;
     private boolean won;
     private GoodsChecker goodsChecker = null;
 
@@ -32,9 +31,7 @@ public class AbandonedStation extends Card {
         super(level, requiredDays);
         this.crewNumberRequired = crewNumberRequired;
         this.possibleGoodsGain = possibleGoodsGain;
-        this.initialized = false;
         this.currentPlayer = null;
-        this.playerToInteract = new ArrayList<>();
         this.won = false;
     }
     //asks every player in order of ranking that meets the requirements if they want to spend days to gain the goods
@@ -68,7 +65,7 @@ public class AbandonedStation extends Card {
     @Override
     public void removeCrew(String playerName, ArrayList<Coordinates> toRemoveFrom) {
         Player player = game.identifyPlayerByName(playerName);
-        if (!playerName.equals(currentPlayer.getPlayerName()) || !won) {
+        if (!player.getPlayerName().equals(currentPlayer.getPlayerName()) || !won) {
             try {
                 viewsMap.get(playerName).showWrongInputMessage();
             } catch(Exception ignored) {}
@@ -123,30 +120,24 @@ public class AbandonedStation extends Card {
      * if the arraylist is empty ends the card event.
      */
     public void nextPlayer() {
-        if (!initialized) {
-            playerToInteract = game.getListOfInFlightPlayers();
-            initialized = true;
-        } else {
-            if (playerToInteract.isEmpty()) {
-                game.endCardEvent();
-                return;
-            }
-            playerToInteract.removeFirst();
+        playerIndex++;
+        if (playerIndex > game.getNumberOfPlayers() - 1) {
+            game.endCardEvent();
+            return;
         }
-        currentPlayer = playerToInteract.getFirst();
+        currentPlayer = game.getListOfInFlightPlayers().get(playerIndex);
+        this.currentPlayersView = viewsMap.get(currentPlayer.getPlayerName());
+
         if (currentPlayer.IsDisconnected()) {
             nextPlayer();
         }
-        this.currentPlayersView = viewsMap.get(currentPlayer.getPlayerName());
-
         if (currentPlayer.getTotalCrew() < crewNumberRequired) {
             nextPlayer();
         }
         else {
             try {
                 currentPlayersView.setClientState(ClientState.ACTION);
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
         }
     }
 

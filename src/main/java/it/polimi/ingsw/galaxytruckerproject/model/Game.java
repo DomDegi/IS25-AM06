@@ -311,6 +311,7 @@ public class Game implements GameInterface{
 
     public void setDrawnCard (Card card) {
         this.drawnCard = card;
+        gameState = CARD_EVENT;
     }
 
     public Card getDrawnCard() {

@@ -163,6 +163,7 @@ class AbandonedStationTest {
         flightBoard.addToFlightBoard(player3, 1);
     }
 
+    //The first player(3) doesn't get to choose because they don't have enough crew, after him comes player1 and then player2
     @Test
     void successfully_initialize_card () {
         game.setDrawnCard(abandonedStation);
@@ -193,7 +194,6 @@ class AbandonedStationTest {
 
     @Test
     void successfully_execute_card_and_discarded_crew () {
-        successfully_initialize_card();
         successfully_execute_card_and_accepted();
         int initialCrew = player1.getTotalCrew();
         ArrayList<Coordinates> toRemove =  new ArrayList<>();
@@ -206,8 +206,7 @@ class AbandonedStationTest {
 
     @Test
     void successfully_execute_card_accepted_landed_putted () {
-        successfully_initialize_card();
-        successfully_execute_card_and_accepted();
+        successfully_execute_card_and_discarded_crew();
         ArrayList<CargoHold> modifiedTiles = new ArrayList<>();
         CargoHold newTile0 = new CargoBlue(3, new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),0);
         newTile0.setCoordinates(new Coordinates(1,4));
@@ -271,7 +270,6 @@ class AbandonedStationTest {
     @Test
     void refused_by_everyone() {
         successfully_initialize_card();
-        abandonedStation.choice(player3.getPlayerName(), false);
         abandonedStation.choice(player1.getPlayerName(), false);
         abandonedStation.choice(player2.getPlayerName(), false);
         assertEquals(GameState.DRAW_CARD, game.getGameState());
@@ -280,9 +278,9 @@ class AbandonedStationTest {
     @Test
     void wrong_player_chooses() {
         successfully_initialize_card();
+        abandonedStation.choice(player2.getPlayerName(), false);
         abandonedStation.choice(player1.getPlayerName(), false);
         abandonedStation.choice(player3.getPlayerName(), false);
-        abandonedStation.choice(player2.getPlayerName(), false);
         assertEquals(GameState.CARD_EVENT, game.getGameState());
     }
 }

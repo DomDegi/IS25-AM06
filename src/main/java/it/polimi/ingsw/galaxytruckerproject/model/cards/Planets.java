@@ -19,21 +19,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Planets extends Card{
     private final ArrayList<Planet> listOfPlanets;
-    private ArrayList<Player> playerToInteract;
     private Player currentPlayer;
     private ViewInterface currentPlayerView = null;
-    private boolean initialized;
     private boolean chosen;
     private GoodsChecker goodsChecker;
     public Map<String,Planet> playerChosenPlanets = null;
+    private int playerIndex = -1;
 
     @JsonCreator
     public Planets(@JsonProperty("level") int level, @JsonProperty("requiredDays") int requiredDays, @JsonProperty("listOfPlanets") ArrayList<Planet> listOfPlanets) {
         super(level, requiredDays);
         this.listOfPlanets = listOfPlanets;
-        this.initialized = false;
         this.currentPlayer = null;
-        this.playerToInteract = new ArrayList<>();
         this.chosen = false;
     }
     @Override
@@ -101,16 +98,10 @@ public class Planets extends Card{
     }
 
     public void nextPlayer() {
-        if (!initialized) {
-            playerToInteract = new ArrayList<>(game.getListOfInFlightPlayers());
-            initialized=true;
-        }
-        else {
-            if (playerToInteract.isEmpty()) {
-                game.endCardEvent();
-                return;
-            }
-            playerToInteract.removeFirst();
+        playerIndex++;
+        if (playerIndex > game.getNumberOfPlayers() - 1) {
+            game.endCardEvent();
+            return;
         }
         chosen = false;
         AtomicInteger i = new AtomicInteger();
@@ -122,7 +113,7 @@ public class Planets extends Card{
             game.endCardEvent();
             return;
         }
-        currentPlayer= playerToInteract.getFirst();
+        currentPlayer= game.getListOfInFlightPlayers().get(playerIndex);
         currentPlayerView=viewsMap.get(currentPlayer.getPlayerName());
         this.goodsChecker = null;
 

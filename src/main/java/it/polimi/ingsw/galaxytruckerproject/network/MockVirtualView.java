@@ -175,6 +175,7 @@ public class MockVirtualView implements VirtualView {
 
     @Override
     public void showWrongInputMessage() throws RemoteException {
+        System.out.println("Wrong input");
         // Implement mock behavior or leave empty
     }
 

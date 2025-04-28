@@ -154,6 +154,10 @@ class SmugglersTest {
         shipBoard3.positionTile(Optional.of(tile35), new Coordinates(3,3));
         shipBoard3.verifyCorrectness();
 
+        player1.setAllCrewToHuman();
+        player2.setAllCrewToHuman();
+        player3.setAllCrewToHuman();
+
         flightBoard.addPlayerToGame(player1);
         flightBoard.addPlayerToGame(player2);
         flightBoard.addPlayerToGame(player3);
@@ -186,7 +190,6 @@ class SmugglersTest {
         game.setDrawnCard(smugglers);
         game.getDrawnCard().initializeCard(game, viewMap);
 
-        String input="no";
         game.getDrawnCard().cannonChoice("EnnioVolante", 0, new ArrayList<>());
 
         int batteries=player1.getShipBoard().getNumBatteries();
