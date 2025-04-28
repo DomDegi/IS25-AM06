@@ -13,7 +13,9 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -23,7 +25,7 @@ public class Planets extends Card{
     private ViewInterface currentPlayerView = null;
     private boolean chosen;
     private GoodsChecker goodsChecker;
-    public Map<String,Planet> playerChosenPlanets = null;
+    public Map<String,Planet> playerChosenPlanets = new HashMap<>();
     private int playerIndex = -1;
 
     @JsonCreator
@@ -67,16 +69,17 @@ public class Planets extends Card{
     //input 0 to not choose anything
     @Override
     public void planetChoice(String playerName, int planet) {
-        if (!playerName.equals(currentPlayer.getPlayerName())) {
+        if (!playerName.equals(currentPlayer.getPlayerName()) || chosen) {
             try {
                 viewsMap.get(playerName).showWrongInputMessage();
             }catch(Exception ignored) {}
             return;
         }
-        if (planet <= 0) {
+        if (planet <= 0 ) {
             nextPlayer();
+            return;
         }
-        if (listOfPlanets.get(planet - 1).getOccupationStatus() || chosen) {
+        if (listOfPlanets.get(planet - 1).getOccupationStatus()) {
             try {
                 currentPlayerView.showWrongInputMessage();
             }catch(Exception ignored) {}
@@ -87,6 +90,9 @@ public class Planets extends Card{
         notifyPlayerLanded(playerName, planet);
         this.goodsChecker = new GoodsChecker(currentPlayer, listOfPlanets.get(planet-1).getListOfGoods());
         chosen = true;
+        try {
+            currentPlayerView.setClientState(ClientState.MANAGE_GOODS);
+        } catch (Exception ignored) {}
     }
 
     public void notifyPlayerLanded(String playerName, int planet) {

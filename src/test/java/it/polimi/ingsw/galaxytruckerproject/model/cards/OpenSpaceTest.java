@@ -145,10 +145,10 @@ class OpenSpaceTest {
     @Test
     void successfully_initialize_card_and_execute () {
         game.setDrawnCard(openSpace);
-        game.getDrawnCard().initializeCard(game, viewMap);
         int player1_initial_pos = player1.getPlayerPosition();
         int player2_initial_pos = player2.getPlayerPosition();
         int player3_initial_pos = player3.getPlayerPosition();
+        game.getDrawnCard().initializeCard(game, viewMap);
 
         game.getDrawnCard().engineChoice("MimmoPericoloso", 0, new ArrayList<>());
         game.getDrawnCard().engineChoice("FedeGalattico", 0, new ArrayList<>());
@@ -163,20 +163,21 @@ class OpenSpaceTest {
     @Test
     void successfully_initialize_card_and_execute_yes () {
         game.setDrawnCard(openSpace);
-        game.getDrawnCard().initializeCard(game, viewMap);
         int player1_initial_pos = player1.getPlayerPosition();
         int player2_initial_pos = player2.getPlayerPosition();
         int player3_initial_pos = player3.getPlayerPosition();
+        game.getDrawnCard().initializeCard(game, viewMap);
+
         ArrayList<Coordinates> batteries = new ArrayList<>();
         batteries.add(new Coordinates(3,3));
 
         game.getDrawnCard().engineChoice("MimmoPericoloso", 0, new ArrayList<>());
-        game.getDrawnCard().cannonChoice("FedeGalattico", 1, batteries);
+        game.getDrawnCard().engineChoice("FedeGalattico", 1, batteries);
 
 
-        assertEquals(6, player1.getPlayerPosition());
+        assertEquals(player1_initial_pos + 1, player1.getPlayerPosition());
         assertEquals(player2_initial_pos + 2, player2.getPlayerPosition());
         assertFalse(player2.isLanded());
-        assertEquals(10, player3.getPlayerPosition());
+        assertEquals(player3_initial_pos + 1, player3.getPlayerPosition());
     }
 }
