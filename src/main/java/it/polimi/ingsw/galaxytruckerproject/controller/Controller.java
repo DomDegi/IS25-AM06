@@ -27,16 +27,18 @@ public class Controller implements ControllerInterface {
 
     private final MultiGameController multiGameController;
 
-    private final VirtualView view;
+    private VirtualView view;
 
     private GameController gameController;
 
 
-    public Controller(MultiGameController multiGameController, VirtualView view) {
+    public Controller(MultiGameController multiGameController) {
         this.multiGameController = multiGameController;
-        this.view = view;
     }
 
+    public void setView(VirtualView view) {
+        this.view = view;
+    }
 
     /**
      * useful method to set the gameController for the joined game

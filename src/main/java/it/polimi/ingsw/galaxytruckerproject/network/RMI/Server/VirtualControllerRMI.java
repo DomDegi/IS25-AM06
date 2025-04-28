@@ -36,7 +36,7 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
     }
     public void connect(VirtualView client, String playerName) throws RemoteException {
 
-        Controller controllerPlayer = new Controller(multiController, client);
+        Controller controllerPlayer = new Controller(multiController);
 
         synchronized (this.clients) {
             this.clients.put(playerName, controllerPlayer);
@@ -146,6 +146,11 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
 
     public void notifyNewCrewArrangement(String playerName, ArrayList<Tile> cabins) throws RemoteException {
         clients.get(playerName).pickCrewMembers(cabins);
+    }
+
+    @Override
+    public void setView(VirtualView virtualView) {
+
     }
 
     public void rollTheDices(String playerName) throws RemoteException {

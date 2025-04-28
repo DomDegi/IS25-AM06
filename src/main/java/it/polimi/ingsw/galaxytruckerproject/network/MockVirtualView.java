@@ -261,5 +261,15 @@ public class MockVirtualView implements VirtualView {
     public void printProjectile(Projectile projectile) {
         // Implement mock behavior or leave empty
     }
+
+    @Override
+    public void connected() {
+
+    }
+
+    @Override
+    public void printCabins(Tile cabins) {
+
+    }
 }
 

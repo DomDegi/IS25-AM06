@@ -767,5 +767,13 @@ public class ClientController {
     public void setDeck(Map<Integer, ArrayList<Card>> deck) {
         this.deck = deck;
     }
+
+    public void setConnected(boolean connected) {
+        this.connected = connected;
+    }
+
+    public void setGameMode(GameMode gameMode) {
+        this.gameMode = gameMode;
+    }
 }
 

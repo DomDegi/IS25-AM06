@@ -6,6 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class TUI implements DisplayableView{
+    public TUI(){}
     @Override
     public void askNickname() throws IOException {
             System.out.println("enter your nickname");
@@ -183,6 +185,16 @@ public class TUI implements DisplayableView{
     @Override
     public void printProjectile(Projectile projectile) {
         System.out.println("you're under attack from:\n"+projectile.toString());
+    }
+
+    @Override
+    public void connected() {
+        System.out.println("You are connected");
+    }
+
+    @Override
+    public void setGameMode(GameMode gameMode) {
+        System.out.println("your gameMode is: " + gameMode.toString());
     }
 
     @Override

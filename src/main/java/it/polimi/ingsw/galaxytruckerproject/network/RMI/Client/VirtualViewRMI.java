@@ -7,6 +7,7 @@ import it.polimi.ingsw.galaxytruckerproject.client.GamePhases;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
@@ -189,6 +190,17 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     @Override
     public void printCabins(Tile cabins) {
         view.printCabins(cabins);
+    }
+
+    @Override
+    public void connected() {
+        clientController.setConnected(true);
+    }
+
+    @Override
+    public void setGameMode(GameMode gameMode) {
+        view.setGameMode(gameMode);
+        clientController.set
     }
 
     @Override
