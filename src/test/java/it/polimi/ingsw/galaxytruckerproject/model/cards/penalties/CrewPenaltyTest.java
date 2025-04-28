@@ -82,7 +82,7 @@ class CrewPenaltyTest {
         penalty.initializePenalty(game,mockView1,player1);
         ArrayList<Coordinates> toRemove = new ArrayList<>();
         Coordinates coord0 =  new Coordinates(1,1);
-        Coordinates coord1 =  new Coordinates(1,2);
+        Coordinates coord1 =  new Coordinates(2,1);
         Coordinates coord2 =  new Coordinates(1,1);
         Coordinates coord3 =  new Coordinates(2,2);
         Coordinates coord4 =  new Coordinates(2,3);
