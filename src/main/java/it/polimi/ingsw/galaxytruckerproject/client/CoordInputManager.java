@@ -129,7 +129,7 @@ public class CoordInputManager {
     public void endCheckingFase() throws RemoteException {
         if(coordReqType == CoordReqType.CHOOSE_DOUBLE_CANNON) {
             if(numBattery*2 == coordinates.size() ) {
-            clientController.getVirtualController().sendDoubleCannonUsed(clientController.getName(),fireStrength,coordinates);
+            clientController.getVirtualController().sendDoubleCannonUsed(fireStrength,coordinates);
             coordinates.clear();
             fireStrength = 0;
             numEngine = 0;}
@@ -141,7 +141,7 @@ public class CoordInputManager {
         }
         if (coordReqType == CoordReqType.CHOOSE_DOUBLE_ENGINE) {
             if(numBattery*2 == coordinates.size() ) {
-                clientController.getVirtualController().sendNumDoubleEngineUsed(clientController.getName(), numEngine, coordinates);
+                clientController.getVirtualController().sendNumDoubleEngineUsed( numEngine, coordinates);
                 coordinates.clear();
                 numEngine = 0;
                 fireStrength = 0;
@@ -152,7 +152,7 @@ public class CoordInputManager {
             return;
         }
         if(needed==-1 || needed==coordinates.size()) {
-        clientController.getVirtualController().sendCoordinates(clientController.getName(), coordinates);
+        clientController.getVirtualController().sendCoordinates( coordinates);
         coordinates.clear();
         fireStrength = 0;
         numBattery=0;

@@ -20,21 +20,23 @@ import java.util.HashMap;
 public class VirtualControllerRMI extends UnicastRemoteObject implements VirtualController{
 
 
-    private final MultiGameController multiController;
+    //private final MultiGameController controller;
     //final List<ViewInterface> clients = new ArrayList<>();
-    private final HashMap <String, Controller> clients;
+    //private final HashMap <String, Controller> clients;
+    private Controller controller;
 
-    public VirtualControllerRMI(MultiGameController multiController) throws RemoteException {
+    public VirtualControllerRMI(Controller controller) throws RemoteException {
         super();
-        this.multiController = multiController;
-        this.clients = new HashMap<String, Controller>();
+        //this.multiController = multiController;
+        //this.clients = new HashMap<String, Controller>();
+        this.controller = controller;
     }
 
     //PHASE OF LOGIN/CREATION OF MATCHES METHODS
     public void login(String playerName) throws RemoteException {
-        clients.get(playerName).login(playerName);
+        controller.login(playerName);
     }
-    public void connect(VirtualView client, String playerName) throws RemoteException {
+    /*public void connect(VirtualView client, String playerName) throws RemoteException {
 
         Controller controllerPlayer = new Controller(multiController, client);
 
@@ -44,112 +46,113 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
 
         }
     }
-    public void createGame(String gameName, int playerCount, GameMode chooseMode, String playerName) throws RemoteException {
-        clients.get(playerName).createGame(gameName, playerCount, chooseMode);
+    */
+    public void createGame(String gameName, int playerCount, GameMode chooseMode) throws RemoteException {
+        controller.createGame(gameName, playerCount, chooseMode);
     }
-    public void joinGame(String gameName, String playerName) throws RemoteException {
-        clients.get(playerName).joinGame(gameName);
+    public void joinGame(String gameName) throws RemoteException {
+        controller.joinGame(gameName);
     }
-    public void leaveGame(String playerName) throws RemoteException {
-        clients.get(playerName).leaveGame();
+    public void leaveGame() throws RemoteException {
+        controller.leaveGame();
     }
-    public void leave(String playerName) throws RemoteException {
-        clients.get(playerName).leave();
+    public void leave() throws RemoteException {
+        controller.leave();
     }
-    public void chooseColor(String playerName, PlayersColor color) throws RemoteException {
-        clients.get(playerName).chooseColor(color);
+    public void chooseColor( PlayersColor color) throws RemoteException {
+        controller.chooseColor(color);
     }
 
 
     //COORDINATES MANAGMENT METHODS
-    public void sendCoordinates(String playerName, ArrayList<Coordinates> coordinates) throws RemoteException{
+    public void sendCoordinates( ArrayList<Coordinates> coordinates) throws RemoteException{
 
     }
 
-    public void sendDoubleCannonUsed( String playerName ,float doublePower, ArrayList<Coordinates> batteries) throws RemoteException {
-        clients.get(playerName).useCannons(doublePower, batteries);
+    public void sendDoubleCannonUsed( float doublePower, ArrayList<Coordinates> batteries) throws RemoteException {
+        controller.useCannons(doublePower, batteries);
     }
 
-    public void sendNumDoubleEngineUsed(String playerName , int numEngine, ArrayList<Coordinates> batteries) throws RemoteException {
-        clients.get(playerName).useEngines(numEngine, batteries);
+    public void sendNumDoubleEngineUsed( int numEngine, ArrayList<Coordinates> batteries) throws RemoteException {
+        controller.useEngines(numEngine, batteries);
 
     }
 
-    public void sendYes( String playerName) throws RemoteException{
-        clients.get(playerName).makeAChoice(true);
+    public void sendYes( ) throws RemoteException{
+        controller.makeAChoice(true);
     }
 
-    public void sendNo(String playerName) throws RemoteException{
-        clients.get(playerName).makeAChoice(false);
+    public void sendNo( ) throws RemoteException{
+        controller.makeAChoice(false);
     }
 
 
 
     //TILE METHODS
-    public void notifySetTile(String playerName, Tile tile) throws RemoteException {
-        clients.get(playerName).setTile(tile);
+    public void notifySetTile( Tile tile) throws RemoteException {
+        controller.setTile(tile);
     }
-    public void notifyTileBooking(String playerName) throws RemoteException {
-        clients.get(playerName).bookTile();
+    public void notifyTileBooking() throws RemoteException {
+        controller.bookTile();
     }
-    public void notifyRefusedTile(String playerName) throws RemoteException {
-        clients.get(playerName).refuseTile();
+    public void notifyRefusedTile() throws RemoteException {
+        controller.refuseTile();
     }
-    public void reqDrawTileFromStack(String playerName) throws RemoteException {
-        clients.get(playerName).drawTileFromStack();
+    public void reqDrawTileFromStack() throws RemoteException {
+        controller.drawTileFromStack();
     }
-    public void reqDrawTileFromTurned(String playerName, int index) throws RemoteException {
-        clients.get(playerName).drawTileFromTurned(index);
+    public void reqDrawTileFromTurned( int index) throws RemoteException {
+        controller.drawTileFromTurned(index);
     }
 
     //CARD METHODS
-    public void lookCardsRequest(String playerName, int deckToLookAt) throws RemoteException {
-        clients.get(playerName).lookGameCards(deckToLookAt);
+    public void lookCardsRequest( int deckToLookAt) throws RemoteException {
+        controller.lookGameCards(deckToLookAt);
     }
-    public void stopLookingAtCardsRequest(String playerName) throws RemoteException {
-        clients.get(playerName).stopLookingAtCards();
+    public void stopLookingAtCardsRequest() throws RemoteException {
+        controller.stopLookingAtCards();
     }
-    public void drawCards(String playerName) throws RemoteException {
-        clients.get(playerName).drawCard();
-    }
-
-    //DONE
-    public void sendTurnHourGlass(String playerName) throws RemoteException {
-        clients.get(playerName).turnHourglass();
-    }
-
-    public void notifyEarlyLanding(String playerName) throws RemoteException {
-        clients.get(playerName).earlyLanding();
-    }
-
-
-
-
-    //DONE
-    public void notifyCompleted(String playerName) throws RemoteException {
-        clients.get(playerName).completedShip();
+    public void drawCards() throws RemoteException {
+        controller.drawCard();
     }
 
     //DONE
-    public void notifySetPosition(String playerName, int position) throws RemoteException {
-        clients.get(playerName).setPosition(position);
+    public void sendTurnHourGlass() throws RemoteException {
+        controller.turnHourglass();
+    }
+
+    public void notifyEarlyLanding() throws RemoteException {
+        controller.earlyLanding();
+    }
+
+
+
+
+    //DONE
+    public void notifyCompleted() throws RemoteException {
+        controller.completedShip();
     }
 
     //DONE
-    public void planetChoiceRequest(String playerName,int planet) throws RemoteException {
-        clients.get(playerName).choosePlanet(planet);
+    public void notifySetPosition( int position) throws RemoteException {
+        controller.setPosition(position);
     }
 
-    public void notifyNewGoodsArrangement(String playerName, int creditsToVerify, ArrayList<CargoHold> updatedCargos) throws RemoteException {
-        clients.get(playerName).manageGoods(creditsToVerify, updatedCargos);
+    //DONE
+    public void planetChoiceRequest(int planet) throws RemoteException {
+        controller.choosePlanet(planet);
     }
 
-    public void notifyNewCrewArrangement(String playerName, ArrayList<Tile> cabins) throws RemoteException {
-        clients.get(playerName).pickCrewMembers(cabins);
+    public void notifyNewGoodsArrangement( int creditsToVerify, ArrayList<CargoHold> updatedCargos) throws RemoteException {
+        controller.manageGoods(creditsToVerify, updatedCargos);
     }
 
-    public void rollTheDices(String playerName) throws RemoteException {
-        clients.get(playerName).rollTheDices();
+    public void notifyNewCrewArrangement( ArrayList<Tile> cabins) throws RemoteException {
+        controller.pickCrewMembers(cabins);
+    }
+
+    public void rollTheDices() throws RemoteException {
+        controller.rollTheDices();
     }
 
 
