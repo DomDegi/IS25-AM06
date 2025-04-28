@@ -386,7 +386,7 @@ public class ClientController {
                         Coordinates coordinates=transformCoordinates(scroll(words,1));
                         if(coordinates!=null){
                             me.getShipBoard().positionTile(Optional.ofNullable(this.tileInHand),coordinates);
-                            virtualController.notifySetTile(this.name,coordinates,this.tileInHand);
+                            virtualController.notifySetTile(this.name,/*coordinates,*/this.tileInHand);
                             view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                         }
                     }
