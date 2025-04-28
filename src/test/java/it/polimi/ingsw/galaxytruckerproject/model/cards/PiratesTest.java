@@ -3,16 +3,21 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.LargeCannonShot;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.SmallCannonShot;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.network.MockVirtualView;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,6 +29,11 @@ class PiratesTest {
     private Player player2;
     private Player player3;
     private FlightBoard flightBoard;
+    private final VirtualView mockView1 = new MockVirtualView();
+    private final VirtualView mockView2 = new MockVirtualView();
+    private final VirtualView mockView3 = new MockVirtualView();
+    Map<String,VirtualView> viewMap = new HashMap<>();
+
 
     @BeforeEach
     void setUp() {
@@ -40,6 +50,10 @@ class PiratesTest {
         projectiles.add(second);
         projectiles.add(third);
         pirates = new Pirates(1,2,3,6, projectiles);
+
+        viewMap.put("MimmoPericoloso", mockView1);
+        viewMap.put("FedeGalattico", mockView2);
+        viewMap.put("EnnioVolante", mockView3);
 
         //shipboard 5 to player1
         ShipBoard shipBoard1 = new ShipBoard(player1);
@@ -148,28 +162,17 @@ class PiratesTest {
     @Test
     void successfully_initialised_executed(){
         game.setDrawnCard(pirates);
-        game.getDrawnCard().initializeCard(game, );
+        game.getDrawnCard().initializeCard(game, viewMap);
+        int player1_initialPosition = player1.getPlayerPosition();
 
-        String input;
-        String[] words;
-        input="no";
-        words=input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
-
-        input="yes";
-        words=input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        input="2 0";
-        words=input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        input="3 0";
-        words=input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        input="yes";
-        words=input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
+        game.getDrawnCard().cannonChoice("EnnioVolante", 0, new ArrayList<>());
+        ArrayList<Coordinates> coord = new ArrayList<>();
+        coord.add(new Coordinates(3,0));
+        game.getDrawnCard().cannonChoice("MimmoPericoloso", 1, coord);
+        game.getDrawnCard().choice("MimmoPericoloso", true);
         assertEquals(6, player1.getCredit());
-
+        assertTrue(player1_initialPosition > player1.getPlayerPosition());
+        assertEquals(GameState.DRAW_CARD, game.getGameState());
     }
 
     @Test
@@ -183,37 +186,16 @@ class PiratesTest {
         projectiles.add(third);
         pirates = new Pirates(1,2,4,6, projectiles);
         game.setDrawnCard(pirates);
-        game.getDrawnCard().initializeCard(game, );
-        String input;
-        String[] words;
-        input="no";
-        words=input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
-        input="roll";
-        words=input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
-        input="roll";
-        words=input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
-        input="rol";
-        words=input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
-        input="roll";
-        words=input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"EnnioVolante");
-
-        input="yes";
-        words=input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        input="2 0";
-        words=input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        input="3 0";
-        words=input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
-        input="yes";
-        words=input.split(" ");
-        game.getDrawnCard().executeCard(game, ,"MimmoPericoloso");
+        game.getDrawnCard().initializeCard(game, viewMap);
+        game.getDrawnCard().cannonChoice("EnnioVolante", 0, new ArrayList<>());
+        game.getDrawnCard().rollTheDices("EnnioVolante");
+        game.getDrawnCard().rollTheDices("EnnioVolante");
+        game.getDrawnCard().rollTheDices("EnnioVolante");
+        game.getDrawnCard().rollTheDices("EnnioVolante");
+        ArrayList<Coordinates> coord = new ArrayList<>();
+        coord.add(new Coordinates(3,0));
+        game.getDrawnCard().cannonChoice("MimmoPericoloso", 1, coord);
+        game.getDrawnCard().choice("MimmoPericoloso", true);
         assertEquals(6, player1.getCredit());
 
     }

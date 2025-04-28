@@ -3,10 +3,12 @@ package it.polimi.ingsw.galaxytruckerproject.view;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
@@ -16,7 +18,6 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Set;
 
 public interface ViewInterface extends Remote, Serializable {
     /**
@@ -33,8 +34,8 @@ public interface ViewInterface extends Remote, Serializable {
      * show login response from server
      * @param success
          */
-    void showLoginResponse(boolean success);
-    void setClientState (ClientState newState);
+    void showLoginResponse(boolean success) throws RemoteException;
+    void setClientState (ClientState newState) throws RemoteException;
     /**
      * Shows on the view the list of the games that are in starting phase.
      * Also asks player calls for the function asksJoinOrCreate().
@@ -76,11 +77,6 @@ public interface ViewInterface extends Remote, Serializable {
      */
     void showInGamePlayers (ArrayList<Player> players);
     /**
-     * asks for the inputted player's shipboard
-     */
-    void asksPlayersInfo ();
-    void showShipsErrors ();
-    /**
      * shows the chosen players shipboard
      * @param player
      * @param shipBoard
@@ -91,7 +87,7 @@ public interface ViewInterface extends Remote, Serializable {
      * @param drawnTile
      */
     //DEVE ANCHE MANDARLA AL CLIENT
-    void showDrawnTile (Tile drawnTile);
+    void showDrawnTile (Tile drawnTile) throws RemoteException;
     /**
      * shows the player the tiles that got turned from player refusing them
      * @param turnedTiles the current array in the model
@@ -102,7 +98,7 @@ public interface ViewInterface extends Remote, Serializable {
      * @param bookedTiles the booked tiles
      */
     void showBookedTiles (ArrayList<Tile> bookedTiles);
-    void showWrongInputMessage ();
+    void showWrongInputMessage () throws RemoteException;
     /**
      * prints on the view the cards that are on the shipboard to be seen during
      * ship building phase
@@ -119,15 +115,15 @@ public interface ViewInterface extends Remote, Serializable {
     /**
      * asks the player to input a series of coordinates of coord
      */
-    void asksToInputCoordinates (CoordReqType coordReqType);
+    void asksToInputCoordinates (CoordReqType coordReqType) throws RemoteException;
     void asksToTurnTheHourglass ();
     void notifyYouCanDrawThisCardDeck();
     void notifyYourShipIsCorrect();
     /**
      * asks to set position on the flightboard
      */
-    void asksToMakeAChoice ();
-    void asksToManageGoods(ArrayList<Goods> goods);
+    void asksToMakeAChoice () throws RemoteException;
+    void asksToManageGoods(ArrayList<Goods> goods) throws RemoteException;
     void asksToRemoveGoods();
     void asksToRemoveCrew();
     /**
@@ -141,4 +137,8 @@ public interface ViewInterface extends Remote, Serializable {
     void notifyPlayerLandedOnPlanet(String playerName, int planet)  throws RemoteException;
     void wrongLocalInput();
     void showCard(Card card);
+    void printFlightboard(LightFlightboard lightFlightboard);
+    void printShipboard(LightShipBoard lightShipBoard);
+    void printProjectile(Projectile projectile);
+
 }

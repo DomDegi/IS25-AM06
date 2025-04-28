@@ -1,10 +1,11 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
-import java.util.*;
 
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+
+import java.util.*;
 
 
 public class ShipBoard implements ShipBoardInterface{
@@ -452,16 +453,6 @@ public class ShipBoard implements ShipBoardInterface{
             addPenalty();
         }
         return true;
-    }
-
-    public void chooseHowToFillCabins() {
-        for (Coordinates coordinates : crewCoordinates) {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Insert crewType: ");
-            String user = scanner.nextLine();
-            CrewType crewType = CrewType.valueOf(user.toUpperCase());
-            tilesTable[coordinates.getX()][coordinates.getY()].get().setCrewType(crewType);
-        }
     }
 
     //New ChooseCrew METHOD

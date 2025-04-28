@@ -3,7 +3,10 @@ package it.polimi.ingsw.galaxytruckerproject.view;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
@@ -38,7 +41,6 @@ public class GUI implements ViewInterface {
 
     }
 
-    @Override
     public void asksJoinOrCreate() {
 
     }
@@ -78,12 +80,10 @@ public class GUI implements ViewInterface {
 
     }
 
-    @Override
     public void asksPlayersInfo() {
 
     }
 
-    @Override
     public void showShipsErrors() {
 
     }
@@ -103,7 +103,6 @@ public class GUI implements ViewInterface {
 
     }
 
-    @Override
     public void showTurnedTiles(ArrayList<Tile> turnedTiles) {
 
     }
@@ -143,7 +142,6 @@ public class GUI implements ViewInterface {
 
     }
 
-    @Override
     public void asksToInputCoordinates() {
 
     }
@@ -163,7 +161,6 @@ public class GUI implements ViewInterface {
 
     }
 
-    @Override
     public void asksToSetPosition() {
 
     }
@@ -173,7 +170,6 @@ public class GUI implements ViewInterface {
 
     }
 
-    @Override
     public void asksPlanetChoice() {
 
     }
@@ -183,17 +179,14 @@ public class GUI implements ViewInterface {
 
     }
 
-    @Override
     public void asksToUseEngines() {
 
     }
 
-    @Override
     public void asksToUseCannons() {
 
     }
 
-    @Override
     public void asksToUseBatteries() {
 
     }
@@ -208,7 +201,6 @@ public class GUI implements ViewInterface {
 
     }
 
-    @Override
     public void asksWhichBranchToKeep(ArrayList<Set<Coordinates>> branch) {
 
     }
@@ -218,11 +210,9 @@ public class GUI implements ViewInterface {
 
     }
 
-    @Override
     public void showScores() {
     }
 
-    @Override
     public void asksChosenMode() {
 
     }
@@ -234,6 +224,31 @@ public class GUI implements ViewInterface {
 
     @Override
     public void notifyPlayerLandedOnPlanet(String playerName, int planet) throws RemoteException {
+
+    }
+
+    @Override
+    public void wrongLocalInput() {
+
+    }
+
+    @Override
+    public void showCard(Card card) {
+
+    }
+
+    @Override
+    public void printFlightboard(LightFlightboard lightFlightboard) {
+
+    }
+
+    @Override
+    public void printShipboard(LightShipBoard lightShipBoard) {
+
+    }
+
+    @Override
+    public void printProjectile(Projectile projectile) {
 
     }
 

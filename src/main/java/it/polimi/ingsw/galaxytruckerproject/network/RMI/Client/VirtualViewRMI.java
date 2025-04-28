@@ -8,13 +8,14 @@ import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
-import it.polimi.ingsw.galaxytruckerproject.view.*;
+import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -22,7 +23,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 
 public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     //private final VirtualController server;
@@ -55,7 +55,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
-    public void showLoginResponse(boolean success) {
+    public void showLoginResponse(boolean success) throws RemoteException {
         view.showLoginResponse(success);
         if (success) {
             clientController.setState(ClientState.LOBBY);
@@ -63,7 +63,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
-    public void setClientState(ClientState newState) {
+    public void setClientState(ClientState newState) throws RemoteException {
         view.setClientState(newState);
         clientController.setState(newState);
     }
@@ -101,18 +101,12 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     public void showInGamePlayers(ArrayList<Player> players) {view.showInGamePlayers(players);}
 
     @Override
-    public void asksPlayersInfo() {view.asksPlayersInfo();}
-
-    @Override
-    public void showShipsErrors() {view.showShipsErrors();}//non dovrebbe esistere
-
-    @Override
     public void showPlayersBoard(String player, ShipBoard shipBoard) {
         view.showPlayersBoard(player, shipBoard);
     }
 
     @Override
-    public void showDrawnTile(Tile drawnTile) {
+    public void showDrawnTile(Tile drawnTile) throws RemoteException {
         view.showDrawnTile(drawnTile);
         clientController.setState(ClientState.S_MANAGE_DRAWN_TILE);
         clientController.setTileInHand(drawnTile);
@@ -148,7 +142,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
-    public void notifyAvailableCardDeck(Map<String, Integer> lockedSmallDecks) throws RemoteException {
+    public void notifyNotAvailableCardDeck(ArrayList<Integer> lockedSmallDecks) throws RemoteException {
         clientController.decksNotAvailable(lockedSmallDecks);
     }
 
@@ -175,6 +169,21 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     @Override
     public void showCard(Card card) {
         view.showCard(card);
+    }
+
+    @Override
+    public void printFlightboard(LightFlightboard lightFlightboard) {
+        view.printFlightboard(lightFlightboard);
+    }
+
+    @Override
+    public void printShipboard(LightShipBoard lightShipBoard) {
+        view.printShipboard(lightShipBoard);
+    }
+
+    @Override
+    public void printProjectile(Projectile projectile) {
+        view.printProjectile(projectile);
     }
 
     @Override
@@ -211,7 +220,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
-    public void showWrongInputMessage() {
+    public void showWrongInputMessage() throws RemoteException {
         view.showWrongInputMessage();
         clientController.rollBackState();
     }
@@ -227,7 +236,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
-    public void asksToInputCoordinates(CoordReqType coordReqType) {
+    public void asksToInputCoordinates(CoordReqType coordReqType) throws RemoteException {
         clientController.setState(ClientState.COORD_REQUEST);
         clientController.getCoordInputManager().setCoordReqType(coordReqType);
         view.asksToInputCoordinates(coordReqType);
@@ -247,6 +256,11 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
+    public void notifyFlightBoardCards(Map<Integer, ArrayList<Card>> cards) throws RemoteException {
+        clientController.setDeck(cards);
+    }
+
+    @Override
     public void asksToTurnTheHourglass() {
         view.asksToTurnTheHourglass();
     }
@@ -261,13 +275,13 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
-    public void asksToMakeAChoice() {
+    public void asksToMakeAChoice() throws RemoteException {
         view.asksToMakeAChoice();
         setClientState(ClientState.ACTION);
     }
 
     @Override
-    public void asksToManageGoods(ArrayList<Goods> goods) {
+    public void asksToManageGoods(ArrayList<Goods> goods) throws RemoteException {
         view.asksToManageGoods(goods);
         setClientState(ClientState.MANAGE_GOODS);
     }

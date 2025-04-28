@@ -3,11 +3,8 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.Message;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
@@ -33,4 +30,8 @@ public abstract class Enemies extends Card {
     @Override
     public abstract void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap);
 
+    @Override
+    public float getEnemiesFirePower() {
+        return cannonStrength;
+    }
 }

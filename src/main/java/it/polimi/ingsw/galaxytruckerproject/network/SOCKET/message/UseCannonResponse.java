@@ -2,7 +2,6 @@ package it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message;
 
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import static it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.MessageType.USE_CANNON_RESPONSE;

@@ -2,12 +2,14 @@ package it.polimi.ingsw.galaxytruckerproject.controller;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.ControllerInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 /*
@@ -157,17 +159,17 @@ public class Controller implements ControllerInterface {
     }
 
     @Override
-    public void useCannons(float doublePower, ArrayList<Coordinates> batteries) {
+    public void useCannons(float doublePower, ArrayList<Coordinates> batteries) throws RemoteException {
         gameController.playerUsesCannons(nickname, doublePower, batteries);
     }
 
     @Override
-    public void useEngines(int numberOfDoubleEngines, ArrayList<Coordinates> batteries) {
+    public void useEngines(int numberOfDoubleEngines, ArrayList<Coordinates> batteries) throws RemoteException{
         gameController.playerUsesEngines(nickname, numberOfDoubleEngines, batteries);
     }
 
     @Override
-    public void manageGoods(int clientCreditsToVerify, ArrayList<CargoHold> updatedCargos) {
+    public void manageGoods(int clientCreditsToVerify, ArrayList<CargoHold> updatedCargos) throws RemoteException{
         gameController.playerManagesGoods(nickname, clientCreditsToVerify, updatedCargos);
     }
 
@@ -195,22 +197,23 @@ public class Controller implements ControllerInterface {
         gameController.playerRemovesCrew(nickname, toRemoveFrom);
     }
 
-    public void removeGoods(ArrayList<Coordinates> fromHere) {
-
+    @Override
+    public void removeGoods(ArrayList<Coordinates> fromHere) throws Exception {
+        gameController.playerRemovesGoods(nickname, fromHere);
     }
 
+    @Override
     public void useBatteries(ArrayList<Coordinates> batteries) throws Exception {
-
+        gameController.playerUsesBatteries(nickname, batteries);
     }
 
     @Override
     public void rollTheDices() throws Exception {
-
+        gameController.playerRollsTheDices(nickname);
     }
 
     @Override
     public void chooseBranch(ArrayList<Coordinates> thisOne) throws Exception {
-
+        gameController.playerChoosesBranch(nickname, thisOne);
     }
 }
-

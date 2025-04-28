@@ -35,7 +35,7 @@ public class ClientController {
     private GoodsManager goodsManager;
     private CabinsManager cabinsManager;
     private Map<Integer,Tile> turnedTiles;
-    private final Map<Integer, ArrayList<Card>> deck;
+    private Map<Integer, ArrayList<Card>> deck;
     private final Map<Integer,Boolean> availabledeck;
     private ArrayList<Goods> goodsList;
 
@@ -278,7 +278,8 @@ public class ClientController {
                 if (words[0].equals("done"))
                     coordInputManager.endCheckingFase();
                 else
-                    coordInputManager.checkCoord(transformCoordinates(words));
+                    //gestire il -1 in base alla carta
+                    coordInputManager.checkCoord(transformCoordinates(words),-1);
             }
 
             case START_SHIP_CREATION ->
@@ -627,11 +628,15 @@ public class ClientController {
                     virtualController.notifySetPosition(name, 0);
                 }
             }
+            case ROLL_DICE -> {
+                view.printProjectile(displayedCard.getListOfProjectiles().getFirst());
+                displayedCard.getListOfProjectiles().removeFirst();
+            }
 
         }
     }
 
-    public boolean rollBackState(){
+    public boolean rollBackState() throws RemoteException {
         view.setClientState(previousState);
         if (state==previousState)
             return false;
@@ -753,6 +758,14 @@ public class ClientController {
             if(notAvailableDecks.contains(index))
                 availabledeck.put(index,Boolean.FALSE);
         }
+    }
+
+    public ViewInterface getView() {
+        return view;
+    }
+
+    public void setDeck(Map<Integer, ArrayList<Card>> deck) {
+        this.deck = deck;
     }
 }
 

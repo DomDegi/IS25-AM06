@@ -11,14 +11,17 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.*;
+import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.TRIAL;
 
 
 public class GameController implements Observer {
@@ -102,7 +105,9 @@ public class GameController implements Observer {
                     return;
                 }
                 else{
-                    view.asksToInputCoordinates(CoordReqType.CHOOSE_TO_BREAK);
+                    try {
+                        view.asksToInputCoordinates(CoordReqType.CHOOSE_TO_BREAK);
+                    } catch(Exception ignored) {}
                 }
             }
             // if player disconnected during ships verification without choosing a starting position
@@ -160,7 +165,9 @@ public class GameController implements Observer {
                 }
                 //if game is already out of lobby phase
             } else if (playersViewMap.containsKey(playerName)) {
+                try {
                 playersViewMap.get(playerName).showWrongInputMessage();
+                } catch(Exception ignored) {}
             } // if the count has been reached starts the game
     }
 
@@ -198,7 +205,9 @@ public class GameController implements Observer {
         }
         for (Player player : activePlayers.values()) {
             if (player.getPlayerColor().equals(playersColor)) {
+                try {
                 view.showWrongInputMessage();
+                } catch(Exception ignored) {}
                 return false;
             }
         }
@@ -246,7 +255,9 @@ public class GameController implements Observer {
                 playersView.showErrorMessage("drawn tile is null: stack is empty");
                 return;
             }
+            try{
             playersView.showDrawnTile(drawnTile);
+            } catch(Exception ignored) {}
         }
         else {
             drawnTile = game.drawTurnedTile(playerName, index);
@@ -254,7 +265,9 @@ public class GameController implements Observer {
                     playersView.showErrorMessage("drawn tile is null: turned tile is empty or index out of bounds");
                     return;
                 }
+                try{
                 playersView.showDrawnTile(drawnTile);
+                } catch(Exception ignored) {}
                 notifyRemoveTurnedTile(drawnTile);
         }
         updatePlayerView(ClientState.S_MANAGE_CARDS, playerName);
@@ -297,10 +310,14 @@ public class GameController implements Observer {
                     this.setCrewForDisconnectedPlayer(player);
                 }
                 else {
+                    try{
                     playersView.setClientState(ClientState.MANAGE_CABINS);
+                    } catch(Exception ignored) {}
                 }
             } else {
+                try{
                 playersView.asksToInputCoordinates(CoordReqType.CHOOSE_TO_BREAK);
+                } catch(Exception ignored) {}
                 playersWithErrors.add(player.getPlayerName());
             }
         }
@@ -313,7 +330,9 @@ public class GameController implements Observer {
             return;
         }
         if(!playersWithErrors.contains(playerName)){
-            playersView.showWrongInputMessage();
+            try {
+                playersView.showWrongInputMessage();
+            } catch(Exception ignored) {}
             return;
         }
         for (Coordinates coord: toRemove) {
@@ -330,10 +349,14 @@ public class GameController implements Observer {
                 this.setCrewForDisconnectedPlayer(player);
             }
             else
+                try{
                 playersView.setClientState(ClientState.MANAGE_CABINS);
+                } catch(Exception ignored) {}
             return;
         }
+        try{
         playersView.asksToInputCoordinates(CoordReqType.CHOOSE_TO_BREAK);
+        } catch(Exception ignored) {}
     }
 
     public void setCrewForDisconnectedPlayer(Player player) {
@@ -351,7 +374,9 @@ public class GameController implements Observer {
             updatePlayerView(ClientState.WAIT_OTHER_PLAYER_ACTION, player.getPlayerName());
         }
         else {
+            try{
             playersView.showWrongInputMessage();
+            } catch(Exception ignored) {}
         }
 
         ArrayList<Coordinates> cabinsToCheck;
@@ -399,7 +424,9 @@ public class GameController implements Observer {
         if (playerStateIs(playerName, ClientState.S_END_DRAW_TILE_CARD)) {
             for (Integer integer: lockedSmallDecks.values()) {
                 if (integer == cardsToLookAt) {
+                    try{
                     playersView.showWrongInputMessage();
+                    } catch(Exception ignored) {}
                     return;
                 }
             }
@@ -430,7 +457,9 @@ public class GameController implements Observer {
 
     public void stopLookingAtCards(ViewInterface playersView, String playerName) {
         if (clientsStatesMap.get(playerName) != ClientState.S_MANAGE_CARDS) {
+            try{
             playersView.showWrongInputMessage();
+            } catch(Exception ignored) {}
             return;
         }
         lockedSmallDecks.remove(playerName);
@@ -443,18 +472,24 @@ public class GameController implements Observer {
         Tile settedTile;
         if (!tile.isBooked()) {
             if (clientsStatesMap.get(playerName) != ClientState.S_MANAGE_DRAWN_TILE) {
+                try{
                 playersView.showWrongInputMessage();
+                } catch(Exception ignored) {}
                 return;
             }
         }
         else {
             if (clientsStatesMap.get(playerName) != ClientState.S_MANAGE_CARDS) {
+                try{
                 playersView.showWrongInputMessage();
+                } catch(Exception ignored) {}
                 return;
             }
             settedTile = game.drawAndPositionBookedTile(playerName, tile);
             if (settedTile == null) {
+                try{
                 playersView.showWrongInputMessage();
+                } catch(Exception ignored) {}
                 return;
             }
             notifyRemovedBookedTile(playerName, settedTile);
@@ -466,7 +501,9 @@ public class GameController implements Observer {
             notifyPositionedTile(playerName, settedTile);
         }
         else {
+            try{
             playersView.showWrongInputMessage();
+            } catch(Exception ignored) {}
         }
     }
 
@@ -495,18 +532,24 @@ public class GameController implements Observer {
                 notifyBookedTile(playerName, toBook);
             }
             else {
+                try{
                 playersView.showWrongInputMessage();
+                } catch(Exception ignored) {}
             }
         }
         else  {
+            try{
             playersView.showWrongInputMessage();
+            } catch(Exception ignored) {}
         }
     }
 
     //now no input except hourglass and checkShipboard work and checks if the other player have completed
     public void completed (String playerName, ViewInterface playersView) {
         if (!playerStateIs(playerName, ClientState.S_END_DRAW_TILE_CARD)) {
+            try{
             playersView.showWrongInputMessage();
+            } catch(Exception ignored) {}
             return;
         }
         updatePlayerView(ClientState.S_FINISHED, playerName);
@@ -537,7 +580,9 @@ public class GameController implements Observer {
             notifyPlayerMovement(playerName, player.getPlayerPosition(), player.getPlayerRanking());
         }
         else {
+            try{
             playersView.showWrongInputMessage();
+            } catch(Exception ignored) {}
         }
         checkIfAllPlayersReady();
     }
@@ -601,7 +646,9 @@ public class GameController implements Observer {
                     startTimer();
                 }
                 else {
+                    try{
                     playersView.showWrongInputMessage();
+                    } catch(Exception ignored) {}
                 }
                 break;
             default:
@@ -657,7 +704,9 @@ public class GameController implements Observer {
             return;
         }
         if (!game.identifyPlayerByName(playerName).equals(game.getListOfInFlightPlayers().getFirst())){
+            try{
             playersView.showWrongInputMessage();
+            } catch(Exception ignored) {}
         }
         else {
             game.drawCard();
@@ -711,6 +760,22 @@ public class GameController implements Observer {
 
     public void playerRemovesCrew (String playerName, ArrayList<Coordinates> toRemoveFrom) {
         game.getDrawnCard().removeCrew(playerName, toRemoveFrom);
+    }
+
+    public void playerRemovesGoods(String playerName, ArrayList<Coordinates> toRemoveFrom) {
+        game.getDrawnCard().removeGoods(playerName, toRemoveFrom);
+    }
+
+    public void playerUsesBatteries(String playerName, ArrayList<Coordinates> batteries) {
+        game.getDrawnCard().useBatteries(playerName, batteries);
+    }
+
+    public void playerRollsTheDices(String playerName) {
+        game.getDrawnCard().rollTheDices(playerName);
+    }
+
+    public void playerChoosesBranch(String playerName, ArrayList<Coordinates> branch) {
+        game.getDrawnCard().branchChoice(playerName, branch);
     }
 
 
@@ -839,13 +904,17 @@ public class GameController implements Observer {
 
     public void updateEveryView(ClientState newState) {
         for (String playerName:  playersViewMap.keySet()) {
+            try{
             playersViewMap.get(playerName).setClientState(newState);
+            } catch(Exception ignored) {}
             clientsStatesMap.put(playerName, newState);
         }
     }
 
     public void updatePlayerView (ClientState newState, String playerName) {
+        try{
         playersViewMap.get(playerName).setClientState(newState);
+        } catch(Exception ignored) {}
         clientsStatesMap.put(playerName, newState);
     }
 

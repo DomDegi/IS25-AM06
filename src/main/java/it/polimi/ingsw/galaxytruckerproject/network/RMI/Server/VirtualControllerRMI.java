@@ -9,14 +9,13 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
-import it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message.*;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class VirtualControllerRMI extends UnicastRemoteObject implements VirtualController{
 

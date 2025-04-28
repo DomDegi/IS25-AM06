@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
@@ -38,13 +38,22 @@ public class OpenSpace extends Card {
     @Override
     public void engineChoice(String playerName, int numDoubleEngines, ArrayList<Coordinates> batteriesToUse) {
         if (!playerName.equals(currentPlayer.getPlayerName())) {
-            viewsMap.get(playerName).showWrongInputMessage();
+            try {
+                viewsMap.get(playerName).showWrongInputMessage();
+            }catch(Exception ignored) {}
             return;
         }
-        int engineStrength =  currentPlayer.useEngines(numDoubleEngines, batteriesToUse);
+        Map<Integer,ArrayList<Tile>> returned = currentPlayer.useEngines(numDoubleEngines, batteriesToUse);
+        int engineStrength =  returned.keySet().iterator().next();
         if (engineStrength == -1) {
-            currentPlayerView.showWrongInputMessage();
+            try {
+                currentPlayerView.showWrongInputMessage();
+            }catch(Exception ignored) {}
             return;
+        }
+        ArrayList<Tile> tiles = returned.get(engineStrength);
+        if (!tiles.isEmpty()) {
+            notifyModifiedTiles(playerName, tiles);
         }
         this.moveOrEarlyLand(engineStrength);
         this.nextPlayer();
@@ -74,11 +83,13 @@ public class OpenSpace extends Card {
         }
         this.currentPlayer = game.getListOfInFlightPlayers().get(playerIndex);
         this.currentPlayerView = viewsMap.get(currentPlayer.getPlayerName());
-        if (currentPlayer.IsDisconnected()) {
+        if (currentPlayer.IsDisconnected() || currentPlayer.getShipBoard().getDoubleEngine().isEmpty() || currentPlayer.getShipBoard().getNumBatteries() == 0) {
             engineChoice(currentPlayer.getPlayerName(), 0, new ArrayList<>());
             return;
         }
-        currentPlayerView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_ENGINE);
+        try {
+            currentPlayerView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_ENGINE);
+        }catch(Exception ignored) {}
     }
 
     public String toString() {

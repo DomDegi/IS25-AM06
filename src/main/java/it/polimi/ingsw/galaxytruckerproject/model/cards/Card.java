@@ -3,6 +3,8 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.Penalty;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
@@ -12,6 +14,7 @@ import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 
@@ -51,6 +54,14 @@ public abstract class Card {
         }
     }
 
+    public void notifyBrokenTiles(String playerName, ArrayList<Coordinates> tiles) {
+        for (VirtualView view : viewsMap.values()) {
+            try {
+                view.notifyBrokenTile(playerName, tiles);
+            } catch (Exception ignored) {}
+        }
+    }
+
     public void notifyMovement (Player player) {
         for (VirtualView view : viewsMap.values()) {
             try {
@@ -81,6 +92,12 @@ public abstract class Card {
 
     public void removeGoods(String playerName, ArrayList<Coordinates> goodsToRemove){}
 
+    public void useBatteries(String playerName, ArrayList<Coordinates> batteries){}
+
+    public void rollTheDices(String playerName) {}
+
+    public void branchChoice(String playerName, ArrayList<Coordinates> branchChoices){}
+
     //Getter methods needed for view
     public int getLevel() {
         return level;
@@ -90,7 +107,9 @@ public abstract class Card {
     public int getCrewNumber(){return 0;}
     public ArrayList<Goods> getGoodsList(String playerName){return null;}
     public int getGoodsPenalty(){return 0;}
-
+    public ArrayList<Projectile> getListOfProjectiles() { return null;}
+    public float getEnemiesFirePower() {return 0f;}
+    public LinkedHashMap<ChallengeType, Penalty> getChallenges() {return null;}
 
     @Override
     public String toString() {

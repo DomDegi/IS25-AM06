@@ -6,7 +6,8 @@ public enum CoordReqType {
     CHOOSE_BATTERY ,
     CHOOSE_DOUBLE_CANNON,
     CHOOSE_DOUBLE_ENGINE,
-    CHOOSE_CREW;
+    CHOOSE_CREW,
+    REMOVE_GOODS;
 
     @Override
     public String toString() {
@@ -17,6 +18,7 @@ public enum CoordReqType {
             case CHOOSE_DOUBLE_CANNON -> {return "choose the double cannons you want to use, and they're batteries";}
             case CHOOSE_DOUBLE_ENGINE -> {return "choose the double engine you want to use, and they're batteries";}
             case CHOOSE_CREW -> {return "choose the crew you want to remove";}
+            case REMOVE_GOODS -> {return "choose your goods to remove";}
         }
         return "error in coord request toString";
     }

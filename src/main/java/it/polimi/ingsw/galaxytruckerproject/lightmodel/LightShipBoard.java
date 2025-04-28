@@ -5,7 +5,9 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.Set;
 
 public class LightShipBoard implements ShipBoardInterface{
 
@@ -223,11 +225,11 @@ public class LightShipBoard implements ShipBoardInterface{
 
     //IT RETURNS THE COORDINATES OF EVERY CARGO_HOLD THAT CONTAINS A TYPE OF GOOD (RED, YELLOW, GREEN, BLU). IF
     //A CARGO_HOLD CONTAINS MORE THAN ONE GOOD WITH THE SAME COLOR IS GOING TO BE ADD TWICE.
-    public ArrayList<Coordinates> cargoHoldContainsGood(Goods goodColor){
+    public ArrayList<Coordinates> cargoHoldContainsGood(Goods good){
         ArrayList<Coordinates> cargoHoldContainsGood = new ArrayList<>();
         for(Coordinates coordinates : cargoHoldCoordinates){
             for(int i=0; i<tilesTable[coordinates.getX()][coordinates.getY()].get().getCargo().size(); i++){
-                if(tilesTable[coordinates.getX()][coordinates.getY()].get().getCargo().get(i).getColor()==goodColor.getColor()){
+                if(tilesTable[coordinates.getX()][coordinates.getY()].get().getCargo().get(i).getColor()==good.getColor()){
                     cargoHoldContainsGood.add(coordinates);
                 }
             }

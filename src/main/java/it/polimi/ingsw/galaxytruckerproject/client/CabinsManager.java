@@ -4,7 +4,6 @@ import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Cabin;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CrewType;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
 import java.util.ArrayList;
 

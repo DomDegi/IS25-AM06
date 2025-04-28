@@ -33,7 +33,9 @@ public class GoodsPenalty extends Penalty {
     public ArrayList<Tile> removeGoods(Player player, VirtualView playersView, ArrayList<Coordinates> toRemove){
         ArrayList<Tile> updatedTiles;
         if (toRemove.size() != numberOfLostGoods && toRemove.size() != numberOfBatteries + numberOfGoods) {
-            playersView.showWrongInputMessage();
+            try {
+                playersView.showWrongInputMessage();
+            }catch(Exception ignored) {}
             return null;
         }
         if (numberOfGoods == numberOfLostGoods) {
@@ -49,7 +51,7 @@ public class GoodsPenalty extends Penalty {
     }
 
     @Override
-    public ArrayList<Tile> automaticGoodsPenalty(GameInterface game, Player disconnectedPlayer, ViewInterface view) {
+    public ArrayList<Tile> automaticGoodsPenalty(Player disconnectedPlayer, ViewInterface view) {
         if (numberOfGoods == numberOfLostGoods) {
             return automaticRemoveGoods(disconnectedPlayer, numberOfLostGoods);
         }
@@ -101,7 +103,7 @@ public class GoodsPenalty extends Penalty {
         ArrayList<Tile> updatedTiles = new ArrayList<>();
         Coordinates currentTile;
         ArrayList<Coordinates> batteryComponents = disconnectedPlayer.getShipBoard().getBatteryCoordinates();
-        for (int i = 0; i < batteryComponents.size(); i++) {
+        for (int i = 0; i < number; i++) {
             currentTile = batteryComponents.getFirst();
             disconnectedPlayer.getShipBoard().chooseBatteryUse(currentTile);
             if (!updatedTiles.contains(disconnectedPlayer.getShipBoard().getTile(currentTile))) {
@@ -123,13 +125,19 @@ public class GoodsPenalty extends Penalty {
     }
 
     @Override
-    public boolean initializePenalty(VirtualView view, Player player) {
+    public boolean initializePenalty(GameInterface game,VirtualView view, Player player) {
+        if (player.IsDisconnected()) {
+            game.getDrawnCard().notifyModifiedTiles(player.getPlayerName(), automaticGoodsPenalty(player, view));
+            return false;
+        }
         if (player.getShipBoard().isCargoEmpty()) {
             if (player.getShipBoard().getNumBatteries() == 0) {
                 return false;
             }
             this.numberOfBatteries = Math.min(player.getShipBoard().getNumBatteries(), numberOfLostGoods);
-            view.asksToInputCoordinates(CoordReqType.REMOVE_GOODS);
+            try {
+                view.asksToInputCoordinates(CoordReqType.REMOVE_GOODS);
+            }catch(Exception ignored) {}
         }
         else {
             if (player.getShipBoard().getAllGoods().size() < numberOfLostGoods) {
@@ -142,7 +150,9 @@ public class GoodsPenalty extends Penalty {
             else {
                 this.numberOfGoods = numberOfLostGoods;
             }
-            view.asksToInputCoordinates(CoordReqType.REMOVE_GOODS);
+            try {
+                view.asksToInputCoordinates(CoordReqType.REMOVE_GOODS);
+            }catch(Exception ignored) {}
         }
         return true;
     }
