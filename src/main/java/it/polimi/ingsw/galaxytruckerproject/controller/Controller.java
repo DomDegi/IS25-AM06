@@ -208,7 +208,7 @@ public class Controller implements ControllerInterface {
     }
 
     @Override
-    public void rollTheDices() throws Exception {
+    public void rollTheDices() throws RemoteException {
         gameController.playerRollsTheDices(nickname);
     }
 

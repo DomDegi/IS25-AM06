@@ -6,6 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -288,7 +289,7 @@ public class LightShipBoard implements ShipBoardInterface{
                     }
                     else{
                         System.out.println("YOU HAVE TO REMOVE A BLUE GOOD");
-                        chooseCargoStockToEmpty(coordinates);//THE METHOD GETS INVOKED UNITL THE COORDINATES CONTAINS
+                        chooseCargoStockToEmpty(coordinates);//THE METHOD GETS INVOKED UNTIL THE COORDINATES CONTAINS
                         //A BLUE GOOD
                     }
                     break;
@@ -327,9 +328,7 @@ public class LightShipBoard implements ShipBoardInterface{
         return tile;
     }
 
-    public ArrayList<Coordinates> getCabinsCoordinates() {
-        return crewCoordinates;
-    }
+
     /*
     public void swapGoods(Coordinates coordinatesFrom,Coordinates coordinatesTo, Goods goodToSwap ){
         //Check if the coordinates are of a CargoHolder
@@ -438,7 +437,7 @@ public class LightShipBoard implements ShipBoardInterface{
 
 public String toString(){
 
-    StringBuilder s = new StringBuilder("Schipboard: ");
+    StringBuilder s = new StringBuilder("Shipboard: ");
     for (int i = 0; i < 5; i++) {
         for (int j = 0; j < 7; j++) {
             if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable()) {

@@ -119,7 +119,7 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
     }
 
     public void notifyEarlyLanding(String playerName) throws RemoteException {
-
+        clients.get(playerName).earlyLanding();
     }
 
 

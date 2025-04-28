@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public interface VirtualController extends Remote, Serializable {
 
     //PHASE OF LOGIN/CREATION OF MATCHES METHODS
+    void login(String playerName) throws RemoteException;
     void connect(VirtualView client, String playerName) throws RemoteException;
     void createGame(String gameName, int playerCount, GameMode chooseMode, String playerName) throws RemoteException;
     void joinGame(String gameName, String playerName) throws RemoteException;
@@ -51,6 +52,7 @@ public interface VirtualController extends Remote, Serializable {
 
     void sendTurnHourGlass(String playerName) throws RemoteException;
     void rollTheDices(String playerName) throws RemoteException;
+    void planetChoiceRequest(String playerName, int choice) throws RemoteException;
 
     /*BOOLEAN
     boolean checkCorrectionShipboard(String playerName) throws RemoteException;

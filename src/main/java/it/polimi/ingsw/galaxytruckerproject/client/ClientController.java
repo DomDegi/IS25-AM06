@@ -207,8 +207,8 @@ public class ClientController {
                     return;
                 Planets planet=(Planets) displayedCard;
                 if (chose >= 0 && chose <planet.getListOfPlanets().size()) {
-                    indexDeckInHandOrPlanet = chose;
-                    virtualController.planetChoiceRequest(this.name,chose);
+                    int indexDeckInHandOrPlanet = chose;
+                    virtualController.planetChoiceRequest(this.name, chose);
                     view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                 }
             }
@@ -293,7 +293,7 @@ public class ClientController {
                     return;
                 switch (words[0]) {
                     case"done" -> {
-                        virtualController.sendEndShipBoardCreation(this.name);
+                        virtualController.notifyCompleted(this.name);
                         view.setClientState(ClientState.S_FINISHED);
                     }
                     case "draw" -> {
@@ -319,7 +319,7 @@ public class ClientController {
                             case "tile" -> {
                                 switch (words[2]){
                                     case "new"->{
-                                        virtualController.reqDrawTileFromPile(this.name);
+                                        virtualController.reqDrawTileFromStack(this.name);
                                         view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                                     }
                                     case "b1" ->{
@@ -337,7 +337,7 @@ public class ClientController {
                                         if (chose==-1)
                                             return;
                                         if (chose>0&&chose<turnedTiles.size()) {
-                                            virtualController.reqDrawTileFromTable(this.name,chose);
+                                            virtualController.reqDrawTileFromTurned(this.name,chose);
                                             view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                                         }else {
                                             view.showErrorMessage("\nWrong Input");
@@ -430,7 +430,7 @@ public class ClientController {
             }
 
             case ROLL_DICE->{
-                virtualController.rolldice(name);
+                virtualController.rollTheDices(name);
                 view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
             }
 
