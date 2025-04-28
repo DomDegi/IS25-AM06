@@ -68,7 +68,7 @@ public class AbandonedStation extends Card {
     @Override
     public void removeCrew(String playerName, ArrayList<Coordinates> toRemoveFrom) {
         Player player = game.identifyPlayerByName(playerName);
-        if (!playerName.equals(currentPlayer.getPlayerName()) || won) {
+        if (!playerName.equals(currentPlayer.getPlayerName()) || !won) {
             try {
                 viewsMap.get(playerName).showWrongInputMessage();
             } catch(Exception ignored) {}
