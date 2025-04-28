@@ -54,7 +54,6 @@ class AbandonedShipTest {
 
         Tile tile2=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),0);
         shipBoard1.positionTile(Optional.of(tile2), new Coordinates(1,1));
-        tile2.setCrewType(CrewType.HUMAN);
         Tile tile3=new AlienLifeSupportsSystem( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),0,CrewType.BROWN);
         shipBoard1.positionTile(Optional.of(tile3), new Coordinates(1,2));
         Tile tile4=new CargoRed(3, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),0);
@@ -68,22 +67,18 @@ class AbandonedShipTest {
         shipBoard1.positionTile(Optional.of(tile7), new Coordinates(2,0));
         Tile tile8=new EquipCabin( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),0);
         shipBoard1.positionTile(Optional.of(tile8), new Coordinates(2,1));
-        tile8.setCrewType(CrewType.HUMAN);
         Tile tile9=new EquipCabin( new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),0);
         shipBoard1.positionTile(Optional.of(tile9), new Coordinates(2,2));
-        tile9.setCrewType(CrewType.HUMAN);
         Tile tile10=new Shields( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),0);
         shipBoard1.positionTile(Optional.of(tile10), new Coordinates(2,4));
         Tile tile12=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),0);
         shipBoard1.positionTile(Optional.of(tile12), new Coordinates(2,5));
-        tile12.setCrewType(CrewType.HUMAN);
         Tile tile11=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),0);
         shipBoard1.positionTile(Optional.of(tile11), new Coordinates(2,6));
         Tile tile13=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),0, 2);
         shipBoard1.positionTile(Optional.of(tile13), new Coordinates(3,0));
         Tile tile14=new EquipCabin( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),0);
         shipBoard1.positionTile(Optional.of(tile14), new Coordinates(3,2));
-        tile14.setCrewType(CrewType.HUMAN);
         Tile tile15=new SingleEngine( new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),0);
         shipBoard1.positionTile(Optional.of(tile15), new Coordinates(3,3));
         Tile tile16=new CargoRed(1, new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),0);
@@ -123,7 +118,6 @@ class AbandonedShipTest {
         game.setGameState(GameState.CARD_EVENT);
         assertEquals(abandonedShip, game.getDrawnCard());
         //first player (2) to play doesn't have enough crew so should be skipped automatically whatever his input is
-        assertEquals(player2, abandonedShip.getPlayerToPlay());
         assertEquals(player1, abandonedShip.getPlayerToPlay());
         //player 1 is next and says yes
         abandonedShip.choice(player1.getPlayerName(), true);
