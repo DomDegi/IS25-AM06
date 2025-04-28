@@ -22,7 +22,7 @@ class ProjectilePenaltyTest2 {
 
     private Player player;
     private ProjectilePenalty penalty;
-    private ArrayList<Projectile> listOfMeteors1;
+    private ArrayList<Projectile> listOfLargeMeteors;
     private ArrayList<Projectile> listOfMeteorsFull;
     private ArrayList<Projectile> listOfLargeCannonShot1;
     private ShipBoard shipBoard;
@@ -75,7 +75,7 @@ class ProjectilePenaltyTest2 {
         //verifyCorrectness is needed for the shipboard stats setting
 
 
-        listOfMeteors1 = new ArrayList<Projectile>(List.of(new LargeMeteor(Direction.NORTH)));
+        listOfLargeMeteors = new ArrayList<Projectile>(List.of(new LargeMeteor(Direction.NORTH)));
 
 
         listOfMeteorsFull = new ArrayList<>(Arrays.asList(
@@ -90,6 +90,7 @@ class ProjectilePenaltyTest2 {
         ));
 
         listOfLargeCannonShot1 = new ArrayList<Projectile>(List.of(new LargeCannonShot(Direction.NORTH)));
+
     }
 
     @Test
@@ -99,7 +100,7 @@ class ProjectilePenaltyTest2 {
         String[] input = {};
 
         //Large Metors
-        penalty = new ProjectilePenalty(listOfMeteors1);
+        penalty = new ProjectilePenalty(listOfLargeMeteors);
         penalty.setDiceRoll(10);
         boolean returnValue = penalty.initializePenalty(gameLvl2, mockView, player);
         assertFalse(returnValue);
@@ -118,14 +119,24 @@ class ProjectilePenaltyTest2 {
         //System.out.println(shipBoard.toString());
     }
 
-    void ListOfMeteorsFull_test() {
-        System.out.println(shipBoard.toString());
-        System.out.println("Lancio cannonShot");
-        penalty = new ProjectilePenalty(listOfMeteorsFull);
-        boolean returnValue = penalty.initializePenalty(gameLvl2, mockView, player);
-        penalty.randomRollForOne(mockView, player);
-        System.out.println(shipBoard.toString());
-        penalty.printInfoOnAllProjectiles();
+    @Test
+    void large_meteor_from_north_on_double_cannon_activate_Battery() {
+        //System.out.println(shipBoard.toString());
+        //System.out.println("Lancio meteore");
+        penalty = new ProjectilePenalty(listOfLargeMeteors);
+        int initialMeteorsCount = penalty.getListOfProjectiles().size();
+        System.out.println(initialMeteorsCount);
+
+        ArrayList<Coordinates> coordinates=new ArrayList<>();
+        coordinates.add(new Coordinates(3,3));
+        penalty = new ProjectilePenalty(listOfLargeMeteors);
+        penalty.setDiceRoll(7);
+        //modified input method to use battery in this test
+        boolean returnValue = penalty.initializePenalty(gameLvl2, mockView,player1);
+        assertTrue(returnValue);
+        penalty.playerUsesBatteryToDefend(player1,coordinates);
+        assertEquals(1, shipBoard1.getTile(3,3).getNumBatteries());
+        assertEquals(initialMeteorsCount - 1, penalty.getListOfProjectiles().size());
     }
 
 
