@@ -48,16 +48,20 @@ public class ProjectilePenalty extends Penalty {
         if (this.game == null) {
             this.game = game;
         }
+        /*
         if (player.IsDisconnected()) {
             game.getDrawnCard().notifyBrokenTiles(player.getPlayerName(), automaticProjectilePenalty(player, view));
             return false;
         }
+        */
         if (getListOfProjectiles().isEmpty()) {
             return false;
         }
         if (this.diceRoll != 0) {
             hitOrMiss(view, player);
+            //System.out.println("gogo");
             return defenseStatus != Defense.PROTECTED;
+
         }
         else {
             try {
@@ -101,6 +105,7 @@ public class ProjectilePenalty extends Penalty {
 
     public Coordinates hitOrMiss(VirtualView view,Player player) {
         this.defenseStatus = listOfProjectiles.getFirst().throwProjectile(player, diceRoll, game);
+        //System.out.println(this.defenseStatus);
         if (!player.IsDisconnected()) {
             switch (defenseStatus) {
                 case PROTECTED -> resetForNextProjectile();
