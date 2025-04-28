@@ -243,7 +243,7 @@ public class ClientController {
                     inManager = true;
                     }
                     CrewType type = CrewType.HUMAN;
-                    ArrayList<Cabin> newTiles = new ArrayList<>();
+                    ArrayList<Tile> newTiles = new ArrayList<>();
                     switch (words[0]) {
                         case "humans" -> type = CrewType.HUMAN;
                         case "brownalien" -> type = CrewType.BROWN;
@@ -614,7 +614,7 @@ public class ClientController {
                         inManager = true;
                     }
                     CrewType type = CrewType.HUMAN;
-                    ArrayList<Cabin> newTiles = new ArrayList<>();
+                    ArrayList<Tile> newTiles = new ArrayList<>();
                     for (Coordinates cabinsCoordinates : me.getShipBoard().getCabinsCoordinates()) {
                         newTiles = cabinsManager.manageCabins(type);
                     }
