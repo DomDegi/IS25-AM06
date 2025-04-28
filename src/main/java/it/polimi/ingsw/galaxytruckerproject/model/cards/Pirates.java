@@ -18,7 +18,7 @@ import java.util.Map;
 public class Pirates extends Enemies {
     private final ArrayList<Projectile> listOfCannonShots;
     private final int rewardCredits;
-    private int playerIndex;
+    private int playerIndex = -1;
     private Player currentPlayer = null;
     private VirtualView currentView = null;
     private ProjectilePenalty penaltyIfLose;
@@ -40,7 +40,7 @@ public class Pirates extends Enemies {
     public String toString() {
         StringBuilder string = new StringBuilder();
         string.append("Pirates: ").append(super.toString()).append("rewardCredits: ").append(rewardCredits).append(" ");
-        for (Projectile projectile: penaltyIfLose.getListOfProjectiles()) {
+        for (Projectile projectile: listOfCannonShots) {
             string.append(projectile.toString());
         }
         return string.toString();
@@ -51,26 +51,11 @@ public class Pirates extends Enemies {
         this.game = game;
         this.viewsMap = viewsMap;
         nextPlayer();
-        if (playerIndex > game.getNumberOfPlayers() - 1){
-            System.out.println("No player beat the pirates\n");
-            game.endCardEvent();
-            return;
-        }
-        currentPlayer = game.getListOfInFlightPlayers().get(playerIndex);
-        System.out.println(currentPlayer.getPlayerName() + ", you are face to face with a ship of Pirates\n");
-        System.out.println("their cannon strength is " + cannonStrength + "\n");
-        System.out.println("if yours is lower than theirs, you will get hit by a series of cannon shots\n");
-        System.out.println("input if needed first the double cannons coordinates and after the batteries coordinates\n");
-        currentPlayer.printCurrentInfoCannons();
-        currentPlayer.printCurrentInfoBatteries();
     }
     
 
     public void nextPlayer() {
-        if (currentPlayer != null){
-            playerIndex++;
-        }
-        won = 0;
+        playerIndex++;
         if (playerIndex > game.getNumberOfPlayers() - 1) {
             game.endCardEvent();
             return;

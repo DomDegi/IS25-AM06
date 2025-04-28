@@ -172,6 +172,7 @@ public class FlightBoard {
             }
         }
     }
+
     public void moveBackward(Player player, int movement) {
         if (player.isLanded()) {
             System.out.println("Player already landed: " + player);
