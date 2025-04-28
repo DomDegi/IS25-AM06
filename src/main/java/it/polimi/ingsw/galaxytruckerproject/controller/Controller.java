@@ -157,17 +157,17 @@ public class Controller implements ControllerInterface {
     }
 
     @Override
-    public void useCannons(float doublePower, ArrayList<Coordinates> batteries) throws Exception {
+    public void useCannons(float doublePower, ArrayList<Coordinates> batteries) {
         gameController.playerUsesCannons(nickname, doublePower, batteries);
     }
 
     @Override
-    public void useEngines(int numberOfDoubleEngines, ArrayList<Coordinates> batteries) throws Exception {
+    public void useEngines(int numberOfDoubleEngines, ArrayList<Coordinates> batteries) {
         gameController.playerUsesEngines(nickname, numberOfDoubleEngines, batteries);
     }
 
     @Override
-    public void manageGoods(int clientCreditsToVerify, ArrayList<CargoHold> updatedCargos) throws Exception {
+    public void manageGoods(int clientCreditsToVerify, ArrayList<CargoHold> updatedCargos) {
         gameController.playerManagesGoods(nickname, clientCreditsToVerify, updatedCargos);
     }
 
@@ -195,9 +195,22 @@ public class Controller implements ControllerInterface {
         gameController.playerRemovesCrew(nickname, toRemoveFrom);
     }
 
-    public void removeGoods(ArrayList<Coordinates> fromHere) throws Exception {
-        gameController.playerRemovesGoods(nickname, fromHere);
+    public void removeGoods(ArrayList<Coordinates> fromHere) {
+
     }
 
+    public void useBatteries(ArrayList<Coordinates> batteries) throws Exception {
 
+    }
+
+    @Override
+    public void rollTheDices() throws Exception {
+
+    }
+
+    @Override
+    public void chooseBranch(ArrayList<Coordinates> thisOne) throws Exception {
+
+    }
 }
+

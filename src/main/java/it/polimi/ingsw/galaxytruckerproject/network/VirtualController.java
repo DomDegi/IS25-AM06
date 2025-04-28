@@ -40,8 +40,8 @@ public interface VirtualController extends Remote, Serializable {
 
     // COORDINATES RELATED METHODS
     void sendCoordinates(String playerName, ArrayList<Coordinates> coordinates) throws RemoteException;
-    void sendDoubleCannonUsed(String playerName, float Strength, ArrayList<Coordinates> coordinates) throws Exception;
-    void sendNumDoubleEngineUsed(String playerName, int NumEngine, ArrayList<Coordinates> coordinates) throws Exception;
+    void sendDoubleCannonUsed(String playerName, float Strength, ArrayList<Coordinates> coordinates) throws RemoteException;
+    void sendNumDoubleEngineUsed(String playerName, int NumEngine, ArrayList<Coordinates> coordinates) throws RemoteException;
 
 
     // YES/NO
@@ -50,7 +50,7 @@ public interface VirtualController extends Remote, Serializable {
 
 
     void sendTurnHourGlass(String playerName) throws RemoteException;
-
+    void rollTheDices(String playerName) throws RemoteException;
 
     /*BOOLEAN
     boolean checkCorrectionShipboard(String playerName) throws RemoteException;
@@ -60,13 +60,13 @@ public interface VirtualController extends Remote, Serializable {
     void notifySetPosition(String playerName, int position) throws RemoteException;
 
 
-    void notifyNewGoodsArrangement(String playerName, int clientGoodsValue, ArrayList<CargoHold> updatedCargos) throws Exception;
-    void notifyNewCrewArrangement(String playerName, ArrayList<Tile> updatedCabin) throws Exception;
+    void notifyNewGoodsArrangement(String playerName, int clientGoodsValue, ArrayList<CargoHold> updatedCargos) throws RemoteException;
+    void notifyNewCrewArrangement(String playerName, ArrayList<Tile> updatedCabin) throws RemoteException;
 
 
 
     //METODI CON USAGE CHE SONO STATI MODIFICATI(DA CONTROLLARE CON FEDERICO)
-    void notifySetTile( String playerName, Coordinates coordinates, Tile tile) throws RemoteException;
-    void sendEndShipBoardCreation(String playerName) throws RemoteException;
+    //void notifySetTile( String playerName, Coordinates coordinates, Tile tile) throws RemoteException;
+    //void sendEndShipBoardCreation(String playerName) throws RemoteException;
 
 }

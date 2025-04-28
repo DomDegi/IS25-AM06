@@ -141,13 +141,19 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).choosePlanet(planet);
     }
 
-    public void notifyNewGoodsArrangement(String playerName, int creditsToVerify, ArrayList<CargoHold> updatedCargos) throws Exception {
+    public void notifyNewGoodsArrangement(String playerName, int creditsToVerify, ArrayList<CargoHold> updatedCargos) throws RemoteException {
         clients.get(playerName).manageGoods(creditsToVerify, updatedCargos);
     }
 
-    public void notifyNewCrewArrangement(String playerName, ArrayList<Tile> cabins) throws Exception {
+    public void notifyNewCrewArrangement(String playerName, ArrayList<Tile> cabins) throws RemoteException {
         clients.get(playerName).pickCrewMembers(cabins);
     }
+
+    public void rollTheDices(String playerName) throws RemoteException {
+        clients.get(playerName).rollTheDices();
+    }
+
+
 
 
 
