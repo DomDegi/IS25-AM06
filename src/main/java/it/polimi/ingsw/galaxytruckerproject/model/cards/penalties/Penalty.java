@@ -20,11 +20,12 @@ import java.util.ArrayList;
 })
 
 public abstract class Penalty {
+    GameInterface game;
 
     @Override
     public abstract String toString();
 
-    public abstract boolean initializePenalty(VirtualView view, Player player);
+    public abstract boolean initializePenalty(GameInterface game, VirtualView view, Player player);
 
     public ArrayList<Tile> removeGoods(Player player, VirtualView view, ArrayList<Coordinates> toRemove) {
         return null;
@@ -33,12 +34,21 @@ public abstract class Penalty {
         return null;
     }
 
-    public ArrayList<Tile> automaticGoodsPenalty(GameInterface game, Player disconnectedPlayer, ViewInterface view) {
+    public ArrayList<Tile> automaticGoodsPenalty(Player disconnectedPlayer, ViewInterface view) {
         return null;
     }
 
-    public ArrayList<Tile> automaticCrewPenalty(GameInterface game, Player disconnectedPlayer, ViewInterface view) {
+    public ArrayList<Tile> automaticCrewPenalty(Player disconnectedPlayer, ViewInterface view) {
         return null;
     }
 
+    public Coordinates randomRollForOne(VirtualView view, Player player) { return null; }
+
+    public ArrayList<Coordinates> chooseToMaintain(Player player, ArrayList<Coordinates> received){
+        return null;
+    }
+
+    public Tile playerUsesBatteryToDefend(Player player, ArrayList<Coordinates> batteries) { return null; }
+
+    public int getDiceRoll() { return 0; }
 }

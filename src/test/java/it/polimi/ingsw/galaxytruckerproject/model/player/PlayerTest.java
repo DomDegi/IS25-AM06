@@ -1,10 +1,13 @@
 package it.polimi.ingsw.galaxytruckerproject.model.player;
 
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -129,7 +132,11 @@ class PlayerTest {
     void remove_crew_test() {
         int initial_crew = player1.getTotalCrew();
         player1.printCurrentInfoCabins();
-        player1.removeCrew(player1.parseCoordinates(new String[]{"2", "1", "2", "1", "1", "1"}));
+        ArrayList<Coordinates> coord = new ArrayList<>();
+        coord.add(new Coordinates(2,1));
+        coord.add(new Coordinates(2,1));
+        coord.add(new Coordinates(1,1));
+        player1.removeCrew(coord);
         player1.printCurrentInfoCabins();
         assertEquals(initial_crew - 3, player1.getTotalCrew());
     }
@@ -137,31 +144,86 @@ class PlayerTest {
     //basic test
     @Test
     void use_double_cannon_test1() {
-        float base_firepower = player1.useDoubleCannons(new ArrayList<>());
-        assertEquals(base_firepower, 3.5);
+        Map<Float,ArrayList<Tile>> returnedMap = player1.useCannons(0F, new ArrayList<>());
+        float base_firepower = returnedMap.keySet().iterator().next();
+        ArrayList<Tile> tiles = returnedMap.get(base_firepower);
+        assertEquals(3.5, base_firepower);
         int initial_batteries = player1.getShipBoard().getNumBatteries();
-        player1.useDoubleCannons(player1.parseCoordinates(new String []{"2", "0", "2", "6"}));
-        float after_2_double_cannons = player1.useDoubleCannons(player1.parseCoordinates(new String[]{"3", "6", "3", "6"}));
-        assertEquals(base_firepower + 4, after_2_double_cannons);
+        ArrayList<Coordinates> coord = new ArrayList<>(); coord.add(new Coordinates(2,0)); coord.add(new Coordinates(2,6));
+        Map<Float,ArrayList<Tile>> returnedMap2 = player1.useCannons(4F, coord);
+        float after_2_doubleCannons =  returnedMap2.keySet().iterator().next();
+        ArrayList<Tile> tiles2 = returnedMap2.get(after_2_doubleCannons);
+        assertEquals(base_firepower + 4, after_2_doubleCannons);
         assertEquals(initial_batteries - 2, player1.getShipBoard().getNumBatteries());
+        assertEquals(tiles.get(0).getCoordinates(), coord.get(0));
+        assertEquals(tiles.get(1).getCoordinates(), coord.get(1));
     }
 
     //basic test
     @Test
     void use_double_engine_test1() {
-        float base_enginestrength = player1.useDoubleEngines(new ArrayList<>());
+        Map<Integer,ArrayList<Tile>> returned0 = player1.useEngines(0, new ArrayList<>());
+        int base_enginestrength = returned0.keySet().iterator().next();
         int initial_batteries = player1.getShipBoard().getNumBatteries();
-        assertEquals(base_enginestrength , 1);
-        player1.useDoubleEngines(player1.parseCoordinates(new String []{"4", "2", "3", "5"}));
+        assertEquals(1, base_enginestrength);
+        ArrayList<Coordinates>  coord = new ArrayList<>(); coord.add(new Coordinates(4,2)); coord.add(new Coordinates(3,5));
+        Map<Integer,ArrayList<Tile>> returned1 = player1.useEngines(2, coord);
         player1.printCurrentInfoEngines();
         if (player1.getShipBoard().getDoubleEngine().isEmpty())
             System.out.println("is empty");
-        int after_2_double_engines = player1.useDoubleEngines(player1.parseCoordinates(new String[]{"3", "0", "3", "0"}));
+        int after_2_double_engines = returned1.keySet().iterator().next();
+        ArrayList<Tile> tiles2 = returned1.get(after_2_double_engines);
         assertEquals(base_enginestrength + 4, after_2_double_engines);
         assertEquals(initial_batteries - 2, player1.getShipBoard().getNumBatteries());
-
+        assertEquals(tiles2.get(0).getCoordinates(), coord.get(0));
+        assertEquals(tiles2.get(1).getCoordinates(), coord.get(1));
     }
 
+    @Test
+    void automatic_crew_choice() {
+        assertEquals(0, player1.getTotalCrew());
+        player1.setAllCrewToHuman();
+        assertEquals(12, player1.getTotalCrew());
+    }
 
+    @Test
+    void crew_choice_one_is_brown_alien() {
+        assertEquals(0, player1.getTotalCrew());
+        ArrayList<Tile> tiles = new ArrayList<>();
+        EquipCabin newCabin0 = new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE));
+        newCabin0.setCoordinates(new Coordinates(1,1));
+        newCabin0.setCrewType(CrewType.BROWN);
+        EquipCabin newCabin1 =new EquipCabin( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE));
+        newCabin1.setCoordinates(new Coordinates(2,1));
+        newCabin1.setCrewType(CrewType.HUMAN);
+        EquipCabin newCabin2 = new EquipCabin( new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
+        newCabin2.setCoordinates(new Coordinates(2,2));
+        newCabin2.setCrewType(CrewType.BROWN);
+        tiles.add(newCabin0); tiles.add(newCabin1); tiles.add(newCabin2);
+        assertTrue(player1.verifyAndSetupCrew(tiles));
+        assertEquals(CrewType.BROWN, player1.getShipBoard().getTile(new Coordinates(1,1)).getCrewType());
+        assertEquals(CrewType.BROWN, player1.getShipBoard().getTile(new Coordinates(2,2)).getCrewType());
+        assertEquals(CrewType.HUMAN, player1.getShipBoard().getTile(new Coordinates(2,1)).getCrewType());
+        assertEquals(4, player1.getTotalCrew());
+        assertEquals(2, player1.getShipBoard().getNumBrownAliens());
+        assertEquals(2, player1.getShipBoard().getNumHumanCrew());
+    }
 
+    @Test
+    void removeGoods_test() {
+        player1.getShipBoard().gainGoods(new Goods(GoodsColor.RED), new Coordinates(3,4));
+        player1.getShipBoard().gainGoods(new Goods(GoodsColor.YELLOW), new Coordinates(1,3));
+        player1.getShipBoard().gainGoods(new Goods(GoodsColor.BLUE), new Coordinates(1,3));
+        player1.getShipBoard().gainGoods(new Goods(GoodsColor.GREEN), new Coordinates(1,3));
+        player1.getShipBoard().gainGoods(new Goods(GoodsColor.YELLOW), new Coordinates(1,4));
+        ArrayList<Coordinates> coordinates = new ArrayList<>();
+        coordinates.add(new  Coordinates(1,3));
+        coordinates.add(new  Coordinates(1,4));
+        coordinates.add(new Coordinates(1,3));
+        coordinates.add(new Coordinates(3,4));
+        player1.removeGoods(coordinates);
+        assertEquals(1,player1.getShipBoard().getAllGoods().size());
+        assertTrue(player1.getShipBoard().getTile(new Coordinates(3,4)).getCargo().isEmpty());
+        assertEquals(GoodsColor.BLUE, player1.getShipBoard().getAllGoods().getFirst().getColor());
+    }
 }

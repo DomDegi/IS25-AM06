@@ -28,7 +28,9 @@ public class CrewPenalty extends Penalty {
     @Override
     public ArrayList<Tile> removeCrew(Player player, VirtualView virtualView, ArrayList<Coordinates> toRemove) {
         if (toRemove.size() < numberOfCrew) {
-            virtualView.showWrongInputMessage();
+            try {
+                virtualView.showWrongInputMessage();
+            }catch(Exception ignored) {}
             return null;
         }
         while (toRemove.size() > numberOfCrew) {
@@ -36,7 +38,9 @@ public class CrewPenalty extends Penalty {
         }
         ArrayList<Tile> updatedTiles = player.removeCrew(toRemove);
         if (updatedTiles == null)  {
-            virtualView.showWrongInputMessage();
+            try {
+                virtualView.showWrongInputMessage();
+            }catch(Exception ignored) {}
             return null;
         }
         else {
@@ -45,7 +49,7 @@ public class CrewPenalty extends Penalty {
     }
 
     @Override
-    public ArrayList<Tile> automaticCrewPenalty(GameInterface game, Player disconnectedPlayer, ViewInterface view) {
+    public ArrayList<Tile> automaticCrewPenalty(Player disconnectedPlayer, ViewInterface view) {
         ArrayList<Tile> toUpdate= new ArrayList<>();
         for (int i = 0; i < numberOfLostCrew && disconnectedPlayer.getTotalCrew() > 0; i++) {
             Coordinates firstCabin = disconnectedPlayer.getShipBoard().getCabinsCoordinates().getFirst();
@@ -58,8 +62,12 @@ public class CrewPenalty extends Penalty {
     }
 
     @Override
-    public boolean initializePenalty(VirtualView view, Player player) {
+    public boolean initializePenalty(GameInterface game, VirtualView view, Player player) {
         if (player.getTotalCrew() == 0) {
+            return false;
+        }
+        if (player.IsDisconnected()) {
+            game.getDrawnCard().notifyModifiedTiles(player.getPlayerName(), automaticCrewPenalty(player, view));
             return false;
         }
         numberOfCrew = Math.min(player.getTotalCrew(), numberOfLostCrew);

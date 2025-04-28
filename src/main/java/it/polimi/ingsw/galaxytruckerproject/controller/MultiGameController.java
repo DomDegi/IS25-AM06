@@ -41,7 +41,9 @@ public class MultiGameController {
             }
             else {
                 wasSuccessful = true;
+                try{
                 view.showLoginResponse(true);
+                } catch(Exception ignored) {}
                 if (isAlreadyInAGame(nickname)) {
                     GameController previouslyJoinedGame = gameFromNickname(nickname);
                     controller.setGameController(previouslyJoinedGame);

@@ -6,9 +6,13 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.network.MockVirtualView;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,6 +24,10 @@ class EpidemicTest {
     private Player player2;
     private Player player3;
     private FlightBoard flightBoard;
+    private final VirtualView mockView1 = new MockVirtualView();
+    private final VirtualView mockView2 = new MockVirtualView();
+    private final VirtualView mockView3 = new MockVirtualView();
+    Map<String,VirtualView> viewMap = new HashMap<>();
 
     @BeforeEach
     void setUp() {
@@ -29,6 +37,11 @@ class EpidemicTest {
         player2 = new Player("FedeGalattico", PlayersColor.RED);
         player3 = new Player("EnnioVolante", PlayersColor.YELLOW);
         epidemic = new Epidemic(1);
+
+
+        viewMap.put("MimmoPericoloso", mockView1);
+        viewMap.put("FedeGalattico", mockView2);
+        viewMap.put("EnnioVolante", mockView3);
 
         //shipboard 5 to player1
         ShipBoard shipBoard1 = new ShipBoard(player1);
@@ -137,7 +150,7 @@ class EpidemicTest {
     @Test
     void successfully_initialize_card_and_execute () {
         game.setDrawnCard(epidemic);
-        game.getDrawnCard().initializeCard(game, );
+        game.getDrawnCard().initializeCard(game, viewMap);
 
         assertEquals(7, player1.getTotalCrew());
         assertEquals(2, player2.getTotalCrew());
@@ -196,7 +209,7 @@ class EpidemicTest {
         shipBoard1.positionTile(Optional.of(tile21), new Coordinates(4,2));
         shipBoard1.verifyCorrectness();
         game.setDrawnCard(epidemic);
-        game.getDrawnCard().initializeCard(game, );
+        game.getDrawnCard().initializeCard(game, viewMap);
 
         assertEquals(7, player1.getTotalCrew());
         assertEquals(2, player2.getTotalCrew());

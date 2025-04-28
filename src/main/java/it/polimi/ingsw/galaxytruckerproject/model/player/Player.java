@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Player {
+public class Player implements PlayerInterface {
     private int playerRanking;
     private final String playerName;
     private int playerPosition;

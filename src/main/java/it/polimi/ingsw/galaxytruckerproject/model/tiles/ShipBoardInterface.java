@@ -14,42 +14,55 @@ public interface ShipBoardInterface {
 
     public Tile getTile(Coordinates coordinates);
 
-    public Tile getTile(int x, int y);
-
-
-    public void setHumanCrew(int humanCrew);
-
-    public int getPenalty();
-
-    public Player getPlayer();
-
-    public int getNumBatteries();
-
-    public float getSingleCannonPower();
-
-    public ArrayList<Coordinates> getDoubleCannon();
-
-    public int getNumSingleEngine();
-
-    public ArrayList<Coordinates> getDoubleEngine();
-
-    public int getNumPurpleAliens();
-
-    public int getNumHumanCrew();
-
-    public int getNumExposedConnectors();
-
-    public int getDoubleCannonPower(Coordinates coordinates);
+    public ArrayList<Coordinates> getCargoHoldCoordinates();
 
     public ArrayList<Coordinates> getBatteryCoordinates();
 
-    public ArrayList<Coverage> getCoverageShields();
-
-    public ArrayList<Coordinates> getCargoHoldCoordinates();
-
     public ArrayList<Coordinates> getCabinsCoordinates();
 
+    public ArrayList<Coverage> getCoverageShields();
+
+    public PlayerInterface getPlayer();
+
+
+
+    public Tile getTile(int x, int y);
+
     public Optional<Tile>[][] getTilesTable();
+
+    //public void setHumanCrew(int humanCrew);
+
+    //public int getPenalty();
+
+    //public Player getPlayer();
+
+   // public int getNumBatteries();
+
+   // public float getSingleCannonPower();
+
+   // public ArrayList<Coordinates> getDoubleCannon();
+
+    //public int getNumSingleEngine();
+
+   // public ArrayList<Coordinates> getDoubleEngine();
+
+    //public int getNumPurpleAliens();
+
+   // public int getNumHumanCrew();
+
+  //  public int getNumExposedConnectors();
+
+   // public int getDoubleCannonPower(Coordinates coordinates);
+
+   // public ArrayList<Coordinates> getBatteryCoordinates();
+
+   // public ArrayList<Coverage> getCoverageShields();
+
+    //public ArrayList<Coordinates> getCargoHoldCoordinates();
+
+    //public ArrayList<Coordinates> getCabinsCoordinates();
+
+    //public Optional<Tile>[][] getTilesTable();
 
     public void addBreakSingleCannonPower(float power);
 
@@ -77,13 +90,13 @@ public interface ShipBoardInterface {
 
     public boolean positionTile(Optional<Tile> tile, Coordinates coordinates);
 
-    public void destroyForCorrection(Coordinates coordinates);
+    //public void destroyForCorrection(Coordinates coordinates);
 
-    public ArrayList<Set<Coordinates>> destroyTile(Coordinates coordinates);
+    //public ArrayList<Set<Coordinates>> destroyTile(Coordinates coordinates);
 
     public boolean checkEarlyLanding();
 
-    public boolean verifyCorrectness();
+
 
     public boolean chooseCrewToRemove(Coordinates coordinates);
 
@@ -99,7 +112,7 @@ public interface ShipBoardInterface {
 
     public boolean isCargoEmpty();
 
-    public void checkBeforeAsking(int goodsToRemove);
+
 
     public ArrayList<Goods> getAllGoods();
 

@@ -12,13 +12,12 @@ import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.SmallMeteor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.network.MockVirtualView;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,6 +32,10 @@ class CombatZoneTest {
     FlightBoard flightBoard;
     CombatZone combatZone;
     ArrayList<Projectile> listOfMeteor;
+    private final VirtualView mockView1 = new MockVirtualView();
+    private final VirtualView mockView2 = new MockVirtualView();
+    private final VirtualView mockView3 = new MockVirtualView();
+    Map<String,VirtualView> viewMap = new HashMap<>();
 
 
     @BeforeEach
@@ -44,6 +47,11 @@ class CombatZoneTest {
         player1 = new Player("player 1", PlayersColor.BLUE);
         player2 = new Player("player 2", PlayersColor.RED);
         player3 = new Player("player 3", PlayersColor.YELLOW);
+
+        viewMap.put(player1.getPlayerName(),mockView1);
+        viewMap.put(player2.getPlayerName(),mockView2);
+        viewMap.put(player3.getPlayerName(),mockView3);
+
 
         //shipboard 5 to player1
         shipBoard1 = new ShipBoard(player1);
@@ -117,6 +125,7 @@ class CombatZoneTest {
         shipBoard2.positionTile(Optional.of(tile29), new Coordinates(3,4));
         shipBoard2.verifyCorrectness();
 
+
         //shipboard1 to player3
         shipBoard3 = new ShipBoard(player3);
         player3.setPlayerShip(shipBoard3);
@@ -138,6 +147,10 @@ class CombatZoneTest {
         Tile tile35=new SingleEngine( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),0);
         shipBoard3.positionTile(Optional.of(tile35), new Coordinates(3,3));
         shipBoard3.verifyCorrectness();
+
+        player1.setAllCrewToHuman();
+        player2.setAllCrewToHuman();
+        player3.setAllCrewToHuman();
 
         flightBoard = game.getFlightBoard();
         flightBoard.addPlayerToGame(player1);
@@ -161,21 +174,61 @@ class CombatZoneTest {
     }
 
     @Test
-    void testCombatZone(){
+    void testCombatZone_first_challenge(){
         int player1_initialDays = player1.getPlayerPosition();
+        int player3_initialDays = player3.getPlayerPosition();
         game.setDrawnCard(combatZone);
-        game.getDrawnCard().initializeCard(game, );
+        game.getDrawnCard().initializeCard(game, viewMap);
         game.setGameState(GameState.CARD_EVENT);
         assertEquals(combatZone, game.getDrawnCard());
-        assertEquals(player1,game.getListOfInFlightPlayers().get(combatZone.getPlayerIndex()));
-        combatZone.executeCard(game, , player1.getPlayerName());
-        combatZone.executeCard(game, , player2.getPlayerName());
-        combatZone.executeCard(game, , player3.getPlayerName());
-        combatZone.executeCard(game, , player1.getPlayerName());
-        combatZone.executeCard(game, , player2.getPlayerName());
-        combatZone.executeCard(game, , player3.getPlayerName());
+        assertEquals(2, player3.getTotalCrew());
+        assertEquals(4, player2.getTotalCrew());
+        assertEquals(12, player1.getTotalCrew());
+        assertEquals(player1_initialDays, player1.getPlayerPosition());
+        assertEquals(player3_initialDays - 3, player3.getPlayerPosition());
+    }
 
-        //problema con la gestione dell' indice
+    @Test
+    void testCombatZone_second_challenge_no_one_uses_batteries(){
+        testCombatZone_first_challenge();
+        int player1_initialDays = player1.getPlayerPosition();
+        int player2_initialDays = player2.getPlayerPosition();
+        int player3_initialDays = player3.getPlayerPosition();
+        combatZone.engineChoice(player1.getPlayerName(), 0, new ArrayList<>());
+        combatZone.engineChoice(player2.getPlayerName(), 0, new ArrayList<>());
+        combatZone.engineChoice(player3.getPlayerName(), 0, new ArrayList<>());
+        assertEquals(player1_initialDays, player1.getPlayerPosition());
+        assertEquals(player2_initialDays - 3, player2.getPlayerPosition());
+        assertEquals(player3_initialDays, player3.getPlayerPosition());
+    }
 
+    @Test
+    void testCombatZone_second_challenge_player2_uses_batteries(){
+        testCombatZone_first_challenge();
+        ArrayList<Coordinates> batteries = new ArrayList<>();
+        batteries.add(new Coordinates(3,2));
+        int player1_initialDays = player1.getPlayerPosition();
+        int player2_initialDays = player2.getPlayerPosition();
+        int player3_initialDays = player3.getPlayerPosition();
+        combatZone.engineChoice(player1.getPlayerName(), 0, new ArrayList<>());
+        combatZone.engineChoice(player2.getPlayerName(), 1, batteries);
+        combatZone.engineChoice(player3.getPlayerName(), 2, new ArrayList<>());
+        assertEquals(player1_initialDays - 3, player1.getPlayerPosition());
+        assertEquals(player2_initialDays, player2.getPlayerPosition());
+        assertEquals(player3_initialDays, player3.getPlayerPosition());
+    }
+
+    @Test
+    void testCombatZone_third_challenge_no_one_uses_batteries_and_card_ends(){
+        testCombatZone_second_challenge_no_one_uses_batteries();
+        int player2_initialCrew = player2.getTotalCrew();
+        combatZone.cannonChoice(player1.getPlayerName(), 0, new ArrayList<>());
+        combatZone.cannonChoice(player2.getPlayerName(), 0, new ArrayList<>());
+        combatZone.cannonChoice(player3.getPlayerName(), 0, new ArrayList<>());
+        ArrayList<Coordinates> crewPenalty =  new ArrayList<>();
+        crewPenalty.add(new Coordinates(2,4));
+        combatZone.removeCrew(player2.getPlayerName(), crewPenalty);
+        assertEquals(player2_initialCrew - 1, player1.getPlayerPosition());
+        assertEquals(GameState.DRAW_CARD, game.getGameState());
     }
 }

@@ -20,7 +20,6 @@ import java.util.Set;
 public class ProjectilePenalty extends Penalty {
     private final ArrayList<Projectile> listOfProjectiles;
     private int diceRoll = 0;
-    private GameInterface game = null;
     private Defense defenseStatus = null;
     private ArrayList<Set<Coordinates>> branch = null;
     private Coordinates destroyedTile = null;
@@ -45,11 +44,26 @@ public class ProjectilePenalty extends Penalty {
 
     //asks the player to roll the dices
     @Override
-    public boolean initializePenalty(VirtualView view, Player player) {
+    public boolean initializePenalty(GameInterface game, VirtualView view, Player player) {
+        if (this.game == null) {
+            this.game = game;
+        }
+        if (player.IsDisconnected()) {
+            game.getDrawnCard().notifyBrokenTiles(player.getPlayerName(), automaticProjectilePenalty(player, view));
+            return false;
+        }
         if (getListOfProjectiles().isEmpty()) {
             return false;
         }
-        view.setClientState(ClientState.ACTION);
+        if (this.diceRoll != 0) {
+            hitOrMiss(view, player);
+            return defenseStatus != Defense.PROTECTED;
+        }
+        else {
+            try {
+                view.setClientState(ClientState.ROLL_DICE);
+            }catch(Exception ignored) {}
+        }
         return true;
     }
 
@@ -78,31 +92,39 @@ public class ProjectilePenalty extends Penalty {
         return listOfProjectiles.getFirst().getCoordinatesToDestroy();
     }
 
-    public Coordinates randomRollForOne (VirtualView view, Player player, GameInterface game) {
-        if (game == null) {
-            this.game = game;
-        }
+    @Override
+    public Coordinates randomRollForOne (VirtualView view, Player player) {
         Random rand = new Random();
         this.diceRoll = 2 + rand.nextInt(11);
+        return hitOrMiss(view, player);
+    }
+
+    public Coordinates hitOrMiss(VirtualView view,Player player) {
         this.defenseStatus = listOfProjectiles.getFirst().throwProjectile(player, diceRoll, game);
         if (!player.IsDisconnected()) {
             switch (defenseStatus) {
                 case PROTECTED -> resetForNextProjectile();
                 case HIT -> {
                     this.destroyedTile = playerGetsHit(player, view);
-                    view.notifyBrokenTile(player.getPlayerName(), destroyedTile);
+                    ArrayList<Coordinates> toRemove = new ArrayList<>();
+                    toRemove.add(destroyedTile);
+                    view.notifyBrokenTile(player.getPlayerName(), toRemove);
                     if (branch == null) {
                         resetForNextProjectile();
                         return destroyedTile;
                     } else {
-                        view.asksToInputCoordinates(CoordReqType.CHOOSE_TO_MAINTAIN);
+                        try {
+                            view.asksToInputCoordinates(CoordReqType.CHOOSE_TO_MAINTAIN);
+                        }catch(Exception ignored) {}
                     }
                 }
                 case CHOOSETOUSEBATTERY -> {
                     if (player.getShipBoard().getNumBatteries() == 0) {
                         playerGetsHit(player, view);
                     } else {
-                        view.asksToInputCoordinates(CoordReqType.CHOOSE_BATTERY);
+                        try {
+                            view.asksToInputCoordinates(CoordReqType.CHOOSE_BATTERY);
+                        }catch(Exception ignored) {}
                     }
                 }
             }
@@ -110,6 +132,7 @@ public class ProjectilePenalty extends Penalty {
         return null;
     }
 
+    @Override
     public ArrayList<Coordinates> chooseToMaintain(Player player, ArrayList<Coordinates> received) {
         int i = 0;
         ArrayList<Coordinates> toRemove = new ArrayList<>();
@@ -136,6 +159,7 @@ public class ProjectilePenalty extends Penalty {
         }
     }
 
+    @Override
     public Tile playerUsesBatteryToDefend(Player player, ArrayList<Coordinates> batteries) {
         if (player.getShipBoard().getNumBatteries() < 1) {
             //shouldn't happen
@@ -157,6 +181,7 @@ public class ProjectilePenalty extends Penalty {
         this.diceRoll = diceRoll;
     }
 
+    @Override
     public int getDiceRoll(){
         return diceRoll;
     }
@@ -165,7 +190,7 @@ public class ProjectilePenalty extends Penalty {
         this.listOfProjectiles.add(projectile);
     }
 
-    public ArrayList<Coordinates> automaticProjectilePenalty(GameInterface game, Player player, VirtualView view) {
+    public ArrayList<Coordinates> automaticProjectilePenalty(Player player, VirtualView view) {
         ArrayList<Coordinates> startingCabinBranch = new ArrayList<>();
         startingCabinBranch.add(new Coordinates(2, 3));
         ArrayList<Coordinates> firstBranchCoordinates = new ArrayList<>();
@@ -173,7 +198,9 @@ public class ProjectilePenalty extends Penalty {
         ArrayList<Coordinates> removedTiles;
 
         while (!listOfProjectiles.isEmpty()) {
-            this.randomRollForOne(view, player, game);
+            if (this.diceRoll == 0) {
+                randomRollForOne(view, player);
+            }
             if (defenseStatus == Defense.HIT || defenseStatus == Defense.CHOOSETOUSEBATTERY) {
                 // if true: kept the branch with the starting cabin, else kept the first branch
                 if (branch != null){

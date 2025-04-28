@@ -46,7 +46,9 @@ public class Planets extends Card{
     @Override
     public void manageGoods (String playerName, int clientCredits, ArrayList<CargoHold> updatedCargos) {
         if (!playerName.equals(currentPlayer.getPlayerName()) || !chosen) {
-            viewsMap.get(playerName).showWrongInputMessage();
+            try {
+                viewsMap.get(playerName).showWrongInputMessage();
+            }catch(Exception ignored) {}
             return;
         }
         if (goodsChecker.check(clientCredits, updatedCargos)) {
@@ -57,20 +59,30 @@ public class Planets extends Card{
             nextPlayer();
         }
         else {
-            currentPlayerView.showWrongInputMessage();
+            try {
+                currentPlayerView.showWrongInputMessage();
+            }catch(Exception ignored) {}
         }
     }
 
 
     //planet choice is from 1 to total planets, but the array indexes start from 0
+    //input 0 to not choose anything
     @Override
     public void planetChoice(String playerName, int planet) {
         if (!playerName.equals(currentPlayer.getPlayerName())) {
-            viewsMap.get(playerName).showWrongInputMessage();
+            try {
+                viewsMap.get(playerName).showWrongInputMessage();
+            }catch(Exception ignored) {}
             return;
         }
+        if (planet <= 0) {
+            nextPlayer();
+        }
         if (listOfPlanets.get(planet - 1).getOccupationStatus() || chosen) {
-            currentPlayerView.showWrongInputMessage();
+            try {
+                currentPlayerView.showWrongInputMessage();
+            }catch(Exception ignored) {}
             return;
         }
         listOfPlanets.get(planet - 1).setOccupationStatus();
@@ -118,7 +130,9 @@ public class Planets extends Card{
             nextPlayer();
             return;
         }
-        currentPlayerView.setClientState(ClientState.PLANET_CHOICE);
+        try {
+            currentPlayerView.setClientState(ClientState.PLANET_CHOICE);
+        }catch(Exception ignored) {}
     }
 
     @Override

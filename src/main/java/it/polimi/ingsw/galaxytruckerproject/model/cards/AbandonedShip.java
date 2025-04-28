@@ -47,11 +47,15 @@ public class AbandonedShip extends Card {
     public void removeCrew(String playerName, ArrayList<Coordinates> crewToRemove){
         Player player = game.identifyPlayerByName(playerName);
         if (!playerAccepted || !player.equals(playerToPlay)) {
-            viewsMap.get(playerName).showWrongInputMessage();
+            try{
+                viewsMap.get(playerName).showWrongInputMessage();
+            } catch(Exception ignored) {}
             return;
         }
         if (crewToRemove.size() != this.crewNumberRequired) {
-            playersView.showWrongInputMessage();
+            try{
+                playersView.showWrongInputMessage();
+            } catch(Exception ignored) {}
             return;
         }
         ArrayList<Tile> updatedTile = player.removeCrew(crewToRemove);
@@ -64,17 +68,23 @@ public class AbandonedShip extends Card {
             game.endCardEvent();
         }
         else {
-            playersView.showWrongInputMessage();
+            try{
+                playersView.showWrongInputMessage();
+            } catch(Exception ignored) {}
         }
     }
 
     public void choice (String playerName, boolean choice) {
         if (!playerName.equals(playerToPlay.getPlayerName())) {
-            viewsMap.get(playerName).showWrongInputMessage();
+            try{
+                viewsMap.get(playerName).showWrongInputMessage();
+            } catch(Exception ignored) {}
             return;
         }
         if (choice) {
-            playersView.asksToInputCoordinates(CoordReqType.CHOOSE_CREW);
+            try {
+                playersView.asksToInputCoordinates(CoordReqType.CHOOSE_CREW);
+            } catch(Exception ignored) {}
             playerAccepted = true;
         }
         else {
@@ -102,7 +112,9 @@ public class AbandonedShip extends Card {
             this.nextPlayer();
         }
         else if (playerToPlay.getTotalCrew() >= crewNumberRequired) {
-            playersView.setClientState(ClientState.ACTION);
+            try {
+                playersView.setClientState(ClientState.ACTION);
+            } catch(Exception ignored) {}
         }
     }
 
