@@ -27,12 +27,14 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
     public VirtualControllerRMI(MultiGameController multiController) throws RemoteException {
         super();
         this.multiController = multiController;
-        this.clients = new HashMap<String, Controller>();
+        this.clients = new HashMap<>();
     }
 
     //PHASE OF LOGIN/CREATION OF MATCHES METHODS
     public void login(String playerName) throws RemoteException {
-        clients.get(playerName).login(playerName);
+        if(clients.containsKey(playerName)){
+            clients.get(playerName).login(playerName);
+        }
     }
     public void connect(VirtualView client, String playerName) throws RemoteException {
 
