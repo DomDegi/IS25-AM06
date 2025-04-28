@@ -27,11 +27,13 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
     public VirtualControllerRMI(MultiGameController multiController) throws RemoteException {
         super();
         this.multiController = multiController;
-        this.clients = new HashMap<String, Controller>();
+        this.clients = new HashMap<>();
     }
 
     public void login(String playerName) throws RemoteException {
-        clients.get(playerName).login(playerName);
+            if (clients.containsKey(playerName)) {
+                clients.get(playerName).login(playerName);
+            }
     }
 
     @Override
@@ -200,7 +202,7 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
     }
 
     @Override
-    public void rolldice(String name) {
+    public void rolldice(String name) throws RemoteException {
 
     }
 

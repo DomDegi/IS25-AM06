@@ -3,13 +3,14 @@ package it.polimi.ingsw.galaxytruckerproject.client;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Planets;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
-import it.polimi.ingsw.galaxytruckerproject.network.RMI.Server.VirtualControllerRMI;
+import it.polimi.ingsw.galaxytruckerproject.network.RMI.Client.VirtualViewRMI;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import it.polimi.ingsw.galaxytruckerproject.view.TUI;
@@ -36,7 +37,7 @@ public class ClientController {
     private CabinsManager cabinsManager;
     private Map<Integer,Tile> turnedTiles;
     private Map<Integer, ArrayList<Card>> deck;
-    private final Map<Integer,Boolean> availabledeck;
+    private final Map<Integer,Boolean> availableDeck;
     private ArrayList<Goods> goodsList;
 
     private Tile tileInHand;
@@ -47,23 +48,23 @@ public class ClientController {
 
     public ClientController(VirtualController virtualController) {
         this.deck = new HashMap<>();
+        this.goodsList = new ArrayList<>();
         this.me = new LightPlayer("",null);
-        this.flightBoard = new LightFlightboard(null);
+        this.flightBoard = new LightFlightboard(new FlightBoard(null));
         this.inManager = false;
         this.connected = false;
         this.turnedTiles = new HashMap<>();
+        this.previousState=ClientState.CHOOSE_UI;
+        this.state = ClientState.CHOOSE_UI;
         this.phase = GamePhases.LOGIN;
-        this.indexCard = 0;
-        this.availabledeck = new HashMap<>(3);
-        availabledeck.put(1,Boolean.TRUE);
-        availabledeck.put(2,Boolean.TRUE);
-        availabledeck.put(3,Boolean.TRUE);
+        this.availableDeck = new HashMap<>(3);
+        availableDeck.put(1,Boolean.TRUE);
+        availableDeck.put(2,Boolean.TRUE);
+        availableDeck.put(3,Boolean.TRUE);
         this.virtualController = virtualController;
+        this.indexCard = 0;
         this.indexDeckInHandOrPlanet = 0;
         this.hourglassTurns = 0;
-        this.goodsList = new ArrayList<>();
-        previousState=ClientState.CHOOSE_UI;
-        state = ClientState.CHOOSE_UI;
         this.coordInputManager=new CoordInputManager(me.getShipBoard(),this);
     }
 
@@ -84,11 +85,11 @@ public class ClientController {
             case CHOOSE_UI->{
                 switch(words[0]) {
                     case "gui"->
-                        this.view=new GUI();
+                            this.view=new VirtualViewRMI(this,new GUI());
                     case "tui"->
-                        this.view=new TUI();
+                            this.view=new VirtualViewRMI(this,new TUI());
                     default->{
-                        view.showErrorMessage("\nWrong Input");
+                        view.wrongLocalInput();
                         return;
                     }
                 }
@@ -97,9 +98,9 @@ public class ClientController {
 
             case CHOOSE_CONNECTION_TYPE->{
                 switch(words[0]) {
-                    case "rmi"->virtualController=new VirtualControllerRMI(null);
+                    case "rmi"->{}
                         //Da sistemare
-                    case "socket"->virtualController= new VirtualControllerRMI(null);
+                    case "socket"->{}
                     //Da sistemare
                     default->{
                         view.showErrorMessage("\nWrong Input");
@@ -304,7 +305,7 @@ public class ClientController {
                                     if (chose == -1)
                                         return;
                                     if (chose > 0 && chose < 4) {
-                                        if (availabledeck.get(chose)) {
+                                        if (availableDeck.get(chose)) {
                                             virtualController.lookCardsRequest(name, chose);
                                             indexDeckInHandOrPlanet = chose;
                                             displayedCard = this.deck.get(indexDeckInHandOrPlanet).getFirst();
@@ -451,7 +452,7 @@ public class ClientController {
         }
     }
 
-    private Coordinates transformCoordinates(String[] input) {
+    private Coordinates transformCoordinates(String[] input) throws RemoteException {
         if (input.length < 2) {
             view.showErrorMessage("\nWrong Input");
             return null;
@@ -481,7 +482,7 @@ public class ClientController {
         return new Coordinates(CoordinatesX, CoordinatesY);
     }
 
-    private boolean checkShipBoards(String[] input) {
+    private boolean checkShipBoards(String[] input) throws RemoteException {
         if (input[0].equals("check")) {
             int chose=numerate(scroll(input,1));
             if (chose==-1)
@@ -552,7 +553,7 @@ public class ClientController {
         return false;
     }
 
-    private int numerate(String[] input){
+    private int numerate(String[] input) throws RemoteException {
         int chose;
         if (input[0].isEmpty()) {
             view.showErrorMessage("\nWrong Input");
@@ -582,7 +583,7 @@ public class ClientController {
 
     public void setState(ClientState newState) throws RemoteException {
         previousState=state;
-        view.setClientState(newState);
+        state=newState;
         switch(newState){
             case START_SHIP_CREATION ->
                 phase=GamePhases.SHIPBOARD;
@@ -628,7 +629,10 @@ public class ClientController {
                     virtualController.notifySetPosition(name, 0);
                 }
             }
-
+            case ROLL_DICE -> {
+                view.printProjectile(displayedCard.getListOfProjectiles().getFirst());
+                displayedCard.getListOfProjectiles().removeFirst();
+            }
         }
     }
 
@@ -748,11 +752,11 @@ public class ClientController {
 
     public void decksNotAvailable(ArrayList<Integer> notAvailableDecks) {
         for(int index=0;index<4;index++){
-            availabledeck.put(index,Boolean.TRUE);
+            availableDeck.put(index,Boolean.TRUE);
         }
         for(int index:notAvailableDecks){
             if(notAvailableDecks.contains(index))
-                availabledeck.put(index,Boolean.FALSE);
+                availableDeck.put(index,Boolean.FALSE);
         }
     }
 

@@ -6,6 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
+import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -27,7 +28,7 @@ public class MultiGameController {
      * @param controller player's personal controller to interact with the model
      * @return boolean value to tell if the login was successful
      */
-    public boolean login(String nickname, VirtualView view, Controller controller) {
+    public boolean login(String nickname, VirtualView view, Controller controller) throws RemoteException {
         boolean wasSuccessful;
         if (view != null && controller != null) {
             //check if the nickname is unique
@@ -60,7 +61,7 @@ public class MultiGameController {
         return wasSuccessful;
     }
 
-    public void createGame (String creator, String gameName, int playerCount, Controller controller, GameMode chosenMode) {
+    public void createGame (String creator, String gameName, int playerCount, Controller controller, GameMode chosenMode) throws RemoteException {
         VirtualView creatorView = viewsMap.get(creator);
 
         if (creator != null && creatorView != null && controller != null && !isAlreadyInAGame(gameName)) {
@@ -82,7 +83,7 @@ public class MultiGameController {
         }
     }
 
-    public void joinGame (String joiner, String gameName, Controller controller) {
+    public void joinGame (String joiner, String gameName, Controller controller) throws RemoteException {
         GameController gameToJoin = gamesMap.get(gameName);
         VirtualView joinerView = viewsMap.get(joiner);
 
@@ -180,7 +181,11 @@ public class MultiGameController {
         Map<String, GameController> joinableGames;
         joinableGames = gamesMap.entrySet().stream().filter(entry -> entry.getValue().getGameState().equals(GameState.START_GAME))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-        view.showJoinableGamesList(joinableGames);
+        try {
+            view.showJoinableGamesList(joinableGames);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
         viewsMap.put(nickname, view);
     }
 
@@ -190,7 +195,11 @@ public class MultiGameController {
      * @param creatorView view of the game creator
      */
     public void notifyNewGame (String gameCreator, ViewInterface creatorView) {
-        creatorView.showGenericMessage("created game");
+        try {
+            creatorView.showGenericMessage("created game");
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
         viewsMap.forEach(this::joinableGamesList);
     }
 }

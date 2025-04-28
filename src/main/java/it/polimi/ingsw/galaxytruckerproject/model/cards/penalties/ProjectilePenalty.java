@@ -108,7 +108,11 @@ public class ProjectilePenalty extends Penalty {
                     this.destroyedTile = playerGetsHit(player, view);
                     ArrayList<Coordinates> toRemove = new ArrayList<>();
                     toRemove.add(destroyedTile);
-                    view.notifyBrokenTile(player.getPlayerName(), toRemove);
+                    try {
+                        view.notifyBrokenTile(player.getPlayerName(), toRemove);
+                    } catch (java.rmi.RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
                     if (branch == null) {
                         resetForNextProjectile();
                         return destroyedTile;

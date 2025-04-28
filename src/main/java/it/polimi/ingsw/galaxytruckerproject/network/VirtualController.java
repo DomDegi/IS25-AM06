@@ -60,11 +60,11 @@ public interface VirtualController extends Remote, Serializable {
 
     void planetChoiceRequest(String name, int chose)throws RemoteException;
 
-    void notifyNewCrewArrangement(String name, ArrayList<Cabin> newTiles);
+    void notifyNewCrewArrangement(String name, ArrayList<Cabin> newTiles)throws RemoteException;
 
     void lookCardsRequest(String name, int chose) throws RemoteException;
 
-    void rolldice(String name);
+    void rolldice(String name)throws RemoteException;
     //pescaggio carta durante shipboard
     //notifica fine lettura carte
     //scelta pianeta
