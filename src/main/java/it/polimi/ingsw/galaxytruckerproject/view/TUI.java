@@ -186,6 +186,11 @@ public class TUI implements DisplayableView{
     }
 
     @Override
+    public void printCabins(Tile cabins) {
+        System.out.println("choose equip type of:"+cabins.toString());
+    }
+
+    @Override
     public void notifyDrawnCard(Card card) throws RemoteException {
         System.out.println("a new card has been drawn\n "+card.toString());
     }

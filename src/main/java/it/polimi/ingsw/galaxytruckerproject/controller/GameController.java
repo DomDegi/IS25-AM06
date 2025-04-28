@@ -18,6 +18,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
+import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -96,7 +97,7 @@ public class GameController implements Observer {
      */
 
     //RICONNETTE IL PLAYER SE DISCONNESSO
-    public void reconnectPlayer(String playerName, VirtualView view) {
+    public void reconnectPlayer(String playerName, VirtualView view) throws RemoteException {
         if (disconnectedPlayers.containsKey(playerName)) {
             //If player disconnected during ships verification without fixing the ship
             if (playersWithErrors.contains(playerName)) {

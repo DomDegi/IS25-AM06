@@ -187,6 +187,11 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView {
     }
 
     @Override
+    public void printCabins(Tile cabins) {
+        view.printCabins(cabins);
+    }
+
+    @Override
     public void notifyModifiedTiles(String playerName, ArrayList<Tile> tiles) throws RemoteException {
         clientController.modifyTiles(playerName, tiles);
         if (playerName.equals(clientController.getName())) {
