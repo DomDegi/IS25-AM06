@@ -252,4 +252,9 @@ public class GUI implements ViewInterface {
 
     }
 
+    @Override
+    public void printCabins(Tile cabins) {
+
+    }
+
 }

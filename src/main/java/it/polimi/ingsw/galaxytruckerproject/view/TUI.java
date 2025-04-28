@@ -208,5 +208,4 @@ public class TUI implements DisplayableView{
         System.out.println(card.toString());
     }
 
-
 }

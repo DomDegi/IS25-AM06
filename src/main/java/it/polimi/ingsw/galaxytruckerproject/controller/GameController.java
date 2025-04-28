@@ -73,7 +73,7 @@ public class GameController implements Observer {
      */
 
     //ASSOCIA IL PLAYER ALLA VIEW
-    public void addToPlayersViewMap(String playerName, VirtualView view, boolean reconnecting) {
+    public void addToPlayersViewMap(String playerName, VirtualView view, boolean reconnecting) throws RemoteException {
         if (reconnecting) {
             reconnectPlayer(playerName, view);
         }
@@ -152,7 +152,7 @@ public class GameController implements Observer {
      * both nickname and color.
      * If players number reaches the initial setted count, starts game.
      */
-    public void playerAddition(String playerName, PlayersColor playersColor) {
+    public void playerAddition(String playerName, PlayersColor playersColor) throws RemoteException {
             if (this.getGameState() == GameState.START_GAME && playersViewMap.containsKey(playerName)) {
                 //if playerCount is still to be reached, add player to the game model
                 if (game.getNumberOfPlayers() < game.getPlayerCount()) {
@@ -195,7 +195,7 @@ public class GameController implements Observer {
      * @param playersColor chosen color
      * @return true if color is available, false otherwise
      */
-    public boolean checkColorAvailable (String playerName, ViewInterface view, PlayersColor playersColor) {
+    public boolean checkColorAvailable (String playerName, ViewInterface view, PlayersColor playersColor) throws RemoteException {
         if (! playersViewMap.containsKey(playerName)) {
             view.showErrorMessage("can't choose a color without logging in");
             return false;
@@ -236,7 +236,7 @@ public class GameController implements Observer {
         }
     }
 
-    public  void drawTile(VirtualView playersView, String playerName, int index, boolean turned) {
+    public  void drawTile(VirtualView playersView, String playerName, int index, boolean turned) throws RemoteException {
 
         // Can't draw if the shipboard is completed or there is already a tile to place/book/refuse
         if (playerStateIs(playerName, ClientState.S_MANAGE_DRAWN_TILE)
@@ -292,7 +292,7 @@ public class GameController implements Observer {
     }
 
     //errors check and management
-    public void verifyShipCorrectness() {
+    public void verifyShipCorrectness() throws RemoteException {
         for (Player player : game.getListOfInFlightPlayers()) {
             boolean correctness = player.getShipBoard().verifyCorrectness();
             ViewInterface playersView = this.getViewFromNickname(player.getPlayerName());
@@ -310,7 +310,7 @@ public class GameController implements Observer {
         }
     }
 
-    public void shipErrorManagement(String playerName, VirtualView playersView, ArrayList<Coordinates> toRemove) {
+    public void shipErrorManagement(String playerName, VirtualView playersView, ArrayList<Coordinates> toRemove) throws RemoteException {
         Player player = game.identifyPlayerByName(playerName);
 
         if(player==null){
@@ -345,7 +345,7 @@ public class GameController implements Observer {
         updatePlayerView(ClientState.WAIT_OTHER_PLAYER_ACTION, player.getPlayerName());
     }
 
-    public void playerPicksCrewMembers(String playerName, VirtualView playersView ,ArrayList<Tile> cabins) {
+    public void playerPicksCrewMembers(String playerName, VirtualView playersView ,ArrayList<Tile> cabins) throws RemoteException {
         Player player = game.identifyPlayerByName(playerName);
         if (player == null) {
             return;
@@ -399,7 +399,7 @@ public class GameController implements Observer {
         updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
     }
 
-    public synchronized void lookGameCards(String playerName, ViewInterface playersView, int cardsToLookAt) {
+    public synchronized void lookGameCards(String playerName, ViewInterface playersView, int cardsToLookAt) throws RemoteException {
         if (playerStateIs(playerName, ClientState.S_END_DRAW_TILE_CARD)) {
             for (Integer integer: lockedSmallDecks.values()) {
                 if (integer == cardsToLookAt) {
@@ -432,7 +432,7 @@ public class GameController implements Observer {
         return new ArrayList<>(lockedSmallDecks.values());
     }
 
-    public void stopLookingAtCards(ViewInterface playersView, String playerName) {
+    public void stopLookingAtCards(ViewInterface playersView, String playerName) throws RemoteException {
         if (clientsStatesMap.get(playerName) != ClientState.S_MANAGE_CARDS) {
             playersView.showWrongInputMessage();
             return;
@@ -443,7 +443,7 @@ public class GameController implements Observer {
     }
 
     //set drawn tile on the player's shipboard
-    public void setTile (ViewInterface playersView, String playerName, Tile tile) {
+    public void setTile (ViewInterface playersView, String playerName, Tile tile) throws RemoteException {
         Tile settedTile;
         if (!tile.isBooked()) {
             if (clientsStatesMap.get(playerName) != ClientState.S_MANAGE_DRAWN_TILE) {
@@ -491,7 +491,7 @@ public class GameController implements Observer {
     }
 
     //set currently drawn tile as booked for the player
-    public void bookTile(ViewInterface playersView, String playerName) {
+    public void bookTile(ViewInterface playersView, String playerName) throws RemoteException {
         if (playerStateIs(playerName,  ClientState.S_MANAGE_DRAWN_TILE)) {
             Tile toBook = game.playerBookTile(playerName);
             if (toBook != null) {
@@ -508,7 +508,7 @@ public class GameController implements Observer {
     }
 
     //now no input except hourglass and checkShipboard work and checks if the other player have completed
-    public void completed (String playerName, ViewInterface playersView) {
+    public void completed (String playerName, ViewInterface playersView) throws RemoteException {
         if (!playerStateIs(playerName, ClientState.S_END_DRAW_TILE_CARD)) {
             playersView.showWrongInputMessage();
             return;
@@ -530,7 +530,7 @@ public class GameController implements Observer {
         checkIfAllPlayersReady();
     }
 
-    public void setPosition (String playerName, ViewInterface playersView, int position) {
+    public void setPosition (String playerName, ViewInterface playersView, int position) throws RemoteException {
         if (!playerStateIs(playerName, ClientState.S_FINISHED)) {
             return;
         }
@@ -585,7 +585,7 @@ public class GameController implements Observer {
 
     //Turns hourglass isn't on and adds 1 to the turn count,
     // if it's already been turned twice, player that turns it needs to have completed his ship
-    public synchronized void turnHourglass(String playerName) {
+    public synchronized void turnHourglass(String playerName) throws RemoteException {
         ViewInterface playersView = this.getViewFromNickname(playerName);
 
         if (hourglassON) {
@@ -644,7 +644,7 @@ public class GameController implements Observer {
     //Every player can check others shipboard
     //Every player can do an early landing
     //When cards are over go to CONCLUDE_GAME state
-    public void drawCard (String playerName, VirtualView playersView) {
+    public void drawCard (String playerName, VirtualView playersView) throws RemoteException {
         if (game.getCardsLeft() == 0) {
             game.endCardPhase();
             concludeGame();
@@ -857,14 +857,14 @@ public class GameController implements Observer {
         return (activePlayers.isEmpty());
     }
 
-    public void updateEveryView(ClientState newState) {
+    public void updateEveryView(ClientState newState) throws RemoteException {
         for (String playerName:  playersViewMap.keySet()) {
             playersViewMap.get(playerName).setClientState(newState);
             clientsStatesMap.put(playerName, newState);
         }
     }
 
-    public void updatePlayerView (ClientState newState, String playerName) {
+    public void updatePlayerView (ClientState newState, String playerName) throws RemoteException {
         playersViewMap.get(playerName).setClientState(newState);
         clientsStatesMap.put(playerName, newState);
     }
