@@ -65,7 +65,7 @@ public interface VirtualController extends Remote, Serializable {
     void notifyNewGoodsArrangement( int clientGoodsValue, ArrayList<CargoHold> updatedCargos) throws RemoteException;
     void notifyNewCrewArrangement( ArrayList<Tile> updatedCabin) throws RemoteException;
 
-    void setView(VirtualView virtualView);
+    void setView(VirtualView virtualView) throws RemoteException;
 
 
     //METODI CON USAGE CHE SONO STATI MODIFICATI(DA CONTROLLARE CON FEDERICO)

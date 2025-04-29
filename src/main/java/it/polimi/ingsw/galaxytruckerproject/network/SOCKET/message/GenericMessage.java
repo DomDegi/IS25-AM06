@@ -1,7 +1,5 @@
 package it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message;
 
-import it.polimi.ingsw.galaxytruckerproject.network.Server;
-
 public class GenericMessage extends Message {
     private final String genericMessage;
 

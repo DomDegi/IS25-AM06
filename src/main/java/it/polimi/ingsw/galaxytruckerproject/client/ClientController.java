@@ -11,10 +11,15 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import it.polimi.ingsw.galaxytruckerproject.network.RMI.Server.VirtualControllerRMI;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
+import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import it.polimi.ingsw.galaxytruckerproject.view.TUI;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.*;
 
@@ -29,7 +34,8 @@ public class ClientController {
     private GamePhases phase;
 
     private GameMode gameMode;
-    private ViewInterface view;
+    private VirtualView view;
+    private DisplayableView displayableView;
     private VirtualController virtualController;
     private final CoordInputManager coordInputManager;
     private GoodsManager goodsManager;
@@ -48,7 +54,6 @@ public class ClientController {
     public ClientController(VirtualController virtualController) {
         this.deck = new HashMap<>();
         this.me = new LightPlayer("",null);
-        this.flightBoard = new LightFlightboard(null);
         this.inManager = false;
         this.connected = false;
         this.turnedTiles = new HashMap<>();
@@ -67,6 +72,18 @@ public class ClientController {
         this.coordInputManager=new CoordInputManager(me.getShipBoard(),this);
     }
 
+    public void main (String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        while(true) {
+            String in = scanner.nextLine();
+            try {
+                input(in);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
     public VirtualController getVirtualController() {
         return virtualController;
     }
@@ -84,9 +101,9 @@ public class ClientController {
             case CHOOSE_UI->{
                 switch(words[0]) {
                     case "gui"->
-                        this.view=new GUI();
+                        this.displayableView=new GUI();
                     case "tui"->
-                        this.view=new TUI();
+                        this.displayableView=new TUI();
                     default->{
                         view.showErrorMessage("\nWrong Input");
                         return;
@@ -97,8 +114,17 @@ public class ClientController {
 
             case CHOOSE_CONNECTION_TYPE->{
                 switch(words[0]) {
-                    case "rmi"->virtualController=new VirtualControllerRMI(null);
-                        //Da sistemare
+                    case "rmi"->{
+                        try {
+                            connectRMI();
+                        }
+                        catch (MalformedURLException e) {
+                            throw new RuntimeException(e);
+                        }
+                        catch (NotBoundException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
                     case "socket"->virtualController= new VirtualControllerRMI(null);
                     //Da sistemare
                     default->{
@@ -453,29 +479,49 @@ public class ClientController {
 
     private Coordinates transformCoordinates(String[] input) {
         if (input.length < 2) {
-            view.showErrorMessage("\nWrong Input");
+            try {
+                view.showErrorMessage("\nWrong Input");
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
             return null;
         }
         int CoordinatesX;
         try {
             CoordinatesX = Integer.parseInt(input[0]);
         } catch (NumberFormatException e) {
-            view.showErrorMessage("\nWrong Input");
+            try {
+                view.showErrorMessage("\nWrong Input");
+            } catch (RemoteException ex) {
+                throw new RuntimeException(ex);
+            }
             return null;
         }
         if(CoordinatesX<0||CoordinatesX>4){
-            view.showErrorMessage("\nWrong Input");
+            try {
+                view.showErrorMessage("\nWrong Input");
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
             return null;
         }
         int CoordinatesY;
         try {
             CoordinatesY = Integer.parseInt(input[1]);
         } catch (NumberFormatException e) {
-            view.showErrorMessage("\nWrong Input");
+            try {
+                view.showErrorMessage("\nWrong Input");
+            } catch (RemoteException ex) {
+                throw new RuntimeException(ex);
+            }
             return null;
         }
         if(CoordinatesY<0||CoordinatesY>6){
-            view.showErrorMessage("\nWrong Input");
+            try {
+                view.showErrorMessage("\nWrong Input");
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
             return null;
         }
         return new Coordinates(CoordinatesX, CoordinatesY);
@@ -555,14 +601,22 @@ public class ClientController {
     private int numerate(String[] input){
         int chose;
         if (input[0].isEmpty()) {
-            view.showErrorMessage("\nWrong Input");
+            try {
+                view.showErrorMessage("\nWrong Input");
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
             return -1;
         }
         try {
             chose = Integer.parseInt(input[0]);
             return chose;
         } catch (NumberFormatException e) {
-            view.showErrorMessage("\nWrong Input");
+            try {
+                view.showErrorMessage("\nWrong Input");
+            } catch (RemoteException ex) {
+                throw new RuntimeException(ex);
+            }
             return -1;
         }
     }
@@ -774,6 +828,11 @@ public class ClientController {
 
     public void setGameMode(GameMode gameMode) {
         this.gameMode = gameMode;
+    }
+
+    void connectRMI() throws MalformedURLException, NotBoundException, RemoteException {
+        virtualController=(VirtualController) Naming.lookup("rmi://localhost/VirtualController");
+        virtualController.setView(this.view);
     }
 }
 

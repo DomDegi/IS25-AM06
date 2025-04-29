@@ -10,6 +10,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.TileFactory;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
@@ -62,7 +63,11 @@ public class Game implements GameInterface{
 
     public void notifyObservers(GameState newState) {
         for (Observer observer : observers) {
-            observer.update(newState);
+            try {
+                observer.update(newState);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

@@ -12,12 +12,13 @@ import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class VirtualControllerRMI extends UnicastRemoteObject implements VirtualController{
+public class VirtualControllerRMI extends UnicastRemoteObject implements VirtualController, Remote {
 
 
     //private final MultiGameController controller;
@@ -156,8 +157,9 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
     }
 
     @Override
-    public void setView(VirtualView virtualView) {
-
+    public void setView(VirtualView virtualView) throws RemoteException {
+        System.out.println("setView");
+        controller.setView(virtualView);
     }
 
 

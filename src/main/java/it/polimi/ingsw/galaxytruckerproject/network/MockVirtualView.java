@@ -5,6 +5,7 @@ import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
@@ -290,6 +291,11 @@ public class MockVirtualView implements VirtualView {
 
     @Override
     public void connected() {
+
+    }
+
+    @Override
+    public void setGameMode(GameMode gameMode) {
 
     }
 
