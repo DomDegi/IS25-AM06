@@ -43,6 +43,7 @@ public class ProjectilePenalty extends Penalty {
     }
 
     public Coordinates hitOrMiss(VirtualView view,Player player) {
+        System.out.println(diceRoll);
         this.defenseStatus = listOfProjectiles.getFirst().throwProjectile(player, diceRoll, game);
         System.out.println(this.defenseStatus);
 
@@ -95,10 +96,12 @@ public class ProjectilePenalty extends Penalty {
         if (getListOfProjectiles().isEmpty()) {
             return false;
         }
+        System.out.println(diceRoll);
         if (this.diceRoll != 0) {
             hitOrMiss(view, player);
-            //System.out.println("gogo");
+            System.out.println("gogo");
             System.out.println(defenseStatus);
+
             //RETURNS TRUE IF THE SHIPBOARD GETS HIT,
             // FALSE OTHERWISE.
             return (defenseStatus != Defense.PROTECTED);
@@ -137,10 +140,13 @@ public class ProjectilePenalty extends Penalty {
         return listOfProjectiles.getFirst().getCoordinatesToDestroy();
     }
 
+    //modificato!!!!!!!!
     @Override
     public Coordinates randomRollForOne (VirtualView view, Player player) {
+        //this.game = game;
         Random rand = new Random();
         this.diceRoll = 2 + rand.nextInt(11);
+
         return hitOrMiss(view, player);
     }
 

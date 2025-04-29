@@ -21,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProjectilePenaltyTest2 {
 
     private Player player;
+    private Player player1;
+
     private ProjectilePenalty penalty;
     private ArrayList<Projectile> listOfLargeMeteors;
     private ArrayList<Projectile> listOfMeteorsFull;
@@ -28,8 +30,10 @@ class ProjectilePenaltyTest2 {
     private ShipBoard shipBoard;
     private Game gameLvl2 = new Game(GameMode.LEVEL2, 4);
     private Game gameTrial = new Game(GameMode.TRIAL, 3);
+
     private ShipBoard shipBoard1;
-    private Player player1;
+    private ShipBoard shipBoard2;
+    private Player player2;
     private VirtualView mockView = new MockVirtualView();
 
     @BeforeEach
@@ -52,27 +56,33 @@ class ProjectilePenaltyTest2 {
 
 
 
-        player1= new  Player("MimmoPericoloso", PlayersColor.BLUE);
-        shipBoard1=new ShipBoard(player1);
-        shipBoard1.initializeLevel2();
+
+
+        //PLAYER 2
+        player2 = new  Player("MimmoPericoloso", PlayersColor.BLUE);
+        shipBoard2 =new ShipBoard(player2);
+        shipBoard2.initializeLevel2();
         //DOUBLE CANNON
         Tile tile1=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),0);
-        shipBoard1.positionTile(Optional.of(tile1), new Coordinates(1,3));
+        shipBoard2.positionTile(Optional.of(tile1), new Coordinates(1,3));
         Tile tile2=new CargoBlue(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),0);
-        shipBoard1.positionTile(Optional.of(tile2), new Coordinates(2,2));
+        shipBoard2.positionTile(Optional.of(tile2), new Coordinates(2,2));
         Tile tile3=new EquipCabin( new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),0);
-        shipBoard1.positionTile(Optional.of(tile3), new Coordinates(2,4));
+        shipBoard2.positionTile(Optional.of(tile3), new Coordinates(2,4));
         tile3.setCrewType(CrewType.HUMAN);
         Tile tile4=new Shields( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),0);
-        shipBoard1.positionTile(Optional.of(tile4), new Coordinates(2,5));
+        shipBoard2.positionTile(Optional.of(tile4), new Coordinates(2,5));
         Tile tile5=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),0,3);
-        shipBoard1.positionTile(Optional.of(tile5), new Coordinates(3,2));
+        shipBoard2.positionTile(Optional.of(tile5), new Coordinates(3,2));
         Tile tile7=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),0,2);
-        shipBoard1.positionTile(Optional.of(tile7), new Coordinates(3,3));
+        shipBoard2.positionTile(Optional.of(tile7), new Coordinates(3,3));
         Tile tile6=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),0);
-        shipBoard1.positionTile(Optional.of(tile6), new Coordinates(3,4));
-        boolean result=shipBoard1.verifyCorrectness();
+        shipBoard2.positionTile(Optional.of(tile6), new Coordinates(3,4));
+        boolean result= shipBoard2.verifyCorrectness();
         //verifyCorrectness is needed for the shipboard stats setting
+
+
+
 
 
         listOfLargeMeteors = new ArrayList<Projectile>(List.of(new LargeMeteor(Direction.NORTH)));
@@ -106,6 +116,103 @@ class ProjectilePenaltyTest2 {
         assertFalse(returnValue);
     }
 
+    @Test
+    void largeMeteorFromEastOnSingleCannon() {
+        //PLAYER 1
+        Player player1 = new Player("fedeBulfariGalattico", PlayersColor.BLUE);
+        ShipBoard shipBoard1 = new ShipBoard(player1);
+        shipBoard1.initializeLevel2();
+        Tile tile1=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile1), new Coordinates(1,3));
+        Tile tile2=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile2), new Coordinates(1,4));
+        Tile tile3=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE));
+        tile3.rotate();
+        shipBoard1.positionTile(Optional.of(tile3), new Coordinates(2,5));
+        Tile tile4=new Pipe( new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL));
+        shipBoard1.positionTile(Optional.of(tile4), new Coordinates(2,4));
+        Tile tile5=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
+        tile5.rotate();
+        tile5.rotate();
+        tile5.rotate();
+        shipBoard1.positionTile(Optional.of(tile5), new Coordinates(2,2));
+        Tile tile6=new SingleEngine( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile6), new Coordinates(3,3));
+        boolean result=shipBoard1.verifyCorrectness();
+        //verifyCorrectness is needed for the shipboard stats setting
+
+        ArrayList<Projectile> ListOfLargeMeteors2 = new ArrayList<Projectile>(List.of(new LargeMeteor(Direction.EAST)));
+        penalty = new ProjectilePenalty(ListOfLargeMeteors2);
+        penalty.setDiceRoll(7);
+        boolean returnValue = penalty.initializePenalty(gameLvl2, mockView, player1);
+        assertFalse(returnValue);
+
+    }
+
+    @Test
+    void largeMeteorFromWestOnSingleCannon() {
+        //PLAYER 1
+        Player player1 = new Player("fedeBulfariGalattico", PlayersColor.BLUE);
+        ShipBoard shipBoard1 = new ShipBoard(player1);
+        shipBoard1.initializeLevel2();
+        Tile tile1=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile1), new Coordinates(1,3));
+        Tile tile2=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile2), new Coordinates(1,4));
+        Tile tile3=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE));
+        tile3.rotate();
+        shipBoard1.positionTile(Optional.of(tile3), new Coordinates(2,5));
+        Tile tile4=new Pipe( new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL));
+        shipBoard1.positionTile(Optional.of(tile4), new Coordinates(2,4));
+        Tile tile5=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
+        tile5.rotate();
+        tile5.rotate();
+        tile5.rotate();
+        shipBoard1.positionTile(Optional.of(tile5), new Coordinates(2,2));
+        Tile tile6=new SingleEngine( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile6), new Coordinates(3,3));
+        boolean result=shipBoard1.verifyCorrectness();
+        //verifyCorrectness is needed for the shipboard stats setting
+
+        ArrayList<Projectile> ListOfLargeMeteors2 = new ArrayList<Projectile>(List.of(new LargeMeteor(Direction.WEST)));
+        penalty = new ProjectilePenalty(ListOfLargeMeteors2);
+        penalty.setDiceRoll(7);
+        boolean returnValue = penalty.initializePenalty(gameLvl2, mockView, player1);
+        assertFalse(returnValue);
+    }
+
+    @Test
+    void largeMeteorFromSouth(){
+        //PLAYER 1
+        Player player1 = new Player("fedeBulfariGalattico", PlayersColor.BLUE);
+        ShipBoard shipBoard1 = new ShipBoard(player1);
+        shipBoard1.initializeLevel2();
+        Tile tile1=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile1), new Coordinates(1,3));
+        Tile tile2=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile2), new Coordinates(1,4));
+        Tile tile3=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE));
+        tile3.rotate();
+        shipBoard1.positionTile(Optional.of(tile3), new Coordinates(2,5));
+        Tile tile4=new Pipe( new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL));
+        shipBoard1.positionTile(Optional.of(tile4), new Coordinates(2,4));
+        Tile tile5=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
+        tile5.rotate();
+        tile5.rotate();
+        tile5.rotate();
+        shipBoard1.positionTile(Optional.of(tile5), new Coordinates(2,2));
+        Tile tile6=new SingleEngine( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile6), new Coordinates(3,3));
+        boolean result=shipBoard1.verifyCorrectness();
+        //verifyCorrectness is needed for the shipboard stats setting
+
+        ArrayList<Projectile> ListOfLargeMeteors2 = new ArrayList<Projectile>(List.of(new LargeMeteor(Direction.SOUTH)));
+        penalty = new ProjectilePenalty(ListOfLargeMeteors2);
+        penalty.setDiceRoll(7);
+        boolean returnValue = penalty.initializePenalty(gameLvl2, mockView, player1);
+        assertTrue(returnValue);
+        assertEquals(shipBoard1.getTilesTable()[3][3],Optional.empty());
+    }
 
     @Test
     void largeCannonShotFromNorthOnSmallCannon() {
@@ -130,16 +237,16 @@ class ProjectilePenaltyTest2 {
         penalty.setDiceRoll(7);
 
 
-        boolean returnValue = penalty.initializePenalty(gameLvl2, mockView,player1);
+        boolean returnValue = penalty.initializePenalty(gameLvl2, mockView, player2);
         assertTrue(returnValue);
         //COORDINATES OF THE BATTERY COMPONENT
         ArrayList<Coordinates> coordinates = new ArrayList<>();
         coordinates.add(new Coordinates(3,3));
 
-        penalty.playerUsesBatteryToDefend(player1,coordinates);
+        penalty.playerUsesBatteryToDefend(player2,coordinates);
 
         //We expect that the number of batteries decreases by one since a battery has been used in order to activate the DoubleCannon
-        assertEquals(1, shipBoard1.getTile(3,3).getNumBatteries());
+        assertEquals(1, shipBoard2.getTile(3,3).getNumBatteries());
         assertEquals(initialMeteorsCount - 1, penalty.getListOfProjectiles().size());
     }
 
@@ -147,7 +254,7 @@ class ProjectilePenaltyTest2 {
     void large_meteor_from_north_choose_shipboard_to_mantain() {
         //System.out.println(shipBoard.toString());
         //System.out.println("Lancio meteore");
-        //shipBoard1.destroyTile(new Coordinates(1,3));
+        //shipBoard2.destroyTile(new Coordinates(1,3));
 
 
         penalty = new ProjectilePenalty(listOfLargeMeteors);
@@ -155,20 +262,44 @@ class ProjectilePenaltyTest2 {
 
         penalty.setDiceRoll(8);
         //modified input method to use battery in this test
-        boolean returnValue = penalty.initializePenalty(gameLvl2, mockView,player1);
+        boolean returnValue = penalty.initializePenalty(gameLvl2, mockView, player2);
         assertTrue(returnValue);
-        assertEquals(shipBoard1.getTilesTable()[2][4],Optional.empty());
+        assertEquals(shipBoard2.getTilesTable()[2][4],Optional.empty());
 
         ArrayList<Coordinates> coordinates=new ArrayList<>();
         coordinates.add(new Coordinates(3,3));
-        penalty.chooseToMaintain(player1,coordinates);
+        penalty.chooseToMaintain(player2,coordinates);
 
 
 
-        assertEquals(shipBoard1.getTilesTable()[2][5],Optional.empty());
-        System.out.println(shipBoard1.toString());
+        assertEquals(shipBoard2.getTilesTable()[2][5],Optional.empty());
+        System.out.println(shipBoard2.toString());
     }
 
+    @Test
+    void ListOfMeteorsFull_test() {
+        //System.out.println(shipBoard.toString());
+        //System.out.println("Lancio cannonShot");
+        penalty = new ProjectilePenalty(listOfMeteorsFull);
+        int initialMeteorsCount = penalty.getListOfProjectiles().size();
+        System.out.println(initialMeteorsCount);
+
+        boolean returnValue = penalty.initializePenalty(gameLvl2, mockView, player);
+        penalty.printInfoOnAllProjectiles();
+        penalty.randomRollForOne(mockView, player);
+        assertEquals(initialMeteorsCount - 1, penalty.getListOfProjectiles().size());
+        penalty.printInfoOnAllProjectiles();
+
+
+        //System.out.println(shipBoard.toString());
+        //penalty.printInfoOnAllProjectiles();
+    }
+
+
+    @Test
+    void playerDisconnected(){
+
+    }
 
 
 

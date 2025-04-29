@@ -49,6 +49,11 @@ public class LightShipBoard implements ShipBoardInterface{
 
     public LightShipBoard(LightPlayer player) {
         this.player = player;
+        this.bookedTiles = new ArrayList<>();
+        this.cargoHoldCoordinates = new ArrayList<>();
+        this.crewCoordinates = new ArrayList<>();
+        this.credit = 0;
+
     }
 
     //the Client will intialize which level he wants to play. Then he's going to comunicate it to ShipBoard in the
