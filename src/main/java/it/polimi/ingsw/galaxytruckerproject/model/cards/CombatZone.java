@@ -45,11 +45,13 @@ public class CombatZone extends Card {
     public void nextChallenge () {
         if (listOfChallenges.isEmpty()) {
             game.endCardEvent();
+            return;
         }
         if (currentChallenge == null) {
             currentChallenge = listOfChallenges.sequencedKeySet().getFirst();
             currentPenalty = listOfChallenges.get(currentChallenge);
             playerIndex = 0;
+            initializeCurrentPlayer();
             minPlayer = null;
         }
         switch (currentChallenge) {
@@ -68,14 +70,20 @@ public class CombatZone extends Card {
 
     public void nextPlayer() {
         playerIndex++;
+        if (playerIndex < game.getNumberOfPlayers()) {
+            this.initializeCurrentPlayer();
+        }
+        nextChallenge();
+    }
+
+    public void initializeCurrentPlayer() {
         this.currentPlayer = game.getListOfInFlightPlayers().get(playerIndex);
         this.currentView = viewsMap.get(currentPlayer.getPlayerName());
-        nextChallenge();
     }
 
     public void cannonStrengthCheck () {
         if (currentPlayer != null) {
-            if (currentPlayer.IsDisconnected()) {
+            if (currentPlayer.IsDisconnected() || currentPlayer.getShipBoard().getDoubleCannon().isEmpty() || currentPlayer.getShipBoard().getNumBatteries() == 0) {
                 float power = currentPlayer.getShipBoard().getSingleCannonPower();
                 if (power == 0) {
                     power += currentPlayer.getShipBoard().getNumPurpleAliens();
@@ -92,7 +100,7 @@ public class CombatZone extends Card {
 
     public void enginePowerCheck () {
         if (currentPlayer != null) {
-            if (currentPlayer.IsDisconnected()) {
+            if (currentPlayer.IsDisconnected() || currentPlayer.getShipBoard().getDoubleEngine().isEmpty() || currentPlayer.getShipBoard().getNumBatteries() == 0) {
                 float power = currentPlayer.getShipBoard().getNumSingleEngine();
                 if (power == 0) {
                     power += currentPlayer.getShipBoard().getNumBrownAliens();
@@ -114,8 +122,9 @@ public class CombatZone extends Card {
     }
 
     public void findMinPlayer() {
-        if (savedValues.size() != game.getNumberOfPlayers())
+        if (savedValues.size() != game.getNumberOfPlayers()) {
             return;
+        }
         float minValue = 150; //big number
         float currentValue = -1;
         for (Player player: savedValues.keySet()) {
@@ -126,6 +135,7 @@ public class CombatZone extends Card {
             }
         }
         minPlayerView = viewsMap.get(minPlayer.getPlayerName());
+        System.out.println(minPlayer.getPlayerName());
         if (!currentPenalty.initializePenalty(game,minPlayerView, minPlayer)) {
             resetForNextPenalty();
         }
@@ -151,17 +161,20 @@ public class CombatZone extends Card {
             return;
         }
         Map<Float,ArrayList<Tile>> valueMap = currentPlayer.useCannons(doubleCannonPower, batteries);
-        float strength = valueMap.keySet().iterator().next();
-        if (strength != -1) {
-            savedValues.put(currentPlayer, strength);
-            notifyModifiedTiles(playerName,valueMap.values().iterator().next());
-            nextPlayer();
-        }
-        else {
-            try {
+        if (valueMap == null) {
+            try{
                 currentView.showWrongInputMessage();
-            }catch(Exception ignored) {}
+            } catch (Exception ignored) {}
+            return;
         }
+        float strength = valueMap.keySet().iterator().next();
+        ArrayList<Tile> updatedTiles = valueMap.get(strength);
+
+        savedValues.put(currentPlayer, strength);
+        if (!updatedTiles.isEmpty()) {
+            notifyModifiedTiles(playerName, valueMap.get(strength));
+        }
+        nextPlayer();
     }
 
     @Override
@@ -173,17 +186,20 @@ public class CombatZone extends Card {
             return;
         }
         Map<Integer,ArrayList<Tile>> valueMap = currentPlayer.useEngines(numDoubleEngine, batteriesToUse);
-        float strength = valueMap.keySet().iterator().next();
-        if (strength != -1) {
-            savedValues.put(currentPlayer, strength);
-            notifyModifiedTiles(playerName,valueMap.values().iterator().next());
-            nextPlayer();
-        }
-        else {
-            try {
+        if (valueMap == null) {
+            try{
                 currentView.showWrongInputMessage();
-            }catch(Exception ignored) {}
+            } catch (Exception ignored) {}
+            return;
         }
+        int strength = valueMap.keySet().iterator().next();
+        ArrayList<Tile> updatedTiles = valueMap.get(strength);
+
+        savedValues.put(currentPlayer, (float) strength);
+        if (!updatedTiles.isEmpty()) {
+            notifyModifiedTiles(playerName, valueMap.values().iterator().next());
+        }
+        nextPlayer();
     }
 
     @Override

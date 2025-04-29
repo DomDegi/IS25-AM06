@@ -190,9 +190,8 @@ class CombatZoneTest {
         int player3_initialDays = player3.getPlayerPosition();
         combatZone.engineChoice(player1.getPlayerName(), 0, new ArrayList<>());
         combatZone.engineChoice(player2.getPlayerName(), 0, new ArrayList<>());
-        combatZone.engineChoice(player3.getPlayerName(), 0, new ArrayList<>());
         assertEquals(player1_initialDays, player1.getPlayerPosition());
-        assertEquals(player2_initialDays - 3, player2.getPlayerPosition());
+        assertEquals(player2_initialDays - 3 , player2.getPlayerPosition());
         assertEquals(player3_initialDays, player3.getPlayerPosition());
     }
 
@@ -218,11 +217,10 @@ class CombatZoneTest {
         int player2_initialCrew = player2.getTotalCrew();
         combatZone.cannonChoice(player1.getPlayerName(), 0, new ArrayList<>());
         combatZone.cannonChoice(player2.getPlayerName(), 0, new ArrayList<>());
-        combatZone.cannonChoice(player3.getPlayerName(), 0, new ArrayList<>());
         ArrayList<Coordinates> crewPenalty =  new ArrayList<>();
         crewPenalty.add(new Coordinates(2,4));
         combatZone.removeCrew(player2.getPlayerName(), crewPenalty);
-        assertEquals(player2_initialCrew - 1, player1.getPlayerPosition());
+        assertEquals(player2_initialCrew - 1, player2.getTotalCrew());
         assertEquals(GameState.DRAW_CARD, game.getGameState());
     }
 }
