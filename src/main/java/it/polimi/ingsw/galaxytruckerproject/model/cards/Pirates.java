@@ -33,7 +33,6 @@ public class Pirates extends Enemies {
             @JsonProperty("listOfShots") ArrayList<Projectile> listOfShots) {
         super(level, requiredDays, cannonStrength);  // Chiamata al costruttore della classe base
         this.rewardCredits = rewardCredits;
-        this.playerIndex = 0;
         this.listOfCannonShots = listOfShots;
     }
 
@@ -64,7 +63,14 @@ public class Pirates extends Enemies {
         String playerName = currentPlayer.getPlayerName();
         this.currentView = viewsMap.get(playerName);
         float singleCannonPower = currentPlayer.getShipBoard().getSingleCannonPower();
+        if (singleCannonPower > 0) {
+            singleCannonPower = singleCannonPower + currentPlayer.getShipBoard().getNumPurpleAliens()*2;
+        }
         penaltyIfLose = new ProjectilePenalty(listOfCannonShots);
+        System.out.println("current player is: " + currentPlayer.getPlayerName());
+        if (currentPlayer.IsDisconnected()) {
+            System.out.println("current player is disconnected: " +  currentPlayer.getPlayerName());
+        }
 
         won = 0;
         if (currentPlayer.IsDisconnected()) {
@@ -77,7 +83,9 @@ public class Pirates extends Enemies {
             }
             else {
                 won = -1;
-                penaltyIfLose.initializePenalty(game, currentView, currentPlayer);
+                if (penaltyIfLose.initializePenalty(game, currentView, currentPlayer)) {
+                    return;
+                }
                 nextPlayer();
             }
         }
@@ -89,21 +97,18 @@ public class Pirates extends Enemies {
                 }catch(Exception ignored) {}
             }
             else if (currentPlayer.getShipBoard().getDoubleCannon().isEmpty() ||
-                    currentPlayer.getShipBoard().getBatteryCoordinates().isEmpty()) {
+                    currentPlayer.getShipBoard().getNumBatteries() == 0) {
                 if (singleCannonPower == cannonStrength) {
                     nextPlayer();
                 }
                 else {
                     won = -1;
                     penaltyIfLose.initializePenalty(game,currentView, currentPlayer);
-                    try {
-                        currentView.asksToInputCoordinates(CoordReqType.CHOOSE_TO_MAINTAIN);
-                    }catch(Exception ignored) {}
                 }
             }
             else {
                 try {
-                    currentView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_ENGINE);
+                    currentView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_CANNON);
                 }catch(Exception ignored) {}
             }
         }
@@ -134,14 +139,14 @@ public class Pirates extends Enemies {
         Player player = game.identifyPlayerByName(playerName);
         if (!player.getPlayerName().equals(currentPlayer.getPlayerName())) {
             try {
-                viewsMap.get(playerName).setClientState(ClientState.ACTION);
+                viewsMap.get(playerName).showWrongInputMessage();
             }catch(Exception ignored) {}
             return;
         }
         Map<Float,ArrayList<Tile>> returned = player.useCannons(doubleCannonPower, batteriesToUse);
         if (returned == null) {
             try {
-                currentView.setClientState(ClientState.ACTION);
+                currentView.showWrongInputMessage();
             }catch(Exception ignored) {}
             return;
         }
@@ -167,14 +172,14 @@ public class Pirates extends Enemies {
                 nextPlayer();
             }
             try {
-                currentView.asksToInputCoordinates(CoordReqType.CHOOSE_CREW);
+                currentView.setClientState(ClientState.ROLL_DICE);
             }catch(Exception ignored) {}
         }
     }
 
     @Override
     public void rollTheDices(String playerName) {
-        if (!playerName.equals(currentPlayer.getPlayerName())) {
+        if (!playerName.equals(currentPlayer.getPlayerName()) || penaltyIfLose.getDiceRoll() != 0) {
             try {
                 viewsMap.get(playerName).showWrongInputMessage();
             }catch(Exception ignored) {}
@@ -188,9 +193,9 @@ public class Pirates extends Enemies {
         if (firstBrokenTile != null) {
             broken.add(firstBrokenTile);
             notifyBrokenTiles(playerName, broken);
-            if (!penaltyIfLose.initializePenalty(game,currentView, currentPlayer)) {
-                nextPlayer();
-            }
+        }
+        if (!penaltyIfLose.initializePenalty(game, currentView, currentPlayer)) {
+            nextPlayer();
         }
     }
 

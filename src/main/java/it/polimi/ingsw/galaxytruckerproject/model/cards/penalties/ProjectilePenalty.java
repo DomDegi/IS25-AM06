@@ -62,7 +62,6 @@ public class ProjectilePenalty extends Penalty {
                             view.asksToInputCoordinates(CoordReqType.CHOOSE_TO_MAINTAIN);
                         }catch(Exception ignored) {}
                     }
-                    System.out.println('d');
                 }
                 case CHOOSETOUSEBATTERY -> {
                     if (player.getShipBoard().getNumBatteries() == 0) {
@@ -87,12 +86,12 @@ public class ProjectilePenalty extends Penalty {
             this.game = game;
         }
 
-        if (player.IsDisconnected()) {
-            game.getDrawnCard().notifyBrokenTiles(player.getPlayerName(), automaticProjectilePenalty(player, view));
+        if (listOfProjectiles.isEmpty()) {
             return false;
         }
 
-        if (getListOfProjectiles().isEmpty()) {
+        if (player.IsDisconnected()) {
+            game.getDrawnCard().notifyBrokenTiles(player.getPlayerName(), automaticProjectilePenalty(player, view));
             return false;
         }
         if (this.diceRoll != 0) {
@@ -121,7 +120,10 @@ public class ProjectilePenalty extends Penalty {
 
     public Coordinates playerGetsHit (Player player, ViewInterface view) {
         Coordinates toDestroy = this.getBrokenTile();
-        this.branch = player.getShipBoard().destroyTile(toDestroy);
+        ArrayList<Set<Coordinates>> returned = player.getShipBoard().destroyTile(toDestroy);
+        if (!returned.isEmpty()) {
+            this.branch = returned;
+        }
         return toDestroy;
     }
 
@@ -140,7 +142,7 @@ public class ProjectilePenalty extends Penalty {
     @Override
     public Coordinates randomRollForOne (VirtualView view, Player player) {
         Random rand = new Random();
-        this.diceRoll = 2 + rand.nextInt(11);
+        this.diceRoll = 1;
         return hitOrMiss(view, player);
     }
 
@@ -223,13 +225,15 @@ public class ProjectilePenalty extends Penalty {
                         totalRemovedTiles.addAll(removedTiles);
                     }
                     else {
-                        firstBranchCoordinates.addAll(branch.getFirst());
+                        firstBranchCoordinates.clear();
+                        firstBranchCoordinates.add(branch.getFirst().iterator().next());
                         removedTiles = chooseToMaintain(player, firstBranchCoordinates);
                         totalRemovedTiles.addAll(removedTiles);
                     }
                 }
                 else {
                     totalRemovedTiles.add(destroyedTile);
+                    resetForNextProjectile();
                 }
             }
             else {

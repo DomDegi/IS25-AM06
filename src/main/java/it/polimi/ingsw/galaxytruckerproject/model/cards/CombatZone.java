@@ -85,8 +85,8 @@ public class CombatZone extends Card {
         if (currentPlayer != null) {
             if (currentPlayer.IsDisconnected() || currentPlayer.getShipBoard().getDoubleCannon().isEmpty() || currentPlayer.getShipBoard().getNumBatteries() == 0) {
                 float power = currentPlayer.getShipBoard().getSingleCannonPower();
-                if (power == 0) {
-                    power += currentPlayer.getShipBoard().getNumPurpleAliens();
+                if (power > 0) {
+                    power += 2*currentPlayer.getShipBoard().getNumPurpleAliens();
                 }
                 savedValues.put(currentPlayer, power);
             }
@@ -102,8 +102,8 @@ public class CombatZone extends Card {
         if (currentPlayer != null) {
             if (currentPlayer.IsDisconnected() || currentPlayer.getShipBoard().getDoubleEngine().isEmpty() || currentPlayer.getShipBoard().getNumBatteries() == 0) {
                 float power = currentPlayer.getShipBoard().getNumSingleEngine();
-                if (power == 0) {
-                    power += currentPlayer.getShipBoard().getNumBrownAliens();
+                if (power > 0) {
+                    power += 2*currentPlayer.getShipBoard().getNumBrownAliens();
                 }
                 savedValues.put(currentPlayer, power);
             }

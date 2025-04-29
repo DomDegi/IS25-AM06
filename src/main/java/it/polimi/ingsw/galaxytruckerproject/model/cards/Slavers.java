@@ -63,6 +63,9 @@ public class Slavers extends Enemies{
         String playerName = currentPlayer.getPlayerName();
         this.playersView = viewsMap.get(playerName);
         float singleCannonPower = currentPlayer.getShipBoard().getSingleCannonPower();
+        if (singleCannonPower > 0) {
+            singleCannonPower = singleCannonPower + 2*currentPlayer.getShipBoard().getNumPurpleAliens();
+        }
 
         won = 0;
         if (currentPlayer.IsDisconnected()) {
@@ -114,14 +117,14 @@ public class Slavers extends Enemies{
         Player player = game.identifyPlayerByName(playerName);
         if (!player.getPlayerName().equals(currentPlayer.getPlayerName())) {
             try {
-                viewsMap.get(playerName).setClientState(ClientState.ACTION);
+                viewsMap.get(playerName).showWrongInputMessage();
             }catch(Exception ignored) {}
             return;
         }
         Map<Float,ArrayList<Tile>> returned = player.useCannons(doubleCannonPower, batteriesToUse);
         if (returned == null) {
             try {
-                playersView.setClientState(ClientState.ACTION);
+                playersView.showWrongInputMessage();
             }catch(Exception ignored) {}
             return;
         }
