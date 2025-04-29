@@ -67,11 +67,6 @@ public class Pirates extends Enemies {
             singleCannonPower = singleCannonPower + currentPlayer.getShipBoard().getNumPurpleAliens()*2;
         }
         penaltyIfLose = new ProjectilePenalty(listOfCannonShots);
-        System.out.println("current player is: " + currentPlayer.getPlayerName());
-        if (currentPlayer.IsDisconnected()) {
-            System.out.println("current player is disconnected: " +  currentPlayer.getPlayerName());
-        }
-
         won = 0;
         if (currentPlayer.IsDisconnected()) {
             if (singleCannonPower > cannonStrength) {
