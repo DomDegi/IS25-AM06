@@ -14,26 +14,24 @@ import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Planets extends Card{
     private final ArrayList<Planet> listOfPlanets;
-    private ArrayList<Player> playerToInteract;
     private Player currentPlayer;
     private ViewInterface currentPlayerView = null;
-    private boolean initialized;
     private boolean chosen;
     private GoodsChecker goodsChecker;
-    public Map<String,Planet> playerChosenPlanets = null;
+    public Map<String,Planet> playerChosenPlanets = new HashMap<>();
+    private int playerIndex = -1;
 
     @JsonCreator
     public Planets(@JsonProperty("level") int level, @JsonProperty("requiredDays") int requiredDays, @JsonProperty("listOfPlanets") ArrayList<Planet> listOfPlanets) {
         super(level, requiredDays);
         this.listOfPlanets = listOfPlanets;
-        this.initialized = false;
         this.currentPlayer = null;
-        this.playerToInteract = new ArrayList<>();
         this.chosen = false;
     }
     @Override
@@ -70,16 +68,17 @@ public class Planets extends Card{
     //input 0 to not choose anything
     @Override
     public void planetChoice(String playerName, int planet) {
-        if (!playerName.equals(currentPlayer.getPlayerName())) {
+        if (!playerName.equals(currentPlayer.getPlayerName()) || chosen) {
             try {
                 viewsMap.get(playerName).showWrongInputMessage();
             }catch(Exception ignored) {}
             return;
         }
-        if (planet <= 0) {
+        if (planet <= 0 ) {
             nextPlayer();
+            return;
         }
-        if (listOfPlanets.get(planet - 1).getOccupationStatus() || chosen) {
+        if (listOfPlanets.get(planet - 1).getOccupationStatus()) {
             try {
                 currentPlayerView.showWrongInputMessage();
             }catch(Exception ignored) {}
@@ -90,6 +89,9 @@ public class Planets extends Card{
         notifyPlayerLanded(playerName, planet);
         this.goodsChecker = new GoodsChecker(currentPlayer, listOfPlanets.get(planet-1).getListOfGoods());
         chosen = true;
+        try {
+            currentPlayerView.setClientState(ClientState.MANAGE_GOODS);
+        } catch (Exception ignored) {}
     }
 
     public void notifyPlayerLanded(String playerName, int planet) {
@@ -101,16 +103,10 @@ public class Planets extends Card{
     }
 
     public void nextPlayer() {
-        if (!initialized) {
-            playerToInteract = new ArrayList<>(game.getListOfInFlightPlayers());
-            initialized=true;
-        }
-        else {
-            if (playerToInteract.isEmpty()) {
-                game.endCardEvent();
-                return;
-            }
-            playerToInteract.removeFirst();
+        playerIndex++;
+        if (playerIndex > game.getNumberOfPlayers() - 1) {
+            game.endCardEvent();
+            return;
         }
         chosen = false;
         AtomicInteger i = new AtomicInteger();
@@ -122,7 +118,7 @@ public class Planets extends Card{
             game.endCardEvent();
             return;
         }
-        currentPlayer= playerToInteract.getFirst();
+        currentPlayer= game.getListOfInFlightPlayers().get(playerIndex);
         currentPlayerView=viewsMap.get(currentPlayer.getPlayerName());
         this.goodsChecker = null;
 

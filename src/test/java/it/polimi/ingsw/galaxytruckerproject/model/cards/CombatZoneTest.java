@@ -61,7 +61,6 @@ class CombatZoneTest {
         shipBoard1.positionTile(Optional.of(tile1), new Coordinates(0,4));
         Tile tile2=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),0);
         shipBoard1.positionTile(Optional.of(tile2), new Coordinates(1,1));
-        tile2.setCrewType(CrewType.HUMAN);
         Tile tile3=new AlienLifeSupportsSystem( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),0,CrewType.BROWN);
         shipBoard1.positionTile(Optional.of(tile3), new Coordinates(1,2));
         Tile tile4=new CargoBlue(3, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),0);
@@ -74,22 +73,18 @@ class CombatZoneTest {
         shipBoard1.positionTile(Optional.of(tile7), new Coordinates(2,0));
         Tile tile8=new EquipCabin( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),0);
         shipBoard1.positionTile(Optional.of(tile8), new Coordinates(2,1));
-        tile8.setCrewType(CrewType.HUMAN);
         Tile tile9=new EquipCabin( new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),0);
         shipBoard1.positionTile(Optional.of(tile9), new Coordinates(2,2));
-        tile9.setCrewType(CrewType.HUMAN);
         Tile tile10=new Shields( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),0);
         shipBoard1.positionTile(Optional.of(tile10), new Coordinates(2,4));
         Tile tile12=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),0);
         shipBoard1.positionTile(Optional.of(tile12), new Coordinates(2,5));
-        tile12.setCrewType(CrewType.HUMAN);
         Tile tile11=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),0);
         shipBoard1.positionTile(Optional.of(tile11), new Coordinates(2,6));
         Tile tile13=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),0, 2);
         shipBoard1.positionTile(Optional.of(tile13), new Coordinates(3,0));
         Tile tile14=new EquipCabin( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),0);
         shipBoard1.positionTile(Optional.of(tile14), new Coordinates(3,2));
-        tile14.setCrewType(CrewType.HUMAN);
         Tile tile15=new SingleEngine( new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),0);
         shipBoard1.positionTile(Optional.of(tile15), new Coordinates(3,3));
         Tile tile16=new CargoRed(1, new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),0);
@@ -116,7 +111,6 @@ class CombatZoneTest {
         shipBoard2.positionTile(Optional.of(tile24), new Coordinates(2,2));
         Tile tile25=new EquipCabin( new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),0);
         shipBoard2.positionTile(Optional.of(tile25), new Coordinates(2,4));
-        tile25.setCrewType(CrewType.HUMAN);
         Tile tile27=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),0,3);
         shipBoard2.positionTile(Optional.of(tile27), new Coordinates(3,2));
         Tile tile28=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),0,2);
@@ -196,9 +190,8 @@ class CombatZoneTest {
         int player3_initialDays = player3.getPlayerPosition();
         combatZone.engineChoice(player1.getPlayerName(), 0, new ArrayList<>());
         combatZone.engineChoice(player2.getPlayerName(), 0, new ArrayList<>());
-        combatZone.engineChoice(player3.getPlayerName(), 0, new ArrayList<>());
         assertEquals(player1_initialDays, player1.getPlayerPosition());
-        assertEquals(player2_initialDays - 3, player2.getPlayerPosition());
+        assertEquals(player2_initialDays - 3 , player2.getPlayerPosition());
         assertEquals(player3_initialDays, player3.getPlayerPosition());
     }
 
@@ -224,11 +217,10 @@ class CombatZoneTest {
         int player2_initialCrew = player2.getTotalCrew();
         combatZone.cannonChoice(player1.getPlayerName(), 0, new ArrayList<>());
         combatZone.cannonChoice(player2.getPlayerName(), 0, new ArrayList<>());
-        combatZone.cannonChoice(player3.getPlayerName(), 0, new ArrayList<>());
         ArrayList<Coordinates> crewPenalty =  new ArrayList<>();
         crewPenalty.add(new Coordinates(2,4));
         combatZone.removeCrew(player2.getPlayerName(), crewPenalty);
-        assertEquals(player2_initialCrew - 1, player1.getPlayerPosition());
+        assertEquals(player2_initialCrew - 1, player2.getTotalCrew());
         assertEquals(GameState.DRAW_CARD, game.getGameState());
     }
 }

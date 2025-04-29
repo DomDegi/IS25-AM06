@@ -163,8 +163,7 @@ class SlaversTest {
     void successfully_initialised_executed_negated_all(){
         game.setDrawnCard(slavers);
         game.getDrawnCard().initializeCard(game, viewMap);
-        String input;
-        String[] words;
+
         game.getDrawnCard().cannonChoice("EnnioVolante", 0,new ArrayList<>());
         game.getDrawnCard().cannonChoice("MimmoPericoloso",0, new ArrayList<>());
         game.getDrawnCard().cannonChoice("FedeGalattico",0,new ArrayList<>());

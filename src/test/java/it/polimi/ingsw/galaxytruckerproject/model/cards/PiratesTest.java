@@ -187,16 +187,14 @@ class PiratesTest {
         pirates = new Pirates(1,2,4,6, projectiles);
         game.setDrawnCard(pirates);
         game.getDrawnCard().initializeCard(game, viewMap);
-        game.getDrawnCard().cannonChoice("EnnioVolante", 0, new ArrayList<>());
-        game.getDrawnCard().rollTheDices("EnnioVolante");
         game.getDrawnCard().rollTheDices("EnnioVolante");
         game.getDrawnCard().rollTheDices("EnnioVolante");
         game.getDrawnCard().rollTheDices("EnnioVolante");
         ArrayList<Coordinates> coord = new ArrayList<>();
         coord.add(new Coordinates(3,0));
-        game.getDrawnCard().cannonChoice("MimmoPericoloso", 1, coord);
+        game.getDrawnCard().cannonChoice("MimmoPericoloso", 2, coord);
         game.getDrawnCard().choice("MimmoPericoloso", true);
         assertEquals(6, player1.getCredit());
-
+        assertEquals(GameState.DRAW_CARD, game.getGameState());
     }
 }

@@ -20,10 +20,9 @@ import java.util.Map;
 public class Smugglers extends Enemies{
     private final GoodsPenalty lostGoods;
     private final ArrayList<Goods> rewardGoods;
-    private ArrayList<Player> playerToInteract;
     private Player currentPlayer;
     private VirtualView playersView;
-    private boolean initialized;
+    private int playerIndex = -1;
     private int won;
     private GoodsChecker goodsChecker;
 
@@ -32,9 +31,7 @@ public class Smugglers extends Enemies{
         super(level, requiredDays, cannonStrength);
         this.lostGoods =new GoodsPenalty(lostGoods);
         this.rewardGoods = rewardGoods;
-        this.initialized = false;
         this.currentPlayer = null;
-        this.playerToInteract = new ArrayList<>();
         this.won = 0;
     }
 
@@ -46,20 +43,18 @@ public class Smugglers extends Enemies{
     }
 
     public void nextPlayer() {
-        if (!initialized) {
-            this.initialized = true;
-            this.playerToInteract = game.getListOfInFlightPlayers();
-        } else {
-            if (playerToInteract.isEmpty()) {
-                game.endCardEvent();
-                return;
-            }
-            playerToInteract.removeFirst();
+        playerIndex++;
+        if (playerIndex > game.getNumberOfPlayers() - 1) {
+            game.endCardEvent();
+            return;
         }
-        currentPlayer = playerToInteract.getFirst();
+        currentPlayer = game.getListOfInFlightPlayers().get(playerIndex);
         String playerName = currentPlayer.getPlayerName();
         this.playersView = viewsMap.get(playerName);
         float singleCannonPower = currentPlayer.getShipBoard().getSingleCannonPower();
+        if (singleCannonPower > 0) {
+            singleCannonPower = singleCannonPower + 2*currentPlayer.getShipBoard().getNumPurpleAliens();
+        }
         won = 0;
         if (currentPlayer.IsDisconnected()) {
             if (singleCannonPower > cannonStrength) {
@@ -110,19 +105,19 @@ public class Smugglers extends Enemies{
         Player player = game.identifyPlayerByName(playerName);
         if (!player.getPlayerName().equals(currentPlayer.getPlayerName())) {
             try {
-                viewsMap.get(playerName).setClientState(ClientState.ACTION);
+                viewsMap.get(playerName).showWrongInputMessage();
             }catch(Exception ignored) {}
             return;
         }
         Map<Float,ArrayList<Tile>> returned = player.useCannons(doubleCannonPower, batteriesToUse);
         if (returned == null) {
             try {
-                playersView.setClientState(ClientState.ACTION);
+                playersView.showWrongInputMessage();
             }catch(Exception ignored) {}
             return;
         }
-        notifyModifiedTiles(playerName, returned.values().iterator().next());
         float cannonPower = returned.keySet().iterator().next();
+        notifyModifiedTiles(playerName, returned.get(cannonPower));
         if (cannonPower > cannonStrength) {
             won = 1;
             if (currentPlayer.IsDisconnected()) {
@@ -139,7 +134,7 @@ public class Smugglers extends Enemies{
         }
         else {
             won = -1;
-            if (lostGoods.initializePenalty(game,playersView, currentPlayer)) {
+            if (!lostGoods.initializePenalty(game,playersView, currentPlayer)) {
                 nextPlayer();
             }
             try {
@@ -193,6 +188,7 @@ public class Smugglers extends Enemies{
     public void removeGoods(String playerName, ArrayList<Coordinates> goodsToRemove) {
         Player player = game.identifyPlayerByName(playerName);
         if (!player.getPlayerName().equals(currentPlayer.getPlayerName()) || won != -1) {
+            System.out.println(currentPlayer.getPlayerName());
             try {
                 viewsMap.get(playerName).showWrongInputMessage();
             }catch(Exception ignored) {}

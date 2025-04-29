@@ -65,7 +65,6 @@ class AbandonedStationTest {
         shipBoard1.positionTile(Optional.of(tile1), new Coordinates(0,4));
         Tile tile2=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),0);
         shipBoard1.positionTile(Optional.of(tile2), new Coordinates(1,1));
-        tile2.setCrewType(CrewType.HUMAN);
         Tile tile3=new AlienLifeSupportsSystem( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),0,CrewType.BROWN);
         shipBoard1.positionTile(Optional.of(tile3), new Coordinates(1,2));
         Tile tile4=new CargoRed(3, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),0);
@@ -78,22 +77,18 @@ class AbandonedStationTest {
         shipBoard1.positionTile(Optional.of(tile7), new Coordinates(2,0));
         Tile tile8=new EquipCabin( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),0);
         shipBoard1.positionTile(Optional.of(tile8), new Coordinates(2,1));
-        tile8.setCrewType(CrewType.HUMAN);
         Tile tile9=new EquipCabin( new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),0);
         shipBoard1.positionTile(Optional.of(tile9), new Coordinates(2,2));
-        tile9.setCrewType(CrewType.HUMAN);
         Tile tile10=new Shields( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),0);
         shipBoard1.positionTile(Optional.of(tile10), new Coordinates(2,4));
         Tile tile12=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),0);
         shipBoard1.positionTile(Optional.of(tile12), new Coordinates(2,5));
-        tile12.setCrewType(CrewType.HUMAN);
         Tile tile11=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),0);
         shipBoard1.positionTile(Optional.of(tile11), new Coordinates(2,6));
         Tile tile13=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),0, 2);
         shipBoard1.positionTile(Optional.of(tile13), new Coordinates(3,0));
         Tile tile14=new EquipCabin( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),0);
         shipBoard1.positionTile(Optional.of(tile14), new Coordinates(3,2));
-        tile14.setCrewType(CrewType.HUMAN);
         Tile tile15=new SingleEngine( new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),0);
         shipBoard1.positionTile(Optional.of(tile15), new Coordinates(3,3));
         Tile tile16=new CargoRed(1, new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),0);
@@ -124,7 +119,6 @@ class AbandonedStationTest {
         shipBoard2.positionTile(Optional.of(tile24), new Coordinates(2,2));
         Tile tile25=new EquipCabin( new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),0);
         shipBoard2.positionTile(Optional.of(tile25), new Coordinates(2,4));
-        tile25.setCrewType(CrewType.HUMAN);
         Tile tile26=new Shields( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),0);
         shipBoard2.positionTile(Optional.of(tile26), new Coordinates(2,5));
         Tile tile27=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),0,3);
@@ -157,6 +151,10 @@ class AbandonedStationTest {
         shipBoard3.positionTile(Optional.of(tile35), new Coordinates(3,3));
         shipBoard3.verifyCorrectness();
 
+        player1.setAllCrewToHuman();
+        player2.setAllCrewToHuman();
+        player3.setAllCrewToHuman();
+
         flightBoard.addPlayerToGame(player1);
         flightBoard.addPlayerToGame(player2);
         flightBoard.addPlayerToGame(player3);
@@ -165,6 +163,7 @@ class AbandonedStationTest {
         flightBoard.addToFlightBoard(player3, 1);
     }
 
+    //The first player(3) doesn't get to choose because they don't have enough crew, after him comes player1 and then player2
     @Test
     void successfully_initialize_card () {
         game.setDrawnCard(abandonedStation);
@@ -194,9 +193,20 @@ class AbandonedStationTest {
     }
 
     @Test
-    void successfully_execute_card_accepted_landed_putted () {
-        successfully_initialize_card();
+    void successfully_execute_card_and_discarded_crew () {
         successfully_execute_card_and_accepted();
+        int initialCrew = player1.getTotalCrew();
+        ArrayList<Coordinates> toRemove =  new ArrayList<>();
+        toRemove.add(new Coordinates(1,1));
+        toRemove.add(new Coordinates(2,1));
+        toRemove.add(new Coordinates(1,1));
+        abandonedStation.removeCrew(player1.getPlayerName(), toRemove);
+        assertEquals(initialCrew - 3,player1.getTotalCrew());
+    }
+
+    @Test
+    void successfully_execute_card_accepted_landed_putted () {
+        successfully_execute_card_and_discarded_crew();
         ArrayList<CargoHold> modifiedTiles = new ArrayList<>();
         CargoHold newTile0 = new CargoBlue(3, new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),0);
         newTile0.setCoordinates(new Coordinates(1,4));
@@ -257,19 +267,20 @@ class AbandonedStationTest {
         assertEquals(0,player1.getShipBoard().getAllGoods().size());
     }
 
+    @Test
     void refused_by_everyone() {
         successfully_initialize_card();
         abandonedStation.choice(player1.getPlayerName(), false);
         abandonedStation.choice(player2.getPlayerName(), false);
-        abandonedStation.choice(player3.getPlayerName(), false);
         assertEquals(GameState.DRAW_CARD, game.getGameState());
     }
 
+    @Test
     void wrong_player_chooses() {
         successfully_initialize_card();
+        abandonedStation.choice(player2.getPlayerName(), false);
         abandonedStation.choice(player1.getPlayerName(), false);
         abandonedStation.choice(player3.getPlayerName(), false);
-        abandonedStation.choice(player2.getPlayerName(), false);
         assertEquals(GameState.CARD_EVENT, game.getGameState());
     }
 }

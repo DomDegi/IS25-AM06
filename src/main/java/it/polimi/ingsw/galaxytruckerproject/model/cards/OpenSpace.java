@@ -17,7 +17,7 @@ import java.util.Map;
 public class OpenSpace extends Card {
     private Player currentPlayer = null;
     private ViewInterface currentPlayerView = null;
-    private int playerIndex = 0;
+    private int playerIndex = -1;
     ArrayList<Player> playersToEarlyLand = new ArrayList<>();
     
 
@@ -44,52 +44,52 @@ public class OpenSpace extends Card {
             return;
         }
         Map<Integer,ArrayList<Tile>> returned = currentPlayer.useEngines(numDoubleEngines, batteriesToUse);
-        int engineStrength =  returned.keySet().iterator().next();
-        if (engineStrength == -1) {
+        if (returned == null) {
             try {
                 currentPlayerView.showWrongInputMessage();
-            }catch(Exception ignored) {}
+            } catch(Exception ignored) {}
             return;
         }
+        int engineStrength =  returned.keySet().iterator().next();
         ArrayList<Tile> tiles = returned.get(engineStrength);
         if (!tiles.isEmpty()) {
             notifyModifiedTiles(playerName, tiles);
         }
         this.moveOrEarlyLand(engineStrength);
-        this.nextPlayer();
     }
 
     //moves player forward; early lands if engineStrength == 0
     private void moveOrEarlyLand(int engineStrength) {
         if (engineStrength == 0) {
             playersToEarlyLand.add(currentPlayer);
-            nextPlayer();
-            return;
         }
-        game.getFlightBoard().moveForward(currentPlayer, engineStrength);
-        notifyMovement(currentPlayer);
+        else {
+            game.getFlightBoard().moveForward(currentPlayer, engineStrength);
+            notifyMovement(currentPlayer);
+        }
         nextPlayer();
     }
 
     public void nextPlayer() {
-        if (currentPlayer != null) {
-            playerIndex++;
-        }
+        playerIndex++;
         if (playerIndex > game.getNumberOfPlayers() - 1) {
             for (Player player: playersToEarlyLand) {
                 game.getFlightBoard().earlyLanding(player);
             }
             game.endCardEvent();
+            return;
         }
         this.currentPlayer = game.getListOfInFlightPlayers().get(playerIndex);
         this.currentPlayerView = viewsMap.get(currentPlayer.getPlayerName());
         if (currentPlayer.IsDisconnected() || currentPlayer.getShipBoard().getDoubleEngine().isEmpty() || currentPlayer.getShipBoard().getNumBatteries() == 0) {
             engineChoice(currentPlayer.getPlayerName(), 0, new ArrayList<>());
-            return;
         }
-        try {
-            currentPlayerView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_ENGINE);
-        }catch(Exception ignored) {}
+        else {
+            try {
+                currentPlayerView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_ENGINE);
+            } catch (Exception ignored) {
+            }
+        }
     }
 
     public String toString() {

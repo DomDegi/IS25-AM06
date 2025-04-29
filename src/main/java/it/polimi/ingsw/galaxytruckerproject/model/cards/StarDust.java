@@ -32,6 +32,7 @@ public class StarDust extends Card {
         for (int i = players.size() - 1; i >= 0; i--) {
             currentPlayer = players.get(i);
             int playerExposedConnectors = players.get(i).getShipBoard().countExposedConnectors();
+            game.getFlightBoard().moveBackward(currentPlayer, playerExposedConnectors);
 
             if (playerExposedConnectors > 0) {
                 notifyMovement(currentPlayer);

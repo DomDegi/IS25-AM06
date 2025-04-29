@@ -18,9 +18,9 @@
     AlienSupportSystem, Shields.
   - Auxiliary Classes needed to make the previous work: Coordinates and Goods. 
   - TilesFactory and tiles.json needed to produce the tilesDeck and tilesStack
-  - ShipBoard
-  - Player 
-  - FlightBoard
+  - ShipBoard/LightShipBoard
+  - Player/LightPlayer
+  - FlightBoard/LightFlightBoard
   - Game and the interface it implements: GameInterface
   - GameController and the interface it implements: GameObserver
   - Network: VirtualControllerRMI,VirtualViewRMI, VirtualInterface

@@ -100,6 +100,22 @@ public class MockVirtualView implements VirtualView {
     @Override
     public void setClientState(ClientState newState) throws RemoteException {
         // Implement mock behavior or leave empty
+        switch (newState) {
+            case ACTION -> System.out.println("input yes or no\n");
+            case DRAW_CARD ->  System.out.println("draw card\n");
+            case MANAGE_GOODS -> System.out.println("manage goods\n");
+            case MANAGE_CABINS -> System.out.println("choose aliens or humans\n");
+            case ROLL_DICE -> System.out.println("roll dice\n");
+            case COORD_REQUEST ->  System.out.println("coord request: ");
+            case PLANET_CHOICE ->   System.out.println("planet choice\n");
+            case COLOR_CHOICE ->    System.out.println("color choice\n");
+            case S_MANAGE_DRAWN_TILE ->  System.out.println("s manage drawn tile\n");
+            case S_END_DRAW_TILE_CARD -> System.out.println("s end draw tile card\n");
+            case START_SHIP_CREATION ->  System.out.println("start ship creation\n");
+            case WAIT_OTHER_PLAYER_ACTION -> System.out.println("wait other player action\n");
+            case S_MANAGE_CARDS ->   System.out.println("manage cards\n");
+            case S_FINISHED ->  System.out.println("finished ship\n");
+        }
     }
 
     @Override
@@ -159,6 +175,7 @@ public class MockVirtualView implements VirtualView {
 
     @Override
     public void showWrongInputMessage() throws RemoteException {
+        System.out.println("Wrong input");
         // Implement mock behavior or leave empty
     }
 
@@ -184,7 +201,17 @@ public class MockVirtualView implements VirtualView {
 
     @Override
     public void asksToInputCoordinates(CoordReqType coordReqType) throws RemoteException {
+        setClientState(ClientState.COORD_REQUEST);
         // Implement mock behavior or leave empty
+        switch(coordReqType) {
+            case CHOOSE_CREW -> System.out.println("choose crew to remove\n");
+            case CHOOSE_DOUBLE_ENGINE -> System.out.println("choose double-engine\n");
+            case CHOOSE_DOUBLE_CANNON ->  System.out.println("choose double-cannon\n");
+            case REMOVE_GOODS ->  System.out.println("remove goods\n");
+            case CHOOSE_TO_BREAK ->  System.out.println("choose tile to break\n");
+            case CHOOSE_TO_MAINTAIN ->   System.out.println("choose branch to maintain\n");
+            case CHOOSE_BATTERY -> System.out.println("choose battery to use\n");
+        }
     }
 
     @Override

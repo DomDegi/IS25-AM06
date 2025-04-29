@@ -241,9 +241,12 @@ class PlanetsTest {
         cargo2.addGood(new Goods(RED));
         cargo2.addGood(new Goods(RED));
         ArrayList<CargoHold> modifiedTiles2 = new ArrayList<>();
-        modifiedTiles2.add(cargo1);
+        modifiedTiles2.add(cargo2);
         game.getDrawnCard().planetChoice("FedeGalattico",3);
         game.getDrawnCard().manageGoods(player2.getPlayerName(),player2.getShipBoard().convertGoodsToCredit()+8, modifiedTiles2);
         assertEquals(2,player2.getShipBoard().getAllGoods().size());
+
+        //game.getDrawnCard().planetChoice("pipo",0); //the planets are already over
+        assertEquals(GameState.DRAW_CARD, game.getGameState());
     }
 }

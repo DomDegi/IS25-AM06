@@ -154,6 +154,10 @@ class SmugglersTest {
         shipBoard3.positionTile(Optional.of(tile35), new Coordinates(3,3));
         shipBoard3.verifyCorrectness();
 
+        player1.setAllCrewToHuman();
+        player2.setAllCrewToHuman();
+        player3.setAllCrewToHuman();
+
         flightBoard.addPlayerToGame(player1);
         flightBoard.addPlayerToGame(player2);
         flightBoard.addPlayerToGame(player3);
@@ -186,7 +190,6 @@ class SmugglersTest {
         game.setDrawnCard(smugglers);
         game.getDrawnCard().initializeCard(game, viewMap);
 
-        String input="no";
         game.getDrawnCard().cannonChoice("EnnioVolante", 0, new ArrayList<>());
 
         int batteries=player1.getShipBoard().getNumBatteries();
@@ -330,12 +333,64 @@ class SmugglersTest {
         game.setDrawnCard(smugglers);
         game.getDrawnCard().initializeCard(game, viewMap);
 
-        String input="yes";
-        String[] words= input.split(" ");
         ArrayList<Coordinates> toUse = new ArrayList<>();
         toUse.add(new Coordinates(3,0));
         game.getDrawnCard().cannonChoice("MimmoPericoloso",2,toUse);
         assertEquals(0,player2.getShipBoard().getAllGoods().size());
         assertEquals(batteries-1,player1.getShipBoard().getNumBatteries());
+    }
+
+    @Test
+    void successfully_initialize_disconnected_player_loses(){
+        Goods good1=new Goods(BLUE);
+        Goods good2=new Goods(RED);
+        Goods good3=new Goods(GREEN);
+        Goods good4=new Goods(YELLOW);
+        ArrayList<Goods> rewardGoods =new ArrayList<>();
+        player1.getShipBoard().gainGoods(good2,new Coordinates(1,3));
+        player1.playerDisconnects();
+        int batteries=player1.getShipBoard().getNumBatteries();
+        int goods = player1.getShipBoard().getAllGoods().size();
+
+        rewardGoods.add(good2);
+        rewardGoods.add(good3);
+        rewardGoods.add(good4);
+        rewardGoods.add(good1);
+        rewardGoods.add(good1);
+        smugglers = new Smugglers(1, 2, 15,2,rewardGoods);
+        flightBoard.moveBackward(player3,10);
+
+        game.setDrawnCard(smugglers);
+        game.getDrawnCard().initializeCard(game, viewMap);
+        assertEquals(goods - 1,player1.getShipBoard().getAllGoods().size());
+        assertEquals(batteries-1,player1.getShipBoard().getNumBatteries());
+    }
+
+    @Test
+    void successfully_initialize_disconnected_player_loses_multiple_goods(){
+        Goods good1=new Goods(BLUE);
+        Goods good2=new Goods(RED);
+        Goods good3=new Goods(GREEN);
+        Goods good4=new Goods(YELLOW);
+        ArrayList<Goods> rewardGoods =new ArrayList<>();
+        player1.getShipBoard().gainGoods(good2,new Coordinates(1,3));
+        player1.getShipBoard().gainGoods(good4,new Coordinates(1,3));
+        player1.getShipBoard().gainGoods(good1,new Coordinates(1,4));
+        player1.playerDisconnects();
+        int batteries=player1.getShipBoard().getNumBatteries();
+        int goods = player1.getShipBoard().getAllGoods().size();
+
+        rewardGoods.add(good2);
+        rewardGoods.add(good3);
+        rewardGoods.add(good4);
+        rewardGoods.add(good1);
+        rewardGoods.add(good1);
+        smugglers = new Smugglers(1, 2, 15,2,rewardGoods);
+        flightBoard.moveBackward(player3,10);
+
+        game.setDrawnCard(smugglers);
+        game.getDrawnCard().initializeCard(game, viewMap);
+        assertEquals(goods - 2,player1.getShipBoard().getAllGoods().size());
+        assertEquals(1,player1.getShipBoard().convertGoodsToCredit());
     }
 }
