@@ -19,7 +19,6 @@ import java.util.HashMap;
 
 public class VirtualControllerRMI extends UnicastRemoteObject implements VirtualController{
 
-
     private final MultiGameController multiController;
     //final List<ViewInterface> clients = new ArrayList<>();
     private final HashMap <String, Controller> clients;
@@ -59,7 +58,9 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         clients.get(playerName).leave();
     }
     public void chooseColor(String playerName, PlayersColor color) throws RemoteException {
-        clients.get(playerName).chooseColor(color);
+        if(clients.containsKey(playerName)){
+            clients.get(playerName).chooseColor(color);
+        }
     }
 
 

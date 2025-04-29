@@ -18,8 +18,7 @@ public class CoordInputManager {
     private ArrayList<Coordinates> coordinates;
     private int numBattery;
     private int needed;
-    public CoordInputManager(LightShipBoard lightShipBoard, ClientController clientController)
-    {
+    public CoordInputManager(LightShipBoard lightShipBoard, ClientController clientController) {
         this.lightShipBoard = lightShipBoard;
         this.clientController = clientController;
         coordinates = new ArrayList<>();
@@ -33,7 +32,7 @@ public class CoordInputManager {
         this.coordReqType = coordReqType;
     }
 
-    //needed serve per sapere quande coordinate servono ( ad esempio per quando bisogna scegliere quali   crewmate eliminare), se non è necessario un numero indicare -1
+    //needed serve per sapere quante coordinate servono (ad esempio per quando bisogna scegliere quali crewmate eliminare), se non è necessario un numero indicare -1
     public boolean checkCoord(Coordinates coordinate, int needed) throws RemoteException {
         this.needed = needed;
         Tile tile = lightShipBoard.getTile(coordinate);
@@ -116,9 +115,6 @@ public class CoordInputManager {
 
                 }
             }
-
-
-
         }
         if(coordinates.size()==needed) {
             endCheckingFase();
@@ -126,44 +122,33 @@ public class CoordInputManager {
         return true;
     }
 
-    public void endCheckingFase() throws RemoteException {
-        if(coordReqType == CoordReqType.CHOOSE_DOUBLE_CANNON) {
-            if(numBattery*2 == coordinates.size() ) {
+    public boolean endCheckingFase() throws RemoteException {
+        if(coordReqType == CoordReqType.CHOOSE_DOUBLE_CANNON && numBattery*2 == coordinates.size() ) {
             clientController.getVirtualController().sendDoubleCannonUsed(clientController.getName(),fireStrength,coordinates);
             coordinates.clear();
             fireStrength = 0;
-            numEngine = 0;}
-            else {
-                clientController.getView().wrongLocalInput();
-            }
-            return;
-
+            numEngine = 0;
+            clientController.getView().setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+            return true;
         }
-        if (coordReqType == CoordReqType.CHOOSE_DOUBLE_ENGINE) {
-            if(numBattery*2 == coordinates.size() ) {
-                clientController.getVirtualController().sendNumDoubleEngineUsed(clientController.getName(), numEngine, coordinates);
-                coordinates.clear();
-                numEngine = 0;
-                fireStrength = 0;
-            }
-            else {
-                clientController.getView().wrongLocalInput();
-            }
-            return;
+        if (coordReqType == CoordReqType.CHOOSE_DOUBLE_ENGINE && numBattery*2 == coordinates.size() ) {
+            clientController.getVirtualController().sendNumDoubleEngineUsed(clientController.getName(), numEngine, coordinates);
+            coordinates.clear();
+            numEngine = 0;
+            fireStrength = 0;
+            clientController.getView().setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+            return true;
         }
         if(needed==-1 || needed==coordinates.size()) {
-        clientController.getVirtualController().sendCoordinates(clientController.getName(), coordinates);
-        coordinates.clear();
-        fireStrength = 0;
-        numBattery=0;
-        numEngine = 0;
-        clientController.getView().setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
-
+            clientController.getVirtualController().sendCoordinates(clientController.getName(), coordinates);
+            coordinates.clear();
+            fireStrength = 0;
+            numBattery=0;
+            numEngine = 0;
+            clientController.getView().setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+            return true;
         }
-        else
-        {
-            clientController.getView().wrongLocalInput();
-        }
-        return;
+        clientController.getView().wrongLocalInput();
+        return false;
     }
 }
