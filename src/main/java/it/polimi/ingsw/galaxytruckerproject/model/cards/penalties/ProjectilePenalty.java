@@ -21,7 +21,7 @@ public class ProjectilePenalty extends Penalty {
     private final ArrayList<Projectile> listOfProjectiles;
     private int diceRoll = 0;
     private Defense defenseStatus = null;
-    private ArrayList<Set<Coordinates>> branch = null;
+    private ArrayList<Set<Coordinates>> branch;
     private Coordinates destroyedTile = null;
 
     @JsonCreator
@@ -42,22 +42,67 @@ public class ProjectilePenalty extends Penalty {
         return string.toString();
     }
 
+    public Coordinates hitOrMiss(VirtualView view,Player player) {
+        this.defenseStatus = listOfProjectiles.getFirst().throwProjectile(player, diceRoll, game);
+        System.out.println(this.defenseStatus);
+
+        if (!player.IsDisconnected()) {
+            switch (defenseStatus) {
+                case PROTECTED -> resetForNextProjectile();
+                case HIT -> {
+                    this.destroyedTile = playerGetsHit(player, view);
+                    ArrayList<Coordinates> toRemove = new ArrayList<>();
+                    toRemove.add(destroyedTile);
+                    view.notifyBrokenTile(player.getPlayerName(), toRemove);
+                    if (branch == null) {
+                        resetForNextProjectile();
+                        return destroyedTile;
+                    } else {
+                        try {
+                            view.asksToInputCoordinates(CoordReqType.CHOOSE_TO_MAINTAIN);
+                        }catch(Exception ignored) {}
+                    }
+                    System.out.println('d');
+                }
+                case CHOOSETOUSEBATTERY -> {
+                    if (player.getShipBoard().getNumBatteries() == 0) {
+                        playerGetsHit(player, view);
+                    } else {
+                        try {
+                            view.asksToInputCoordinates(CoordReqType.CHOOSE_BATTERY);
+                        }catch(Exception ignored) {}
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+
     //asks the player to roll the dices
     @Override
     public boolean initializePenalty(GameInterface game, VirtualView view, Player player) {
+        this.defenseStatus = null;
         if (this.game == null) {
             this.game = game;
         }
+
         if (player.IsDisconnected()) {
             game.getDrawnCard().notifyBrokenTiles(player.getPlayerName(), automaticProjectilePenalty(player, view));
             return false;
         }
+
         if (getListOfProjectiles().isEmpty()) {
             return false;
         }
         if (this.diceRoll != 0) {
             hitOrMiss(view, player);
-            return defenseStatus != Defense.PROTECTED;
+            //System.out.println("gogo");
+            System.out.println(defenseStatus);
+            //RETURNS TRUE IF THE SHIPBOARD GETS HIT,
+            // FALSE OTHERWISE.
+            return (defenseStatus != Defense.PROTECTED);
+
         }
         else {
             try {
@@ -83,7 +128,7 @@ public class ProjectilePenalty extends Penalty {
     public void resetForNextProjectile () {
         this.listOfProjectiles.removeFirst();
         diceRoll = 0;
-        defenseStatus = null;
+        //defenseStatus = null;
         branch = null;
         destroyedTile = null;
     }
@@ -99,38 +144,7 @@ public class ProjectilePenalty extends Penalty {
         return hitOrMiss(view, player);
     }
 
-    public Coordinates hitOrMiss(VirtualView view,Player player) {
-        this.defenseStatus = listOfProjectiles.getFirst().throwProjectile(player, diceRoll, game);
-        if (!player.IsDisconnected()) {
-            switch (defenseStatus) {
-                case PROTECTED -> resetForNextProjectile();
-                case HIT -> {
-                    this.destroyedTile = playerGetsHit(player, view);
-                    ArrayList<Coordinates> toRemove = new ArrayList<>();
-                    toRemove.add(destroyedTile);
-                    view.notifyBrokenTile(player.getPlayerName(), toRemove);
-                    if (branch == null) {
-                        resetForNextProjectile();
-                        return destroyedTile;
-                    } else {
-                        try {
-                            view.asksToInputCoordinates(CoordReqType.CHOOSE_TO_MAINTAIN);
-                        }catch(Exception ignored) {}
-                    }
-                }
-                case CHOOSETOUSEBATTERY -> {
-                    if (player.getShipBoard().getNumBatteries() == 0) {
-                        playerGetsHit(player, view);
-                    } else {
-                        try {
-                            view.asksToInputCoordinates(CoordReqType.CHOOSE_BATTERY);
-                        }catch(Exception ignored) {}
-                    }
-                }
-            }
-        }
-        return null;
-    }
+
 
     @Override
     public ArrayList<Coordinates> chooseToMaintain(Player player, ArrayList<Coordinates> received) {

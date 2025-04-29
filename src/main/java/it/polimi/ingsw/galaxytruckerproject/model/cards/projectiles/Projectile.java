@@ -41,6 +41,7 @@ public abstract class Projectile {
      * @return
      */
     public Defense throwProjectile(Player player, int DiceRoll, GameInterface game) {
+        System.out.println("You shouldn't be here ninja");
         return Defense.PROTECTED;
     }
 
@@ -96,7 +97,9 @@ public abstract class Projectile {
                 }
                 Temp= tileTable[i][diceRoll];
             }
+            //System.out.println("Ain't no luck baby");
             coordinatesToDestroy= Optional.of(Temp.get().getCoordinates());
+            System.out.println(coordinatesToDestroy);
             return;
         }
 

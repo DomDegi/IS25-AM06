@@ -15,6 +15,7 @@ public class LargeCannonShot extends Projectile  {
     @Override
     public Defense throwProjectile(Player player, int DiceRoll, GameInterface game) {
         Throw(player, DiceRoll);
+        System.out.println("Ain't no luck baby 2.0");
         if(coordinatesToDestroy.isEmpty()){
             return Defense.PROTECTED;
         }

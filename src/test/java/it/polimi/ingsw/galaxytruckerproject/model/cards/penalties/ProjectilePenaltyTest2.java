@@ -2,10 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards.penalties;
 
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.LargeCannonShot;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.LargeMeteor;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.SmallMeteor;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.*;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
@@ -21,11 +18,11 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ProjectilePenaltyTest {
+class ProjectilePenaltyTest2 {
 
     private Player player;
     private ProjectilePenalty penalty;
-    private ArrayList<Projectile> listOfMeteors1;
+    private ArrayList<Projectile> listOfLargeMeteors;
     private ArrayList<Projectile> listOfMeteorsFull;
     private ArrayList<Projectile> listOfLargeCannonShot1;
     private ShipBoard shipBoard;
@@ -48,7 +45,7 @@ class ProjectilePenaltyTest {
         SingleCannon singleCannonS = new SingleCannon(new Link(Connectors.UNIVERSAL), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH),0);
         SingleCannon singleCannonW = new SingleCannon(new Link(Connectors.SMOOTH), new Link(Connectors.UNIVERSAL), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH),0);
 
-        shipBoard.positionTile(Optional.of(singleCannonN), new Coordinates(3, 1));
+        shipBoard.positionTile(Optional.of(singleCannonN), new Coordinates(3, 6));
         shipBoard.positionTile(Optional.of(singleCannonE), new Coordinates(4, 2));
         shipBoard.positionTile(Optional.of(singleCannonS), new Coordinates(3, 3));
         shipBoard.positionTile(Optional.of(singleCannonW), new Coordinates(2, 2));
@@ -75,8 +72,11 @@ class ProjectilePenaltyTest {
         Tile tile6=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),0);
         shipBoard1.positionTile(Optional.of(tile6), new Coordinates(3,4));
         boolean result=shipBoard1.verifyCorrectness();
+        //verifyCorrectness is needed for the shipboard stats setting
 
-        listOfMeteors1 = new ArrayList<>(List.of(new LargeMeteor(Direction.NORTH)));
+
+        listOfLargeMeteors = new ArrayList<Projectile>(List.of(new LargeMeteor(Direction.NORTH)));
+
 
         listOfMeteorsFull = new ArrayList<>(Arrays.asList(
                 new LargeMeteor(Direction.NORTH),
@@ -89,77 +89,87 @@ class ProjectilePenaltyTest {
                 new SmallMeteor(Direction.WEST)
         ));
 
-        listOfLargeCannonShot1 = new ArrayList<>(List.of(new LargeCannonShot(Direction.NORTH)));
+        listOfLargeCannonShot1 = new ArrayList<Projectile>(List.of(new LargeCannonShot(Direction.NORTH)));
+
     }
 
     @Test
-    void large_meteor_from_north_on_single_cannon() {
+    void largeMeteorFromNorthOnSingleCannon() {
         //System.out.println(shipBoard.toString());
         //System.out.println("Lancio meteore");
         String[] input = {};
-        penalty = new ProjectilePenalty(listOfMeteors1);
-        penalty.setDiceRoll(1);
+
+        //Large Metors
+        penalty = new ProjectilePenalty(listOfLargeMeteors);
+        penalty.setDiceRoll(10);
         boolean returnValue = penalty.initializePenalty(gameLvl2, mockView, player);
         assertFalse(returnValue);
     }
 
 
     @Test
-    void largeCannonShot_from_north_on_small_cannon() {
-        System.out.println(shipBoard.toString());
-        System.out.println("Lancio cannonShot");
+    void largeCannonShotFromNorthOnSmallCannon() {
+        //System.out.println(shipBoard.toString());
+        //System.out.println("Lancio cannonShot");
         penalty = new ProjectilePenalty(listOfLargeCannonShot1);
-        penalty.setDiceRoll(4);
+        penalty.setDiceRoll(10);
         boolean returnValue = penalty.initializePenalty(gameLvl2, mockView, player);
-        assertFalse(returnValue);
-        System.out.println(shipBoard.toString());
+        //THE SHIPBOARD GETS EFFECTIVLY HIT
+        assertTrue(returnValue);
+        //System.out.println(shipBoard.toString());
     }
 
     @Test
-    void ListOfMeteorsFull_test() {
-        System.out.println(shipBoard.toString());
-        System.out.println("Lancio cannonShot");
-        penalty = new ProjectilePenalty(listOfMeteorsFull);
-        boolean returnValue = penalty.initializePenalty(gameLvl2, mockView, player);
-        penalty.randomRollForOne(mockView, player);
-        System.out.println(shipBoard.toString());
-        penalty.printInfoOnAllProjectiles();
-    }
-
-    @Test
-    void large_meteor_from_north_on_double_cannon_activate_Battery() {
+    void largeMeteorFromNorthOnDoubleCannonActivateBattery() {
         //System.out.println(shipBoard.toString());
         //System.out.println("Lancio meteore");
+        penalty = new ProjectilePenalty(listOfLargeMeteors);
         int initialMeteorsCount = penalty.getListOfProjectiles().size();
-        ArrayList<Coordinates> coordinates=new ArrayList<>();
-        coordinates.add(new Coordinates(3,3));
-        penalty = new ProjectilePenalty(listOfMeteors1);
+        System.out.println(initialMeteorsCount);
+
         penalty.setDiceRoll(7);
-        //modified input method to use battery in this test
+
+
         boolean returnValue = penalty.initializePenalty(gameLvl2, mockView,player1);
         assertTrue(returnValue);
+        //COORDINATES OF THE BATTERY COMPONENT
+        ArrayList<Coordinates> coordinates = new ArrayList<>();
+        coordinates.add(new Coordinates(3,3));
+
         penalty.playerUsesBatteryToDefend(player1,coordinates);
+
+        //We expect that the number of batteries decreases by one since a battery has been used in order to activate the DoubleCannon
         assertEquals(1, shipBoard1.getTile(3,3).getNumBatteries());
         assertEquals(initialMeteorsCount - 1, penalty.getListOfProjectiles().size());
     }
+
     @Test
     void large_meteor_from_north_choose_shipboard_to_mantain() {
         //System.out.println(shipBoard.toString());
         //System.out.println("Lancio meteore");
-        shipBoard1.destroyTile(new Coordinates(1,3));
+        //shipBoard1.destroyTile(new Coordinates(1,3));
+
+
+        penalty = new ProjectilePenalty(listOfLargeMeteors);
         int initialMeteorsCount = penalty.getListOfProjectiles().size();
-        ArrayList<Coordinates> coordinates=new ArrayList<>();
-        coordinates.add(new Coordinates(3,3));
-        penalty = new ProjectilePenalty(listOfMeteors1);
+
         penalty.setDiceRoll(8);
         //modified input method to use battery in this test
         boolean returnValue = penalty.initializePenalty(gameLvl2, mockView,player1);
         assertTrue(returnValue);
-        penalty.chooseToMaintain(player1,coordinates);
         assertEquals(shipBoard1.getTilesTable()[2][4],Optional.empty());
+
+        ArrayList<Coordinates> coordinates=new ArrayList<>();
+        coordinates.add(new Coordinates(3,3));
+        penalty.chooseToMaintain(player1,coordinates);
+
+
+
         assertEquals(shipBoard1.getTilesTable()[2][5],Optional.empty());
         System.out.println(shipBoard1.toString());
     }
+
+
 
 
 
