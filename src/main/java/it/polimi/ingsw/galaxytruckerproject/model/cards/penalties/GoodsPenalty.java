@@ -126,18 +126,11 @@ public class GoodsPenalty extends Penalty {
 
     @Override
     public boolean initializePenalty(GameInterface game,VirtualView view, Player player) {
-        if (player.IsDisconnected()) {
-            game.getDrawnCard().notifyModifiedTiles(player.getPlayerName(), automaticGoodsPenalty(player, view));
-            return false;
-        }
         if (player.getShipBoard().isCargoEmpty()) {
             if (player.getShipBoard().getNumBatteries() == 0) {
                 return false;
             }
             this.numberOfBatteries = Math.min(player.getShipBoard().getNumBatteries(), numberOfLostGoods);
-            try {
-                view.asksToInputCoordinates(CoordReqType.REMOVE_GOODS);
-            }catch(Exception ignored) {}
         }
         else {
             if (player.getShipBoard().getAllGoods().size() < numberOfLostGoods) {
@@ -150,6 +143,16 @@ public class GoodsPenalty extends Penalty {
             else {
                 this.numberOfGoods = numberOfLostGoods;
             }
+            if (player.IsDisconnected()) {
+                game.getDrawnCard().notifyModifiedTiles(player.getPlayerName(), automaticGoodsPenalty(player, view));
+                return false;
+            }
+        }
+        if (player.IsDisconnected()) {
+            game.getDrawnCard().notifyModifiedTiles(player.getPlayerName(), automaticGoodsPenalty(player, view));
+            return false;
+        }
+        else {
             try {
                 view.asksToInputCoordinates(CoordReqType.REMOVE_GOODS);
             }catch(Exception ignored) {}
