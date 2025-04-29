@@ -62,6 +62,7 @@ public class ProjectilePenalty extends Penalty {
                             view.asksToInputCoordinates(CoordReqType.CHOOSE_TO_MAINTAIN);
                         }catch(Exception ignored) {}
                     }
+                    System.out.println('d');
                 }
                 case CHOOSETOUSEBATTERY -> {
                     if (player.getShipBoard().getNumBatteries() == 0) {

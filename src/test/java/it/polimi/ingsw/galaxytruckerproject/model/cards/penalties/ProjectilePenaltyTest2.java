@@ -120,25 +120,54 @@ class ProjectilePenaltyTest2 {
     }
 
     @Test
-    void large_meteor_from_north_on_double_cannon_activate_Battery() {
+    void largeMeteorFromNorthOnDoubleCannonActivateBattery() {
         //System.out.println(shipBoard.toString());
         //System.out.println("Lancio meteore");
         penalty = new ProjectilePenalty(listOfLargeMeteors);
         int initialMeteorsCount = penalty.getListOfProjectiles().size();
         System.out.println(initialMeteorsCount);
 
-        ArrayList<Coordinates> coordinates=new ArrayList<>();
-        coordinates.add(new Coordinates(3,3));
-        penalty = new ProjectilePenalty(listOfLargeMeteors);
         penalty.setDiceRoll(7);
-        //modified input method to use battery in this test
+
+
         boolean returnValue = penalty.initializePenalty(gameLvl2, mockView,player1);
         assertTrue(returnValue);
+        //COORDINATES OF THE BATTERY COMPONENT
+        ArrayList<Coordinates> coordinates = new ArrayList<>();
+        coordinates.add(new Coordinates(3,3));
+
         penalty.playerUsesBatteryToDefend(player1,coordinates);
+
+        //We expect that the number of batteries decreases by one since a battery has been used in order to activate the DoubleCannon
         assertEquals(1, shipBoard1.getTile(3,3).getNumBatteries());
         assertEquals(initialMeteorsCount - 1, penalty.getListOfProjectiles().size());
     }
 
+    @Test
+    void large_meteor_from_north_choose_shipboard_to_mantain() {
+        //System.out.println(shipBoard.toString());
+        //System.out.println("Lancio meteore");
+        //shipBoard1.destroyTile(new Coordinates(1,3));
+
+
+        penalty = new ProjectilePenalty(listOfLargeMeteors);
+        int initialMeteorsCount = penalty.getListOfProjectiles().size();
+
+        penalty.setDiceRoll(8);
+        //modified input method to use battery in this test
+        boolean returnValue = penalty.initializePenalty(gameLvl2, mockView,player1);
+        assertTrue(returnValue);
+        assertEquals(shipBoard1.getTilesTable()[2][4],Optional.empty());
+
+        ArrayList<Coordinates> coordinates=new ArrayList<>();
+        coordinates.add(new Coordinates(3,3));
+        penalty.chooseToMaintain(player1,coordinates);
+
+
+
+        assertEquals(shipBoard1.getTilesTable()[2][5],Optional.empty());
+        System.out.println(shipBoard1.toString());
+    }
 
 
 
