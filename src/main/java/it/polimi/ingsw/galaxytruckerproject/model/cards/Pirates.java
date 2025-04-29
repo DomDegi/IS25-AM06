@@ -174,7 +174,7 @@ public class Pirates extends Enemies {
 
     @Override
     public void rollTheDices(String playerName) {
-        if (!playerName.equals(currentPlayer.getPlayerName()) || penaltyIfLose.getDiceRoll() != 0) {
+        if (!playerName.equals(currentPlayer.getPlayerName()) || penaltyIfLose.getDiceRoll() != -1) {
             try {
                 viewsMap.get(playerName).showWrongInputMessage();
             }catch(Exception ignored) {}
