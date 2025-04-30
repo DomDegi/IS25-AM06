@@ -136,7 +136,7 @@ public class GameController implements Observer {
             view.showErrorMessage("player was never connected to this game");
         }
     }
-    /*
+
     public void updateReconnectedPlayer(VirtualView view) {
         Map<String, LightShipBoard> updatedShipBoards = new HashMap<>();
         for (Player player: game.getListOfAllPlayer()) {
@@ -147,7 +147,7 @@ public class GameController implements Observer {
                     game.getDrawnCard(), hourglassTurns, game.getTurnedTiles(), notAvailableCardDecks());
         } catch(Exception ignored) {}
     }
-    */
+
     /**
      * adds player to the gameModel after they enter a valid color for their starting cabin
      * both nickname and color.
