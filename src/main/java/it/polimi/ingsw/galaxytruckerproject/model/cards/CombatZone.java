@@ -299,6 +299,16 @@ public class CombatZone extends Card {
             return;
         }
         Tile batteryComponent = currentPenalty.playerUsesBatteryToDefend(player,batteries);
+        if (batteries.isEmpty() && batteryComponent == null) {
+            currentPenalty.hitOrMiss(currentView, player);
+            Coordinates destroyedTile = currentPenalty.getDestroyedTile();
+            if (currentPenalty.getBranch() == null && destroyedTile != null) {
+                ArrayList<Coordinates> toRemove = new ArrayList<>();
+                toRemove.add(destroyedTile);
+                notifyBrokenTiles(playerName, toRemove);
+            }
+            return;
+        }
         ArrayList<Tile> modifiedTiles = new ArrayList<>();
         modifiedTiles.add(batteryComponent);
         if (batteryComponent != null) {

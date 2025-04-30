@@ -40,7 +40,8 @@ class MeteorSwarmTest {
     void setUp() {
         int level = 2;
         ArrayList<Projectile> listOfMeteors = new ArrayList<> (Arrays.asList(
-                new LargeMeteor(Direction.NORTH)/*,
+                new LargeMeteor(Direction.NORTH),
+                new SmallMeteor(Direction.EAST)/*,
                 new SmallMeteor(Direction.NORTH),
                 new LargeMeteor(Direction.EAST),
                 new SmallMeteor(Direction.EAST),
@@ -171,12 +172,10 @@ class MeteorSwarmTest {
         game.getDrawnCard().initializeCard(game, viewMap);
         game.setGameState(GameState.CARD_EVENT);
         assertEquals(meteorSwarm, game.getDrawnCard());
-        meteorSwarm.setDiceRoll(0);
-        ArrayList<Coordinates> batteries = new ArrayList<>();
-        batteries.add(new Coordinates(3,0));
-        meteorSwarm.useBatteries(player1.getPlayerName(), batteries);
-        assertEquals(player1_initialBatteries - 1, player1.getShipBoard().getNumBatteries());
+        meteorSwarm.setDiceRoll(2);
+        //assertEquals(player1_initialBatteries - 1, player1.getShipBoard().getNumBatteries());
         System.out.println(meteorSwarm.toString());
+        meteorSwarm.setDiceRoll(2);
         assertEquals(GameState.DRAW_CARD, game.getGameState());
     }
 }

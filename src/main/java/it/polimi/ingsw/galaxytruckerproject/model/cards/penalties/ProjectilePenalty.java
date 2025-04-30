@@ -41,9 +41,11 @@ public class ProjectilePenalty extends Penalty {
         }
         return string.toString();
     }
-
-    public Coordinates hitOrMiss(VirtualView view,Player player) {
-        this.defenseStatus = listOfProjectiles.getFirst().throwProjectile(player, diceRoll, game);
+    @Override
+    public Coordinates hitOrMiss(VirtualView view, Player player) {
+        if (defenseStatus == null) {
+            this.defenseStatus = listOfProjectiles.getFirst().throwProjectile(player, diceRoll, game);
+        }
         System.out.println(this.defenseStatus);
 
         if (!player.IsDisconnected()) {
@@ -97,9 +99,6 @@ public class ProjectilePenalty extends Penalty {
         if (this.diceRoll != -1) {
             Coordinates destroyed = hitOrMiss(view, player);
             if (destroyed != null) {
-                ArrayList<Coordinates> toRemove = new ArrayList<>();
-                toRemove.add(destroyed);
-                game.getDrawnCard().notifyBrokenTiles(player.getPlayerName(), toRemove);
                 return false;
             }
             return defenseStatus != Defense.PROTECTED;
@@ -183,6 +182,7 @@ public class ProjectilePenalty extends Penalty {
             return null;
         }
         if (batteries.isEmpty()) {
+            this.defenseStatus = Defense.HIT;
             return null;
         }
         if (player.getShipBoard().chooseBatteryUse(batteries.getFirst())) {
@@ -242,6 +242,18 @@ public class ProjectilePenalty extends Penalty {
             }
         }
         return totalRemovedTiles;
+    }
+    @Override
+    public Defense getDefenseStatus() {
+        return defenseStatus;
+    }
+    @Override
+    public ArrayList<Set<Coordinates>>  getBranch() {
+        return branch;
+    }
+    @Override
+    public Coordinates getDestroyedTile() {
+        return destroyedTile;
     }
 }
 
