@@ -1,22 +1,18 @@
 package it.polimi.ingsw.galaxytruckerproject.network.RMI.Server;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.Controller;
-import it.polimi.ingsw.galaxytruckerproject.controller.MultiGameController;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Cabin;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
-import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class VirtualControllerRMI extends UnicastRemoteObject implements VirtualController, Remote {
 
@@ -162,6 +158,10 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         controller.setView(virtualView);
     }
 
+    @Override
+    public void ping() throws RemoteException{
+        controller.ping();
+    }
 
 
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.client;
 
+import it.polimi.ingsw.galaxytruckerproject.controller.ControllerFactory;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
@@ -822,17 +823,22 @@ public class ClientController {
         this.deck = deck;
     }
 
-    public void setConnected(boolean connected) {
-        this.connected = connected;
-    }
+    public void setConnected(boolean connected) {this.connected = connected;}
 
-    public void setGameMode(GameMode gameMode) {
-        this.gameMode = gameMode;
-    }
+    public void setGameMode(GameMode gameMode) {this.gameMode = gameMode;}
 
     void connectRMI() throws MalformedURLException, NotBoundException, RemoteException {
-        virtualController=(VirtualController) Naming.lookup("rmi://localhost/VirtualController");
+        ControllerFactory controllerFactory=(ControllerFactory) Naming.lookup("rmi://localhost/VirtualController");
+        virtualController=controllerFactory.createController();
         virtualController.setView(this.view);
+    }
+
+    public void ping()  {
+        try {
+            virtualController.ping();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 

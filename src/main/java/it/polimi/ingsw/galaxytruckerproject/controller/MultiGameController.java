@@ -218,4 +218,14 @@ public class MultiGameController {
             joinableGamesList(key, value);
         }
     }
+
+    public void playPingPong(){
+        while(true){
+            for(GameController game : gamesMap.values()){
+                for(String playerName : game.getActivePlayers().keySet()){
+                    game.pingPong(playerName,game.getViewFromNickname(playerName));
+                }
+            }
+        }
+    }
 }

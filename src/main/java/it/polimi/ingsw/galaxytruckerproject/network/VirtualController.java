@@ -67,6 +67,8 @@ public interface VirtualController extends Remote, Serializable {
 
     void setView(VirtualView virtualView) throws RemoteException;
 
+    void ping() throws RemoteException;
+
 
     //METODI CON USAGE CHE SONO STATI MODIFICATI(DA CONTROLLARE CON FEDERICO)
     //void notifySetTile( String playerName, Coordinates coordinates, Tile tile) throws RemoteException;

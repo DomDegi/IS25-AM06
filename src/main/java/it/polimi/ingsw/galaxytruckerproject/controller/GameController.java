@@ -20,7 +20,7 @@ import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.rmi.RemoteException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.*;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.TRIAL;
 
@@ -33,6 +33,7 @@ public class GameController implements Observer {
     private final Map<String, VirtualView> playersViewMap;
     private final Map<String, Player> activePlayers;
     private final Map<String, Player> disconnectedPlayers;
+    private final Map<String, CompletableFuture<Void>> pendingPongs = new ConcurrentHashMap<>();
     private final ArrayList<Player> playersToEarlyLand = new ArrayList<>();
     private final ConcurrentHashMap<String, Integer> lockedSmallDecks = new ConcurrentHashMap<>();
     private int hourglassTurns = 0;
@@ -994,5 +995,48 @@ public class GameController implements Observer {
      */
     public ViewInterface getViewFromNickname(String playerName) {
         return playersViewMap.get(playerName);
+    }
+
+    public void pingPong(String playerName, ViewInterface view){
+        Player player=activePlayers.get(playerName);
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        pendingPongs.put(playerName, future);
+        try{
+            view.ping();
+            future.get(5, TimeUnit.SECONDS);
+
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            activePlayers.remove(playerName);
+            disconnectedPlayers.put(playerName,player);
+            player.setDisconnected(true);
+            System.out.println(playerName+" disconnected");
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            activePlayers.remove(playerName);
+            disconnectedPlayers.put(playerName,player);
+            System.out.println(playerName+" disconnected");
+            player.setDisconnected(true);
+            throw new RuntimeException(e);
+        } catch (TimeoutException e) {
+            activePlayers.remove(playerName);
+            disconnectedPlayers.put(playerName,player);
+            player.setDisconnected(true);
+            System.out.println(playerName+" disconnected");
+            throw new RuntimeException(e);
+        }finally {
+            pendingPongs.remove(playerName);
+        }
+    }
+    public void pong(String nickname) {
+        CompletableFuture<Void> future = pendingPongs.get(nickname);
+        if (future != null) {
+            future.complete(null);
+        }
+    }
+
+    public Map<String, Player> getActivePlayers() {
+        return activePlayers;
     }
 }

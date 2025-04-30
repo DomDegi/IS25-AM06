@@ -198,6 +198,11 @@ public class TUI implements DisplayableView{
     }
 
     @Override
+    public void ping() throws RemoteException {
+        
+    }
+
+    @Override
     public void printCabins(Tile cabins) {
         System.out.println("choose equip type of:"+cabins.toString());
     }

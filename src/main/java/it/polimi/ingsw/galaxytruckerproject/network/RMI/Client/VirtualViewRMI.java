@@ -205,6 +205,11 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     }
 
     @Override
+    public void ping() throws RemoteException {
+        clientController.ping();
+    }
+
+    @Override
     public void notifyModifiedTiles(String playerName, ArrayList<Tile> tiles) throws RemoteException {
         clientController.modifyTiles(playerName, tiles);
         if (playerName.equals(clientController.getName())) {

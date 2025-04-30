@@ -222,5 +222,9 @@ public class Controller implements ControllerInterface {
     public VirtualView getView() {
         return view;
     }
+
+    public void ping(){
+        gameController.pong(nickname);
+    }
 }
 
