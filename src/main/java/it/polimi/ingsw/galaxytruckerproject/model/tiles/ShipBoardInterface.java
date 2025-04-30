@@ -10,6 +10,7 @@ import java.util.Set;
 public interface ShipBoardInterface {
 
     public void initializeTestFlight();
+
     public void initializeLevel2();
 
     public Tile getTile(Coordinates coordinates);
