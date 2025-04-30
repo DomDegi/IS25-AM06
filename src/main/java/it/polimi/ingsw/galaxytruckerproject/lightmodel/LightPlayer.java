@@ -76,4 +76,7 @@ public class LightPlayer implements PlayerInterface {
     public int getCredits() {
         return credits;
     }
+    public void SetPlayerShip(LightShipBoard shipBoard){
+        this.shipboard = shipBoard;
+    }
 }
