@@ -165,8 +165,10 @@ public class LightShipBoard implements ShipBoardInterface{
     public boolean positionTile(Optional<Tile> tile, Coordinates coordinates) {
         if (tile.isPresent() && tilesTable[coordinates.getX()][coordinates.getY()].isEmpty()) {
             tilesTable[coordinates.getX()][coordinates.getY()] = tile;
-            tile.get().setCoordinates(coordinates);
             tile.get().setShipBoard(this);
+            tile.get().setCoordinates(coordinates);
+
+
             /*we're going to add the class tile also in the client. IF so we need to add this:
             //Personally I don't think we should but we'll see
             tile.get().setShipBoard(this);
