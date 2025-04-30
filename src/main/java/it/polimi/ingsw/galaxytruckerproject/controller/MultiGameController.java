@@ -221,11 +221,13 @@ public class MultiGameController {
 
     public void playPingPong(){
         while(true){
-            for(GameController game : gamesMap.values()){
-                for(String playerName : game.getActivePlayers().keySet()){
-                    game.pingPong(playerName,game.getViewFromNickname(playerName));
+            if(gamesMap!=null)
+                for(GameController game : gamesMap.values()){
+                    if(game.getActivePlayers()!=null)
+                        for(String playerName : game.getActivePlayers().keySet()){
+                            game.pingPong(playerName,game.getViewFromNickname(playerName));
+                        }
                 }
-            }
         }
     }
 }
