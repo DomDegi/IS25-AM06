@@ -1,122 +1,121 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
-import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.Set;
 
 public interface ShipBoardInterface {
 
-    public void initializeTestFlight();
-    public void initializeLevel2();
+    void initializeTestFlight();
 
-    public Tile getTile(Coordinates coordinates);
+    void initializeLevel2();
 
-    public ArrayList<Coordinates> getCargoHoldCoordinates();
+    Tile getTile(Coordinates coordinates);
 
-    public ArrayList<Coordinates> getBatteryCoordinates();
+    ArrayList<Coordinates> getCargoHoldCoordinates();
 
-    public ArrayList<Coordinates> getCabinsCoordinates();
+    ArrayList<Coordinates> getBatteryCoordinates();
 
-    public ArrayList<Coverage> getCoverageShields();
+    ArrayList<Coordinates> getCabinsCoordinates();
 
-    public PlayerInterface getPlayer();
+    ArrayList<Coverage> getCoverageShields();
 
-
-
-    public Tile getTile(int x, int y);
-
-    public Optional<Tile>[][] getTilesTable();
-
-    //public void setHumanCrew(int humanCrew);
-
-    //public int getPenalty();
-
-    //public Player getPlayer();
-
-   // public int getNumBatteries();
-
-   // public float getSingleCannonPower();
-
-   // public ArrayList<Coordinates> getDoubleCannon();
-
-    //public int getNumSingleEngine();
-
-   // public ArrayList<Coordinates> getDoubleEngine();
-
-    //public int getNumPurpleAliens();
-
-   // public int getNumHumanCrew();
-
-  //  public int getNumExposedConnectors();
-
-   // public int getDoubleCannonPower(Coordinates coordinates);
-
-   // public ArrayList<Coordinates> getBatteryCoordinates();
-
-   // public ArrayList<Coverage> getCoverageShields();
-
-    //public ArrayList<Coordinates> getCargoHoldCoordinates();
-
-    //public ArrayList<Coordinates> getCabinsCoordinates();
-
-    //public Optional<Tile>[][] getTilesTable();
-
-    public void addBreakSingleCannonPower(float power);
-
-    public void addBreakSingleEngine(boolean ab);
-
-    public void addBreakDoubleEngine(boolean ab, Coordinates coordinates);
-
-    public void addBreakDoubleCannon(boolean ab, Coordinates coordinates);
-
-    public void addBreakBrownAliens(boolean ab);
-
-    public void addBreakPurpleAliens(boolean ab);
-
-    public void addBreakHumanCrew(int num);
-
-    public void addBreakBatteries(int num);
-
-    public void addPenalty();
-
-    public boolean addBookedTile(Tile tile);
-
-    public ArrayList<Tile> getBookedTiles();
-
-    public Tile removeBookedTile(int num);
-
-    public boolean positionTile(Optional<Tile> tile, Coordinates coordinates);
-
-    //public void destroyForCorrection(Coordinates coordinates);
-
-    //public ArrayList<Set<Coordinates>> destroyTile(Coordinates coordinates);
-
-    public boolean checkEarlyLanding();
+    PlayerInterface getPlayer();
 
 
 
-    public boolean chooseCrewToRemove(Coordinates coordinates);
+    Tile getTile(int x, int y);
 
-    public ArrayList<Tile> epidemic();
+    Optional<Tile>[][] getTilesTable();
 
-    public boolean chooseBatteryUse(Coordinates coordinates);
+    //void setHumanCrew(int humanCrew);
 
-    public Coverage chooseShields(Coordinates shieldCoordinates, Coordinates batteryCoordinates);
+    //int getPenalty();
 
-    public int gainGoods(Goods goods, Coordinates coordinates);
+    //Player getPlayer();
 
-    public void removeGood(Goods good, Coordinates coordinates);
+    // int getNumBatteries();
 
-    public boolean isCargoEmpty();
+    // float getSingleCannonPower();
+
+    // ArrayList<Coordinates> getDoubleCannon();
+
+    //int getNumSingleEngine();
+
+    // ArrayList<Coordinates> getDoubleEngine();
+
+    //int getNumPurpleAliens();
+
+    // int getNumHumanCrew();
+
+    //  int getNumExposedConnectors();
+
+    // int getDoubleCannonPower(Coordinates coordinates);
+
+    // ArrayList<Coordinates> getBatteryCoordinates();
+
+    // ArrayList<Coverage> getCoverageShields();
+
+    //ArrayList<Coordinates> getCargoHoldCoordinates();
+
+    //ArrayList<Coordinates> getCabinsCoordinates();
+
+    //Optional<Tile>[][] getTilesTable();
+
+    void addBreakSingleCannonPower(float power);
+
+    void addBreakSingleEngine(boolean ab);
+
+    void addBreakDoubleEngine(boolean ab, Coordinates coordinates);
+
+    void addBreakDoubleCannon(boolean ab, Coordinates coordinates);
+
+    void addBreakBrownAliens(boolean ab);
+
+    void addBreakPurpleAliens(boolean ab);
+
+    void addBreakHumanCrew(int num);
+
+    void addBreakBatteries(int num);
+
+    void addPenalty();
+
+    boolean addBookedTile(Tile tile);
+
+    ArrayList<Tile> getBookedTiles();
+
+    Tile removeBookedTile(int num);
+
+    boolean positionTile(Optional<Tile> tile, Coordinates coordinates);
+
+    //void destroyForCorrection(Coordinates coordinates);
+
+    //ArrayList<Set<Coordinates>> destroyTile(Coordinates coordinates);
+
+    boolean checkEarlyLanding();
 
 
 
-    public ArrayList<Goods> getAllGoods();
+    boolean chooseCrewToRemove(Coordinates coordinates);
 
-    public void addBattery(Coordinates coordinates);
+    ArrayList<Tile> epidemic();
+
+    boolean chooseBatteryUse(Coordinates coordinates);
+
+    Coverage chooseShields(Coordinates shieldCoordinates, Coordinates batteryCoordinates);
+
+    int gainGoods(Goods goods, Coordinates coordinates);
+
+    void removeGood(Goods good, Coordinates coordinates);
+
+    boolean isCargoEmpty();
+
+
+
+    ArrayList<Goods> getAllGoods();
+
+    void addBattery(Coordinates coordinates);
 
 
 }

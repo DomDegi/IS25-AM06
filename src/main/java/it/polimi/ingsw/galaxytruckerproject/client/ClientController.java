@@ -177,123 +177,6 @@ public class ClientController {
                 view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
             }
 
-            case DRAW_CARD ->{
-                virtualController.drawCards(this.name);
-                view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
-            }
-
-            case ACTION-> {
-                if (checkShipBoards(words))
-                    return true;
-                if (land(words))
-                    return true;
-                switch (words[0]){
-                    case "yes" ->
-                        virtualController.sendYes(this.name);
-                    case "no" ->
-                        virtualController.sendNo(this.name);
-                    default->{
-                        view.wrongLocalInput();
-                        return false;
-                    }
-                }
-                view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
-            }
-
-            case PLANET_CHOICE-> {
-                if (checkShipBoards(words))
-                    return true;
-                if (land(words))
-                    return true;
-                if (words[0].equals("no"))
-                    words[0]="0";
-                int chose=numerate(words);
-                if(chose==-1)
-                    return false;
-                Planets planet=(Planets) displayedCard;
-                if (chose >= 0 && chose <planet.getListOfPlanets().size()) {
-                    indexDeckInHandOrPlanet = chose;
-                    virtualController.planetChoiceRequest(this.name,chose);
-                    view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
-                }
-            }
-
-            case MANAGE_GOODS-> {
-                if(!inManager){
-                    goodsManager = new GoodsManager(me, goodsList);
-                    inManager=true;
-                }
-                if (checkShipBoards(words))
-                    return true;
-                if (land(words))
-                    return true;
-                HashSet<CargoHold> newTilesGoods = goodsManager.getReward(words);
-                ArrayList<CargoHold> newTiles;
-                if (!newTilesGoods.isEmpty()) {
-                    newTiles = new ArrayList<>(newTilesGoods);
-                    if (newTiles.getFirst().getTotSpaces() == -1){
-                        newTiles.clear();
-                    }
-                    int goodsVal = me.getShipBoard().convertGoodsToCredit();
-                    virtualController.notifyNewGoodsArrangement(this.name,goodsVal,newTiles);
-                    inManager=false;
-                    view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
-                }
-            }
-
-            case MANAGE_CABINS -> {
-                if(gameMode==GameMode.LEVEL2){
-                    if (!inManager) {
-                    cabinsManager = new CabinsManager(me);
-                    inManager = true;
-                    }
-                    CrewType type;
-                    ArrayList<Tile> newTiles = new ArrayList<>();
-                    switch (words[0]) {
-                        case "humans" -> type = CrewType.HUMAN;
-                        case "brownalien" -> type = CrewType.BROWN;
-                        case "purplealien" -> type = CrewType.PURPLE;
-                        default -> {
-                            view.wrongLocalInput();
-                            return false;
-                        }
-                    }
-                    if (me.getShipBoard().getCabinsCoordinates().isEmpty()) {
-                        virtualController.notifyNewCrewArrangement(this.name, newTiles);
-                        inManager = false;
-                        view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
-                    } else {
-                        newTiles = cabinsManager.manageCabins(type);
-                        if (!newTiles.isEmpty()) {
-                            virtualController.notifyNewCrewArrangement(this.name, newTiles);
-                            inManager = false;
-                            view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
-                        }
-                    }
-                }
-            }
-
-            case COORD_REQUEST -> {
-                if (checkShipBoards(words))
-                    return true;
-                if (phase != GamePhases.CARDS) {
-                    if (land(words))
-                        return true;
-                }
-                if (words[0].equals("done"))
-                    return coordInputManager.endCheckingFase();
-                else {
-                    //gestire il -1 in base alla carta
-                    Coordinates coords = transformCoordinates(words);
-                    if(coords==null)
-                        return false;
-                    if(!coordInputManager.checkCoord(coords, -1)) {
-                        view.wrongLocalInput();
-                        return false;
-                    }
-                }
-            }
-
             case START_SHIP_CREATION -> {
                 return firstHourglassTurn(words);
             }
@@ -452,18 +335,127 @@ public class ClientController {
                     int chose = numerate(scroll(words, 0));
                     if (chose == -1)
                         return false;
-                    if (chose > 0 && flightBoard.getInGamePlayers().size() > chose) {
+                    if (chose > 0 &&  chose < flightBoard.getInGamePlayers().size()) {
                         virtualController.notifySetPosition(name, chose);
+                        view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                     } else {
                         view.wrongLocalInput();
                         return false;
                     }
+                } else {
+                    view.wrongLocalInput();
+                    return false;
                 }
             }
 
             case ROLL_DICE->{
                 virtualController.rollTheDices(name);
                 view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+            }
+
+            case DRAW_CARD ->{
+                virtualController.drawCards(this.name);
+                view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+            }
+
+            case ACTION-> {
+                if (checkShipBoards(words))
+                    return true;
+                if (land(words))
+                    return true;
+                switch (words[0]){
+                    case "yes" ->
+                            virtualController.sendYes(this.name);
+                    case "no" ->
+                            virtualController.sendNo(this.name);
+                    default->{
+                        view.wrongLocalInput();
+                        return false;
+                    }
+                }
+                view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+            }
+
+            case PLANET_CHOICE-> {
+                if (checkShipBoards(words))
+                    return true;
+                if (land(words))
+                    return true;
+                if (words[0].equals("no"))
+                    words[0]="0";
+                int chose=numerate(words);
+                if(chose==-1)
+                    return false;
+                Planets planet=(Planets) displayedCard;
+                if (chose >= 0 && chose <planet.getListOfPlanets().size()) {
+                    indexDeckInHandOrPlanet = chose;
+                    virtualController.planetChoiceRequest(this.name,chose);
+                    view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                }
+            }
+
+            case MANAGE_GOODS-> {
+                if (checkShipBoards(words))
+                    return true;
+                if (land(words))
+                    return true;
+                HashSet<CargoHold> newTilesGoods = goodsManager.getReward(words);
+                ArrayList<CargoHold> newTiles;
+                if (!newTilesGoods.isEmpty()) {
+                    newTiles = new ArrayList<>(newTilesGoods);
+                    if (newTiles.getFirst().getTotSpaces() == -1){
+                        newTiles.clear();
+                    }
+                    int goodsVal = me.getShipBoard().convertGoodsToCredit();
+                    virtualController.notifyNewGoodsArrangement(this.name,goodsVal,newTiles);
+                    inManager=false;
+                    view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                }
+            }
+
+            case MANAGE_CABINS -> {
+                if(gameMode==GameMode.LEVEL2){
+                    CrewType type;
+                    ArrayList<Tile> newTiles = new ArrayList<>();
+                    switch (words[0]) {
+                        case "humans" -> type = CrewType.HUMAN;
+                        case "brownalien" -> type = CrewType.BROWN;
+                        case "purplealien" -> type = CrewType.PURPLE;
+                        default -> {
+                            view.wrongLocalInput();
+                            return false;
+                        }
+                    }
+                    if (!(me.getShipBoard().getCabinsCoordinates().isEmpty()||me.getShipBoard().getCabinsCoordinates().size()==1)) {
+                        newTiles = cabinsManager.manageCabins(type);
+                        if (!newTiles.isEmpty()) {
+                            virtualController.notifyNewCrewArrangement(this.name, newTiles);
+                            inManager = false;
+                            view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                        }
+                    }
+                }
+            }
+
+            case COORD_REQUEST -> {
+                if (checkShipBoards(words))
+                    return true;
+                if (phase == GamePhases.CARDS) {
+                    if (land(words))
+                        return true;
+                }
+                if (words[0].equals("done"))
+                    return coordInputManager.endCheckingFase();
+                else {
+                    //gestire il -1 in base alla carta
+                    Coordinates coords = transformCoordinates(words);
+                    if(coords==null)
+                        return false;
+                    if(!coordInputManager.checkCoord(coords, -1)) {
+                        view.wrongLocalInput();
+                        return false;
+                    }
+                }
             }
 
             case WAIT_OTHER_PLAYER_ACTION->{
@@ -496,20 +488,6 @@ public class ClientController {
                 me.setShipboard(new LightShipBoard(me));
                 phase = GamePhases.SHIPBOARD;
             }
-            case DRAW_CARD -> {
-                phase = GamePhases.CARDS;
-                if(me.getRank()!=1){
-                    view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
-                }
-            }
-            case MANAGE_GOODS -> {
-                if(!inManager){
-                    goodsManager = new GoodsManager(me, goodsList);
-                    inManager=true;
-                }
-                goodsManager.goodsPrinter(goodsList);
-                System.out.print("Chose for each good where to put it, input 'no' to stop:\n");
-            }
             case S_END_DRAW_TILE_CARD ->
                     view.showTurnedTiles(turnedTiles);
             case S_MANAGE_CARDS -> {
@@ -519,11 +497,17 @@ public class ClientController {
                 }
             }
             case MANAGE_CABINS -> {
-                if (gameMode == GameMode.TRIAL) {
-                    if (!inManager) {
-                        cabinsManager = new CabinsManager(me);
-                        inManager = true;
+                if (!inManager) {
+                    cabinsManager = new CabinsManager(me);
+                    inManager = true;
+                }
+                if (gameMode == GameMode.LEVEL2) {
+                    if (me.getShipBoard().getCabinsCoordinates().isEmpty()||me.getShipBoard().getCabinsCoordinates().size()==1) {
+                        virtualController.notifyNewCrewArrangement(this.name, new ArrayList<>());
+                        inManager = false;
+                        view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                     }
+                }else if (gameMode == GameMode.TRIAL) {
                     CrewType type = CrewType.HUMAN;
                     ArrayList<Tile> newTiles = new ArrayList<>();
                     for (Coordinates cabinsCoordinates : me.getShipBoard().getCabinsCoordinates()) {
@@ -542,6 +526,20 @@ public class ClientController {
             case ROLL_DICE -> {
                 view.printProjectile(displayedCard.getListOfProjectiles().getFirst());
                 displayedCard.getListOfProjectiles().removeFirst();
+            }
+            case DRAW_CARD -> {
+                phase = GamePhases.CARDS;
+                if(me.getRank()!=1){
+                    view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                }
+            }
+            case MANAGE_GOODS -> {
+                if(!inManager){
+                    goodsManager = new GoodsManager(me, goodsList);
+                    inManager=true;
+                }
+                goodsManager.goodsPrinter(goodsList);
+                System.out.print("Chose for each good where to put it, input 'no' to stop:\n");
             }
         }
     }
@@ -610,6 +608,7 @@ public class ClientController {
             }
             hourglassTurns=2;
             virtualController.sendTurnHourGlass(this.name);
+            view.setClientState(state);
             return true;
         }
         return false;
@@ -621,7 +620,10 @@ public class ClientController {
                 view.wrongLocalInput();
                 return false;
             }
-            hourglassTurns=3;
+            if(hourglassTurns==1)
+                hourglassTurns=2;
+            else
+                hourglassTurns=3;
             virtualController.sendTurnHourGlass(this.name);
             view.setClientState(ClientState.S_FINISHED);
             return true;

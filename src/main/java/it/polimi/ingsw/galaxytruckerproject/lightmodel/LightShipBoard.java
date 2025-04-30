@@ -44,6 +44,7 @@ public class LightShipBoard implements ShipBoardInterface{
         this.crewCoordinates = new ArrayList<>();
         this.credit = 0;
         this. player = new LightPlayer(this.shipBoard.getPlayer());
+
     }
 
     public LightShipBoard(LightPlayer player) {
@@ -52,6 +53,7 @@ public class LightShipBoard implements ShipBoardInterface{
         this.cargoHoldCoordinates = new ArrayList<>();
         this.crewCoordinates = new ArrayList<>();
         this.credit = 0;
+
     }
 
     //the Client will intialize which level he wants to play. Then he's going to comunicate it to ShipBoard in the
@@ -163,7 +165,7 @@ public class LightShipBoard implements ShipBoardInterface{
         if (tile.isPresent() && tilesTable[coordinates.getX()][coordinates.getY()].isEmpty()) {
             tilesTable[coordinates.getX()][coordinates.getY()] = tile;
             tile.get().setCoordinates(coordinates);
-
+            tile.get().setShipBoard(this);
             /*we're going to add the class tile also in the client. IF so we need to add this:
             //Personally I don't think we should but we'll see
             tile.get().setShipBoard(this);
@@ -438,21 +440,21 @@ public class LightShipBoard implements ShipBoardInterface{
         }
     }
 
-public String toString(){
+    public String toString(){
 
-    StringBuilder s = new StringBuilder("Shipboard: ");
-    for (int i = 0; i < 5; i++) {
-        for (int j = 0; j < 7; j++) {
-            if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable()) {
-                s.append(tilesTable[i][j].get().toString());
-                s.append("\n");
+        StringBuilder s = new StringBuilder("Shipboard: ");
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 7; j++) {
+                if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable()) {
+                    s.append(tilesTable[i][j].get().toString());
+                    s.append("\n");
+                }
             }
+            s.append("\n-\n");
         }
-        s.append("\n-\n");
+        s.append("\ncredit:"+credit + "\n");
+        return s.toString();
     }
-    s.append("\ncredit:"+credit + "\n");
-    return s.toString();
-}
     public boolean checkEarlyLanding() {
         return numHumanCrew == 0;
     }
@@ -580,15 +582,4 @@ public String toString(){
         this.bookedTiles = shipBoard.getBookedTiles();
     }
     */
-
-
-
-
-
-
-
-
-
-
-
 }

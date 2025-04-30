@@ -62,7 +62,7 @@ public class LightPlayer implements PlayerInterface {
     public void bookTile(Tile tile) throws RemoteException {
        boolean mustBeTrue= shipboard.addBookedTile(tile);
        if(!mustBeTrue){
-           System.out.println("error in tile boooking "+tile);
+           System.out.println("error in tile booking "+tile);
        }
     }
 

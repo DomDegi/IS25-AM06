@@ -193,13 +193,14 @@ public class GoodsManager {
         AtomicInteger i = new AtomicInteger(1);
         goodsArray.forEach(goods -> {
             if(goods.getColor()==GoodsColor.BLUE){
-                sb.append(i).append(" - ").append(ANSI_BLUE).append(goods.getColor()).append(" ").append(ANSI_RESET).append("good: it equals to ").append(goods.getValue()).append(" cosmic credits\n");
+                System.out.printf(i+" - " + ANSI_BLUE + goods.getColor() + ANSI_RESET+" good: it equals to " + goods.getValue()+" cosmic credits\n");
             }else if(goods.getColor()==GoodsColor.GREEN){
-                sb.append(i).append(" - ").append(ANSI_GREEN).append(goods.getColor()).append(" ").append(ANSI_RESET).append("good: it equals to ").append(goods.getValue()).append(" cosmic credits\n");
+                System.out.printf(i+" - " + ANSI_GREEN + goods.getColor() + ANSI_RESET+" good: it equals to " + goods.getValue()+" cosmic credits\n");
             }else if(goods.getColor()==GoodsColor.YELLOW){
-                sb.append(i).append(" - ").append(ANSI_YELLOW).append(goods.getColor()).append(" ").append(ANSI_RESET).append("good: it equals to ").append(goods.getValue()).append(" cosmic credits\n");
+                System.out.printf(i+" - " + ANSI_YELLOW + goods.getColor() + ANSI_RESET+" good: it equals to " + goods.getValue()+" cosmic credits\n");
             }else if(goods.getColor()==GoodsColor.RED){
-                sb.append(i).append(" - ").append(ANSI_RED).append(goods.getColor()).append(" ").append(ANSI_RESET).append("good: it equals to ").append(goods.getValue()).append(" cosmic credits\n");
+                System.out.printf(i+" - " + ANSI_RED + goods.getColor() + ANSI_RESET+" good: it equals to " + goods.getValue()+" cosmic credits\n");
+                //sb.append(i).append(" - ").append(ANSI_RED).append(goods.getColor()).append(" ").append(ANSI_RESET).append("good: it equals to ").append(goods.getValue()).append(" cosmic credits\n");
             }
             i.getAndIncrement();
         });

@@ -7,9 +7,10 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.CrewType;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class CabinsManager {
-    private LightPlayer lightPlayer;
+    private final LightPlayer lightPlayer;
     private ArrayList<Coordinates> cabins;
     ArrayList<Tile> modifiedCabins = new ArrayList<>();
     private int index;
@@ -24,10 +25,14 @@ public class CabinsManager {
         if (!initialized) {
             setup();
         }else {
+            if(!cabins.get(index).equals( new Coordinates(2, 3))) {
+                index++;
+            }
             lightPlayer.getShipBoard().getTile(cabins.get(index)).setCrewType(crewType);
             modifiedCabins.add(lightPlayer.getShipBoard().getTile(cabins.get(index)));
             index++;
             if (index >= cabins.size()) {
+                initialized = false;
                 return modifiedCabins;
             }
         }
@@ -36,5 +41,6 @@ public class CabinsManager {
 
     public void setup() {
         System.out.println(cabins.get(index));
+        initialized = true;
     }
 }
