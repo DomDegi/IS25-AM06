@@ -145,6 +145,6 @@ public interface ViewInterface extends Remote, Serializable {
     void printCabins(Tile cabins) throws RemoteException;
     void connected() throws RemoteException;
     void setGameMode(GameMode gameMode) throws RemoteException;
-
     void ping() throws RemoteException;
+    void goodsPrinter (ArrayList<Goods> goodsArray) throws RemoteException;
 }

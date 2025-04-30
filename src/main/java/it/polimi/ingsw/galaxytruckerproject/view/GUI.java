@@ -268,4 +268,14 @@ public class GUI implements DisplayableView {
 
     }
 
+    @Override
+    public void ping() throws RemoteException {
+
+    }
+
+    @Override
+    public void goodsPrinter(ArrayList<Goods> goodsArray) throws RemoteException {
+
+    }
+
 }

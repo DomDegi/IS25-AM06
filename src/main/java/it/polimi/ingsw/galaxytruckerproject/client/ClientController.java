@@ -106,7 +106,7 @@ public class ClientController {
                     case "tui"->
                         this.displayableView=new TUI();
                     default->{
-                        view.showErrorMessage("\nWrong Input");
+                        view.wrongLocalInput();
                         return;
                     }
                 }
@@ -191,7 +191,7 @@ public class ClientController {
                     case "blue"->
                         color = PlayersColor.BLUE;
                     default->{
-                        view.showErrorMessage("\nWrong Input");
+                        view.wrongLocalInput();
                         return;
                     }
                 }
@@ -215,7 +215,7 @@ public class ClientController {
                     case "no" ->
                         virtualController.sendNo();
                     default->{
-                        view.showErrorMessage("\nWrong Input");
+                        view.wrongLocalInput();
                         return;
                     }
                 }
@@ -276,7 +276,7 @@ public class ClientController {
                         case "brownalien" -> type = CrewType.BROWN;
                         case "purplealien" -> type = CrewType.PURPLE;
                         default -> {
-                            view.showErrorMessage("\nWrong Input");
+                            view.wrongLocalInput();
                             return;
                         }
                     }
@@ -337,10 +337,10 @@ public class ClientController {
                                             displayedCard = this.deck.get(indexDeckInHandOrPlanet).getFirst();
                                             view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                                         } else
-                                            view.showErrorMessage("\nWrong Input");
+                                            view.wrongLocalInput();
                                     }
                                 } else {
-                                    view.showErrorMessage("\nWrong Input");
+                                    view.wrongLocalInput();
                                 }
                             }
                             case "tile" -> {
@@ -367,7 +367,7 @@ public class ClientController {
                                             virtualController.reqDrawTileFromTurned(chose);
                                             view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                                         }else {
-                                            view.showErrorMessage("\nWrong Input");
+                                            view.wrongLocalInput();
                                         }
                                     }
                                 }
@@ -430,7 +430,7 @@ public class ClientController {
                     case "book" -> {
                         state = ClientState.S_END_DRAW_TILE_CARD;
                         if(!me.getShipBoard().addBookedTile(this.tileInHand)){
-                            view.showErrorMessage("\nWrong Input");
+                            view.wrongLocalInput();
                             return;
                         }
                         this.tileInHand.setBooked(true);
@@ -452,7 +452,7 @@ public class ClientController {
                     if (chose > 0 && flightBoard.getInGamePlayers().size() > chose) {
                         virtualController.notifySetPosition( chose);
                     } else
-                        view.showErrorMessage("\nWrong Input");
+                        view.wrongLocalInput();
                 }
             }
 
@@ -481,7 +481,7 @@ public class ClientController {
     private Coordinates transformCoordinates(String[] input) {
         if (input.length < 2) {
             try {
-                view.showErrorMessage("\nWrong Input");
+                view.wrongLocalInput();
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -537,7 +537,11 @@ public class ClientController {
                 System.out.println(me.getShipBoard());
             }
             if (chose >= 1 && chose <= 4) {
-                System.out.println(flightBoard.getInGamePlayers().get(indexDeckInHandOrPlanet).getShipBoard());
+                try {
+                    view.printShipboard(flightBoard.getInGamePlayers().get(indexDeckInHandOrPlanet).getShipBoard());
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
             }
             return true;
         }
@@ -652,7 +656,7 @@ public class ClientController {
                     goodsManager = new GoodsManager(me, goodsList);
                     inManager=true;
                 }
-                goodsManager.goodsPrinter(goodsList);
+                view.goodsPrinter(goodsList);
                 System.out.print("Chose for each good where to put it, input 'no' to stop:\n");
             }
             case S_MANAGE_CARDS -> {
