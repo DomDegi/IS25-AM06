@@ -6,6 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.cards.*;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import it.polimi.ingsw.galaxytruckerproject.network.RMI.Server.VirtualControllerRMI;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
@@ -28,6 +29,7 @@ class LightShipBoardTest {
 
         LightPlayer light1 = new LightPlayer("Pippo C.", PlayersColor.RED);
         LightShipBoard shipBoard1 = new LightShipBoard(light1);
+
 
 
 }
