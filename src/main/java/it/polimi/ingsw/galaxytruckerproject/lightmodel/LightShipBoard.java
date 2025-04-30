@@ -37,7 +37,7 @@ public class LightShipBoard implements ShipBoardInterface{
     private int credit;
 
 
-    public LightShipBoard(ShipBoard shipBoard) {
+    /*public LightShipBoard(ShipBoard shipBoard) {
         this.shipBoard = shipBoard;
         this.bookedTiles = new ArrayList<>();
         this.cargoHoldCoordinates = new ArrayList<>();
@@ -45,7 +45,7 @@ public class LightShipBoard implements ShipBoardInterface{
         this.credit = 0;
         this. player = new LightPlayer(this.shipBoard.getPlayer());
 
-    }
+    }*/
 
     public LightShipBoard(LightPlayer player) {
         this.player = player;
@@ -440,21 +440,21 @@ public class LightShipBoard implements ShipBoardInterface{
         }
     }
 
-public String toString(){
+    public String toString(){
 
-    StringBuilder s = new StringBuilder("Shipboard: ");
-    for (int i = 0; i < 5; i++) {
-        for (int j = 0; j < 7; j++) {
-            if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable()) {
-                s.append(tilesTable[i][j].get().toString());
-                s.append("\n");
+        StringBuilder s = new StringBuilder("Shipboard: ");
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 7; j++) {
+                if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable()) {
+                    s.append(tilesTable[i][j].get().toString());
+                    s.append("\n");
+                }
             }
+            s.append("\n-\n");
         }
-        s.append("\n-\n");
+        s.append("\ncredit:"+credit + "\n");
+        return s.toString();
     }
-    s.append("\ncredit:"+credit + "\n");
-    return s.toString();
-}
     public boolean checkEarlyLanding() {
         return numHumanCrew == 0;
     }
