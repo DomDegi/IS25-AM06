@@ -19,7 +19,7 @@ import java.util.Set;
 
 public class ProjectilePenalty extends Penalty {
     private final ArrayList<Projectile> listOfProjectiles;
-    private int diceRoll = 0;
+    private int diceRoll = -1;
     private Defense defenseStatus = null;
     private ArrayList<Set<Coordinates>> branch;
     private Coordinates destroyedTile = null;
@@ -62,7 +62,6 @@ public class ProjectilePenalty extends Penalty {
                             view.asksToInputCoordinates(CoordReqType.CHOOSE_TO_MAINTAIN);
                         }catch(Exception ignored) {}
                     }
-                    System.out.println('d');
                 }
                 case CHOOSETOUSEBATTERY -> {
                     if (player.getShipBoard().getNumBatteries() == 0) {
@@ -95,15 +94,15 @@ public class ProjectilePenalty extends Penalty {
             game.getDrawnCard().notifyBrokenTiles(player.getPlayerName(), automaticProjectilePenalty(player, view));
             return false;
         }
-        if (this.diceRoll != 0) {
-            hitOrMiss(view, player);
-            //System.out.println("gogo");
-            System.out.println(defenseStatus);
-
-            //RETURNS TRUE IF THE SHIPBOARD GETS HIT,
-            // FALSE OTHERWISE.
-            return (defenseStatus != Defense.PROTECTED);
-
+        if (this.diceRoll != -1) {
+            Coordinates destroyed = hitOrMiss(view, player);
+            if (destroyed != null) {
+                ArrayList<Coordinates> toRemove = new ArrayList<>();
+                toRemove.add(destroyed);
+                game.getDrawnCard().notifyBrokenTiles(player.getPlayerName(), toRemove);
+                return false;
+            }
+            return defenseStatus != Defense.PROTECTED;
         }
         else {
             try {
@@ -131,7 +130,7 @@ public class ProjectilePenalty extends Penalty {
 
     public void resetForNextProjectile () {
         this.listOfProjectiles.removeFirst();
-        diceRoll = 0;
+        diceRoll = -1;
         //defenseStatus = null;
         branch = null;
         destroyedTile = null;
@@ -141,10 +140,8 @@ public class ProjectilePenalty extends Penalty {
         return listOfProjectiles.getFirst().getCoordinatesToDestroy();
     }
 
-    //modificato!!!!!!!!
     @Override
     public Coordinates randomRollForOne (VirtualView view, Player player) {
-        //this.game = game;
         Random rand = new Random();
         this.diceRoll = 2 + rand.nextInt(11);
 

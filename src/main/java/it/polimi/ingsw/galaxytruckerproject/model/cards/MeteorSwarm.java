@@ -40,11 +40,11 @@ public class MeteorSwarm extends Card {
     }
 
     private void startMeteorPhase() {
+        System.out.println("sono qua");
         if (currentMeteorIndex >= listOfMeteors.size()) {
             game.endCardEvent();
             return;
         }
-
         activePenalties.clear();
         currentDiceRoll = 0;
         currentPlayerRolling = inFlightPlayers.getFirst();
