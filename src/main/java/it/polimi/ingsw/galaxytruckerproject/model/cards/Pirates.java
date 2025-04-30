@@ -227,6 +227,16 @@ public class Pirates extends Enemies {
             return;
         }
         Tile batteryComponent = penaltyIfLose.playerUsesBatteryToDefend(player,batteries);
+        if (batteries.isEmpty() && batteryComponent == null) {
+            penaltyIfLose.hitOrMiss(currentView, player);
+            Coordinates destroyedTile = penaltyIfLose.getDestroyedTile();
+            if (penaltyIfLose.getBranch() == null && destroyedTile != null) {
+                ArrayList<Coordinates> toRemove = new ArrayList<>();
+                toRemove.add(destroyedTile);
+                notifyBrokenTiles(playerName, toRemove);
+            }
+            return;
+        }
         ArrayList<Tile> modifiedTiles = new ArrayList<>();
         modifiedTiles.add(batteryComponent);
         if (batteryComponent != null) {

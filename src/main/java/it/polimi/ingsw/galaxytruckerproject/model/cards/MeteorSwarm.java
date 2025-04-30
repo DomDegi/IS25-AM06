@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.ProjectilePenalty;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Defense;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
@@ -56,14 +57,22 @@ public class MeteorSwarm extends Card {
 
     public void applyMeteorToPlayers() {
         Projectile currentMeteor = listOfMeteors.get(currentMeteorIndex);
-        ArrayList<Projectile> singleMeteorList = new ArrayList<>();
-        singleMeteorList.add(currentMeteor);
 
         for (Player player : inFlightPlayers) {
-            ProjectilePenalty newPenalty = new ProjectilePenalty(singleMeteorList);
+            ArrayList<Projectile> singleMeteorCopy = new ArrayList<>();
+            singleMeteorCopy.add(currentMeteor);
+            ProjectilePenalty newPenalty = new ProjectilePenalty(singleMeteorCopy);
             newPenalty.setDiceRoll(currentDiceRoll);
             if (newPenalty.initializePenalty(game, viewsMap.get(player.getPlayerName()), player)) {
                 activePenalties.put(player, newPenalty);
+            }
+            else {
+                ArrayList<Coordinates> toDestroy = new ArrayList<>();
+                Coordinates destroyedTile = newPenalty.getDestroyedTile();
+                if (destroyedTile != null && newPenalty.getBranch() == null) {
+                    toDestroy.add(destroyedTile);
+                    notifyBrokenTiles(player.getPlayerName(), toDestroy);
+                }
             }
         }
         prepareNextMeteor();
@@ -93,13 +102,23 @@ public class MeteorSwarm extends Card {
     @Override
     public void useBatteries(String playerName, ArrayList<Coordinates> batteries) {
         Player player = game.identifyPlayerByName(playerName);
-        if (!activePenalties.containsKey(player)) {
+        if (!activePenalties.containsKey(player) || activePenalties.get(player).getDefenseStatus() != Defense.CHOOSETOUSEBATTERY) {
             try {
                 viewsMap.get(playerName).showWrongInputMessage();
             }catch(Exception ignored) {}
             return;
         }
         Tile batteryComponent = activePenalties.get(player).playerUsesBatteryToDefend(player,batteries);
+        if (batteries.isEmpty() && batteryComponent == null) {
+            activePenalties.get(player).hitOrMiss(viewsMap.get(playerName), player);
+            Coordinates destroyedTile = activePenalties.get(player).getDestroyedTile();
+            if (activePenalties.get(player).getBranch() == null && destroyedTile != null) {
+                ArrayList<Coordinates> toRemove = new ArrayList<>();
+                toRemove.add(destroyedTile);
+                notifyBrokenTiles(playerName, toRemove);
+            }
+            return;
+        }
         ArrayList<Tile> modifiedTiles = new ArrayList<>();
         modifiedTiles.add(batteryComponent);
         if (batteryComponent != null) {
@@ -118,7 +137,7 @@ public class MeteorSwarm extends Card {
     @Override
     public void branchChoice(String playerName, ArrayList<Coordinates> branchChoices) {
         Player player = game.identifyPlayerByName(playerName);
-        if (!activePenalties.containsKey(player)) {
+        if (!activePenalties.containsKey(player) || activePenalties.get(player).getBranch() == null) {
             try {
                 viewsMap.get(playerName).showWrongInputMessage();
             }catch(Exception ignored) {}

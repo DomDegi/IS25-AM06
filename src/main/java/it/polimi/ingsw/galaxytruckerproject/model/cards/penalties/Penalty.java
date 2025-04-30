@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards.penalties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Defense;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
@@ -10,6 +11,7 @@ import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
@@ -24,6 +26,8 @@ public abstract class Penalty {
 
     @Override
     public abstract String toString();
+
+    public Coordinates hitOrMiss(VirtualView view, Player player) { return null; }
 
     public abstract boolean initializePenalty(GameInterface game, VirtualView view, Player player);
 
@@ -51,4 +55,11 @@ public abstract class Penalty {
     public Tile playerUsesBatteryToDefend(Player player, ArrayList<Coordinates> batteries) { return null; }
 
     public int getDiceRoll() { return 0; }
+
+
+    public Defense getDefenseStatus() { return null; }
+
+    public ArrayList<Set<Coordinates>>  getBranch() { return null; }
+
+    public Coordinates getDestroyedTile() { return null; }
 }
