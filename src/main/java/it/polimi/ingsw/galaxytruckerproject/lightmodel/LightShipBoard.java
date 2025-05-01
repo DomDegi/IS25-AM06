@@ -568,6 +568,13 @@ public class LightShipBoard implements ShipBoardInterface{
         return true;
     }
 
+    public void setGetStat(){
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 7; j++) {
+                if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable())
+                    tilesTable[i][j].get().getStat();
+            }
+    }
 
     /*
     public void setTilesTable(Coordinates coordinates) {
