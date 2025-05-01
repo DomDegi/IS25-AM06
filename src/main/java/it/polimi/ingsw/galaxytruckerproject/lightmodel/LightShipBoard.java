@@ -37,7 +37,7 @@ public class LightShipBoard implements ShipBoardInterface{
     private int credit;
 
 
-    /*public LightShipBoard(ShipBoard shipBoard) {
+    public LightShipBoard(ShipBoard shipBoard) {
         this.shipBoard = shipBoard;
         this.bookedTiles = new ArrayList<>();
         this.cargoHoldCoordinates = new ArrayList<>();
@@ -45,7 +45,7 @@ public class LightShipBoard implements ShipBoardInterface{
         this.credit = 0;
         this. player = new LightPlayer(this.shipBoard.getPlayer());
 
-    }*/
+    }
 
     public LightShipBoard(LightPlayer player) {
         this.player = player;
@@ -523,6 +523,51 @@ public class LightShipBoard implements ShipBoardInterface{
     public Optional<Tile>[][] getTilesTable() {
         return tilesTable;
     }
+
+    public Set<Coordinates> connectedSet(Coordinates start, Set<Coordinates> set) {
+        int x = start.getX();
+        int y = start.getY();
+        set.add(new Coordinates(x, y));
+        //south
+        if (x<4 && tilesTable[x][y].get().getSouth().getConnectorsType() != Connectors.SMOOTH && tilesTable[x + 1][y].isPresent() && tilesTable[x + 1][y].get().fillable() && !set.contains(tilesTable[x + 1][y].get().getCoordinates())) {
+            connectedSet(new Coordinates(x + 1, y), set);
+        }
+        //east
+        if (y<6 && tilesTable[x][y].get().getEast().getConnectorsType() != Connectors.SMOOTH && tilesTable[x][y + 1].isPresent() && tilesTable[x][y + 1].get().fillable() && !set.contains(tilesTable[x][y + 1].get().getCoordinates())) {
+            connectedSet(new Coordinates(x, y + 1), set);
+        }
+        //north
+        if (x>0 && tilesTable[x][y].get().getNorth().getConnectorsType() != Connectors.SMOOTH && tilesTable[x - 1][y].isPresent() && tilesTable[x - 1][y].get().fillable() && !set.contains(tilesTable[x - 1][y].get().getCoordinates())) {
+            connectedSet(new Coordinates(x - 1, y), set);
+        }
+        //west
+        if (y>0 && tilesTable[x][y].get().getWest().getConnectorsType() != Connectors.SMOOTH && tilesTable[x][y - 1].isPresent() && tilesTable[x][y - 1].get().fillable() && !set.contains(tilesTable[x][y - 1].get().getCoordinates())) {
+            connectedSet(new Coordinates(x, y - 1), set);
+        }
+        return set;
+    }
+
+    public boolean verifyCorrectness() {
+        Set<Coordinates> set = new HashSet<Coordinates>();
+        set=this.connectedSet( new Coordinates(2,3), set);
+        // da controllare che tutte le caselle non vuote siano nel set per la correttezza (no caso delle due navi separate)
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 7; j++) {
+                if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable() )
+                    if(!tilesTable[i][j].get().isCorrect() ||! set.contains(tilesTable[i][j].get().getCoordinates()) ) return false;
+            }
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 7; j++) {
+                if (tilesTable[i][j].isPresent())
+                    tilesTable[i][j].get().getStat();
+            }
+        int i=bookedTiles.size();
+        for(int j=0;j<i;j++) {
+            addPenalty();
+        }
+        return true;
+    }
+
 
     /*
     public void setTilesTable(Coordinates coordinates) {
