@@ -18,18 +18,18 @@ public class LightShipBoard implements ShipBoardInterface{
     protected final LightPlayer player; //protected because it need to be called in StartingCabin (Tiles)
     private Optional<Tile>[][] tilesTable;
     private int penalty;
-    private ArrayList<Tile> bookedTiles = new ArrayList<>();
+    private ArrayList<Tile> bookedTiles;
     private int numExposedConnectors;
     private int numBatteries;
     private float singleCannonPower;
-    private ArrayList<Coordinates> DoubleCannon = new ArrayList<>();
-    private ArrayList<Coordinates> cargoHoldCoordinates = new ArrayList<>();
+    private ArrayList<Coordinates> DoubleCannon;
+    private ArrayList<Coordinates> cargoHoldCoordinates;
 
     private int numSingleEngine;
-    private ArrayList<Coordinates> DoubleEngine = new ArrayList<>();
+    private ArrayList<Coordinates> DoubleEngine;
     private ArrayList<Coverage> shields;
-    private ArrayList<Coordinates> batteryCoordinates = new ArrayList<>();
-    private ArrayList<Coordinates> crewCoordinates = new ArrayList<>();
+    private ArrayList<Coordinates> batteryCoordinates;
+    private ArrayList<Coordinates> crewCoordinates;
 
     private int numBrownAliens;
     private int numPurpleAliens;

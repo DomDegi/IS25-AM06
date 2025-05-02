@@ -1,9 +1,12 @@
 package it.polimi.ingsw.galaxytruckerproject.lightmodel;
 
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -70,6 +73,12 @@ class LightShipBoardTest2 {
         Tile tile21=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
         shipBoard1.positionTile(Optional.of(tile21), new Coordinates(4,2));
         shipBoard1.setGetStat();
+        ArrayList<Goods> goods=new ArrayList<>();
+        goods.add(new Goods(GoodsColor.RED));
+        goods.add(new Goods(GoodsColor.BLUE));
+        goods.add(new Goods(GoodsColor.GREEN));
+        goods.add(new Goods(GoodsColor.YELLOW));
+
     }
 
 }
