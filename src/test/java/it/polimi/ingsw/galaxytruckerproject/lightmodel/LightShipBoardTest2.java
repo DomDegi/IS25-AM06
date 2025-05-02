@@ -75,11 +75,8 @@ class LightShipBoardTest2 {
         Tile tile21=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
         shipBoard1.positionTile(Optional.of(tile21), new Coordinates(4,2));
         shipBoard1.setGetStat();
-        ArrayList<Goods> goods=new ArrayList<>();
-        goods.add(new Goods(GoodsColor.RED));
-        goods.add(new Goods(GoodsColor.BLUE));
-        goods.add(new Goods(GoodsColor.GREEN));
-        goods.add(new Goods(GoodsColor.YELLOW));
+        shipBoard1.getTilesTable();
+        System.out.println(shipBoard1.toString());
 
     }
 
