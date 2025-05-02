@@ -18,18 +18,18 @@ public class LightShipBoard implements ShipBoardInterface{
     protected final LightPlayer player; //protected because it need to be called in StartingCabin (Tiles)
     private Optional<Tile>[][] tilesTable;
     private int penalty;
-    private ArrayList<Tile> bookedTiles;
-    private int numExposedConnectors;;
+    private ArrayList<Tile> bookedTiles = new ArrayList<>();
+    private int numExposedConnectors;
     private int numBatteries;
     private float singleCannonPower;
-    private ArrayList<Coordinates> DoubleCannon;
-    private ArrayList<Coordinates> cargoHoldCoordinates;
+    private ArrayList<Coordinates> DoubleCannon = new ArrayList<>();
+    private ArrayList<Coordinates> cargoHoldCoordinates = new ArrayList<>();
 
     private int numSingleEngine;
-    private ArrayList<Coordinates> DoubleEngine;
+    private ArrayList<Coordinates> DoubleEngine = new ArrayList<>();
     private ArrayList<Coverage> shields;
-    private ArrayList<Coordinates> batteryCoordinates;
-    private ArrayList<Coordinates> crewCoordinates;
+    private ArrayList<Coordinates> batteryCoordinates = new ArrayList<>();
+    private ArrayList<Coordinates> crewCoordinates = new ArrayList<>();
 
     private int numBrownAliens;
     private int numPurpleAliens;
@@ -37,7 +37,7 @@ public class LightShipBoard implements ShipBoardInterface{
     private int credit;
 
 
-    public LightShipBoard(ShipBoard shipBoard) {
+    /*public LightShipBoard(ShipBoard shipBoard) {
         this.shipBoard = shipBoard;
         this.bookedTiles = new ArrayList<>();
         this.cargoHoldCoordinates = new ArrayList<>();
@@ -45,10 +45,16 @@ public class LightShipBoard implements ShipBoardInterface{
         this.credit = 0;
         this. player = new LightPlayer(this.shipBoard.getPlayer());
 
-    }
+    }*/
 
     public LightShipBoard(LightPlayer player) {
         this.player = player;
+        this.player.SetPlayerShip(this);
+        this.bookedTiles = new ArrayList<>();
+        this.cargoHoldCoordinates = new ArrayList<>();
+        this.crewCoordinates = new ArrayList<>();
+        this.credit = 0;
+
     }
 
     //the Client will intialize which level he wants to play. Then he's going to comunicate it to ShipBoard in the
@@ -159,7 +165,9 @@ public class LightShipBoard implements ShipBoardInterface{
     public boolean positionTile(Optional<Tile> tile, Coordinates coordinates) {
         if (tile.isPresent() && tilesTable[coordinates.getX()][coordinates.getY()].isEmpty()) {
             tilesTable[coordinates.getX()][coordinates.getY()] = tile;
+            tile.get().setShipBoard(this);
             tile.get().setCoordinates(coordinates);
+
 
             /*we're going to add the class tile also in the client. IF so we need to add this:
             //Personally I don't think we should but we'll see
@@ -435,21 +443,21 @@ public class LightShipBoard implements ShipBoardInterface{
         }
     }
 
-public String toString(){
+    public String toString(){
 
-    StringBuilder s = new StringBuilder("Shipboard: ");
-    for (int i = 0; i < 5; i++) {
-        for (int j = 0; j < 7; j++) {
-            if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable()) {
-                s.append(tilesTable[i][j].get().toString());
-                s.append("\n");
+        StringBuilder s = new StringBuilder("Shipboard: ");
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 7; j++) {
+                if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable()) {
+                    s.append(tilesTable[i][j].get().toString());
+                    s.append("\n");
+                }
             }
+            s.append("\n-\n");
         }
-        s.append("\n-\n");
+        s.append("\ncredit:"+credit + "\n");
+        return s.toString();
     }
-    s.append("\ncredit:"+credit + "\n");
-    return s.toString();
-}
     public boolean checkEarlyLanding() {
         return numHumanCrew == 0;
     }

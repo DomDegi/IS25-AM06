@@ -130,7 +130,7 @@ public class GameController implements Observer {
             if (GameState.SHIPS_CREATION.equals(this.getGameState())) {
                 updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
             }
-            updateReconnectedPlayer(view);
+            //updateReconnectedPlayer(view);
         }
         else {
             view.showErrorMessage("player was never connected to this game");

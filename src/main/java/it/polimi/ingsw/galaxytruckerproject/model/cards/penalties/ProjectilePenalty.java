@@ -142,6 +142,7 @@ public class ProjectilePenalty extends Penalty {
     public Coordinates randomRollForOne (VirtualView view, Player player) {
         Random rand = new Random();
         this.diceRoll = 2 + rand.nextInt(11);
+
         return hitOrMiss(view, player);
     }
 

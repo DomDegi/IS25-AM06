@@ -20,6 +20,7 @@ public class LightPlayer implements PlayerInterface {
         this.playerName = playerName;
         this.color = color;
     }
+
     public LightPlayer(Player player){
         this.playerName = player.getPlayerName();
         this.color = player.getPlayerColor();
@@ -75,5 +76,8 @@ public class LightPlayer implements PlayerInterface {
     }
     public int getCredits() {
         return credits;
+    }
+    public void SetPlayerShip(LightShipBoard shipBoard){
+        this.shipboard = shipBoard;
     }
 }

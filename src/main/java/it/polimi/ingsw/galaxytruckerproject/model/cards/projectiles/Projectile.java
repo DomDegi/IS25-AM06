@@ -97,7 +97,7 @@ public abstract class Projectile {
                 }
                 Temp= tileTable[i][diceRoll];
             }
-            //System.out.println("Ain't no luck baby");
+            System.out.println("Ain't no luck baby");
             coordinatesToDestroy= Optional.of(Temp.get().getCoordinates());
             System.out.println(coordinatesToDestroy);
             return;
