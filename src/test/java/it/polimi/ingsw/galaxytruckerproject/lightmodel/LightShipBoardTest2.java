@@ -75,7 +75,7 @@ class LightShipBoardTest2 {
         Tile tile21=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
         shipBoard1.positionTile(Optional.of(tile21), new Coordinates(4,2));
         shipBoard1.setGetStat();
-        shipBoard1.getTilesTable();
+        boolean correct = shipBoard1.getTilesTable()!=null;
         System.out.println(shipBoard1.toString());
 
     }
