@@ -215,7 +215,7 @@ public class GameController implements Observer {
     }
 
     /**
-     * Starts the game as soon as one of the players turns the hourglass if LEVEL2 game
+     * Starts the game as soon as one of the players turns the hourglass if LEVEL2 game,
      * if TRIAL starts the game without hourglass
      */
     public void startGame() {

@@ -46,7 +46,6 @@ public class ProjectilePenalty extends Penalty {
         if (defenseStatus == null) {
             this.defenseStatus = listOfProjectiles.getFirst().throwProjectile(player, diceRoll, game);
         }
-        System.out.println(this.defenseStatus);
 
         if (!player.IsDisconnected()) {
             switch (defenseStatus) {
