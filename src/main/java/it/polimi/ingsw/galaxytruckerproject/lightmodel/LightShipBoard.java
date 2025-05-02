@@ -45,16 +45,29 @@ public class LightShipBoard implements ShipBoardInterface{
         this.credit = 0;
         this. player = new LightPlayer(this.shipBoard.getPlayer());
 
+
     }
 
     public LightShipBoard(LightPlayer player) {
         this.player = player;
-        this.player.SetPlayerShip(this);
-        this.bookedTiles = new ArrayList<>();
-        this.cargoHoldCoordinates = new ArrayList<>();
-        this.crewCoordinates = new ArrayList<>();
-        this.credit = 0;
 
+        this.player.setPlayerShip(this);
+        this.penalty = 0;
+        this.bookedTiles = new ArrayList<Tile>();
+        this.numBatteries = 0;
+        this.singleCannonPower = 0;
+        this.DoubleCannon = new ArrayList<Coordinates>();
+        this.batteryCoordinates= new ArrayList<Coordinates>();
+        this.crewCoordinates=  new ArrayList<Coordinates>();
+        this.cargoHoldCoordinates= new ArrayList<Coordinates>();
+        this.numSingleEngine = 0;
+        this.DoubleEngine = new ArrayList<Coordinates>();
+        this.shields = new ArrayList<Coverage>();
+        this.numBrownAliens = 0;
+        this.numPurpleAliens = 0;
+        this.numExposedConnectors = 0;
+        this.numHumanCrew = 0;
+        this.credit = 0;
     }
 
     //the Client will intialize which level he wants to play. Then he's going to comunicate it to ShipBoard in the
