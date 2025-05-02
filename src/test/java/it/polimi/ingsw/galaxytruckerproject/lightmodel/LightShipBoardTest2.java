@@ -18,6 +18,8 @@ class LightShipBoardTest2 {
         LightPlayer lightPlayer = new LightPlayer("Per favore", PlayersColor.GREEN);
         LightShipBoard lightShipBoard = new LightShipBoard(lightPlayer);
         lightShipBoard.initializeLevel2();
+        boolean cazzo = lightPlayer.getShipBoard().equals(lightShipBoard);
+        assertTrue(cazzo);
     }
 
     @Test
