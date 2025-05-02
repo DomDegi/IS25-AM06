@@ -34,7 +34,7 @@ public class GoodsManager {
             int CoordinatesY;
             if (input.length == 0) {
                 System.out.println("\nInvalid input format. Please provide integer values.");
-                return null;
+                return new HashSet<>();
             }
             if (input[0].equalsIgnoreCase("done") || input[0].equalsIgnoreCase("0")) {
                 System.out.println("\nYou stopped positioning your cargo\n");

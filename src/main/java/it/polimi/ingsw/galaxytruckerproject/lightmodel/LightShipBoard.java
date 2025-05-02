@@ -18,18 +18,18 @@ public class LightShipBoard implements ShipBoardInterface{
     protected final LightPlayer player; //protected because it need to be called in StartingCabin (Tiles)
     private Optional<Tile>[][] tilesTable;
     private int penalty;
-    private ArrayList<Tile> bookedTiles;
-    private int numExposedConnectors;;
+    private ArrayList<Tile> bookedTiles = new ArrayList<>();
+    private int numExposedConnectors;
     private int numBatteries;
     private float singleCannonPower;
-    private ArrayList<Coordinates> DoubleCannon;
-    private ArrayList<Coordinates> cargoHoldCoordinates;
+    private ArrayList<Coordinates> DoubleCannon = new ArrayList<>();
+    private ArrayList<Coordinates> cargoHoldCoordinates = new ArrayList<>();
 
     private int numSingleEngine;
-    private ArrayList<Coordinates> DoubleEngine;
+    private ArrayList<Coordinates> DoubleEngine = new ArrayList<>();
     private ArrayList<Coverage> shields;
-    private ArrayList<Coordinates> batteryCoordinates;
-    private ArrayList<Coordinates> crewCoordinates;
+    private ArrayList<Coordinates> batteryCoordinates = new ArrayList<>();
+    private ArrayList<Coordinates> crewCoordinates = new ArrayList<>();
 
     private int numBrownAliens;
     private int numPurpleAliens;
@@ -45,15 +45,29 @@ public class LightShipBoard implements ShipBoardInterface{
         this.credit = 0;
         this. player = new LightPlayer(this.shipBoard.getPlayer());
 
+
     }
 
     public LightShipBoard(LightPlayer player) {
         this.player = player;
-        this.bookedTiles = new ArrayList<>();
-        this.cargoHoldCoordinates = new ArrayList<>();
-        this.crewCoordinates = new ArrayList<>();
-        this.credit = 0;
 
+        this.player.setPlayerShip(this);
+        this.penalty = 0;
+        this.bookedTiles = new ArrayList<Tile>();
+        this.numBatteries = 0;
+        this.singleCannonPower = 0;
+        this.DoubleCannon = new ArrayList<Coordinates>();
+        this.batteryCoordinates= new ArrayList<Coordinates>();
+        this.crewCoordinates=  new ArrayList<Coordinates>();
+        this.cargoHoldCoordinates= new ArrayList<Coordinates>();
+        this.numSingleEngine = 0;
+        this.DoubleEngine = new ArrayList<Coordinates>();
+        this.shields = new ArrayList<Coverage>();
+        this.numBrownAliens = 0;
+        this.numPurpleAliens = 0;
+        this.numExposedConnectors = 0;
+        this.numHumanCrew = 0;
+        this.credit = 0;
     }
 
     //the Client will intialize which level he wants to play. Then he's going to comunicate it to ShipBoard in the
@@ -164,8 +178,10 @@ public class LightShipBoard implements ShipBoardInterface{
     public boolean positionTile(Optional<Tile> tile, Coordinates coordinates) {
         if (tile.isPresent() && tilesTable[coordinates.getX()][coordinates.getY()].isEmpty()) {
             tilesTable[coordinates.getX()][coordinates.getY()] = tile;
-            tile.get().setCoordinates(coordinates);
             tile.get().setShipBoard(this);
+            tile.get().setCoordinates(coordinates);
+
+
             /*we're going to add the class tile also in the client. IF so we need to add this:
             //Personally I don't think we should but we'll see
             tile.get().setShipBoard(this);
@@ -521,6 +537,58 @@ public class LightShipBoard implements ShipBoardInterface{
         return tilesTable;
     }
 
+    public Set<Coordinates> connectedSet(Coordinates start, Set<Coordinates> set) {
+        int x = start.getX();
+        int y = start.getY();
+        set.add(new Coordinates(x, y));
+        //south
+        if (x<4 && tilesTable[x][y].get().getSouth().getConnectorsType() != Connectors.SMOOTH && tilesTable[x + 1][y].isPresent() && tilesTable[x + 1][y].get().fillable() && !set.contains(tilesTable[x + 1][y].get().getCoordinates())) {
+            connectedSet(new Coordinates(x + 1, y), set);
+        }
+        //east
+        if (y<6 && tilesTable[x][y].get().getEast().getConnectorsType() != Connectors.SMOOTH && tilesTable[x][y + 1].isPresent() && tilesTable[x][y + 1].get().fillable() && !set.contains(tilesTable[x][y + 1].get().getCoordinates())) {
+            connectedSet(new Coordinates(x, y + 1), set);
+        }
+        //north
+        if (x>0 && tilesTable[x][y].get().getNorth().getConnectorsType() != Connectors.SMOOTH && tilesTable[x - 1][y].isPresent() && tilesTable[x - 1][y].get().fillable() && !set.contains(tilesTable[x - 1][y].get().getCoordinates())) {
+            connectedSet(new Coordinates(x - 1, y), set);
+        }
+        //west
+        if (y>0 && tilesTable[x][y].get().getWest().getConnectorsType() != Connectors.SMOOTH && tilesTable[x][y - 1].isPresent() && tilesTable[x][y - 1].get().fillable() && !set.contains(tilesTable[x][y - 1].get().getCoordinates())) {
+            connectedSet(new Coordinates(x, y - 1), set);
+        }
+        return set;
+    }
+
+    public boolean verifyCorrectness() {
+        Set<Coordinates> set = new HashSet<Coordinates>();
+        set=this.connectedSet( new Coordinates(2,3), set);
+        // da controllare che tutte le caselle non vuote siano nel set per la correttezza (no caso delle due navi separate)
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 7; j++) {
+                if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable() )
+                    if(!tilesTable[i][j].get().isCorrect() ||! set.contains(tilesTable[i][j].get().getCoordinates()) ) return false;
+            }
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 7; j++) {
+                if (tilesTable[i][j].isPresent())
+                    tilesTable[i][j].get().getStat();
+            }
+        int i=bookedTiles.size();
+        for(int j=0;j<i;j++) {
+            addPenalty();
+        }
+        return true;
+    }
+
+    public void setGetStat(){
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 7; j++) {
+                if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable())
+                    tilesTable[i][j].get().getStat();
+            }
+    }
+
     /*
     public void setTilesTable(Coordinates coordinates) {
         tilesTable = shipBoard.getTilesTable();
@@ -582,4 +650,15 @@ public class LightShipBoard implements ShipBoardInterface{
         this.bookedTiles = shipBoard.getBookedTiles();
     }
     */
+
+
+
+
+
+
+
+
+
+
+
 }

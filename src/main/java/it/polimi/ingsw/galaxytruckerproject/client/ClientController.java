@@ -401,7 +401,7 @@ public class ClientController {
                     return true;
                 HashSet<CargoHold> newTilesGoods = goodsManager.getReward(words);
                 ArrayList<CargoHold> newTiles;
-                if (!newTilesGoods.isEmpty()) {
+                if (newTilesGoods!=null) {
                     newTiles = new ArrayList<>(newTilesGoods);
                     if (newTiles.getFirst().getTotSpaces() == -1){
                         newTiles.clear();
@@ -416,7 +416,7 @@ public class ClientController {
             case MANAGE_CABINS -> {
                 if(gameMode==GameMode.LEVEL2){
                     CrewType type;
-                    ArrayList<Tile> newTiles = new ArrayList<>();
+                    ArrayList<Tile> newTiles;
                     switch (words[0]) {
                         case "humans" -> type = CrewType.HUMAN;
                         case "brownalien" -> type = CrewType.BROWN;
@@ -426,7 +426,7 @@ public class ClientController {
                             return false;
                         }
                     }
-                    if (!(me.getShipBoard().getCabinsCoordinates().isEmpty()||me.getShipBoard().getCabinsCoordinates().size()==1)) {
+                    if (!(me.getShipBoard().getCabinsCoordinates()==null||me.getShipBoard().getCabinsCoordinates().size()==1)) {
                         newTiles = cabinsManager.manageCabins(type);
                         if (!newTiles.isEmpty()) {
                             virtualController.notifyNewCrewArrangement(this.name, newTiles);
@@ -502,7 +502,7 @@ public class ClientController {
                     inManager = true;
                 }
                 if (gameMode == GameMode.LEVEL2) {
-                    if (me.getShipBoard().getCabinsCoordinates().isEmpty()||me.getShipBoard().getCabinsCoordinates().size()==1) {
+                    if (me.getShipBoard().getCabinsCoordinates()==null||me.getShipBoard().getCabinsCoordinates().size()==1) {
                         virtualController.notifyNewCrewArrangement(this.name, new ArrayList<>());
                         inManager = false;
                         view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
@@ -539,7 +539,7 @@ public class ClientController {
                     inManager=true;
                 }
                 goodsManager.goodsPrinter(goodsList);
-                System.out.print("Chose for each good where to put it, input 'no' to stop:\n");
+                view.showGenericMessage("Chose for each good where to put it, input 'no' to stop:\n");
             }
         }
     }

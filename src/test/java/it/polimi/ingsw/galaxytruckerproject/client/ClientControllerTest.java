@@ -324,11 +324,16 @@ class ClientControllerTest {
         controller.getView().setClientState(ClientState.MANAGE_CABINS);
     }
 
+    @Captor
+    ArgumentCaptor<ArrayList<CargoHold>> newTilesCaptor;
+
+    @Captor
+    ArgumentCaptor<Integer> valueCaptor;
+
     @Test
     void MANAGE_GOODS_test() throws RemoteException {
         LightShipBoard shipBoard1 = new LightShipBoard(controller.getMe());
         shipBoard1.initializeLevel2();
-        controller.getMe().setShipboard(shipBoard1);
         Tile tile1=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
         shipBoard1.positionTile(Optional.of(tile1), new Coordinates(0,4));
         Tile tile2=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE));
@@ -336,7 +341,7 @@ class ClientControllerTest {
         tile2.setCrewType(CrewType.HUMAN);
         Tile tile3=new AlienLifeSupportsSystem( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),CrewType.BROWN);
         shipBoard1.positionTile(Optional.of(tile3), new Coordinates(1,2));
-        Tile tile4=new CargoBlue(3, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
+        Tile tile4=new CargoRed(3, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
         shipBoard1.positionTile(Optional.of(tile4), new Coordinates(1,3));
         Tile tile5=new CargoBlue(3, new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
         shipBoard1.positionTile(Optional.of(tile5), new Coordinates(1,4));
@@ -376,6 +381,7 @@ class ClientControllerTest {
         shipBoard1.positionTile(Optional.of(tile20), new Coordinates(4,1));
         Tile tile21=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
         shipBoard1.positionTile(Optional.of(tile21), new Coordinates(4,2));
+        shipBoard1.setGetStat();
         S_FINISHED_test();
         ArrayList<Goods> goods=new ArrayList<>();
         goods.add(new Goods(GoodsColor.RED));
@@ -385,6 +391,10 @@ class ClientControllerTest {
         controller.getGoodsList().addAll(goods);
         controller.getView().setClientState(ClientState.MANAGE_GOODS);
         String input="1 1 3";
-        assertFalse(controller.input(input));
+        assertTrue(controller.input(input));
+        input="done";
+        assertTrue(controller.input(input));
+        verify(mockVirtualController,times(1)).notifyNewGoodsArrangement(notNull(),valueCaptor.capture(),newTilesCaptor.capture());
+
     }
 }

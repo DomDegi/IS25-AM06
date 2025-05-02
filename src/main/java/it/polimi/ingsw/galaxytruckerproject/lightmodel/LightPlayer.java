@@ -20,6 +20,7 @@ public class LightPlayer implements PlayerInterface {
         this.playerName = playerName;
         this.color = color;
     }
+
     public LightPlayer(Player player){
         this.playerName = player.getPlayerName();
         this.color = player.getPlayerColor();
@@ -60,10 +61,10 @@ public class LightPlayer implements PlayerInterface {
         this.shipboard = shipboard;
     }
     public void bookTile(Tile tile) throws RemoteException {
-       boolean mustBeTrue= shipboard.addBookedTile(tile);
-       if(!mustBeTrue){
-           System.out.println("error in tile booking "+tile);
-       }
+        boolean mustBeTrue= shipboard.addBookedTile(tile);
+        if(!mustBeTrue){
+            System.out.println("error in tile boooking "+tile);
+        }
     }
 
     @Override
@@ -75,5 +76,8 @@ public class LightPlayer implements PlayerInterface {
     }
     public int getCredits() {
         return credits;
+    }
+    public void setPlayerShip(LightShipBoard shipBoard){
+        this.shipboard = shipBoard;
     }
 }
