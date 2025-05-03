@@ -6,12 +6,13 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class MultiGameController {
+public class MultiGameController implements Serializable {
 
     private final Map<String, GameController> gamesMap = new HashMap<>();
 

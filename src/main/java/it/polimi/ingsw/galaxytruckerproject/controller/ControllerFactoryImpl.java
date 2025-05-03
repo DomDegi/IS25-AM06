@@ -3,9 +3,11 @@ package it.polimi.ingsw.galaxytruckerproject.controller;
 import it.polimi.ingsw.galaxytruckerproject.network.RMI.Server.VirtualControllerRMI;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 
+import java.io.Serializable;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-public class ControllerFactoryImpl implements ControllerFactory {
+public class ControllerFactoryImpl implements ControllerFactory, Serializable, Remote {
     private MultiGameController multiGameController;
     public ControllerFactoryImpl() {
         multiGameController = new MultiGameController();
