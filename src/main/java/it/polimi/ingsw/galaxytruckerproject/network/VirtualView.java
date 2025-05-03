@@ -7,11 +7,12 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
 
-public interface VirtualView extends ViewInterface {
+public interface VirtualView extends ViewInterface, Serializable {
 
     void notifyNewTurnedTile(Tile tile) throws RemoteException;//add a new turned tile to the map in the clients
     void notifyRemoveTurnedTile(Tile tile) throws RemoteException;//remove a turned tile to the map in the clients

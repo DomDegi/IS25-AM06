@@ -18,6 +18,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.*;
@@ -25,7 +26,7 @@ import java.util.concurrent.*;
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.TRIAL;
 
 
-public class GameController implements Observer {
+public class GameController implements Observer, Serializable {
     private final String gameName;
     private final GameInterface game;
     private final ArrayList<String> playersWithErrors;

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.controller;
 
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
@@ -53,6 +54,13 @@ public class MultiGameController implements Serializable {
                 }
                 else {
                     joinableGamesList(nickname, view);
+                    try {
+                        view.setClientState(ClientState.LOBBY);
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+
+
                 }
             }
         }

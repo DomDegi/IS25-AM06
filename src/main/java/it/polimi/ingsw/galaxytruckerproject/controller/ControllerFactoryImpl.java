@@ -6,10 +6,12 @@ import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
-public class ControllerFactoryImpl implements ControllerFactory, Serializable, Remote {
+public class ControllerFactoryImpl extends UnicastRemoteObject implements ControllerFactory, Remote {
     private MultiGameController multiGameController;
-    public ControllerFactoryImpl() {
+    public ControllerFactoryImpl() throws RemoteException {
+        super();
         multiGameController = new MultiGameController();
     }
     @Override

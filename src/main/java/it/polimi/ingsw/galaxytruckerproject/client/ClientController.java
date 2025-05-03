@@ -176,11 +176,7 @@ public class ClientController {
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
-                        try {
-                            view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+
                     }
                     case "redo"-> me.setPlayerName("");
                     default-> me.setPlayerName(words[0]);
@@ -1329,7 +1325,7 @@ public class ClientController {
     public void setGameMode(GameMode gameMode) {this.gameMode = gameMode;}
 
     void connectRMI() throws MalformedURLException, NotBoundException, RemoteException {
-        ControllerFactory controllerFactory=(ControllerFactory) Naming.lookup("rmi://localhost/VirtualController");
+        ControllerFactory controllerFactory=(ControllerFactory) Naming.lookup("rmi://localhost/ControllerFactory");
         virtualController=controllerFactory.createController();
         virtualController.setView(this.view);
     }

@@ -11,7 +11,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public interface VirtualController extends Remote, Serializable {
+public interface VirtualController extends Remote{
 
     //PHASE OF LOGIN/CREATION OF MATCHES METHODS
     void login(String playerName) throws RemoteException;

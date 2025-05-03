@@ -9,12 +9,13 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
+import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-public class VirtualControllerRMI extends UnicastRemoteObject implements VirtualController, Remote {
+public class VirtualControllerRMI extends UnicastRemoteObject implements VirtualController, Remote , Serializable {
 
 
     //private final MultiGameController controller;
