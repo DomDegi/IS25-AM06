@@ -18,8 +18,9 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
+import java.rmi.RemoteException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.*;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.TRIAL;
 
@@ -32,6 +33,7 @@ public class GameController implements Observer {
     private final Map<String, VirtualView> playersViewMap;
     private final Map<String, Player> activePlayers;
     private final Map<String, Player> disconnectedPlayers;
+    private final Map<String, CompletableFuture<Void>> pendingPongs = new ConcurrentHashMap<>();
     private final ArrayList<Player> playersToEarlyLand = new ArrayList<>();
     private final ConcurrentHashMap<String, Integer> lockedSmallDecks = new ConcurrentHashMap<>();
     private int hourglassTurns = 0;
@@ -43,7 +45,7 @@ public class GameController implements Observer {
     }
 
     @Override
-    public void update(GameState newState) {
+    public void update(GameState newState) throws RemoteException {
         switch (newState) {
             case START_GAME -> startGame();
             case VERIFY_SHIP_CORRECTNESS ->  verifyShipCorrectness();
@@ -79,10 +81,18 @@ public class GameController implements Observer {
         else {
             if (this.getGameState().equals(GameState.START_GAME)){
                 playersViewMap.put(playerName, view);
-                view.askColor();
+                try {
+                    view.askColor();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
             }
             else{
-                view.showGenericMessage("Can't join a game in progress");
+                try {
+                    view.showGenericMessage("Can't join a game in progress");
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
@@ -96,12 +106,16 @@ public class GameController implements Observer {
      */
 
     //RICONNETTE IL PLAYER SE DISCONNESSO
-    public void reconnectPlayer(String playerName, VirtualView view) {
+    public void reconnectPlayer(String playerName, VirtualView view)  {
         if (disconnectedPlayers.containsKey(playerName)) {
             //If player disconnected during ships verification without fixing the ship
             if (playersWithErrors.contains(playerName)) {
                 if (!this.getGameState().equals(GameState.VERIFY_SHIP_CORRECTNESS)) {
-                    view.showErrorMessage("Can't connect because didn't finish ship creation");
+                    try {
+                        view.showErrorMessage("Can't connect because didn't finish ship creation");
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
                     return;
                 }
                 else{
@@ -116,11 +130,19 @@ public class GameController implements Observer {
                     !this.getGameState().equals(GameState.SHIPS_CREATION)) {
 
                 if (this.getGameState() != GameState.VERIFY_SHIP_CORRECTNESS) {
-                    view.showErrorMessage("Can't reconnect because player didn't complete starting position choosing");
+                    try {
+                        view.showErrorMessage("Can't reconnect because player didn't complete starting position choosing");
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
                     return;
                 }
                 else {
-                    view.asksToChooseStartingPosition();
+                    try {
+                        view.asksToChooseStartingPosition();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
             Player reconnectingPlayer = disconnectedPlayers.get(playerName);
@@ -133,7 +155,11 @@ public class GameController implements Observer {
             //updateReconnectedPlayer(view);
         }
         else {
-            view.showErrorMessage("player was never connected to this game");
+            try {
+                view.showErrorMessage("player was never connected to this game");
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -153,7 +179,7 @@ public class GameController implements Observer {
      * both nickname and color.
      * If players number reaches the initial setted count, starts game.
      */
-    public void playerAddition(String playerName, PlayersColor playersColor) {
+    public void playerAddition(String playerName, PlayersColor playersColor)  {
             if (this.getGameState() == GameState.START_GAME && playersViewMap.containsKey(playerName)) {
                 //if playerCount is still to be reached, add player to the game model
                 if (game.getNumberOfPlayers() < game.getPlayerCount()) {
@@ -161,7 +187,11 @@ public class GameController implements Observer {
                     activePlayers.put(playerName, game.identifyPlayerByName(playerName));
                 }
                 else { //player count already reached
-                    playersViewMap.get(playerName).showErrorMessage("Lobby is already full");
+                    try {
+                        playersViewMap.get(playerName).showErrorMessage("Lobby is already full");
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
                 //if game is already out of lobby phase
             } else if (playersViewMap.containsKey(playerName)) {
@@ -198,9 +228,13 @@ public class GameController implements Observer {
      * @param playersColor chosen color
      * @return true if color is available, false otherwise
      */
-    public boolean checkColorAvailable (String playerName, ViewInterface view, PlayersColor playersColor) {
+    public boolean checkColorAvailable (String playerName, ViewInterface view, PlayersColor playersColor)  {
         if (! playersViewMap.containsKey(playerName)) {
-            view.showErrorMessage("can't choose a color without logging in");
+            try {
+                view.showErrorMessage("can't choose a color without logging in");
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
             return false;
         }
         for (Player player : activePlayers.values()) {
@@ -241,7 +275,7 @@ public class GameController implements Observer {
         }
     }
 
-    public  void drawTile(VirtualView playersView, String playerName, int index, boolean turned) {
+    public  void drawTile(VirtualView playersView, String playerName, int index, boolean turned)  {
 
         // Can't draw if the shipboard is completed or there is already a tile to place/book/refuse
         if (playerStateIs(playerName, ClientState.S_MANAGE_DRAWN_TILE)
@@ -252,7 +286,11 @@ public class GameController implements Observer {
         if (!turned) {
             drawnTile = game.drawTile(playerName);
             if (drawnTile == null) {
-                playersView.showErrorMessage("drawn tile is null: stack is empty");
+                try {
+                    playersView.showErrorMessage("drawn tile is null: stack is empty");
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
                 return;
             }
             try{
@@ -262,7 +300,11 @@ public class GameController implements Observer {
         else {
             drawnTile = game.drawTurnedTile(playerName, index);
                 if (drawnTile == null) {
-                    playersView.showErrorMessage("drawn tile is null: turned tile is empty or index out of bounds");
+                    try {
+                        playersView.showErrorMessage("drawn tile is null: turned tile is empty or index out of bounds");
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
                     return;
                 }
                 try{
@@ -420,7 +462,7 @@ public class GameController implements Observer {
         updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
     }
 
-    public synchronized void lookGameCards(String playerName, ViewInterface playersView, int cardsToLookAt) {
+    public synchronized void lookGameCards(String playerName, ViewInterface playersView, int cardsToLookAt)  {
         if (playerStateIs(playerName, ClientState.S_END_DRAW_TILE_CARD)) {
             for (Integer integer: lockedSmallDecks.values()) {
                 if (integer == cardsToLookAt) {
@@ -431,13 +473,21 @@ public class GameController implements Observer {
                 }
             }
             lockedSmallDecks.put(playerName, cardsToLookAt);
-            playersView.showInGameCards(game.getInGameCards(cardsToLookAt));
+            try {
+                playersView.showInGameCards(game.getInGameCards(cardsToLookAt));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
             updatePlayerView(ClientState.S_MANAGE_CARDS, playerName);
             notifyNotAvailableCardDeck();
         }
         else {
-            playersView.showErrorMessage("can't look at the event cards while you still have your drawn tile, " +
-                    "you completed your ship or you are already looking at cards");
+            try {
+                playersView.showErrorMessage("can't look at the event cards while you still have your drawn tile, " +
+                        "you completed your ship or you are already looking at cards");
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -545,7 +595,7 @@ public class GameController implements Observer {
     }
 
     //now no input except hourglass and checkShipboard work and checks if the other player have completed
-    public void completed (String playerName, ViewInterface playersView) {
+    public void completed (String playerName, ViewInterface playersView)  {
         if (!playerStateIs(playerName, ClientState.S_END_DRAW_TILE_CARD)) {
             try{
             playersView.showWrongInputMessage();
@@ -564,12 +614,16 @@ public class GameController implements Observer {
                 }
             }
         }else{
-            playersView.asksToChooseStartingPosition();
+            try {
+                playersView.asksToChooseStartingPosition();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
         checkIfAllPlayersReady();
     }
 
-    public void setPosition (String playerName, ViewInterface playersView, int position) {
+    public void setPosition (String playerName, ViewInterface playersView, int position)  {
         if (!playerStateIs(playerName, ClientState.S_FINISHED)) {
             return;
         }
@@ -603,7 +657,7 @@ public class GameController implements Observer {
         }
     }
 
-    private void checkIfAllPlayersReady() {
+    private void checkIfAllPlayersReady()  {
         if (game.getListOfAllPlayer().size() == game.getListOfInFlightPlayers().size()) {
             this.endShipCreation();
         }
@@ -613,7 +667,11 @@ public class GameController implements Observer {
                     if (player.IsDisconnected()) {
                         removePlayer(player.getPlayerName());
                     }
-                    playersViewMap.get(player.getPlayerName()).asksToChooseStartingPosition();
+                    try {
+                        playersViewMap.get(player.getPlayerName()).asksToChooseStartingPosition();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         }
@@ -626,11 +684,15 @@ public class GameController implements Observer {
 
     //Turns hourglass isn't on and adds 1 to the turn count,
     // if it's already been turned twice, player that turns it needs to have completed his ship
-    public synchronized void turnHourglass(String playerName) {
+    public synchronized void turnHourglass(String playerName)  {
         ViewInterface playersView = this.getViewFromNickname(playerName);
 
         if (hourglassON) {
-            playersView.showErrorMessage("hourglass is already trickling");
+            try {
+                playersView.showErrorMessage("hourglass is already trickling");
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
             return;
         }
         switch (hourglassTurns) {
@@ -687,7 +749,7 @@ public class GameController implements Observer {
     //Every player can check others shipboard
     //Every player can do an early landing
     //When cards are over go to CONCLUDE_GAME state
-    public void drawCard (String playerName, VirtualView playersView) {
+    public void drawCard (String playerName, VirtualView playersView)  {
         if (game.getCardsLeft() == 0) {
             game.endCardPhase();
             concludeGame();
@@ -861,9 +923,13 @@ public class GameController implements Observer {
         showScores();
     }
 
-    public void showScores() {
+    public void showScores()  {
         for (VirtualView view: playersViewMap.values()) {
-            view.showScores(game.getListOfAllPlayer());
+            try {
+                view.showScores(game.getListOfAllPlayer());
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -929,5 +995,48 @@ public class GameController implements Observer {
      */
     public ViewInterface getViewFromNickname(String playerName) {
         return playersViewMap.get(playerName);
+    }
+
+    public void pingPong(String playerName, ViewInterface view){
+        Player player=activePlayers.get(playerName);
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        pendingPongs.put(playerName, future);
+        try{
+            view.ping();
+            future.get(5, TimeUnit.SECONDS);
+
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            activePlayers.remove(playerName);
+            disconnectedPlayers.put(playerName,player);
+            player.setDisconnected(true);
+            System.out.println(playerName+" disconnected");
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            activePlayers.remove(playerName);
+            disconnectedPlayers.put(playerName,player);
+            System.out.println(playerName+" disconnected");
+            player.setDisconnected(true);
+            throw new RuntimeException(e);
+        } catch (TimeoutException e) {
+            activePlayers.remove(playerName);
+            disconnectedPlayers.put(playerName,player);
+            player.setDisconnected(true);
+            System.out.println(playerName+" disconnected");
+            throw new RuntimeException(e);
+        }finally {
+            pendingPongs.remove(playerName);
+        }
+    }
+    public void pong(String nickname) {
+        CompletableFuture<Void> future = pendingPongs.get(nickname);
+        if (future != null) {
+            future.complete(null);
+        }
+    }
+
+    public Map<String, Player> getActivePlayers() {
+        return activePlayers;
     }
 }

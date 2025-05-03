@@ -17,54 +17,57 @@ public interface VirtualController extends Remote, Serializable {
 
     //PHASE OF LOGIN/CREATION OF MATCHES METHODS
     void login(String playerName) throws RemoteException;
-    void connect(VirtualView client, String playerName) throws RemoteException;
-    void createGame(String gameName, int playerCount, GameMode chooseMode, String playerName) throws RemoteException;
-    void joinGame(String gameName, String playerName) throws RemoteException;
-    void leaveGame(String playerName) throws RemoteException;
-    void leave(String playerName) throws RemoteException;
-    void chooseColor(String playerName, PlayersColor color) throws RemoteException;
+    //void connect(VirtualView client, String playerName) throws RemoteException;
+    void createGame( String gameName, int playerCount, GameMode chooseMode) throws RemoteException;
+    void joinGame(String gameName) throws RemoteException;
+    void leaveGame() throws RemoteException;
+    void leave() throws RemoteException;
+    void chooseColor( PlayersColor color) throws RemoteException;
 
 
     //TILE RELATED METHODS
-    void notifySetTile(String playerName, Tile tile) throws RemoteException;
-    void notifyRefusedTile(String playerName) throws RemoteException;
-    void reqDrawTileFromTurned(String playerName, int index) throws RemoteException;
-    void reqDrawTileFromStack(String playerName) throws RemoteException;//pescaggio tile scoperte
-    void notifyTileBooking(String playerName) throws RemoteException;//per ora metto key però forse è meglio tile
+    void notifySetTile( Tile tile) throws RemoteException;
+    void notifyRefusedTile() throws RemoteException;
+    void reqDrawTileFromTurned( int index) throws RemoteException;
+    void reqDrawTileFromStack() throws RemoteException;//pescaggio tile scoperte
+    void notifyTileBooking() throws RemoteException;//per ora metto key però forse è meglio tile
 
 
     // CARDS RELATED METHODS
-    void lookCardsRequest(String playerName, int deckToLookAt) throws RemoteException;
-    void stopLookingAtCardsRequest(String playerName) throws RemoteException;
-    void drawCards(String playerName) throws RemoteException;
+    void lookCardsRequest( int deckToLookAt) throws RemoteException;
+    void stopLookingAtCardsRequest() throws RemoteException;
+    void drawCards() throws RemoteException;
 
 
     // COORDINATES RELATED METHODS
-    void sendCoordinates(String playerName, ArrayList<Coordinates> coordinates) throws RemoteException;
-    void sendDoubleCannonUsed(String playerName, float Strength, ArrayList<Coordinates> coordinates) throws RemoteException;
-    void sendNumDoubleEngineUsed(String playerName, int NumEngine, ArrayList<Coordinates> coordinates) throws RemoteException;
+    void sendCoordinates( ArrayList<Coordinates> coordinates) throws RemoteException;
+    void sendDoubleCannonUsed( float Strength, ArrayList<Coordinates> coordinates) throws RemoteException;
+    void sendNumDoubleEngineUsed( int NumEngine, ArrayList<Coordinates> coordinates) throws RemoteException;
 
 
     // YES/NO
-    void sendYes(String playerName) throws RemoteException;
-    void sendNo(String playerName) throws RemoteException;
+    void sendYes() throws RemoteException;
+    void sendNo() throws RemoteException;
 
 
-    void sendTurnHourGlass(String playerName) throws RemoteException;
-    void rollTheDices(String playerName) throws RemoteException;
-    void planetChoiceRequest(String playerName, int choice) throws RemoteException;
+    void sendTurnHourGlass( ) throws RemoteException;
+    void rollTheDices() throws RemoteException;
+    void planetChoiceRequest(int choice) throws RemoteException;
 
     /*BOOLEAN
     boolean checkCorrectionShipboard(String playerName) throws RemoteException;
      */
-    void notifyEarlyLanding(String playerName) throws RemoteException;
-    void notifyCompleted(String playerName) throws RemoteException;
-    void notifySetPosition(String playerName, int position) throws RemoteException;
+    void notifyEarlyLanding() throws RemoteException;
+    void notifyCompleted() throws RemoteException;
+    void notifySetPosition( int position) throws RemoteException;
 
 
-    void notifyNewGoodsArrangement(String playerName, int clientGoodsValue, ArrayList<CargoHold> updatedCargos) throws RemoteException;
-    void notifyNewCrewArrangement(String playerName, ArrayList<Tile> updatedCabin) throws RemoteException;
+    void notifyNewGoodsArrangement( int clientGoodsValue, ArrayList<CargoHold> updatedCargos) throws RemoteException;
+    void notifyNewCrewArrangement( ArrayList<Tile> updatedCabin) throws RemoteException;
 
+    void setView(VirtualView virtualView) throws RemoteException;
+
+    void ping() throws RemoteException;
 
 
     //METODI CON USAGE CHE SONO STATI MODIFICATI(DA CONTROLLARE CON FEDERICO)

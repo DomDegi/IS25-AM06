@@ -32,7 +32,7 @@ public enum ClientState {
             case COORD_REQUEST -> {return "coordinates requested";}
             case MANAGE_GOODS -> {return  "going to manage goods of the planet ";}
             case PLANET_CHOICE -> {return "choose one of the planets to land";}
-            case S_END_DRAW_TILE_CARD -> {return "now you can draw a tile ore a tile ";}
+            case S_END_DRAW_TILE_CARD -> {return "now you can draw a tile or a card";}
             case S_MANAGE_CARDS -> {return "you're seeing the cards";}
             case S_MANAGE_DRAWN_TILE -> {return "you can rotate, position, book or refuse this tile ";}
             case S_FINISHED -> {return "you've finished the ship creation, wait to know if your ship is correct";}

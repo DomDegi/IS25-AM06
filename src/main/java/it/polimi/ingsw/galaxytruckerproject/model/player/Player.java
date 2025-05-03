@@ -391,4 +391,7 @@ public class Player implements PlayerInterface {
         this.playerShip = shipBoard;
     }
 
+    public void setDisconnected(boolean disconnected) {
+        isDisconnected = disconnected;
+    }
 }

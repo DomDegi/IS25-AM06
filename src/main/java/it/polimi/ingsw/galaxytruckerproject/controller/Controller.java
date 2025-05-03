@@ -9,6 +9,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
+import javax.swing.text.View;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
@@ -27,16 +28,18 @@ public class Controller implements ControllerInterface {
 
     private final MultiGameController multiGameController;
 
-    private final VirtualView view;
+    private VirtualView view;
 
     private GameController gameController;
 
 
-    public Controller(MultiGameController multiGameController, VirtualView view) {
+    public Controller(MultiGameController multiGameController) {
         this.multiGameController = multiGameController;
-        this.view = view;
     }
 
+    public void setView(VirtualView view) {
+        this.view = view;
+    }
 
     /**
      * useful method to set the gameController for the joined game
@@ -52,7 +55,7 @@ public class Controller implements ControllerInterface {
      * @param nickname nickname of player to login
      */
     @Override
-    public void login (String nickname) {
+    public void login (String nickname)  {
         if (multiGameController.login(nickname, view, this)) {
             this.nickname = nickname;
         }
@@ -65,7 +68,7 @@ public class Controller implements ControllerInterface {
      * @param chosenMode chosen gameMode between LVL2 flight and trialFlight
      */
     @Override
-    public void createGame (String gameName ,int playerCount, GameMode chosenMode) {
+    public void createGame (String gameName ,int playerCount, GameMode chosenMode)  {
         multiGameController.createGame(nickname, gameName, playerCount, this, chosenMode);
     }
 
@@ -74,7 +77,7 @@ public class Controller implements ControllerInterface {
      * @param gameName name of the game to enter
      */
     @Override
-    public void joinGame (String gameName) {
+    public void joinGame (String gameName)  {
         multiGameController.joinGame(nickname, gameName, this);
     }
 
@@ -82,7 +85,7 @@ public class Controller implements ControllerInterface {
      * this method calls on the multiGameController for the leave game method
      */
     @Override
-    public void leaveGame () {
+    public void leaveGame ()  {
         multiGameController.leaveGame(nickname);
     }
 
@@ -159,17 +162,17 @@ public class Controller implements ControllerInterface {
     }
 
     @Override
-    public void useCannons(float doublePower, ArrayList<Coordinates> batteries) throws RemoteException {
+    public void useCannons(float doublePower, ArrayList<Coordinates> batteries)  {
         gameController.playerUsesCannons(nickname, doublePower, batteries);
     }
 
     @Override
-    public void useEngines(int numberOfDoubleEngines, ArrayList<Coordinates> batteries) throws RemoteException{
+    public void useEngines(int numberOfDoubleEngines, ArrayList<Coordinates> batteries) {
         gameController.playerUsesEngines(nickname, numberOfDoubleEngines, batteries);
     }
 
     @Override
-    public void manageGoods(int clientCreditsToVerify, ArrayList<CargoHold> updatedCargos) throws RemoteException{
+    public void manageGoods(int clientCreditsToVerify, ArrayList<CargoHold> updatedCargos) {
         gameController.playerManagesGoods(nickname, clientCreditsToVerify, updatedCargos);
     }
 
@@ -198,12 +201,12 @@ public class Controller implements ControllerInterface {
     }
 
     @Override
-    public void removeGoods(ArrayList<Coordinates> fromHere) throws Exception {
+    public void removeGoods(ArrayList<Coordinates> fromHere)  {
         gameController.playerRemovesGoods(nickname, fromHere);
     }
 
     @Override
-    public void useBatteries(ArrayList<Coordinates> batteries) throws Exception {
+    public void useBatteries(ArrayList<Coordinates> batteries)  {
         gameController.playerUsesBatteries(nickname, batteries);
     }
 
@@ -213,7 +216,15 @@ public class Controller implements ControllerInterface {
     }
 
     @Override
-    public void chooseBranch(ArrayList<Coordinates> thisOne) throws Exception {
+    public void chooseBranch(ArrayList<Coordinates> thisOne)  {
         gameController.playerChoosesBranch(nickname, thisOne);
     }
+    public VirtualView getView() {
+        return view;
+    }
+
+    public void ping(){
+        gameController.pong(nickname);
+    }
 }
+

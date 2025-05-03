@@ -6,6 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
+import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -27,7 +28,7 @@ public class MultiGameController {
      * @param controller player's personal controller to interact with the model
      * @return boolean value to tell if the login was successful
      */
-    public boolean login(String nickname, VirtualView view, Controller controller) {
+    public boolean login(String nickname, VirtualView view, Controller controller){
         boolean wasSuccessful;
         if (view != null && controller != null) {
             //check if the nickname is unique
@@ -65,10 +66,18 @@ public class MultiGameController {
 
         if (creator != null && creatorView != null && controller != null && !isAlreadyInAGame(gameName)) {
             if (gamesMap.get(gameName) != null) {
-                creatorView.showErrorMessage("Game with this name already exists");
+                try {
+                    creatorView.showErrorMessage("Game with this name already exists");
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
             }
             else if (playerCount < 2 || playerCount > 4) {
-                creatorView.showErrorMessage("Invalid number of players");
+                try {
+                    creatorView.showErrorMessage("Invalid number of players");
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
             }
             else {
                 Game game = new Game(chosenMode, playerCount);
@@ -88,7 +97,11 @@ public class MultiGameController {
 
         if (joinerView != null && controller != null) {
             if (gameToJoin == null) {
-                joinerView.showErrorMessage("a game with this name doesn't exists");
+                try {
+                    joinerView.showErrorMessage("a game with this name doesn't exists");
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
             }
             else {
                 viewsMap.remove(joiner);
@@ -176,11 +189,15 @@ public class MultiGameController {
      * @param nickname nickname of the player to add the viewsMap
      * @param view view of the player to call the method that shows the joinable games on
      */
-    public void joinableGamesList(String nickname, VirtualView view) {
+    public void joinableGamesList(String nickname, VirtualView view)  {
         Map<String, GameController> joinableGames;
         joinableGames = gamesMap.entrySet().stream().filter(entry -> entry.getValue().getGameState().equals(GameState.START_GAME))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-        view.showJoinableGamesList(joinableGames);
+        try {
+            view.showJoinableGamesList(joinableGames);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
         viewsMap.put(nickname, view);
     }
 
@@ -189,8 +206,28 @@ public class MultiGameController {
      * @param gameCreator game creator
      * @param creatorView view of the game creator
      */
-    public void notifyNewGame (String gameCreator, ViewInterface creatorView) {
-        creatorView.showGenericMessage("created game");
-        viewsMap.forEach(this::joinableGamesList);
+    public void notifyNewGame (String gameCreator, ViewInterface creatorView)  {
+        try {
+            creatorView.showGenericMessage("created game");
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+        for (Map.Entry<String, VirtualView> entry : viewsMap.entrySet()) {
+            String key = entry.getKey();
+            VirtualView value = entry.getValue();
+            joinableGamesList(key, value);
+        }
+    }
+
+    public void playPingPong(){
+        while(true){
+            if(gamesMap!=null)
+                for(GameController game : gamesMap.values()){
+                    if(game.getActivePlayers()!=null)
+                        for(String playerName : game.getActivePlayers().keySet()){
+                            game.pingPong(playerName,game.getViewFromNickname(playerName));
+                        }
+                }
+        }
     }
 }

@@ -6,9 +6,11 @@ import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
@@ -17,8 +19,10 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class TUI implements DisplayableView{
+    public TUI(){}
     @Override
     public void askNickname() throws IOException {
             System.out.println("enter your nickname");
@@ -186,6 +190,52 @@ public class TUI implements DisplayableView{
     }
 
     @Override
+    public void connected() {
+        System.out.println("You are connected");
+    }
+
+    @Override
+    public void setGameMode(GameMode gameMode) {
+        System.out.println("your gameMode is: " + gameMode.toString());
+    }
+
+    @Override
+    public void ping() throws RemoteException {
+        
+    }
+
+    @Override
+    public void goodsPrinter(ArrayList<Goods> goodsArray) throws RemoteException {
+        String ANSI_RESET = "\u001B[0m";
+        String ANSI_BLUE = "\u001B[34m";
+        String ANSI_GREEN = "\u001B[32m";
+        String ANSI_YELLOW = "\u001B[33m";
+        String ANSI_RED= "\u001B[31m";
+
+        StringBuilder sb= new StringBuilder();
+
+        AtomicInteger i = new AtomicInteger(1);
+        goodsArray.forEach(goods -> {
+            if(goods.getColor()== GoodsColor.BLUE){
+                sb.append(i).append(" - ").append(ANSI_BLUE).append(goods.getColor()).append(" ").append(ANSI_RESET).append("good: it equals to ").append(goods.getValue()).append(" cosmic credits\n");
+            }else if(goods.getColor()==GoodsColor.GREEN){
+                sb.append(i).append(" - ").append(ANSI_GREEN).append(goods.getColor()).append(" ").append(ANSI_RESET).append("good: it equals to ").append(goods.getValue()).append(" cosmic credits\n");
+            }else if(goods.getColor()==GoodsColor.YELLOW){
+                sb.append(i).append(" - ").append(ANSI_YELLOW).append(goods.getColor()).append(" ").append(ANSI_RESET).append("good: it equals to ").append(goods.getValue()).append(" cosmic credits\n");
+            }else if(goods.getColor()==GoodsColor.RED){
+                sb.append(i).append(" - ").append(ANSI_RED).append(goods.getColor()).append(" ").append(ANSI_RESET).append("good: it equals to ").append(goods.getValue()).append(" cosmic credits\n");
+            }
+            i.getAndIncrement();
+        });
+        System.out.println(sb.toString());
+    }
+
+    @Override
+    public void printCabins(Tile cabins) {
+        System.out.println("choose equip type of:"+cabins.toString());
+    }
+
+    @Override
     public void notifyDrawnCard(Card card) throws RemoteException {
         System.out.println("a new card has been drawn\n "+card.toString());
     }
@@ -202,6 +252,5 @@ public class TUI implements DisplayableView{
     public void showCard(Card card) {
         System.out.println(card.toString());
     }
-
 
 }

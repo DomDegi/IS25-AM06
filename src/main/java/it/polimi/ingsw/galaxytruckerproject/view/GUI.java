@@ -5,6 +5,7 @@ import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
-public class GUI implements ViewInterface {
+public class GUI implements DisplayableView {
 
     @Override
     public void askNickname() throws IOException {
@@ -249,6 +250,31 @@ public class GUI implements ViewInterface {
 
     @Override
     public void printProjectile(Projectile projectile) {
+
+    }
+
+    @Override
+    public void printCabins(Tile cabins) {
+
+    }
+
+    @Override
+    public void connected() {
+
+    }
+
+    @Override
+    public void setGameMode(GameMode gameMode) {
+
+    }
+
+    @Override
+    public void ping() throws RemoteException {
+
+    }
+
+    @Override
+    public void goodsPrinter(ArrayList<Goods> goodsArray) throws RemoteException {
 
     }
 

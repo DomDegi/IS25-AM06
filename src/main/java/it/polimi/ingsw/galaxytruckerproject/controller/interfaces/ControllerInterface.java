@@ -124,4 +124,6 @@ public interface ControllerInterface {
      * @throws Exception
      */
     void setPosition(int position) throws Exception;
+
+    void ping() throws RemoteException;
 }

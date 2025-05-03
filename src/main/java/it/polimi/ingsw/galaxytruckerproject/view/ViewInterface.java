@@ -5,10 +5,12 @@ import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Cabin;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
@@ -29,7 +31,7 @@ public interface ViewInterface extends Remote, Serializable {
      * asks player to set a color for the starting cabin
      * @throws IOException
      */
-    void askColor ();
+    void askColor () throws RemoteException;
     /**
      * show login response from server
      * @param success
@@ -40,7 +42,7 @@ public interface ViewInterface extends Remote, Serializable {
      * Shows on the view the list of the games that are in starting phase.
      * Also asks player calls for the function asksJoinOrCreate().
      */
-    void showJoinableGamesList(Map<String, GameController> joinableGames);
+    void showJoinableGamesList(Map<String, GameController> joinableGames) throws RemoteException;
 
     /**
      * asks player to set a player count for the created game
@@ -64,24 +66,24 @@ public interface ViewInterface extends Remote, Serializable {
      * shows on the view a generic message sent by the server
      * @param genericMessage the message to be shown
      */
-    void showGenericMessage (String genericMessage);
+    void showGenericMessage (String genericMessage) throws RemoteException;
 
     /**
      * shows on the view a error message sent by the server
      * @param errorMessage the message to be shown.
      */
-    void showErrorMessage (String errorMessage);
+    void showErrorMessage (String errorMessage) throws RemoteException;
     /**
      * shows on the view the list of players in the game with their status (in flight or landed)
      * @param players in game players
      */
-    void showInGamePlayers (ArrayList<Player> players);
+    void showInGamePlayers (ArrayList<Player> players) throws RemoteException;
     /**
      * shows the chosen players shipboard
      * @param player
      * @param shipBoard
      */
-    void showPlayersBoard(String player, ShipBoard shipBoard);
+    void showPlayersBoard(String player, ShipBoard shipBoard) throws RemoteException;
     /**
      * show the drawnTile to the player
      * @param drawnTile
@@ -92,53 +94,57 @@ public interface ViewInterface extends Remote, Serializable {
      * shows the player the tiles that got turned from player refusing them
      * @param turnedTiles the current array in the model
      */
-    void showTurnedTiles (Map<Integer,Tile> turnedTiles);
+    void showTurnedTiles (Map<Integer,Tile> turnedTiles) throws RemoteException;
     /**
      * shows the tiles that the player booked on their shipboard
      * @param bookedTiles the booked tiles
      */
-    void showBookedTiles (ArrayList<Tile> bookedTiles);
+    void showBookedTiles (ArrayList<Tile> bookedTiles) throws RemoteException;
     void showWrongInputMessage () throws RemoteException;
     /**
      * prints on the view the cards that are on the shipboard to be seen during
      * ship building phase
      * @param inGameCards the cards returned by the model
      */
-    void showInGameCards (ArrayList<Card> inGameCards);
-    void asksToRollTheDices();//asks the player to confirm he wants to roll the dices
-    void showDiceRoll(int diceRoll);
+    void showInGameCards (ArrayList<Card> inGameCards) throws RemoteException;
+    void asksToRollTheDices() throws RemoteException;//asks the player to confirm he wants to roll the dices
+    void showDiceRoll(int diceRoll) throws RemoteException;
     /**
      * asks the player to choose a starting position from 1 to playerCount
      */
-    void asksToChooseStartingPosition ();
+    void asksToChooseStartingPosition () throws RemoteException;
 
     /**
      * asks the player to input a series of coordinates of coord
      */
     void asksToInputCoordinates (CoordReqType coordReqType) throws RemoteException;
-    void asksToTurnTheHourglass ();
-    void notifyYouCanDrawThisCardDeck();
-    void notifyYourShipIsCorrect();
+    void asksToTurnTheHourglass () throws RemoteException;
+    void notifyYouCanDrawThisCardDeck() throws RemoteException;
+    void notifyYourShipIsCorrect() throws RemoteException;
     /**
      * asks to set position on the flightboard
      */
     void asksToMakeAChoice () throws RemoteException;
     void asksToManageGoods(ArrayList<Goods> goods) throws RemoteException;
-    void asksToRemoveGoods();
-    void asksToRemoveCrew();
+    void asksToRemoveGoods() throws RemoteException;
+    void asksToRemoveCrew() throws RemoteException;
     /**
      * at the end of the game shows every players score on the view
      */
-    void showScores(ArrayList<Player> players);
+    void showScores(ArrayList<Player> players) throws RemoteException;
     /**
      * asks the player to choose the mode of the game to be created
      */
     void notifyDrawnCard(Card card) throws RemoteException; //tell the players which card has been drawn
     void notifyPlayerLandedOnPlanet(String playerName, int planet)  throws RemoteException;
-    void wrongLocalInput();
-    void showCard(Card card);
-    void printFlightboard(LightFlightboard lightFlightboard);
-    void printShipboard(LightShipBoard lightShipBoard);
-    void printProjectile(Projectile projectile);
-
+    void wrongLocalInput() throws RemoteException;
+    void showCard(Card card) throws RemoteException;
+    void printFlightboard(LightFlightboard lightFlightboard) throws RemoteException;
+    void printShipboard(LightShipBoard lightShipBoard) throws RemoteException;
+    void printProjectile(Projectile projectile) throws RemoteException;
+    void printCabins(Tile cabins) throws RemoteException;
+    void connected() throws RemoteException;
+    void setGameMode(GameMode gameMode) throws RemoteException;
+    void ping() throws RemoteException;
+    void goodsPrinter (ArrayList<Goods> goodsArray) throws RemoteException;
 }
