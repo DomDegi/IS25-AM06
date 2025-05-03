@@ -9,6 +9,7 @@ import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
@@ -186,6 +187,28 @@ public class TUI implements DisplayableView{
     }
 
     @Override
+    public void goodsPrinter(ArrayList<Goods> goodsArray) {
+        String ANSI_RESET = "\u001B[0m";
+        String ANSI_BLUE = "\u001B[34m";
+        String ANSI_GREEN = "\u001B[32m";
+        String ANSI_YELLOW = "\u001B[33m";
+        String ANSI_RED= "\u001B[31m";
+        int i=1;
+        for(Goods goods: goodsArray){
+            if(goods.getColor()==GoodsColor.BLUE){
+                System.out.println(i+" - " + ANSI_BLUE + goods.getColor() + ANSI_RESET+" good: it equals to " + goods.getValue()+" cosmic credits");
+            }else if(goods.getColor()==GoodsColor.GREEN){
+                System.out.println(i+" - " + ANSI_GREEN + goods.getColor() + ANSI_RESET+" good: it equals to " + goods.getValue()+" cosmic credits");
+            }else if(goods.getColor()==GoodsColor.YELLOW){
+                System.out.println(i+" - " + ANSI_YELLOW + goods.getColor() + ANSI_RESET+" good: it equals to " + goods.getValue()+" cosmic credits");
+            }else if(goods.getColor()==GoodsColor.RED){
+                System.out.println(i+" - " + ANSI_RED + goods.getColor() + ANSI_RESET+" good: it equals to " + goods.getValue()+" cosmic credits");
+            }
+            i++;
+        }
+    }
+
+    @Override
     public DisplayableView getDisplayedView() throws RemoteException {
         return new TUI();
     }
@@ -207,6 +230,5 @@ public class TUI implements DisplayableView{
     public void showCard(Card card) throws RemoteException {
         System.out.println(card.toString());
     }
-
 
 }

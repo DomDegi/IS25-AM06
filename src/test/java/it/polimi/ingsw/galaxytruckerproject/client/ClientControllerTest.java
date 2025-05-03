@@ -305,18 +305,18 @@ class ClientControllerTest {
         input="turn";
         assertTrue(controller.input(input));
         assertEquals(3,controller.getHourglassTurns());
-        //post collegamento a server
         /*
+        controller.getView().setClientState(ClientState.S_FINISHED);
         input="3";
         assertTrue(controller.input(input));
         verify(mockVirtualController,times(1)).notifySetPosition(notNull(),choseCaptor.capture());
         assertEquals(3,choseCaptor.getValue());
-        assertEquals(ClientState.WAIT_OTHER_PLAYER_ACTION, controller.getState());
-        */
+        assertEquals(ClientState.WAIT_OTHER_PLAYER_ACTION, controller.getState());*/
+
     }
 
     @Test
-    void MANAGE_CABINS_test() throws RemoteException {
+    void MANAGE_CABINS_test_butNull() throws RemoteException {
         S_FINISHED_test();
         controller.getView().setClientState(ClientState.MANAGE_CABINS);
         String input="humans";
@@ -325,13 +325,11 @@ class ClientControllerTest {
     }
 
     @Captor
-    ArgumentCaptor<ArrayList<CargoHold>> newTilesCaptor;
-
-    @Captor
-    ArgumentCaptor<Integer> valueCaptor;
+    ArgumentCaptor<ArrayList<Tile>> cabinCaptor;
 
     @Test
-    void MANAGE_GOODS_test() throws RemoteException {
+    void MANAGE_CABINS_test() throws RemoteException {
+        S_FINISHED_test();
         LightShipBoard shipBoard1 = new LightShipBoard(controller.getMe());
         shipBoard1.initializeLevel2();
         Tile tile1=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
@@ -382,7 +380,88 @@ class ClientControllerTest {
         Tile tile21=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
         shipBoard1.positionTile(Optional.of(tile21), new Coordinates(4,2));
         shipBoard1.setGetStat();
+        controller.getView().setClientState(ClientState.MANAGE_CABINS);
+        String input="humans";
+        assertTrue(controller.input(input));
+        input="humans";
+        assertTrue(controller.input(input));
+        input="brownAlien";
+        assertTrue(controller.input(input));
+        input="Alien";
+        assertFalse(controller.input(input));
+        input="brownAlien";
+        assertTrue(controller.input(input));
+        input="humans";
+        assertTrue(controller.input(input));
+        input="humans";
+        assertTrue(controller.input(input));
+        verify(mockVirtualController,times(1)).notifyNewCrewArrangement(notNull(),cabinCaptor.capture());
+        assertEquals(CrewType.HUMAN,cabinCaptor.getValue().get(0).getCrewType());
+        assertEquals(CrewType.HUMAN,cabinCaptor.getValue().get(1).getCrewType());
+        assertEquals(CrewType.BROWN,cabinCaptor.getValue().get(2).getCrewType());
+        assertEquals(CrewType.HUMAN,cabinCaptor.getValue().get(3).getCrewType());
+        assertEquals(CrewType.HUMAN,cabinCaptor.getValue().get(4).getCrewType());
+    }
+
+    @Captor
+    ArgumentCaptor<ArrayList<CargoHold>> newTilesCaptor;
+
+    @Captor
+    ArgumentCaptor<Integer> valueCaptor;
+
+    @Test
+    void MANAGE_GOODS_test() throws RemoteException {
         S_FINISHED_test();
+        LightShipBoard shipBoard1 = new LightShipBoard(controller.getMe());
+        shipBoard1.initializeLevel2();
+        Tile tile1=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile1), new Coordinates(0,4));
+        Tile tile2=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE));
+        shipBoard1.positionTile(Optional.of(tile2), new Coordinates(1,1));
+        tile2.setCrewType(CrewType.HUMAN);
+        Tile tile3=new AlienLifeSupportsSystem( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),CrewType.BROWN);
+        shipBoard1.positionTile(Optional.of(tile3), new Coordinates(1,2));
+        Tile tile4=new CargoRed(3, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile4), new Coordinates(1,3));
+        Tile tile5=new CargoBlue(3, new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
+        shipBoard1.positionTile(Optional.of(tile5), new Coordinates(1,4));
+        Tile tile6=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE));
+        shipBoard1.positionTile(Optional.of(tile6), new Coordinates(1,5));
+        Tile tile7=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile7), new Coordinates(2,0));
+        Tile tile8=new EquipCabin( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE));
+        shipBoard1.positionTile(Optional.of(tile8), new Coordinates(2,1));
+        tile8.setCrewType(CrewType.HUMAN);
+        Tile tile9=new EquipCabin( new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile9), new Coordinates(2,2));
+        tile9.setCrewType(CrewType.HUMAN);
+        Tile tile10=new Shields( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL));
+        shipBoard1.positionTile(Optional.of(tile10), new Coordinates(2,4));
+        Tile tile12=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL));
+        shipBoard1.positionTile(Optional.of(tile12), new Coordinates(2,5));
+        tile12.setCrewType(CrewType.HUMAN);
+        Tile tile11=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL));
+        shipBoard1.positionTile(Optional.of(tile11), new Coordinates(2,6));
+        Tile tile13=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE), 2);
+        shipBoard1.positionTile(Optional.of(tile13), new Coordinates(3,0));
+        Tile tile14=new EquipCabin( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile14), new Coordinates(3,2));
+        tile14.setCrewType(CrewType.HUMAN);
+        Tile tile15=new SingleEngine( new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile15), new Coordinates(3,3));
+        Tile tile16=new CargoRed(1, new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE));
+        shipBoard1.positionTile(Optional.of(tile16), new Coordinates(3,4));
+        Tile tile17=new DoubleEngine( new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE));
+        shipBoard1.positionTile(Optional.of(tile17), new Coordinates(3,5));
+        Tile tile18=new BatteryComponents( new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH), 2);
+        shipBoard1.positionTile(Optional.of(tile18), new Coordinates(3,6));
+        Tile tile19=new BatteryComponents( new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH), 2);
+        shipBoard1.positionTile(Optional.of(tile19), new Coordinates(4,0));
+        Tile tile20=new SingleCannon(new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
+        shipBoard1.positionTile(Optional.of(tile20), new Coordinates(4,1));
+        Tile tile21=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
+        shipBoard1.positionTile(Optional.of(tile21), new Coordinates(4,2));
+        shipBoard1.setGetStat();
         ArrayList<Goods> goods=new ArrayList<>();
         goods.add(new Goods(GoodsColor.RED));
         goods.add(new Goods(GoodsColor.BLUE));
@@ -395,6 +474,81 @@ class ClientControllerTest {
         input="done";
         assertTrue(controller.input(input));
         verify(mockVirtualController,times(1)).notifyNewGoodsArrangement(notNull(),valueCaptor.capture(),newTilesCaptor.capture());
-
+        assertEquals(GoodsColor.RED,newTilesCaptor.getValue().getFirst().getCargo().getFirst().getColor());
+        assertEquals(4,valueCaptor.getValue());
     }
+
+    @Test
+    void MANAGE_GOODS_test_pick() throws RemoteException{
+        S_FINISHED_test();
+        LightShipBoard shipBoard1 = new LightShipBoard(controller.getMe());
+        shipBoard1.initializeLevel2();
+        Tile tile1=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile1), new Coordinates(0,4));
+        Tile tile2=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE));
+        shipBoard1.positionTile(Optional.of(tile2), new Coordinates(1,1));
+        tile2.setCrewType(CrewType.HUMAN);
+        Tile tile3=new AlienLifeSupportsSystem( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),CrewType.BROWN);
+        shipBoard1.positionTile(Optional.of(tile3), new Coordinates(1,2));
+        Tile tile4=new CargoRed(3, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile4), new Coordinates(1,3));
+        Tile tile5=new CargoBlue(3, new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
+        shipBoard1.positionTile(Optional.of(tile5), new Coordinates(1,4));
+        Tile tile6=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE));
+        shipBoard1.positionTile(Optional.of(tile6), new Coordinates(1,5));
+        Tile tile7=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile7), new Coordinates(2,0));
+        Tile tile8=new EquipCabin( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE));
+        shipBoard1.positionTile(Optional.of(tile8), new Coordinates(2,1));
+        tile8.setCrewType(CrewType.HUMAN);
+        Tile tile9=new EquipCabin( new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile9), new Coordinates(2,2));
+        tile9.setCrewType(CrewType.HUMAN);
+        Tile tile10=new Shields( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL));
+        shipBoard1.positionTile(Optional.of(tile10), new Coordinates(2,4));
+        Tile tile12=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL));
+        shipBoard1.positionTile(Optional.of(tile12), new Coordinates(2,5));
+        tile12.setCrewType(CrewType.HUMAN);
+        Tile tile11=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL));
+        shipBoard1.positionTile(Optional.of(tile11), new Coordinates(2,6));
+        Tile tile13=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE), 2);
+        shipBoard1.positionTile(Optional.of(tile13), new Coordinates(3,0));
+        Tile tile14=new EquipCabin( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile14), new Coordinates(3,2));
+        tile14.setCrewType(CrewType.HUMAN);
+        Tile tile15=new SingleEngine( new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH));
+        shipBoard1.positionTile(Optional.of(tile15), new Coordinates(3,3));
+        Tile tile16=new CargoRed(1, new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE));
+        shipBoard1.positionTile(Optional.of(tile16), new Coordinates(3,4));
+        Tile tile17=new DoubleEngine( new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE));
+        shipBoard1.positionTile(Optional.of(tile17), new Coordinates(3,5));
+        Tile tile18=new BatteryComponents( new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH), 2);
+        shipBoard1.positionTile(Optional.of(tile18), new Coordinates(3,6));
+        Tile tile19=new BatteryComponents( new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH), 2);
+        shipBoard1.positionTile(Optional.of(tile19), new Coordinates(4,0));
+        Tile tile20=new SingleCannon(new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
+        shipBoard1.positionTile(Optional.of(tile20), new Coordinates(4,1));
+        Tile tile21=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
+        shipBoard1.positionTile(Optional.of(tile21), new Coordinates(4,2));
+        shipBoard1.setGetStat();
+        ArrayList<Goods> goods=new ArrayList<>();
+        goods.add(new Goods(GoodsColor.RED));
+        goods.add(new Goods(GoodsColor.BLUE));
+        goods.add(new Goods(GoodsColor.GREEN));
+        goods.add(new Goods(GoodsColor.YELLOW));
+        controller.getGoodsList().addAll(goods);
+        controller.getView().setClientState(ClientState.MANAGE_GOODS);
+        String input="1 1 3";
+        assertTrue(controller.input(input));
+        input= "pick 1 3";
+        assertTrue(controller.input(input));
+        input="1";
+        assertTrue(controller.input(input));
+        input="done";
+        assertTrue(controller.input(input));
+        verify(mockVirtualController,times(1)).notifyNewGoodsArrangement(notNull(),valueCaptor.capture(),newTilesCaptor.capture());
+        assertTrue(newTilesCaptor.getValue().getFirst().getCargo().isEmpty());
+        assertEquals(0,valueCaptor.getValue());
+    }
+
 }

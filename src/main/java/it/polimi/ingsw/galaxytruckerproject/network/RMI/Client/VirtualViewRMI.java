@@ -193,6 +193,11 @@ public class VirtualViewRMI extends UnicastRemoteObject implements Remote, Virtu
     }
 
     @Override
+    public void goodsPrinter(ArrayList<Goods> goodsArray) throws RemoteException {
+        view.goodsPrinter(goodsArray);
+    }
+
+    @Override
     public void notifyModifiedTiles(String playerName, ArrayList<Tile> tiles) throws RemoteException {
         clientController.modifyTiles(playerName, tiles);
         if (playerName.equals(clientController.getName())) {
@@ -313,4 +318,5 @@ public class VirtualViewRMI extends UnicastRemoteObject implements Remote, Virtu
     public void asksToRemoveCrew() throws RemoteException {
         view.asksToRemoveCrew();
     }// aggiorna: deve chiamare il nuovo rimuovitore di crew dal coordinate request handler
+
 }

@@ -67,6 +67,10 @@ public class LightPlayer implements PlayerInterface {
         }
     }
 
+    public void setColor(PlayersColor color) {
+        this.color = color;
+    }
+
     @Override
     public PlayersColor getPlayerColor() {
         return color;

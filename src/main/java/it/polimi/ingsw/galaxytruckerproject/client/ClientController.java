@@ -22,7 +22,6 @@ import java.util.*;
 public class ClientController {
     private ClientState state;
     private ClientState previousState;
-    private String name;
     private final LightPlayer me;
     private LightFlightboard flightBoard;
     private boolean inManager;
@@ -38,7 +37,7 @@ public class ClientController {
     private Map<Integer,Tile> turnedTiles;
     private Map<Integer, ArrayList<Card>> deck;
     private final Map<Integer,Boolean> availableDeck;
-    private ArrayList<Goods> goodsList;
+    private final ArrayList<Goods> goodsList;
 
     private Tile tileInHand;
     private Card displayedCard;
@@ -118,11 +117,11 @@ public class ClientController {
                         if(!connected){
                             //start connection
                         }
-                        virtualController.login(name);
+                        virtualController.login(me.getPlayerName());
                         view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                     }
-                    case "redo"-> this.name=("");
-                    default-> this.name=(words[0]);
+                    case "redo"-> me.setPlayerName("");
+                    default-> me.setPlayerName(words[0]);
                 }
             }
 
@@ -142,12 +141,12 @@ public class ClientController {
                                 return false;
                             }
                         }
-                        virtualController.createGame(gameName,NumberOfPlayers,gameMode,name);
+                        virtualController.createGame(gameName,NumberOfPlayers,gameMode,me.getPlayerName());
                         view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                     }
                     case "joingame"-> {
                         String gameName = words[1];
-                        virtualController.joinGame(gameName,name);
+                        virtualController.joinGame(gameName,me.getPlayerName());
                         view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                     }
                     default-> {
@@ -173,7 +172,8 @@ public class ClientController {
                         return false;
                     }
                 }
-                virtualController.chooseColor(this.name,color);
+                me.setColor(color);
+                virtualController.chooseColor(me.getPlayerName(),color);
                 view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
             }
 
@@ -188,7 +188,7 @@ public class ClientController {
                     return true;
                 switch (words[0]) {
                     case"done" -> {
-                        virtualController.notifyCompleted(this.name);
+                        virtualController.notifyCompleted(me.getPlayerName());
                         view.setClientState(ClientState.S_FINISHED);
                     }
                     case "draw" -> {
@@ -199,7 +199,7 @@ public class ClientController {
                                     if (chose == -1)
                                         return false;
                                     if (chose > 0 && chose < 4 && availableDeck.get(chose)) {
-                                        virtualController.lookCardsRequest(name, chose);
+                                        virtualController.lookCardsRequest(me.getPlayerName(), chose);
                                         indexDeckInHandOrPlanet = chose;
                                         displayedCard = this.deck.get(indexDeckInHandOrPlanet).getFirst();
                                         view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
@@ -215,7 +215,7 @@ public class ClientController {
                             case "tile" -> {
                                 switch (words[2]){
                                     case "new"->{
-                                        virtualController.reqDrawTileFromStack(this.name);
+                                        virtualController.reqDrawTileFromStack(me.getPlayerName());
                                         view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                                     }
                                     case "b1" ->{
@@ -249,7 +249,7 @@ public class ClientController {
                                             return false;
                                         if (chose>0&&turnedTiles.containsKey(chose)) {
                                             tileInHand=turnedTiles.get(chose);
-                                            virtualController.reqDrawTileFromTurned(this.name,chose);
+                                            virtualController.reqDrawTileFromTurned(me.getPlayerName(),chose);
                                             view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                                         }else {
                                             view.wrongLocalInput();
@@ -281,7 +281,7 @@ public class ClientController {
                     }
                     case "done" -> {
                         //done action
-                        virtualController.stopLookingAtCardsRequest(this.name);
+                        virtualController.stopLookingAtCardsRequest(me.getPlayerName());
                         view.setClientState(ClientState.S_END_DRAW_TILE_CARD);
                     }
                 }
@@ -299,7 +299,7 @@ public class ClientController {
                         Coordinates coordinates=transformCoordinates(scroll(words,1));
                         if(coordinates!=null){
                             me.getShipBoard().positionTile(Optional.ofNullable(this.tileInHand),coordinates);
-                            virtualController.notifySetTile(this.name,this.tileInHand);
+                            virtualController.notifySetTile(me.getPlayerName(),this.tileInHand);
                             view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                         }else
                             return false;
@@ -311,7 +311,7 @@ public class ClientController {
                             return true;
                         }
                         this.turnedTiles.put(this.tileInHand.getKey(),this.tileInHand);
-                        virtualController.notifyRefusedTile(this.name);
+                        virtualController.notifyRefusedTile(me.getPlayerName());
                         view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                     }
                     case "book" -> {
@@ -320,7 +320,7 @@ public class ClientController {
                             return false;
                         }
                         this.tileInHand.setBooked(true);
-                        virtualController.notifyTileBooking(this.name);
+                        virtualController.notifyTileBooking(me.getPlayerName());
                         view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                     }
                 }
@@ -336,7 +336,7 @@ public class ClientController {
                     if (chose == -1)
                         return false;
                     if (chose > 0 &&  chose < flightBoard.getInGamePlayers().size()) {
-                        virtualController.notifySetPosition(name, chose);
+                        virtualController.notifySetPosition(me.getPlayerName(), chose);
                         view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                     } else {
                         view.wrongLocalInput();
@@ -349,12 +349,12 @@ public class ClientController {
             }
 
             case ROLL_DICE->{
-                virtualController.rollTheDices(name);
+                virtualController.rollTheDices(me.getPlayerName());
                 view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
             }
 
             case DRAW_CARD ->{
-                virtualController.drawCards(this.name);
+                virtualController.drawCards(me.getPlayerName());
                 view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
             }
 
@@ -365,9 +365,9 @@ public class ClientController {
                     return true;
                 switch (words[0]){
                     case "yes" ->
-                            virtualController.sendYes(this.name);
+                            virtualController.sendYes(me.getPlayerName());
                     case "no" ->
-                            virtualController.sendNo(this.name);
+                            virtualController.sendNo(me.getPlayerName());
                     default->{
                         view.wrongLocalInput();
                         return false;
@@ -389,7 +389,7 @@ public class ClientController {
                 Planets planet=(Planets) displayedCard;
                 if (chose >= 0 && chose <planet.getListOfPlanets().size()) {
                     indexDeckInHandOrPlanet = chose;
-                    virtualController.planetChoiceRequest(this.name,chose);
+                    virtualController.planetChoiceRequest(me.getPlayerName(),chose);
                     view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                 }
             }
@@ -399,22 +399,24 @@ public class ClientController {
                     return true;
                 if (land(words))
                     return true;
-                HashSet<CargoHold> newTilesGoods = goodsManager.getReward(words);
-                ArrayList<CargoHold> newTiles;
-                if (newTilesGoods!=null) {
-                    newTiles = new ArrayList<>(newTilesGoods);
-                    if (newTiles.getFirst().getTotSpaces() == -1){
-                        newTiles.clear();
+                if(inManager){
+                    HashSet<CargoHold> newTilesGoods = goodsManager.getReward(words);
+                    ArrayList<CargoHold> newTiles;
+                    if (newTilesGoods != null) {
+                        newTiles = new ArrayList<>(newTilesGoods);
+                        if (newTiles.getFirst().getTotSpaces() == -1) {
+                            newTiles.clear();
+                        }
+                        int goodsVal = me.getShipBoard().convertGoodsToCredit();
+                        virtualController.notifyNewGoodsArrangement(me.getPlayerName(), goodsVal, newTiles);
+                        inManager = false;
+                        view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                     }
-                    int goodsVal = me.getShipBoard().convertGoodsToCredit();
-                    virtualController.notifyNewGoodsArrangement(this.name,goodsVal,newTiles);
-                    inManager=false;
-                    view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                 }
             }
 
             case MANAGE_CABINS -> {
-                if(gameMode==GameMode.LEVEL2){
+                if(gameMode==GameMode.LEVEL2&& inManager){
                     CrewType type;
                     ArrayList<Tile> newTiles;
                     switch (words[0]) {
@@ -423,13 +425,14 @@ public class ClientController {
                         case "purplealien" -> type = CrewType.PURPLE;
                         default -> {
                             view.wrongLocalInput();
+                            cabinsManager.setup();
                             return false;
                         }
                     }
-                    if (!(me.getShipBoard().getCabinsCoordinates()==null||me.getShipBoard().getCabinsCoordinates().size()==1)) {
+                    if (!(me.getShipBoard().getCabinsCoordinates().isEmpty()||me.getShipBoard().getCabinsCoordinates().size()==1)) {
                         newTiles = cabinsManager.manageCabins(type);
-                        if (!newTiles.isEmpty()) {
-                            virtualController.notifyNewCrewArrangement(this.name, newTiles);
+                        if (newTiles!=null) {
+                            virtualController.notifyNewCrewArrangement(me.getPlayerName(), newTiles);
                             inManager = false;
                             view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                         }
@@ -451,7 +454,7 @@ public class ClientController {
                     Coordinates coords = transformCoordinates(words);
                     if(coords==null)
                         return false;
-                    if(!coordInputManager.checkCoord(coords, -1)) {
+                    if(!coordInputManager.checkCoord(coords)) {
                         view.wrongLocalInput();
                         return false;
                     }
@@ -498,29 +501,30 @@ public class ClientController {
             }
             case MANAGE_CABINS -> {
                 if (!inManager) {
-                    cabinsManager = new CabinsManager(me);
+                    cabinsManager = new CabinsManager(me,view);
                     inManager = true;
                 }
+                cabinsManager.setup();
                 if (gameMode == GameMode.LEVEL2) {
-                    if (me.getShipBoard().getCabinsCoordinates()==null||me.getShipBoard().getCabinsCoordinates().size()==1) {
-                        virtualController.notifyNewCrewArrangement(this.name, new ArrayList<>());
+                    if (me.getShipBoard().getCabinsCoordinates()==null||me.getShipBoard().getCabinsCoordinates().isEmpty()||me.getShipBoard().getCabinsCoordinates().size()==1) {
+                        virtualController.notifyNewCrewArrangement(me.getPlayerName(), new ArrayList<>());
                         inManager = false;
                         view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                     }
                 }else if (gameMode == GameMode.TRIAL) {
                     CrewType type = CrewType.HUMAN;
                     ArrayList<Tile> newTiles = new ArrayList<>();
-                    for (Coordinates cabinsCoordinates : me.getShipBoard().getCabinsCoordinates()) {
+                    for (Coordinates _ : me.getShipBoard().getCabinsCoordinates()) {
                         newTiles = cabinsManager.manageCabins(type);
                     }
-                    virtualController.notifyNewCrewArrangement(this.name, newTiles);
+                    virtualController.notifyNewCrewArrangement(me.getPlayerName(), newTiles);
                     inManager = false;
                     view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
                 }
             }
             case S_FINISHED-> {
                 if (gameMode == GameMode.TRIAL) {
-                    virtualController.notifySetPosition(name, 0);
+                    virtualController.notifySetPosition(me.getPlayerName(), 0);
                 }
             }
             case ROLL_DICE -> {
@@ -535,10 +539,10 @@ public class ClientController {
             }
             case MANAGE_GOODS -> {
                 if(!inManager){
-                    goodsManager = new GoodsManager(me, goodsList);
+                    goodsManager = new GoodsManager(me, goodsList,view);
                     inManager=true;
                 }
-                goodsManager.goodsPrinter(goodsList);
+                view.goodsPrinter(goodsList);
                 view.showGenericMessage("Chose for each good where to put it, input 'no' to stop:\n");
             }
         }
@@ -593,7 +597,7 @@ public class ClientController {
     private boolean firstHourglassTurn(String[] input) throws RemoteException {
         if (((gameMode==GameMode.LEVEL2 && input[0].equals("turn")) || input[0].equals("start")) && hourglassTurns == 0) {
             hourglassTurns=1;
-            virtualController.sendTurnHourGlass(this.name);
+            virtualController.sendTurnHourGlass(me.getPlayerName());
             view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
             return true;
         }
@@ -607,7 +611,7 @@ public class ClientController {
                 return false;
             }
             hourglassTurns=2;
-            virtualController.sendTurnHourGlass(this.name);
+            virtualController.sendTurnHourGlass(me.getPlayerName());
             view.setClientState(state);
             return true;
         }
@@ -624,7 +628,7 @@ public class ClientController {
                 hourglassTurns=2;
             else
                 hourglassTurns=3;
-            virtualController.sendTurnHourGlass(this.name);
+            virtualController.sendTurnHourGlass(me.getPlayerName());
             view.setClientState(ClientState.S_FINISHED);
             return true;
         }
@@ -642,7 +646,7 @@ public class ClientController {
 
     private boolean land(String[] input) throws RemoteException {
         if (input[0].equals("earlyland")&&!me.isLanded()){
-            virtualController.notifyEarlyLanding(this.name);
+            virtualController.notifyEarlyLanding(me.getPlayerName());
             return true;
         }
         return false;
@@ -702,7 +706,7 @@ public class ClientController {
         turnedTiles.remove(tile.getKey());
     }
     public String getName() {
-        return name;
+        return me.getPlayerName();
     }
     public void setTileInHand(Tile tile) {
         tileInHand = tile;
