@@ -125,6 +125,7 @@ class PlayerTest {
 
     @Test
     void remove_crew_test() {
+        player1.setAllCrewToHuman();
         int initial_crew = player1.getTotalCrew();
         player1.printCurrentInfoCabins();
         ArrayList<Coordinates> coord = new ArrayList<>();
