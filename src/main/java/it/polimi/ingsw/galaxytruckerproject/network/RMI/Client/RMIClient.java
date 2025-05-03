@@ -7,22 +7,23 @@ import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
 import it.polimi.ingsw.galaxytruckerproject.view.TUI;
 
 import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.util.Scanner;
 
 public class RMIClient implements Client {
-    public static void main(String[] args) {
-        try {
-            // Prendo l'oggetto remoto
-            VirtualController controller = (VirtualController) Naming.lookup("rmi://localhost/VirtualController");
 
-            ClientController clientController = new ClientController(controller);
-            DisplayableView displayableView = new TUI();
-            VirtualView virtualView = new VirtualViewRMI(clientController,displayableView);
-            controller.setView(virtualView);
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static void main (String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        ClientController clientController = new ClientController();
+        while(true) {
+            String in = scanner.nextLine();
+            try {
+                clientController.input(in);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
+
     }
 }
 
