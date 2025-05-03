@@ -1,12 +1,14 @@
 package it.polimi.ingsw.galaxytruckerproject.client;
 
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.AlienOptions;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CrewType;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class CabinsManager {
     private final LightPlayer lightPlayer;

@@ -283,9 +283,4 @@ public class GUI implements DisplayableView {
 
     }
 
-    @Override
-    public void goodsPrinter(ArrayList<Goods> goodsArray) throws RemoteException {
-
-    }
-
 }

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message;
 
+import it.polimi.ingsw.galaxytruckerproject.network.Server;
+
 public class LoginRequestResponse extends Message{
     private final boolean loginSuccessful;
     private final boolean isConnected;

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message;
 
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.network.Server;
 
 public class UpdateDrawnCard extends Message{
 

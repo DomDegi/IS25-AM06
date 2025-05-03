@@ -11,7 +11,6 @@ import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class GoodsManager {
     private final ArrayList<Goods> possibleGoodsGain;

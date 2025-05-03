@@ -82,6 +82,11 @@ public class MockVirtualView implements VirtualView {
         // Implement mock behavior or leave empty
     }
 
+    @Override
+    public void ping() throws RemoteException {
+
+    }
+
     // --- ViewInterface methods ---
 
     @Override

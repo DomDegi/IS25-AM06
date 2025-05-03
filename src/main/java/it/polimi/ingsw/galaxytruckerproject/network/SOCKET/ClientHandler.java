@@ -1,7 +1,5 @@
 package it.polimi.ingsw.galaxytruckerproject.network.SOCKET;
 
-import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;

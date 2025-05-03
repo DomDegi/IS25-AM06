@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message;
 
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.network.Server;
 
 public class DrawnTileResponse extends Message {
 

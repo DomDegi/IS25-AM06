@@ -1,14 +1,12 @@
 package it.polimi.ingsw.galaxytruckerproject.network.RMI.Server;
-import java.rmi.registry.LocateRegistry;
 
-import it.polimi.ingsw.galaxytruckerproject.controller.Controller;
 import it.polimi.ingsw.galaxytruckerproject.controller.ControllerFactory;
 import it.polimi.ingsw.galaxytruckerproject.controller.ControllerFactoryImpl;
 import it.polimi.ingsw.galaxytruckerproject.controller.MultiGameController;
 import it.polimi.ingsw.galaxytruckerproject.network.Server;
 
 import java.rmi.Naming;
-import java.util.Map;
+import java.rmi.registry.LocateRegistry;
 
 public class RMIServer implements Server {
 
