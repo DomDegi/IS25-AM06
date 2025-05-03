@@ -3,11 +3,12 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Player implements PlayerInterface {
+public class Player implements PlayerInterface , Serializable {
     private int playerRanking;
     private final String playerName;
     private int playerPosition;

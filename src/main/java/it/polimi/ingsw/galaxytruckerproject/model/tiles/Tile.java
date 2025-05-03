@@ -2,10 +2,11 @@ package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public abstract class Tile {
+public abstract class Tile implements Serializable {
     protected Link north;
     protected Link east;
     protected Link south;

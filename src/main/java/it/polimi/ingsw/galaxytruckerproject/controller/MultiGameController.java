@@ -38,7 +38,7 @@ public class MultiGameController implements Serializable {
                 wasSuccessful = false;
                 try {
                     view.showLoginResponse(false);
-                    view.askNickname();
+                    view.showWrongInputMessage();
                 } catch (Exception ignored) {
                 }
             }

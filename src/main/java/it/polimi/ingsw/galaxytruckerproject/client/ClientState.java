@@ -1,6 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.client;
 
-public enum ClientState {
+import java.io.Serializable;
+
+public enum ClientState implements Serializable {
     CHOOSE_UI,
     CHOOSE_CONNECTION_TYPE,
     LOBBY,//choose game

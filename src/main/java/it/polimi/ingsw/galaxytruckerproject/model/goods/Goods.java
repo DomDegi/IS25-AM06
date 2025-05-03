@@ -4,7 +4,9 @@ package it.polimi.ingsw.galaxytruckerproject.model.goods;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Goods {
+import java.io.Serializable;
+
+public class Goods implements Serializable {
     private final GoodsColor color;
 
     @JsonCreator

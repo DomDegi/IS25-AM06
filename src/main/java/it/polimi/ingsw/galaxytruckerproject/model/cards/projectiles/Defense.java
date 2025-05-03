@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles;
 
-public enum Defense {
+import java.io.Serializable;
+
+public enum Defense implements Serializable {
     PROTECTED, CHOOSETOUSEBATTERY, HIT
 }

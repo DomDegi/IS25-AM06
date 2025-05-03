@@ -195,6 +195,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
 
     @Override
     public void connected() throws RemoteException{
+        view.connected();
         clientController.setConnected(true);
     }
 

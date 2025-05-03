@@ -4,12 +4,13 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-public class LightShipBoard implements ShipBoardInterface{
+public class LightShipBoard implements ShipBoardInterface , Serializable {
 
     //Variable that saves the reference to the ShipBoard present in the model along with all the game logic
     private ShipBoard shipBoard;

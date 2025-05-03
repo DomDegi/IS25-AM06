@@ -12,6 +12,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -31,7 +32,7 @@ import java.util.Map;
         @JsonSubTypes.Type(value = Epidemic.class, name ="Epidemic")
 })
 
-public abstract class Card {
+public abstract class Card implements Serializable {
     protected final int level;
     protected final int requiredDays;
     protected GameInterface game = null;

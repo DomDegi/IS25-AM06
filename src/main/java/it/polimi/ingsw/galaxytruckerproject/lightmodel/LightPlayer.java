@@ -5,9 +5,10 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.PlayerInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 
-public class LightPlayer implements PlayerInterface {
+public class LightPlayer implements PlayerInterface , Serializable {
     private int position; //position on the board
     private LightShipBoard shipboard;
     private int rank;
