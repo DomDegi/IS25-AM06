@@ -99,16 +99,16 @@ public interface ViewInterface extends Remote, Serializable {
      * shows the tiles that the player booked on their shipboard
      * @param bookedTiles the booked tiles
      */
-    void showBookedTiles (ArrayList<Tile> bookedTiles) throws RemoteException;
+    void showBookedTiles (ArrayList<Tile> bookedTiles)throws RemoteException;
     void showWrongInputMessage () throws RemoteException;
     /**
      * prints on the view the cards that are on the shipboard to be seen during
      * ship building phase
      * @param inGameCards the cards returned by the model
      */
-    void showInGameCards (ArrayList<Card> inGameCards) throws RemoteException;
-    void asksToRollTheDices() throws RemoteException;//asks the player to confirm he wants to roll the dices
-    void showDiceRoll(int diceRoll) throws RemoteException;
+    void showInGameCards (ArrayList<Card> inGameCards)throws RemoteException;
+    void asksToRollTheDices()throws RemoteException;//asks the player to confirm he wants to roll the dices
+    void showDiceRoll(int diceRoll)throws RemoteException;
     /**
      * asks the player to choose a starting position from 1 to playerCount
      */
@@ -118,16 +118,16 @@ public interface ViewInterface extends Remote, Serializable {
      * asks the player to input a series of coordinates of coord
      */
     void asksToInputCoordinates (CoordReqType coordReqType) throws RemoteException;
-    void asksToTurnTheHourglass () throws RemoteException;
+    void asksToTurnTheHourglass ()throws RemoteException;
     void notifyYouCanDrawThisCardDeck() throws RemoteException;
-    void notifyYourShipIsCorrect() throws RemoteException;
+    void notifyYourShipIsCorrect()throws RemoteException;
     /**
      * asks to set position on the flightboard
      */
     void asksToMakeAChoice () throws RemoteException;
     void asksToManageGoods(ArrayList<Goods> goods) throws RemoteException;
-    void asksToRemoveGoods() throws RemoteException;
-    void asksToRemoveCrew() throws RemoteException;
+    void asksToRemoveGoods()throws RemoteException;
+    void asksToRemoveCrew()throws RemoteException;
     /**
      * at the end of the game shows every players score on the view
      */
@@ -147,6 +147,7 @@ public interface ViewInterface extends Remote, Serializable {
     void setGameMode(GameMode gameMode) throws RemoteException;
     void ping() throws RemoteException;
     void goodsPrinter (ArrayList<Goods> goodsArray) throws RemoteException;
-    DisplayableView getDisplayedView()throws RemoteException;
 
+    //METHOD NECESSARY ONLY FOR TESTING
+    DisplayableView getDisplayedView()throws RemoteException;
 }
