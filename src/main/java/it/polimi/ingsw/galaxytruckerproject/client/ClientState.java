@@ -23,14 +23,14 @@ public enum ClientState {
     @Override
     public String toString() {
         switch(this) {
-            case CHOOSE_UI -> {return "You want to use TUI or GUI?";}
-            case CHOOSE_CONNECTION_TYPE -> {return "You want to use RMI connection or Socket connection?";}
-            case LOBBY -> {return"You're in the lobby";}
-            case LOGIN -> {return "Choose your nickname";}
-            case COLOR_CHOICE -> {return "Choose your color";}
-            case ACTION -> {return "You can accept or deny";}
+            case CHOOSE_UI -> {return "You want to use TUI or GUI? [tui] [gui]";}
+            case CHOOSE_CONNECTION_TYPE -> {return "You want to use RMI connection or Socket connection? [rmi] [socket]";}
+            case LOBBY -> {return"You're in the lobby [createGame name numPlayer gameMode] [joinGame name]";}
+            case LOGIN -> {return "Choose your nickname [name] [done] [reset]";}
+            case COLOR_CHOICE -> {return "Choose your color [red] [yellow] [green] [blue]";}
+            case ACTION -> {return "You can accept or deny [yes] [no]";}
             case COORD_REQUEST -> {return "Coordinates requested";}
-            case MANAGE_GOODS -> {return  "Going to manage goods of the planet ";}
+            case MANAGE_GOODS -> {return  "Going to manage goods of the planet";}
             case PLANET_CHOICE -> {return "Choose one of the planets to land";}
             case S_END_DRAW_TILE_CARD -> {return "Now you can draw a tile or a card";}
             case S_MANAGE_CARDS -> {return "You're seeing the cards";}

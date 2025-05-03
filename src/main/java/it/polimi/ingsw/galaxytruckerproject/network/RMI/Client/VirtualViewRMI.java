@@ -74,6 +74,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     @Override
     public void showJoinableGamesList(ArrayList<GameInfo> joinableGames) throws RemoteException {
         view.showJoinableGamesList(joinableGames);
+        clientController.setGameInfo(joinableGames);
     }
 
     //A CHE SERVE
