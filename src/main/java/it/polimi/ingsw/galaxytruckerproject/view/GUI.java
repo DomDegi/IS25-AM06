@@ -5,6 +5,7 @@ import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
@@ -47,7 +48,7 @@ public class GUI implements DisplayableView {
     }
 
     @Override
-    public void showJoinableGamesList(Map<String, GameController> joinableGames) throws RemoteException {
+    public void showJoinableGamesList(ArrayList<GameInfo> joinableGames) throws RemoteException {
 
     }
 

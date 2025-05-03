@@ -6,6 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
@@ -36,7 +37,6 @@ public class TUI implements DisplayableView{
     public void showLoginResponse(boolean success) {
         if(success) {
             System.out.println("You are logged in");
-            System.out.println("");
         }
         else {
             System.out.println("login failed, retry");
@@ -47,10 +47,11 @@ public class TUI implements DisplayableView{
     public void setClientState(ClientState newState) {
         System.out.println(newState.toString());
     }
+
     @Override
-    public void showJoinableGamesList(Map<String, GameController> joinableGames) throws RemoteException {
-        for(String nameGame : joinableGames.keySet()){
-            System.out.println(joinableGames.get(nameGame).toString());
+    public void showJoinableGamesList(ArrayList<GameInfo> joinableGames) throws RemoteException {
+        for(GameInfo game: joinableGames){
+            System.out.println(game.toString());
         }
     }
     @Override
