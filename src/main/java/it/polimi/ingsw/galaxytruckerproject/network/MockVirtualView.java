@@ -12,6 +12,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -288,5 +289,18 @@ public class MockVirtualView implements VirtualView {
     public void printProjectile(Projectile projectile) {
         // Implement mock behavior or leave empty
     }
+
+    @Override
+    public DisplayableView getDisplayedView(){
+        return null;
+    }
+
+    @Override
+    public void goodsPrinter (ArrayList<Goods> goodsArray){
+
+    }
+
+
+
 }
 
