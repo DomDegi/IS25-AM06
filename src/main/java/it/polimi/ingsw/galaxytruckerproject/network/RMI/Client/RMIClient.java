@@ -11,6 +11,7 @@ public class RMIClient implements Client {
         Scanner scanner = new Scanner(System.in);
         ClientController clientController = null;
         clientController = new ClientController();
+        System.out.println("You want to use TUI or GUI? [tui] [gui]");
         while(true) {
             String in = scanner.nextLine();
             clientController.input(in);
