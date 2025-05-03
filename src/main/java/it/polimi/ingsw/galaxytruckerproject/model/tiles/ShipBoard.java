@@ -5,13 +5,14 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 
-public class ShipBoard implements ShipBoardInterface{
+public class ShipBoard implements ShipBoardInterface, Serializable {
     protected final Player player; //protected because it need to be called in StartingCabin (Tiles)
     private Optional<Tile>[][] tilesTable;
     private int numExposedConnectors;

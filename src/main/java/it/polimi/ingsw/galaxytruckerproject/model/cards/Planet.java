@@ -4,9 +4,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Planet {
+public class Planet implements Serializable {
     private final ArrayList<Goods> listOfGoods;
     private boolean occupationStatus = false;
 

@@ -3,9 +3,10 @@ package it.polimi.ingsw.galaxytruckerproject.lightmodel;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class LightFlightboard {
+public class LightFlightboard implements Serializable {
     private ArrayList<LightPlayer> inGamePlayers;
 
     public LightFlightboard(FlightBoard flightBoard) {

@@ -9,6 +9,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Direction;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
+import java.io.Serializable;
 import java.util.Optional;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
@@ -18,7 +19,7 @@ import java.util.Optional;
         @JsonSubTypes.Type(value = SmallCannonShot.class, name = "SmallCannonShot")
 })
 
-public abstract class Projectile {
+public abstract class Projectile implements Serializable {
     protected Direction direction;
     protected int diceRoll;
     protected Optional<Coordinates> coordinatesToDestroy = Optional.empty();

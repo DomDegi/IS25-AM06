@@ -2,9 +2,10 @@ package it.polimi.ingsw.galaxytruckerproject.model;
 
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class FlightBoard {
+public class FlightBoard implements Serializable {
     private final ArrayList<Player> inGamePlayers;
     private final ArrayList<Player> podium;
     private int freePodiumPosition;

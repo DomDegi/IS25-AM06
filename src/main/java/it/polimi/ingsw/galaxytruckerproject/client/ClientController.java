@@ -1405,7 +1405,7 @@ public class ClientController {
     public void setGameMode(GameMode gameMode) {this.gameMode = gameMode;}
 
     void connectRMI() throws MalformedURLException, NotBoundException, RemoteException {
-        ControllerFactory controllerFactory=(ControllerFactory) Naming.lookup("rmi://localhost/VirtualController");
+        ControllerFactory controllerFactory=(ControllerFactory) Naming.lookup("rmi://localhost/ControllerFactory");
         virtualController=controllerFactory.createController();
         virtualController.setView(this.view);
     }

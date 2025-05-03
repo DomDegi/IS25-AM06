@@ -7,10 +7,11 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 
-public interface GameInterface{
+public interface GameInterface extends Serializable {
 
     //observer methods
     void addObserver(Observer o);

@@ -10,6 +10,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -21,7 +22,7 @@ import java.util.Set;
         @JsonSubTypes.Type(value = FlightDaysPenalty.class, name = "FlightDaysPenalty")
 })
 
-public abstract class Penalty {
+public abstract class Penalty implements Serializable {
     GameInterface game;
 
     @Override

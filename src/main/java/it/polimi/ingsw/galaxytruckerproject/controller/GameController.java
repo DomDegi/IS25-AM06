@@ -18,6 +18,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.*;
@@ -25,7 +26,7 @@ import java.util.concurrent.*;
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.TRIAL;
 
 
-public class GameController implements Observer {
+public class GameController implements Observer, Serializable {
     private final String gameName;
     private final GameInterface game;
     private final ArrayList<String> playersWithErrors;
@@ -82,7 +83,7 @@ public class GameController implements Observer {
             if (this.getGameState().equals(GameState.LOBBY_PHASE)){
                 playersViewMap.put(playerName, view);
                 try {
-                    view.askColor();
+                    view.setClientState(ClientState.COLOR_CHOICE);
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
@@ -181,11 +182,17 @@ public class GameController implements Observer {
      * If players number reaches the initial setted count, starts game.
      */
     public void playerAddition(String playerName, PlayersColor playersColor)  {
-            if (this.getGameState() == GameState.LOBBY_PHASE && playersViewMap.containsKey(playerName)) {
+        try {
+            playersViewMap.get(playerName).connected();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+        if (this.getGameState() == GameState.LOBBY_PHASE && playersViewMap.containsKey(playerName)) {
                 //if playerCount is still to be reached, add player to the game model
                 if (game.getNumberOfPlayers() < game.getPlayerCount()) {
                     game.addPlayer(playerName, playersColor);
                     activePlayers.put(playerName, game.identifyPlayerByName(playerName));
+
                 }
                 else { //player count already reached
                     try {
@@ -1008,25 +1015,13 @@ public class GameController implements Observer {
 
         } catch (RemoteException e) {
             throw new RuntimeException(e);
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
             activePlayers.remove(playerName);
             disconnectedPlayers.put(playerName,player);
             player.setDisconnected(true);
             System.out.println(playerName+" disconnected");
             throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            activePlayers.remove(playerName);
-            disconnectedPlayers.put(playerName,player);
-            System.out.println(playerName+" disconnected");
-            player.setDisconnected(true);
-            throw new RuntimeException(e);
-        } catch (TimeoutException e) {
-            activePlayers.remove(playerName);
-            disconnectedPlayers.put(playerName,player);
-            player.setDisconnected(true);
-            System.out.println(playerName+" disconnected");
-            throw new RuntimeException(e);
-        }finally {
+        } finally {
             pendingPongs.remove(playerName);
         }
     }

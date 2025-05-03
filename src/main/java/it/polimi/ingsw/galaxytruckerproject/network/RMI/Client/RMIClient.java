@@ -17,5 +17,6 @@ public class RMIClient implements Client {
         }
 
     }
+    
 }
 

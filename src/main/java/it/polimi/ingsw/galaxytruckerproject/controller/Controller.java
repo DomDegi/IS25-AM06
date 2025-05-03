@@ -8,6 +8,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 
 
 
-public class Controller implements ControllerInterface {
+public class Controller implements ControllerInterface, Serializable {
 
     private String nickname;
 

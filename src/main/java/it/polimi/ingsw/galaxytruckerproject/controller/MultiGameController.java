@@ -56,6 +56,13 @@ public class MultiGameController implements Serializable {
                 }
                 else {
                     joinableGamesList(nickname, view);
+                    try {
+                        view.setClientState(ClientState.LOBBY);
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+
+
                 }
             }
         }
