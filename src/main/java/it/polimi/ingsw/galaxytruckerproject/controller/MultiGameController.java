@@ -189,7 +189,7 @@ public class MultiGameController {
      * @param nickname nickname of the player to add the viewsMap
      * @param view view of the player to call the method that shows the joinable games on
      */
-    public void joinableGamesList(String nickname, VirtualView view)  {
+    public void joinableGamesList(String nickname, VirtualView view) {
         Map<String, GameController> joinableGames;
         joinableGames = gamesMap.entrySet().stream().filter(entry -> entry.getValue().getGameState().equals(GameState.START_GAME))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));

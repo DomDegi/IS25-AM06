@@ -31,7 +31,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     private final ClientController clientController;
     private final DisplayableView view;
 
-    public VirtualViewRMI(ClientController clientController, DisplayableView view) throws RemoteException {
+    public VirtualViewRMI(ClientController clientController, DisplayableView view)throws RemoteException{
         super();
         this.clientController = clientController;
         this.view = view;
@@ -97,10 +97,10 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     }
 
     @Override
-    public void showErrorMessage(String errorMessage) throws RemoteException{view.showErrorMessage(errorMessage);}
+    public void showErrorMessage(String errorMessage) throws RemoteException {view.showErrorMessage(errorMessage);}
 
     @Override
-    public void showInGamePlayers(ArrayList<Player> players)throws RemoteException {view.showInGamePlayers(players);}
+    public void showInGamePlayers(ArrayList<Player> players) throws RemoteException {view.showInGamePlayers(players);}
 
     @Override
     public void showPlayersBoard(String player, ShipBoard shipBoard) throws RemoteException {
@@ -215,6 +215,11 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     }
 
     @Override
+    public DisplayableView getDisplayedView() throws RemoteException {
+        return getDisplayedView();
+    }
+
+    @Override
     public void notifyModifiedTiles(String playerName, ArrayList<Tile> tiles) throws RemoteException {
         clientController.modifyTiles(playerName, tiles);
         if (playerName.equals(clientController.getName())) {
@@ -259,7 +264,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     }
 
     @Override
-    public void asksToChooseStartingPosition()throws RemoteException  {
+    public void asksToChooseStartingPosition() throws RemoteException {
         view.asksToChooseStartingPosition();
     }
 
@@ -294,7 +299,13 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     }
 
     @Override
-    public void notifyYouCanDrawThisCardDeck() throws RemoteException{view.showCard(clientController.getDisplayedCard());}
+    public void notifyYouCanDrawThisCardDeck() throws RemoteException {
+        try {
+            view.showCard(clientController.getDisplayedCard());
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public void notifyYourShipIsCorrect() throws RemoteException{
@@ -329,4 +340,5 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     public void asksToRemoveCrew() throws RemoteException {
         view.asksToRemoveCrew();
     }// aggiorna: deve chiamare il nuovo rimuovitore di crew dal coordinate request handler
+
 }

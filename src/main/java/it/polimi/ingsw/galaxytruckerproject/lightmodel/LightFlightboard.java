@@ -6,13 +6,11 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import java.util.ArrayList;
 
 public class LightFlightboard {
-    private FlightBoard flightBoard;
     private ArrayList<LightPlayer> inGamePlayers;
 
     public LightFlightboard(FlightBoard flightBoard) {
-        this.flightBoard = flightBoard;
         this.inGamePlayers = new ArrayList<>();
-        for(Player player: flightBoard.getInGamePlayers()){
+        for(Player player: flightBoard.getAllPlayers()){
             LightPlayer inGamePlayer = new LightPlayer(player);
             inGamePlayers.add(inGamePlayer);
         }
@@ -29,7 +27,6 @@ public class LightFlightboard {
                 return player;
             }
         }
-    //per ora metto return null
     return null;
     }
 }

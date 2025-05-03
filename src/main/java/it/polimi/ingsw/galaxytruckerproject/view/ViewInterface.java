@@ -77,13 +77,13 @@ public interface ViewInterface extends Remote, Serializable {
      * shows on the view the list of players in the game with their status (in flight or landed)
      * @param players in game players
      */
-    void showInGamePlayers (ArrayList<Player> players) throws RemoteException;
+    void showInGamePlayers (ArrayList<Player> players)throws RemoteException;
     /**
      * shows the chosen players shipboard
      * @param player
      * @param shipBoard
      */
-    void showPlayersBoard(String player, ShipBoard shipBoard) throws RemoteException;
+    void showPlayersBoard(String player, ShipBoard shipBoard)throws RemoteException;
     /**
      * show the drawnTile to the player
      * @param drawnTile
@@ -147,4 +147,6 @@ public interface ViewInterface extends Remote, Serializable {
     void setGameMode(GameMode gameMode) throws RemoteException;
     void ping() throws RemoteException;
     void goodsPrinter (ArrayList<Goods> goodsArray) throws RemoteException;
+    DisplayableView getDisplayedView()throws RemoteException;
+
 }

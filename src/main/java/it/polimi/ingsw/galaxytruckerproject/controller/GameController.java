@@ -45,7 +45,7 @@ public class GameController implements Observer {
     }
 
     @Override
-    public void update(GameState newState) throws RemoteException {
+    public void update(GameState newState) {
         switch (newState) {
             case START_GAME -> startGame();
             case VERIFY_SHIP_CORRECTNESS ->  verifyShipCorrectness();
@@ -623,7 +623,7 @@ public class GameController implements Observer {
         checkIfAllPlayersReady();
     }
 
-    public void setPosition (String playerName, ViewInterface playersView, int position)  {
+    public void setPosition (String playerName, VirtualView playersView, int position) {
         if (!playerStateIs(playerName, ClientState.S_FINISHED)) {
             return;
         }
@@ -657,7 +657,7 @@ public class GameController implements Observer {
         }
     }
 
-    private void checkIfAllPlayersReady()  {
+    private void checkIfAllPlayersReady() {
         if (game.getListOfAllPlayer().size() == game.getListOfInFlightPlayers().size()) {
             this.endShipCreation();
         }
@@ -749,7 +749,7 @@ public class GameController implements Observer {
     //Every player can check others shipboard
     //Every player can do an early landing
     //When cards are over go to CONCLUDE_GAME state
-    public void drawCard (String playerName, VirtualView playersView)  {
+    public void drawCard (String playerName, VirtualView playersView) {
         if (game.getCardsLeft() == 0) {
             game.endCardPhase();
             concludeGame();
@@ -923,7 +923,7 @@ public class GameController implements Observer {
         showScores();
     }
 
-    public void showScores()  {
+    public void showScores() {
         for (VirtualView view: playersViewMap.values()) {
             try {
                 view.showScores(game.getListOfAllPlayer());
