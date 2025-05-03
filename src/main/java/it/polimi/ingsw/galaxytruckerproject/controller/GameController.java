@@ -79,7 +79,7 @@ public class GameController implements Observer {
             reconnectPlayer(playerName, view);
         }
         else {
-            if (this.getGameState().equals(GameState.START_GAME)){
+            if (this.getGameState().equals(GameState.LOBBY_PHASE)){
                 playersViewMap.put(playerName, view);
                 try {
                     view.askColor();
@@ -127,7 +127,8 @@ public class GameController implements Observer {
             // if player disconnected during ships verification without choosing a starting position
             if (disconnectedPlayers.get(playerName).getPlayerPosition() == 0 && disconnectedPlayers.get(playerName).getPlayerRanking() == 0 &&
                     !this.getGameState().equals(GameState.START_GAME) ||
-                    !this.getGameState().equals(GameState.SHIPS_CREATION)) {
+                    !this.getGameState().equals(GameState.SHIPS_CREATION) ||
+                    !this.getGameState().equals(GameState.LOBBY_PHASE)) {
 
                 if (this.getGameState() != GameState.VERIFY_SHIP_CORRECTNESS) {
                     try {
@@ -180,7 +181,7 @@ public class GameController implements Observer {
      * If players number reaches the initial setted count, starts game.
      */
     public void playerAddition(String playerName, PlayersColor playersColor)  {
-            if (this.getGameState() == GameState.START_GAME && playersViewMap.containsKey(playerName)) {
+            if (this.getGameState() == GameState.LOBBY_PHASE && playersViewMap.containsKey(playerName)) {
                 //if playerCount is still to be reached, add player to the game model
                 if (game.getNumberOfPlayers() < game.getPlayerCount()) {
                     game.addPlayer(playerName, playersColor);
