@@ -5,6 +5,7 @@ import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Planets;
@@ -36,6 +37,7 @@ public class ClientController {
     private boolean inManager;
     private boolean connected;
     private GamePhases phase;
+    private ArrayList<GameInfo> gameInfo;
 
     private GameMode gameMode;
     private VirtualView view;
@@ -218,16 +220,27 @@ public class ClientController {
                     }
                     case "joingame"-> {
                         String gameName = words[1];
+                        for(GameInfo games:gameInfo) {
+                            if(Objects.equals(gameName, games.getGameName())){
+                                try {
+                                    view.setClientState(ClientState.WAIT);
+                                } catch (RemoteException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                try {
+                                    virtualController.joinGame(gameName);
+                                } catch (RemoteException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                return true;
+                            }
+                        }
                         try {
-                            view.setClientState(ClientState.WAIT);
+                            view.wrongLocalInput();
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
-                        try {
-                            virtualController.joinGame(gameName);
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        return false;
                     }
                     default-> {
                         try {
@@ -1257,6 +1270,9 @@ public class ClientController {
         this.deck = deck;
     }
 
+    public void setGameInfo(ArrayList<GameInfo> gameInfo) {
+        this.gameInfo = gameInfo;
+    }
 
     //Test getter
     public ClientState getState() {

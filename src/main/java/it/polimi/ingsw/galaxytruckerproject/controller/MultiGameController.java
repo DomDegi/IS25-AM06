@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.controller;
 
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
@@ -9,6 +10,7 @@ import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -199,9 +201,16 @@ public class MultiGameController implements Serializable {
      * @param view view of the player to call the method that shows the joinable games on
      */
     public void joinableGamesList(String nickname, VirtualView view) {
-        Map<String, GameController> joinableGames;
-        joinableGames = gamesMap.entrySet().stream().filter(entry -> entry.getValue().getGameState().equals(GameState.LOBBY_PHASE))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        ArrayList<GameInfo> joinableGames = new ArrayList<>();
+        for (GameController gameController : gamesMap.values()) {
+            if (gameController.getGameState().equals(GameState.LOBBY_PHASE)) {
+                joinableGames.add(new GameInfo
+                        (gameController.getGameName(),
+                         gameController.getGame().getMode(),
+                         gameController.getPlayersViewMap().size(),
+                                gameController.getGame().getPlayerCount()));
+            }
+        }
         try {
             view.showJoinableGamesList(joinableGames);
         } catch (RemoteException e) {
