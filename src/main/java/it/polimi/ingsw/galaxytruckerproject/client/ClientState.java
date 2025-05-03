@@ -23,25 +23,25 @@ public enum ClientState {
     @Override
     public String toString() {
         switch(this) {
-            case CHOOSE_UI -> {return "you want to use TUI or GUI?";}
-            case CHOOSE_CONNECTION_TYPE -> {return "you want to use RMI connection or Socket connection?";}
-            case LOBBY -> {return"you're in the lobby";}
-            case LOGIN -> {return "choose your nickname";}
-            case COLOR_CHOICE -> {return "choose your color";}
-            case ACTION -> {return "you can accept or deny";}
-            case COORD_REQUEST -> {return "coordinates requested";}
-            case MANAGE_GOODS -> {return  "going to manage goods of the planet ";}
-            case PLANET_CHOICE -> {return "choose one of the planets to land";}
-            case S_END_DRAW_TILE_CARD -> {return "now you can draw a tile or a card";}
-            case S_MANAGE_CARDS -> {return "you're seeing the cards";}
-            case S_MANAGE_DRAWN_TILE -> {return "you can rotate, position, book or refuse this tile ";}
-            case S_FINISHED -> {return "you've finished the ship creation, wait to know if your ship is correct";}
-            case WAIT -> {return "waiting for server";}
-            case START_SHIP_CREATION -> {return "turn the hourglass to start the ship creation";}
-            case DRAW_CARD -> {return "draw a card";}
-            case MANAGE_CABINS -> {return "select the crew type in yours equip cabins";}
-            case ROLL_DICE -> {return"roll the dice";}
+            case CHOOSE_UI -> {return "You want to use TUI or GUI?";}
+            case CHOOSE_CONNECTION_TYPE -> {return "You want to use RMI connection or Socket connection?";}
+            case LOBBY -> {return"You're in the lobby";}
+            case LOGIN -> {return "Choose your nickname";}
+            case COLOR_CHOICE -> {return "Choose your color";}
+            case ACTION -> {return "You can accept or deny";}
+            case COORD_REQUEST -> {return "Coordinates requested";}
+            case MANAGE_GOODS -> {return  "Going to manage goods of the planet ";}
+            case PLANET_CHOICE -> {return "Choose one of the planets to land";}
+            case S_END_DRAW_TILE_CARD -> {return "Now you can draw a tile or a card";}
+            case S_MANAGE_CARDS -> {return "You're seeing the cards";}
+            case S_MANAGE_DRAWN_TILE -> {return "You can rotate, position, book or refuse this tile ";}
+            case S_FINISHED -> {return "You've finished the ship creation, wait to know if your ship is correct";}
+            case WAIT -> {return "Waiting for server";}
+            case START_SHIP_CREATION -> {return "Turn the hourglass to start the ship creation";}
+            case DRAW_CARD -> {return "Draw a card";}
+            case MANAGE_CABINS -> {return "Select the crew type in yours equip cabins";}
+            case ROLL_DICE -> {return"Roll the dice";}
         }
-        return "error in client state to string";
+        return "Error in client state to string";
     }
 }
