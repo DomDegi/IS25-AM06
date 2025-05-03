@@ -35,7 +35,7 @@ public class Game implements GameInterface{
     //instances a new game starting in the state START_GAME
     public Game(GameMode mode, int playerCount) {
         this.mode = mode;
-        this.gameState = null;
+        this.gameState = LOBBY_PHASE;
         this.turnedTiles = new ConcurrentHashMap<>();
         this.flightBoard = new FlightBoard(mode);
         this.tileStack = new TileFactory().getStack(TileFactory.loadTilesFromJson("Tiles.json"));

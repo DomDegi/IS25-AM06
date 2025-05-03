@@ -192,7 +192,7 @@ public class MultiGameController implements Serializable {
      */
     public void joinableGamesList(String nickname, VirtualView view) {
         Map<String, GameController> joinableGames;
-        joinableGames = gamesMap.entrySet().stream().filter(entry -> entry.getValue().getGameState().equals(GameState.START_GAME))
+        joinableGames = gamesMap.entrySet().stream().filter(entry -> entry.getValue().getGameState().equals(GameState.LOBBY_PHASE))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         try {
             view.showJoinableGamesList(joinableGames);
