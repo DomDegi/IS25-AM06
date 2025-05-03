@@ -140,6 +140,8 @@ public interface ViewInterface extends Remote, Serializable {
     void printFlightboard(LightFlightboard lightFlightboard)throws RemoteException;
     void printShipboard(LightShipBoard lightShipBoard)throws RemoteException;
     void printProjectile(Projectile projectile)throws RemoteException;
-    DisplayableView getDisplayedView()throws RemoteException;
     void goodsPrinter (ArrayList<Goods> goodsArray) throws RemoteException;
+
+    //METHOD NECESSARY ONLY FOR TESTING
+    DisplayableView getDisplayedView()throws RemoteException;
 }
