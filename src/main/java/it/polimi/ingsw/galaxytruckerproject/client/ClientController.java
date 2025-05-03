@@ -826,11 +826,6 @@ public class ClientController {
                     cabinsManager = new CabinsManager(me,view);
                     inManager = true;
                 }
-                try {
-                    cabinsManager.setup();
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
                 if (gameMode == GameMode.LEVEL2) {
                     if (me.getShipBoard().getCabinsCoordinates()==null||me.getShipBoard().getCabinsCoordinates().isEmpty()||me.getShipBoard().getCabinsCoordinates().size()==1) {
                         try {
@@ -841,6 +836,12 @@ public class ClientController {
                         inManager = false;
                         try {
                             view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                    } else {
+                        try {
+                            cabinsManager.setup();
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
