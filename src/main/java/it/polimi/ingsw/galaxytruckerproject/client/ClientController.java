@@ -168,15 +168,16 @@ public class ClientController {
             case LOGIN->{
                 switch (words[0]) {
                     case "done" -> {
-                        if(!connected){
-                            //start connection
+                        try {
+                            view.setClientState(ClientState.WAIT);
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
                         }
                         try {
                             virtualController.login(me.getPlayerName());
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
-
                     }
                     case "redo"-> me.setPlayerName("");
                     default-> me.setPlayerName(words[0]);
@@ -205,12 +206,12 @@ public class ClientController {
                             }
                         }
                         try {
-                            virtualController.createGame(gameName,NumberOfPlayers,gameMode);
+                            view.setClientState(ClientState.WAIT);
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
                         try {
-                            view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                            virtualController.createGame(gameName,NumberOfPlayers,gameMode);
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
@@ -218,12 +219,12 @@ public class ClientController {
                     case "joingame"-> {
                         String gameName = words[1];
                         try {
-                            virtualController.joinGame(gameName);
+                            view.setClientState(ClientState.WAIT);
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
                         try {
-                            view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                            virtualController.joinGame(gameName);
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
@@ -261,12 +262,12 @@ public class ClientController {
                 }
                 me.setColor(color);
                 try {
-                    virtualController.chooseColor(color);
+                    view.setClientState(ClientState.WAIT);
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
                 try {
-                    view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                    virtualController.chooseColor(color);
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
@@ -304,17 +305,17 @@ public class ClientController {
                                         return false;
                                     if (chose > 0 && chose < 4 && availableDeck.get(chose)) {
                                         try {
+                                            view.setClientState(ClientState.WAIT);
+                                        } catch (RemoteException e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                        try {
                                             virtualController.lookCardsRequest( chose);
                                         } catch (RemoteException e) {
                                             throw new RuntimeException(e);
                                         }
                                         indexDeckInHandOrPlanet = chose;
                                         displayedCard = this.deck.get(indexDeckInHandOrPlanet).getFirst();
-                                        try {
-                                            view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
-                                        } catch (RemoteException e) {
-                                            throw new RuntimeException(e);
-                                        }
                                     } else {
                                         try {
                                             view.wrongLocalInput();
@@ -336,12 +337,12 @@ public class ClientController {
                                 switch (words[2]){
                                     case "new"->{
                                         try {
-                                            virtualController.reqDrawTileFromStack();
+                                            view.setClientState(ClientState.WAIT);
                                         } catch (RemoteException e) {
                                             throw new RuntimeException(e);
                                         }
                                         try {
-                                            view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                                            virtualController.reqDrawTileFromStack();
                                         } catch (RemoteException e) {
                                             throw new RuntimeException(e);
                                         }
@@ -395,12 +396,12 @@ public class ClientController {
                                         if (chose>0&&turnedTiles.containsKey(chose)) {
                                             tileInHand=turnedTiles.get(chose);
                                             try {
-                                                virtualController.reqDrawTileFromTurned(chose);
+                                                view.setClientState(ClientState.WAIT);
                                             } catch (RemoteException e) {
                                                 throw new RuntimeException(e);
                                             }
                                             try {
-                                                view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                                                virtualController.reqDrawTileFromTurned(chose);
                                             } catch (RemoteException e) {
                                                 throw new RuntimeException(e);
                                             }
@@ -447,12 +448,12 @@ public class ClientController {
                     case "done" -> {
                         //done action
                         try {
-                            virtualController.stopLookingAtCardsRequest();
+                            view.setClientState(ClientState.S_END_DRAW_TILE_CARD);
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
                         try {
-                            view.setClientState(ClientState.S_END_DRAW_TILE_CARD);
+                            virtualController.stopLookingAtCardsRequest();
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
@@ -474,12 +475,12 @@ public class ClientController {
                         if(coordinates!=null){
                             me.getShipBoard().positionTile(Optional.ofNullable(this.tileInHand),coordinates);
                             try {
-                                virtualController.notifySetTile(this.tileInHand);
+                                view.setClientState(ClientState.WAIT);
                             } catch (RemoteException e) {
                                 throw new RuntimeException(e);
                             }
                             try {
-                                view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                                virtualController.notifySetTile(this.tileInHand);
                             } catch (RemoteException e) {
                                 throw new RuntimeException(e);
                             }
@@ -498,12 +499,12 @@ public class ClientController {
                         }
                         this.turnedTiles.put(this.tileInHand.getKey(),this.tileInHand);
                         try {
-                            virtualController.notifyRefusedTile();
+                            view.setClientState(ClientState.WAIT);
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
                         try {
-                            view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                            virtualController.notifyRefusedTile();
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
@@ -519,12 +520,12 @@ public class ClientController {
                         }
                         this.tileInHand.setBooked(true);
                         try {
-                            virtualController.notifyTileBooking();
+                            view.setClientState(ClientState.WAIT);
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
                         try {
-                            view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                            virtualController.notifyTileBooking();
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
@@ -544,12 +545,12 @@ public class ClientController {
                         return false;
                     if (chose > 0 &&  chose < flightBoard.getInGamePlayers().size()) {
                         try {
-                            virtualController.notifySetPosition(chose);
+                            view.setClientState(ClientState.WAIT);
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
                         try {
-                            view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                            virtualController.notifySetPosition(chose);
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
@@ -573,12 +574,12 @@ public class ClientController {
 
             case ROLL_DICE->{
                 try {
-                    virtualController.rollTheDices();
+                    view.setClientState(ClientState.WAIT);
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
                 try {
-                    view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                    virtualController.rollTheDices();
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
@@ -586,12 +587,12 @@ public class ClientController {
 
             case DRAW_CARD ->{
                 try {
-                    virtualController.drawCards();
+                    view.setClientState(ClientState.WAIT);
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
                 try {
-                    view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                    virtualController.drawCards();
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
@@ -605,12 +606,22 @@ public class ClientController {
                 switch (words[0]){
                     case "yes" -> {
                         try {
+                            view.setClientState(ClientState.WAIT);
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                        try {
                             virtualController.sendYes();
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
                     }
                     case "no" -> {
+                        try {
+                            view.setClientState(ClientState.WAIT);
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
                         try {
                             virtualController.sendNo();
                         } catch (RemoteException e) {
@@ -625,11 +636,6 @@ public class ClientController {
                         }
                         return false;
                     }
-                }
-                try {
-                    view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
                 }
             }
 
@@ -648,12 +654,12 @@ public class ClientController {
                 if (chose >= 0 && chose <planet.getListOfPlanets().size()) {
                     indexDeckInHandOrPlanet = chose;
                     try {
-                        virtualController.planetChoiceRequest(chose);
+                        view.setClientState(ClientState.WAIT);
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
                     try {
-                        view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                        virtualController.planetChoiceRequest(chose);
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
@@ -680,16 +686,16 @@ public class ClientController {
                         }
                         int goodsVal = me.getShipBoard().convertGoodsToCredit();
                         try {
+                            view.setClientState(ClientState.WAIT);
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                        try {
                             virtualController.notifyNewGoodsArrangement( goodsVal, newTiles);
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
                         inManager = false;
-                        try {
-                            view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
                     }
                 }
             }
@@ -724,16 +730,16 @@ public class ClientController {
                         }
                         if (newTiles!=null) {
                             try {
+                                view.setClientState(ClientState.WAIT);
+                            } catch (RemoteException e) {
+                                throw new RuntimeException(e);
+                            }
+                            try {
                                 virtualController.notifyNewCrewArrangement(newTiles);
                             } catch (RemoteException e) {
                                 throw new RuntimeException(e);
                             }
                             inManager = false;
-                            try {
-                                view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
-                            } catch (RemoteException e) {
-                                throw new RuntimeException(e);
-                            }
                         }
                     }
                 }
@@ -770,7 +776,7 @@ public class ClientController {
                 }
             }
 
-            case WAIT_OTHER_PLAYER_ACTION->{
+            case WAIT ->{
                 switch(phase){
                     case LOGIN -> {
 
@@ -822,21 +828,22 @@ public class ClientController {
                     cabinsManager = new CabinsManager(me,view);
                     inManager = true;
                 }
-                try {
-                    cabinsManager.setup();
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
                 if (gameMode == GameMode.LEVEL2) {
                     if (me.getShipBoard().getCabinsCoordinates()==null||me.getShipBoard().getCabinsCoordinates().isEmpty()||me.getShipBoard().getCabinsCoordinates().size()==1) {
+                        try {
+                            view.setClientState(ClientState.WAIT);
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
                         try {
                             virtualController.notifyNewCrewArrangement(new ArrayList<>());
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
                         inManager = false;
+                    } else {
                         try {
-                            view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                            cabinsManager.setup();
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
@@ -852,16 +859,16 @@ public class ClientController {
                         }
                     }
                     try {
+                        view.setClientState(ClientState.WAIT);
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                    try {
                         virtualController.notifyNewCrewArrangement(newTiles);
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
                     inManager = false;
-                    try {
-                        view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
                 }
             }
             case S_FINISHED-> {
@@ -885,7 +892,7 @@ public class ClientController {
                 phase = GamePhases.CARDS;
                 if(me.getRank()!=1){
                     try {
-                        view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                        view.setClientState(ClientState.WAIT);
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
@@ -988,12 +995,12 @@ public class ClientController {
         if (((gameMode==GameMode.LEVEL2 && input[0].equals("turn")) || input[0].equals("start")) && hourglassTurns == 0) {
             hourglassTurns=1;
             try {
-                virtualController.sendTurnHourGlass();
+                view.setClientState(ClientState.WAIT);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
             try {
-                view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                virtualController.sendTurnHourGlass();
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -1014,12 +1021,12 @@ public class ClientController {
             }
             hourglassTurns=2;
             try {
-                virtualController.sendTurnHourGlass();
+                view.setClientState(state);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
             try {
-                view.setClientState(state);
+                virtualController.sendTurnHourGlass();
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -1043,12 +1050,12 @@ public class ClientController {
             else
                 hourglassTurns=3;
             try {
-                virtualController.sendTurnHourGlass();
+                view.setClientState(ClientState.S_FINISHED);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
             try {
-                view.setClientState(ClientState.S_FINISHED);
+                virtualController.sendTurnHourGlass();
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -1174,7 +1181,7 @@ public class ClientController {
     }
 
     //deve copiare e incollare quelle tiles nelle loro coordinate per il player corrispondente
-    //verrà usato in caso di batterie usate, goods o crewmate dispersi
+    //verrà usato in caso di batterie usate, goods o crewMate dispersi
     public void modifyTiles(String playerName,ArrayList<Tile> tiles){
         LightPlayer player=playerFinder(playerName);
         if(player==null)

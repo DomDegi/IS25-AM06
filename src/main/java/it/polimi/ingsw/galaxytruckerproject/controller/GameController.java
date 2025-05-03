@@ -80,7 +80,7 @@ public class GameController implements Observer, Serializable {
             reconnectPlayer(playerName, view);
         }
         else {
-            if (this.getGameState().equals(GameState.START_GAME)){
+            if (this.getGameState().equals(GameState.LOBBY_PHASE)){
                 playersViewMap.put(playerName, view);
                 try {
                     view.askColor();
@@ -128,7 +128,8 @@ public class GameController implements Observer, Serializable {
             // if player disconnected during ships verification without choosing a starting position
             if (disconnectedPlayers.get(playerName).getPlayerPosition() == 0 && disconnectedPlayers.get(playerName).getPlayerRanking() == 0 &&
                     !this.getGameState().equals(GameState.START_GAME) ||
-                    !this.getGameState().equals(GameState.SHIPS_CREATION)) {
+                    !this.getGameState().equals(GameState.SHIPS_CREATION) ||
+                    !this.getGameState().equals(GameState.LOBBY_PHASE)) {
 
                 if (this.getGameState() != GameState.VERIFY_SHIP_CORRECTNESS) {
                     try {
@@ -181,7 +182,7 @@ public class GameController implements Observer, Serializable {
      * If players number reaches the initial setted count, starts game.
      */
     public void playerAddition(String playerName, PlayersColor playersColor)  {
-            if (this.getGameState() == GameState.START_GAME && playersViewMap.containsKey(playerName)) {
+            if (this.getGameState() == GameState.LOBBY_PHASE && playersViewMap.containsKey(playerName)) {
                 //if playerCount is still to be reached, add player to the game model
                 if (game.getNumberOfPlayers() < game.getPlayerCount()) {
                     game.addPlayer(playerName, playersColor);
@@ -404,7 +405,7 @@ public class GameController implements Observer, Serializable {
 
     public void setCrewForDisconnectedPlayer(Player player) {
         notifyModifiedTiles(player.getPlayerName(), player.setAllCrewToHuman());
-        updatePlayerView(ClientState.WAIT_OTHER_PLAYER_ACTION, player.getPlayerName());
+        updatePlayerView(ClientState.WAIT, player.getPlayerName());
     }
 
     public void playerPicksCrewMembers(String playerName, VirtualView playersView ,ArrayList<Tile> cabins) {
@@ -414,7 +415,7 @@ public class GameController implements Observer, Serializable {
         }
         if (player.verifyAndSetupCrew(cabins)) {
             notifyModifiedTiles(playerName, cabins);
-            updatePlayerView(ClientState.WAIT_OTHER_PLAYER_ACTION, player.getPlayerName());
+            updatePlayerView(ClientState.WAIT, player.getPlayerName());
         }
         else {
             try{
@@ -610,7 +611,7 @@ public class GameController implements Observer, Serializable {
                 if (player.getPlayerName().equals(playerName)) {
                     game.getFlightBoard().addToTrialFlightBoard(player);
                     //It's not important for trial flight, so 0 is a placeholder value
-                    updatePlayerView(ClientState.WAIT_OTHER_PLAYER_ACTION, playerName);
+                    updatePlayerView(ClientState.WAIT, playerName);
                     break;
                 }
             }
@@ -794,7 +795,7 @@ public class GameController implements Observer, Serializable {
         else if (game.getGameState() == GameState.CARD_EVENT) {
             playersToEarlyLand.add(player);
         }
-        updatePlayerView(ClientState.WAIT_OTHER_PLAYER_ACTION, playerName);
+        updatePlayerView(ClientState.WAIT, playerName);
     }
 
     /**

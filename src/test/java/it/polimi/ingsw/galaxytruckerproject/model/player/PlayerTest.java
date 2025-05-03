@@ -91,7 +91,6 @@ class PlayerTest {
         shipBoard2.positionTile(Optional.of(tile24), new Coordinates(2,2));
         Tile tile25=new EquipCabin( new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE));
         shipBoard2.positionTile(Optional.of(tile25), new Coordinates(2,4));
-        tile25.setCrewType(CrewType.HUMAN);
         Tile tile27=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),3);
         shipBoard2.positionTile(Optional.of(tile27), new Coordinates(3,2));
         Tile tile28=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),2);
@@ -125,6 +124,7 @@ class PlayerTest {
 
     @Test
     void remove_crew_test() {
+        player1.setAllCrewToHuman();
         int initial_crew = player1.getTotalCrew();
         player1.printCurrentInfoCabins();
         ArrayList<Coordinates> coord = new ArrayList<>();

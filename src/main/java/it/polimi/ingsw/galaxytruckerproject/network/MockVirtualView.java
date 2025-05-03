@@ -119,7 +119,7 @@ public class MockVirtualView implements VirtualView {
             case S_MANAGE_DRAWN_TILE ->  System.out.println("s manage drawn tile\n");
             case S_END_DRAW_TILE_CARD -> System.out.println("s end draw tile card\n");
             case START_SHIP_CREATION ->  System.out.println("start ship creation\n");
-            case WAIT_OTHER_PLAYER_ACTION -> System.out.println("wait other player action\n");
+            case WAIT -> System.out.println("wait other player action\n");
             case S_MANAGE_CARDS ->   System.out.println("manage cards\n");
             case S_FINISHED ->  System.out.println("finished ship\n");
         }
