@@ -52,7 +52,7 @@ public class Controller implements ControllerInterface {
      * @param nickname nickname of player to login
      */
     @Override
-    public void login (String nickname) {
+    public void login (String nickname) throws RemoteException {
         if (multiGameController.login(nickname, view, this)) {
             this.nickname = nickname;
         }
@@ -65,7 +65,7 @@ public class Controller implements ControllerInterface {
      * @param chosenMode chosen gameMode between LVL2 flight and trialFlight
      */
     @Override
-    public void createGame (String gameName ,int playerCount, GameMode chosenMode) {
+    public void createGame (String gameName ,int playerCount, GameMode chosenMode) throws RemoteException {
         multiGameController.createGame(nickname, gameName, playerCount, this, chosenMode);
     }
 
@@ -74,7 +74,7 @@ public class Controller implements ControllerInterface {
      * @param gameName name of the game to enter
      */
     @Override
-    public void joinGame (String gameName) {
+    public void joinGame (String gameName) throws RemoteException {
         multiGameController.joinGame(nickname, gameName, this);
     }
 
@@ -92,24 +92,24 @@ public class Controller implements ControllerInterface {
     }
 
     @Override
-    public void chooseColor(PlayersColor color) {
+    public void chooseColor(PlayersColor color) throws RemoteException {
         if (gameController.checkColorAvailable(nickname, view, color)) {
             gameController.playerAddition(nickname, color);
         }
     }
 
     @Override
-    public void turnHourglass () {
+    public void turnHourglass () throws RemoteException {
         gameController.turnHourglass(this.nickname);
     }
 
     @Override
-    public void drawTileFromStack () {
+    public void drawTileFromStack () throws RemoteException {
         gameController.drawTile(view ,nickname,0, false);
     }
 
     @Override
-    public void drawTileFromTurned (int index) {
+    public void drawTileFromTurned (int index) throws RemoteException {
         gameController.drawTile(view, nickname, index, true);
     }
 
@@ -119,7 +119,7 @@ public class Controller implements ControllerInterface {
     }
 
     @Override
-    public void lookGameCards(int index) {
+    public void lookGameCards(int index) throws RemoteException {
         gameController.lookGameCards(nickname, view, index);
     }
 

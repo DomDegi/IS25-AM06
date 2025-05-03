@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
-public class GUI implements ViewInterface {
+public class GUI implements DisplayableView {
 
     @Override
     public void askNickname() throws IOException {
@@ -27,7 +27,7 @@ public class GUI implements ViewInterface {
     }
 
     @Override
-    public void askColor() {
+    public void askColor() throws RemoteException {
 
     }
 
@@ -46,7 +46,7 @@ public class GUI implements ViewInterface {
     }
 
     @Override
-    public void showJoinableGamesList(Map<String, GameController> joinableGames) {
+    public void showJoinableGamesList(Map<String, GameController> joinableGames) throws RemoteException {
 
     }
 
@@ -66,7 +66,7 @@ public class GUI implements ViewInterface {
     }
 
     @Override
-    public void showGenericMessage(String genericMessage) {
+    public void showGenericMessage(String genericMessage) throws RemoteException {
 
     }
 
@@ -76,7 +76,7 @@ public class GUI implements ViewInterface {
     }
 
     @Override
-    public void showInGamePlayers(ArrayList<Player> players) {
+    public void showInGamePlayers(ArrayList<Player> players) throws RemoteException {
 
     }
 
@@ -89,7 +89,7 @@ public class GUI implements ViewInterface {
     }
 
     @Override
-    public void showPlayersBoard(String player, ShipBoard shipBoard) {
+    public void showPlayersBoard(String player, ShipBoard shipBoard) throws RemoteException {
 
     }
 
@@ -108,7 +108,7 @@ public class GUI implements ViewInterface {
     }
 
     @Override
-    public void showBookedTiles(ArrayList<Tile> bookedTiles) {
+    public void showBookedTiles(ArrayList<Tile> bookedTiles) throws RemoteException {
 
     }
 
@@ -118,22 +118,22 @@ public class GUI implements ViewInterface {
     }
 
     @Override
-    public void showInGameCards(ArrayList<Card> inGameCards) {
+    public void showInGameCards(ArrayList<Card> inGameCards) throws RemoteException {
 
     }
 
     @Override
-    public void asksToRollTheDices() {
+    public void asksToRollTheDices() throws RemoteException {
 
     }
 
     @Override
-    public void showDiceRoll(int diceRoll) {
+    public void showDiceRoll(int diceRoll) throws RemoteException {
 
     }
 
     @Override
-    public void asksToChooseStartingPosition() {
+    public void asksToChooseStartingPosition() throws RemoteException {
 
     }
 
@@ -147,17 +147,17 @@ public class GUI implements ViewInterface {
     }
 
     @Override
-    public void asksToTurnTheHourglass() {
+    public void asksToTurnTheHourglass() throws RemoteException {
 
     }
 
     @Override
-    public void notifyYouCanDrawThisCardDeck() {
+    public void notifyYouCanDrawThisCardDeck() throws RemoteException {
 
     }
 
     @Override
-    public void notifyYourShipIsCorrect() {
+    public void notifyYourShipIsCorrect() throws RemoteException {
 
     }
 
@@ -192,12 +192,12 @@ public class GUI implements ViewInterface {
     }
 
     @Override
-    public void asksToRemoveGoods() {
+    public void asksToRemoveGoods() throws RemoteException {
 
     }
 
     @Override
-    public void asksToRemoveCrew() {
+    public void asksToRemoveCrew() throws RemoteException {
 
     }
 
@@ -206,7 +206,7 @@ public class GUI implements ViewInterface {
     }
 
     @Override
-    public void showScores(ArrayList<Player> players) {
+    public void showScores(ArrayList<Player> players) throws RemoteException {
 
     }
 
@@ -228,27 +228,37 @@ public class GUI implements ViewInterface {
     }
 
     @Override
-    public void wrongLocalInput() {
+    public void wrongLocalInput() throws RemoteException {
 
     }
 
     @Override
-    public void showCard(Card card) {
+    public void showCard(Card card) throws RemoteException {
 
     }
 
     @Override
-    public void printFlightboard(LightFlightboard lightFlightboard) {
+    public void printFlightboard(LightFlightboard lightFlightboard) throws RemoteException {
 
     }
 
     @Override
-    public void printShipboard(LightShipBoard lightShipBoard) {
+    public void printShipboard(LightShipBoard lightShipBoard) throws RemoteException {
 
     }
 
     @Override
-    public void printProjectile(Projectile projectile) {
+    public void printProjectile(Projectile projectile) throws RemoteException {
+
+    }
+
+    @Override
+    public DisplayableView getDisplayedView() throws RemoteException {
+        return new GUI();
+    }
+
+    @Override
+    public void goodsPrinter(ArrayList<Goods> goodsArray) throws RemoteException {
 
     }
 
