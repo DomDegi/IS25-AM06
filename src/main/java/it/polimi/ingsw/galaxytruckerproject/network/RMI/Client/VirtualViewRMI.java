@@ -216,7 +216,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
 
     @Override
     public DisplayableView getDisplayedView() throws RemoteException {
-        return getDisplayedView();
+        return view;
     }
 
     @Override
