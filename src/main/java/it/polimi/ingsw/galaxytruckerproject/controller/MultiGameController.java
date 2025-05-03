@@ -1,5 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.controller;
 
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
@@ -37,7 +38,7 @@ public class MultiGameController implements Serializable {
                 wasSuccessful = false;
                 try {
                     view.showLoginResponse(false);
-                    view.askNickname();
+                    view.showWrongInputMessage();
                 } catch (Exception ignored) {
                 }
             }
