@@ -177,7 +177,7 @@ public class ClientController {
                             throw new RuntimeException(e);
                         }
                         try {
-                            view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                            view.setClientState(ClientState.WAIT);
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
@@ -214,7 +214,7 @@ public class ClientController {
                             throw new RuntimeException(e);
                         }
                         try {
-                            view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                            view.setClientState(ClientState.WAIT);
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
@@ -227,7 +227,7 @@ public class ClientController {
                             throw new RuntimeException(e);
                         }
                         try {
-                            view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                            view.setClientState(ClientState.WAIT);
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
@@ -270,7 +270,7 @@ public class ClientController {
                     throw new RuntimeException(e);
                 }
                 try {
-                    view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                    view.setClientState(ClientState.WAIT);
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
@@ -315,7 +315,7 @@ public class ClientController {
                                         indexDeckInHandOrPlanet = chose;
                                         displayedCard = this.deck.get(indexDeckInHandOrPlanet).getFirst();
                                         try {
-                                            view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                                            view.setClientState(ClientState.WAIT);
                                         } catch (RemoteException e) {
                                             throw new RuntimeException(e);
                                         }
@@ -345,7 +345,7 @@ public class ClientController {
                                             throw new RuntimeException(e);
                                         }
                                         try {
-                                            view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                                            view.setClientState(ClientState.WAIT);
                                         } catch (RemoteException e) {
                                             throw new RuntimeException(e);
                                         }
@@ -404,7 +404,7 @@ public class ClientController {
                                                 throw new RuntimeException(e);
                                             }
                                             try {
-                                                view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                                                view.setClientState(ClientState.WAIT);
                                             } catch (RemoteException e) {
                                                 throw new RuntimeException(e);
                                             }
@@ -483,7 +483,7 @@ public class ClientController {
                                 throw new RuntimeException(e);
                             }
                             try {
-                                view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                                view.setClientState(ClientState.WAIT);
                             } catch (RemoteException e) {
                                 throw new RuntimeException(e);
                             }
@@ -507,7 +507,7 @@ public class ClientController {
                             throw new RuntimeException(e);
                         }
                         try {
-                            view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                            view.setClientState(ClientState.WAIT);
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
@@ -528,7 +528,7 @@ public class ClientController {
                             throw new RuntimeException(e);
                         }
                         try {
-                            view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                            view.setClientState(ClientState.WAIT);
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
@@ -553,7 +553,7 @@ public class ClientController {
                             throw new RuntimeException(e);
                         }
                         try {
-                            view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                            view.setClientState(ClientState.WAIT);
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
@@ -582,7 +582,7 @@ public class ClientController {
                     throw new RuntimeException(e);
                 }
                 try {
-                    view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                    view.setClientState(ClientState.WAIT);
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
@@ -595,7 +595,7 @@ public class ClientController {
                     throw new RuntimeException(e);
                 }
                 try {
-                    view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                    view.setClientState(ClientState.WAIT);
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
@@ -631,7 +631,7 @@ public class ClientController {
                     }
                 }
                 try {
-                    view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                    view.setClientState(ClientState.WAIT);
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
@@ -657,7 +657,7 @@ public class ClientController {
                         throw new RuntimeException(e);
                     }
                     try {
-                        view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                        view.setClientState(ClientState.WAIT);
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
@@ -690,7 +690,7 @@ public class ClientController {
                         }
                         inManager = false;
                         try {
-                            view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                            view.setClientState(ClientState.WAIT);
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
@@ -734,7 +734,7 @@ public class ClientController {
                             }
                             inManager = false;
                             try {
-                                view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                                view.setClientState(ClientState.WAIT);
                             } catch (RemoteException e) {
                                 throw new RuntimeException(e);
                             }
@@ -774,7 +774,7 @@ public class ClientController {
                 }
             }
 
-            case WAIT_OTHER_PLAYER_ACTION->{
+            case WAIT ->{
                 switch(phase){
                     case LOGIN -> {
 
@@ -835,7 +835,7 @@ public class ClientController {
                         }
                         inManager = false;
                         try {
-                            view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                            view.setClientState(ClientState.WAIT);
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
@@ -863,7 +863,7 @@ public class ClientController {
                     }
                     inManager = false;
                     try {
-                        view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                        view.setClientState(ClientState.WAIT);
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
@@ -890,7 +890,7 @@ public class ClientController {
                 phase = GamePhases.CARDS;
                 if(me.getRank()!=1){
                     try {
-                        view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                        view.setClientState(ClientState.WAIT);
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
@@ -998,7 +998,7 @@ public class ClientController {
                 throw new RuntimeException(e);
             }
             try {
-                view.setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+                view.setClientState(ClientState.WAIT);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }

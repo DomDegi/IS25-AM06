@@ -9,12 +9,12 @@ public enum ClientState {
     ACTION,// yes or no
     COORD_REQUEST,//usare askCoordinates in modo da settare per la richiesta di coordinata corretta
     MANAGE_GOODS,
-    PLANET_CHOICE,//scelta su quale pianteta atterrare
+    PLANET_CHOICE,//scelta su quale pianeta atterrare
     S_END_DRAW_TILE_CARD,//può scegliere se finire la costruzione o pescale una tle/carta
     S_MANAGE_CARDS,//scorre le carte che ha in mano durante la fase di costruzione
     S_MANAGE_DRAWN_TILE,//ruota, posiziona o scarta
     S_FINISHED,//costruzione della shipboard finita, attesa della verifica correttezza
-    WAIT_OTHER_PLAYER_ACTION,
+    WAIT,
     START_SHIP_CREATION,
     DRAW_CARD,
     MANAGE_CABINS,
@@ -36,7 +36,7 @@ public enum ClientState {
             case S_MANAGE_CARDS -> {return "you're seeing the cards";}
             case S_MANAGE_DRAWN_TILE -> {return "you can rotate, position, book or refuse this tile ";}
             case S_FINISHED -> {return "you've finished the ship creation, wait to know if your ship is correct";}
-            case WAIT_OTHER_PLAYER_ACTION -> {return "waiting for server";}
+            case WAIT -> {return "waiting for server";}
             case START_SHIP_CREATION -> {return "turn the hourglass to start the ship creation";}
             case DRAW_CARD -> {return "draw a card";}
             case MANAGE_CABINS -> {return "select the crew type in yours equip cabins";}

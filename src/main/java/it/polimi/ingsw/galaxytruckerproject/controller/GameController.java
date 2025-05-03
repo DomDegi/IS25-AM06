@@ -403,7 +403,7 @@ public class GameController implements Observer {
 
     public void setCrewForDisconnectedPlayer(Player player) {
         notifyModifiedTiles(player.getPlayerName(), player.setAllCrewToHuman());
-        updatePlayerView(ClientState.WAIT_OTHER_PLAYER_ACTION, player.getPlayerName());
+        updatePlayerView(ClientState.WAIT, player.getPlayerName());
     }
 
     public void playerPicksCrewMembers(String playerName, VirtualView playersView ,ArrayList<Tile> cabins) {
@@ -413,7 +413,7 @@ public class GameController implements Observer {
         }
         if (player.verifyAndSetupCrew(cabins)) {
             notifyModifiedTiles(playerName, cabins);
-            updatePlayerView(ClientState.WAIT_OTHER_PLAYER_ACTION, player.getPlayerName());
+            updatePlayerView(ClientState.WAIT, player.getPlayerName());
         }
         else {
             try{
@@ -609,7 +609,7 @@ public class GameController implements Observer {
                 if (player.getPlayerName().equals(playerName)) {
                     game.getFlightBoard().addToTrialFlightBoard(player);
                     //It's not important for trial flight, so 0 is a placeholder value
-                    updatePlayerView(ClientState.WAIT_OTHER_PLAYER_ACTION, playerName);
+                    updatePlayerView(ClientState.WAIT, playerName);
                     break;
                 }
             }
@@ -793,7 +793,7 @@ public class GameController implements Observer {
         else if (game.getGameState() == GameState.CARD_EVENT) {
             playersToEarlyLand.add(player);
         }
-        updatePlayerView(ClientState.WAIT_OTHER_PLAYER_ACTION, playerName);
+        updatePlayerView(ClientState.WAIT, playerName);
     }
 
     /**

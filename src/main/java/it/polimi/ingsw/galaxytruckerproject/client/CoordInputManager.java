@@ -160,7 +160,7 @@ public class CoordInputManager {
             coordinates.clear();
             fireStrength = 0;
             numEngine = 0;
-            clientController.getView().setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+            clientController.getView().setClientState(ClientState.WAIT);
             return true;
         }
         if (coordReqType == CoordReqType.CHOOSE_DOUBLE_ENGINE && needed == 0  ) {
@@ -168,7 +168,7 @@ public class CoordInputManager {
             coordinates.clear();
             numEngine = 0;
             fireStrength = 0;
-            clientController.getView().setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+            clientController.getView().setClientState(ClientState.WAIT);
             return true;
         }
         if(needed==coordinates.size()) {
@@ -177,7 +177,7 @@ public class CoordInputManager {
             fireStrength = 0;
             needed = 0;
             numEngine = 0;
-            clientController.getView().setClientState(ClientState.WAIT_OTHER_PLAYER_ACTION);
+            clientController.getView().setClientState(ClientState.WAIT);
             return true;
         }
         clientController.getView().wrongLocalInput();

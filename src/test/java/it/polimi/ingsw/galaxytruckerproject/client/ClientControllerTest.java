@@ -313,7 +313,7 @@ class ClientControllerTest {
         assertTrue(clientController.input(input));
         verify(mockVirtualController,times(1)).notifySetPosition(notNull(),choseCaptor.capture());
         assertEquals(3,choseCaptor.getValue());
-        assertEquals(ClientState.WAIT_OTHER_PLAYER_ACTION, clientController.getState());*/
+        assertEquals(ClientState.WAIT, clientController.getState());*/
 
     }
 
