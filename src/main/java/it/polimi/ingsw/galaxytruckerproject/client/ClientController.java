@@ -190,11 +190,35 @@ public class ClientController {
                 //CHOOSE TUI OR GUI
                 switch(words[0]) {
                     case "creategame"-> {
+                        if(words[1]==null){
+                            try {
+                                view.wrongLocalInput();
+                            } catch (RemoteException e) {
+                                throw new RuntimeException(e);
+                            }
+                            return false;
+                        }
                         String gameName = words[1];
                         int NumberOfPlayers;
+                        if(words[2]==null){
+                            try {
+                                view.wrongLocalInput();
+                            } catch (RemoteException e) {
+                                throw new RuntimeException(e);
+                            }
+                            return false;
+                        }
                         NumberOfPlayers = numerate(scroll(words,2));
                         if(NumberOfPlayers==-1||NumberOfPlayers>4)
                             return false;
+                        if(words[3]==null){
+                            try {
+                                view.wrongLocalInput();
+                            } catch (RemoteException e) {
+                                throw new RuntimeException(e);
+                            }
+                            return false;
+                        }
                         switch(words[3]) {
                             case "trialmode"-> gameMode=GameMode.TRIAL;
                             case "level2mode"-> gameMode=GameMode.LEVEL2;
@@ -219,6 +243,14 @@ public class ClientController {
                         }
                     }
                     case "joingame"-> {
+                        if(words[1]==null){
+                            try {
+                                view.wrongLocalInput();
+                            } catch (RemoteException e) {
+                                throw new RuntimeException(e);
+                            }
+                            return false;
+                        }
                         String gameName = words[1];
                         for(GameInfo games:gameInfo) {
                             if(Objects.equals(gameName, games.getGameName())){
@@ -291,6 +323,7 @@ public class ClientController {
             }
 
             case S_END_DRAW_TILE_CARD -> {
+
                 if (secondHourglassTurn(words))
                     return true;
                 if (checkShipBoards(words))
@@ -309,10 +342,26 @@ public class ClientController {
                         }
                     }
                     case "draw" -> {
+                        if(words[1]==null){
+                            try {
+                                view.wrongLocalInput();
+                            } catch (RemoteException e) {
+                                throw new RuntimeException(e);
+                            }
+                            return false;
+                        }
                         switch (words[1]) {
                             case "card" -> {
                                 if(gameMode==GameMode.LEVEL2) {
                                     int chose ;
+                                    if(words[2]==null){
+                                        try {
+                                            view.wrongLocalInput();
+                                        } catch (RemoteException e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                        return false;
+                                    }
                                     chose = numerate(scroll(words, 2));
                                     if (chose == -1)
                                         return false;
@@ -347,6 +396,14 @@ public class ClientController {
                                 }
                             }
                             case "tile" -> {
+                                if(words[2]==null){
+                                    try {
+                                        view.wrongLocalInput();
+                                    } catch (RemoteException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                    return false;
+                                }
                                 switch (words[2]){
                                     case "new"->{
                                         try {
