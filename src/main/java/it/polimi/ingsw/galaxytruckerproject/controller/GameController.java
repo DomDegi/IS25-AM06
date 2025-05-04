@@ -752,12 +752,11 @@ public class GameController implements Observer, Serializable {
             @Override
             public void run() {
                 hourglassON = false;
-                System.out.println("hourglass is exhausted\n");
+
                 hourglass.cancel();
                 if (hourglassTurns == 3) {
                     updateEveryView(ClientState.S_FINISHED);
                     checkIfAllPlayersReady();
-                    System.out.println("The time is up, ship creation is over\n");
                 }
             }
         }, 95000); //95 seconds

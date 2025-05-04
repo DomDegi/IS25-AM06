@@ -9,6 +9,8 @@ import it.polimi.ingsw.galaxytruckerproject.network.MockVirtualView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
+
 import static it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -73,8 +75,6 @@ class GameControllerTest {
         gameController.refuseTile(player1.getPlayerName());
         assertFalse(game.getTurnedTiles().isEmpty());
         assertNotNull(game.identifyPlayerByName(player2.getPlayerName()));
-        System.out.println(game.getTurnedTiles().get(drawnBy1.getKey()).toString());
-        assertNotNull(game.drawTurnedTile(player2.getPlayerName(),drawnBy1.getKey()));
         gameController.drawTile(view2,player2.getPlayerName(),drawnBy1.getKey() ,true);
         assertNotNull(player2.getDrawnTile());
     }
@@ -97,8 +97,19 @@ class GameControllerTest {
         player_draws_tile_test();
         Tile toSet = player2.getDrawnTile();
         toSet.setCoordinates(new Coordinates(1,3));
-        gameController.setTile(view2,player2.getPlayerName(),player2.getDrawnTile());
+        gameController.setTile(view2,player2.getPlayerName(),toSet);
         assertEquals(player2.getShipBoard().getTile(new Coordinates(1,3)),toSet);
-        //assertNull(player2.getDrawnTile());
+        assertNull(player2.getDrawnTile());
+    }
+
+    @Test
+    void booked_test() {
+        player_draws_tile_test();
+        Tile tile = player2.getDrawnTile();
+        gameController.bookTile(view2, player2.getPlayerName());
+        tile.setCoordinates(new Coordinates(1,3));
+        gameController.setTile(view2,player2.getPlayerName(),tile);
+        assertEquals(player2.getShipBoard().getTile(new Coordinates(1,3)),tile);
+        assertTrue(player2.getShipBoard().getBookedTiles().isEmpty());
     }
 }
