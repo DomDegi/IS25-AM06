@@ -1,7 +1,6 @@
-package it.polimi.ingsw.galaxytruckerproject.network.SOCKET;
+package it.polimi.ingsw.galaxytruckerproject.network.Socket;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.ControllerInterface;
-import it.polimi.ingsw.galaxytruckerproject.network.RMI.Client.VirtualViewRMI;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
 import java.io.IOException;
