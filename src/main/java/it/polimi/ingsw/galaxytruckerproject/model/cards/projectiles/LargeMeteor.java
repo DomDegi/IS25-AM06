@@ -21,7 +21,7 @@ public class LargeMeteor extends Projectile {
     public Defense throwProjectile(Player player, int diceRoll, GameInterface game) {
         Throw(player,diceRoll);
 
-        if(coordinatesToDestroy.isEmpty()){
+        if(coordinatesToDestroy != null){
             System.out.println("YOU WERE JUST LUCKY, SORRY MAN");
             return Defense.PROTECTED;
         }

@@ -22,7 +22,7 @@ import java.util.Optional;
 public abstract class Projectile implements Serializable {
     protected Direction direction;
     protected int diceRoll;
-    protected Optional<Coordinates> coordinatesToDestroy = Optional.empty();
+    protected Coordinates coordinatesToDestroy = null;
 
 
     public Projectile(Direction direction) {
@@ -48,7 +48,10 @@ public abstract class Projectile implements Serializable {
 
     //returns the coordinates of the tile that would get hit
     public Coordinates getCoordinatesToDestroy() {
-        return coordinatesToDestroy.orElseGet(() -> new Coordinates(0, 0));
+        if(coordinatesToDestroy == null){
+            return new Coordinates(0,0);
+        }else
+            return coordinatesToDestroy;
     }
 
     /**
@@ -63,7 +66,7 @@ public abstract class Projectile implements Serializable {
         int i;// num of iteration
         if(direction==Direction.SOUTH){
             if(diceRoll<4 ||diceRoll>10){
-                coordinatesToDestroy=Optional.empty();
+                coordinatesToDestroy=null;
                 return;
             }
             diceRoll = diceRoll-4;
@@ -73,17 +76,17 @@ public abstract class Projectile implements Serializable {
             {
                 i--;
                 if(i<0) {
-                    coordinatesToDestroy=Optional.empty();
+                    coordinatesToDestroy=null;
                     return;
                 }
                 Temp= tileTable[i][diceRoll];
             }
-            coordinatesToDestroy= Optional.of(Temp.get().getCoordinates());
+            coordinatesToDestroy= Temp.get().getCoordinates();
             return;
         }
         if(direction==Direction.NORTH){
             if(diceRoll<4 ||diceRoll>10){
-                coordinatesToDestroy=Optional.empty();
+                coordinatesToDestroy=null;
                 return;
             }
             diceRoll = diceRoll-4;
@@ -93,20 +96,20 @@ public abstract class Projectile implements Serializable {
             {
                 i++;
                 if(i>4) {
-                    coordinatesToDestroy=Optional.empty();
+                    coordinatesToDestroy=null;
                     return;
                 }
                 Temp= tileTable[i][diceRoll];
             }
             System.out.println("Ain't no luck baby");
-            coordinatesToDestroy= Optional.of(Temp.get().getCoordinates());
+            coordinatesToDestroy= Temp.get().getCoordinates();
             System.out.println(coordinatesToDestroy);
             return;
         }
 
         if(direction==Direction.EAST){
             if(diceRoll<5 ||diceRoll>9){
-                coordinatesToDestroy=Optional.empty();
+                coordinatesToDestroy=null;
                 return;
             }
             diceRoll = diceRoll-5;
@@ -116,17 +119,17 @@ public abstract class Projectile implements Serializable {
             {
                 i--;
                 if(i<0) {
-                    coordinatesToDestroy=Optional.empty();
+                    coordinatesToDestroy=null;
                     return;
                 }
                 Temp= tileTable[diceRoll][i];
             }
-            coordinatesToDestroy= Optional.of(Temp.get().getCoordinates());
+            coordinatesToDestroy= Temp.get().getCoordinates();
             return;
         }
         if(direction==Direction.WEST){
             if(diceRoll<5 ||diceRoll>9){
-                coordinatesToDestroy=Optional.empty();
+                coordinatesToDestroy=null;
                 return ;
             }
             diceRoll = diceRoll-5;
@@ -136,15 +139,15 @@ public abstract class Projectile implements Serializable {
             {
                 i++;
                 if(i>6) {
-                    coordinatesToDestroy = Optional.empty();
+                    coordinatesToDestroy = null;
                     return;
                 }
                 Temp= tileTable[diceRoll][i];
             }
-            coordinatesToDestroy= Optional.of(Temp.get().getCoordinates());
+            coordinatesToDestroy= Temp.get().getCoordinates();
             return;
         }
-        coordinatesToDestroy= Optional.empty();
+        coordinatesToDestroy= null;
     }
 
     @Override
