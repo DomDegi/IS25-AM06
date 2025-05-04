@@ -1452,5 +1452,8 @@ public class ClientController {
             throw new RuntimeException(e);
         }
     }
+    public void turnHourGlass(){
+        this.hourglassTurns++;
+    }
 }
 
