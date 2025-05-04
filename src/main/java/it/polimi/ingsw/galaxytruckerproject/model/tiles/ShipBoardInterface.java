@@ -3,10 +3,11 @@ package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 
 import java.io.Serializable;
+import java.rmi.Remote;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public interface ShipBoardInterface extends Serializable {
+public interface ShipBoardInterface extends Remote {
 
     void initializeTestFlight();
 

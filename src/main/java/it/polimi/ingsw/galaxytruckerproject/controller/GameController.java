@@ -96,6 +96,11 @@ public class GameController implements Observer, Serializable {
                 }
             }
         }
+        try {
+            view.setGameMode(this.game.getMode());
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -570,7 +575,7 @@ public class GameController implements Observer, Serializable {
 
         if (settedTile != null) {
             updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
-            notifyPositionedTile(playerName, settedTile);
+            notifyPositionedTile(playerName, settedTile.send());
         }
         else {
             try{

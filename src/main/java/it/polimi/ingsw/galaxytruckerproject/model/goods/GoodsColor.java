@@ -3,7 +3,9 @@ package it.polimi.ingsw.galaxytruckerproject.model.goods;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum GoodsColor {
+import java.io.Serializable;
+
+public enum GoodsColor implements Serializable {
     RED(4), YELLOW(3), GREEN(2), BLUE(1);
 
     private final int value;

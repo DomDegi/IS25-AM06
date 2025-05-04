@@ -4,7 +4,7 @@ package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Link {
+public class Link implements java.io.Serializable {
     Connectors connectorsType;
 
     @JsonCreator

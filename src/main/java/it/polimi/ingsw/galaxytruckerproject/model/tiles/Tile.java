@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public abstract class Tile implements Serializable {
+public abstract class Tile implements Serializable,Cloneable {
     protected Link north;
     protected Link east;
     protected Link south;
@@ -173,5 +173,14 @@ public abstract class Tile implements Serializable {
 
     public void setBooked(boolean booked) {
         this.booked = booked;
+    }
+    public Tile send(){
+        try {
+            Tile cloned= (Tile) super.clone();
+            cloned.setShipBoard(null);
+            return cloned;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

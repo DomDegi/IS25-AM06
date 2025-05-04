@@ -99,6 +99,10 @@ public class Game implements GameInterface{
         }
         Player player = new Player(playerName, color);
         flightBoard.addPlayerToGame(player);
+        if (mode == GameMode.LEVEL2) {
+            player.getShipBoard().initializeLevel2();
+        } else
+            player.getShipBoard().initializeTestFlight();
         if (this.getListOfAllPlayer().size() == playerCount) {
             setGameState(START_GAME);
         }
