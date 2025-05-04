@@ -3,13 +3,13 @@ package it.polimi.ingsw.galaxytruckerproject.controller;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.MockVirtualView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 class GameControllerTest {
@@ -52,5 +52,29 @@ class GameControllerTest {
         assertTrue(gameController.checkColorAvailable(player4.getPlayerName(),view4,BLUE));
         gameController.playerAddition("p4", BLUE);
         assertEquals(4, gameController.getPlayers().size());
+    }
+
+    @Test
+    void set_player_pointers() {
+        player1 = gameController.getActivePlayers().get("p1");
+        player2 = gameController.getActivePlayers().get("p2");
+        player3 = gameController.getActivePlayers().get("p3");
+        player4 = gameController.getActivePlayers().get("p4");
+    }
+    @Test
+    void player_draws_tile_test() {
+        player_addition_test();
+        set_player_pointers();
+        gameController.turnHourglass(player1.getPlayerName());
+        gameController.drawTile(view1,player1.getPlayerName(),-1 ,false);
+        Tile drawnBy1 = player1.getDrawnTile();
+        assertNotNull(drawnBy1);
+        gameController.refuseTile(player1.getPlayerName());
+        assertFalse(game.getTurnedTiles().isEmpty());
+        assertNotNull(game.identifyPlayerByName(player2.getPlayerName()));
+        System.out.println(game.getTurnedTiles().get(drawnBy1.getKey()).toString());
+        assertNotNull(game.drawTurnedTile(player2.getPlayerName(),drawnBy1.getKey()));
+        gameController.drawTile(view1,player2.getPlayerName(),drawnBy1.getKey() ,true);
+        assertNotNull(player2.getDrawnTile());
     }
 }

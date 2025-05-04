@@ -90,7 +90,7 @@ public class GameController implements Observer, Serializable {
             }
             else{
                 try {
-                    view.showGenericMessage("Can't join a game in progress");
+                    view.showWrongInputMessage();
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
@@ -113,7 +113,7 @@ public class GameController implements Observer, Serializable {
             if (playersWithErrors.contains(playerName)) {
                 if (!this.getGameState().equals(GameState.VERIFY_SHIP_CORRECTNESS)) {
                     try {
-                        view.showErrorMessage("Can't connect because didn't finish ship creation");
+                        view.showWrongInputMessage();
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
@@ -133,7 +133,7 @@ public class GameController implements Observer, Serializable {
 
                 if (this.getGameState() != GameState.VERIFY_SHIP_CORRECTNESS) {
                     try {
-                        view.showErrorMessage("Can't reconnect because player didn't complete starting position choosing");
+                        view.showWrongInputMessage();
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
@@ -141,7 +141,7 @@ public class GameController implements Observer, Serializable {
                 }
                 else {
                     try {
-                        view.asksToChooseStartingPosition();
+                        view.setClientState(ClientState.S_FINISHED);
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
@@ -154,11 +154,11 @@ public class GameController implements Observer, Serializable {
             if (GameState.SHIPS_CREATION.equals(this.getGameState())) {
                 updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
             }
-            //updateReconnectedPlayer(view);
+            updateReconnectedPlayer(view);
         }
         else {
             try {
-                view.showErrorMessage("player was never connected to this game");
+                view.showWrongInputMessage();
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -182,11 +182,6 @@ public class GameController implements Observer, Serializable {
      * If players number reaches the initial setted count, starts game.
      */
     public void playerAddition(String playerName, PlayersColor playersColor)  {
-        try {
-            playersViewMap.get(playerName).connected();
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
         if (this.getGameState() == GameState.LOBBY_PHASE && playersViewMap.containsKey(playerName)) {
                 //if playerCount is still to be reached, add player to the game model
                 if (game.getNumberOfPlayers() < game.getPlayerCount()) {
@@ -196,7 +191,7 @@ public class GameController implements Observer, Serializable {
                 }
                 else { //player count already reached
                     try {
-                        playersViewMap.get(playerName).showErrorMessage("Lobby is already full");
+                        playersViewMap.get(playerName).showWrongInputMessage();
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
@@ -239,7 +234,7 @@ public class GameController implements Observer, Serializable {
     public boolean checkColorAvailable (String playerName, ViewInterface view, PlayersColor playersColor)  {
         if (! playersViewMap.containsKey(playerName)) {
             try {
-                view.showErrorMessage("can't choose a color without logging in");
+                view.showWrongInputMessage();
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -288,6 +283,9 @@ public class GameController implements Observer, Serializable {
         // Can't draw if the shipboard is completed or there is already a tile to place/book/refuse
         if (playerStateIs(playerName, ClientState.S_MANAGE_DRAWN_TILE)
                 || playerStateIs(playerName, ClientState.S_FINISHED)) {
+            try {
+                playersView.showWrongInputMessage();
+            } catch(Exception ignored) {}
             return;
         }
         Tile drawnTile;
@@ -295,7 +293,7 @@ public class GameController implements Observer, Serializable {
             drawnTile = game.drawTile(playerName);
             if (drawnTile == null) {
                 try {
-                    playersView.showErrorMessage("drawn tile is null: stack is empty");
+                    playersView.showWrongInputMessage();
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
@@ -303,13 +301,15 @@ public class GameController implements Observer, Serializable {
             }
             try{
             playersView.showDrawnTile(drawnTile);
-            } catch(Exception ignored) {}
+            } catch(RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
         else {
             drawnTile = game.drawTurnedTile(playerName, index);
                 if (drawnTile == null) {
                     try {
-                        playersView.showErrorMessage("drawn tile is null: turned tile is empty or index out of bounds");
+                        playersView.showWrongInputMessage();
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
@@ -320,7 +320,7 @@ public class GameController implements Observer, Serializable {
                 } catch(Exception ignored) {}
                 notifyRemoveTurnedTile(drawnTile);
         }
-        updatePlayerView(ClientState.S_MANAGE_CARDS, playerName);
+        updatePlayerView(ClientState.S_MANAGE_DRAWN_TILE, playerName);
     }
 
     public void notifyRemoveTurnedTile(Tile tile) {
@@ -462,7 +462,10 @@ public class GameController implements Observer, Serializable {
 
 
     public void refuseTile(String playerName) {
-        if (playerStateIs(playerName, ClientState.S_MANAGE_DRAWN_TILE)) {
+        if (!playerStateIs(playerName, ClientState.S_MANAGE_DRAWN_TILE)) {
+            try {
+                playersViewMap.get(playerName).showWrongInputMessage();
+            } catch(Exception ignored) {}
             return;
         }
         Tile refused = game.refuseTile(playerName);

@@ -113,9 +113,9 @@ public class Game implements GameInterface{
     public synchronized Tile drawTile (String playerName) {
         Player player = identifyPlayerByName(playerName);
         if (player == null) { return null;}
-        Tile drawnTile = tileStack.pop();
+        Tile drawnTile;
         try {
-            tileStack.pop();
+            drawnTile = tileStack.pop();
         } catch (Exception e) {
             System.out.println("Tile stack empty\n");
             return null;
@@ -128,7 +128,8 @@ public class Game implements GameInterface{
 
     public synchronized Tile drawTurnedTile (String playerName, int index) {
         Player player = identifyPlayerByName(playerName);
-        if (player == null || (index < 0 || index >= turnedTiles.size())) { return null;}
+        if (player == null || !turnedTiles.containsKey(index)) {
+            return null;}
         Tile drawnTile = turnedTiles.remove(index);
         if (drawnTile != null) {
             player.hasDrawnTile(drawnTile);
