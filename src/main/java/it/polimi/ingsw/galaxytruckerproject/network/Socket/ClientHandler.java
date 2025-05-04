@@ -1,7 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.network.Socket;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.ControllerInterface;
-import it.polimi.ingsw.galaxytruckerproject.network.Socket.message.Message;
+import it.polimi.ingsw.galaxytruckerproject.network.Socket.ClientMessage.ClientMessage;
+
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
 import java.io.IOException;
@@ -68,16 +69,35 @@ public class ClientHandler implements Runnable {
         threadInListening.start();
     }
 
-    public void sendMessageToServer(Message message){};
+    public void sendMessageToServer(ClientMessage message){};
 
     public void listenForMessages() {
-        while(listening){
+        System.out.println("Listening for messages received by " + clientSocket.getInetAddress());
+        int expectedIndex = 0;
+        while(listening) {
+            ClientMessage message;
+            try {
+                message = (ClientMessage) input.readObject();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                return;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            synchronized (this) {
+                if ( message.getIndex() > expectedIndex) {
+
+                }
+            }
+        }
+
 
         }
-    };
 
-    public void processMessage(Message message){};
 
+    public void processMessage(ClientMessage message){
+        message.processMessage(this);
+    }
 
 
 
