@@ -13,7 +13,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class MultiGameController implements Serializable {
 
@@ -78,14 +77,14 @@ public class MultiGameController implements Serializable {
         if (creator != null && creatorView != null && controller != null && !isAlreadyInAGame(gameName)) {
             if (gamesMap.get(gameName) != null) {
                 try {
-                    creatorView.showErrorMessage("Game with this name already exists");
+                    creatorView.showWrongInputMessage();
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
             }
             else if (playerCount < 2 || playerCount > 4) {
                 try {
-                    creatorView.showErrorMessage("Invalid number of players");
+                    creatorView.showWrongInputMessage();
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
@@ -96,8 +95,8 @@ public class MultiGameController implements Serializable {
                 controller.setGameController(gameController);
                 gamesMap.put(gameName, gameController); //adds game to open games
                 viewsMap.remove(creator); //remove player from map of the views of player joining a game
-                notifyNewGame(creator, creatorView);
                 gameController.addToPlayersViewMap(creator, creatorView, false);
+                notifyNewGame(creator, creatorView);
             }
         }
     }
@@ -109,7 +108,7 @@ public class MultiGameController implements Serializable {
         if (joinerView != null && controller != null) {
             if (gameToJoin == null) {
                 try {
-                    joinerView.showErrorMessage("a game with this name doesn't exists");
+                    joinerView.showWrongInputMessage();
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
@@ -204,11 +203,7 @@ public class MultiGameController implements Serializable {
         ArrayList<GameInfo> joinableGames = new ArrayList<>();
         for (GameController gameController : gamesMap.values()) {
             if (gameController.getGameState().equals(GameState.LOBBY_PHASE)) {
-                joinableGames.add(new GameInfo
-                        (gameController.getGameName(),
-                         gameController.getGame().getMode(),
-                         gameController.getPlayersViewMap().size(),
-                                gameController.getGame().getPlayerCount()));
+                joinableGames.add(new GameInfo(gameController));
             }
         }
         try {

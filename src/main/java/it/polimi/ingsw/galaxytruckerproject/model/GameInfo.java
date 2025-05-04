@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.model;
 
+import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
+
 import java.io.Serializable;
 
 public class GameInfo implements Serializable {
@@ -8,11 +10,11 @@ public class GameInfo implements Serializable {
     private final int maxPlayerCount;
     private final int currentPlayerCount;
 
-    public GameInfo(String gameName, GameMode gameMode, int maxPlayerCount, int currentPlayerCount) {
-        this.gameName = gameName;
-        this.gameMode = gameMode;
-        this.maxPlayerCount = maxPlayerCount;
-        this.currentPlayerCount = currentPlayerCount;
+    public GameInfo(GameController gameController) {
+        this.gameName = gameController.getGameName();
+        this.gameMode = gameController.getGame().getMode();
+        this.maxPlayerCount = gameController.getGame().getPlayerCount();
+        this.currentPlayerCount = gameController.getPlayersViewMap().size();
     }
 
     public String getGameName() {
