@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.controller;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.MockVirtualView;
 import org.junit.jupiter.api.BeforeEach;
@@ -74,7 +75,30 @@ class GameControllerTest {
         assertNotNull(game.identifyPlayerByName(player2.getPlayerName()));
         System.out.println(game.getTurnedTiles().get(drawnBy1.getKey()).toString());
         assertNotNull(game.drawTurnedTile(player2.getPlayerName(),drawnBy1.getKey()));
-        gameController.drawTile(view1,player2.getPlayerName(),drawnBy1.getKey() ,true);
+        gameController.drawTile(view2,player2.getPlayerName(),drawnBy1.getKey() ,true);
         assertNotNull(player2.getDrawnTile());
+    }
+
+    @Test
+    void player_draws_cards_ship() {
+        player_addition_test();
+        set_player_pointers();
+        gameController.turnHourglass(player1.getPlayerName());
+        gameController.lookGameCards(player1.getPlayerName(), view1, 1);
+        assertEquals(1, gameController.getLockedSmallDecks().size());
+        gameController.lookGameCards(player2.getPlayerName(), view2, 1);
+        assertEquals(1,gameController.getLockedSmallDecks().size());
+        gameController.stopLookingAtCards(view1, player1.getPlayerName());
+        assertEquals(0,gameController.getLockedSmallDecks().size());
+    }
+
+    @Test
+    void player_positions_tile() {
+        player_draws_tile_test();
+        Tile toSet = player2.getDrawnTile();
+        toSet.setCoordinates(new Coordinates(1,3));
+        gameController.setTile(view2,player2.getPlayerName(),player2.getDrawnTile());
+        assertEquals(player2.getShipBoard().getTile(new Coordinates(1,3)),toSet);
+        //assertNull(player2.getDrawnTile());
     }
 }

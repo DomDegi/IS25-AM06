@@ -31,6 +31,6 @@ public class GameInfo implements Serializable {
     }
     @Override
     public String toString(){
-        return gameName + " GameMode: " + gameMode + " " + maxPlayerCount + "/" + currentPlayerCount;
+        return gameName + " GameMode: " + gameMode + " " + currentPlayerCount + "/" + maxPlayerCount;
     }
 }
