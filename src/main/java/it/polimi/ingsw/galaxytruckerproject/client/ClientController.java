@@ -190,7 +190,7 @@ public class ClientController {
                 //CHOOSE TUI OR GUI
                 switch(words[0]) {
                     case "creategame"-> {
-                        if(words[1]==null){
+                        if(!(words.length > 1)){
                             try {
                                 view.wrongLocalInput();
                             } catch (RemoteException e) {
@@ -200,7 +200,7 @@ public class ClientController {
                         }
                         String gameName = words[1];
                         int NumberOfPlayers;
-                        if(words[2]==null){
+                        if(!(words.length > 2)){
                             try {
                                 view.wrongLocalInput();
                             } catch (RemoteException e) {
@@ -211,7 +211,7 @@ public class ClientController {
                         NumberOfPlayers = numerate(scroll(words,2));
                         if(NumberOfPlayers==-1||NumberOfPlayers>4)
                             return false;
-                        if(words[3]==null){
+                        if(!(words.length > 3)){
                             try {
                                 view.wrongLocalInput();
                             } catch (RemoteException e) {
@@ -243,7 +243,7 @@ public class ClientController {
                         }
                     }
                     case "joingame"-> {
-                        if(words[1]==null){
+                        if(!(words.length > 1)){
                             try {
                                 view.wrongLocalInput();
                             } catch (RemoteException e) {
@@ -342,7 +342,7 @@ public class ClientController {
                         }
                     }
                     case "draw" -> {
-                        if(words[1]==null){
+                        if(!(words.length > 1)){
                             try {
                                 view.wrongLocalInput();
                             } catch (RemoteException e) {
@@ -354,7 +354,7 @@ public class ClientController {
                             case "card" -> {
                                 if(gameMode==GameMode.LEVEL2) {
                                     int chose ;
-                                    if(words[2]==null){
+                                    if(!(words.length > 2)){
                                         try {
                                             view.wrongLocalInput();
                                         } catch (RemoteException e) {
@@ -396,7 +396,7 @@ public class ClientController {
                                 }
                             }
                             case "tile" -> {
-                                if(words[2]==null){
+                                if(!(words.length > 2)){
                                     try {
                                         view.wrongLocalInput();
                                     } catch (RemoteException e) {
@@ -541,6 +541,14 @@ public class ClientController {
                         this.tileInHand.rotate();
                     case "position" -> {
                         Coordinates coordinates;
+                        if(!(words.length > 2)){
+                            try {
+                                view.wrongLocalInput();
+                            } catch (RemoteException e) {
+                                throw new RuntimeException(e);
+                            }
+                            return false;
+                        }
                         coordinates = transformCoordinates(scroll(words,1));
                         if(coordinates!=null){
                             me.getShipBoard().positionTile(Optional.ofNullable(this.tileInHand),coordinates);
@@ -1039,6 +1047,14 @@ public class ClientController {
 
     private boolean checkShipBoards(String[] input){
         if (input[0].equals("check")) {
+            if(!(input.length > 1)){
+                try {
+                    view.wrongLocalInput();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+                return false;
+            }
             int chose=numerate(scroll(input,1));
             if (chose==-1)
                 return false;
@@ -1405,9 +1421,7 @@ public class ClientController {
     public void setGameMode(GameMode gameMode) {this.gameMode = gameMode;}
 
     void connectRMI() throws MalformedURLException, NotBoundException, RemoteException {
-       // ControllerFactory controllerFactory=(ControllerFactory) Naming.lookup("rmi://localhost/ControllerFactory");
-        ControllerFactory controllerFactory=(ControllerFactory) Naming.lookup("rmi://192.168.181.165/ControllerFactory");
-
+        ControllerFactory controllerFactory=(ControllerFactory) Naming.lookup("rmi://localHost/ControllerFactory");
         virtualController=controllerFactory.createController();
         virtualController.setView(this.view);
     }
