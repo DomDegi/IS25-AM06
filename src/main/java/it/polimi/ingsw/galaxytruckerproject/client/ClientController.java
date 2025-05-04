@@ -32,7 +32,7 @@ import java.util.*;
 public class ClientController {
     private ClientState state;
     private ClientState previousState;
-    private LightPlayer me;
+    private final LightPlayer me;
     private LightFlightboard flightBoard;
     private boolean inManager;
     private boolean connected;
@@ -53,7 +53,6 @@ public class ClientController {
     private Tile tileInHand;
     private Card displayedCard;
     private int indexDeckInHandOrPlanet;
-    private int indexCard;
     private int hourglassTurns;
 
     public ClientController() {
@@ -62,7 +61,6 @@ public class ClientController {
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
-        this.deck = new HashMap<>();
         this.me = new LightPlayer("",null);
         this.goodsList = new ArrayList<>();
         this.flightBoard = new LightFlightboard(new FlightBoard(null));
@@ -76,7 +74,6 @@ public class ClientController {
         availableDeck.put(1,Boolean.TRUE);
         availableDeck.put(2,Boolean.TRUE);
         availableDeck.put(3,Boolean.TRUE);
-        this.indexCard = 0;
         this.indexDeckInHandOrPlanet = 0;
         this.hourglassTurns = 0;
         this.coordInputManager=new CoordInputManager(me.getShipBoard(),this);
@@ -492,41 +489,16 @@ public class ClientController {
             }
 
             case S_MANAGE_CARDS-> {
-                switch (words[0]) {
-                    case "previous" -> {
-                        indexCard--;
-                        if(indexCard<0)
-                            indexCard=2;
-                        displayedCard = this.deck.get(indexDeckInHandOrPlanet).get(indexCard);
-                        try {
-                            view.showCard(displayedCard);
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                if(words[0].equals("done")) {
+                    try {
+                        view.setClientState(ClientState.S_END_DRAW_TILE_CARD);
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
                     }
-                    case "next" -> {
-                        indexCard++;
-                        if(indexCard>2)
-                            indexCard=0;
-                        displayedCard = this.deck.get(indexDeckInHandOrPlanet).get(indexCard);
-                        try {
-                            view.showCard(displayedCard);
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                    case "done" -> {
-                        //done action
-                        try {
-                            view.setClientState(ClientState.S_END_DRAW_TILE_CARD);
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
-                        try {
-                            virtualController.stopLookingAtCardsRequest();
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                    try {
+                        virtualController.stopLookingAtCardsRequest();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
                     }
                 }
             }
@@ -1162,19 +1134,16 @@ public class ClientController {
 
     public void setGameMode(GameMode gameMode) {
         this.gameMode = gameMode;
-        LightShipBoard shipBoard;
         me.setShipboard(new LightShipBoard(me));
         if(gameMode==GameMode.LEVEL2){
             me.getShipBoard().initializeLevel2();
             for (LightPlayer player : flightBoard.getInGamePlayers()) {
-                shipBoard= new LightShipBoard(player);
                 player.getShipBoard().initializeLevel2();
             }
         }
         else if(gameMode==GameMode.TRIAL) {
             me.getShipBoard().initializeTestFlight();
             for (LightPlayer player : flightBoard.getInGamePlayers()) {
-                shipBoard= new LightShipBoard(player);
                 player.getShipBoard().initializeTestFlight();
             }
         }
@@ -1228,18 +1197,28 @@ public class ClientController {
         return copiedInput;
     }
 
-    public boolean rollBackState() {
+    public void rollBackState() {
         try {
             view.setClientState(previousState);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
         if (state==previousState)
-            return false;
+            return;
         state=previousState;
-        return true;
-
     }
+
+    public void addToFlightboard(String name,PlayersColor color,int pos, int ranking){
+        if(Objects.equals(name, me.getPlayerName())){
+            flightBoard.addInGamePlayer(me);
+            return;
+        }
+        LightPlayer player = new LightPlayer(name,color);
+        player.setPosition(pos);
+        player.setRank(ranking);
+        flightBoard.addInGamePlayer(player);
+    }
+
     public void updateFlightboard(String name,int pos, int ranking) {
         for(LightPlayer player:flightBoard.getInGamePlayers())
             if (player.getPlayerName().equals(name)){
@@ -1297,8 +1276,6 @@ public class ClientController {
             player.getShipBoard().positionTile(Optional.of(modTiles),modTiles.getCoordinates());
         }
     }
-
-
 
     //rompe le tile nelle coordinate corrispondenti per il player selezionato
     public void brokenTiles(String playerName, ArrayList<Coordinates> coordinates){
@@ -1428,10 +1405,6 @@ public class ClientController {
 
     public int getIndexDeckInHandOrPlanet() {
         return indexDeckInHandOrPlanet;
-    }
-
-    public int getIndexCard() {
-        return indexCard;
     }
 
     public int getHourglassTurns() {
