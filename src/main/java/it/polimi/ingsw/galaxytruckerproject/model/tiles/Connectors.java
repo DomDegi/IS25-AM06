@@ -3,7 +3,9 @@ package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum Connectors {
+import java.io.Serializable;
+
+public enum Connectors implements Serializable {
     SMOOTH, SINGLE, DOUBLE, UNIVERSAL;
 
     @JsonValue

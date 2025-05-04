@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.model.player;
 
-public enum PlayersColor {
+import java.io.Serializable;
+
+public enum PlayersColor implements Serializable {
     RED, YELLOW,GREEN,BLUE
 }

@@ -32,7 +32,7 @@ import java.util.*;
 public class ClientController {
     private ClientState state;
     private ClientState previousState;
-    private final LightPlayer me;
+    private LightPlayer me;
     private LightFlightboard flightBoard;
     private boolean inManager;
     private boolean connected;
@@ -63,8 +63,8 @@ public class ClientController {
             throw new RuntimeException(e);
         }
         this.deck = new HashMap<>();
-        this.goodsList = new ArrayList<>();
         this.me = new LightPlayer("",null);
+        this.goodsList = new ArrayList<>();
         this.flightBoard = new LightFlightboard(new FlightBoard(null));
         this.inManager = false;
         this.connected = false;
@@ -558,7 +558,8 @@ public class ClientController {
                                 throw new RuntimeException(e);
                             }
                             try {
-                                virtualController.notifySetTile(this.tileInHand);
+
+                                virtualController.notifySetTile(this.tileInHand.send());
                             } catch (RemoteException e) {
                                 throw new RuntimeException(e);
                             }
@@ -1159,6 +1160,26 @@ public class ClientController {
         return searchedPlayer;
     }
 
+    public void setGameMode(GameMode gameMode) {
+        this.gameMode = gameMode;
+        LightShipBoard shipBoard;
+        me.setShipboard(new LightShipBoard(me));
+        if(gameMode==GameMode.LEVEL2){
+            me.getShipBoard().initializeLevel2();
+            for (LightPlayer player : flightBoard.getInGamePlayers()) {
+                shipBoard= new LightShipBoard(player);
+                player.getShipBoard().initializeLevel2();
+            }
+        }
+        else if(gameMode==GameMode.TRIAL) {
+            me.getShipBoard().initializeTestFlight();
+            for (LightPlayer player : flightBoard.getInGamePlayers()) {
+                shipBoard= new LightShipBoard(player);
+                player.getShipBoard().initializeTestFlight();
+            }
+        }
+    }
+
     private boolean land(String[] input){
         if (input[0].equals("earlyland")&&!me.isLanded()){
             try {
@@ -1277,13 +1298,14 @@ public class ClientController {
         }
     }
 
+
+
     //rompe le tile nelle coordinate corrispondenti per il player selezionato
     public void brokenTiles(String playerName, ArrayList<Coordinates> coordinates){
         LightPlayer player=playerFinder(playerName);
         if(player==null)
             return;
         player.getShipBoard().destroy(coordinates);
-
     }
 
     //aggiungi booked tile al player (dalla light shipboard) con check sul senso dell'invocazione
@@ -1418,10 +1440,8 @@ public class ClientController {
 
     public void setConnected(boolean connected) {this.connected = connected;}
 
-    public void setGameMode(GameMode gameMode) {this.gameMode = gameMode;}
-
     void connectRMI() throws MalformedURLException, NotBoundException, RemoteException {
-        ControllerFactory controllerFactory=(ControllerFactory) Naming.lookup("rmi://localHost/ControllerFactory");
+        ControllerFactory controllerFactory=(ControllerFactory) Naming.lookup("rmi://localhost/ControllerFactory");
         virtualController=controllerFactory.createController();
         virtualController.setView(this.view);
     }
