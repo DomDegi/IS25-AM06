@@ -279,7 +279,9 @@ public class GameController implements Observer, Serializable {
         for (VirtualView view: playersViewMap.values()) {
             try {
                 view.notifyFlightBoardCards(flightBoardCards);
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+
+            }
         }
     }
 
@@ -305,7 +307,7 @@ public class GameController implements Observer, Serializable {
                 return;
             }
             try{
-            playersView.showDrawnTile(drawnTile);
+            playersView.showDrawnTile(drawnTile.send());
             } catch(RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -321,7 +323,7 @@ public class GameController implements Observer, Serializable {
                     return;
                 }
                 try{
-                playersView.showDrawnTile(drawnTile);
+                playersView.showDrawnTile(drawnTile.send());
                 } catch(Exception ignored) {}
                 notifyRemoveTurnedTile(drawnTile);
         }
@@ -331,7 +333,7 @@ public class GameController implements Observer, Serializable {
     public void notifyRemoveTurnedTile(Tile tile) {
         playersViewMap.values().forEach(virtualView -> {
             try {
-                virtualView.notifyRemoveTurnedTile(tile);
+                virtualView.notifyRemoveTurnedTile(tile.send());
             } catch (Exception ignored) { //unhandled exception
             }
         });
@@ -340,7 +342,7 @@ public class GameController implements Observer, Serializable {
     public void notifyBookedTile (String playerName, Tile tile) {
         playersViewMap.values().forEach(virtualView -> {
             try {
-                virtualView.notifyBookedTile(playerName, tile);
+                virtualView.notifyBookedTile(playerName, tile.send());
             } catch (Exception ignored) {//unhandled exception
             }
         });
@@ -349,7 +351,7 @@ public class GameController implements Observer, Serializable {
     public void notifyNewTurnedTile(Tile tile) {
         playersViewMap.values().forEach(virtualView -> {
             try {
-                virtualView.notifyNewTurnedTile(tile);
+                virtualView.notifyNewTurnedTile(tile.send());
             } catch (Exception ignored) { //unhandled exception
             }
         });
@@ -547,12 +549,12 @@ public class GameController implements Observer, Serializable {
     public void setTile (ViewInterface playersView, String playerName, Tile tile) {
         Tile settedTile;
         if (!tile.isBooked()) {
-            if (clientsStatesMap.get(playerName) != ClientState.S_MANAGE_DRAWN_TILE) {
+            /*if (clientsStatesMap.get(playerName) != ClientState.S_MANAGE_DRAWN_TILE) {
                 try{
                 playersView.showWrongInputMessage();
                 } catch(Exception ignored) {}
                 return;
-            }
+            }*/
         }
         else {
             if (playerStateIs(playerName,ClientState.S_MANAGE_CARDS) || playerStateIs(playerName,ClientState.S_FINISHED)) {
@@ -586,7 +588,7 @@ public class GameController implements Observer, Serializable {
     private void notifyPositionedTile(String playerName, Tile tile) {
         for (VirtualView view: playersViewMap.values()) {
             try {
-                view.notifyPositionedTile(playerName, tile);
+                view.notifyPositionedTile(playerName, tile.send());
             } catch (Exception ignored) {}
         }
     }
@@ -594,7 +596,7 @@ public class GameController implements Observer, Serializable {
     private void notifyRemovedBookedTile (String playerName, Tile tile) {
         for (VirtualView view: playersViewMap.values()) {
             try {
-                view.notifyRemovedBookedTile(playerName, tile);
+                view.notifyRemovedBookedTile(playerName, tile.send());
             } catch (Exception ignored) {}
         }
     }

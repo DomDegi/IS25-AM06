@@ -1,6 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
-public enum Direction {
+import java.io.Serializable;
+
+public enum Direction implements Serializable {
         NORTH,EAST,SOUTH,WEST;
 
         @Override

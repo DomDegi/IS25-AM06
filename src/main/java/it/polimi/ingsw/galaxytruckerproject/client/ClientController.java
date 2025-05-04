@@ -1162,19 +1162,18 @@ public class ClientController {
 
     public void setGameMode(GameMode gameMode) {
         this.gameMode = gameMode;
-        LightShipBoard shipBoard;
         me.setShipboard(new LightShipBoard(me));
         if(gameMode==GameMode.LEVEL2){
             me.getShipBoard().initializeLevel2();
             for (LightPlayer player : flightBoard.getInGamePlayers()) {
-                shipBoard= new LightShipBoard(player);
+                new LightShipBoard(player);
                 player.getShipBoard().initializeLevel2();
             }
         }
         else if(gameMode==GameMode.TRIAL) {
             me.getShipBoard().initializeTestFlight();
             for (LightPlayer player : flightBoard.getInGamePlayers()) {
-                shipBoard= new LightShipBoard(player);
+                new LightShipBoard(player);
                 player.getShipBoard().initializeTestFlight();
             }
         }
@@ -1452,6 +1451,9 @@ public class ClientController {
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
+    }
+    public void turnHourGlass(){
+        this.hourglassTurns++;
     }
 }
 

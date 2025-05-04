@@ -18,7 +18,7 @@ public class SmallCannonShot extends Projectile {
     public Defense throwProjectile(Player player, int diceRoll, GameInterface game) {
         Throw(player,diceRoll);
 
-        if(coordinatesToDestroy.isEmpty()){
+        if(coordinatesToDestroy!=null){
             //miss
             return Defense.PROTECTED;
         }

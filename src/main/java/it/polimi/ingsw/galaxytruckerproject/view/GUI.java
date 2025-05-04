@@ -265,6 +265,16 @@ public class GUI implements DisplayableView {
     }
 
     @Override
+    public void notifyTurnedHourglass() throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyEndOfTime() throws RemoteException {
+
+    }
+
+    @Override
     public void printCabins(Tile cabins) {
 
     }

@@ -246,6 +246,16 @@ public class TUI implements DisplayableView {
     }
 
     @Override
+    public void notifyTurnedHourglass() throws RemoteException {
+        System.out.println("hourglass has been turned");
+    }
+
+    @Override
+    public void notifyEndOfTime() throws RemoteException {
+        System.out.println("end of time");
+    }
+
+    @Override
     public void printCabins(Tile cabins) {
         System.out.println("choose equip type of:" + cabins.toString());
     }
