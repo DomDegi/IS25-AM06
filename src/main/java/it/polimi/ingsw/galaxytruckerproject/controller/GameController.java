@@ -388,6 +388,7 @@ public class GameController implements Observer, Serializable {
         for (Coordinates coord: toRemove) {
             player.getShipBoard().destroyForCorrection(coord);
         }
+        notifyBrokenTile(playerName,toRemove);
 
         boolean correctness = player.getShipBoard().verifyCorrectness();
         if (correctness) {
@@ -407,6 +408,16 @@ public class GameController implements Observer, Serializable {
         try{
         playersView.asksToInputCoordinates(CoordReqType.CHOOSE_TO_BREAK);
         } catch(Exception ignored) {}
+    }
+
+    public void notifyBrokenTile(String playerName, ArrayList<Coordinates> removed) {
+        for (VirtualView view: playersViewMap.values()){
+            try {
+                view.notifyBrokenTile(playerName,removed);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public void setCrewForDisconnectedPlayer(Player player) {
