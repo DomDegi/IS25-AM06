@@ -505,8 +505,7 @@ public class GameController implements Observer, Serializable {
         }
         else {
             try {
-                playersView.showErrorMessage("can't look at the event cards while you still have your drawn tile, " +
-                        "you completed your ship or you are already looking at cards");
+                playersView.showWrongInputMessage();
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -551,7 +550,7 @@ public class GameController implements Observer, Serializable {
             }
         }
         else {
-            if (clientsStatesMap.get(playerName) != ClientState.S_MANAGE_CARDS) {
+            if (playerStateIs(playerName,ClientState.S_MANAGE_CARDS) || playerStateIs(playerName,ClientState.S_FINISHED)) {
                 try{
                 playersView.showWrongInputMessage();
                 } catch(Exception ignored) {}
@@ -1048,5 +1047,9 @@ public class GameController implements Observer, Serializable {
 
     public Map<String, Player> getActivePlayers() {
         return activePlayers;
+    }
+
+    public ConcurrentHashMap<String, Integer> getLockedSmallDecks() {
+        return lockedSmallDecks;
     }
 }
