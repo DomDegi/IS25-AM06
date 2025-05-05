@@ -76,7 +76,16 @@ public class ClientHandler implements Runnable {
         threadInListening.start();
     }
 
-    public void sendMessageToServer(ClientMessage message){};
+    public void sendServerMessageToClient(ClientMessage message){
+        try {
+            output.reset();
+            output.writeObject(message);
+        } catch (IOException e) {
+            System.out.println("Could not send message to " + clientSocket.getInetAddress());
+            e.printStackTrace();
+        }
+
+    };
 
     public void listenForMessages() {
         System.out.println("Listening for messages received by " + clientSocket.getInetAddress());
@@ -149,7 +158,7 @@ public class ClientHandler implements Runnable {
 
 
 
-    public void setVirtualView(){
+    public void setVirtualView(VirtualView view){
         this.virtualView = virtualView;
     }
 

@@ -1,19 +1,19 @@
 package it.polimi.ingsw.galaxytruckerproject.network.Socket.ClientMessage;
 
+import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.ControllerInterface;
+import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.ClientHandler;
 
-public class LoginMessage extends ClientMessage {
+public class TurnHourglassMessage extends ClientMessage{
 
-    private String nickname;
-
-    public LoginMessage(String nickname) {
-        this.nickname = nickname;
+    public TurnHourglassMessage() {
+        ;
     }
 
     @Override
     public void processMessage(ClientHandler clientHandler) {
         try {
-            clientHandler.getController().login(nickname);
+            clientHandler.getController().turnHourglass();
         } catch (Exception e) {
             ;
         }

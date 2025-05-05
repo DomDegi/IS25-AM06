@@ -2,18 +2,16 @@ package it.polimi.ingsw.galaxytruckerproject.network.Socket.ClientMessage;
 
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.ClientHandler;
 
-public class LoginMessage extends ClientMessage {
+public class LeaveGameMessage extends ClientMessage {
 
-    private String nickname;
-
-    public LoginMessage(String nickname) {
-        this.nickname = nickname;
+    public LeaveGameMessage() {
+        ;
     }
 
     @Override
     public void processMessage(ClientHandler clientHandler) {
         try {
-            clientHandler.getController().login(nickname);
+            clientHandler.getController().leaveGame();
         } catch (Exception e) {
             ;
         }

@@ -2,18 +2,17 @@ package it.polimi.ingsw.galaxytruckerproject.network.Socket.ClientMessage;
 
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.ClientHandler;
 
-public class LoginMessage extends ClientMessage {
+import java.net.Socket;
 
-    private String nickname;
+public class DrawTileStackMessage extends ClientMessage {
 
-    public LoginMessage(String nickname) {
-        this.nickname = nickname;
+    public DrawTileStackMessage () {
+        ;
     }
 
-    @Override
     public void processMessage(ClientHandler clientHandler) {
         try {
-            clientHandler.getController().login(nickname);
+            clientHandler.getController().drawTileFromStack();
         } catch (Exception e) {
             ;
         }
