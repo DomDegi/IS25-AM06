@@ -43,7 +43,6 @@ public class SocketServer implements Server {
                     }
                     clientHandler.setController(controller);
                     clientHandler.setVirtualView(virtualView);
-                    virtualView.setClientState(ClientState.LOGIN);
                 } catch (IOException e) {
                     System.out.println("Connection crashed");
                     throw new RuntimeException(e);
