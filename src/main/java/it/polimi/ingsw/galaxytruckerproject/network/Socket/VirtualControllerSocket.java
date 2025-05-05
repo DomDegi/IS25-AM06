@@ -5,8 +5,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.network.Socket.ClientMessage.ChooseColorMessage;
-import it.polimi.ingsw.galaxytruckerproject.network.Socket.ClientMessage.LoginMessage;
+import it.polimi.ingsw.galaxytruckerproject.network.Socket.ClientMessage.*;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
@@ -32,21 +31,26 @@ public class VirtualControllerSocket implements VirtualController{
 
     @Override
     public void createGame(String gameName, int playerCount, GameMode chooseMode) throws RemoteException {
+        CreateGameMessage message = new CreateGameMessage(gameName, playerCount, chooseMode);
+        serverHandler.sendClientMessage(message);
     }
 
     @Override
     public void joinGame(String gameName) throws RemoteException {
-
+        JoinGameMessage message = new JoinGameMessage(gameName);
+        serverHandler.sendClientMessage(message);
     }
 
     @Override
     public void leaveGame() throws RemoteException {
-
+        LeaveGameMessage message = new LeaveGameMessage();
+        serverHandler.sendClientMessage(message);
     }
 
     @Override
     public void leave() throws RemoteException {
-
+        LeaveMessage message = new LeaveMessage();
+        serverHandler.sendClientMessage(message);
     }
 
     @Override
@@ -66,12 +70,14 @@ public class VirtualControllerSocket implements VirtualController{
 
     @Override
     public void reqDrawTileFromTurned(int index) throws RemoteException {
-
+        DrawTileTurnedMessage message = new DrawTileTurnedMessage(index);
+        serverHandler.sendClientMessage(message);
     }
 
     @Override
     public void reqDrawTileFromStack() throws RemoteException {
-
+        DrawTileStackMessage message = new DrawTileStackMessage();
+        serverHandler.sendClientMessage(message);
     }
 
     @Override
@@ -81,12 +87,14 @@ public class VirtualControllerSocket implements VirtualController{
 
     @Override
     public void lookCardsRequest(int deckToLookAt) throws RemoteException {
-
+        LookGameCardMessage message = new LookGameCardMessage(deckToLookAt);
+        serverHandler.sendClientMessage(message);
     }
 
     @Override
     public void stopLookingAtCardsRequest() throws RemoteException {
-
+        StopLookingCardsMessage message = new StopLookingCardsMessage();
+        serverHandler.sendClientMessage(message);
     }
 
     @Override
