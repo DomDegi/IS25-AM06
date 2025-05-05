@@ -146,13 +146,13 @@ class GameControllerTest {
     }
 
     @Test
-    void completed_ship_test() {
+    void completed_ship_test_trial() {
         set_player_pointers_trial();
-        gameController.turnHourglass(player1.getPlayerName());
-        gameController.completed(player1.getPlayerName(), view1);
-        gameController.completed(player2.getPlayerName(), view2);
-        gameController.completed(player3.getPlayerName(), view3);
-        gameController.completed(player4.getPlayerName(), view4);
-        assertEquals(trialController.getGameState(), GameState.VERIFY_SHIP_CORRECTNESS);
+        trialController.turnHourglass(player1.getPlayerName());
+        trialController.completed(player1.getPlayerName(), view1);
+        trialController.completed(player2.getPlayerName(), view2);
+        trialController.completed(player3.getPlayerName(), view3);
+        trialController.completed(player4.getPlayerName(), view4);
+        assertEquals(GameState.VERIFY_SHIP_CORRECTNESS, trialController.getGameState());
     }
 }

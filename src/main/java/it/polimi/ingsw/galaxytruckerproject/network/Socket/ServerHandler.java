@@ -56,19 +56,23 @@ public class ServerHandler implements Runnable {
                     Thread messageReceiver = new Thread(this::receiveMessages, "message receiver");
                     messageReceiver.start();
                 } catch (IOException e) {
+                    e.printStackTrace();
                     System.out.println("Input and output streams could not be created");
                     throw new CompletionException(e);
                 }
             });
             connectionFuture.get(3,TimeUnit.SECONDS);
         } catch (TimeoutException e) {
+            e.printStackTrace();
             System.out.println("Connection timed out");
             try{
                 server.close();
             } catch (IOException e1) {
+                e.printStackTrace();
                 System.out.println(e1.getMessage());
             }
         } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
             System.out.println("server handler could not run");
         }
     }
@@ -78,6 +82,7 @@ public class ServerHandler implements Runnable {
             output.reset();
             output.writeObject(clientMessage);
         } catch (IOException e){
+            e.printStackTrace();
             System.out.println("Could not send message to server");
         }
     }
@@ -106,6 +111,7 @@ public class ServerHandler implements Runnable {
             try {
                 serverMessage.processMessage(this);
             } catch (Exception e) {
+                e.printStackTrace();
                 System.out.println("Could not process message from server");
             }
     }
@@ -115,6 +121,7 @@ public class ServerHandler implements Runnable {
         try{
             server.close();
         } catch (IOException e) {
+            e.printStackTrace();
             System.out.println("Could not close server");
         }
     }
@@ -125,6 +132,7 @@ public class ServerHandler implements Runnable {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
+                e.printStackTrace();
                 System.out.println("waiting for setup");
             }
         }
