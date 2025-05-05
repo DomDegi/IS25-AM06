@@ -219,7 +219,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     @Override
     public void notifyTurnedHourglass() throws RemoteException {
         view.notifyTurnedHourglass();
-        clientController.turnHourGlass();
+        clientController.turnHourglass();
     }
 
     @Override
