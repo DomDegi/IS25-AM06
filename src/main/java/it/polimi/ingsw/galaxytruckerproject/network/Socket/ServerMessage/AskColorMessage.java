@@ -16,7 +16,7 @@ public class AskColorMessage extends ServerMessage {
         try {
             serverHandler.getView().askColor();
         } catch (RemoteException e) {
-            ;
+            e.printStackTrace();
         }
     }
 

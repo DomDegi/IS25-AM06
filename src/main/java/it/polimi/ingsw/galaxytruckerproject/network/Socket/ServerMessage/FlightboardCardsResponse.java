@@ -12,7 +12,7 @@ public class FlightboardCardsResponse extends ServerMessage {
         try {
             serverHandler.getView().showCard(serverHandler.getClientController().getDisplayedCard());
         } catch (Exception e) {
-            ;
+            e.printStackTrace();
         }
     }
 }
