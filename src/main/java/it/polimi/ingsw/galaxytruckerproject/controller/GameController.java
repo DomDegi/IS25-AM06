@@ -76,6 +76,11 @@ public class GameController implements Observer, Serializable {
 
     //ASSOCIA IL PLAYER ALLA VIEW
     public void addToPlayersViewMap(String playerName, VirtualView view, boolean reconnecting) {
+        try {
+            view.setGameMode(this.game.getMode());
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
         if (reconnecting) {
             reconnectPlayer(playerName, view);
         }
@@ -95,11 +100,6 @@ public class GameController implements Observer, Serializable {
                     throw new RuntimeException(e);
                 }
             }
-        }
-        try {
-            view.setGameMode(this.game.getMode());
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
         }
     }
 

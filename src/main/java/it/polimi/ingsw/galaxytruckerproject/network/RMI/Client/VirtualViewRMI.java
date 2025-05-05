@@ -60,9 +60,6 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     @Override
     public void showLoginResponse(boolean success) throws RemoteException {
         view.showLoginResponse(success);
-        if (success) {
-            clientController.setState(ClientState.LOBBY);
-        }
     }
 
     @Override
