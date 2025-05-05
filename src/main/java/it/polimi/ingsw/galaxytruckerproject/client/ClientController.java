@@ -50,13 +50,14 @@ public class ClientController {
     private final Map<Integer,Boolean> availableDeck;
     private final ArrayList<Goods> goodsList;
 
+    private int numPlayer;
     private Tile tileInHand;
     private ArrayList<Card> displayedCard;
     private int indexDeckInHandOrPlanet;
     private int hourglassTurns;
 
     public ClientController() {
-
+        this.numPlayer=0;
         this.deck = new HashMap<>();
         this.me = new LightPlayer("",null);
         this.goodsList = new ArrayList<>();
@@ -97,9 +98,9 @@ public class ClientController {
         switch (state) {
             case CHOOSE_UI->{
                 switch(words[0]) {
-                    case "gui"->
+                    case "gui","g"->
                             this.view= new GUI();
-                    case "tui"->
+                    case "tui","t"->
                             this.view=new TUI();
                     default->{
                         try {
@@ -123,7 +124,7 @@ public class ClientController {
                             throw new RuntimeException(e);
                         }
                     }
-                    case "socket"-> {
+                    case "socket","s"-> {
                         try {
                             virtualController= new VirtualControllerRMI(null);
                         } catch (RemoteException e) {
@@ -145,7 +146,7 @@ public class ClientController {
 
             case LOGIN->{
                 switch (words[0]) {
-                    case "done" -> {
+                    case "done","d" -> {
                         if(!Objects.equals(me.getPlayerName(), "")) {
                             setState(ClientState.WAIT);
                             try {
@@ -169,7 +170,7 @@ public class ClientController {
             case LOBBY-> {
                 //CHOOSE TUI OR GUI
                 switch(words[0]) {
-                    case "creategame"-> {
+                    case "creategame","c"-> {
                         if(!(words.length > 1)){
                             try {
                                 view.wrongLocalInput();
@@ -191,6 +192,7 @@ public class ClientController {
                         NumberOfPlayers = numerate(scroll(words,2));
                         if(NumberOfPlayers==-1||NumberOfPlayers>4)
                             return false;
+                        numPlayer=NumberOfPlayers;
                         if(!(words.length > 3)){
                             try {
                                 view.wrongLocalInput();
@@ -200,8 +202,8 @@ public class ClientController {
                             return false;
                         }
                         switch(words[3]) {
-                            case "trialmode"-> gameMode=GameMode.TRIAL;
-                            case "level2mode"-> gameMode=GameMode.LEVEL2;
+                            case "trialmode","t"-> gameMode=GameMode.TRIAL;
+                            case "level2mode","2"-> gameMode=GameMode.LEVEL2;
                             default->{
                                 try {
                                     view.wrongLocalInput();
@@ -218,7 +220,7 @@ public class ClientController {
                             throw new RuntimeException(e);
                         }
                     }
-                    case "joingame"-> {
+                    case "joingame","j"-> {
                         if(!(words.length > 1)){
                             try {
                                 view.wrongLocalInput();
@@ -231,6 +233,7 @@ public class ClientController {
                         for(GameInfo games:gameInfo) {
                             if(Objects.equals(gameName, games.getGameName())){
                                 setState(ClientState.WAIT);
+                                numPlayer=games.getMaxPlayerCount();
                                 try {
                                     virtualController.joinGame(gameName);
                                 } catch (RemoteException e) {
@@ -260,13 +263,13 @@ public class ClientController {
             case COLOR_CHOICE->{
                 PlayersColor color;
                 switch (words[0]){
-                    case "red"->
+                    case "red","r"->
                         color = PlayersColor.RED;
-                    case "yellow"->
+                    case "yellow","y"->
                         color = PlayersColor.YELLOW;
-                    case "green"->
+                    case "green","g"->
                         color = PlayersColor.GREEN;
-                    case "blue"->
+                    case "blue","b"->
                         color = PlayersColor.BLUE;
                     default->{
                         try {
@@ -296,7 +299,7 @@ public class ClientController {
                 if (checkShipBoards(words))
                     return true;
                 switch (words[0]) {
-                    case"done" -> {
+                    case"done","d" -> {
                         setState(ClientState.WAIT);
                         try {
                             virtualController.notifyCompleted();
@@ -521,7 +524,7 @@ public class ClientController {
                     chose = numerate(scroll(words, 0));
                     if (chose == -1)
                         return false;
-                    if (chose > 0 &&  chose < flightBoard.getInGamePlayers().size()) {
+                    if (chose > 0 &&  chose <= numPlayer) {
                         setState(ClientState.WAIT);
                         try {
                             virtualController.notifySetPosition(chose);
@@ -580,11 +583,8 @@ public class ClientController {
                     }
                     case "no" -> {
                         setState(ClientState.WAIT);
-                        try {
-                            virtualController.sendNo();
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+
+
                     }
                     default->{
                         try {
@@ -725,7 +725,11 @@ public class ClientController {
             case WAIT ->{
                 switch(phase){
                     case LOGIN -> {
-
+                        try {
+                            view.wrongLocalInput();
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                     case SHIPBOARD -> {
                         if (checkShipBoards(words))
@@ -1072,10 +1076,9 @@ public class ClientController {
     }
 
     public void rollBackState() {
-        setState(previousState);
         if (state==previousState)
             return;
-        state=previousState;
+        setState(previousState);
     }
 
     public void addToFlightboard(String name,PlayersColor color,int pos, int ranking){

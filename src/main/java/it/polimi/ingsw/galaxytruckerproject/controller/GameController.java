@@ -362,7 +362,7 @@ public class GameController implements Observer, Serializable {
 
     //errors check and management
     public void verifyShipCorrectness() {
-        for (Player player : game.getListOfInFlightPlayers()) {
+        for (Player player :new ArrayList<>(game.getListOfInFlightPlayers()) ) {
             boolean correctness = player.getShipBoard().verifyCorrectness();
             ViewInterface playersView = this.getViewFromNickname(player.getPlayerName());
             if (correctness){
@@ -636,7 +636,7 @@ public class GameController implements Observer, Serializable {
         }
         updatePlayerView(ClientState.S_FINISHED, playerName);
         if(game.getMode() == TRIAL) {
-            for (Player player : game.getFlightBoard().getInGamePlayers()) {
+            for (Player player : game.getFlightBoard().getAllPlayers()) {
                 if (player.getPlayerName().equals(playerName)) {
                     game.getFlightBoard().addToTrialFlightBoard(player);
                     //It's not important for trial flight, so 0 is a placeholder value
@@ -710,7 +710,6 @@ public class GameController implements Observer, Serializable {
 
     private void endShipCreation () {
         game.endShipCreation();
-
     }
 
 
