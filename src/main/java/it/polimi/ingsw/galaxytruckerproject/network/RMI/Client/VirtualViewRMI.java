@@ -73,6 +73,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     }
 
     //A CHE SERVE
+    //Boh, da quando c'è joinableGames a niente
     @Override
     public void askPlayerCount() throws IOException {
         view.askPlayerCount();

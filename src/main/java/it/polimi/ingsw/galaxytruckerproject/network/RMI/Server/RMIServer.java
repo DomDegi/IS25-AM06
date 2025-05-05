@@ -20,7 +20,7 @@ public class RMIServer implements Server {
         ObjectInputFilter.Config.setSerialFilter(info -> ObjectInputFilter.Status.ALLOWED);
 
         try {
-            ControllerFactory controllerFactory = new ControllerFactoryImpl();
+            ControllerFactory controllerFactory = new ControllerFactoryImpl(multiGameController);
             // Avvio il registry (opzionale se già avviato esternamente)
             LocateRegistry.createRegistry(1099); // porta standard RMI
             // Registro l'oggetto con un nome

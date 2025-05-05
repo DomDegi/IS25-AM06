@@ -102,7 +102,7 @@ public class VirtualControllerSocket implements VirtualController{
 
     @Override
     public void drawCards() throws RemoteException {
-
+        serverHandler.sendClientMessage(new DrawCardMessage());
     }
 
     @Override
@@ -146,7 +146,7 @@ public class VirtualControllerSocket implements VirtualController{
 
     @Override
     public void planetChoiceRequest(int choice) throws RemoteException {
-
+        serverHandler.sendClientMessage(new PlanetChoiceMessage(choice));
     }
 
     @Override

@@ -41,22 +41,22 @@ public class VirtualViewSocket implements VirtualView {
 
     @Override
     public void notifyNewTurnedTile(Tile tile) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new NewTurnedTileMessage(tile));
     }
 
     @Override
     public void notifyRemoveTurnedTile(Tile tile) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new RemoveTurnedTileMessage(tile));
     }
 
     @Override
     public void notifyPlayerMovement(String playerName, int playerPosition, int playerRanking) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new PlayerMovementMessage(playerName, playerPosition, playerRanking));
     }
 
     @Override
     public void notifyPositionedTile(String playerName, Tile tile) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new PositionedTileMessage(playerName, tile));
     }
 
     @Override
