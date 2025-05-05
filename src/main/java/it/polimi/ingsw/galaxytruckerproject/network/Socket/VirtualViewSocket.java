@@ -14,6 +14,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.*;
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.AskColorMessage;
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.LoginResponseMessage;
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.SetClientStateMessage;
@@ -98,7 +99,7 @@ public class VirtualViewSocket implements VirtualView {
 
     @Override
     public void notifyFlightBoardCards(Map<Integer, ArrayList<Card>> cards) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new FlightBoardCardsMessage(cards));
     }
 
     @Override
@@ -186,7 +187,6 @@ public class VirtualViewSocket implements VirtualView {
 
     @Override
     public void showInGameCards(ArrayList<Card> inGameCards) throws RemoteException {
-
     }
 
     @Override
@@ -206,17 +206,17 @@ public class VirtualViewSocket implements VirtualView {
 
     @Override
     public void asksToInputCoordinates(CoordReqType coordReqType) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new AskToInputCoordinatesMessage(coordReqType));
     }
 
     @Override
     public void asksToTurnTheHourglass() throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new AskToTurnHourglassMessage());
     }
 
     @Override
     public void notifyYouCanDrawThisCardDeck() throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new FlightboardCardsResponse());
     }
 
     @Override
@@ -311,12 +311,12 @@ public class VirtualViewSocket implements VirtualView {
 
     @Override
     public void notifyTurnedHourglass() throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new TurnedHourglassMessage());
     }
 
     @Override
     public void notifyEndOfTime() throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new TimeExpiredMessage());
     }
 
     @Override
