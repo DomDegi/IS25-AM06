@@ -18,7 +18,7 @@ public class SetClientStateMessage extends ServerMessage {
         try {
             serverHandler.getView().setClientState(clientState);
         } catch (RemoteException e) {
-            ;
+            e.printStackTrace();
         }
     }
 }

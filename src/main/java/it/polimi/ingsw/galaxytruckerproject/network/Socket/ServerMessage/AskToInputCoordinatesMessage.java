@@ -17,6 +17,8 @@ public class AskToInputCoordinatesMessage extends ServerMessage{
     public void processMessage(ServerHandler serverHandler) {
         try {
             serverHandler.getView().asksToInputCoordinates(coordReqType);
-        } catch (RemoteException ignored) {}
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 }

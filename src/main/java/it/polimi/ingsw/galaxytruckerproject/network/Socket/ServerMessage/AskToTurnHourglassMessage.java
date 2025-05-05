@@ -12,7 +12,8 @@ public class AskToTurnHourglassMessage extends ServerMessage {
     public void processMessage(ServerHandler serverHandler) {
         try {
             serverHandler.getView().notifyTurnedHourglass();
-        } catch (RemoteException ignored) {
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
 }

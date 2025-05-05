@@ -16,6 +16,10 @@ public class FlightBoardCardsMessage extends ServerMessage {
 
     @Override
     public void processMessage(ServerHandler serverHandler) {
-        serverHandler.getClientController().setDeck(flightBoardCards);
+        try{
+            serverHandler.getClientController().setDeck(flightBoardCards);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }

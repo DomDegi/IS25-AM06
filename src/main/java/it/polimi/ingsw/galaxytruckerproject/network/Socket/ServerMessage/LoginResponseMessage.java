@@ -17,7 +17,7 @@ public class LoginResponseMessage extends ServerMessage {
         try {
             serverHandler.getView().showLoginResponse(success);
         } catch (RemoteException e) {
-            ;
+            e.printStackTrace();
         }
     }
 }
