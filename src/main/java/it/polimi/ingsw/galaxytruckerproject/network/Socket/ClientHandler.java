@@ -161,7 +161,7 @@ public class ClientHandler implements Runnable {
 
 
     public void setVirtualView(VirtualView view){
-        this.virtualView = virtualView;
+        this.virtualView = view;
     }
 
     public VirtualView getVirtualView(){
