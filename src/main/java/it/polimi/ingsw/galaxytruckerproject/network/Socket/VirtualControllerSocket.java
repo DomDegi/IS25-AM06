@@ -31,7 +31,6 @@ public class VirtualControllerSocket implements VirtualController{
 
     @Override
     public void createGame(String gameName, int playerCount, GameMode chooseMode) throws RemoteException {
-
     }
 
     @Override
@@ -161,7 +160,6 @@ public class VirtualControllerSocket implements VirtualController{
 
     @Override
     public void setView(VirtualView virtualView) throws RemoteException {
-
     }
 
     @Override

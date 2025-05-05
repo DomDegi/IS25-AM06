@@ -14,8 +14,6 @@ public class LoginMessage extends ClientMessage {
     public void processMessage(ClientHandler clientHandler) {
         try {
             clientHandler.getController().login(nickname);
-        } catch (Exception e) {
-            ;
-        }
+        } catch (Exception ignored) {}
     }
 }
