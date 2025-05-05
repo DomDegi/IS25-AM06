@@ -6,12 +6,14 @@ import java.rmi.RemoteException;
 
 public class TimeExpiredMessage extends ServerMessage {
 
-    public TimeExpiredMessage() {}
+
+    public TimeExpiredMessage() {
+    }
 
     @Override
     public void processMessage(ServerHandler serverHandler) {
         try {
-            serverHandler.getView().notifyTurnedHourglass();
+            serverHandler.getView().notifyEndOfTime();
         } catch (RemoteException e) {
             e.printStackTrace();
         }

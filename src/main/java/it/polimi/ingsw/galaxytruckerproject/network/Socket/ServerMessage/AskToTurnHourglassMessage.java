@@ -6,12 +6,14 @@ import java.rmi.RemoteException;
 
 public class AskToTurnHourglassMessage extends ServerMessage {
 
-    public AskToTurnHourglassMessage() {}
+
+    public AskToTurnHourglassMessage() {
+    }
 
     @Override
     public void processMessage(ServerHandler serverHandler) {
         try {
-            serverHandler.getView().notifyTurnedHourglass();
+            serverHandler.getView().asksToTurnTheHourglass();
         } catch (RemoteException e) {
             e.printStackTrace();
         }

@@ -15,10 +15,6 @@ public class SetClientStateMessage extends ServerMessage {
 
     @Override
     public void processMessage(ServerHandler serverHandler) {
-        try {
-            serverHandler.getView().setClientState(clientState);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+            serverHandler.getClientController().setState(clientState);
     }
 }

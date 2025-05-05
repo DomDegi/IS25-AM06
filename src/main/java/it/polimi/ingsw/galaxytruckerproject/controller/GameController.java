@@ -776,7 +776,7 @@ public class GameController implements Observer, Serializable {
     public void notifyTurnedHourglass() {
         for (VirtualView view: playersViewMap.values()) {
             try {
-                view.notifyTurnedHourglass();
+                view.notifyTurnedHourglass(hourglassTurns);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }

@@ -740,7 +740,7 @@ public class ClientController {
                 switch(phase){
                     case LOGIN -> {
                         try {
-                            view.wrongLocalInput();
+                            view.showGenericMessage("Wrong input in wait");
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
