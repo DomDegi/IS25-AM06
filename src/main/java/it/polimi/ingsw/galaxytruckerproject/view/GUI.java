@@ -2,7 +2,6 @@ package it.polimi.ingsw.galaxytruckerproject.view;
 
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
-import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
@@ -235,7 +234,7 @@ public class GUI implements DisplayableView {
     }
 
     @Override
-    public void showCard(Card card) throws RemoteException {
+    public void showCard(ArrayList<Card> cards) throws RemoteException {
 
     }
 

@@ -76,6 +76,11 @@ public class GameController implements Observer, Serializable {
 
     //ASSOCIA IL PLAYER ALLA VIEW
     public void addToPlayersViewMap(String playerName, VirtualView view, boolean reconnecting) {
+        try {
+            view.setGameMode(this.game.getMode());
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
         if (reconnecting) {
             reconnectPlayer(playerName, view);
         }
@@ -96,11 +101,7 @@ public class GameController implements Observer, Serializable {
                 }
             }
         }
-        try {
-            view.setGameMode(this.game.getMode());
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
     /**
@@ -249,7 +250,9 @@ public class GameController implements Observer, Serializable {
             if (player.getPlayerColor().equals(playersColor)) {
                 try {
                 view.showWrongInputMessage();
-                } catch(Exception ignored) {}
+                } catch(RemoteException e) {
+                    throw new RuntimeException(e);
+                }
                 return false;
             }
         }
@@ -632,7 +635,6 @@ public class GameController implements Observer, Serializable {
             return;
         }
         updatePlayerView(ClientState.S_FINISHED, playerName);
-
         if(game.getMode() == TRIAL) {
             for (Player player : game.getFlightBoard().getInGamePlayers()) {
                 if (player.getPlayerName().equals(playerName)) {
@@ -708,6 +710,7 @@ public class GameController implements Observer, Serializable {
 
     private void endShipCreation () {
         game.endShipCreation();
+
     }
 
 

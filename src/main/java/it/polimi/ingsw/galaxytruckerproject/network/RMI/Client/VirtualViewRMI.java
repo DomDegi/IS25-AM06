@@ -4,7 +4,6 @@ import it.polimi.ingsw.galaxytruckerproject.client.ClientController;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.client.GamePhases;
-import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
@@ -60,9 +59,6 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     @Override
     public void showLoginResponse(boolean success) throws RemoteException {
         view.showLoginResponse(success);
-        if (success) {
-            clientController.setState(ClientState.LOBBY);
-        }
     }
 
     @Override
@@ -111,7 +107,6 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     @Override
     public void showDrawnTile(Tile drawnTile) throws RemoteException {
         view.showDrawnTile(drawnTile);
-        clientController.setState(ClientState.S_MANAGE_DRAWN_TILE);
         clientController.setTileInHand(drawnTile);
     }
 
@@ -170,8 +165,8 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     }
 
     @Override
-    public void showCard(Card card)throws RemoteException {
-        view.showCard(card);
+    public void showCard(ArrayList<Card> cards)throws RemoteException {
+        view.showCard(cards);
     }
 
     @Override
@@ -219,7 +214,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     @Override
     public void notifyTurnedHourglass() throws RemoteException {
         view.notifyTurnedHourglass();
-        clientController.turnHourGlass();
+        clientController.turnHourglass();
     }
 
     @Override

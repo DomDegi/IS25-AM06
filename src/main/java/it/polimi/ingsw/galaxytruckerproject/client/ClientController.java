@@ -293,7 +293,7 @@ public class ClientController {
                     return true;
                 switch (words[0]) {
                     case"done" -> {
-                        setState(ClientState.S_FINISHED);
+                        setState(ClientState.WAIT);
                         try {
                             virtualController.notifyCompleted();
                         } catch (RemoteException e) {
@@ -352,17 +352,17 @@ public class ClientController {
                             }
                             case "tile" -> {
                                 if(!(words.length > 2)){
+                                    setState(ClientState.WAIT);
                                     try {
-                                        view.wrongLocalInput();
+                                        virtualController.reqDrawTileFromStack();
                                     } catch (RemoteException e) {
                                         throw new RuntimeException(e);
                                     }
-                                    return false;
+                                    return true;
                                 }
                                 switch (words[2]){
                                     case "new"->{
                                         setState(ClientState.WAIT);
-
                                         try {
                                             virtualController.reqDrawTileFromStack();
                                         } catch (RemoteException e) {
@@ -1292,6 +1292,9 @@ public class ClientController {
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
+    }
+    public void turnHourglass() {
+        hourglassTurns++;
     }
 }
 
