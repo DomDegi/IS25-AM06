@@ -6,11 +6,11 @@ import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerHandler;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public class showJoinableGamesMessage extends ServerMessage{
+public class ShowJoinableGamesMessage extends ServerMessage{
 
     ArrayList<GameInfo> joinableGames;
 
-    public showJoinableGamesMessage(ArrayList<GameInfo> joinableGames) {
+    public ShowJoinableGamesMessage(ArrayList<GameInfo> joinableGames) {
         this.joinableGames = joinableGames;
     }
 

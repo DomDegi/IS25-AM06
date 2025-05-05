@@ -60,12 +60,14 @@ public class VirtualControllerSocket implements VirtualController{
 
     @Override
     public void notifySetTile(Tile tile) throws RemoteException {
-
+        SetTileMessage message = new SetTileMessage(tile);
+        serverHandler.sendClientMessage(message);
     }
 
     @Override
     public void notifyRefusedTile() throws RemoteException {
-
+        RefuseTileMessage message = new RefuseTileMessage();
+        serverHandler.sendClientMessage(message);
     }
 
     @Override
@@ -82,7 +84,8 @@ public class VirtualControllerSocket implements VirtualController{
 
     @Override
     public void notifyTileBooking() throws RemoteException {
-
+        TileBookingMessage message = new TileBookingMessage();
+        serverHandler.sendClientMessage(message);
     }
 
     @Override
@@ -119,22 +122,26 @@ public class VirtualControllerSocket implements VirtualController{
 
     @Override
     public void sendYes() throws RemoteException {
-
+        SendYesMessage message = new SendYesMessage();
+        serverHandler.sendClientMessage(message);
     }
 
     @Override
     public void sendNo() throws RemoteException {
-
+        SendNoMessage message = new SendNoMessage();
+        serverHandler.sendClientMessage(message);
     }
 
     @Override
     public void sendTurnHourGlass() throws RemoteException {
-
+        TurnHourglassMessage message = new TurnHourglassMessage();
+        serverHandler.sendClientMessage(message);
     }
 
     @Override
     public void rollTheDices() throws RemoteException {
-
+        RollDicesMessage message = new RollDicesMessage();
+        serverHandler.sendClientMessage(message);
     }
 
     @Override
