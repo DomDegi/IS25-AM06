@@ -60,8 +60,6 @@ public class MultiGameController implements Serializable {
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
-
-
                 }
             }
         }

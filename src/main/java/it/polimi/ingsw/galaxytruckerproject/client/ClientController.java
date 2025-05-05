@@ -18,7 +18,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.RMI.Client.VirtualViewRMI;
 import it.polimi.ingsw.galaxytruckerproject.network.RMI.Server.VirtualControllerRMI;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
-import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import it.polimi.ingsw.galaxytruckerproject.view.TUI;
@@ -52,7 +51,7 @@ public class ClientController {
     private final ArrayList<Goods> goodsList;
 
     private Tile tileInHand;
-    private Card displayedCard;
+    private ArrayList<Card> displayedCard;
     private int indexDeckInHandOrPlanet;
     private int hourglassTurns;
 
@@ -98,12 +97,10 @@ public class ClientController {
         switch (state) {
             case CHOOSE_UI->{
                 switch(words[0]) {
-                    case "gui"-> {
+                    case "gui"->
                             this.view= new GUI();
-                    }
-                    case "tui"-> {
+                    case "tui"->
                             this.view=new TUI();
-                    }
                     default->{
                         try {
                             view.wrongLocalInput();
@@ -149,11 +146,19 @@ public class ClientController {
             case LOGIN->{
                 switch (words[0]) {
                     case "done" -> {
-                        setState(ClientState.WAIT);
-                        try {
-                            virtualController.login(me.getPlayerName());
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
+                        if(!Objects.equals(me.getPlayerName(), "")) {
+                            setState(ClientState.WAIT);
+                            try {
+                                virtualController.login(me.getPlayerName());
+                            } catch (RemoteException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }else{
+                            try {
+                                view.wrongLocalInput();
+                            } catch (RemoteException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                     }
                     case "redo"-> me.setPlayerName("");
@@ -286,7 +291,6 @@ public class ClientController {
             }
 
             case S_END_DRAW_TILE_CARD -> {
-
                 if (secondHourglassTurn(words))
                     return true;
                 if (checkShipBoards(words))
@@ -332,7 +336,7 @@ public class ClientController {
                                             throw new RuntimeException(e);
                                         }
                                         indexDeckInHandOrPlanet = chose;
-                                        displayedCard = this.deck.get(indexDeckInHandOrPlanet).getFirst();
+                                        displayedCard = this.deck.get(indexDeckInHandOrPlanet);
                                     } else {
                                         try {
                                             view.wrongLocalInput();
@@ -361,7 +365,7 @@ public class ClientController {
                                     return true;
                                 }
                                 switch (words[2]){
-                                    case "new"->{
+                                    case "new" -> {
                                         setState(ClientState.WAIT);
                                         try {
                                             virtualController.reqDrawTileFromStack();
@@ -604,7 +608,7 @@ public class ClientController {
                 chose = numerate(words);
                 if(chose==-1)
                     return false;
-                Planets planet=(Planets) displayedCard;
+                Planets planet=(Planets) displayedCard.getFirst();
                 if (chose >= 0 && chose <planet.getListOfPlanets().size()) {
                     indexDeckInHandOrPlanet = chose;
                     setState(ClientState.WAIT);
@@ -812,11 +816,11 @@ public class ClientController {
             }
             case ROLL_DICE -> {
                 try {
-                    view.printProjectile(displayedCard.getListOfProjectiles().getFirst());
+                    view.printProjectile(displayedCard.getFirst().getListOfProjectiles().getFirst());
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
-                displayedCard.getListOfProjectiles().removeFirst();
+                displayedCard.getFirst().getListOfProjectiles().removeFirst();
             }
             case DRAW_CARD -> {
                 phase = GamePhases.CARDS;
@@ -1126,9 +1130,10 @@ public class ClientController {
     }
 
     public void setDisplayedCard(Card displayedCard) {
-        this.displayedCard = displayedCard;
+        this.displayedCard.clear();
+        this.displayedCard.add(displayedCard);
     }
-    public Card getDisplayedCard() {
+    public ArrayList<Card> getDisplayedCard() {
         return displayedCard;
     }
 
@@ -1184,7 +1189,7 @@ public class ClientController {
         for(LightPlayer player:flightBoard.getInGamePlayers()){
             player.setShipboard(lightShipBoardMap.get(player.getPlayerName()));
         }
-        displayedCard=card;
+        displayedCard.add(card);
         this.hourglassTurns=hourglassTurns;
         turnedTiles=newTurnedTiles;
         decksNotAvailable(notAvailableDecks);

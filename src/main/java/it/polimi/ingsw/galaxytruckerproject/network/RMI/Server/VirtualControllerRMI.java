@@ -61,7 +61,6 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         controller.chooseColor(color);
     }
 
-
     //COORDINATES MANAGMENT METHODS
     public void sendCoordinates( ArrayList<Coordinates> coordinates) throws RemoteException{
 

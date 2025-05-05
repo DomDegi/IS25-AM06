@@ -1,6 +1,5 @@
 package it.polimi.ingsw.galaxytruckerproject.client;
 
-import it.polimi.ingsw.galaxytruckerproject.controller.Controller;
 import it.polimi.ingsw.galaxytruckerproject.controller.MultiGameController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
@@ -9,7 +8,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
-import it.polimi.ingsw.galaxytruckerproject.network.RMI.Server.VirtualControllerRMI;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.view.TUI;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,9 +27,6 @@ import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class ClientControllerTest {
-    MultiGameController multiGameController = new MultiGameController();
-    Controller controller= new Controller(multiGameController);
-    VirtualController virtualController=new VirtualControllerRMI(controller);
     ClientControllerTest() throws RemoteException {
     }
 
@@ -180,7 +175,7 @@ class ClientControllerTest {
         assertTrue(clientController.input(input));
         verify(mockVirtualController,times(1)).lookCardsRequest(choseCaptor.capture());
         assertEquals(1,choseCaptor.getValue());
-        assertEquals(Slavers.class, clientController.getDisplayedCard().getClass());
+        assertEquals(Slavers.class, clientController.getDisplayedCard().getFirst().getClass());
         assertEquals(1, clientController.getIndexDeckInHandOrPlanet());
     }
 

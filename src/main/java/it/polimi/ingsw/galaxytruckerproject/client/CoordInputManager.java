@@ -31,9 +31,9 @@ public class CoordInputManager {
         this.coordinates.clear();
         switch (coordReqType) {
             case CHOOSE_DOUBLE_CANNON, CHOOSE_DOUBLE_ENGINE, CHOOSE_TO_BREAK -> needed=0;
-            case CHOOSE_BATTERY, REMOVE_GOODS -> needed= clientController.getDisplayedCard().getGoodsPenalty();
+            case CHOOSE_BATTERY, REMOVE_GOODS -> needed= clientController.getDisplayedCard().getFirst().getGoodsPenalty();
             case CHOOSE_TO_MAINTAIN -> needed=1;
-            case CHOOSE_CREW -> needed=clientController.getDisplayedCard().getCrewNumber();
+            case CHOOSE_CREW -> needed=clientController.getDisplayedCard().getFirst().getCrewNumber();
         }
         this.coordReqType = coordReqType;
     }
