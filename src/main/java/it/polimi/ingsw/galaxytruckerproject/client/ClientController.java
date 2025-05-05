@@ -17,6 +17,8 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.CrewType;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.RMI.Client.VirtualViewRMI;
 import it.polimi.ingsw.galaxytruckerproject.network.RMI.Server.VirtualControllerRMI;
+import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerHandler;
+import it.polimi.ingsw.galaxytruckerproject.network.Socket.VirtualControllerSocket;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
@@ -24,7 +26,9 @@ import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import it.polimi.ingsw.galaxytruckerproject.view.TUI;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.Socket;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -136,9 +140,9 @@ public class ClientController {
                     }
                     case "socket"-> {
                         try {
-                            virtualController= new VirtualControllerRMI(null);
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
+                            connectSocket();
+                        } catch (IOException e) {
+                            System.out.println("Error connecting to server via socket");
                         }
                     }
                     //Da sistemare
@@ -1379,6 +1383,29 @@ public class ClientController {
         ControllerFactory controllerFactory=(ControllerFactory) Naming.lookup("rmi://localhost/ControllerFactory");
         this.virtualController=controllerFactory.createController();
         virtualController.setView(viewRMI);
+    }
+
+    void connectSocket() throws IOException {
+        Socket server;
+        try{
+            server = new Socket("localhost",12345);
+        } catch(Exception e){
+            System.out.println("Server unreachable, check the port and the ip address");
+            return;
+        }
+        ServerHandler serverHandler = new ServerHandler(server);
+        virtualController = new VirtualControllerSocket(view,serverHandler);
+        Thread waitForSetup = new Thread(serverHandler, "wait for setup of " + server.getInetAddress().getHostAddress());
+        waitForSetup.start();
+        while(!serverHandler.isReady()){
+            try{
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                System.out.println("waiting for view and virtual controller setup in serverHandler");
+            }
+        }
+        serverHandler.setController(virtualController);
+        serverHandler.setView(view);
     }
 
     public void ping()  {

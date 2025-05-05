@@ -2,6 +2,8 @@ package it.polimi.ingsw.galaxytruckerproject.network.Socket;
 
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
+import it.polimi.ingsw.galaxytruckerproject.controller.Controller;
+import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.ControllerInterface;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
@@ -22,6 +24,19 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class VirtualViewSocket implements VirtualView {
+
+    private final ClientHandler clientHandler;
+
+    private ControllerInterface controller;
+
+    public VirtualViewSocket(ClientHandler clientHandler) {
+        this.clientHandler = clientHandler;
+    }
+
+    public void setController(ControllerInterface controller) {
+        this.controller = controller;
+    }
+
     @Override
     public void notifyNewTurnedTile(Tile tile) throws RemoteException {
 

@@ -29,6 +29,8 @@ public class ServerHandler implements Runnable {
 
     public boolean isOn = true;
 
+    public boolean isReady = false;
+
     public ServerHandler(Socket server) throws IOException {
         this.server = server;
     }
@@ -49,6 +51,7 @@ public class ServerHandler implements Runnable {
                 try {
                     this.input = new ObjectInputStream(server.getInputStream());
                     this.output = new ObjectOutputStream(server.getOutputStream());
+                    this.waitSetup();
                     Thread messageReceiver = new Thread(this::receiveMessages, "message receiver");
                     messageReceiver.start();
                 } catch (IOException e) {
@@ -112,5 +115,20 @@ public class ServerHandler implements Runnable {
         } catch (IOException e) {
             System.out.println("Could not close server");
         }
+    }
+
+    public void waitSetup() {
+        this.isReady = true;
+        while(this.view == null || this.virtualController == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                System.out.println("waiting for setup");
+            }
+        }
+    }
+
+    public boolean isReady(){
+        return this.isReady;
     }
 }

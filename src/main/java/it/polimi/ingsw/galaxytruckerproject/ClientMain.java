@@ -1,11 +1,11 @@
-package it.polimi.ingsw.galaxytruckerproject.network.RMI.Client;
+package it.polimi.ingsw.galaxytruckerproject;
 
 import it.polimi.ingsw.galaxytruckerproject.client.ClientController;
 import it.polimi.ingsw.galaxytruckerproject.network.Client;
 
 import java.util.Scanner;
 
-public class RMIClient implements Client {
+public class ClientMain implements Client {
 
     public static void main (String[] args) {
         Scanner scanner = new Scanner(System.in);

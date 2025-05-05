@@ -13,19 +13,13 @@ public class RMIServer implements Server {
 
     public static final String SERVER_NAME = "GalaxyTruckerServer";
 
+    public RMIServer() {
+    }
 
-    public static void main(String[] args) {
-        /*
-        ObjectInputFilter filter = ObjectInputFilter.Config.createFilter(
-                "java.rmi.server.*;java.rmi.registry.*;java.lang.*;" +
-                        "java.util.*;java.base/*;" +
-                "it.polimi.ingsw.galaxytruckerproject.*;java.base/*;!*"
-        );
-        ObjectInputFilter.Config.setSerialFilter(filter);*/
+    public void connect(MultiGameController multiGameController) {
         ObjectInputFilter.Config.setSerialFilter(info -> ObjectInputFilter.Status.ALLOWED);
 
         try {
-            MultiGameController multiGameController = new MultiGameController();
             ControllerFactory controllerFactory = new ControllerFactoryImpl();
             // Avvio il registry (opzionale se già avviato esternamente)
             LocateRegistry.createRegistry(1099); // porta standard RMI
