@@ -12,7 +12,7 @@ public class RefuseTileMessage extends ClientMessage {
         try {
             clientHandler.getController().refuseTile();
         } catch (Exception e) {
-            ;
+            e.printStackTrace();
         }
     }
 }

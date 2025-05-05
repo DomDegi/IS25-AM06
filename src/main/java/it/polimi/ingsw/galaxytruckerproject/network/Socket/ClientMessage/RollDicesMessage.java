@@ -13,7 +13,7 @@ public class RollDicesMessage extends ClientMessage {
         try {
             clientHandler.getController().rollTheDices();
         } catch (Exception e) {
-            ;
+            e.printStackTrace();
         }
     }
 }

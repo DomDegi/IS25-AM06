@@ -16,7 +16,7 @@ public class SetTileMessage extends ClientMessage {
         try {
             clientHandler.getController().setTile(tile);
         } catch (Exception e) {
-            ;
+            e.printStackTrace();
         }
     }
 }

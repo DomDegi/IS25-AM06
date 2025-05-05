@@ -12,7 +12,7 @@ public class LeaveMessage extends ClientMessage {
         try {
             clientHandler.getController().leave();
         } catch (Exception e) {
-            ;
+            e.printStackTrace();
         }
     }
 }

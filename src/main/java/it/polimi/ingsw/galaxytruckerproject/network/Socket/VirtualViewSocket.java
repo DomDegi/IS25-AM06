@@ -2,7 +2,6 @@ package it.polimi.ingsw.galaxytruckerproject.network.Socket;
 
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
-import it.polimi.ingsw.galaxytruckerproject.controller.Controller;
 import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.ControllerInterface;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
@@ -15,9 +14,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.AskColorMessage;
-import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.LoginResponseMessage;
-import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.SetClientStateMessage;
+import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.*;
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.ShowJoinableGamesMessage;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;

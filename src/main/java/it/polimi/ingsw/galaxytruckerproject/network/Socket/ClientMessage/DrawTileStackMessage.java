@@ -14,7 +14,7 @@ public class DrawTileStackMessage extends ClientMessage {
         try {
             clientHandler.getController().drawTileFromStack();
         } catch (Exception e) {
-            ;
+            e.printStackTrace();
         }
     }
 }

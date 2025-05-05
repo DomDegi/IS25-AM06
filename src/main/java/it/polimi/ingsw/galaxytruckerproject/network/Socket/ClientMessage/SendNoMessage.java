@@ -13,7 +13,7 @@ public class SendNoMessage extends ClientMessage {
         try {
             clientHandler.getController().makeAChoice(false);
         } catch (Exception e) {
-            ;
+            e.printStackTrace();
         }
     }
 }

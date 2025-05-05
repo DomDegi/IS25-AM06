@@ -14,7 +14,7 @@ public class LookGameCardMessage extends ClientMessage {
         try {
             clientHandler.getController().lookGameCards(index);
         } catch (Exception e) {
-            ;
+            e.printStackTrace();
         }
     }
 }

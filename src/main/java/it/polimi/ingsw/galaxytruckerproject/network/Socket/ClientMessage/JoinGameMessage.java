@@ -16,7 +16,7 @@ public class JoinGameMessage extends ClientMessage {
         try {
             clientHandler.getController().joinGame(gameName);
         } catch (Exception e) {
-            ;
+            e.printStackTrace();
         }
     }
 

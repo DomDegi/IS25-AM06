@@ -13,7 +13,7 @@ public class LeaveGameMessage extends ClientMessage {
         try {
             clientHandler.getController().leaveGame();
         } catch (Exception e) {
-            ;
+            e.printStackTrace();
         }
     }
 }

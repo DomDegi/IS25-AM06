@@ -15,7 +15,7 @@ public class DrawTileTurnedMessage extends ClientMessage {
         try {
             clientHandler.getController().drawTileFromTurned(index);
         } catch (Exception e) {
-            ;
+            e.printStackTrace();
         }
     }
 

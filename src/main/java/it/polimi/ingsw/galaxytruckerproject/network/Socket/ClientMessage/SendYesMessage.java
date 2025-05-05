@@ -15,7 +15,7 @@ public class SendYesMessage extends ClientMessage {
         try {
             clientHandler.getController().makeAChoice(true);
         } catch (Exception e) {
-            ;
+            e.printStackTrace();
         }
     }
 }

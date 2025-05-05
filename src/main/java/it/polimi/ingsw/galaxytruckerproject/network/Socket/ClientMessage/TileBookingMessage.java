@@ -13,7 +13,7 @@ public class TileBookingMessage extends ClientMessage {
         try {
             clientHandler.getController().bookTile();
         } catch (Exception e) {
-            ;
+            e.printStackTrace();
         }
     }
 }

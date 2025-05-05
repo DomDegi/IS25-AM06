@@ -15,7 +15,7 @@ public class TurnHourglassMessage extends ClientMessage{
         try {
             clientHandler.getController().turnHourglass();
         } catch (Exception e) {
-            ;
+            e.printStackTrace();
         }
     }
 }

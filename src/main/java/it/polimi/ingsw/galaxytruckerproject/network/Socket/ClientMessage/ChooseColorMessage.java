@@ -15,7 +15,7 @@ public class ChooseColorMessage extends ClientMessage {
         try {
             clientHandler.getController().chooseColor(color);
         } catch (Exception e) {
-            ;
+            e.printStackTrace();
         }
     }
 }
