@@ -16,13 +16,6 @@ import java.util.Queue;
 public class ClientHandler implements Runnable {
 
 
-
-
-
-
-
-
-
     //socket of the client
     private final Socket clientSocket;
 
@@ -113,10 +106,30 @@ public class ClientHandler implements Runnable {
 
     }
 
+    public void listenAndProcess(){
+        System.out.println("Listening for messages from " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
+
+        while (listening) {
+            try {
+                ClientMessage message = (ClientMessage) input.readObject();
+                message.processMessage(this); // o passa la VirtualView se serve
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                break;
+            } catch (Exception e) {
+                System.err.println("Error while processing message:");
+                e.printStackTrace();
+            }
+        }
+    }
+
+
 
     public void processMessage(ClientMessage message){
         message.processMessage(this);
     }
+
+
 
 
 
