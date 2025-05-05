@@ -1,5 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.network.Socket;
 
+import it.polimi.ingsw.galaxytruckerproject.client.ClientController;
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.ClientMessage.ClientMessage;
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.ServerMessage;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
@@ -9,8 +10,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.concurrent.*;
 
 public class ServerHandler implements Runnable {
@@ -22,6 +21,8 @@ public class ServerHandler implements Runnable {
     private ObjectOutputStream output;
 
     private DisplayableView view;
+
+    private ClientController clientController;
 
     private VirtualController virtualController;
 
@@ -39,8 +40,12 @@ public class ServerHandler implements Runnable {
         this.view = view;
     }
 
-    public void setController(VirtualController virtualController) {
+    public void setVirtualController(VirtualController virtualController) {
         this.virtualController = virtualController;
+    }
+
+    public void setClientController(ClientController clientController) {
+        this.clientController = clientController;
     }
 
     @Override
@@ -139,6 +144,10 @@ public class ServerHandler implements Runnable {
     }
     public DisplayableView getView() {
         return this.view;
+    }
+
+    public ClientController getClientController() {
+        return this.clientController;
     }
 
     public boolean isReady(){
