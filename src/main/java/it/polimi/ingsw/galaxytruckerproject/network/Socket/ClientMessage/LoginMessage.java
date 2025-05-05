@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.network.Socket.ClientMessage;
 
+import it.polimi.ingsw.galaxytruckerproject.network.Socket.ClientHandler;
+
 public class LoginMessage extends ClientMessage {
 
     private String nickname;
@@ -9,7 +11,9 @@ public class LoginMessage extends ClientMessage {
     }
 
     @Override
-    public void processMessage(ClientMessage clientHandler) {
-        clientHandler.getController().login(nickname);
+    public void processMessage(ClientHandler clientHandler) {
+        try {
+            clientHandler.getController().login(nickname);
+        } catch (Exception ignored) {}
     }
 }
