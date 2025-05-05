@@ -27,13 +27,17 @@ public class ServerHandler implements Runnable {
 
     private final ExecutorService messageProcesser = Executors.newSingleThreadExecutor();
 
-    private final Queue<ServerMessage> receivedMessages = new PriorityQueue<>();
-
     public boolean isOn = true;
 
-    public ServerHandler(Socket server, DisplayableView view, VirtualController virtualController) throws IOException {
+    public ServerHandler(Socket server) throws IOException {
         this.server = server;
+    }
+
+    public void setView(DisplayableView view) {
         this.view = view;
+    }
+
+    public void setController(VirtualController virtualController) {
         this.virtualController = virtualController;
     }
 
@@ -88,21 +92,17 @@ public class ServerHandler implements Runnable {
                 return;
             }
             synchronized (this){
-                receivedMessages.add(serverMessage);
-                messageProcesser.submit(() -> processMessage(receivedMessages));
+                messageProcesser.submit(() -> processMessage(serverMessage));
             }
         }
     }
 
-    public void processMessage(Queue<ServerMessage> queue){
-        while(!queue.isEmpty()){
-            ServerMessage serverMessage = queue.poll();
+    public void processMessage(ServerMessage serverMessage){
             try {
                 serverMessage.processMessage(this);
             } catch (Exception e) {
                 System.out.println("Could not process message from server");
             }
-        }
     }
 
     public void stopReceivingMessages(){

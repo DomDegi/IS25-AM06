@@ -5,16 +5,28 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.network.Socket.ClientMessage.LoginMessage;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
+import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public class VirtualControllerSocket implements VirtualController {
+public class VirtualControllerSocket implements VirtualController{
+
+    private DisplayableView view;
+
+    private ServerHandler serverHandler;
+
+    public VirtualControllerSocket(DisplayableView view, ServerHandler serverHandler) {
+        this.view = view;
+        this.serverHandler = serverHandler;
+    }
+
     @Override
     public void login(String playerName) throws RemoteException {
-
+        serverHandler.sendClientMessage(new LoginMessage(playerName));
     }
 
     @Override
