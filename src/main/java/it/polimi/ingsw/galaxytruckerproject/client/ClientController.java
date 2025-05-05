@@ -58,6 +58,8 @@ public class ClientController {
 
     public ClientController() {
         this.numPlayer=0;
+        this.gameInfo=new ArrayList<>();
+        this.view=new TUI();
         this.deck = new HashMap<>();
         this.me = new LightPlayer("",null);
         this.goodsList = new ArrayList<>();
@@ -116,11 +118,10 @@ public class ClientController {
 
             case CHOOSE_CONNECTION_TYPE->{
                 switch(words[0]) {
-                    case "rmi"->{
+                    case "rmi","r"->{
                         try {
                             connectRMI();
-                        }
-                        catch (MalformedURLException | NotBoundException | RemoteException e) {
+                        } catch (MalformedURLException | NotBoundException | RemoteException e) {
                             throw new RuntimeException(e);
                         }
                     }
@@ -131,7 +132,6 @@ public class ClientController {
                             throw new RuntimeException(e);
                         }
                     }
-                    //Da sistemare
                     default->{
                         try {
                             view.wrongLocalInput();
@@ -230,6 +230,14 @@ public class ClientController {
                             return false;
                         }
                         String gameName = words[1];
+                        if(gameInfo==null){
+                            try {
+                                view.wrongLocalInput();
+                            } catch (RemoteException e) {
+                                throw new RuntimeException(e);
+                            }
+                            return false;
+                        }
                         for(GameInfo games:gameInfo) {
                             if(Objects.equals(gameName, games.getGameName())){
                                 setState(ClientState.WAIT);
@@ -583,8 +591,11 @@ public class ClientController {
                     }
                     case "no" -> {
                         setState(ClientState.WAIT);
-
-
+                        try {
+                            virtualController.sendNo();
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                     default->{
                         try {

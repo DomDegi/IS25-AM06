@@ -31,18 +31,18 @@ public enum ClientState implements Serializable {
             case LOGIN -> {return "Choose your nickname [name] [done] [reset]";}
             case COLOR_CHOICE -> {return "Choose your color [red] [yellow] [green] [blue]";}
             case ACTION -> {return "You can accept or deny [yes] [no]";}
-            case COORD_REQUEST -> {return "Coordinates requested";}
+            case COORD_REQUEST -> {return "Coordinates requested [coordinates]";}
             case MANAGE_GOODS -> {return  "Going to manage goods of the planet";}
-            case PLANET_CHOICE -> {return "Choose one of the planets to land";}
-            case S_END_DRAW_TILE_CARD -> {return "Now you can draw a tile or a card";}
-            case S_MANAGE_CARDS -> {return "You're seeing the cards";}
-            case S_MANAGE_DRAWN_TILE -> {return "You can rotate, position, book or refuse this tile ";}
-            case S_FINISHED -> {return "You've finished the ship creation, wait to know if your ship is correct";}
+            case PLANET_CHOICE -> {return "Choose one of the planets to land [planetNumber]";}
+            case S_END_DRAW_TILE_CARD -> {return "Now you can draw a tile or a card [draw tile|draw tile new] [draw tile b1] [draw tile b2] [draw tile turnedTileNum] [draw card numDeck] [checkShipboard] [turn]";}
+            case S_MANAGE_CARDS -> {return "You're seeing the cards [done]";}
+            case S_MANAGE_DRAWN_TILE -> {return "You can rotate, position, book or refuse this tile [rotate] [position] [book] [refuse] [checkShipboard] [turn]";}
+            case S_FINISHED -> {return "You've finished the ship creation, wait to know if your ship is correct [flightBoardPosition] [checkShipboard] [turn]";}
             case WAIT -> {return "Waiting for server";}
-            case START_SHIP_CREATION -> {return "Turn the hourglass to start the ship creation";}
-            case DRAW_CARD -> {return "Draw a card";}
-            case MANAGE_CABINS -> {return "Select the crew type in yours equip cabins";}
-            case ROLL_DICE -> {return"Roll the dice";}
+            case START_SHIP_CREATION -> {return "Turn the hourglass to start the ship creation [start|turn]";}
+            case DRAW_CARD -> {return "Draw a card [draw]";}
+            case MANAGE_CABINS -> {return "Select the crew type in yours equip cabins [human] [purpleAlien] [brownAlien]";}
+            case ROLL_DICE -> {return"Roll the dice [roll]";}
         }
         return "Error in client state to string";
     }

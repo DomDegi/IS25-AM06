@@ -1,7 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.client;
 
-import it.polimi.ingsw.galaxytruckerproject.controller.MultiGameController;
+import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.*;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
@@ -27,14 +28,12 @@ import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class ClientControllerTest {
-    ClientControllerTest() throws RemoteException {
-    }
 
     @Mock
     VirtualController mockVirtualController;
 
     @InjectMocks
-    ClientController clientController;
+    ClientController clientController=new ClientController();
 
     @BeforeEach
     void setUp() {
@@ -101,7 +100,7 @@ class ClientControllerTest {
     @Test
     void LOBBY_create_test() throws RemoteException {
         LOGIN_test();
-        clientController.getView().setClientState(ClientState.LOBBY);
+        clientController.setState(ClientState.LOBBY);
         String input="creategame pluto 4 level2mode";
         assertTrue(clientController.input(input));
         verify(mockVirtualController,times(1)).createGame(gameNameArgumentCaptor.capture(),numberOfPlayersArgumentCaptor.capture(),gameModeArgumentCaptor.capture());
@@ -116,12 +115,9 @@ class ClientControllerTest {
     @Test
     void LOBBY_join_test() throws RemoteException {
         LOGIN_test();
-        clientController.getView().setClientState(ClientState.LOBBY);
+        clientController.setState(ClientState.LOBBY);
         String input="joingame pluto";
-        assertTrue(clientController.input(input));
-        verify(mockVirtualController,times(1)).joinGame(gameNameArgumentCaptor.capture());
-        assertEquals("pluto", gameNameArgumentCaptor.getValue());
-        assertEquals("pippo", clientController.getName());
+        assertFalse(clientController.input(input));
     }
 
     @Captor
@@ -130,7 +126,7 @@ class ClientControllerTest {
     @Test
     void COLOR_CHOICE_test() throws RemoteException {
         LOBBY_create_test();
-        clientController.getView().setClientState(ClientState.COLOR_CHOICE);
+        clientController.setState(ClientState.COLOR_CHOICE);
         String input="red";
         assertTrue(clientController.input(input));
         verify(mockVirtualController,times(1)).chooseColor(playersColorArgumentCaptor.capture());
@@ -141,7 +137,7 @@ class ClientControllerTest {
     void START_SHIP_CREATION_test() throws RemoteException {
         COLOR_CHOICE_test();
         assertEquals(GamePhases.LOGIN, clientController.getPhase());
-        clientController.getView().setClientState(ClientState.START_SHIP_CREATION);
+        clientController.setState(ClientState.START_SHIP_CREATION);
         assertEquals(GamePhases.SHIPBOARD, clientController.getPhase());
         String input="STaRt  ";
         assertTrue(clientController.input(input));
@@ -151,10 +147,10 @@ class ClientControllerTest {
     @Test
     void S_END_DRAW_TILE_CARD_test_done() throws RemoteException {
         START_SHIP_CREATION_test();
-        clientController.getView().setClientState(ClientState.S_END_DRAW_TILE_CARD);
+        clientController.setState(ClientState.S_END_DRAW_TILE_CARD);
         String input="done";
         assertTrue(clientController.input(input));
-        assertEquals(ClientState.S_FINISHED, clientController.getState());
+        assertEquals(ClientState.WAIT, clientController.getState());
     }
 
     @Captor
@@ -163,7 +159,7 @@ class ClientControllerTest {
     @Test
     void S_END_DRAW_TILE_CARD_test_draw_card() throws RemoteException {
         START_SHIP_CREATION_test();
-        clientController.getView().setClientState(ClientState.S_END_DRAW_TILE_CARD);
+        clientController.setState(ClientState.S_END_DRAW_TILE_CARD);
         ArrayList<Integer> notAvailableDeck = new ArrayList<>();
         notAvailableDeck.add(2);
         clientController.decksNotAvailable(notAvailableDeck);
@@ -182,17 +178,17 @@ class ClientControllerTest {
     @Test
     void S_END_DRAW_TILE_CARD_test_draw_tile_new() throws RemoteException {
         START_SHIP_CREATION_test();
-        clientController.getView().setClientState(ClientState.S_END_DRAW_TILE_CARD);
+        clientController.setState(ClientState.S_END_DRAW_TILE_CARD);
         String input="draw tile new";
         assertTrue(clientController.input(input));
         clientController.setTileInHand(new CargoRed(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL)));
-        clientController.getView().setClientState(ClientState.S_MANAGE_DRAWN_TILE);
+        clientController.setState(ClientState.S_MANAGE_DRAWN_TILE);
     }
 
     @Test
     void S_END_DRAW_TILE_CARD_test_draw_tile_b1_butEmpty() throws RemoteException {
         START_SHIP_CREATION_test();
-        clientController.getView().setClientState(ClientState.S_END_DRAW_TILE_CARD);
+        clientController.setState(ClientState.S_END_DRAW_TILE_CARD);
         String input="draw tile b1";
         assertFalse(clientController.input(input));
     }
@@ -213,7 +209,7 @@ class ClientControllerTest {
     @Test
     void S_END_DRAW_TILE_CARD_test_draw_tile_b1() throws RemoteException {
         S_MANAGE_DRAWN_TILE_test();
-        clientController.getView().setClientState(ClientState.S_END_DRAW_TILE_CARD);
+        clientController.setState(ClientState.S_END_DRAW_TILE_CARD);
         clientController.setTileInHand(new CargoBlue(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL)));
         String input="draw tile b1";
         assertTrue(clientController.input(input));
@@ -223,7 +219,7 @@ class ClientControllerTest {
     @Test
     void S_END_DRAW_TILE_CARD_test_draw_tile_b2_butB2Empty_soB1() throws RemoteException {
         S_MANAGE_DRAWN_TILE_test();
-        clientController.getView().setClientState(ClientState.S_END_DRAW_TILE_CARD);
+        clientController.setState(ClientState.S_END_DRAW_TILE_CARD);
         clientController.setTileInHand(new CargoBlue(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL)));
         String input="draw tile b2";
         assertTrue(clientController.input(input));
@@ -244,7 +240,7 @@ class ClientControllerTest {
         String input="draw tile new";
         assertTrue(clientController.input(input));
         clientController.setTileInHand(new CargoBlue(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL)));
-        clientController.getView().setClientState(ClientState.S_MANAGE_DRAWN_TILE);
+        clientController.setState(ClientState.S_MANAGE_DRAWN_TILE);
         input="book";
         assertTrue(clientController.input(input));
     }
@@ -254,11 +250,11 @@ class ClientControllerTest {
         S_END_DRAW_TILE_CARD_test_draw_new_book2();
         String input="draw tile new";
         assertFalse(clientController.input(input));
-        clientController.getView().setClientState(ClientState.S_END_DRAW_TILE_CARD);
+        clientController.setState(ClientState.S_END_DRAW_TILE_CARD);
         input="draw tile new";
         assertTrue(clientController.input(input));
         clientController.setTileInHand(new CargoBlue(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL)));
-        clientController.getView().setClientState(ClientState.S_MANAGE_DRAWN_TILE);
+        clientController.setState(ClientState.S_MANAGE_DRAWN_TILE);
         input="book";
         assertFalse(clientController.input(input));
     }
@@ -266,7 +262,7 @@ class ClientControllerTest {
     @Test
     void S_END_DRAW_TILE_CARD_test_draw_tile_b2() throws RemoteException {
         S_END_DRAW_TILE_CARD_test_draw_new_book3_butFull();
-        clientController.getView().setClientState(ClientState.S_END_DRAW_TILE_CARD);
+        clientController.setState(ClientState.S_END_DRAW_TILE_CARD);
         clientController.setTileInHand(new CargoBlue(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL)));
         String input="draw tile b2";
         assertTrue(clientController.input(input));
@@ -276,11 +272,11 @@ class ClientControllerTest {
     @Test
     void S_END_DRAW_TILE_CARD_test_draw_tile_fromRefused() throws RemoteException {
         START_SHIP_CREATION_test();
-        clientController.getView().setClientState(ClientState.S_END_DRAW_TILE_CARD);
+        clientController.setState(ClientState.S_END_DRAW_TILE_CARD);
         String input="draw tile 4";
         assertFalse(clientController.input(input));
         clientController.getTurnedTiles().put(4,new CargoRed(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL)));
-        clientController.getView().setClientState(ClientState.S_END_DRAW_TILE_CARD);
+        clientController.setState(ClientState.S_END_DRAW_TILE_CARD);
         assertEquals(1, clientController.getTurnedTiles().size());
         input="draw tile 4";
         assertTrue(clientController.input(input));
@@ -291,11 +287,13 @@ class ClientControllerTest {
     @Test
     void S_FINISHED_test() throws RemoteException {
         START_SHIP_CREATION_test();
-        clientController.getView().setClientState(ClientState.S_END_DRAW_TILE_CARD);
+        clientController.setState(ClientState.S_END_DRAW_TILE_CARD);
         assertEquals(1, clientController.getHourglassTurns());
         String input="done";
         assertTrue(clientController.input(input));
-        assertEquals(ClientState.S_FINISHED, clientController.getState());
+        assertEquals(GamePhases.SHIPBOARD, clientController.getPhase());
+        assertEquals(ClientState.WAIT, clientController.getState());
+        clientController.setState(ClientState.S_FINISHED);
         input="turn";
         assertTrue(clientController.input(input));
         assertEquals(2, clientController.getHourglassTurns());
@@ -303,7 +301,7 @@ class ClientControllerTest {
         assertTrue(clientController.input(input));
         assertEquals(3, clientController.getHourglassTurns());
         /*
-        clientController.getView().setClientState(ClientState.S_FINISHED);
+        clientController.setState(ClientState.S_FINISHED);
         input="3";
         assertTrue(clientController.input(input));
         verify(mockVirtualController,times(1)).notifySetPosition(notNull(),choseCaptor.capture());
@@ -315,10 +313,10 @@ class ClientControllerTest {
     @Test
     void MANAGE_CABINS_test_butNull() throws RemoteException {
         S_FINISHED_test();
-        clientController.getView().setClientState(ClientState.MANAGE_CABINS);
+        clientController.setState(ClientState.MANAGE_CABINS);
         String input="humans";
         assertFalse(clientController.input(input));
-        clientController.getView().setClientState(ClientState.MANAGE_CABINS);
+        clientController.setState(ClientState.MANAGE_CABINS);
     }
 
     @Captor
@@ -377,7 +375,7 @@ class ClientControllerTest {
         Tile tile21=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
         shipBoard1.positionTile(Optional.of(tile21), new Coordinates(4,2));
         shipBoard1.setGetStat();
-        clientController.getView().setClientState(ClientState.MANAGE_CABINS);
+        clientController.setState(ClientState.MANAGE_CABINS);
         String input="humans";
         assertTrue(clientController.input(input));
         input="humans";
@@ -465,7 +463,7 @@ class ClientControllerTest {
         goods.add(new Goods(GoodsColor.GREEN));
         goods.add(new Goods(GoodsColor.YELLOW));
         clientController.getGoodsList().addAll(goods);
-        clientController.getView().setClientState(ClientState.MANAGE_GOODS);
+        clientController.setState(ClientState.MANAGE_GOODS);
         String input="1 1 3";
         assertTrue(clientController.input(input));
         input="done";
@@ -534,7 +532,7 @@ class ClientControllerTest {
         goods.add(new Goods(GoodsColor.GREEN));
         goods.add(new Goods(GoodsColor.YELLOW));
         clientController.getGoodsList().addAll(goods);
-        clientController.getView().setClientState(ClientState.MANAGE_GOODS);
+        clientController.setState(ClientState.MANAGE_GOODS);
         String input="1 1 3";
         assertTrue(clientController.input(input));
         input= "pick 1 3";
