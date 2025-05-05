@@ -497,13 +497,14 @@ public class GameController implements Observer, Serializable {
                 if (integer == cardsToLookAt) {
                     try{
                     playersView.showWrongInputMessage();
-                    } catch(Exception ignored) {}
+                    } catch(Exception ignored) {
+                    }
                     return;
                 }
             }
             lockedSmallDecks.put(playerName, cardsToLookAt);
             try {
-                playersView.showInGameCards(game.getInGameCards(cardsToLookAt));
+                playersView.notifyYouCanDrawThisCardDeck();
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }

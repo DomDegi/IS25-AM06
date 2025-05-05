@@ -67,7 +67,6 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
 
     @Override
     public void setClientState(ClientState newState) throws RemoteException {
-        view.setClientState(newState);
         clientController.setState(newState);
     }
 
