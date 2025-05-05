@@ -5,6 +5,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.network.Socket.ClientMessage.ChooseColorMessage;
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.ClientMessage.LoginMessage;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
@@ -50,7 +51,7 @@ public class VirtualControllerSocket implements VirtualController{
 
     @Override
     public void chooseColor(PlayersColor color) throws RemoteException {
-
+        serverHandler.sendClientMessage(new ChooseColorMessage(color));
     }
 
     @Override

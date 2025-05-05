@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.network.Socket;
 import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.ControllerInterface;
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.ClientMessage.ClientMessage;
 
+import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.ServerMessage;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
 import java.io.IOException;
@@ -77,7 +78,7 @@ public class ClientHandler implements Runnable {
         threadInListening.start();
     }
 
-    public void sendServerMessageToClient(ClientMessage message){
+    public void sendServerMessageToClient(ServerMessage message){
         try {
             output.reset();
             output.writeObject(message);
