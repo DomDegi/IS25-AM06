@@ -21,10 +21,10 @@ public class ServerMain {
         }
         MultiGameController multiGameController = new MultiGameController();
 
-        RMIServer rmi = new RMIServer();
-        rmi.connect(multiGameController);
-
         SocketServer socketServer = new SocketServer();
         socketServer.connect(multiGameController);
+
+        RMIServer rmi = new RMIServer();
+        rmi.connect(multiGameController);
     }
 }

@@ -49,8 +49,9 @@ public class ServerHandler implements Runnable {
         try {
             CompletableFuture<?> connectionFuture = CompletableFuture.runAsync(() -> {
                 try {
-                    this.input = new ObjectInputStream(server.getInputStream());
                     this.output = new ObjectOutputStream(server.getOutputStream());
+                    this.output.flush();
+                    this.input = new ObjectInputStream(server.getInputStream());
                     this.waitSetup();
                     Thread messageReceiver = new Thread(this::receiveMessages, "message receiver");
                     messageReceiver.start();
@@ -92,6 +93,7 @@ public class ServerHandler implements Runnable {
                 return;
             } catch (IOException e) {
                 System.out.println("Error handling inputStream from server");
+                e.printStackTrace();
                 return;
             }
             synchronized (this){

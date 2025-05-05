@@ -24,8 +24,8 @@ public class RMIServer implements Server {
             // Avvio il registry (opzionale se già avviato esternamente)
             LocateRegistry.createRegistry(1099); // porta standard RMI
             // Registro l'oggetto con un nome
-            Naming.rebind("rmi://localHost/ControllerFactory", controllerFactory);
-            System.out.println("Server pronto!");
+            Naming.rebind("rmi://localhost/ControllerFactory", controllerFactory);
+            System.out.println("RMIServer pronto!");
             multiGameController.playPingPong();
         } catch (Exception e) {
             e.printStackTrace();
