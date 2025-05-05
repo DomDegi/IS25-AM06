@@ -19,6 +19,7 @@ import it.polimi.ingsw.galaxytruckerproject.network.RMI.Client.VirtualViewRMI;
 import it.polimi.ingsw.galaxytruckerproject.network.RMI.Server.VirtualControllerRMI;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
+import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import it.polimi.ingsw.galaxytruckerproject.view.TUI;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
@@ -40,7 +41,7 @@ public class ClientController {
     private ArrayList<GameInfo> gameInfo;
 
     private GameMode gameMode;
-    private VirtualView view;
+    private DisplayableView view;
     private VirtualController virtualController;
     private final CoordInputManager coordInputManager;
     private GoodsManager goodsManager;
@@ -57,11 +58,7 @@ public class ClientController {
     private int hourglassTurns;
 
     public ClientController() {
-        try {
-            this.view=new VirtualViewRMI(this,new TUI());
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+
         this.deck = new HashMap<>();
         this.me = new LightPlayer("",null);
         this.goodsList = new ArrayList<>();
@@ -104,18 +101,14 @@ public class ClientController {
             case CHOOSE_UI->{
                 switch(words[0]) {
                     case "gui"-> {
-                        try {
-                            this.view=new VirtualViewRMI(this,new GUI());
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+
+                            this.view= new GUI();
+
                     }
                     case "tui"-> {
-                        try {
-                            this.view=new VirtualViewRMI(this,new TUI());
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+
+                            this.view=new TUI();
+
                     }
                     default->{
                         try {
@@ -1440,9 +1433,10 @@ public class ClientController {
     public void setConnected(boolean connected) {this.connected = connected;}
 
     void connectRMI() throws MalformedURLException, NotBoundException, RemoteException {
+        VirtualViewRMI viewRMI=new VirtualViewRMI(this,view);
         ControllerFactory controllerFactory=(ControllerFactory) Naming.lookup("rmi://localhost/ControllerFactory");
         virtualController=controllerFactory.createController();
-        virtualController.setView(this.view);
+        virtualController.setView(viewRMI);
     }
 
     public void ping()  {
