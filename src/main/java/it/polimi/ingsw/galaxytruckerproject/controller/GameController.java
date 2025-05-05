@@ -636,7 +636,7 @@ public class GameController implements Observer, Serializable {
         }
         updatePlayerView(ClientState.S_FINISHED, playerName);
         if(game.getMode() == TRIAL) {
-            for (Player player : game.getFlightBoard().getInGamePlayers()) {
+            for (Player player : game.getFlightBoard().getAllPlayers()) {
                 if (player.getPlayerName().equals(playerName)) {
                     game.getFlightBoard().addToTrialFlightBoard(player);
                     //It's not important for trial flight, so 0 is a placeholder value
