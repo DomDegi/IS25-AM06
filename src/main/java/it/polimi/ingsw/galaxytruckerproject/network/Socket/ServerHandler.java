@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.network.Socket;
 
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.ClientMessage.ClientMessage;
+import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.ServerMessage;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
 
@@ -8,6 +9,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.concurrent.*;
 
 public class ServerHandler implements Runnable {
@@ -24,9 +27,17 @@ public class ServerHandler implements Runnable {
 
     private final ExecutorService messageProcesser = Executors.newSingleThreadExecutor();
 
-    public ServerHandler(Socket server, DisplayableView view, VirtualController virtualController) throws IOException {
+    public boolean isOn = true;
+
+    public ServerHandler(Socket server) throws IOException {
         this.server = server;
+    }
+
+    public void setView(DisplayableView view) {
         this.view = view;
+    }
+
+    public void setController(VirtualController virtualController) {
         this.virtualController = virtualController;
     }
 
@@ -58,7 +69,48 @@ public class ServerHandler implements Runnable {
         }
     }
 
-    public void sendMessage(ClientMessage message){
+    public void sendClientMessage(ClientMessage clientMessage){
+        try{
+            output.reset();
+            output.writeObject(clientMessage);
+        } catch (IOException e){
+            System.out.println("Could not send message to server");
+        }
+    }
 
+    public void receiveMessages(){
+        System.out.println("Receiving messages from server");
+        while(isOn){
+            ServerMessage serverMessage;
+            try{
+                serverMessage = (ServerMessage) input.readObject();
+            } catch (ClassNotFoundException e) {
+                System.out.println("Could not read object from server, it wasn't a ServerMessage");
+                return;
+            } catch (IOException e) {
+                System.out.println("Error handling inputStream from server");
+                return;
+            }
+            synchronized (this){
+                messageProcesser.submit(() -> processMessage(serverMessage));
+            }
+        }
+    }
+
+    public void processMessage(ServerMessage serverMessage){
+            try {
+                serverMessage.processMessage(this);
+            } catch (Exception e) {
+                System.out.println("Could not process message from server");
+            }
+    }
+
+    public void stopReceivingMessages(){
+        this.isOn = false;
+        try{
+            server.close();
+        } catch (IOException e) {
+            System.out.println("Could not close server");
+        }
     }
 }
