@@ -29,6 +29,7 @@ public class VirtualViewSocket implements VirtualView {
 
     private ControllerInterface controller;
 
+
     public VirtualViewSocket(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
     }

@@ -127,6 +127,9 @@ public class ServerHandler implements Runnable {
             }
         }
     }
+    public DisplayableView getView() {
+        return this.view;
+    }
 
     public boolean isReady(){
         return this.isReady;
