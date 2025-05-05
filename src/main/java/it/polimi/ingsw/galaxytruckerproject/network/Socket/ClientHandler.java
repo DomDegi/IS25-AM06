@@ -9,8 +9,19 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class ClientHandler implements Runnable {
+
+
+
+
+
+
+
+
 
     //socket of the client
     private final Socket clientSocket;
@@ -32,6 +43,9 @@ public class ClientHandler implements Runnable {
 
     //indicates if the ClientHandler is listening
     private volatile boolean listening = true;
+
+    //per quella che è la nostra logica di gioco non dovrebbe servire
+    private final Queue<ClientMessage> receivedMessages = new PriorityQueue<>(Comparator.comparingInt(ClientMessage::getIndex));
 
 
     //Initializes a new handler using a specific socket (connected to the client)
@@ -85,27 +99,24 @@ public class ClientHandler implements Runnable {
                 throw new RuntimeException(e);
             }
             synchronized (this) {
+                //Il messaggio arriva troppo presto e quindi deve essere messo in coda
                 if ( message.getIndex() > expectedIndex) {
-
+                    receivedMessages.add(message);
+                }else if(message.getIndex() < expectedIndex){
+                    //wrong input
                 }
             }
-        }
 
 
+
         }
+
+    }
 
 
     public void processMessage(ClientMessage message){
         message.processMessage(this);
     }
-
-
-
-
-
-
-
-
 
 
 
