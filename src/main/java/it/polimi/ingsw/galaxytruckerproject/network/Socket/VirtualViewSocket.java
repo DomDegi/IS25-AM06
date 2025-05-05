@@ -188,12 +188,12 @@ public class VirtualViewSocket implements VirtualView {
 
     @Override
     public void asksToRollTheDices() throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new AskToRollTheDicesMessage());
     }
 
     @Override
     public void showDiceRoll(int diceRoll) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new ShowDiceRollMessage(diceRoll));
     }
 
     @Override
@@ -298,7 +298,7 @@ public class VirtualViewSocket implements VirtualView {
 
     @Override
     public void ping() throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new ServerPingMessage());
     }
 
     @Override

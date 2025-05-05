@@ -112,12 +112,12 @@ public class VirtualControllerSocket implements VirtualController{
 
     @Override
     public void sendDoubleCannonUsed(float Strength, ArrayList<Coordinates> coordinates) throws RemoteException {
-
+        serverHandler.sendClientMessage(new CannonMessage(Strength, coordinates));
     }
 
     @Override
     public void sendNumDoubleEngineUsed(int NumEngine, ArrayList<Coordinates> coordinates) throws RemoteException {
-
+        serverHandler.sendClientMessage(new EngineMessage(NumEngine, coordinates));
     }
 
     @Override
@@ -151,27 +151,27 @@ public class VirtualControllerSocket implements VirtualController{
 
     @Override
     public void notifyEarlyLanding() throws RemoteException {
-
+        serverHandler.sendClientMessage(new EarlyLandingMessage());
     }
 
     @Override
     public void notifyCompleted() throws RemoteException {
-
+        serverHandler.sendClientMessage(new CompletedShipMessage());
     }
 
     @Override
     public void notifySetPosition(int position) throws RemoteException {
-
+        serverHandler.sendClientMessage(new SetFlightBoardPositionMessage(position));
     }
 
     @Override
     public void notifyNewGoodsArrangement(int clientGoodsValue, ArrayList<CargoHold> updatedCargos) throws RemoteException {
-
+        serverHandler.sendClientMessage(new GoodsArrangementMessage(clientGoodsValue, updatedCargos));
     }
 
     @Override
     public void notifyNewCrewArrangement(ArrayList<Tile> updatedCabin) throws RemoteException {
-
+        serverHandler.sendClientMessage(new CrewArrangementMessage(updatedCabin));
     }
 
     @Override
@@ -180,6 +180,6 @@ public class VirtualControllerSocket implements VirtualController{
 
     @Override
     public void ping() throws RemoteException {
-
+        serverHandler.sendClientMessage(new ClientPingMessage());
     }
 }
