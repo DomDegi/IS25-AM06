@@ -230,6 +230,7 @@ public class Game implements GameInterface{
     public void endShipCreation() {
         Collections.shuffle(inGameCards);
         setGameState(VERIFY_SHIP_CORRECTNESS);
+
     }
 
     //VERIFY_SHIP_CORRECTNESS METHODS

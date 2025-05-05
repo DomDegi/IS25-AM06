@@ -60,8 +60,6 @@ public class MultiGameController implements Serializable {
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
-
-
                 }
             }
         }
@@ -95,8 +93,8 @@ public class MultiGameController implements Serializable {
                 controller.setGameController(gameController);
                 gamesMap.put(gameName, gameController); //adds game to open games
                 viewsMap.remove(creator); //remove player from map of the views of player joining a game
-                gameController.addToPlayersViewMap(creator, creatorView, false);
                 notifyNewGame(creator, creatorView);
+                gameController.addToPlayersViewMap(creator, creatorView, false);
             }
         }
     }

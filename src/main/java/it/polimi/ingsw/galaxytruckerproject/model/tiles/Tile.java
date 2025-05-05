@@ -42,7 +42,7 @@ public abstract class Tile implements Serializable,Cloneable {
     }
     @Override
     public String toString() {
-        return "Tile north:"+north.toString() + " east:" + east.toString() + " south:" + south.toString() + " west:" + west.toString()+"\n"
+        return "Tile Id:"+ key + " north:"+north.toString() + " east:" + east.toString() + " south:" + south.toString() + " west:" + west.toString()+"\n"
                 +"coordinates: "+coordinates.getX()+coordinates.getY();
     }
 

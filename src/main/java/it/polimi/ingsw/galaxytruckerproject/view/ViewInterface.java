@@ -2,7 +2,6 @@ package it.polimi.ingsw.galaxytruckerproject.view;
 
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
-import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
@@ -138,7 +137,7 @@ public interface ViewInterface extends Remote, Serializable {
     void notifyDrawnCard(Card card) throws RemoteException; //tell the players which card has been drawn
     void notifyPlayerLandedOnPlanet(String playerName, int planet)  throws RemoteException;
     void wrongLocalInput() throws RemoteException;
-    void showCard(Card card) throws RemoteException;
+    void showCard(ArrayList<Card> cards) throws RemoteException;
     void printFlightboard(LightFlightboard lightFlightboard) throws RemoteException;
     void printShipboard(LightShipBoard lightShipBoard) throws RemoteException;
     void printProjectile(Projectile projectile) throws RemoteException;
@@ -147,7 +146,7 @@ public interface ViewInterface extends Remote, Serializable {
     void setGameMode(GameMode gameMode) throws RemoteException;
     void ping() throws RemoteException;
     void goodsPrinter (ArrayList<Goods> goodsArray) throws RemoteException;
-    void notifyTurnedHourglass() throws RemoteException;
+    void notifyTurnedHourglass( int i) throws RemoteException;
     void notifyEndOfTime() throws RemoteException;
 
     //METHOD NECESSARY ONLY FOR TESTING

@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class LightFlightboard implements Serializable {
-    private ArrayList<LightPlayer> inGamePlayers;
+    private final ArrayList<LightPlayer> inGamePlayers;
 
     public LightFlightboard(FlightBoard flightBoard) {
         this.inGamePlayers = new ArrayList<>();
@@ -29,5 +29,11 @@ public class LightFlightboard implements Serializable {
             }
         }
     return null;
+    }
+
+    public void addInGamePlayer(LightPlayer player) {
+        if(inGamePlayers.size() <=4){
+            inGamePlayers.add(player);
+        }
     }
 }
