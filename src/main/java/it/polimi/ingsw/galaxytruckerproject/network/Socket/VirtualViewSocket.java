@@ -17,6 +17,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.AskColorMessage;
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.LoginResponseMessage;
+import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.showJoinableGamesMessage;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
 
@@ -124,7 +125,7 @@ public class VirtualViewSocket implements VirtualView {
 
     @Override
     public void showJoinableGamesList(ArrayList<GameInfo> joinableGames) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new showJoinableGamesMessage(joinableGames));
     }
 
     @Override
