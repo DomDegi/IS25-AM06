@@ -15,6 +15,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.LoginResponseMessage;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
 
@@ -110,7 +111,8 @@ public class VirtualViewSocket implements VirtualView {
 
     @Override
     public void showLoginResponse(boolean success) throws RemoteException {
-
+        LoginResponseMessage message = new LoginResponseMessage(success);
+        clientHandler.sendServerMessageToClient(message);
     }
 
     @Override
