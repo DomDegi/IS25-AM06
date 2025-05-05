@@ -245,8 +245,8 @@ public class TUI implements DisplayableView {
     }
 
     @Override
-    public void notifyTurnedHourglass() throws RemoteException {
-        System.out.println("hourglass has been turned");
+    public void notifyTurnedHourglass(int i) throws RemoteException {
+        System.out.println("hourglass has been turned for the "+i+" time");
     }
 
     @Override

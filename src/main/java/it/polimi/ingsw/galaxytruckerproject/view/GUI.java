@@ -264,7 +264,7 @@ public class GUI implements DisplayableView {
     }
 
     @Override
-    public void notifyTurnedHourglass() throws RemoteException {
+    public void notifyTurnedHourglass(int i) throws RemoteException {
 
     }
 

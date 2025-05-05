@@ -146,7 +146,7 @@ public interface ViewInterface extends Remote, Serializable {
     void setGameMode(GameMode gameMode) throws RemoteException;
     void ping() throws RemoteException;
     void goodsPrinter (ArrayList<Goods> goodsArray) throws RemoteException;
-    void notifyTurnedHourglass() throws RemoteException;
+    void notifyTurnedHourglass( int i) throws RemoteException;
     void notifyEndOfTime() throws RemoteException;
 
     //METHOD NECESSARY ONLY FOR TESTING

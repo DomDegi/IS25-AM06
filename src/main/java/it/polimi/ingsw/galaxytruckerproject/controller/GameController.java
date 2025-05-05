@@ -727,24 +727,29 @@ public class GameController implements Observer, Serializable {
             return;
         }
         switch (hourglassTurns) {
-            case 0:
+            case 0->{
                 updateEveryView(ClientState.S_END_DRAW_TILE_CARD);
                 startTimer();
-                break;
-            case 1:
+                updateHourglass();
+            }
+            case 1->{
                 startTimer();
-                break;
-            case 2:
+                updateHourglass();
+            }
+
+            case 2-> {
                 if (playerStateIs(playerName, ClientState.S_FINISHED)) {
                     startTimer();
+                    updateHourglass();
+
                 }
                 else {
                     try{
-                    playersView.showWrongInputMessage();
+                        playersView.showWrongInputMessage();
                     } catch(Exception ignored) {}
                 }
-                break;
-            default:
+            }
+            default->
                 throw new IllegalStateException("Unexpected value: " + hourglassTurns + "\n");
         }
     }
@@ -1061,5 +1066,15 @@ public class GameController implements Observer, Serializable {
 
     public ConcurrentHashMap<String, Integer> getLockedSmallDecks() {
         return lockedSmallDecks;
+    }
+
+    public void updateHourglass(){
+        for(VirtualView view: playersViewMap.values()) {
+            try {
+                view.notifyTurnedHourglass(hourglassTurns);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

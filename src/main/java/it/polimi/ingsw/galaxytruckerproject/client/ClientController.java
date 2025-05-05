@@ -1312,8 +1312,8 @@ public class ClientController {
             throw new RuntimeException(e);
         }
     }
-    public void turnHourglass() {
-        hourglassTurns++;
+    public void turnHourglass(int i) {
+        hourglassTurns= i;
     }
 }
 

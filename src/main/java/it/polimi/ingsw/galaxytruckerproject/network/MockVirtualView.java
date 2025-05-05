@@ -322,7 +322,7 @@ public class MockVirtualView implements VirtualView {
     }
 
     @Override
-    public void notifyTurnedHourglass() throws RemoteException {
+    public void notifyTurnedHourglass(int i) throws RemoteException {
 
     }
 

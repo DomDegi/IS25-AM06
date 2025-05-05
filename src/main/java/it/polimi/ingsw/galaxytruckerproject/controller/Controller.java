@@ -177,12 +177,12 @@ public class Controller implements ControllerInterface, Serializable {
 
     @Override
     public void makeAChoice(boolean choice) {
-        gameController.playerMakesAChoice(nickname, choice);
+        gameController.playerMakesAChoice(nickname,choice);
     }
 
     @Override
     public void choosePlanet(int planet) {
-        gameController.playerChoosesPlanet(nickname, planet);
+        gameController.playerChoosesPlanet(nickname,planet);
     }
 
     @Override
