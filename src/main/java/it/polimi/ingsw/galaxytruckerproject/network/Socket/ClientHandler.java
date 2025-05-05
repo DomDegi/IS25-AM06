@@ -89,7 +89,7 @@ public class ClientHandler implements Runnable {
 
     };
 
-    public void listenForMessages() {
+    /*public void listenForMessages() {
         System.out.println("Listening for messages received by " + clientSocket.getInetAddress());
         int expectedIndex = 0;
         while(listening) {
@@ -115,7 +115,7 @@ public class ClientHandler implements Runnable {
 
         }
 
-    }
+    }*/
 
     public void listenAndProcess(){
         System.out.println("Listening for messages from " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
@@ -134,11 +134,6 @@ public class ClientHandler implements Runnable {
         }
     }
 
-
-
-    public void processMessage(ClientMessage message){
-        message.processMessage(this);
-    }
 
 
 
@@ -161,7 +156,7 @@ public class ClientHandler implements Runnable {
 
 
     public void setVirtualView(VirtualView view){
-        this.virtualView = virtualView;
+        this.virtualView = view;
     }
 
     public VirtualView getVirtualView(){

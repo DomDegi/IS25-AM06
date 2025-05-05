@@ -47,7 +47,9 @@ public class MultiGameController implements Serializable {
                 wasSuccessful = true;
                 try{
                 view.showLoginResponse(true);
-                } catch(Exception ignored) {}
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
                 if (isAlreadyInAGame(nickname)) {
                     GameController previouslyJoinedGame = gameFromNickname(nickname);
                     controller.setGameController(previouslyJoinedGame);
