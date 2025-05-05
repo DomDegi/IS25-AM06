@@ -2,7 +2,6 @@ package it.polimi.ingsw.galaxytruckerproject.network.Socket;
 
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
-import it.polimi.ingsw.galaxytruckerproject.controller.Controller;
 import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.ControllerInterface;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
@@ -17,7 +16,8 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.AskColorMessage;
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.LoginResponseMessage;
-import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.showJoinableGamesMessage;
+import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.SetClientStateMessage;
+import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.ShowJoinableGamesMessage;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
 
@@ -120,12 +120,13 @@ public class VirtualViewSocket implements VirtualView {
 
     @Override
     public void setClientState(ClientState newState) throws RemoteException {
-
+        SetClientStateMessage message = new SetClientStateMessage(newState);
+        clientHandler.sendServerMessageToClient(message);
     }
 
     @Override
     public void showJoinableGamesList(ArrayList<GameInfo> joinableGames) throws RemoteException {
-        clientHandler.sendServerMessageToClient(new showJoinableGamesMessage(joinableGames));
+        clientHandler.sendServerMessageToClient(new ShowJoinableGamesMessage(joinableGames));
     }
 
     @Override

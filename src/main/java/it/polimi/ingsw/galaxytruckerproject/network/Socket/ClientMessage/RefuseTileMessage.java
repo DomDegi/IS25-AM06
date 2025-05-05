@@ -2,9 +2,9 @@ package it.polimi.ingsw.galaxytruckerproject.network.Socket.ClientMessage;
 
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.ClientHandler;
 
-public class RefuseTile extends ClientMessage {
+public class RefuseTileMessage extends ClientMessage {
 
-    public RefuseTile() {
+    public RefuseTileMessage() {
         ;
     }
 
