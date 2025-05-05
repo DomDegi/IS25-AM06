@@ -119,11 +119,9 @@ public class ClientController {
                         return false;
                     }
                 }
-                try {
-                    view.setClientState(ClientState.CHOOSE_CONNECTION_TYPE);
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+
+                setState(ClientState.CHOOSE_CONNECTION_TYPE);
+
             }
 
             case CHOOSE_CONNECTION_TYPE->{
@@ -153,21 +151,16 @@ public class ClientController {
                         return false;
                     }
                 }
-                try {
-                    view.setClientState(ClientState.LOGIN);
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+
+                setState(ClientState.LOGIN);
+
             }
 
             case LOGIN->{
                 switch (words[0]) {
                     case "done" -> {
-                        try {
-                            view.setClientState(ClientState.WAIT);
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        setState(ClientState.WAIT);
+
                         try {
                             virtualController.login(me.getPlayerName());
                         } catch (RemoteException e) {
@@ -224,11 +217,9 @@ public class ClientController {
                                 return false;
                             }
                         }
-                        try {
-                            view.setClientState(ClientState.WAIT);
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+
+                        setState(ClientState.WAIT);
+
                         try {
                             virtualController.createGame(gameName,NumberOfPlayers,gameMode);
                         } catch (RemoteException e) {
@@ -247,11 +238,9 @@ public class ClientController {
                         String gameName = words[1];
                         for(GameInfo games:gameInfo) {
                             if(Objects.equals(gameName, games.getGameName())){
-                                try {
-                                    view.setClientState(ClientState.WAIT);
-                                } catch (RemoteException e) {
-                                    throw new RuntimeException(e);
-                                }
+
+                                setState(ClientState.WAIT);
+
                                 try {
                                     virtualController.joinGame(gameName);
                                 } catch (RemoteException e) {
@@ -299,11 +288,7 @@ public class ClientController {
                     }
                 }
                 me.setColor(color);
-                try {
-                    view.setClientState(ClientState.WAIT);
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+                setState(ClientState.WAIT);
                 try {
                     virtualController.chooseColor(color);
                 } catch (RemoteException e) {
@@ -328,11 +313,7 @@ public class ClientController {
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
-                        try {
-                            view.setClientState(ClientState.S_FINISHED);
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        setState(ClientState.S_FINISHED);
                     }
                     case "draw" -> {
                         if(!(words.length > 1)){
@@ -359,11 +340,7 @@ public class ClientController {
                                     if (chose == -1)
                                         return false;
                                     if (chose > 0 && chose < 4 && availableDeck.get(chose)) {
-                                        try {
-                                            view.setClientState(ClientState.WAIT);
-                                        } catch (RemoteException e) {
-                                            throw new RuntimeException(e);
-                                        }
+                                       setState(ClientState.WAIT);
                                         try {
                                             virtualController.lookCardsRequest( chose);
                                         } catch (RemoteException e) {
@@ -399,11 +376,8 @@ public class ClientController {
                                 }
                                 switch (words[2]){
                                     case "new"->{
-                                        try {
-                                            view.setClientState(ClientState.WAIT);
-                                        } catch (RemoteException e) {
-                                            throw new RuntimeException(e);
-                                        }
+                                        setState(ClientState.WAIT);
+
                                         try {
                                             virtualController.reqDrawTileFromStack();
                                         } catch (RemoteException e) {
@@ -414,11 +388,8 @@ public class ClientController {
                                         if(!me.getShipBoard().getBookedTiles().isEmpty()) {
                                             tileInHand = me.getShipBoard().getBookedTiles().getFirst();
                                             me.getShipBoard().removeBookedTile(0);
-                                            try {
-                                                view.setClientState(ClientState.S_MANAGE_DRAWN_TILE);
-                                            } catch (RemoteException e) {
-                                                throw new RuntimeException(e);
-                                            }
+                                            setState(ClientState.S_MANAGE_DRAWN_TILE);
+
                                         }else{
                                             try {
                                                 view.wrongLocalInput();
@@ -437,11 +408,8 @@ public class ClientController {
                                                 tileInHand = me.getShipBoard().getBookedTiles().getFirst();
                                                 me.getShipBoard().removeBookedTile(0);
                                             }
-                                            try {
-                                                view.setClientState(ClientState.S_MANAGE_DRAWN_TILE);
-                                            } catch (RemoteException e) {
-                                                throw new RuntimeException(e);
-                                            }
+                                            setState(ClientState.S_MANAGE_DRAWN_TILE);
+
                                         }else{
                                             try {
                                                 view.wrongLocalInput();
@@ -458,11 +426,8 @@ public class ClientController {
                                             return false;
                                         if (chose>0&&turnedTiles.containsKey(chose)) {
                                             tileInHand=turnedTiles.get(chose);
-                                            try {
-                                                view.setClientState(ClientState.WAIT);
-                                            } catch (RemoteException e) {
-                                                throw new RuntimeException(e);
-                                            }
+                                            setState(ClientState.WAIT);
+
                                             try {
                                                 virtualController.reqDrawTileFromTurned(chose);
                                             } catch (RemoteException e) {
@@ -510,11 +475,8 @@ public class ClientController {
                     }
                     case "done" -> {
                         //done action
-                        try {
-                            view.setClientState(ClientState.S_END_DRAW_TILE_CARD);
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        setState(ClientState.S_END_DRAW_TILE_CARD);
+
                         try {
                             virtualController.stopLookingAtCardsRequest();
                         } catch (RemoteException e) {
@@ -545,11 +507,8 @@ public class ClientController {
                         coordinates = transformCoordinates(scroll(words,1));
                         if(coordinates!=null){
                             me.getShipBoard().positionTile(Optional.ofNullable(this.tileInHand),coordinates);
-                            try {
-                                view.setClientState(ClientState.WAIT);
-                            } catch (RemoteException e) {
-                                throw new RuntimeException(e);
-                            }
+                            setState(ClientState.WAIT);
+
                             try {
 
                                 virtualController.notifySetTile(this.tileInHand.send());
@@ -562,19 +521,13 @@ public class ClientController {
                     case "refuse" -> {
                         if(this.tileInHand.isBooked()){
                             me.getShipBoard().addBookedTile(this.tileInHand);
-                            try {
-                                view.setClientState(ClientState.S_END_DRAW_TILE_CARD);
-                            } catch (RemoteException e) {
-                                throw new RuntimeException(e);
-                            }
+                            setState(ClientState.S_END_DRAW_TILE_CARD);
+
                             return true;
                         }
                         this.turnedTiles.put(this.tileInHand.getKey(),this.tileInHand);
-                        try {
-                            view.setClientState(ClientState.WAIT);
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        setState(ClientState.WAIT);
+
                         try {
                             virtualController.notifyRefusedTile();
                         } catch (RemoteException e) {
@@ -591,11 +544,7 @@ public class ClientController {
                             return false;
                         }
                         this.tileInHand.setBooked(true);
-                        try {
-                            view.setClientState(ClientState.WAIT);
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        setState(ClientState.WAIT);
                         try {
                             virtualController.notifyTileBooking();
                         } catch (RemoteException e) {
@@ -616,11 +565,7 @@ public class ClientController {
                     if (chose == -1)
                         return false;
                     if (chose > 0 &&  chose < flightBoard.getInGamePlayers().size()) {
-                        try {
-                            view.setClientState(ClientState.WAIT);
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        setState(ClientState.WAIT);
                         try {
                             virtualController.notifySetPosition(chose);
                         } catch (RemoteException e) {
@@ -645,11 +590,7 @@ public class ClientController {
             }
 
             case ROLL_DICE->{
-                try {
-                    view.setClientState(ClientState.WAIT);
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+                setState(ClientState.WAIT);
                 try {
                     virtualController.rollTheDices();
                 } catch (RemoteException e) {
@@ -658,11 +599,7 @@ public class ClientController {
             }
 
             case DRAW_CARD ->{
-                try {
-                    view.setClientState(ClientState.WAIT);
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+                setState(ClientState.WAIT);
                 try {
                     virtualController.drawCards();
                 } catch (RemoteException e) {
@@ -677,11 +614,7 @@ public class ClientController {
                     return true;
                 switch (words[0]){
                     case "yes" -> {
-                        try {
-                            view.setClientState(ClientState.WAIT);
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        setState(ClientState.WAIT);
                         try {
                             virtualController.sendYes();
                         } catch (RemoteException e) {
@@ -689,11 +622,7 @@ public class ClientController {
                         }
                     }
                     case "no" -> {
-                        try {
-                            view.setClientState(ClientState.WAIT);
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        setState(ClientState.WAIT);
                         try {
                             virtualController.sendNo();
                         } catch (RemoteException e) {
@@ -725,11 +654,7 @@ public class ClientController {
                 Planets planet=(Planets) displayedCard;
                 if (chose >= 0 && chose <planet.getListOfPlanets().size()) {
                     indexDeckInHandOrPlanet = chose;
-                    try {
-                        view.setClientState(ClientState.WAIT);
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
+                    setState(ClientState.WAIT);
                     try {
                         virtualController.planetChoiceRequest(chose);
                     } catch (RemoteException e) {
@@ -757,11 +682,7 @@ public class ClientController {
                             newTiles.clear();
                         }
                         int goodsVal = me.getShipBoard().convertGoodsToCredit();
-                        try {
-                            view.setClientState(ClientState.WAIT);
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        setState(ClientState.WAIT);
                         try {
                             virtualController.notifyNewGoodsArrangement( goodsVal, newTiles);
                         } catch (RemoteException e) {
@@ -801,11 +722,7 @@ public class ClientController {
                             throw new RuntimeException(e);
                         }
                         if (newTiles!=null) {
-                            try {
-                                view.setClientState(ClientState.WAIT);
-                            } catch (RemoteException e) {
-                                throw new RuntimeException(e);
-                            }
+                            setState(ClientState.WAIT);
                             try {
                                 virtualController.notifyNewCrewArrangement(newTiles);
                             } catch (RemoteException e) {
@@ -875,10 +792,20 @@ public class ClientController {
         state=newState;
         switch(newState){
             case START_SHIP_CREATION -> {
+                try {
+                    view.setClientState(newState);
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
                 me.setShipboard(new LightShipBoard(me));
                 phase = GamePhases.SHIPBOARD;
             }
             case S_END_DRAW_TILE_CARD -> {
+                try {
+                    view.setClientState(newState);
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
                 try {
                     view.showTurnedTiles(turnedTiles);
                 } catch (RemoteException e) {
@@ -887,12 +814,15 @@ public class ClientController {
             }
             case S_MANAGE_CARDS -> {
                 if(gameMode==GameMode.TRIAL) {
+                    setState(ClientState.S_END_DRAW_TILE_CARD);
+                    previousState=state;
+                }
+                else {
                     try {
-                        view.setClientState(ClientState.S_END_DRAW_TILE_CARD);
+                        view.setClientState(newState);
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
-                    previousState=state;
                 }
             }
             case MANAGE_CABINS -> {
@@ -902,11 +832,7 @@ public class ClientController {
                 }
                 if (gameMode == GameMode.LEVEL2) {
                     if (me.getShipBoard().getCabinsCoordinates()==null||me.getShipBoard().getCabinsCoordinates().isEmpty()||me.getShipBoard().getCabinsCoordinates().size()==1) {
-                        try {
-                            view.setClientState(ClientState.WAIT);
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        setState(ClientState.WAIT);
                         try {
                             virtualController.notifyNewCrewArrangement(new ArrayList<>());
                         } catch (RemoteException e) {
@@ -914,6 +840,11 @@ public class ClientController {
                         }
                         inManager = false;
                     } else {
+                        try {
+                            view.setClientState(newState);
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
                         try {
                             cabinsManager.setup();
                         } catch (RemoteException e) {
@@ -930,11 +861,8 @@ public class ClientController {
                             throw new RuntimeException(e);
                         }
                     }
-                    try {
-                        view.setClientState(ClientState.WAIT);
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
+
+                    setState (ClientState.WAIT);
                     try {
                         virtualController.notifyNewCrewArrangement(newTiles);
                     } catch (RemoteException e) {
@@ -944,6 +872,11 @@ public class ClientController {
                 }
             }
             case S_FINISHED-> {
+                try {
+                    view.setClientState(newState);
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
                 if (gameMode == GameMode.TRIAL) {
                     try {
                         virtualController.notifySetPosition(0);
@@ -954,6 +887,11 @@ public class ClientController {
             }
             case ROLL_DICE -> {
                 try {
+                    view.setClientState(newState);
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
                     view.printProjectile(displayedCard.getListOfProjectiles().getFirst());
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
@@ -961,16 +899,27 @@ public class ClientController {
                 displayedCard.getListOfProjectiles().removeFirst();
             }
             case DRAW_CARD -> {
+
                 phase = GamePhases.CARDS;
                 if(me.getRank()!=1){
+
+                    setState( ClientState.WAIT);
+
+                }
+                else {
                     try {
-                        view.setClientState(ClientState.WAIT);
+                        view.setClientState(newState);
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
                 }
             }
             case MANAGE_GOODS -> {
+                try {
+                    view.setClientState(newState);
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
                 if(!inManager){
                     goodsManager = new GoodsManager(me, goodsList,view);
                     inManager=true;
@@ -982,6 +931,13 @@ public class ClientController {
                 }
                 try {
                     view.showGenericMessage("Chose for each good where to put it, input 'no' to stop:\n");
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            default -> {
+                try {
+                    view.setClientState(newState);
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
@@ -1074,11 +1030,7 @@ public class ClientController {
     private boolean firstHourglassTurn(String[] input) {
         if (((gameMode==GameMode.LEVEL2 && input[0].equals("turn")) || input[0].equals("start")) && hourglassTurns == 0) {
             hourglassTurns=1;
-            try {
-                view.setClientState(ClientState.WAIT);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
+            setState(ClientState.WAIT);
             try {
                 virtualController.sendTurnHourGlass();
             } catch (RemoteException e) {
@@ -1100,11 +1052,8 @@ public class ClientController {
                 return false;
             }
             hourglassTurns=2;
-            try {
-                view.setClientState(state);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
+            setState(state);
+
             try {
                 virtualController.sendTurnHourGlass();
             } catch (RemoteException e) {
@@ -1129,11 +1078,8 @@ public class ClientController {
                 hourglassTurns=2;
             else
                 hourglassTurns=3;
-            try {
-                view.setClientState(ClientState.S_FINISHED);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
+            setState(ClientState.S_FINISHED);
+
             try {
                 virtualController.sendTurnHourGlass();
             } catch (RemoteException e) {
@@ -1221,11 +1167,7 @@ public class ClientController {
     }
 
     public boolean rollBackState() {
-        try {
-            view.setClientState(previousState);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+        setState(previousState);
         if (state==previousState)
             return false;
         state=previousState;
@@ -1435,7 +1377,7 @@ public class ClientController {
     void connectRMI() throws MalformedURLException, NotBoundException, RemoteException {
         VirtualViewRMI viewRMI=new VirtualViewRMI(this,view);
         ControllerFactory controllerFactory=(ControllerFactory) Naming.lookup("rmi://localhost/ControllerFactory");
-        virtualController=controllerFactory.createController();
+        this.virtualController=controllerFactory.createController();
         virtualController.setView(viewRMI);
     }
 
