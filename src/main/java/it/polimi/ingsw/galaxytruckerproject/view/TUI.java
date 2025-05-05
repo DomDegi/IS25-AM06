@@ -2,7 +2,6 @@ package it.polimi.ingsw.galaxytruckerproject.view;
 
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
-import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
@@ -246,8 +245,8 @@ public class TUI implements DisplayableView {
     }
 
     @Override
-    public void notifyTurnedHourglass() throws RemoteException {
-        System.out.println("hourglass has been turned");
+    public void notifyTurnedHourglass(int i) throws RemoteException {
+        System.out.println("hourglass has been turned for the "+i+" time");
     }
 
     @Override
@@ -282,8 +281,10 @@ public class TUI implements DisplayableView {
     }
 
     @Override
-    public void showCard(Card card) throws RemoteException {
-        System.out.println(card.toString());
+    public void showCard(ArrayList<Card> cards) throws RemoteException {
+        for(Card card : cards) {
+            System.out.println(card.toString());
+        }
     }
 
 

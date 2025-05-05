@@ -35,7 +35,7 @@ import java.util.*;
 public class ClientController {
     private ClientState state;
     private ClientState previousState;
-    private LightPlayer me;
+    private final LightPlayer me;
     private LightFlightboard flightBoard;
     private boolean inManager;
     private boolean connected;
@@ -53,14 +53,16 @@ public class ClientController {
     private final Map<Integer,Boolean> availableDeck;
     private final ArrayList<Goods> goodsList;
 
+    private int numPlayer;
     private Tile tileInHand;
-    private Card displayedCard;
+    private ArrayList<Card> displayedCard;
     private int indexDeckInHandOrPlanet;
-    private int indexCard;
     private int hourglassTurns;
 
     public ClientController() {
-
+        this.numPlayer=0;
+        this.gameInfo=new ArrayList<>();
+        this.view=new TUI();
         this.deck = new HashMap<>();
         this.me = new LightPlayer("",null);
         this.goodsList = new ArrayList<>();
@@ -75,7 +77,6 @@ public class ClientController {
         availableDeck.put(1,Boolean.TRUE);
         availableDeck.put(2,Boolean.TRUE);
         availableDeck.put(3,Boolean.TRUE);
-        this.indexCard = 0;
         this.indexDeckInHandOrPlanet = 0;
         this.hourglassTurns = 0;
         this.coordInputManager=new CoordInputManager(me.getShipBoard(),this);
@@ -102,16 +103,10 @@ public class ClientController {
         switch (state) {
             case CHOOSE_UI->{
                 switch(words[0]) {
-                    case "gui"-> {
-
+                    case "gui","g"->
                             this.view= new GUI();
-
-                    }
-                    case "tui"-> {
-
+                    case "tui","t"->
                             this.view=new TUI();
-
-                    }
                     default->{
                         try {
                             view.wrongLocalInput();
@@ -121,29 +116,25 @@ public class ClientController {
                         return false;
                     }
                 }
-
                 setState(ClientState.CHOOSE_CONNECTION_TYPE);
-
             }
 
             case CHOOSE_CONNECTION_TYPE->{
                 switch(words[0]) {
-                    case "rmi"->{
+                    case "rmi","r"->{
                         try {
                             connectRMI();
-                        }
-                        catch (MalformedURLException | NotBoundException | RemoteException e) {
+                        } catch (MalformedURLException | NotBoundException | RemoteException e) {
                             throw new RuntimeException(e);
                         }
                     }
-                    case "socket"-> {
+                    case "socket","s"-> {
                         try {
                             connectSocket();
                         } catch (IOException e) {
                             System.out.println("Error connecting to server via socket");
                         }
                     }
-                    //Da sistemare
                     default->{
                         try {
                             view.wrongLocalInput();
@@ -153,20 +144,25 @@ public class ClientController {
                         return false;
                     }
                 }
-
                 setState(ClientState.LOGIN);
-
             }
 
             case LOGIN->{
                 switch (words[0]) {
-                    case "done" -> {
-                        setState(ClientState.WAIT);
-
-                        try {
-                            virtualController.login(me.getPlayerName());
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
+                    case "done","d" -> {
+                        if(!Objects.equals(me.getPlayerName(), "")) {
+                            setState(ClientState.WAIT);
+                            try {
+                                virtualController.login(me.getPlayerName());
+                            } catch (RemoteException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }else{
+                            try {
+                                view.wrongLocalInput();
+                            } catch (RemoteException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                     }
                     case "redo"-> me.setPlayerName("");
@@ -177,7 +173,7 @@ public class ClientController {
             case LOBBY-> {
                 //CHOOSE TUI OR GUI
                 switch(words[0]) {
-                    case "creategame"-> {
+                    case "creategame","c"-> {
                         if(!(words.length > 1)){
                             try {
                                 view.wrongLocalInput();
@@ -199,6 +195,7 @@ public class ClientController {
                         NumberOfPlayers = numerate(scroll(words,2));
                         if(NumberOfPlayers==-1||NumberOfPlayers>4)
                             return false;
+                        numPlayer=NumberOfPlayers;
                         if(!(words.length > 3)){
                             try {
                                 view.wrongLocalInput();
@@ -208,8 +205,8 @@ public class ClientController {
                             return false;
                         }
                         switch(words[3]) {
-                            case "trialmode"-> gameMode=GameMode.TRIAL;
-                            case "level2mode"-> gameMode=GameMode.LEVEL2;
+                            case "trialmode","t"-> gameMode=GameMode.TRIAL;
+                            case "level2mode","2"-> gameMode=GameMode.LEVEL2;
                             default->{
                                 try {
                                     view.wrongLocalInput();
@@ -219,16 +216,14 @@ public class ClientController {
                                 return false;
                             }
                         }
-
                         setState(ClientState.WAIT);
-
                         try {
                             virtualController.createGame(gameName,NumberOfPlayers,gameMode);
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
                     }
-                    case "joingame"-> {
+                    case "joingame","j"-> {
                         if(!(words.length > 1)){
                             try {
                                 view.wrongLocalInput();
@@ -238,11 +233,18 @@ public class ClientController {
                             return false;
                         }
                         String gameName = words[1];
+                        if(gameInfo==null){
+                            try {
+                                view.wrongLocalInput();
+                            } catch (RemoteException e) {
+                                throw new RuntimeException(e);
+                            }
+                            return false;
+                        }
                         for(GameInfo games:gameInfo) {
                             if(Objects.equals(gameName, games.getGameName())){
-
                                 setState(ClientState.WAIT);
-
+                                numPlayer=games.getMaxPlayerCount();
                                 try {
                                     virtualController.joinGame(gameName);
                                 } catch (RemoteException e) {
@@ -272,13 +274,13 @@ public class ClientController {
             case COLOR_CHOICE->{
                 PlayersColor color;
                 switch (words[0]){
-                    case "red"->
+                    case "red","r"->
                         color = PlayersColor.RED;
-                    case "yellow"->
+                    case "yellow","y"->
                         color = PlayersColor.YELLOW;
-                    case "green"->
+                    case "green","g"->
                         color = PlayersColor.GREEN;
-                    case "blue"->
+                    case "blue","b"->
                         color = PlayersColor.BLUE;
                     default->{
                         try {
@@ -303,19 +305,18 @@ public class ClientController {
             }
 
             case S_END_DRAW_TILE_CARD -> {
-
                 if (secondHourglassTurn(words))
                     return true;
                 if (checkShipBoards(words))
                     return true;
                 switch (words[0]) {
-                    case"done" -> {
+                    case"done","d" -> {
+                        setState(ClientState.WAIT);
                         try {
                             virtualController.notifyCompleted();
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
-                        setState(ClientState.S_FINISHED);
                     }
                     case "draw" -> {
                         if(!(words.length > 1)){
@@ -349,7 +350,7 @@ public class ClientController {
                                             throw new RuntimeException(e);
                                         }
                                         indexDeckInHandOrPlanet = chose;
-                                        displayedCard = this.deck.get(indexDeckInHandOrPlanet).getFirst();
+                                        displayedCard = this.deck.get(indexDeckInHandOrPlanet);
                                     } else {
                                         try {
                                             view.wrongLocalInput();
@@ -369,17 +370,17 @@ public class ClientController {
                             }
                             case "tile" -> {
                                 if(!(words.length > 2)){
+                                    setState(ClientState.WAIT);
                                     try {
-                                        view.wrongLocalInput();
+                                        virtualController.reqDrawTileFromStack();
                                     } catch (RemoteException e) {
                                         throw new RuntimeException(e);
                                     }
-                                    return false;
+                                    return true;
                                 }
                                 switch (words[2]){
-                                    case "new"->{
+                                    case "new" -> {
                                         setState(ClientState.WAIT);
-
                                         try {
                                             virtualController.reqDrawTileFromStack();
                                         } catch (RemoteException e) {
@@ -391,7 +392,6 @@ public class ClientController {
                                             tileInHand = me.getShipBoard().getBookedTiles().getFirst();
                                             me.getShipBoard().removeBookedTile(0);
                                             setState(ClientState.S_MANAGE_DRAWN_TILE);
-
                                         }else{
                                             try {
                                                 view.wrongLocalInput();
@@ -411,7 +411,6 @@ public class ClientController {
                                                 me.getShipBoard().removeBookedTile(0);
                                             }
                                             setState(ClientState.S_MANAGE_DRAWN_TILE);
-
                                         }else{
                                             try {
                                                 view.wrongLocalInput();
@@ -429,7 +428,6 @@ public class ClientController {
                                         if (chose>0&&turnedTiles.containsKey(chose)) {
                                             tileInHand=turnedTiles.get(chose);
                                             setState(ClientState.WAIT);
-
                                             try {
                                                 virtualController.reqDrawTileFromTurned(chose);
                                             } catch (RemoteException e) {
@@ -452,38 +450,12 @@ public class ClientController {
             }
 
             case S_MANAGE_CARDS-> {
-                switch (words[0]) {
-                    case "previous" -> {
-                        indexCard--;
-                        if(indexCard<0)
-                            indexCard=2;
-                        displayedCard = this.deck.get(indexDeckInHandOrPlanet).get(indexCard);
-                        try {
-                            view.showCard(displayedCard);
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                    case "next" -> {
-                        indexCard++;
-                        if(indexCard>2)
-                            indexCard=0;
-                        displayedCard = this.deck.get(indexDeckInHandOrPlanet).get(indexCard);
-                        try {
-                            view.showCard(displayedCard);
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                    case "done" -> {
-                        //done action
-                        setState(ClientState.S_END_DRAW_TILE_CARD);
-
-                        try {
-                            virtualController.stopLookingAtCardsRequest();
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                if(words[0].equals("done")) {
+                    setState(ClientState.S_END_DRAW_TILE_CARD);
+                    try {
+                        virtualController.stopLookingAtCardsRequest();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
                     }
                 }
             }
@@ -510,7 +482,6 @@ public class ClientController {
                         if(coordinates!=null){
                             me.getShipBoard().positionTile(Optional.ofNullable(this.tileInHand),coordinates);
                             setState(ClientState.WAIT);
-
                             try {
 
                                 virtualController.notifySetTile(this.tileInHand.send());
@@ -524,12 +495,10 @@ public class ClientController {
                         if(this.tileInHand.isBooked()){
                             me.getShipBoard().addBookedTile(this.tileInHand);
                             setState(ClientState.S_END_DRAW_TILE_CARD);
-
                             return true;
                         }
                         this.turnedTiles.put(this.tileInHand.getKey(),this.tileInHand);
                         setState(ClientState.WAIT);
-
                         try {
                             virtualController.notifyRefusedTile();
                         } catch (RemoteException e) {
@@ -566,7 +535,7 @@ public class ClientController {
                     chose = numerate(scroll(words, 0));
                     if (chose == -1)
                         return false;
-                    if (chose > 0 &&  chose < flightBoard.getInGamePlayers().size()) {
+                    if (chose > 0 &&  chose <= numPlayer) {
                         setState(ClientState.WAIT);
                         try {
                             virtualController.notifySetPosition(chose);
@@ -653,7 +622,7 @@ public class ClientController {
                 chose = numerate(words);
                 if(chose==-1)
                     return false;
-                Planets planet=(Planets) displayedCard;
+                Planets planet=(Planets) displayedCard.getFirst();
                 if (chose >= 0 && chose <planet.getListOfPlanets().size()) {
                     indexDeckInHandOrPlanet = chose;
                     setState(ClientState.WAIT);
@@ -770,7 +739,11 @@ public class ClientController {
             case WAIT ->{
                 switch(phase){
                     case LOGIN -> {
-
+                        try {
+                            view.showGenericMessage("Wrong input in wait");
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                     case SHIPBOARD -> {
                         if (checkShipBoards(words))
@@ -794,20 +767,10 @@ public class ClientController {
         state=newState;
         switch(newState){
             case START_SHIP_CREATION -> {
-                try {
-                    view.setClientState(newState);
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
                 me.setShipboard(new LightShipBoard(me));
                 phase = GamePhases.SHIPBOARD;
             }
             case S_END_DRAW_TILE_CARD -> {
-                try {
-                    view.setClientState(newState);
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
                 try {
                     view.showTurnedTiles(turnedTiles);
                 } catch (RemoteException e) {
@@ -818,13 +781,6 @@ public class ClientController {
                 if(gameMode==GameMode.TRIAL) {
                     setState(ClientState.S_END_DRAW_TILE_CARD);
                     previousState=state;
-                }
-                else {
-                    try {
-                        view.setClientState(newState);
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
                 }
             }
             case MANAGE_CABINS -> {
@@ -843,11 +799,6 @@ public class ClientController {
                         inManager = false;
                     } else {
                         try {
-                            view.setClientState(newState);
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
-                        try {
                             cabinsManager.setup();
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
@@ -863,7 +814,6 @@ public class ClientController {
                             throw new RuntimeException(e);
                         }
                     }
-
                     setState (ClientState.WAIT);
                     try {
                         virtualController.notifyNewCrewArrangement(newTiles);
@@ -874,11 +824,6 @@ public class ClientController {
                 }
             }
             case S_FINISHED-> {
-                try {
-                    view.setClientState(newState);
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
                 if (gameMode == GameMode.TRIAL) {
                     try {
                         virtualController.notifySetPosition(0);
@@ -889,39 +834,19 @@ public class ClientController {
             }
             case ROLL_DICE -> {
                 try {
-                    view.setClientState(newState);
+                    view.printProjectile(displayedCard.getFirst().getListOfProjectiles().getFirst());
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
-                try {
-                    view.printProjectile(displayedCard.getListOfProjectiles().getFirst());
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
-                displayedCard.getListOfProjectiles().removeFirst();
+                displayedCard.getFirst().getListOfProjectiles().removeFirst();
             }
             case DRAW_CARD -> {
-
                 phase = GamePhases.CARDS;
                 if(me.getRank()!=1){
-
                     setState( ClientState.WAIT);
-
-                }
-                else {
-                    try {
-                        view.setClientState(newState);
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
                 }
             }
             case MANAGE_GOODS -> {
-                try {
-                    view.setClientState(newState);
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
                 if(!inManager){
                     goodsManager = new GoodsManager(me, goodsList,view);
                     inManager=true;
@@ -937,13 +862,11 @@ public class ClientController {
                     throw new RuntimeException(e);
                 }
             }
-            default -> {
-                try {
-                    view.setClientState(newState);
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+        }
+        try {
+            view.setClientState(state);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -1055,7 +978,6 @@ public class ClientController {
             }
             hourglassTurns=2;
             setState(state);
-
             try {
                 virtualController.sendTurnHourGlass();
             } catch (RemoteException e) {
@@ -1081,7 +1003,6 @@ public class ClientController {
             else
                 hourglassTurns=3;
             setState(ClientState.S_FINISHED);
-
             try {
                 virtualController.sendTurnHourGlass();
             } catch (RemoteException e) {
@@ -1168,14 +1089,23 @@ public class ClientController {
         return copiedInput;
     }
 
-    public boolean rollBackState() {
-        setState(previousState);
+    public void rollBackState() {
         if (state==previousState)
-            return false;
-        state=previousState;
-        return true;
-
+            return;
+        setState(previousState);
     }
+
+    public void addToFlightboard(String name,PlayersColor color,int pos, int ranking){
+        if(Objects.equals(name, me.getPlayerName())){
+            flightBoard.addInGamePlayer(me);
+            return;
+        }
+        LightPlayer player = new LightPlayer(name,color);
+        player.setPosition(pos);
+        player.setRank(ranking);
+        flightBoard.addInGamePlayer(player);
+    }
+
     public void updateFlightboard(String name,int pos, int ranking) {
         for(LightPlayer player:flightBoard.getInGamePlayers())
             if (player.getPlayerName().equals(name)){
@@ -1217,9 +1147,10 @@ public class ClientController {
     }
 
     public void setDisplayedCard(Card displayedCard) {
-        this.displayedCard = displayedCard;
+        this.displayedCard.clear();
+        this.displayedCard.add(displayedCard);
     }
-    public Card getDisplayedCard() {
+    public ArrayList<Card> getDisplayedCard() {
         return displayedCard;
     }
 
@@ -1233,8 +1164,6 @@ public class ClientController {
             player.getShipBoard().positionTile(Optional.of(modTiles),modTiles.getCoordinates());
         }
     }
-
-
 
     //rompe le tile nelle coordinate corrispondenti per il player selezionato
     public void brokenTiles(String playerName, ArrayList<Coordinates> coordinates){
@@ -1277,7 +1206,7 @@ public class ClientController {
         for(LightPlayer player:flightBoard.getInGamePlayers()){
             player.setShipboard(lightShipBoardMap.get(player.getPlayerName()));
         }
-        displayedCard=card;
+        displayedCard.add(card);
         this.hourglassTurns=hourglassTurns;
         turnedTiles=newTurnedTiles;
         decksNotAvailable(notAvailableDecks);
@@ -1366,10 +1295,6 @@ public class ClientController {
         return indexDeckInHandOrPlanet;
     }
 
-    public int getIndexCard() {
-        return indexCard;
-    }
-
     public int getHourglassTurns() {
         return hourglassTurns;
     }
@@ -1414,8 +1339,8 @@ public class ClientController {
             throw new RuntimeException(e);
         }
     }
-    public void turnHourGlass(){
-        this.hourglassTurns++;
+    public void turnHourglass(int i) {
+        hourglassTurns= i;
     }
 }
 

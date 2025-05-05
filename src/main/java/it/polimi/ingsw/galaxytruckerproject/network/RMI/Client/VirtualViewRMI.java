@@ -59,9 +59,6 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     @Override
     public void showLoginResponse(boolean success) throws RemoteException {
         view.showLoginResponse(success);
-        if (success) {
-            clientController.setState(ClientState.LOBBY);
-        }
     }
 
     @Override
@@ -110,7 +107,6 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     @Override
     public void showDrawnTile(Tile drawnTile) throws RemoteException {
         view.showDrawnTile(drawnTile);
-        clientController.setState(ClientState.S_MANAGE_DRAWN_TILE);
         clientController.setTileInHand(drawnTile);
     }
 
@@ -169,8 +165,8 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     }
 
     @Override
-    public void showCard(Card card)throws RemoteException {
-        view.showCard(card);
+    public void showCard(ArrayList<Card> cards)throws RemoteException {
+        view.showCard(cards);
     }
 
     @Override
@@ -216,9 +212,9 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     }
 
     @Override
-    public void notifyTurnedHourglass() throws RemoteException {
-        view.notifyTurnedHourglass();
-        clientController.turnHourGlass();
+    public void notifyTurnedHourglass(int i) throws RemoteException {
+        view.notifyTurnedHourglass(i);
+        clientController.turnHourglass(i);
     }
 
     @Override

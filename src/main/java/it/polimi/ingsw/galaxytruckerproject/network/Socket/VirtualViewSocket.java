@@ -148,7 +148,7 @@ public class VirtualViewSocket implements VirtualView {
 
     @Override
     public void showGenericMessage(String genericMessage) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new GenericServerMessage(genericMessage));
     }
 
     @Override
@@ -266,7 +266,7 @@ public class VirtualViewSocket implements VirtualView {
     }
 
     @Override
-    public void showCard(Card card) throws RemoteException {
+    public void showCard(ArrayList<Card> cards) throws RemoteException {
 
     }
 
@@ -311,8 +311,8 @@ public class VirtualViewSocket implements VirtualView {
     }
 
     @Override
-    public void notifyTurnedHourglass() throws RemoteException {
-        clientHandler.sendServerMessageToClient(new TurnedHourglassMessage());
+    public void notifyTurnedHourglass(int turns) throws RemoteException {
+        clientHandler.sendServerMessageToClient(new TurnedHourglassMessage(turns));
     }
 
     @Override

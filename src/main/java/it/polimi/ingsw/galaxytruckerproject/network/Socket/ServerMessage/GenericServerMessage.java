@@ -4,16 +4,18 @@ import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerHandler;
 
 import java.rmi.RemoteException;
 
-public class TimeExpiredMessage extends ServerMessage {
+public class GenericServerMessage extends ServerMessage {
 
+    String genericMessage;
 
-    public TimeExpiredMessage() {
+    public GenericServerMessage(String genericMessage) {
+        this.genericMessage = genericMessage;
     }
 
     @Override
     public void processMessage(ServerHandler serverHandler) {
         try {
-            serverHandler.getView().notifyEndOfTime();
+            serverHandler.getView().showGenericMessage(genericMessage);
         } catch (RemoteException e) {
             e.printStackTrace();
         }

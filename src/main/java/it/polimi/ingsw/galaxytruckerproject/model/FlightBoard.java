@@ -13,6 +13,9 @@ public class FlightBoard implements Serializable {
     private final ArrayList<Integer> occupiedPos = new ArrayList<>();
 
     public FlightBoard(GameMode gameMode) {
+        for (int i=0;i<4;i++){
+            occupiedPos.add(-1);
+        }
         this.gameMode = gameMode;
         this.inGamePlayers = new ArrayList<>();
         this.podium = new ArrayList<>();
@@ -36,9 +39,9 @@ public class FlightBoard implements Serializable {
             System.out.println("Player not found");
             return;
         }
-        if(occupiedPos.isEmpty()){
-            int pos=0;
-            occupiedPos.set(pos,pos);
+        if(occupiedPos.getFirst()==-1){
+            occupiedPos.clear();
+            occupiedPos.add(0);
         }
         inGamePlayers.remove(newPlayer);
         while (inGamePlayers.size() <= occupiedPos.getFirst()) {
@@ -61,8 +64,8 @@ public class FlightBoard implements Serializable {
             default:
                 throw new IllegalArgumentException("Invalid position: " + occupiedPos.getFirst());
         }
-        occupiedPos.set(0,occupiedPos.getFirst()+1);
         inGamePlayers.get(occupiedPos.getFirst()).setPlayerRanking(occupiedPos.getFirst()+1);
+        occupiedPos.set(0,occupiedPos.getFirst()+1);
     }
 
     public boolean addToFlightBoard(Player newPlayer, int pos) {
@@ -106,7 +109,7 @@ public class FlightBoard implements Serializable {
         }
         // makes sure that occupied pos has enough spaces just like we did with inGamePlayers with the null values
 
-        occupiedPos.add(pos);
+        occupiedPos.set(pos,pos);
 
         // gives player a ranking
         inGamePlayers.get(pos).setPlayerRanking(pos + 1);

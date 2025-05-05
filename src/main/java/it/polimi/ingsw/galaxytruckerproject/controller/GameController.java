@@ -76,6 +76,11 @@ public class GameController implements Observer, Serializable {
 
     //ASSOCIA IL PLAYER ALLA VIEW
     public void addToPlayersViewMap(String playerName, VirtualView view, boolean reconnecting) {
+        try {
+            view.setGameMode(this.game.getMode());
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
         if (reconnecting) {
             reconnectPlayer(playerName, view);
         }
@@ -96,11 +101,7 @@ public class GameController implements Observer, Serializable {
                 }
             }
         }
-        try {
-            view.setGameMode(this.game.getMode());
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
     /**
@@ -249,7 +250,9 @@ public class GameController implements Observer, Serializable {
             if (player.getPlayerColor().equals(playersColor)) {
                 try {
                 view.showWrongInputMessage();
-                } catch(Exception ignored) {}
+                } catch(RemoteException e) {
+                    throw new RuntimeException(e);
+                }
                 return false;
             }
         }
@@ -359,7 +362,7 @@ public class GameController implements Observer, Serializable {
 
     //errors check and management
     public void verifyShipCorrectness() {
-        for (Player player : game.getListOfInFlightPlayers()) {
+        for (Player player :new ArrayList<>(game.getListOfInFlightPlayers()) ) {
             boolean correctness = player.getShipBoard().verifyCorrectness();
             ViewInterface playersView = this.getViewFromNickname(player.getPlayerName());
             if (correctness){
@@ -632,9 +635,8 @@ public class GameController implements Observer, Serializable {
             return;
         }
         updatePlayerView(ClientState.S_FINISHED, playerName);
-
         if(game.getMode() == TRIAL) {
-            for (Player player : game.getFlightBoard().getInGamePlayers()) {
+            for (Player player : game.getFlightBoard().getAllPlayers()) {
                 if (player.getPlayerName().equals(playerName)) {
                     game.getFlightBoard().addToTrialFlightBoard(player);
                     //It's not important for trial flight, so 0 is a placeholder value
@@ -725,24 +727,29 @@ public class GameController implements Observer, Serializable {
             return;
         }
         switch (hourglassTurns) {
-            case 0:
+            case 0->{
                 updateEveryView(ClientState.S_END_DRAW_TILE_CARD);
                 startTimer();
-                break;
-            case 1:
+                updateHourglass();
+            }
+            case 1->{
                 startTimer();
-                break;
-            case 2:
+                updateHourglass();
+            }
+
+            case 2-> {
                 if (playerStateIs(playerName, ClientState.S_FINISHED)) {
                     startTimer();
+                    updateHourglass();
+
                 }
                 else {
                     try{
-                    playersView.showWrongInputMessage();
+                        playersView.showWrongInputMessage();
                     } catch(Exception ignored) {}
                 }
-                break;
-            default:
+            }
+            default->
                 throw new IllegalStateException("Unexpected value: " + hourglassTurns + "\n");
         }
     }
@@ -769,7 +776,7 @@ public class GameController implements Observer, Serializable {
     public void notifyTurnedHourglass() {
         for (VirtualView view: playersViewMap.values()) {
             try {
-                view.notifyTurnedHourglass();
+                view.notifyTurnedHourglass(hourglassTurns);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -1079,5 +1086,15 @@ public class GameController implements Observer, Serializable {
 
     public ConcurrentHashMap<String, Integer> getLockedSmallDecks() {
         return lockedSmallDecks;
+    }
+
+    public void updateHourglass(){
+        for(VirtualView view: playersViewMap.values()) {
+            try {
+                view.notifyTurnedHourglass(hourglassTurns);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }
