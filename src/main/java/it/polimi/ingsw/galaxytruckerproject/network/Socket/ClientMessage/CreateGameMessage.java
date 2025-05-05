@@ -20,7 +20,7 @@ public class CreateGameMessage extends ClientMessage {
         try {
             clientHandler.getController().createGame(gameName, playerCount, mode);
         } catch (Exception e) {
-            ;
+            e.printStackTrace();
         }
     }
 

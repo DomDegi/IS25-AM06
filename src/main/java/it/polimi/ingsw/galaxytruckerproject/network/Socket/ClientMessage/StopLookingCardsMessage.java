@@ -12,7 +12,7 @@ public class StopLookingCardsMessage extends ClientMessage {
         try {
             clientHandler.getController().stopLookingAtCards();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 }
