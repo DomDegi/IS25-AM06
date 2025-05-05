@@ -25,10 +25,10 @@ module it.polimi.ingsw.galaxytruckerproject {
     exports it.polimi.ingsw.galaxytruckerproject.model;
     exports it.polimi.ingsw.galaxytruckerproject.view;
     exports it.polimi.ingsw.galaxytruckerproject.model.goods;
-    exports it.polimi.ingsw.galaxytruckerproject.network.SOCKET.message;
+    exports it.polimi.ingsw.galaxytruckerproject.network.Socket.message;
     exports it.polimi.ingsw.galaxytruckerproject.client;
     opens it.polimi.ingsw.galaxytruckerproject.model.goods to com.fasterxml.jackson.databind;
     exports it.polimi.ingsw.galaxytruckerproject.network;
     exports it.polimi.ingsw.galaxytruckerproject.controller.interfaces;
-    exports it.polimi.ingsw.galaxytruckerproject.network.SOCKET;
+    exports it.polimi.ingsw.galaxytruckerproject.network.Socket;
 }
