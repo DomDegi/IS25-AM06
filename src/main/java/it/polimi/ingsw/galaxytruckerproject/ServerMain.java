@@ -21,7 +21,6 @@ public class ServerMain {
         }
         MultiGameController multiGameController = new MultiGameController();
 
-
         SocketServer socketServer = new SocketServer();
         socketServer.connect(multiGameController);
 

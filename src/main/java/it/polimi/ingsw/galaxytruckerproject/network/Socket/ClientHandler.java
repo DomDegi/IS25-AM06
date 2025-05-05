@@ -58,6 +58,7 @@ public class ClientHandler implements Runnable {
     public void run() {
         try {
             output = new ObjectOutputStream(clientSocket.getOutputStream());
+            this.output.flush();
             input = new ObjectInputStream(clientSocket.getInputStream());
         } catch (IOException e) {
             System.out.println("Could not open connection to " + clientSocket.getInetAddress());
@@ -72,7 +73,7 @@ public class ClientHandler implements Runnable {
                 e.printStackTrace();
             }
         }
-        Thread threadInListening = new Thread(this,"Thread in Listening");
+        Thread threadInListening = new Thread(this::listenAndProcess, "Thread in Listening");
         threadInListening.start();
     }
 

@@ -4,12 +4,10 @@ import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.controller.Controller;
 import it.polimi.ingsw.galaxytruckerproject.controller.MultiGameController;
 import it.polimi.ingsw.galaxytruckerproject.network.Server;
-import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.rmi.RemoteException;
 
 public class SocketServer implements Server {
 
@@ -17,6 +15,7 @@ public class SocketServer implements Server {
         ServerSocket server;
         try{
             server = new ServerSocket(12345);
+            System.out.println("Server attivo sulla porta 12345!");
         } catch (IOException e) {
             System.out.println("Cannot open server");
             System.exit(1);
@@ -27,6 +26,7 @@ public class SocketServer implements Server {
             while(true){
                 try {
                     Socket client = server.accept();
+                    System.out.println("Nuovo client connesso da: " + client.getInetAddress());
                     ClientHandler clientHandler = new ClientHandler(client);
                     Thread clientHandlerThread = new Thread(clientHandler);
                     clientHandlerThread.start();
