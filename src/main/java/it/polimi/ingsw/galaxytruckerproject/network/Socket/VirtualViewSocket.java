@@ -11,6 +11,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
@@ -54,8 +55,8 @@ public class VirtualViewSocket implements VirtualView {
     }
 
     @Override
-    public void notifyPlayerMovement(String playerName, int playerPosition, int playerRanking) throws RemoteException {
-        clientHandler.sendServerMessageToClient(new PlayerMovementMessage(playerName, playerPosition, playerRanking));
+    public void notifyPlayerMovement(String playerName, PlayersColor playersColor, int playerPosition, int playerRanking) throws RemoteException {
+        clientHandler.sendServerMessageToClient(new PlayerMovementMessage(playerName,playersColor,  playerPosition, playerRanking));
     }
 
     @Override

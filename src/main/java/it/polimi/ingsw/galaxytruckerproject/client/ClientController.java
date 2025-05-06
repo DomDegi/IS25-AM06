@@ -768,7 +768,7 @@ public class ClientController {
         state=newState;
         switch(newState){
             case START_SHIP_CREATION -> {
-                me.setShipboard(new LightShipBoard(me));
+               //me.setShipboard(new LightShipBoard(me));
                 phase = GamePhases.SHIPBOARD;
             }
             case S_END_DRAW_TILE_CARD -> {
