@@ -4,20 +4,17 @@ import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerHandler;
 
 import java.rmi.RemoteException;
 
-public class ShowDiceRollMessage extends ServerMessage{
+public class WrongInputMessage extends ServerMessage{
 
-    private int diceRoll;
-
-    public ShowDiceRollMessage(int diceRoll) {
-        this.diceRoll = diceRoll;
-    }
+    public WrongInputMessage() {}
 
     @Override
     public void processMessage(ServerHandler serverHandler) {
         try {
-            serverHandler.getView().showDiceRoll(diceRoll);
+            serverHandler.getView().showWrongInputMessage();
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
+        serverHandler.getClientController().rollBackState();
     }
 }
