@@ -640,29 +640,22 @@ public class GameController implements Observer, Serializable {
                 if (player.getPlayerName().equals(playerName)) {
                     game.getFlightBoard().addToTrialFlightBoard(player);
                     //It's not important for trial flight, so 0 is a placeholder value
-                    updatePlayerView(ClientState.WAIT, playerName);
                     break;
                 }
-            }
-        }else{
-            try {
-                playersView.asksToChooseStartingPosition();
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
             }
         }
         checkIfAllPlayersReady();
     }
 
     public void setPosition (String playerName, VirtualView playersView, int position) {
-        if (!playerStateIs(playerName, ClientState.S_FINISHED)) {
+        if (!playerStateIs(playerName, ClientState.S_END_DRAW_TILE_CARD)) {
             return;
         }
         FlightBoard flightBoard = game.getFlightBoard();
         Player player = game.identifyPlayerByName(playerName);
 
         if (flightBoard.addToFlightBoard(player, position)) {
-            notifyPlayerMovement(playerName, player.getPlayerPosition(), player.getPlayerRanking());
+            notifyPlayerMovement(playerName, player.getPlayerColor(),player.getPlayerPosition(), player.getPlayerRanking());
         }
         else {
             try{
@@ -672,10 +665,10 @@ public class GameController implements Observer, Serializable {
         checkIfAllPlayersReady();
     }
 
-    private void notifyPlayerMovement(String playerName, int position, int ranking) {
+    private void notifyPlayerMovement(String playerName,PlayersColor playersColor, int position, int ranking) {
         for (VirtualView view: playersViewMap.values()) {
             try {
-                view.notifyPlayerMovement(playerName, position, ranking);
+                view.notifyPlayerMovement(playerName, playersColor, position, ranking);
             } catch (Exception ignored) {}
         }
     }

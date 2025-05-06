@@ -308,6 +308,35 @@ public class ClientController {
                     return true;
                 switch (words[0]) {
                     case"done","d" -> {
+                        if(gameMode==GameMode.LEVEL2) {
+                            if(!(words.length > 1)){
+                                try {
+                                    view.wrongLocalInput();
+                                } catch (RemoteException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                return false;
+                            }
+                            int chose;
+                            chose = numerate(scroll(words, 1));
+                            if (chose == -1)
+                                return false;
+                            if (chose > 0 &&  chose <= numPlayer) {
+                                setState(ClientState.WAIT);
+                                try {
+                                    virtualController.notifySetPosition(chose);
+                                } catch (RemoteException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            } else {
+                                try {
+                                    view.wrongLocalInput();
+                                } catch (RemoteException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                return false;
+                            }
+                        }
                         setState(ClientState.WAIT);
                         try {
                             virtualController.notifyCompleted();
@@ -527,34 +556,6 @@ public class ClientController {
                     return true;
                 if (thirdHourglassTurn(words))
                     return true;
-                if(gameMode==GameMode.LEVEL2) {
-                    int chose;
-                    chose = numerate(scroll(words, 0));
-                    if (chose == -1)
-                        return false;
-                    if (chose > 0 &&  chose <= numPlayer) {
-                        setState(ClientState.WAIT);
-                        try {
-                            virtualController.notifySetPosition(chose);
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
-                    } else {
-                        try {
-                            view.wrongLocalInput();
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
-                        return false;
-                    }
-                } else {
-                    try {
-                        view.wrongLocalInput();
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
-                    return false;
-                }
             }
 
             case ROLL_DICE->{
@@ -1103,12 +1104,14 @@ public class ClientController {
         flightBoard.addInGamePlayer(player);
     }
 
-    public void updateFlightboard(String name,int pos, int ranking) {
+    public void updateFlightboard(String name,PlayersColor color,int pos, int ranking) {
         for(LightPlayer player:flightBoard.getInGamePlayers())
             if (player.getPlayerName().equals(name)){
                 player.setPosition(pos);
                 player.setRank(ranking);
+                return;
             }
+        addToFlightboard(name,color,pos,ranking);
     }
 
     public LightFlightboard getFlightBoard() {

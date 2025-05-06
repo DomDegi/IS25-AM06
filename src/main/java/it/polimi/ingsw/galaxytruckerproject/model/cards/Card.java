@@ -66,7 +66,7 @@ public abstract class Card implements Serializable {
     public void notifyMovement (Player player) {
         for (VirtualView view : viewsMap.values()) {
             try {
-                view.notifyPlayerMovement(player.getPlayerName(), player.getPlayerPosition(), player.getPlayerRanking());
+                view.notifyPlayerMovement(player.getPlayerName(), player.getPlayerColor(), player.getPlayerPosition(), player.getPlayerRanking());
             } catch (Exception ignored) {}
         }
     }
