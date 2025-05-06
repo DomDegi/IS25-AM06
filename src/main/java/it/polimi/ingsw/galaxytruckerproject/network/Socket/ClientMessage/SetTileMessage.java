@@ -8,7 +8,7 @@ public class SetTileMessage extends ClientMessage {
     private Tile tile;
 
     public SetTileMessage(Tile tile) {
-        this.tile = tile;
+        this.tile = tile.send();
     }
 
     @Override

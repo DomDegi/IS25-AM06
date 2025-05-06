@@ -46,7 +46,7 @@ public class VirtualViewSocket implements VirtualView {
 
     @Override
     public void notifyNewTurnedTile(Tile tile) throws RemoteException {
-        clientHandler.sendServerMessageToClient(new NewTurnedTileMessage(tile));
+        clientHandler.sendServerMessageToClient(new NewTurnedTileMessage(tile.send()));
     }
 
     @Override

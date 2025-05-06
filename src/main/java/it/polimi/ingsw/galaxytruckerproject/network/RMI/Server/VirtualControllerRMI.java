@@ -86,8 +86,13 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
 
 
     //TILE METHODS
-    public void notifySetTile( Tile tile) throws RemoteException {
-        controller.setTile(tile);
+    public void notifySetTile( Tile tile){
+        try {
+            controller.setTile(tile);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
     public void notifyTileBooking() throws RemoteException {
         controller.bookTile();
