@@ -47,6 +47,7 @@ public class SocketServer implements Server {
                     System.out.println("Connection crashed");
                     throw new RuntimeException(e);
                 }
+                multiGameController.playPingPong();
             }
         }, "SocketServer thread");
         socketThread.start();

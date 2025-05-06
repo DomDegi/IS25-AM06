@@ -1,0 +1,25 @@
+package it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage;
+
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerHandler;
+
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+
+public class FinalScoresMessage extends  ServerMessage {
+
+    private ArrayList<Player> players;
+
+    public FinalScoresMessage(ArrayList<Player> players) {
+        this.players = players;
+    }
+
+    @Override
+    public void processMessage(ServerHandler serverHandler) {
+        try {
+            serverHandler.getView().showScores(players);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}

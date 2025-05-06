@@ -45,54 +45,55 @@ public class VirtualViewSocket implements VirtualView {
 
     @Override
     public void notifyNewTurnedTile(Tile tile) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new NewTurnedTileMessage(tile));
     }
 
     @Override
     public void notifyRemoveTurnedTile(Tile tile) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new RemoveTurnedTileMessage(tile));
     }
 
     @Override
     public void notifyPlayerMovement(String playerName, int playerPosition, int playerRanking) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new PlayerMovementMessage(playerName, playerPosition, playerRanking));
     }
 
     @Override
     public void notifyPositionedTile(String playerName, Tile tile) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new PositionedTileMessage(playerName, tile));
     }
 
     @Override
     public void notifyBookedTile(String playerName, Tile tile) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new BookedTileMessage(playerName, tile));
     }
 
     @Override
     public void notifyRemovedBookedTile(String playerName, Tile tile) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new RemovedBookedTileMessage(playerName, tile));
     }
 
     @Override
     public void notifyNotAvailableCardDeck(ArrayList<Integer> lockedSmallDecks) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new NotAvailableCardDeckMessage(lockedSmallDecks));
     }
 
     @Override
     public void notifyModifiedTiles(String playerName, ArrayList<Tile> tiles) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new ModifiedTilesMessage(playerName, tiles));
     }
 
     @Override
     public void notifyGainedCredits(String playerName, int totalCredits) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new GainedCreditsMessage(playerName, totalCredits));
     }
 
     @Override
     public void notifyBrokenTile(String playerName, ArrayList<Coordinates> coordinates) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new BrokenTileMessage(playerName, coordinates));
     }
 
+    // DA FARE CON JSON
     @Override
     public void notifyChangesWhileGone(Map<String, LightShipBoard> updatedShipBoards, LightFlightboard updatedFlightBoard, Card drawnCard, int hourglassTurns, Map<Integer, Tile> turnedTiles, ArrayList<Integer> notAvailable) throws RemoteException {
 
@@ -153,7 +154,7 @@ public class VirtualViewSocket implements VirtualView {
 
     @Override
     public void showErrorMessage(String errorMessage) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new ErrorMessage(errorMessage));
     }
 
     @Override
@@ -168,7 +169,7 @@ public class VirtualViewSocket implements VirtualView {
 
     @Override
     public void showDrawnTile(Tile drawnTile) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new ShowDrawnTileMessage(drawnTile));
     }
 
     @Override
@@ -183,7 +184,7 @@ public class VirtualViewSocket implements VirtualView {
 
     @Override
     public void showWrongInputMessage() throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new WrongInputMessage());
     }
 
     @Override
@@ -192,17 +193,17 @@ public class VirtualViewSocket implements VirtualView {
 
     @Override
     public void asksToRollTheDices() throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new AskToRollTheDicesMessage());
     }
 
     @Override
     public void showDiceRoll(int diceRoll) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new ShowDiceRollMessage(diceRoll));
     }
 
     @Override
     public void asksToChooseStartingPosition() throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new AskToChooseStartingPositionMessage());
     }
 
     @Override
@@ -222,7 +223,7 @@ public class VirtualViewSocket implements VirtualView {
 
     @Override
     public void notifyYourShipIsCorrect() throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new ShipIsCorrectMessage());
     }
 
     @Override
@@ -247,17 +248,17 @@ public class VirtualViewSocket implements VirtualView {
 
     @Override
     public void showScores(ArrayList<Player> players) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new FinalScoresMessage(players));
     }
 
     @Override
     public void notifyDrawnCard(Card card) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new DrawnCardMessage(card));
     }
 
     @Override
     public void notifyPlayerLandedOnPlanet(String playerName, int planet) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new PlayerLandedOnPlanetMessage(playerName,planet));
     }
 
     @Override
@@ -297,12 +298,12 @@ public class VirtualViewSocket implements VirtualView {
 
     @Override
     public void setGameMode(GameMode gameMode) throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new SetGameModeMessage(gameMode));
     }
 
     @Override
     public void ping() throws RemoteException {
-
+        clientHandler.sendServerMessageToClient(new ServerPingMessage());
     }
 
     @Override
