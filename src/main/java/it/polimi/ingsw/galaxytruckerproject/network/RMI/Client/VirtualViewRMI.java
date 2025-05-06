@@ -4,6 +4,7 @@ import it.polimi.ingsw.galaxytruckerproject.client.ClientController;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
@@ -350,4 +351,12 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
         view.asksToRemoveCrew();
     }// aggiorna: deve chiamare il nuovo rimuovitore di crew dal coordinate request handler
 
+    @Override
+    public void notifyInGamePlayers(ArrayList<Player> players) throws RemoteException {
+        ArrayList<LightPlayer>  inGamePlayers = new ArrayList<>();
+        for (Player p: players) {
+            inGamePlayers.add(new LightPlayer(p.getPlayerName(),p.getPlayerColor()));
+        }
+        clientController.getFlightBoard().addInLobbyPlayer(inGamePlayers);
+    }
 }

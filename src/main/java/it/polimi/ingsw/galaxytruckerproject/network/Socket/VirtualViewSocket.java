@@ -4,6 +4,7 @@ import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.ControllerInterface;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
@@ -325,5 +326,14 @@ public class VirtualViewSocket implements VirtualView {
     @Override
     public DisplayableView getDisplayedView() throws RemoteException {
         return null;
+    }
+
+    @Override
+    public void notifyInGamePlayers(ArrayList<Player> players) throws RemoteException {
+        ArrayList<LightPlayer>  inGamePlayers = new ArrayList<>();
+        for (Player p: players) {
+            inGamePlayers.add(new LightPlayer(p.getPlayerName(),p.getPlayerColor()));
+        }
+        clientHandler.sendServerMessageToClient(new InGamePlayers(inGamePlayers));
     }
 }

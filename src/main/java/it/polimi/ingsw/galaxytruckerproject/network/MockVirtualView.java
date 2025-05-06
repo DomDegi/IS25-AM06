@@ -84,6 +84,11 @@ public class MockVirtualView implements VirtualView {
     }
 
     @Override
+    public void notifyInGamePlayers(ArrayList<Player> players) throws RemoteException {
+
+    }
+
+    @Override
     public void ping() throws RemoteException {
 
     }
