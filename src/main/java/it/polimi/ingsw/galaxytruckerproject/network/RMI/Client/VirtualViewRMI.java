@@ -3,7 +3,6 @@ package it.polimi.ingsw.galaxytruckerproject.network.RMI.Client;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientController;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
-import it.polimi.ingsw.galaxytruckerproject.client.GamePhases;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
@@ -74,6 +73,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     }
 
     //A CHE SERVE
+    //Boh, da quando c'è joinableGames a niente
     @Override
     public void askPlayerCount() throws IOException {
         view.askPlayerCount();
@@ -319,7 +319,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     @Override
     public void notifyYourShipIsCorrect() throws RemoteException{
         view.notifyYourShipIsCorrect();
-        clientController.setPhase(GamePhases.CARDS);
+        //clientController.setPhase(GamePhases.CARDS);
     }
 
     @Override

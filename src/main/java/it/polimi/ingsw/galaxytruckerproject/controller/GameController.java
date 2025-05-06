@@ -751,19 +751,39 @@ public class GameController implements Observer, Serializable {
         Timer hourglass = new Timer();
         this.hourglassTurns++;
         hourglassON = true;
+        notifyTurnedHourglass();
         hourglass.schedule(new TimerTask() {
             @Override
             public void run() {
                 hourglassON = false;
-                System.out.println("hourglass is exhausted\n");
+                notifyEndOfTime();
                 hourglass.cancel();
                 if (hourglassTurns == 3) {
                     updateEveryView(ClientState.S_FINISHED);
                     checkIfAllPlayersReady();
-                    System.out.println("The time is up, ship creation is over\n");
                 }
             }
         }, 95000); //95 seconds
+    }
+
+    public void notifyTurnedHourglass() {
+        for (VirtualView view: playersViewMap.values()) {
+            try {
+                view.notifyTurnedHourglass(hourglassTurns);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void notifyEndOfTime() {
+        for (VirtualView view: playersViewMap.values()) {
+            try {
+                view.notifyEndOfTime();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public void askFirstPlayerToDraw() {

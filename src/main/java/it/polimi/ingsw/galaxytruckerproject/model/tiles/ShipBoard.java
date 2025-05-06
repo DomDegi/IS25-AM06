@@ -201,6 +201,7 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
             return false;
         }
         bookedTiles.add(tile);
+        tile.setBooked(true);
         return true;
     }
 
@@ -303,52 +304,6 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
         tilesTable[coordinates.getX()][coordinates.getY()] = Optional.empty();
     }
 
-    //destroy tile+ return set of new possible shipboard coordinates
-    /*public ArrayList<Set<Coordinates>> destroyTile(Coordinates coordinates) {
-        if (coordinates.x == 0 && coordinates.y == 0) {
-            System.out.println("Can't destroy ");
-        }
-        tilesTable[coordinates.x][coordinates.y].get().destroy();
-        tilesTable[coordinates.getX()][coordinates.getY()] = Optional.empty();
-        Set<Coordinates> set1 = null;
-        Set<Coordinates> set2 = null;
-        Set<Coordinates> set3 = null;
-        Set<Coordinates> set4 = null;
-        //southSet
-        int x = coordinates.getX();
-        int y = coordinates.getY();
-
-        //south
-        if (tilesTable[x + 1][y].isPresent() && tilesTable[x + 1][y].get().fillable()) {
-            set1 = (brokenGraph(new Coordinates(x + 1, y)));
-        }
-        //east
-        if (tilesTable[x][y + 1].isPresent() && tilesTable[x][y + 1].get().fillable() && (set1 == null || (tilesTable[x][y + 1].isPresent() && !set1.contains(tilesTable[x][y + 1].get().getCoordinates())))) {
-                    set2 = brokenGraph(new Coordinates(x, y + 1));
-        }
-        //north
-        if (tilesTable[x - 1][y].isPresent() && tilesTable[x - 1][y].get().fillable() && (set1 == null || !set1.contains(tilesTable[x - 1][y].get().getCoordinates())) && (set2 == null || !set2.contains(tilesTable[x - 1][y].get().getCoordinates()))) {
-            set3 = brokenGraph(new Coordinates(x - 1, y));
-        }
-        //west
-        if (tilesTable[x][y - 1].isPresent() && tilesTable[x][y - 1].get().fillable() && (set1 == null || !set1.contains(tilesTable[x][y - 1].get().getCoordinates())) && (set2 == null || !set2.contains(tilesTable[x][y - 1].get().getCoordinates())) && (set3 == null || !set3.contains(tilesTable[x][y - 1].get().getCoordinates()))) {
-            set4 = brokenGraph(new Coordinates(x, y - 1));
-        }
-        ArrayList<Set<Coordinates>> array = new ArrayList<>();
-        if (set1 != null) {
-            array.add(set1);
-        }
-        if (set2 != null) {
-            array.add(set2);
-        }
-        if (set3 != null) {
-            array.add(set3);
-        }
-        if (set4 != null) {
-            array.add(set4);
-        }
-        return array;
-    }*/
 
     public ArrayList<Set<Coordinates>> destroyTile(Coordinates coordinates) {
         if (coordinates.x == 0 && coordinates.y == 0) {

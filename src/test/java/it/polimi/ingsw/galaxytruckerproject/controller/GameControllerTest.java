@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.controller;
 
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
@@ -15,7 +16,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameControllerTest {
     GameController gameController;
+    GameController trialController;
     Game game;
+    Game trialGame;
     Player player1;
     Player player2;
     Player player3;
@@ -28,11 +31,42 @@ class GameControllerTest {
     @BeforeEach
     void setUp() {
         game = new Game(GameMode.LEVEL2, 4);
+        trialGame = new Game(GameMode.TRIAL, 4);
         this.gameController = new GameController(game,"test");
+        this.trialController = new GameController(trialGame,"trialTest");
         player1 = new Player("p1", RED);
         player2 = new Player("p2", YELLOW);
         player3 = new Player("p3", GREEN);
         player4 = new Player("p4", BLUE);
+    }
+
+    @Test
+    void player_addition_test_trial() {
+        trialController.addToPlayersViewMap(player1.getPlayerName(), view1, false);
+        assertTrue(trialController.checkColorAvailable(player1.getPlayerName(),view1,RED));
+        trialController.playerAddition("p1", RED);
+        assertEquals(1, trialController.getPlayers().size());
+        trialController.addToPlayersViewMap(player2.getPlayerName(), view2, false);
+        assertTrue(trialController.checkColorAvailable(player2.getPlayerName(),view2,YELLOW));
+        trialController.playerAddition("p2", YELLOW);
+        assertEquals(2, trialController.getPlayers().size());
+        trialController.addToPlayersViewMap(player3.getPlayerName(), view3, false);
+        assertTrue(trialController.checkColorAvailable(player3.getPlayerName(),view3,GREEN));
+        trialController.playerAddition("p3", GREEN);
+        assertEquals(3, trialController.getPlayers().size());
+        trialController.addToPlayersViewMap(player4.getPlayerName(), view4, false);
+        assertTrue(trialController.checkColorAvailable(player4.getPlayerName(),view4,BLUE));
+        trialController.playerAddition("p4", BLUE);
+        assertEquals(4, trialController.getPlayers().size());
+    }
+
+    @Test
+    void set_player_pointers_trial() {
+        player_addition_test_trial();
+        player1 = trialController.getActivePlayers().get("p1");
+        player2 = trialController.getActivePlayers().get("p2");
+        player3 = trialController.getActivePlayers().get("p3");
+        player4 = trialController.getActivePlayers().get("p4");
     }
 
     @Test
@@ -57,14 +91,15 @@ class GameControllerTest {
 
     @Test
     void set_player_pointers() {
+        player_addition_test();
         player1 = gameController.getActivePlayers().get("p1");
         player2 = gameController.getActivePlayers().get("p2");
         player3 = gameController.getActivePlayers().get("p3");
         player4 = gameController.getActivePlayers().get("p4");
     }
+
     @Test
     void player_draws_tile_test() {
-        player_addition_test();
         set_player_pointers();
         gameController.turnHourglass(player1.getPlayerName());
         gameController.drawTile(view1,player1.getPlayerName(),-1 ,false);
@@ -73,15 +108,12 @@ class GameControllerTest {
         gameController.refuseTile(player1.getPlayerName());
         assertFalse(game.getTurnedTiles().isEmpty());
         assertNotNull(game.identifyPlayerByName(player2.getPlayerName()));
-        System.out.println(game.getTurnedTiles().get(drawnBy1.getKey()).toString());
-        assertNotNull(game.drawTurnedTile(player2.getPlayerName(),drawnBy1.getKey()));
         gameController.drawTile(view2,player2.getPlayerName(),drawnBy1.getKey() ,true);
         assertNotNull(player2.getDrawnTile());
     }
 
     @Test
     void player_draws_cards_ship() {
-        player_addition_test();
         set_player_pointers();
         gameController.turnHourglass(player1.getPlayerName());
         gameController.lookGameCards(player1.getPlayerName(), view1, 1);
@@ -97,8 +129,30 @@ class GameControllerTest {
         player_draws_tile_test();
         Tile toSet = player2.getDrawnTile();
         toSet.setCoordinates(new Coordinates(1,3));
-        gameController.setTile(view2,player2.getPlayerName(),player2.getDrawnTile());
+        gameController.setTile(view2,player2.getPlayerName(),toSet);
         assertEquals(player2.getShipBoard().getTile(new Coordinates(1,3)),toSet);
-        //assertNull(player2.getDrawnTile());
+        assertNull(player2.getDrawnTile());
+    }
+
+    @Test
+    void booked_test() {
+        player_draws_tile_test();
+        Tile tile = player2.getDrawnTile();
+        gameController.bookTile(view2, player2.getPlayerName());
+        tile.setCoordinates(new Coordinates(1,3));
+        gameController.setTile(view2,player2.getPlayerName(),tile);
+        assertEquals(player2.getShipBoard().getTile(new Coordinates(1,3)),tile);
+        assertTrue(player2.getShipBoard().getBookedTiles().isEmpty());
+    }
+
+    @Test
+    void completed_ship_test_trial() {
+        set_player_pointers_trial();
+        trialController.turnHourglass(player1.getPlayerName());
+        trialController.completed(player1.getPlayerName(), view1);
+        trialController.completed(player2.getPlayerName(), view2);
+        trialController.completed(player3.getPlayerName(), view3);
+        trialController.completed(player4.getPlayerName(), view4);
+        assertEquals(GameState.VERIFY_SHIP_CORRECTNESS, trialController.getGameState());
     }
 }
