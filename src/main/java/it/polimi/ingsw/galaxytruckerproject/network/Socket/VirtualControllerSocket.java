@@ -107,7 +107,7 @@ public class VirtualControllerSocket implements VirtualController{
 
     @Override
     public void sendCoordinates(ArrayList<Coordinates> coordinates) throws RemoteException {
-
+        //??
     }
 
     @Override

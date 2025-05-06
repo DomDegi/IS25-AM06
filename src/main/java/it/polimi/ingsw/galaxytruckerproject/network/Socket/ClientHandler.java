@@ -6,10 +6,12 @@ import it.polimi.ingsw.galaxytruckerproject.network.Socket.ClientMessage.ClientM
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.ServerMessage;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -123,7 +125,16 @@ public class ClientHandler implements Runnable {
         while (listening) {
             try {
                 ClientMessage message = (ClientMessage) input.readObject();
-                message.processMessage(this); // o passa la VirtualView se serve
+                message.processMessage(this);
+            } catch (EOFException | SocketException e) {
+                System.out.println("Client disconnected: " + clientSocket.getInetAddress());
+                listening = false;
+                break;
+            } catch (IOException e) {
+                System.out.println("I/O error with client: " + clientSocket.getInetAddress());
+                e.printStackTrace();
+                listening = false;
+                break;
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
                 break;

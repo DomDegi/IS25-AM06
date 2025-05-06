@@ -57,9 +57,9 @@ public class ServerHandler implements Runnable {
                     this.output = new ObjectOutputStream(server.getOutputStream());
                     this.output.flush();
                     this.input = new ObjectInputStream(server.getInputStream());
-                    this.waitSetup();
-                    Thread messageReceiver = new Thread(this::receiveMessages, "message receiver");
-                    messageReceiver.start();
+                    //this.waitSetup();
+                    //Thread messageReceiver = new Thread(this::receiveMessages, "message receiver");
+                    //messageReceiver.start();
                 } catch (IOException e) {
                     e.printStackTrace();
                     System.out.println("Input and output streams could not be created");
@@ -67,6 +67,11 @@ public class ServerHandler implements Runnable {
                 }
             });
             connectionFuture.get(3,TimeUnit.SECONDS);
+
+            this.waitSetup();
+            Thread messageReceiver = new Thread(this::receiveMessages, "message receiver");
+            messageReceiver.start();
+
         } catch (TimeoutException e) {
             e.printStackTrace();
             System.out.println("Connection timed out");
