@@ -1039,14 +1039,15 @@ public class GameController implements Observer, Serializable {
 
     /**
      * returns playersView from playerName
+     *
      * @param playerName player to get view for
      * @return player's viewInterface
      */
-    public ViewInterface getViewFromNickname(String playerName) {
+    public VirtualView getViewFromNickname(String playerName) {
         return playersViewMap.get(playerName);
     }
 
-    public void pingPong(String playerName, ViewInterface view){
+    public void pingPong(String playerName, VirtualView view){
         Player player=activePlayers.get(playerName);
         CompletableFuture<Void> future = new CompletableFuture<>();
         pendingPongs.put(playerName, future);

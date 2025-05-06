@@ -22,11 +22,7 @@ public class BrokenTileMessage extends  ServerMessage {
         ClientController clientController = serverHandler.getClientController();
         clientController.brokenTiles(playerName, brokenTiles);
         if (playerName.equals(clientController.getName())) {
-            try {
-                clientController.getView().printShipboard(clientController.getLightShipBoard());
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
+            clientController.getView().printShipboard(clientController.getLightShipBoard());
         }
     }
 }

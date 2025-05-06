@@ -6,6 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoRed;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.rmi.RemoteException;
@@ -19,9 +20,9 @@ public class GoodsManager {
     private int state;
     private int goodsToGet;
     private final HashSet<CargoHold> changes;
-    private final ViewInterface view;
+    private final DisplayableView view;
 
-    public GoodsManager(LightPlayer currentPlayer, ArrayList<Goods> possibleGoodsGain, ViewInterface view) {
+    public GoodsManager(LightPlayer currentPlayer, ArrayList<Goods> possibleGoodsGain, DisplayableView view) {
         this.view=view;
         this.currentPlayer=currentPlayer;
         this.changes=new HashSet<>();

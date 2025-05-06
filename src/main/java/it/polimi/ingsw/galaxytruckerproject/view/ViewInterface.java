@@ -22,44 +22,17 @@ import java.util.Map;
 
 public interface ViewInterface extends Remote, Serializable {
     /**
-     * asks the player to set a nickname
-     * @throws IOException
-     */
-    void askNickname () throws IOException;
-    /**
-     * asks player to set a color for the starting cabin
-     * @throws IOException
-     */
-    void askColor () throws RemoteException;
-    /**
      * show login response from server
      * @param success
          */
     void showLoginResponse(boolean success) throws RemoteException;
+
     void setClientState (ClientState newState) throws RemoteException;
     /**
      * Shows on the view the list of the games that are in starting phase.
      * Also asks player calls for the function asksJoinOrCreate().
      */
     void showJoinableGamesList(ArrayList<GameInfo> joinableGames) throws RemoteException;
-
-    /**
-     * asks player to set a player count for the created game
-     * @throws IOException
-     */
-    void askPlayerCount () throws IOException;
-
-    /**
-     * asks the server to create a new game with the name chosen
-     * @throws IOException
-     */
-    void createGame() throws IOException;
-
-    /**
-     * asks to join the game with the inputted name
-     * @throws IOException
-     */
-    void joinGame() throws IOException;
 
     /**
      * shows on the view a generic message sent by the server
@@ -73,39 +46,12 @@ public interface ViewInterface extends Remote, Serializable {
      */
     void showErrorMessage (String errorMessage) throws RemoteException;
     /**
-     * shows on the view the list of players in the game with their status (in flight or landed)
-     * @param players in game players
-     */
-    void showInGamePlayers (ArrayList<Player> players)throws RemoteException;
-    /**
-     * shows the chosen players shipboard
-     * @param player
-     * @param shipBoard
-     */
-    void showPlayersBoard(String player, ShipBoard shipBoard)throws RemoteException;
-    /**
      * show the drawnTile to the player
      * @param drawnTile
      */
     //DEVE ANCHE MANDARLA AL CLIENT
     void showDrawnTile (Tile drawnTile) throws RemoteException;
-    /**
-     * shows the player the tiles that got turned from player refusing them
-     * @param turnedTiles the current array in the model
-     */
-    void showTurnedTiles (Map<Integer,Tile> turnedTiles) throws RemoteException;
-    /**
-     * shows the tiles that the player booked on their shipboard
-     * @param bookedTiles the booked tiles
-     */
-    void showBookedTiles (ArrayList<Tile> bookedTiles)throws RemoteException;
     void showWrongInputMessage () throws RemoteException;
-    /**
-     * prints on the view the cards that are on the shipboard to be seen during
-     * ship building phase
-     * @param inGameCards the cards returned by the model
-     */
-    void showInGameCards (ArrayList<Card> inGameCards)throws RemoteException;
     void asksToRollTheDices()throws RemoteException;//asks the player to confirm he wants to roll the dices
     void showDiceRoll(int diceRoll)throws RemoteException;
     /**
@@ -117,16 +63,12 @@ public interface ViewInterface extends Remote, Serializable {
      * asks the player to input a series of coordinates of coord
      */
     void asksToInputCoordinates (CoordReqType coordReqType) throws RemoteException;
-    void asksToTurnTheHourglass ()throws RemoteException;
     void notifyYouCanDrawThisCardDeck() throws RemoteException;
-    void notifyYourShipIsCorrect()throws RemoteException;
+    void notifyYourShipIsCorrect()throws RemoteException;//need to understand if is usefull
     /**
      * asks to set position on the flightboard
      */
-    void asksToMakeAChoice () throws RemoteException;
-    void asksToManageGoods(ArrayList<Goods> goods) throws RemoteException;
-    void asksToRemoveGoods()throws RemoteException;
-    void asksToRemoveCrew()throws RemoteException;
+    void asksToMakeAChoice () throws RemoteException;//need to understand if is usefull
     /**
      * at the end of the game shows every players score on the view
      */
@@ -136,16 +78,8 @@ public interface ViewInterface extends Remote, Serializable {
      */
     void notifyDrawnCard(Card card) throws RemoteException; //tell the players which card has been drawn
     void notifyPlayerLandedOnPlanet(String playerName, int planet)  throws RemoteException;
-    void wrongLocalInput() throws RemoteException;
-    void showCard(ArrayList<Card> cards) throws RemoteException;
-    void printFlightboard(LightFlightboard lightFlightboard) throws RemoteException;
-    void printShipboard(LightShipBoard lightShipBoard) throws RemoteException;
-    void printProjectile(Projectile projectile) throws RemoteException;
-    void printCabins(Tile cabins) throws RemoteException;
-    void connected() throws RemoteException;
+    void connected() throws RemoteException;//need to understand if is usefull
     void setGameMode(GameMode gameMode) throws RemoteException;
-    void ping() throws RemoteException;
-    void goodsPrinter (ArrayList<Goods> goodsArray) throws RemoteException;
     void notifyTurnedHourglass( int i) throws RemoteException;
     void notifyEndOfTime() throws RemoteException;
 

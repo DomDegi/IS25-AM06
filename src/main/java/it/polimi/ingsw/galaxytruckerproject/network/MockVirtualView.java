@@ -90,15 +90,6 @@ public class MockVirtualView implements VirtualView {
 
     // --- ViewInterface methods ---
 
-    @Override
-    public void askNickname() throws IOException {
-        // Implement mock behavior or leave empty
-    }
-
-    @Override
-    public void askColor() {
-        // Implement mock behavior or leave empty
-    }
 
     @Override
     public void showLoginResponse(boolean success) throws RemoteException {
@@ -132,21 +123,6 @@ public class MockVirtualView implements VirtualView {
     }
 
     @Override
-    public void askPlayerCount() throws IOException {
-        // Implement mock behavior or leave empty
-    }
-
-    @Override
-    public void createGame() throws IOException {
-        // Implement mock behavior or leave empty
-    }
-
-    @Override
-    public void joinGame() throws IOException {
-        // Implement mock behavior or leave empty
-    }
-
-    @Override
     public void showGenericMessage(String genericMessage) {
         // Implement mock behavior or leave empty
     }
@@ -157,38 +133,13 @@ public class MockVirtualView implements VirtualView {
     }
 
     @Override
-    public void showInGamePlayers(ArrayList<Player> players) {
-        // Implement mock behavior or leave empty
-    }
-
-    @Override
-    public void showPlayersBoard(String player, ShipBoard shipBoard) {
-        // Implement mock behavior or leave empty
-    }
-
-    @Override
     public void showDrawnTile(Tile drawnTile) throws RemoteException {
-        // Implement mock behavior or leave empty
-    }
-
-    @Override
-    public void showTurnedTiles(Map<Integer, Tile> turnedTiles) {
-        // Implement mock behavior or leave empty
-    }
-
-    @Override
-    public void showBookedTiles(ArrayList<Tile> bookedTiles) {
         // Implement mock behavior or leave empty
     }
 
     @Override
     public void showWrongInputMessage() throws RemoteException {
         System.out.println("Wrong input");
-        // Implement mock behavior or leave empty
-    }
-
-    @Override
-    public void showInGameCards(ArrayList<Card> inGameCards) {
         // Implement mock behavior or leave empty
     }
 
@@ -223,11 +174,6 @@ public class MockVirtualView implements VirtualView {
     }
 
     @Override
-    public void asksToTurnTheHourglass() {
-        // Implement mock behavior or leave empty
-    }
-
-    @Override
     public void notifyYouCanDrawThisCardDeck() {
         // Implement mock behavior or leave empty
     }
@@ -239,21 +185,6 @@ public class MockVirtualView implements VirtualView {
 
     @Override
     public void asksToMakeAChoice() throws RemoteException {
-        // Implement mock behavior or leave empty
-    }
-
-    @Override
-    public void asksToManageGoods(ArrayList<Goods> goods) throws RemoteException {
-        // Implement mock behavior or leave empty
-    }
-
-    @Override
-    public void asksToRemoveGoods() {
-        // Implement mock behavior or leave empty
-    }
-
-    @Override
-    public void asksToRemoveCrew() {
         // Implement mock behavior or leave empty
     }
 
@@ -273,31 +204,6 @@ public class MockVirtualView implements VirtualView {
     }
 
     @Override
-    public void wrongLocalInput() {
-        // Implement mock behavior or leave empty
-    }
-
-    @Override
-    public void showCard(ArrayList<Card> cards) {
-        // Implement mock behavior or leave empty
-    }
-
-    @Override
-    public void printFlightboard(LightFlightboard lightFlightboard) {
-        // Implement mock behavior or leave empty
-    }
-
-    @Override
-    public void printShipboard(LightShipBoard lightShipBoard) {
-        // Implement mock behavior or leave empty
-    }
-
-    @Override
-    public void printProjectile(Projectile projectile) {
-        // Implement mock behavior or leave empty
-    }
-
-    @Override
     public void connected() {
 
     }
@@ -308,19 +214,10 @@ public class MockVirtualView implements VirtualView {
     }
 
     @Override
-    public void printCabins(Tile cabins) {
-
-    }
-
-    @Override
     public DisplayableView getDisplayedView(){
         return null;
     }
 
-    @Override
-    public void goodsPrinter (ArrayList<Goods> goodsArray){
-
-    }
 
     @Override
     public void notifyTurnedHourglass(int i) throws RemoteException {

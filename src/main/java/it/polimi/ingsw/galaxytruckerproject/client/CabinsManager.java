@@ -5,6 +5,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.AlienOptions;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CrewType;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.rmi.RemoteException;
@@ -12,11 +13,11 @@ import java.util.ArrayList;
 
 public class CabinsManager {
     private final LightPlayer lightPlayer;
-    private final ViewInterface view;
+    private final DisplayableView view;
     private final ArrayList<Coordinates> cabins;
     ArrayList<Tile> modifiedCabins = new ArrayList<>();
     private int index=0;
-    public CabinsManager(LightPlayer lightPlayer, ViewInterface view) {
+    public CabinsManager(LightPlayer lightPlayer, DisplayableView view) {
         this.view = view;
         this.lightPlayer = lightPlayer;
         this.cabins = lightPlayer.getShipBoard().getCabinsCoordinates();

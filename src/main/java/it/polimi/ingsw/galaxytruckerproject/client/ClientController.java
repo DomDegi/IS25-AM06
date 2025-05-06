@@ -92,11 +92,8 @@ public class ClientController {
         input = input.replaceAll("\\s+", " ");
         String[] words = input.split(" ");
         if (words.length == 0||words[0].isEmpty()) {
-            try {
-                view.wrongLocalInput();
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
+            view.wrongLocalInput();
+
             return false;
         }
 
@@ -108,11 +105,8 @@ public class ClientController {
                     case "tui","t"->
                             this.view=new TUI();
                     default->{
-                        try {
-                            view.wrongLocalInput();
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        view.wrongLocalInput();
+
                         return false;
                     }
                 }
@@ -136,11 +130,8 @@ public class ClientController {
                         }
                     }
                     default->{
-                        try {
-                            view.wrongLocalInput();
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        view.wrongLocalInput();
+
                         return false;
                     }
                 }
@@ -158,11 +149,7 @@ public class ClientController {
                                 throw new RuntimeException(e);
                             }
                         }else{
-                            try {
-                                view.wrongLocalInput();
-                            } catch (RemoteException e) {
-                                throw new RuntimeException(e);
-                            }
+                            view.wrongLocalInput();
                         }
                     }
                     case "redo"-> me.setPlayerName("");
@@ -175,21 +162,13 @@ public class ClientController {
                 switch(words[0]) {
                     case "creategame","c"-> {
                         if(!(words.length > 1)){
-                            try {
-                                view.wrongLocalInput();
-                            } catch (RemoteException e) {
-                                throw new RuntimeException(e);
-                            }
+                            view.wrongLocalInput();
                             return false;
                         }
                         String gameName = words[1];
                         int NumberOfPlayers;
                         if(!(words.length > 2)){
-                            try {
-                                view.wrongLocalInput();
-                            } catch (RemoteException e) {
-                                throw new RuntimeException(e);
-                            }
+                            view.wrongLocalInput();
                             return false;
                         }
                         NumberOfPlayers = numerate(scroll(words,2));
@@ -197,22 +176,14 @@ public class ClientController {
                             return false;
                         numPlayer=NumberOfPlayers;
                         if(!(words.length > 3)){
-                            try {
-                                view.wrongLocalInput();
-                            } catch (RemoteException e) {
-                                throw new RuntimeException(e);
-                            }
+                            view.wrongLocalInput();
                             return false;
                         }
                         switch(words[3]) {
                             case "trialmode","t"-> gameMode=GameMode.TRIAL;
                             case "level2mode","2"-> gameMode=GameMode.LEVEL2;
                             default->{
-                                try {
-                                    view.wrongLocalInput();
-                                } catch (RemoteException e) {
-                                    throw new RuntimeException(e);
-                                }
+                                view.wrongLocalInput();
                                 return false;
                             }
                         }
@@ -225,20 +196,12 @@ public class ClientController {
                     }
                     case "joingame","j"-> {
                         if(!(words.length > 1)){
-                            try {
-                                view.wrongLocalInput();
-                            } catch (RemoteException e) {
-                                throw new RuntimeException(e);
-                            }
+                            view.wrongLocalInput();
                             return false;
                         }
                         String gameName = words[1];
                         if(gameInfo==null){
-                            try {
-                                view.wrongLocalInput();
-                            } catch (RemoteException e) {
-                                throw new RuntimeException(e);
-                            }
+                            view.wrongLocalInput();
                             return false;
                         }
                         for(GameInfo games:gameInfo) {
@@ -253,19 +216,11 @@ public class ClientController {
                                 return true;
                             }
                         }
-                        try {
-                            view.wrongLocalInput();
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        view.wrongLocalInput();
                         return false;
                     }
                     default-> {
-                        try {
-                            view.wrongLocalInput();
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        view.wrongLocalInput();
                         return false;
                     }
                 }
@@ -283,11 +238,7 @@ public class ClientController {
                     case "blue","b"->
                         color = PlayersColor.BLUE;
                     default->{
-                        try {
-                            view.wrongLocalInput();
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        view.wrongLocalInput();
                         return false;
                     }
                 }
@@ -313,11 +264,7 @@ public class ClientController {
                     case"done","d" -> {
                         if(gameMode==GameMode.LEVEL2) {
                             if(!(words.length > 1)){
-                                try {
-                                    view.wrongLocalInput();
-                                } catch (RemoteException e) {
-                                    throw new RuntimeException(e);
-                                }
+                                view.wrongLocalInput();
                                 return false;
                             }
                             int chose;
@@ -332,11 +279,7 @@ public class ClientController {
                                     throw new RuntimeException(e);
                                 }
                             } else {
-                                try {
-                                    view.wrongLocalInput();
-                                } catch (RemoteException e) {
-                                    throw new RuntimeException(e);
-                                }
+                                view.wrongLocalInput();
                                 return false;
                             }
                         }
@@ -349,11 +292,7 @@ public class ClientController {
                     }
                     case "draw" -> {
                         if(!(words.length > 1)){
-                            try {
-                                view.wrongLocalInput();
-                            } catch (RemoteException e) {
-                                throw new RuntimeException(e);
-                            }
+                            view.wrongLocalInput();
                             return false;
                         }
                         switch (words[1]) {
@@ -361,11 +300,7 @@ public class ClientController {
                                 if(gameMode==GameMode.LEVEL2) {
                                     int chose ;
                                     if(!(words.length > 2)){
-                                        try {
-                                            view.wrongLocalInput();
-                                        } catch (RemoteException e) {
-                                            throw new RuntimeException(e);
-                                        }
+                                        view.wrongLocalInput();
                                         return false;
                                     }
                                     chose = numerate(scroll(words, 2));
@@ -381,19 +316,11 @@ public class ClientController {
                                         indexDeckInHandOrPlanet = chose;
                                         displayedCard = this.deck.get(indexDeckInHandOrPlanet);
                                     } else {
-                                        try {
-                                            view.wrongLocalInput();
-                                        } catch (RemoteException e) {
-                                            throw new RuntimeException(e);
-                                        }
+                                        view.wrongLocalInput();
                                         return false;
                                     }
                                 } else {
-                                    try {
-                                        view.wrongLocalInput();
-                                    } catch (RemoteException e) {
-                                        throw new RuntimeException(e);
-                                    }
+                                    view.wrongLocalInput();
                                     return false;
                                 }
                             }
@@ -422,11 +349,7 @@ public class ClientController {
                                             me.getShipBoard().removeBookedTile(0);
                                             setState(ClientState.S_MANAGE_DRAWN_TILE);
                                         }else{
-                                            try {
-                                                view.wrongLocalInput();
-                                            } catch (RemoteException e) {
-                                                throw new RuntimeException(e);
-                                            }
+                                            view.wrongLocalInput();
                                             return false;
                                         }
                                     }
@@ -441,11 +364,7 @@ public class ClientController {
                                             }
                                             setState(ClientState.S_MANAGE_DRAWN_TILE);
                                         }else{
-                                            try {
-                                                view.wrongLocalInput();
-                                            } catch (RemoteException e) {
-                                                throw new RuntimeException(e);
-                                            }
+                                            view.wrongLocalInput();
                                             return false;
                                         }
                                     }
@@ -463,11 +382,7 @@ public class ClientController {
                                                 throw new RuntimeException(e);
                                             }
                                         }else {
-                                            try {
-                                                view.wrongLocalInput();
-                                            } catch (RemoteException e) {
-                                                throw new RuntimeException(e);
-                                            }
+                                            view.wrongLocalInput();
                                             return false;
                                         }
                                     }
@@ -500,11 +415,7 @@ public class ClientController {
                     case "position" -> {
                         Coordinates coordinates;
                         if(!(words.length > 2)){
-                            try {
-                                view.wrongLocalInput();
-                            } catch (RemoteException e) {
-                                throw new RuntimeException(e);
-                            }
+                            view.wrongLocalInput();
                             return false;
                         }
                         coordinates = transformCoordinates(scroll(words,1));
@@ -536,11 +447,7 @@ public class ClientController {
                     }
                     case "book" -> {
                         if(!me.getShipBoard().addBookedTile(this.tileInHand)){
-                            try {
-                                view.wrongLocalInput();
-                            } catch (RemoteException e) {
-                                throw new RuntimeException(e);
-                            }
+                            view.wrongLocalInput();
                             return false;
                         }
                         this.tileInHand.setBooked(true);
@@ -602,11 +509,7 @@ public class ClientController {
                         }
                     }
                     default->{
-                        try {
-                            view.wrongLocalInput();
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        view.wrongLocalInput();
                         return false;
                     }
                 }
@@ -674,11 +577,7 @@ public class ClientController {
                         case "brownalien" -> type = CrewType.BROWN;
                         case "purplealien" -> type = CrewType.PURPLE;
                         default -> {
-                            try {
-                                view.wrongLocalInput();
-                            } catch (RemoteException e) {
-                                throw new RuntimeException(e);
-                            }
+                            view.wrongLocalInput();
                             try {
                                 cabinsManager.setup();
                             } catch (RemoteException e) {
@@ -772,11 +671,7 @@ public class ClientController {
                 phase = GamePhases.SHIPBOARD;
             }
             case S_END_DRAW_TILE_CARD -> {
-                try {
-                    view.showTurnedTiles(turnedTiles);
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+                view.showTurnedTiles(turnedTiles);
             }
             case S_MANAGE_CARDS -> {
                 if(gameMode==GameMode.TRIAL) {
@@ -834,11 +729,7 @@ public class ClientController {
                 }
             }
             case ROLL_DICE -> {
-                try {
-                    view.printProjectile(displayedCard.getFirst().getListOfProjectiles().getFirst());
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+                view.printProjectile(displayedCard.getFirst().getListOfProjectiles().getFirst());
                 displayedCard.getFirst().getListOfProjectiles().removeFirst();
             }
             case DRAW_CARD -> {
@@ -852,11 +743,7 @@ public class ClientController {
                     goodsManager = new GoodsManager(me, goodsList,view);
                     inManager=true;
                 }
-                try {
-                    view.goodsPrinter(goodsList);
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+                view.goodsPrinter(goodsList);
                 try {
                     view.showGenericMessage("Chose for each good where to put it, input 'no' to stop:\n");
                 } catch (RemoteException e) {
@@ -873,49 +760,29 @@ public class ClientController {
 
     private Coordinates transformCoordinates(String[] input) {
         if (input.length < 2) {
-            try {
-                view.wrongLocalInput();
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
+            view.wrongLocalInput();
             return null;
         }
         int CoordinatesX;
         try {
             CoordinatesX = Integer.parseInt(input[0]);
         } catch (NumberFormatException e) {
-            try {
-                view.wrongLocalInput();
-            } catch (RemoteException ex) {
-                throw new RuntimeException(ex);
-            }
+            view.wrongLocalInput();
             return null;
         }
         if(CoordinatesX<0||CoordinatesX>4){
-            try {
-                view.wrongLocalInput();
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
+            view.wrongLocalInput();
             return null;
         }
         int CoordinatesY;
         try {
             CoordinatesY = Integer.parseInt(input[1]);
         } catch (NumberFormatException e) {
-            try {
-                view.wrongLocalInput();
-            } catch (RemoteException ex) {
-                throw new RuntimeException(ex);
-            }
+            view.wrongLocalInput();
             return null;
         }
         if(CoordinatesY<0||CoordinatesY>6){
-            try {
-                view.wrongLocalInput();
-            } catch (RemoteException ex) {
-                throw new RuntimeException(ex);
-            }
+            view.wrongLocalInput();
             return null;
         }
         return new Coordinates(CoordinatesX, CoordinatesY);
@@ -924,29 +791,17 @@ public class ClientController {
     private boolean checkShipBoards(String[] input){
         if (input[0].equals("check")) {
             if(!(input.length > 1)){
-                try {
-                    view.wrongLocalInput();
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+                view.wrongLocalInput();
                 return false;
             }
             int chose=numerate(scroll(input,1));
             if (chose==-1)
                 return false;
             if (chose == 0) {
-                try {
-                    view.printShipboard(me.getShipBoard());
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+                view.printShipboard(me.getShipBoard());
             }
             if (chose >= 1 && chose <= 4) {
-                try {
-                    view.printShipboard(flightBoard.getInGamePlayers().get(indexDeckInHandOrPlanet).getShipBoard());
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+                view.printShipboard(flightBoard.getInGamePlayers().get(indexDeckInHandOrPlanet).getShipBoard());
             }
             return true;
         }
@@ -970,11 +825,7 @@ public class ClientController {
     private boolean secondHourglassTurn(String[] input) {
         if (input[0].equals("turn") && hourglassTurns == 1) {
             if(gameMode==GameMode.TRIAL){
-                try {
-                    view.wrongLocalInput();
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+                view.wrongLocalInput();
                 return false;
             }
             hourglassTurns=2;
@@ -992,11 +843,7 @@ public class ClientController {
     private boolean thirdHourglassTurn(String[] input) {
         if (input[0].equals("turn") && hourglassTurns >= 1 && hourglassTurns < 3) {
             if(gameMode==GameMode.TRIAL){
-                try {
-                    view.wrongLocalInput();
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+                view.wrongLocalInput();
                 return false;
             }
             if(hourglassTurns==1)
@@ -1057,22 +904,14 @@ public class ClientController {
     private int numerate(String[] input) {
         int chose;
         if (input[0].isEmpty()) {
-            try {
-                view.wrongLocalInput();
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
+            view.wrongLocalInput();
             return -1;
         }
         try {
             chose = Integer.parseInt(input[0]);
             return chose;
         } catch (NumberFormatException e) {
-            try {
-                view.wrongLocalInput();
-            } catch (RemoteException ex) {
-                throw new RuntimeException(ex);
-            }
+            view.wrongLocalInput();
             return -1;
         }
     }
@@ -1225,7 +1064,7 @@ public class ClientController {
         }
     }
 
-    public ViewInterface getView() {
+    public DisplayableView getView() {
         return view;
     }
 

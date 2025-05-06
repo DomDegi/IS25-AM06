@@ -23,16 +23,6 @@ import java.util.Set;
 public class GUI implements DisplayableView {
 
     @Override
-    public void askNickname() throws IOException {
-
-    }
-
-    @Override
-    public void askColor() throws RemoteException {
-
-    }
-
-    @Override
     public void showLoginResponse(boolean success) {
 
     }
@@ -52,21 +42,6 @@ public class GUI implements DisplayableView {
     }
 
     @Override
-    public void askPlayerCount() throws IOException {
-
-    }
-
-    @Override
-    public void createGame() throws IOException {
-
-    }
-
-    @Override
-    public void joinGame() throws IOException {
-
-    }
-
-    @Override
     public void showGenericMessage(String genericMessage) throws RemoteException {
 
     }
@@ -75,22 +50,11 @@ public class GUI implements DisplayableView {
     public void showErrorMessage(String errorMessage) {
 
     }
-
-    @Override
-    public void showInGamePlayers(ArrayList<Player> players) throws RemoteException {
-
-    }
-
     public void asksPlayersInfo() {
 
     }
 
     public void showShipsErrors() {
-
-    }
-
-    @Override
-    public void showPlayersBoard(String player, ShipBoard shipBoard) throws RemoteException {
 
     }
 
@@ -109,17 +73,7 @@ public class GUI implements DisplayableView {
     }
 
     @Override
-    public void showBookedTiles(ArrayList<Tile> bookedTiles) throws RemoteException {
-
-    }
-
-    @Override
     public void showWrongInputMessage() {
-
-    }
-
-    @Override
-    public void showInGameCards(ArrayList<Card> inGameCards) throws RemoteException {
 
     }
 
@@ -148,11 +102,6 @@ public class GUI implements DisplayableView {
     }
 
     @Override
-    public void asksToTurnTheHourglass() throws RemoteException {
-
-    }
-
-    @Override
     public void notifyYouCanDrawThisCardDeck() throws RemoteException {
 
     }
@@ -175,11 +124,6 @@ public class GUI implements DisplayableView {
 
     }
 
-    @Override
-    public void asksToManageGoods(ArrayList<Goods> goods) {
-
-    }
-
     public void asksToUseEngines() {
 
     }
@@ -189,16 +133,6 @@ public class GUI implements DisplayableView {
     }
 
     public void asksToUseBatteries() {
-
-    }
-
-    @Override
-    public void asksToRemoveGoods() throws RemoteException {
-
-    }
-
-    @Override
-    public void asksToRemoveCrew() throws RemoteException {
 
     }
 
@@ -229,27 +163,27 @@ public class GUI implements DisplayableView {
     }
 
     @Override
-    public void wrongLocalInput() throws RemoteException {
+    public void wrongLocalInput() {
 
     }
 
     @Override
-    public void showCard(ArrayList<Card> cards) throws RemoteException {
+    public void showCard(ArrayList<Card> cards) {
 
     }
 
     @Override
-    public void printFlightboard(LightFlightboard lightFlightboard) throws RemoteException {
+    public void printFlightboard(LightFlightboard lightFlightboard) {
 
     }
 
     @Override
-    public void printShipboard(LightShipBoard lightShipBoard) throws RemoteException {
+    public void printShipboard(LightShipBoard lightShipBoard){
 
     }
 
     @Override
-    public void printProjectile(Projectile projectile) throws RemoteException {
+    public void printProjectile(Projectile projectile) {
 
     }
 
@@ -259,7 +193,7 @@ public class GUI implements DisplayableView {
     }
 
     @Override
-    public void goodsPrinter(ArrayList<Goods> goodsArray) throws RemoteException {
+    public void goodsPrinter(ArrayList<Goods> goodsArray) {
 
     }
 
@@ -285,11 +219,6 @@ public class GUI implements DisplayableView {
 
     @Override
     public void setGameMode(GameMode gameMode) {
-
-    }
-
-    @Override
-    public void ping() throws RemoteException {
 
     }
 

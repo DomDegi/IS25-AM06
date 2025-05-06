@@ -25,17 +25,6 @@ public class TUI implements DisplayableView {
     }
 
     @Override
-    public void askNickname() throws IOException {
-        System.out.println("enter your nickname");
-    }
-
-    @Override
-    public void askColor() throws RemoteException {
-        System.out.println("enter your color");
-
-    }
-
-    @Override
     public void showLoginResponse(boolean success) {
         if (success) {
             System.out.println("You are logged in");
@@ -58,21 +47,6 @@ public class TUI implements DisplayableView {
     }
 
     @Override
-    public void askPlayerCount() throws IOException {
-        System.out.println("How many players will the game contain?");
-    }
-
-    @Override
-    public void createGame() throws IOException {
-
-    }
-
-    @Override
-    public void joinGame() throws IOException {
-
-    }
-
-    @Override
     public void showGenericMessage(String genericMessage) throws RemoteException {
         System.out.println(genericMessage);
     }
@@ -82,17 +56,6 @@ public class TUI implements DisplayableView {
         System.out.println(errorMessage);
     }
 
-    @Override
-    public void showInGamePlayers(ArrayList<Player> players) throws RemoteException {
-        for (Player player : players) {
-            System.out.println(player);
-        }
-    }
-
-    @Override
-    public void showPlayersBoard(String player, ShipBoard shipBoard) throws RemoteException {
-        System.out.println(player + "'s ShipBoard: " + shipBoard.toString());
-    }
 
     @Override
     public void showDrawnTile(Tile drawnTile) {
@@ -104,20 +67,6 @@ public class TUI implements DisplayableView {
         for (int i : turnedTiles.keySet()) {
             System.out.println(i + " " + turnedTiles.get(i).toString());
             System.out.println("\n");
-        }
-    }
-
-    @Override
-    public void showBookedTiles(ArrayList<Tile> bookedTiles) throws RemoteException {
-        for (Tile bookedTile : bookedTiles) {
-            System.out.println(bookedTile.toString() + "\n-\n");
-        }
-    }
-
-    @Override
-    public void showInGameCards(ArrayList<Card> inGameCards) throws RemoteException {
-        for (Card card : inGameCards) {
-            System.out.println(card.toString());
         }
     }
 
@@ -147,11 +96,6 @@ public class TUI implements DisplayableView {
     }
 
     @Override
-    public void asksToTurnTheHourglass() throws RemoteException {
-        System.out.println("turn the hourglass");
-    }
-
-    @Override
     public void notifyYouCanDrawThisCardDeck() throws RemoteException {
         System.out.println("you can draw this card deck");
     }
@@ -166,22 +110,6 @@ public class TUI implements DisplayableView {
         System.out.println("please, make a choice");
     }
 
-    @Override
-    public void asksToManageGoods(ArrayList<Goods> goods) {
-        for (Goods good : goods) {
-            System.out.println(good.toString());
-        }
-    }
-
-    @Override
-    public void asksToRemoveGoods() throws RemoteException {
-        System.out.println("choose good/goods to remove");
-    }
-
-    @Override
-    public void asksToRemoveCrew() throws RemoteException {
-        System.out.println("choose crew to remove");
-    }
 
     @Override
     public void showScores(ArrayList<Player> players) throws RemoteException {
@@ -191,19 +119,19 @@ public class TUI implements DisplayableView {
     }
 
     @Override
-    public void printFlightboard(LightFlightboard lightFlightboard) throws RemoteException {
+    public void printFlightboard(LightFlightboard lightFlightboard){
         for (LightPlayer player : lightFlightboard.getInGamePlayers()) {
             System.out.println("Player: " + player.toString());
         }
     }
 
     @Override
-    public void printShipboard(LightShipBoard lightShipBoard) throws RemoteException {
+    public void printShipboard(LightShipBoard lightShipBoard){
         System.out.println("this is your shipboard now:\n" + lightShipBoard.toString());
     }
 
     @Override
-    public void printProjectile(Projectile projectile) throws RemoteException {
+    public void printProjectile(Projectile projectile) {
         System.out.println("you're under attack from:\n" + projectile.toString());
     }
 
@@ -217,10 +145,6 @@ public class TUI implements DisplayableView {
         System.out.println("your gameMode is: " + gameMode.toString());
     }
 
-    @Override
-    public void ping() throws RemoteException {
-
-    }
 
     @Override
     public void goodsPrinter(ArrayList<Goods> goodsArray) {
@@ -276,12 +200,12 @@ public class TUI implements DisplayableView {
     }
 
     @Override
-    public void wrongLocalInput() throws RemoteException {
+    public void wrongLocalInput() {
         System.out.println("You entered a wrong input");
     }
 
     @Override
-    public void showCard(ArrayList<Card> cards) throws RemoteException {
+    public void showCard(ArrayList<Card> cards) {
         for(Card card : cards) {
             System.out.println(card.toString());
         }

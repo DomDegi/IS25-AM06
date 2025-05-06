@@ -16,10 +16,8 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.*;
-import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.AskColorMessage;
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.LoginResponseMessage;
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.SetClientStateMessage;
-import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.ShowJoinableGamesMessage;
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerMessage.ShowJoinableGamesMessage;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
@@ -106,17 +104,6 @@ public class VirtualViewSocket implements VirtualView {
     }
 
     @Override
-    public void askNickname() throws IOException {
-
-    }
-
-    @Override
-    public void askColor() throws RemoteException {
-        AskColorMessage message = new AskColorMessage();
-        clientHandler.sendServerMessageToClient(message);
-    }
-
-    @Override
     public void showLoginResponse(boolean success) throws RemoteException {
         LoginResponseMessage message = new LoginResponseMessage(success);
         clientHandler.sendServerMessageToClient(message);
@@ -134,21 +121,6 @@ public class VirtualViewSocket implements VirtualView {
     }
 
     @Override
-    public void askPlayerCount() throws IOException {
-
-    }
-
-    @Override
-    public void createGame() throws IOException {
-
-    }
-
-    @Override
-    public void joinGame() throws IOException {
-
-    }
-
-    @Override
     public void showGenericMessage(String genericMessage) throws RemoteException {
         clientHandler.sendServerMessageToClient(new GenericServerMessage(genericMessage));
     }
@@ -159,37 +131,13 @@ public class VirtualViewSocket implements VirtualView {
     }
 
     @Override
-    public void showInGamePlayers(ArrayList<Player> players) throws RemoteException {
-
-    }
-
-    @Override
-    public void showPlayersBoard(String player, ShipBoard shipBoard) throws RemoteException {
-
-    }
-
-    @Override
     public void showDrawnTile(Tile drawnTile) throws RemoteException {
         clientHandler.sendServerMessageToClient(new ShowDrawnTileMessage(drawnTile));
     }
 
     @Override
-    public void showTurnedTiles(Map<Integer, Tile> turnedTiles) throws RemoteException {
-
-    }
-
-    @Override
-    public void showBookedTiles(ArrayList<Tile> bookedTiles) throws RemoteException {
-
-    }
-
-    @Override
     public void showWrongInputMessage() throws RemoteException {
         clientHandler.sendServerMessageToClient(new WrongInputMessage());
-    }
-
-    @Override
-    public void showInGameCards(ArrayList<Card> inGameCards) throws RemoteException {
     }
 
     @Override
@@ -213,11 +161,6 @@ public class VirtualViewSocket implements VirtualView {
     }
 
     @Override
-    public void asksToTurnTheHourglass() throws RemoteException {
-        clientHandler.sendServerMessageToClient(new AskToTurnHourglassMessage());
-    }
-
-    @Override
     public void notifyYouCanDrawThisCardDeck() throws RemoteException {
         clientHandler.sendServerMessageToClient(new FlightboardCardsResponse());
     }
@@ -229,21 +172,6 @@ public class VirtualViewSocket implements VirtualView {
 
     @Override
     public void asksToMakeAChoice() throws RemoteException {
-
-    }
-
-    @Override
-    public void asksToManageGoods(ArrayList<Goods> goods) throws RemoteException {
-
-    }
-
-    @Override
-    public void asksToRemoveGoods() throws RemoteException {
-
-    }
-
-    @Override
-    public void asksToRemoveCrew() throws RemoteException {
 
     }
 
@@ -263,36 +191,6 @@ public class VirtualViewSocket implements VirtualView {
     }
 
     @Override
-    public void wrongLocalInput() throws RemoteException {
-
-    }
-
-    @Override
-    public void showCard(ArrayList<Card> cards) throws RemoteException {
-
-    }
-
-    @Override
-    public void printFlightboard(LightFlightboard lightFlightboard) throws RemoteException {
-
-    }
-
-    @Override
-    public void printShipboard(LightShipBoard lightShipBoard) throws RemoteException {
-
-    }
-
-    @Override
-    public void printProjectile(Projectile projectile) throws RemoteException {
-
-    }
-
-    @Override
-    public void printCabins(Tile cabins) throws RemoteException {
-
-    }
-
-    @Override
     public void connected() throws RemoteException {
 
     }
@@ -305,11 +203,6 @@ public class VirtualViewSocket implements VirtualView {
     @Override
     public void ping() throws RemoteException {
         clientHandler.sendServerMessageToClient(new ServerPingMessage());
-    }
-
-    @Override
-    public void goodsPrinter(ArrayList<Goods> goodsArray) throws RemoteException {
-
     }
 
     @Override

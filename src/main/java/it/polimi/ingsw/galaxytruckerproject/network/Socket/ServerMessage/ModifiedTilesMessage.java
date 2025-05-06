@@ -20,11 +20,9 @@ public class ModifiedTilesMessage extends ServerMessage {
     public void processMessage(ServerHandler serverHandler) {
         serverHandler.getClientController().modifyTiles(playerName, tiles);
         if (playerName.equals(serverHandler.getClientController().getName())) {
-            try {
-                serverHandler.getView().printShipboard(serverHandler.getClientController().getLightShipBoard());
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
+
+            serverHandler.getView().printShipboard(serverHandler.getClientController().getLightShipBoard());
+
         }
     }
 }
