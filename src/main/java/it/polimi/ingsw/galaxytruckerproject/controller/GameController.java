@@ -263,13 +263,18 @@ public class GameController implements Observer, Serializable {
      * Starts the game as soon as one of the players turns the hourglass if LEVEL2 game,
      * if TRIAL starts the game without hourglass
      */
-    public void startGame() {
+    public void startGame () {
         game.startShipCreation();
         if (game.getMode() == TRIAL) {
             updateEveryView(ClientState.S_END_DRAW_TILE_CARD);
-        }
-        else {
+            for (Player player : game.getListOfAllPlayer()) {
+                notifyPlayerMovement(player.getPlayerName(), player.getPlayerColor(), 0, 0);
+            }
+        } else {
             updateEveryView(ClientState.START_SHIP_CREATION);
+            for (Player player : game.getListOfAllPlayer()) {
+                notifyPlayerMovement(player.getPlayerName(), player.getPlayerColor(), 0, 0);
+            }
             notifyFlightBoardCards();
         }
     }
@@ -553,12 +558,12 @@ public class GameController implements Observer, Serializable {
     public void setTile (ViewInterface playersView, String playerName, Tile tile) {
         Tile settedTile;
         if (!tile.isBooked()) {
-            /*if (clientsStatesMap.get(playerName) != ClientState.S_MANAGE_DRAWN_TILE) {
+            if (clientsStatesMap.get(playerName) != ClientState.S_MANAGE_DRAWN_TILE) {
                 try{
                 playersView.showWrongInputMessage();
                 } catch(Exception ignored) {}
                 return;
-            }*/
+            }
         }
         else {
             if (playerStateIs(playerName,ClientState.S_MANAGE_CARDS) || playerStateIs(playerName,ClientState.S_FINISHED)) {
@@ -723,17 +728,14 @@ public class GameController implements Observer, Serializable {
             case 0->{
                 updateEveryView(ClientState.S_END_DRAW_TILE_CARD);
                 startTimer();
-                updateHourglass();
             }
             case 1->{
                 startTimer();
-                updateHourglass();
             }
 
             case 2-> {
                 if (playerStateIs(playerName, ClientState.S_FINISHED)) {
                     startTimer();
-                    updateHourglass();
 
                 }
                 else {
@@ -1079,15 +1081,5 @@ public class GameController implements Observer, Serializable {
 
     public ConcurrentHashMap<String, Integer> getLockedSmallDecks() {
         return lockedSmallDecks;
-    }
-
-    public void updateHourglass(){
-        for(VirtualView view: playersViewMap.values()) {
-            try {
-                view.notifyTurnedHourglass(hourglassTurns);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
-        }
     }
 }
