@@ -197,6 +197,11 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     }
 
     @Override
+    public void initializeShipBoards(GameMode gameMode) throws RemoteException{
+        clientController.setGameMode(gameMode);
+    }
+
+    @Override
     public void setGameMode(GameMode gameMode) throws RemoteException{
         view.setGameMode(gameMode);
         clientController.setGameMode(gameMode);

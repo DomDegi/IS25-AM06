@@ -301,7 +301,14 @@ public class ClientController {
             }
 
             case START_SHIP_CREATION -> {
-                return firstHourglassTurn(words);
+                if (firstHourglassTurn(words))
+                    return true;
+                try {
+                    view.wrongLocalInput();
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
+                return false;
             }
 
             case S_END_DRAW_TILE_CARD -> {

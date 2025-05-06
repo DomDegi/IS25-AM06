@@ -84,6 +84,11 @@ public class MockVirtualView implements VirtualView {
     }
 
     @Override
+    public void initializeShipBoards(GameMode gameMode) throws RemoteException {
+
+    }
+
+    @Override
     public void ping() throws RemoteException {
 
     }

@@ -266,9 +266,15 @@ public class GameController implements Observer, Serializable {
     public void startGame() {
         game.startShipCreation();
         if (game.getMode() == TRIAL) {
+            for (Player player : game.getListOfAllPlayer()) {
+                notifyStartPosition(player.getPlayerName(),player.getPlayerColor());
+            }
             updateEveryView(ClientState.S_END_DRAW_TILE_CARD);
         }
         else {
+            for (Player player : game.getListOfAllPlayer()) {
+                notifyStartPosition(player.getPlayerName(),player.getPlayerColor());
+            }
             updateEveryView(ClientState.START_SHIP_CREATION);
             notifyFlightBoardCards();
         }
@@ -669,6 +675,15 @@ public class GameController implements Observer, Serializable {
         for (VirtualView view: playersViewMap.values()) {
             try {
                 view.notifyPlayerMovement(playerName, playersColor, position, ranking);
+            } catch (Exception ignored) {}
+        }
+    }
+
+    private void notifyStartPosition(String playerName,PlayersColor playersColor) {
+        for (VirtualView view: playersViewMap.values()) {
+            try {
+                view.notifyPlayerMovement(playerName, playersColor, 0, 0);
+                view.initializeShipBoards(this.game.getMode());
             } catch (Exception ignored) {}
         }
     }
