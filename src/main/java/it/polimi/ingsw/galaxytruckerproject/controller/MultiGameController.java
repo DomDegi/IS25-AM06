@@ -94,7 +94,13 @@ public class MultiGameController implements Serializable {
                 GameController gameController = new GameController(game, gameName);
                 controller.setGameController(gameController);
                 gamesMap.put(gameName, gameController); //adds game to open games
-                viewsMap.remove(creator); //remove player from map of the views of player joining a game
+                viewsMap.remove(creator);
+                try {
+                    creatorView.showGenericMessage("created game");
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+                //remove player from map of the views of player joining a game
                 gameController.addToPlayersViewMap(creator, creatorView, false);
                 notifyNewGame(creator, creatorView);
             }
@@ -220,11 +226,6 @@ public class MultiGameController implements Serializable {
      * @param creatorView view of the game creator
      */
     public void notifyNewGame (String gameCreator, ViewInterface creatorView)  {
-        try {
-            creatorView.showGenericMessage("created game");
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
         for (Map.Entry<String, VirtualView> entry : viewsMap.entrySet()) {
             String key = entry.getKey();
             VirtualView value = entry.getValue();

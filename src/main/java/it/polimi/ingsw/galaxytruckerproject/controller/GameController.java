@@ -266,15 +266,16 @@ public class GameController implements Observer, Serializable {
     public void startGame () {
         game.startShipCreation();
         if (game.getMode() == TRIAL) {
+            for (Player player : game.getListOfAllPlayer()) {
+                notifyStartPosition(player.getPlayerName(),player.getPlayerColor());
+            }
             updateEveryView(ClientState.S_END_DRAW_TILE_CARD);
+        }
+        else {
             for (Player player : game.getListOfAllPlayer()) {
-                notifyPlayerMovement(player.getPlayerName(), player.getPlayerColor(), 0, 0);
+                notifyStartPosition(player.getPlayerName(),player.getPlayerColor());
             }
-        } else {
             updateEveryView(ClientState.START_SHIP_CREATION);
-            for (Player player : game.getListOfAllPlayer()) {
-                notifyPlayerMovement(player.getPlayerName(), player.getPlayerColor(), 0, 0);
-            }
             notifyFlightBoardCards();
         }
     }
@@ -678,6 +679,15 @@ public class GameController implements Observer, Serializable {
         }
     }
 
+    private void notifyStartPosition(String playerName,PlayersColor playersColor) {
+        for (VirtualView view: playersViewMap.values()) {
+            try {
+                view.notifyPlayerMovement(playerName, playersColor, 0, 0);
+                view.initializeShipBoards(this.game.getMode());
+            } catch (Exception ignored) {}
+        }
+    }
+
     private void notifyModifiedTiles(String playerName, ArrayList<Tile> modifiedTiles) {
         for (VirtualView view: playersViewMap.values()) {
             try {
@@ -736,7 +746,6 @@ public class GameController implements Observer, Serializable {
             case 2-> {
                 if (playerStateIs(playerName, ClientState.S_FINISHED)) {
                     startTimer();
-
                 }
                 else {
                     try{

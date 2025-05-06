@@ -106,6 +106,11 @@ public class VirtualViewSocket implements VirtualView {
     }
 
     @Override
+    public void initializeShipBoards(GameMode gameMode) throws RemoteException {
+        clientHandler.sendServerMessageToClient(new SetGameModeMessage(gameMode));
+    }
+
+    @Override
     public void askNickname() throws IOException {
 
     }

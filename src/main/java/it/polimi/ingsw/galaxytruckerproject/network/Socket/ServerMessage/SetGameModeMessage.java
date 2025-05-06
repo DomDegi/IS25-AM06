@@ -14,6 +14,5 @@ public class SetGameModeMessage extends  ServerMessage{
     @Override
     public void processMessage(ServerHandler serverHandler) {
         serverHandler.getClientController().setGameMode(this.gameMode);
-        serverHandler.getClientController().setGameMode(this.gameMode);
     }
 }
