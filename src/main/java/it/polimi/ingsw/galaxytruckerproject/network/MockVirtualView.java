@@ -59,6 +59,11 @@ public class MockVirtualView implements VirtualView {
     }
 
     @Override
+    public void notifyNotAvailableColor(PlayersColor color) throws RemoteException {
+
+    }
+
+    @Override
     public void notifyModifiedTiles(String playerName, ArrayList<Tile> tiles) throws RemoteException {
         // Implement mock behavior or leave empty
     }

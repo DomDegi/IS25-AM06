@@ -25,6 +25,7 @@ public interface VirtualView extends ViewInterface, Serializable {
     void notifyBookedTile (String playerName, Tile tile) throws RemoteException;
     void notifyRemovedBookedTile(String playerName, Tile tile) throws RemoteException;
     void notifyNotAvailableCardDeck(ArrayList<Integer> lockedSmallDecks) throws RemoteException; //notify which cards deck are not looked at
+    void notifyNotAvailableColor(PlayersColor color) throws RemoteException; //notify which cards deck are not looked at
     void notifyModifiedTiles(String playerName, ArrayList<Tile> tiles) throws RemoteException;
     void notifyGainedCredits (String playerName, int totalCredits) throws RemoteException;
     void notifyBrokenTile(String playerName, ArrayList<Coordinates> coordinates)throws RemoteException;

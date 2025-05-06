@@ -189,25 +189,31 @@ public class GameController implements Observer, Serializable {
      */
     public void playerAddition(String playerName, PlayersColor playersColor)  {
         if (this.getGameState() == GameState.LOBBY_PHASE && playersViewMap.containsKey(playerName)) {
-                //if playerCount is still to be reached, add player to the game model
-                if (game.getNumberOfPlayers() < game.getPlayerCount()) {
-                    game.addPlayer(playerName, playersColor);
-                    activePlayers.put(playerName, game.identifyPlayerByName(playerName));
-
-                }
-                else { //player count already reached
+            //if playerCount is still to be reached, add player to the game model
+            if (game.getNumberOfPlayers() < game.getPlayerCount()) {
+                game.addPlayer(playerName, playersColor);
+                activePlayers.put(playerName, game.identifyPlayerByName(playerName));
+                for (Player player : activePlayers.values()) {
                     try {
-                        playersViewMap.get(playerName).showWrongInputMessage();
+                        playersViewMap.get(player.getPlayerName()).notifyNotAvailableColor(playersColor);
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
                 }
-                //if game is already out of lobby phase
-            } else if (playersViewMap.containsKey(playerName)) {
+            } else { //player count already reached
                 try {
+                    playersViewMap.get(playerName).showWrongInputMessage();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            //if game is already out of lobby phase
+        } else if (playersViewMap.containsKey(playerName)) {
+            try {
                 playersViewMap.get(playerName).showWrongInputMessage();
-                } catch(Exception ignored) {}
-            } // if the count has been reached starts the game
+            } catch (Exception ignored) {
+            }
+        } // if the count has been reached starts the game
     }
 
     public VirtualView removePlayer (String playerName) {
