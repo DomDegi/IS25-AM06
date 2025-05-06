@@ -11,7 +11,7 @@ public class PositionedTileMessage extends ServerMessage{
 
     public PositionedTileMessage(String playerName, Tile tile) {
         this.playerName = playerName;
-        this.tile = tile.send();
+        this.tile = tile;
     }
 
     @Override

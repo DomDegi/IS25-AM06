@@ -267,27 +267,10 @@ public class GameController implements Observer, Serializable {
         game.startShipCreation();
         if (game.getMode() == TRIAL) {
             updateEveryView(ClientState.S_END_DRAW_TILE_CARD);
-            for (Player player : game.getListOfAllPlayer()) {
-                notifyInGamePlayer();
-            }
         }
         else {
             updateEveryView(ClientState.START_SHIP_CREATION);
-            for (Player player : game.getListOfAllPlayer()) {
-                notifyInGamePlayer();
-            }
             notifyFlightBoardCards();
-        }
-    }
-
-    public void notifyInGamePlayer() {
-        ArrayList<Player> players = game.getListOfAllPlayer();
-        for (VirtualView view: playersViewMap.values()) {
-            try {
-                view.notifyInGamePlayers(players);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
         }
     }
 

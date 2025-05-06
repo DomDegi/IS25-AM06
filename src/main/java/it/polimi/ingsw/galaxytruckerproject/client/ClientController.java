@@ -1108,7 +1108,7 @@ public class ClientController {
     }
 
     public void updateFlightboard(String name,PlayersColor color,int pos, int ranking) {
-        for(LightPlayer player:flightBoard.getInLobbyPlayers())
+        for(LightPlayer player:flightBoard.getInGamePlayers())
             if (player.getPlayerName().equals(name)){
                 player.setPosition(pos);
                 player.setRank(ranking);
@@ -1134,12 +1134,7 @@ public class ClientController {
     }
 
     public void setTile(String playerName,Tile tile) {
-        LightPlayer player = flightBoard.getInLobbyPlayer(playerName);
-        if (player ==  null) {
-            System.out.println("this player shouldn't be null");
-            return;
-        }
-        LightShipBoard lightShipBoard= player.getShipBoard();
+        LightShipBoard lightShipBoard= flightBoard.getInGamePlayer(playerName).getShipBoard();
         lightShipBoard.positionTile(Optional.of(tile),tile.getCoordinates());
     }
 
@@ -1211,7 +1206,7 @@ public class ClientController {
 
     public void updateModel(Map<String,LightShipBoard> lightShipBoardMap, LightFlightboard flightBoard,Card card, int hourglassTurns, Map<Integer,Tile> newTurnedTiles, ArrayList<Integer>notAvailableDecks) {
         this.flightBoard=flightBoard;
-        for(LightPlayer player:flightBoard.getInLobbyPlayers()){
+        for(LightPlayer player:flightBoard.getInGamePlayers()){
             player.setShipboard(lightShipBoardMap.get(player.getPlayerName()));
         }
         displayedCard.add(card);
