@@ -146,6 +146,11 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     }
 
     @Override
+    public void notifyNotAvailableColor(PlayersColor color) throws RemoteException {
+        clientController.colorsNotAvailable(color);
+    }
+
+    @Override
     public void notifyDrawnCard(Card card) throws RemoteException {
         view.notifyDrawnCard(card);
         clientController.setState(ClientState.WAIT);

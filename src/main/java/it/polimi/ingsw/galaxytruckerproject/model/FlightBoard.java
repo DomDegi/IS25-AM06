@@ -26,7 +26,8 @@ public class FlightBoard implements Serializable {
         return podium;
     }
     public ArrayList<Player> getInGamePlayers() {
-        rearrange();
+        if(inGamePlayers.size()>1)
+            rearrange();
         return inGamePlayers;
     }
     //FlightBoard management
@@ -84,35 +85,30 @@ public class FlightBoard implements Serializable {
         }
         //removes only if the player is already present in inGamePlayers
         inGamePlayers.remove(newPlayer);
-        //makes sure that inGamePlayers is big enough to avoid IndexOutOfBoundException
-        while (inGamePlayers.size() <= pos) {
-            inGamePlayers.add(null);  // adds null positions
-        }
-        inGamePlayers.set(pos, newPlayer);
         //makes sure that the position chosen is from 0 to 3 (after the offset) and sets the right value for starting pos
         switch (pos) {
             case 0:
-                inGamePlayers.get(pos).setPlayerPosition(9);
+                newPlayer.setPlayerPosition(9);
                 break;
             case 1:
-                inGamePlayers.get(pos).setPlayerPosition(5);
+                newPlayer.setPlayerPosition(5);
                 break;
             case 2:
-                inGamePlayers.get(pos).setPlayerPosition(2);
+                newPlayer.setPlayerPosition(2);
                 break;
             case 3:
-                inGamePlayers.get(pos).setPlayerPosition(0);
+                newPlayer.setPlayerPosition(0);
                 break;
             default:
                 //throw new IllegalArgumentException("Invalid position: " + occupiedPos.getFirst());
                 return false;
         }
-        // makes sure that occupied pos has enough spaces just like we did with inGamePlayers with the null values
-
-        occupiedPos.set(pos,pos);
-
         // gives player a ranking
-        inGamePlayers.get(pos).setPlayerRanking(pos + 1);
+        newPlayer.setPlayerRanking(pos + 1);
+        inGamePlayers.add(newPlayer);
+        // makes sure that occupied pos has enough spaces just like we did with inGamePlayers with the null values
+        occupiedPos.set(pos,pos);
+        rearrange();
         return true;
     }
 
@@ -197,15 +193,17 @@ public class FlightBoard implements Serializable {
     }
     //Array-structure changing method
     public void rearrange() {
-        inGamePlayers.sort((player1, player2) -> {
-            if (player1.isLanded() && !player2.isLanded()) {
-                return 1;
-            } else if (!player1.isLanded() && player2.isLanded()) {
-                return -1;
-            } else {
-                return Integer.compare(player2.getPlayerPosition(), player1.getPlayerPosition());
-            }
-        });
+        if(inGamePlayers.size()>1) {
+            inGamePlayers.sort((player1, player2) -> {
+                if (player1.isLanded() && !player2.isLanded()) {
+                    return 1;
+                } else if (!player1.isLanded() && player2.isLanded()) {
+                    return -1;
+                } else {
+                    return Integer.compare(player2.getPlayerPosition(), player1.getPlayerPosition());
+                }
+            });
+        }
         for (int i = 0; i < inGamePlayers.size(); i++) {
             inGamePlayers.get(i).setPlayerRanking(i + 1);
         }

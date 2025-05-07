@@ -51,6 +51,7 @@ public class ClientController {
     private Map<Integer,Tile> turnedTiles;
     private Map<Integer, ArrayList<Card>> deck;
     private final Map<Integer,Boolean> availableDeck;
+    private final Map<PlayersColor,Boolean> availableColors;
     private final ArrayList<Goods> goodsList;
 
     private int numPlayer;
@@ -77,6 +78,11 @@ public class ClientController {
         availableDeck.put(1,Boolean.TRUE);
         availableDeck.put(2,Boolean.TRUE);
         availableDeck.put(3,Boolean.TRUE);
+        this.availableColors = new HashMap<>(4);
+        availableColors.put(PlayersColor.RED,Boolean.TRUE);
+        availableColors.put(PlayersColor.YELLOW,Boolean.TRUE);
+        availableColors.put(PlayersColor.GREEN,Boolean.TRUE);
+        availableColors.put(PlayersColor.BLUE,Boolean.TRUE);
         this.indexDeckInHandOrPlanet = 0;
         this.hourglassTurns = 0;
         this.coordInputManager=new CoordInputManager(me.getShipBoard(),this);
@@ -1242,6 +1248,10 @@ public class ClientController {
 
     public void setGameInfo(ArrayList<GameInfo> gameInfo) {
         this.gameInfo = gameInfo;
+    }
+
+    public void colorsNotAvailable(PlayersColor notAvailableColors) {
+        this.availableColors.put(notAvailableColors,Boolean.FALSE);
     }
 
     //Test getter
