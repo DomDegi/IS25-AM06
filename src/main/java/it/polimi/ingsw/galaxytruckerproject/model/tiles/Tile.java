@@ -40,11 +40,11 @@ public abstract class Tile implements Serializable,Cloneable {
     public int getKey() {
         return key;
     }
-    @Override
-    public String toString() {
-        return "Tile Id:"+ key + " north:"+north.toString() + " east:" + east.toString() + " south:" + south.toString() + " west:" + west.toString()+"\n"
-                +"coordinates: "+coordinates.getX()+coordinates.getY();
-    }
+//    @Override
+//    public String toString() {
+//        return "Tile Id:" + key + " north:" + north.toString() + " east:" + east.toString() + " south:" + south.toString() + " west:" + west.toString() + "\n"
+//                + "coordinates: " + coordinates.getX() + coordinates.getY();
+//    }
 
 
     //GETTER METHODS LINKS
@@ -182,5 +182,15 @@ public abstract class Tile implements Serializable,Cloneable {
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String toString1() {
+        return "   ";
+    }
+    public String toString2(){
+        return "   ";
+    }
+    public String toString3(){
+        return "   ";
     }
 }

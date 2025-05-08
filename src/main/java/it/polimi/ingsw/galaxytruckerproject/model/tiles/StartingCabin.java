@@ -41,13 +41,34 @@ public class StartingCabin extends Cabin {
         crew=0;
         super.destroy();
     }
-
+    @Override
     public String toString(){
         StringBuilder s = new StringBuilder();
         s.append(playerColor.toString()).append(" Starting Cabin: ");
         s.append(" numCrew:");
         s.append(this.crew).append(" ").append("Human");
-        return s.toString()+ super.toString();
+        return s.toString()+ super.toString()+"\n┌────────┐\n│"+toString1()+"│\n│"+toString2()+"│\n│"+toString3()+"│\n└────────┘";
+    }
+    @Override
+    public String toString1(){
+        if (getCrew() == 2)
+            return " H  " + getNorth() + " H ";
+        else if (getCrew() == 1)
+            return " H  " + getNorth() + "   ";
+        return "    " + getNorth() + "   ";
+    }
+    @Override
+    public String toString2(){
+        return " "+getWest()+" SC "+getEast()+" ";
+    }
+    @Override
+    public String toString3(){
+        if (getKey() >= 100)
+            return "   " + getSouth() +" " + getKey();
+        else if (getKey() >= 10 && getKey() < 100)
+            return "   " + getSouth() + " " +getKey() + " ";
+        else
+            return "   " + getSouth() + "  " + getKey() + " ";
     }
 
 }

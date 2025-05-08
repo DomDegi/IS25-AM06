@@ -12,14 +12,14 @@ public enum Connectors implements Serializable {
     @Override
     public String toString() {
         if (this == SMOOTH)
-            return "SMOOTH";
+            return "0";
         if (this == SINGLE)
-            return "SINGLE";
+            return "1";
         if (this == DOUBLE)
-            return "DOUBLE";
+            return "2";
         if (this == UNIVERSAL)
-            return "UNIVERSAL";
-        return "";
+            return "3";
+        return "  ";
     }
 
     // Metodo per deserializzare la stringa in un enum

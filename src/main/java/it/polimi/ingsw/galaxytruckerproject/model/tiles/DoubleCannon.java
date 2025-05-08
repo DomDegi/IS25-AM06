@@ -17,7 +17,24 @@ public class DoubleCannon extends Cannon{
 
     @Override
     public String toString() {
-        return"DoubleCannon " +super.toString();
+        return"DoubleCannon " +super.toString()+"\n┌────────┐\n│"+toString1()+"│\n│"+toString2()+"│\n│"+toString3()+"│\n└────────┘";
+    }
+    @Override
+    public String toString1(){
+        return "    "+getNorth()+"   ";
+    }
+    @Override
+    public String toString2(){
+        return " "+getWest()+" DC "+getEast()+" ";
+    }
+    @Override
+    public String toString3(){
+        if (getKey() >= 100)
+            return "   " + getSouth() +" " + getKey();
+        else if (getKey() >= 10 && getKey() < 100)
+            return "   " + getSouth() + " " +getKey() + " ";
+        else
+            return "   " + getSouth() + "  " + getKey() + " ";
     }
 
     public void getStat(){

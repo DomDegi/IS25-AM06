@@ -51,7 +51,6 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
 
     public LightShipBoard(LightPlayer player) {
         this.player = player;
-
         this.player.setPlayerShip(this);
         this.penalty = 0;
         this.bookedTiles = new ArrayList<Tile>();
@@ -458,7 +457,6 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
     }
 
     public String toString(){
-
         StringBuilder s = new StringBuilder("Shipboard: ");
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 7; j++) {

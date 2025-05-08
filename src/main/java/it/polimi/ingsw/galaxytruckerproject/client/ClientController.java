@@ -11,10 +11,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Planets;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.CrewType;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import it.polimi.ingsw.galaxytruckerproject.network.RMI.Client.VirtualViewRMI;
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerHandler;
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.VirtualControllerSocket;
@@ -525,7 +522,6 @@ public class ClientController {
                             me.getShipBoard().positionTile(Optional.ofNullable(this.tileInHand),coordinates);
                             setState(ClientState.WAIT);
                             try {
-
                                 virtualController.notifySetTile(this.tileInHand.send());
                             } catch (RemoteException e) {
                                 throw new RuntimeException(e);
@@ -787,6 +783,11 @@ public class ClientController {
             case S_END_DRAW_TILE_CARD -> {
                 try {
                     view.showTurnedTiles(turnedTiles);
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    view.printShipboard(me.getShipBoard());
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }

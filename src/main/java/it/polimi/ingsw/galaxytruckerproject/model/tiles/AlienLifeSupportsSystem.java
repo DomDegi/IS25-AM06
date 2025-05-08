@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
 import java.util.ArrayList;
 
+import static it.polimi.ingsw.galaxytruckerproject.model.tiles.CrewType.BROWN;
 import static it.polimi.ingsw.galaxytruckerproject.model.tiles.CrewType.NotSupportSystem;
 
 public class AlienLifeSupportsSystem extends Tile {
@@ -102,6 +103,24 @@ public class AlienLifeSupportsSystem extends Tile {
 
     @Override
     public String toString() {
-        return "AlienLifeSupportsSystem alienType=" + colorAlienSupported + " " + super.toString();
+        return "AlienLifeSupportsSystem alienType=" + colorAlienSupported + " " + super.toString()+"\n┌────────┐\n│"+toString1()+"│\n│"+toString2()+"│\n│"+toString3()+"│\n└────────┘";
     }
+    @Override
+    public String toString1(){
+        return " "+getAlienLifeSupportSystemColor().toString()+"  "+getNorth()+"   ";
+    }
+    @Override
+    public String toString2(){
+        return " "+getWest()+" AS "+getEast()+" ";
+    }
+    @Override
+    public String toString3(){
+        if (getKey()>=100)
+            return "   "+getSouth()+" "+getKey();
+        else if(getKey()>=10&&getKey()<100)
+            return "   "+getSouth()+" "+getKey()+" ";
+        else
+            return "   "+getSouth()+"  "+getKey()+" ";
+    }
+
 }

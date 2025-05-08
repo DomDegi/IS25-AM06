@@ -199,7 +199,29 @@ public class TUI implements DisplayableView {
 
     @Override
     public void printShipboard(LightShipBoard lightShipBoard) throws RemoteException {
-        System.out.println("this is your shipboard now:\n" + lightShipBoard.toString());
+        System.out.println("this is your shipboard now:\n");
+        for(int x=0;x<=4;x++){
+            if(x==0)
+                System.out.println("┌────────┬────────┬────────┬────────┬────────┬────────┬────────┐");
+            else
+                System.out.println("├────────┼────────┼────────┼────────┼────────┼────────┼────────┤");
+            for(int r=0;r<=2;r++){
+                for (int y = 0; y <= 6; y++) {
+                    if (lightShipBoard.getTilesTable()[x][y].isEmpty()) {
+                        System.out.print("│        ");
+                    } else {
+                        if (r == 0)
+                            System.out.print("│" + lightShipBoard.getTile(x, y).toString1());
+                        if (r == 1)
+                            System.out.print("│" + lightShipBoard.getTile(x, y).toString2());
+                        if (r == 2)
+                            System.out.print("│" + lightShipBoard.getTile(x, y).toString3());
+                    }
+                }
+                System.out.println("│");
+            }
+        }
+        System.out.println("└────────┴────────┴────────┴────────┴────────┴────────┴────────┘");
     }
 
     @Override

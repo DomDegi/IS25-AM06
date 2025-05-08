@@ -209,9 +209,38 @@ public class EquipCabin extends Cabin {
 
     @Override
     public String toString() {
-        return "EquipCabin" + " " + this.crewType +  " " + this.crew + " " + super.toString();
+        return "EquipCabin" + " " + this.crewType +  " " + this.crew + " " + super.toString()+ super.toString()+"\n┌────────┐\n│"+toString1()+"│\n│"+toString2()+"│\n│"+toString3()+"│\n└────────┘";
     }
 
+    @Override
+    public String toString1(){
+        if(getCrew()==0) {
+            return "    " + getNorth() + "   ";
+        }else if(crewType==CrewType.HUMAN) {
+            if (getCrew() == 2)
+                return " H  " + getNorth() + " H ";
+            else if (getCrew() == 1)
+                return " H  " + getNorth() + "   ";
+        }else if (crewType==CrewType.PURPLE) {
+            return " P  " + getNorth() + "   ";
+        }else if (crewType==CrewType.BROWN) {
+            return " B  " + getNorth() + "   ";
+        }
+        return " /  " + getNorth() + " / ";
+    }
+    @Override
+    public String toString2(){
+        return " "+getWest()+" EC "+getEast()+" ";
+    }
+    @Override
+    public String toString3(){
+        if (getKey() >= 100)
+            return "   " + getSouth() +" " + getKey();
+        else if (getKey() >= 10 && getKey() < 100)
+            return "   " + getSouth() +" " + getKey() + " ";
+        else
+            return "   " + getSouth() + "  " + getKey() + " ";
+    }
     //METHODS FOR TESTING
     @Override
     public AlienOptions getAlienability() {
