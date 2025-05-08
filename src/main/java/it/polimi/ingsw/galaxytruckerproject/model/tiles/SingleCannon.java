@@ -29,6 +29,20 @@ public class SingleCannon extends Cannon {
 
     @Override
     public String toString1(){
+        switch (getDirection()){
+            case NORTH->{
+                return " ↑  "+getNorth()+"   ";
+            }
+            case EAST->{
+                return " ←  "+getNorth()+"   ";
+            }
+            case SOUTH->{
+                return " →  "+getNorth()+"   ";
+            }
+            case WEST->{
+                return " ↓  "+getNorth()+"   ";
+            }
+        }
         return "    "+getNorth()+"   ";
     }
     @Override
