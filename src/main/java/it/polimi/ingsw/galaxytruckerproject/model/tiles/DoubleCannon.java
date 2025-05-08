@@ -26,13 +26,13 @@ public class DoubleCannon extends Cannon{
                 return " ↑  "+getNorth()+"   ";
             }
             case EAST->{
-                return " ←  "+getNorth()+"   ";
-            }
-            case SOUTH->{
                 return " →  "+getNorth()+"   ";
             }
-            case WEST->{
+            case SOUTH->{
                 return " ↓  "+getNorth()+"   ";
+            }
+            case WEST->{
+                return " ←  "+getNorth()+"   ";
             }
         }
         return "    "+getNorth()+"   ";

@@ -140,6 +140,7 @@ public interface ViewInterface extends Remote, Serializable {
     void showCard(ArrayList<Card> cards) throws RemoteException;
     void printFlightboard(LightFlightboard lightFlightboard) throws RemoteException;
     void printShipboard(LightShipBoard lightShipBoard) throws RemoteException;
+    void printBooked(LightShipBoard lightShipBoard) throws RemoteException;
     void printProjectile(Projectile projectile) throws RemoteException;
     void printCabins(Tile cabins) throws RemoteException;
     void connected() throws RemoteException;

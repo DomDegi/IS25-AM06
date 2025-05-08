@@ -224,6 +224,26 @@ public class TUI implements DisplayableView {
         System.out.println("└────────┴────────┴────────┴────────┴────────┴────────┴────────┘");
     }
 
+    public void printBooked(LightShipBoard lightShipBoard) throws RemoteException {
+        System.out.println("┌────────┬────────┐");
+            for(int r=0;r<=2;r++){
+                if (lightShipBoard.getBookedTiles().isEmpty())
+                    System.out.print("│        │        ");
+                for (Tile tile: lightShipBoard.getBookedTiles()) {
+                        if (r == 0)
+                            System.out.print("│" + tile.toString1());
+                        if (r == 1)
+                            System.out.print("│" + tile.toString2());
+                        if (r == 2)
+                            System.out.print("│" + tile.toString3());
+                }
+                if (lightShipBoard.getBookedTiles().size()==1)
+                    System.out.print("│        ");
+                System.out.println("│");
+            }
+        System.out.println("└────────┴────────┘");
+    }
+
     @Override
     public void printProjectile(Projectile projectile) throws RemoteException {
         System.out.println("you're under attack from:\n" + projectile.toString());

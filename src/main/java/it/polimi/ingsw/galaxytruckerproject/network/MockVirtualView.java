@@ -303,6 +303,11 @@ public class MockVirtualView implements VirtualView {
     }
 
     @Override
+    public void printBooked(LightShipBoard lightShipBoard) throws RemoteException {
+
+    }
+
+    @Override
     public void printProjectile(Projectile projectile) {
         // Implement mock behavior or leave empty
     }

@@ -356,10 +356,11 @@ public class GameController implements Observer, Serializable {
 
     public void notifyBookedTile (String playerName, Tile tile) {
         playersViewMap.values().forEach(virtualView -> {
-            try {
-                virtualView.notifyBookedTile(playerName, tile.send());
-            } catch (Exception ignored) {//unhandled exception
-            }
+            if(virtualView!=playersViewMap.get(playerName))
+                try {
+                    virtualView.notifyBookedTile(playerName, tile.send());
+                } catch (Exception ignored) {//unhandled exception
+                }
         });
     }
 

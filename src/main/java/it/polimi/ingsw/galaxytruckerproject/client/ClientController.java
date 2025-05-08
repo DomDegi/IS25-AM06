@@ -505,8 +505,14 @@ public class ClientController {
                 if (checkShipBoards(words))
                     return true;
                 switch (words[0]) {
-                    case "rotate" ->
+                    case "rotate" -> {
                         this.tileInHand.rotate();
+                        try {
+                            view.showDrawnTile(tileInHand);
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
                     case "position" -> {
                         Coordinates coordinates;
                         if(!(words.length > 2)){
@@ -789,6 +795,11 @@ public class ClientController {
                 try {
                     view.printShipboard(me.getShipBoard());
                 } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    view.printBooked(me.getShipBoard());
+                }catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -1136,6 +1147,11 @@ public class ClientController {
     }
     public void addTurnedTile(Tile tile) {
         turnedTiles.put(tile.getKey(), tile);
+        try {
+            view.showTurnedTiles(turnedTiles);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
     public void removeTurnedTile(Tile tile) {
         turnedTiles.remove(tile.getKey());

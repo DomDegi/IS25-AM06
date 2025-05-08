@@ -186,6 +186,11 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     }
 
     @Override
+    public void printBooked(LightShipBoard lightShipBoard) throws RemoteException {
+
+    }
+
+    @Override
     public void printProjectile(Projectile projectile)throws RemoteException {
         view.printProjectile(projectile);
     }

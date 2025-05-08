@@ -293,6 +293,11 @@ public class VirtualViewSocket implements VirtualView {
     }
 
     @Override
+    public void printBooked(LightShipBoard lightShipBoard) throws RemoteException {
+
+    }
+
+    @Override
     public void printProjectile(Projectile projectile) throws RemoteException {
 
     }
