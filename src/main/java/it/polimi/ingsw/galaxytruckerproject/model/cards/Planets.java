@@ -100,6 +100,11 @@ public class Planets extends Card{
                         currentPlayerView.setClientState(ClientState.MANAGE_GOODS);
                     } catch (Exception ignored) {
                     }
+                }else {
+                    try {
+                        currentPlayerView.setClientState(ClientState.WAIT);
+                    } catch (Exception ignored) {
+                    }
                 }
             }
             playerIndex=0;
