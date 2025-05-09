@@ -5,7 +5,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CrewType;
 import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
-import it.polimi.ingsw.galaxytruckerproject.view.GUI;
+import it.polimi.ingsw.galaxytruckerproject.view.GUI.GUI;
 import it.polimi.ingsw.galaxytruckerproject.view.TUI;
 
 import java.io.IOException;
@@ -13,7 +13,6 @@ import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
-import static it.polimi.ingsw.galaxytruckerproject.client.ClientState.*;
 
 public class ControllerTUI implements ControllerUI {
     private final ClientController clientController;
