@@ -63,7 +63,7 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
 
     //COORDINATES MANAGMENT METHODS
     public void sendCoordinates( ArrayList<Coordinates> coordinates) throws RemoteException{
-
+        controller.sendCoordinates(coordinates);
     }
 
     public void sendDoubleCannonUsed( float doublePower, ArrayList<Coordinates> batteries) throws RemoteException {

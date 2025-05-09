@@ -120,6 +120,12 @@ public class Controller implements ControllerInterface, Serializable {
         gameController.refuseTile(nickname);
     }
 
+    public void sendCoordinates( ArrayList<Coordinates> coordinates){
+        switch (gameController.getGameState()){
+
+        }
+    }
+
     @Override
     public void lookGameCards(int index) {
         gameController.lookGameCards(nickname, view, index);
