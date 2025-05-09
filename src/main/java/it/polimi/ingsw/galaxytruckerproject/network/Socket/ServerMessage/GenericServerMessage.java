@@ -14,10 +14,6 @@ public class GenericServerMessage extends ServerMessage {
 
     @Override
     public void processMessage(ServerHandler serverHandler) {
-        try {
             serverHandler.getView().showGenericMessage(genericMessage);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
     }
 }

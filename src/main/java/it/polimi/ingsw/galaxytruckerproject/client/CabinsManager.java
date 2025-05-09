@@ -23,7 +23,7 @@ public class CabinsManager {
         this.cabins = lightPlayer.getShipBoard().getCabinsCoordinates();
     }
 
-    public ArrayList<Tile> manageCabins(CrewType crewType) throws RemoteException {
+    public ArrayList<Tile> manageCabins(CrewType crewType) {
         if(lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.NO){
             if(crewType!=CrewType.HUMAN) {
                 view.wrongLocalInput();
@@ -53,7 +53,7 @@ public class CabinsManager {
         return null;
     }
 
-    public void setup() throws RemoteException {
+    public void setup(){
         if(cabins.get(index).equals( new Coordinates(2, 3))) {
             index++;
         }

@@ -64,11 +64,7 @@ public class CoordInputManager {
             }
             case CHOOSE_BATTERY -> {
                 if(tile.getNumBatteries()>0) {
-                    try {
-                        clientController.getView().showGenericMessage("battery added correctly");
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
+                    clientController.getView().showGenericMessage("battery added correctly");
                     clientController.getMe().getShipBoard().chooseBatteryUse(coordinate);
                     coordinates.add(coordinate);
                 } else {
@@ -77,19 +73,11 @@ public class CoordInputManager {
             }
             case CHOOSE_DOUBLE_CANNON ->{
                 if(tile.getStrength()>0) {
-                    try {
-                        clientController.getView().showGenericMessage("double cannon added correctly");
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
+                    clientController.getView().showGenericMessage("double cannon added correctly");
                     fireStrength += tile.getStrength();
                     needed++;
                 } else if(tile.getNumBatteries()>0 && needed >0) {
-                    try {
-                        clientController.getView().showGenericMessage("battery added correctly");
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
+                    clientController.getView().showGenericMessage("battery added correctly");
                     clientController.getMe().getShipBoard().chooseBatteryUse(coordinate);
                     coordinates.add(coordinate);
                     needed--;
@@ -99,19 +87,11 @@ public class CoordInputManager {
             }
             case CHOOSE_DOUBLE_ENGINE -> {
                 if(tile.getEngineStrength()==2) {
-                    try {
-                        clientController.getView().showGenericMessage("double engine added correctly");
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
+                    clientController.getView().showGenericMessage("double engine added correctly");
                     numEngine++;
                     needed++;
                 } else if(tile.getNumBatteries()>0 && needed >0) {
-                    try {
-                        clientController.getView().showGenericMessage("battery added correctly");
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
+                    clientController.getView().showGenericMessage("battery added correctly");
                     clientController.getMe().getShipBoard().chooseBatteryUse(coordinate);
                     coordinates.add(coordinate);
                     needed--;

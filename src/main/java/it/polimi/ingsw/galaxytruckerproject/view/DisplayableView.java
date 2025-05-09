@@ -35,4 +35,8 @@ public interface DisplayableView extends ViewInterface{
     void goodsPrinter (ArrayList<Goods> goodsArray);
 
     void printBooked(LightShipBoard shipBoard);
+
+    void crewPositioned();
+
+    void showGenericMessage (String genericMessage);
 }

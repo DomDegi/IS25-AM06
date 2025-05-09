@@ -42,7 +42,7 @@ public class GUI implements DisplayableView {
     }
 
     @Override
-    public void showGenericMessage(String genericMessage) throws RemoteException {
+    public void showGenericMessage(String genericMessage) {
 
     }
 
@@ -184,6 +184,11 @@ public class GUI implements DisplayableView {
 
     @Override
     public void printBooked(LightShipBoard lightShipBoard) {
+
+    }
+
+    @Override
+    public void crewPositioned() {
 
     }
 

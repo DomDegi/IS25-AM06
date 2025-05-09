@@ -587,20 +587,12 @@ public class ClientController {
                         case "purplealien" -> type = CrewType.PURPLE;
                         default -> {
                             view.wrongLocalInput();
-                            try {
-                                cabinsManager.setup();
-                            } catch (RemoteException e) {
-                                throw new RuntimeException(e);
-                            }
+                            cabinsManager.setup();
                             return false;
                         }
                     }
                     if (!(me.getShipBoard().getCabinsCoordinates().isEmpty()||me.getShipBoard().getCabinsCoordinates().size()==1)) {
-                        try {
-                            newTiles = cabinsManager.manageCabins(type);
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        newTiles = cabinsManager.manageCabins(type);
                         if (newTiles!=null) {
                             setState(ClientState.WAIT);
                             try {
@@ -640,11 +632,7 @@ public class ClientController {
             case WAIT ->{
                 switch(phase){
                     case LOGIN -> {
-                        try {
-                            view.showGenericMessage("Wrong input in wait");
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        view.showGenericMessage("Wrong input in wait");
                     }
                     case SHIPBOARD -> {
                         if (checkShipBoards(words))
@@ -699,22 +687,15 @@ public class ClientController {
                         }
                         inManager = false;
                     } else {
-                        try {
-                            cabinsManager.setup();
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        cabinsManager.setup();
                     }
                 }else if (gameMode == GameMode.TRIAL) {
                     CrewType type = CrewType.HUMAN;
                     ArrayList<Tile> newTiles = new ArrayList<>();
                     for (Coordinates _ : me.getShipBoard().getCabinsCoordinates()) {
-                        try {
-                            newTiles = cabinsManager.manageCabins(type);
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        newTiles = cabinsManager.manageCabins(type);
                     }
+                    view.crewPositioned();
                     setState (ClientState.WAIT);
                     try {
                         virtualController.notifyNewCrewArrangement(newTiles);
@@ -749,11 +730,7 @@ public class ClientController {
                     inManager=true;
                 }
                 view.goodsPrinter(goodsList);
-                try {
-                    view.showGenericMessage("Chose for each good where to put it, input 'no' to stop:\n");
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+                view.showGenericMessage("Chose for each good where to put it, input 'no' to stop:\n");
             }
         }
         try {

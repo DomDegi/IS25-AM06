@@ -45,7 +45,7 @@ public class TUI implements DisplayableView {
     }
 
     @Override
-    public void showGenericMessage(String genericMessage) throws RemoteException {
+    public void showGenericMessage(String genericMessage)  {
         System.out.println(genericMessage);
     }
 
@@ -168,6 +168,11 @@ public class TUI implements DisplayableView {
                 System.out.println("│");
             }
         System.out.println("         └────────┴────────┘");
+    }
+
+    @Override
+    public void crewPositioned() {
+        System.out.println("crew positioned");
     }
 
     public void printDrawnTiles(Map<Integer, Tile> drawnTiles) {
