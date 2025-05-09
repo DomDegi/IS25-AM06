@@ -12,7 +12,7 @@ public class ControllerGUI implements ControllerUI {
     }
 
     @Override
-    public void input(String input) {
-
+    public boolean input(String input) {
+        return true;
     }
 }
