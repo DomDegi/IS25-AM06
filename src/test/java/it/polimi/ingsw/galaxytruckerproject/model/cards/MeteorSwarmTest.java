@@ -170,7 +170,6 @@ class MeteorSwarmTest {
         int player1_initialBatteries = player1.getShipBoard().getNumBatteries();
         game.setDrawnCard(meteorSwarm);
         game.getDrawnCard().initializeCard(game, viewMap);
-        game.setGameState(GameState.CARD_EVENT);
         assertEquals(meteorSwarm, game.getDrawnCard());
         meteorSwarm.setDiceRoll(2);
         //assertEquals(player1_initialBatteries - 1, player1.getShipBoard().getNumBatteries());

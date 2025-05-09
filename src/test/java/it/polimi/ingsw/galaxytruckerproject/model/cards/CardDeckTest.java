@@ -4,8 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
-
 
 class CardDeckTest {
 
@@ -17,32 +17,35 @@ class CardDeckTest {
     @BeforeEach
     void setUp() {
         CardDeck cardDeck = new CardDeck("cards.json");
-        TrialCardDeck trialCardDeck = new TrialCardDeck("trialFlightCards.json");
         cardsLvl1 = cardDeck.getDeckLvl1();
         cardsLvl2 = cardDeck.getDeckLvl2();
-        trialCards = trialCardDeck.getTrialDeck();
+        trialCards = new TrialCardDeck("trialFlightCards.json").getTrialDeck();
     }
 
     @Test
     void print_cards_to_output_file() {
         String filename = "cardsList_output";
         try (FileWriter writer = new FileWriter(filename)) {
-            for (Card card: cardsLvl1) {
+            for (Card card : cardsLvl1) {
                 writer.write(card.toString() + "\n");
             }
-            for (Card card: cardsLvl2) {
+            for (Card card : cardsLvl2) {
                 writer.write(card.toString() + "\n");
             }
-        } catch (Exception ignore){}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
-    void print_trial_deck_to_output_file() {
+    void print_trial_cards_to_output_file() {
         String filename = "trialCardsList_output";
         try (FileWriter writer = new FileWriter(filename)) {
-            for (Card card: trialCards) {
+            for (Card card : trialCards) {
                 writer.write(card.toString() + "\n");
             }
-        } catch (Exception ignore){}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

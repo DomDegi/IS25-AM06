@@ -1,22 +1,23 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.tiles.TileFactory.loadTilesFromJson;
 
 class TileFactoryTest {
     private ArrayList<Tile> tiles;
+    private ArrayDeque<Tile> tilesQueue;
 
     @BeforeEach
     void setUp() {
-        tiles = loadTilesFromJson("Tiles.json");
-        ConcurrentLinkedDeque<Tile> tilesQueue = new TileFactory().getStack(tiles);
+        tiles = loadTilesFromJson("TilesLikeGraphics.json");
     }
 
     @Test
