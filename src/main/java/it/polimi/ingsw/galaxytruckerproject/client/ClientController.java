@@ -41,7 +41,7 @@ public class ClientController {
     private GameMode gameMode;
     private DisplayableView view;
     private VirtualController virtualController;
-    private final CoordInputManager coordInputManager;
+    private CoordInputManager coordInputManager;
     private GoodsManager goodsManager;
     private CabinsManager cabinsManager;
     private Map<Integer,Tile> turnedTiles;
@@ -81,7 +81,6 @@ public class ClientController {
         availableColors.put(PlayersColor.BLUE,Boolean.TRUE);
         this.indexDeckInHandOrPlanet = 0;
         this.hourglassTurns = 0;
-        this.coordInputManager=new CoordInputManager(me.getShipBoard(),this);
     }
 
 
@@ -896,6 +895,7 @@ public class ClientController {
                 player.getShipBoard().initializeTestFlight();
             }
         }
+        this.coordInputManager=new CoordInputManager(me.getShipBoard(),this);
     }
 
     private boolean land(String[] input){
@@ -1141,6 +1141,7 @@ public class ClientController {
         Socket server;
         try{
             server = new Socket("localhost",12345);
+           // server = new Socket("192.168.193.47", 12345);
         } catch(Exception e){
             System.out.println("Server unreachable, check the port and the ip address");
             return;
