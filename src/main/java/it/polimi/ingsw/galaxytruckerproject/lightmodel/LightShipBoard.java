@@ -169,10 +169,16 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         penalty++;
     }
     public Tile getTile(Coordinates coordinates){
-        return tilesTable[coordinates.getX()][coordinates.getY()].get();
+        if(tilesTable[coordinates.getX()][coordinates.getY()].isPresent())
+            return tilesTable[coordinates.getX()][coordinates.getY()].get();
+        else
+            return null;
     }
     public Tile getTile(int x, int y){
-        return tilesTable[x][y].get();
+        if(tilesTable[x][y].isPresent())
+            return tilesTable[x][y].get();
+        else
+            return null;
     }
 
     public boolean positionTile(Optional<Tile> tile, Coordinates coordinates) {

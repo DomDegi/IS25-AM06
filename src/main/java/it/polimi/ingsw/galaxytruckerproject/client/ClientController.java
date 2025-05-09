@@ -263,27 +263,6 @@ public class ClientController {
                     return true;
                 switch (words[0]) {
                     case"done","d" -> {
-                        if(gameMode==GameMode.LEVEL2) {
-                            if(!(words.length > 1)){
-                                view.wrongLocalInput();
-                                return false;
-                            }
-                            int chose;
-                            chose = numerate(scroll(words, 1));
-                            if (chose == -1)
-                                return false;
-                            if (chose > 0 &&  chose <= numPlayer) {
-                                setState(ClientState.WAIT);
-                                try {
-                                    virtualController.notifySetPosition(chose);
-                                } catch (RemoteException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            } else {
-                                view.wrongLocalInput();
-                                return false;
-                            }
-                        }
                         setState(ClientState.WAIT);
                         try {
                             virtualController.notifyCompleted();
@@ -391,6 +370,10 @@ public class ClientController {
                             }
                         }
                     }
+                    default -> {
+                        view.wrongLocalInput();
+                        return false;
+                    }
                 }
             }
 
@@ -472,6 +455,26 @@ public class ClientController {
                     return true;
                 if (thirdHourglassTurn(words))
                     return true;
+                if(gameMode==GameMode.LEVEL2) {
+                    int chose;
+                    chose = numerate(scroll(words, 0));
+                    if (chose == -1)
+                        return false;
+                    if (chose > 0 &&  chose <= numPlayer) {
+                        setState(ClientState.WAIT);
+                        try {
+                            virtualController.notifySetPosition(chose);
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                        return true;
+                    } else {
+                        view.wrongLocalInput();
+                        return false;
+                    }
+                }
+                view.wrongLocalInput();
+                return false;
             }
 
             case ROLL_DICE->{
@@ -619,11 +622,7 @@ public class ClientController {
                         return true;
                 }
                 if (words[0].equals("done")) {
-                    try {
-                        return coordInputManager.endCheckingFase();
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
+                    return coordInputManager.endCheckingFase();
                 }
                 else {
                     //gestire il -1 in base alla carta
@@ -631,13 +630,9 @@ public class ClientController {
                     coords = transformCoordinates(words);
                     if(coords==null)
                         return false;
-                    try {
-                        if(!coordInputManager.checkCoord(coords)) {
-                            view.wrongLocalInput();
-                            return false;
-                        }
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
+                    if(!coordInputManager.checkCoord(coords)) {
+                        view.wrongLocalInput();
+                        return false;
                     }
                 }
             }
@@ -672,9 +667,11 @@ public class ClientController {
         previousState=state;
         state=newState;
         switch(newState){
-            case START_SHIP_CREATION ->
-               //me.setShipboard(new LightShipBoard(me));
+            case START_SHIP_CREATION -> {
+                this.coordInputManager = new CoordInputManager(me.getShipBoard(), this);
+                //me.setShipboard(new LightShipBoard(me));
                 phase = GamePhases.SHIPBOARD;
+            }
 
             case S_END_DRAW_TILE_CARD -> {
                 view.showTurnedTiles(turnedTiles);

@@ -300,14 +300,15 @@ public class GameController implements Observer, Serializable {
         }
     }
 
-    public  void drawTile(VirtualView playersView, String playerName, int index, boolean turned)  {
+    public void drawTile(VirtualView playersView, String playerName, int index, boolean turned) {
 
         // Can't draw if the shipboard is completed or there is already a tile to place/book/refuse
         if (playerStateIs(playerName, ClientState.S_MANAGE_DRAWN_TILE)
                 || playerStateIs(playerName, ClientState.S_FINISHED)) {
             try {
                 playersView.showWrongInputMessage();
-            } catch(Exception ignored) {}
+            } catch (Exception ignored) {
+            }
             return;
         }
         Tile drawnTile;
@@ -321,26 +322,26 @@ public class GameController implements Observer, Serializable {
                 }
                 return;
             }
-            try{
-            playersView.showDrawnTile(drawnTile.send());
-            } catch(RemoteException e) {
+            try {
+                playersView.showDrawnTile(drawnTile.send());
+            } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
-        }
-        else {
+        } else {
             drawnTile = game.drawTurnedTile(playerName, index);
-                if (drawnTile == null) {
-                    try {
-                        playersView.showWrongInputMessage();
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
-                    return;
+            if (drawnTile == null) {
+                try {
+                    playersView.showWrongInputMessage();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
                 }
-                try{
+                return;
+            }
+            notifyRemoveTurnedTile(drawnTile);
+            try {
                 playersView.showDrawnTile(drawnTile.send());
-                } catch(Exception ignored) {}
-                notifyRemoveTurnedTile(drawnTile);
+            } catch (Exception ignored) {
+            }
         }
         updatePlayerView(ClientState.S_MANAGE_DRAWN_TILE, playerName);
     }
@@ -375,7 +376,7 @@ public class GameController implements Observer, Serializable {
 
     //errors check and management
     public void verifyShipCorrectness() {
-        for (Player player :new ArrayList<>(game.getListOfInFlightPlayers()) ) {
+        for (Player player : new ArrayList<>(game.getListOfInFlightPlayers())) {
             boolean correctness = player.getShipBoard().verifyCorrectness();
             ViewInterface playersView = this.getViewFromNickname(player.getPlayerName());
             if (correctness){
@@ -402,7 +403,6 @@ public class GameController implements Observer, Serializable {
 
     public void shipErrorManagement(String playerName, VirtualView playersView, ArrayList<Coordinates> toRemove) {
         Player player = game.identifyPlayerByName(playerName);
-
         if(player==null){
             return;
         }
@@ -491,7 +491,8 @@ public class GameController implements Observer, Serializable {
                 }
             }
         }
-        this.endShipVerification();
+        if(playersWithErrors.isEmpty())
+            this.endShipVerification();
     }
 
     public void endShipVerification() {
@@ -665,19 +666,19 @@ public class GameController implements Observer, Serializable {
     }
 
     public void setPosition (String playerName, VirtualView playersView, int position) {
-        if (!playerStateIs(playerName, ClientState.S_END_DRAW_TILE_CARD)) {
+        if (!playerStateIs(playerName, ClientState.S_FINISHED)) {
             return;
         }
         FlightBoard flightBoard = game.getFlightBoard();
         Player player = game.identifyPlayerByName(playerName);
 
         if (flightBoard.addToFlightBoard(player, position)) {
-            notifyPlayerMovement(playerName, player.getPlayerColor(),player.getPlayerPosition(), player.getPlayerRanking());
-        }
-        else {
-            try{
-            playersView.showWrongInputMessage();
-            } catch(Exception ignored) {}
+            notifyPlayerMovement(playerName, player.getPlayerColor(), player.getPlayerPosition(), player.getPlayerRanking());
+        } else {
+            try {
+                playersView.showWrongInputMessage();
+            } catch (Exception ignored) {
+            }
         }
         checkIfAllPlayersReady();
     }
@@ -710,8 +711,7 @@ public class GameController implements Observer, Serializable {
     private void checkIfAllPlayersReady() {
         if (game.getListOfAllPlayer().size() == game.getListOfInFlightPlayers().size()) {
             this.endShipCreation();
-        }
-        else if (hourglassTurns == 3 && !hourglassON) {
+        } else if (hourglassTurns == 3 && !hourglassON) {
             for (Player player : game.getListOfAllPlayer()) {
                 if (player.getPlayerRanking() == 0 && player.getPlayerPosition() == 0) {
                     if (player.IsDisconnected()) {
