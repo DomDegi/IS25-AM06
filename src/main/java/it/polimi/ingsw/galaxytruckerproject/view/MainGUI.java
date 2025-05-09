@@ -8,14 +8,19 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
 
 
+
 import javafx.event.ActionEvent;
 import javafx.util.Duration;
+
+import java.util.function.Consumer;
 
 import static javafx.application.Application.launch;
 
@@ -208,6 +213,12 @@ public class MainGUI extends Application implements EventHandler<ActionEvent> {
             if (!nickname.isEmpty()) {
                 System.out.println("Nickname inserito: " + nickname);
                 // AGGIUNGEREMO QUI LA LOGICA PER GESTIRE IL NICKNAME(SET STATE E ROBE COSì IMMAGINO)
+
+                VBox colorLayout = chooseColor(selectedColor -> {
+                    System.out.println("Colore scelto per " + nicknameField.getText() + ": " + selectedColor);
+                    // Qui puoi procedere con il gioco o salvare il colore scelto
+                });
+                scene.setRoot(colorLayout);
             } else {
                 System.out.println("Nickname vuoto.");
             }
@@ -227,11 +238,45 @@ public class MainGUI extends Application implements EventHandler<ActionEvent> {
             startAutoTransition(primaryStage, scene, nicknameLayout, 2);
         });
 
+
+
         primaryStage.setScene(scene);
         primaryStage.setTitle("Galaxy Trucker");
         primaryStage.setFullScreenExitHint("");
         primaryStage.setFullScreen(true);
         primaryStage.show();
+    }
+
+
+    public VBox chooseColor(Consumer<String> colorSelected){
+        VBox colorLayout = new VBox(20);
+        colorLayout.setAlignment(Pos.CENTER);
+        Label label = new Label("Choose your color");
+        label.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+
+        HBox imagesBox = new HBox(20);
+        imagesBox.setAlignment(Pos.CENTER);
+
+        // Array dei colori disponibili
+        String[] colors = {"red", "blue", "green", "yellow"};
+
+        for (String color : colors) {
+            Image image = new Image(getClass().getResourceAsStream("/images/" + color + "_starting_cabin.png")); // metti le immagini in resources/images/
+            ImageView imageView = new ImageView(image);
+            imageView.setFitHeight(100);
+            imageView.setFitWidth(100);
+            imageView.setPreserveRatio(true);
+
+            imageView.setOnMouseClicked(e -> {
+                System.out.println("Colore selezionato: " + color);
+                colorSelected.accept(color);
+            });
+
+            imagesBox.getChildren().add(imageView);
+        }
+
+        colorLayout.getChildren().addAll(label, imagesBox);
+        return colorLayout;
     }
 
 
