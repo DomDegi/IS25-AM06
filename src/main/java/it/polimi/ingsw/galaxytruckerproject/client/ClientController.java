@@ -19,7 +19,6 @@ import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import it.polimi.ingsw.galaxytruckerproject.view.TUI;
-import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -415,7 +414,11 @@ public class ClientController {
                 switch (words[0]) {
                     case "rotate" -> {
                         this.tileInHand.rotate();
-                        view.showDrawnTile(tileInHand);
+                        try {
+                            view.showDrawnTile(tileInHand);
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                     case "position" -> {
                         Coordinates coordinates;
@@ -670,10 +673,10 @@ public class ClientController {
         previousState=state;
         state=newState;
         switch(newState){
-            case START_SHIP_CREATION -> {
+            case START_SHIP_CREATION ->
                //me.setShipboard(new LightShipBoard(me));
                 phase = GamePhases.SHIPBOARD;
-            }
+
             case S_END_DRAW_TILE_CARD -> {
                 view.showTurnedTiles(turnedTiles);
                 view.printShipboard(me.getShipBoard());
@@ -987,9 +990,6 @@ public class ClientController {
     public CoordInputManager getCoordInputManager() {
         return coordInputManager;
     }
-    public void setPhase(GamePhases phase) {
-        this.phase = phase;
-    }
 
     public LightShipBoard getLightShipBoard() {
         return me.getShipBoard();
@@ -1092,20 +1092,8 @@ public class ClientController {
         return state;
     }
 
-    public ClientState getPreviousState() {
-        return previousState;
-    }
-
     public LightPlayer getMe() {
         return me;
-    }
-
-    public boolean isInManager() {
-        return inManager;
-    }
-
-    public boolean isConnected() {
-        return connected;
     }
 
     public GamePhases getPhase() {
@@ -1116,24 +1104,12 @@ public class ClientController {
         return gameMode;
     }
 
-    public GoodsManager getGoodsManager() {
-        return goodsManager;
-    }
-
-    public CabinsManager getCabinsManager() {
-        return cabinsManager;
-    }
-
     public Map<Integer, Tile> getTurnedTiles() {
         return turnedTiles;
     }
 
     public Map<Integer, ArrayList<Card>> getDeck() {
         return deck;
-    }
-
-    public Map<Integer, Boolean> getAvailableDeck() {
-        return availableDeck;
     }
 
     public ArrayList<Goods> getGoodsList() {

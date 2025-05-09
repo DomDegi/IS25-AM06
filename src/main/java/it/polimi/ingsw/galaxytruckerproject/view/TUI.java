@@ -124,7 +124,7 @@ public class TUI implements DisplayableView {
     }
 
     @Override
-    public void printShipboard(LightShipBoard lightShipBoard) throws RemoteException {
+    public void printShipboard(LightShipBoard lightShipBoard) {
         System.out.println("this is your shipboard now:\n");
         for(int x=0;x<=4;x++){
             if(x==0)
@@ -150,7 +150,7 @@ public class TUI implements DisplayableView {
         System.out.println("└────────┴────────┴────────┴────────┴────────┴────────┴────────┘");
     }
 
-    public void printBooked(LightShipBoard lightShipBoard) throws RemoteException {
+    public void printBooked(LightShipBoard lightShipBoard) {
         System.out.println("┌────────┬────────┐");
             for(int r=0;r<=2;r++){
                 if (lightShipBoard.getBookedTiles().isEmpty())
