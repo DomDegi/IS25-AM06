@@ -16,7 +16,6 @@ public class ClientMain implements Client {
             String in = scanner.nextLine();
             clientController.input(in);
         }
-
     }
     
 }

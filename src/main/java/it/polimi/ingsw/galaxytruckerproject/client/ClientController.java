@@ -892,6 +892,7 @@ public class ClientController {
                 player.getShipBoard().initializeTestFlight();
             }
         }
+        this.coordInputManager=new CoordInputManager(me.getShipBoard(),this);
     }
 
     private boolean land(String[] input){
@@ -1137,6 +1138,7 @@ public class ClientController {
         Socket server;
         try{
             server = new Socket("localhost",12345);
+           // server = new Socket("192.168.193.47", 12345);
         } catch(Exception e){
             System.out.println("Server unreachable, check the port and the ip address");
             return;
