@@ -13,6 +13,10 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -226,5 +230,26 @@ public class GUI implements DisplayableView {
     public void setGameMode(GameMode gameMode) {
 
     }
+
+    public void start() {
+        try{
+            Stage stage = new Stage();
+            stage.setTitle("Galaxy Trucker");
+            BorderPane root = new BorderPane();
+            Scene scene = new Scene(root,400,300);
+            scene.setFill(Color.AQUAMARINE);
+            stage.setScene(scene);
+            stage.show();
+
+            stage.setMaxHeight(1000);
+            stage.setMinHeight(200);
+            stage.setMaxWidth(600);
+            stage.setMinWidth(200);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
 }

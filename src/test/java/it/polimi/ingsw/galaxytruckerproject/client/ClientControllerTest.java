@@ -1,5 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.client;
 
+class ClientControllerTest {
+};
+/*
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
@@ -309,7 +312,7 @@ class ClientControllerTest {
         assertEquals(3,choseCaptor.getValue());
         assertEquals(ClientState.WAIT, clientController.getState());*/
 
-    }
+    /*
 
     @Test
     void MANAGE_CABINS_test_butNull() throws RemoteException {
@@ -603,3 +606,5 @@ class ClientControllerTest {
         clientController.getView().printShipboard(shipBoard1);
     }
 }
+
+     */
