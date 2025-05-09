@@ -234,6 +234,10 @@ public class MainGUI extends Application implements EventHandler<ActionEvent> {
         primaryStage.show();
     }
 
+
+
+
+
     @Override
     public void handle(ActionEvent event) {
         if(event.getSource() == button1) {
