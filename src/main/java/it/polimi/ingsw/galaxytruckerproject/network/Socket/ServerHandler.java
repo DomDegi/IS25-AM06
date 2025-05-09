@@ -87,9 +87,9 @@ public class ServerHandler implements Runnable {
         }
     }
 
-    public void sendClientMessage(ClientMessage clientMessage){
+    public synchronized void sendClientMessage(ClientMessage clientMessage){
         try{
-            output.reset();
+            //output.reset();
             output.writeObject(clientMessage);
         } catch (IOException e){
             e.printStackTrace();

@@ -80,15 +80,14 @@ public class ClientHandler implements Runnable {
         threadInListening.start();
     }
 
-    public void sendServerMessageToClient(ServerMessage message){
-        try {
-            output.reset();
-            output.writeObject(message);
-        } catch (IOException e) {
-            System.out.println("Could not send message to " + clientSocket.getInetAddress());
-            e.printStackTrace();
-        }
-
+    public synchronized void sendServerMessageToClient(ServerMessage message){
+            try {
+                //output.reset();
+                output.writeObject(message);
+            } catch (IOException e) {
+                System.out.println("Could not send message to " + clientSocket.getInetAddress());
+                e.printStackTrace();
+            }
     };
 
     /*public void listenForMessages() {
