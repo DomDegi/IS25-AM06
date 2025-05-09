@@ -238,7 +238,7 @@ public class MultiGameController implements Serializable {
             if(gamesMap!=null)
                 for(GameController game : gamesMap.values()){
                     if(game.getActivePlayers()!=null)
-                        for(String playerName : game.getActivePlayers().keySet()){
+                        for(String playerName : new ArrayList<>(game.getActivePlayers().keySet())){
                             game.pingPong(playerName,game.getViewFromNickname(playerName));
                         }
                 }

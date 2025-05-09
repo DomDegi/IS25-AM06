@@ -17,7 +17,7 @@ import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerHandler;
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.VirtualControllerSocket;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
-import it.polimi.ingsw.galaxytruckerproject.view.GUI;
+import it.polimi.ingsw.galaxytruckerproject.view.GUI.GUI;
 import it.polimi.ingsw.galaxytruckerproject.view.TUI;
 
 import java.io.IOException;
@@ -101,8 +101,11 @@ public class ClientController {
         switch (state) {
             case CHOOSE_UI->{
                 switch(words[0]) {
-                    case "gui","g"->
+                    case "gui","g"-> {
                             this.view= new GUI();
+                            view.run();
+                            view.setClientController(this);
+                    }
                     case "tui","t"->
                             this.view=new TUI();
                     default->{

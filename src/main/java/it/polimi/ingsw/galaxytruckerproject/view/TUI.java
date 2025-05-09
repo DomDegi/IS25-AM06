@@ -1,5 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.view;
 
+import it.polimi.ingsw.galaxytruckerproject.client.ClientController;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
@@ -12,10 +13,8 @@ import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -59,6 +58,11 @@ public class TUI implements DisplayableView {
     @Override
     public void showDrawnTile(Tile drawnTile) {
         System.out.println(drawnTile.toString());
+    }
+
+    @Override
+    public void run() {
+
     }
 
     @Override
@@ -168,6 +172,11 @@ public class TUI implements DisplayableView {
                 System.out.println("│");
             }
         System.out.println("└────────┴────────┘");
+    }
+
+    @Override
+    public void setClientController(ClientController clientController) {
+
     }
 
     @Override
