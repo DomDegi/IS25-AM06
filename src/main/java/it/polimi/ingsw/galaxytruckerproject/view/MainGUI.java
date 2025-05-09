@@ -1,8 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.view;
 
-import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -191,26 +189,42 @@ public class MainGUI extends Application implements EventHandler<ActionEvent> {
         socketLayout.getChildren().add(label2);
 
         // Layout per la scena successiva
-        VBox getNameLayout = new VBox(20);
-        getNameLayout.setAlignment(Pos.CENTER);
-        Label nameLabel = new Label("Enter your nickname");
+        VBox nicknameLayout = new VBox(20);
+        nicknameLayout.setAlignment(Pos.CENTER);
+        Label nicknameLabel = new Label("Enter your nickname");
+        nicknameLabel.setStyle("-fx-font-size: 28px;");
 
         TextField nicknameField = new TextField();
         nicknameField.setPromptText("Enter your nickname here");
-        nicknameField.setMaxWidth(300); // opzionale, per non farla troppo larga
-        getNameLayout.getChildren().add(nicknameField);
+        nicknameField.setMaxWidth(300);
+        Button confirmButton = new Button("Confirm");
+        confirmButton.setDefaultButton(true);
+        confirmButton.setVisible(false);
+        nicknameField.textProperty().addListener((obs, oldVal, newVal) -> {
+            confirmButton.setVisible(!newVal.trim().isEmpty());
+        });
+        confirmButton.setOnAction(event -> {
+            String nickname = nicknameField.getText().trim();
+            if (!nickname.isEmpty()) {
+                System.out.println("Nickname inserito: " + nickname);
+                // AGGIUNGEREMO QUI LA LOGICA PER GESTIRE IL NICKNAME(SET STATE E ROBE COSì IMMAGINO)
+            } else {
+                System.out.println("Nickname vuoto.");
+            }
+        });
 
-        nameLabel.setStyle("-fx-font-size: 28px;");
-        getNameLayout.getChildren().add(nameLabel);
+        nicknameLayout.getChildren().addAll(nicknameLabel, nicknameField, confirmButton);
+
+
 
         button1.setOnAction(e -> {
             scene.setRoot(rmiLayout);
-            startAutoTransition(primaryStage, scene, getNameLayout, 2);
+            startAutoTransition(primaryStage, scene, nicknameLayout, 2);
         });
 
         button2.setOnAction(e -> {
             scene.setRoot(socketLayout);
-            startAutoTransition(primaryStage, scene, getNameLayout, 2);
+            startAutoTransition(primaryStage, scene, nicknameLayout, 2);
         });
 
         primaryStage.setScene(scene);
