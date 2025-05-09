@@ -11,10 +11,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Planets;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.CrewType;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import it.polimi.ingsw.galaxytruckerproject.network.RMI.Client.VirtualViewRMI;
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerHandler;
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.VirtualControllerSocket;
@@ -51,6 +48,7 @@ public class ClientController {
     private Map<Integer,Tile> turnedTiles;
     private Map<Integer, ArrayList<Card>> deck;
     private final Map<Integer,Boolean> availableDeck;
+    private final Map<PlayersColor,Boolean> availableColors;
     private final ArrayList<Goods> goodsList;
 
     private int numPlayer;
@@ -77,6 +75,11 @@ public class ClientController {
         availableDeck.put(1,Boolean.TRUE);
         availableDeck.put(2,Boolean.TRUE);
         availableDeck.put(3,Boolean.TRUE);
+        this.availableColors = new HashMap<>(4);
+        availableColors.put(PlayersColor.RED,Boolean.TRUE);
+        availableColors.put(PlayersColor.YELLOW,Boolean.TRUE);
+        availableColors.put(PlayersColor.GREEN,Boolean.TRUE);
+        availableColors.put(PlayersColor.BLUE,Boolean.TRUE);
         this.indexDeckInHandOrPlanet = 0;
         this.hourglassTurns = 0;
         this.coordInputManager=new CoordInputManager(me.getShipBoard(),this);
@@ -93,7 +96,6 @@ public class ClientController {
         String[] words = input.split(" ");
         if (words.length == 0||words[0].isEmpty()) {
             view.wrongLocalInput();
-
             return false;
         }
 
@@ -106,7 +108,6 @@ public class ClientController {
                             this.view=new TUI();
                     default->{
                         view.wrongLocalInput();
-
                         return false;
                     }
                 }
@@ -131,7 +132,6 @@ public class ClientController {
                     }
                     default->{
                         view.wrongLocalInput();
-
                         return false;
                     }
                 }
@@ -252,7 +252,10 @@ public class ClientController {
             }
 
             case START_SHIP_CREATION -> {
-                return firstHourglassTurn(words);
+                if (firstHourglassTurn(words))
+                    return true;
+                view.wrongLocalInput();
+                return false;
             }
 
             case S_END_DRAW_TILE_CARD -> {
@@ -410,8 +413,10 @@ public class ClientController {
                 if (checkShipBoards(words))
                     return true;
                 switch (words[0]) {
-                    case "rotate" ->
+                    case "rotate" -> {
                         this.tileInHand.rotate();
+                        view.showDrawnTile(tileInHand);
+                    }
                     case "position" -> {
                         Coordinates coordinates;
                         if(!(words.length > 2)){
@@ -423,7 +428,6 @@ public class ClientController {
                             me.getShipBoard().positionTile(Optional.ofNullable(this.tileInHand),coordinates);
                             setState(ClientState.WAIT);
                             try {
-
                                 virtualController.notifySetTile(this.tileInHand.send());
                             } catch (RemoteException e) {
                                 throw new RuntimeException(e);
@@ -672,6 +676,8 @@ public class ClientController {
             }
             case S_END_DRAW_TILE_CARD -> {
                 view.showTurnedTiles(turnedTiles);
+                view.printShipboard(me.getShipBoard());
+                view.printBooked(me.getShipBoard());
             }
             case S_MANAGE_CARDS -> {
                 if(gameMode==GameMode.TRIAL) {
@@ -961,6 +967,7 @@ public class ClientController {
     }
     public void addTurnedTile(Tile tile) {
         turnedTiles.put(tile.getKey(), tile);
+        view.showTurnedTiles(turnedTiles);
     }
     public void removeTurnedTile(Tile tile) {
         turnedTiles.remove(tile.getKey());
@@ -1074,6 +1081,10 @@ public class ClientController {
 
     public void setGameInfo(ArrayList<GameInfo> gameInfo) {
         this.gameInfo = gameInfo;
+    }
+
+    public void colorsNotAvailable(PlayersColor notAvailableColors) {
+        this.availableColors.put(notAvailableColors,Boolean.FALSE);
     }
 
     //Test getter

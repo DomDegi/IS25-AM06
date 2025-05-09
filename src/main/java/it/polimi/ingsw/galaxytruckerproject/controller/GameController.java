@@ -189,25 +189,31 @@ public class GameController implements Observer, Serializable {
      */
     public void playerAddition(String playerName, PlayersColor playersColor)  {
         if (this.getGameState() == GameState.LOBBY_PHASE && playersViewMap.containsKey(playerName)) {
-                //if playerCount is still to be reached, add player to the game model
-                if (game.getNumberOfPlayers() < game.getPlayerCount()) {
-                    game.addPlayer(playerName, playersColor);
-                    activePlayers.put(playerName, game.identifyPlayerByName(playerName));
-
-                }
-                else { //player count already reached
+            //if playerCount is still to be reached, add player to the game model
+            if (game.getNumberOfPlayers() < game.getPlayerCount()) {
+                game.addPlayer(playerName, playersColor);
+                activePlayers.put(playerName, game.identifyPlayerByName(playerName));
+                for (Player player : activePlayers.values()) {
                     try {
-                        playersViewMap.get(playerName).showWrongInputMessage();
+                        playersViewMap.get(player.getPlayerName()).notifyNotAvailableColor(playersColor);
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
                 }
-                //if game is already out of lobby phase
-            } else if (playersViewMap.containsKey(playerName)) {
+            } else { //player count already reached
                 try {
+                    playersViewMap.get(playerName).showWrongInputMessage();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            //if game is already out of lobby phase
+        } else if (playersViewMap.containsKey(playerName)) {
+            try {
                 playersViewMap.get(playerName).showWrongInputMessage();
-                } catch(Exception ignored) {}
-            } // if the count has been reached starts the game
+            } catch (Exception ignored) {
+            }
+        } // if the count has been reached starts the game
     }
 
     public VirtualView removePlayer (String playerName) {
@@ -266,9 +272,15 @@ public class GameController implements Observer, Serializable {
     public void startGame() {
         game.startShipCreation();
         if (game.getMode() == TRIAL) {
+            for (Player player : game.getListOfAllPlayer()) {
+                notifyStartPosition(player.getPlayerName(),player.getPlayerColor());
+            }
             updateEveryView(ClientState.S_END_DRAW_TILE_CARD);
         }
         else {
+            for (Player player : game.getListOfAllPlayer()) {
+                notifyStartPosition(player.getPlayerName(),player.getPlayerColor());
+            }
             updateEveryView(ClientState.START_SHIP_CREATION);
             notifyFlightBoardCards();
         }
@@ -344,10 +356,11 @@ public class GameController implements Observer, Serializable {
 
     public void notifyBookedTile (String playerName, Tile tile) {
         playersViewMap.values().forEach(virtualView -> {
-            try {
-                virtualView.notifyBookedTile(playerName, tile.send());
-            } catch (Exception ignored) {//unhandled exception
-            }
+            if(virtualView!=playersViewMap.get(playerName))
+                try {
+                    virtualView.notifyBookedTile(playerName, tile.send());
+                } catch (Exception ignored) {//unhandled exception
+                }
         });
     }
 
@@ -669,6 +682,15 @@ public class GameController implements Observer, Serializable {
         for (VirtualView view: playersViewMap.values()) {
             try {
                 view.notifyPlayerMovement(playerName, playersColor, position, ranking);
+            } catch (Exception ignored) {}
+        }
+    }
+
+    private void notifyStartPosition(String playerName,PlayersColor playersColor) {
+        for (VirtualView view: playersViewMap.values()) {
+            try {
+                view.notifyPlayerMovement(playerName, playersColor, 0, 0);
+                view.initializeShipBoards(this.game.getMode());
             } catch (Exception ignored) {}
         }
     }

@@ -34,10 +34,10 @@ public enum ClientState implements Serializable {
             case COORD_REQUEST -> {return "Coordinates requested [coordinates]";}
             case MANAGE_GOODS -> {return  "Going to manage goods of the planet";}
             case PLANET_CHOICE -> {return "Choose one of the planets to land [planetNumber]";}
-            case S_END_DRAW_TILE_CARD -> {return "Now you can draw a tile or a card [done flightBoardPosition] [draw tile|draw tile new] [draw tile b1] [draw tile b2] [draw tile turnedTileNum] [draw card numDeck] [checkShipboard playerNum] [turn]";}
+            case S_END_DRAW_TILE_CARD -> {return "Now you can draw a tile or a card [done flightBoardPosition] [draw tile|draw tile new] [draw tile b1] [draw tile b2] [draw tile turnedTileNum] [draw card numDeck] [check playerNum] [turn]";}
             case S_MANAGE_CARDS -> {return "You're seeing the cards [done]";}
-            case S_MANAGE_DRAWN_TILE -> {return "You can rotate, position, book or refuse this tile [rotate] [position] [book] [refuse] [checkShipboard playerNum] [turn]";}
-            case S_FINISHED -> {return "You've finished the ship creation, wait to know if your ship is correct [checkShipboard playerNum] [turn]";}
+            case S_MANAGE_DRAWN_TILE -> {return "You can rotate, position, book or refuse this tile [rotate] [position] [book] [refuse] [check playerNum] [turn]";}
+            case S_FINISHED -> {return "You've finished the ship creation, wait to know if your ship is correct [check playerNum] [turn]";}
             case WAIT -> {return "Waiting for server";}
             case START_SHIP_CREATION -> {return "Turn the hourglass to start the ship creation [start|turn]";}
             case DRAW_CARD -> {return "Draw a card [draw]";}

@@ -23,13 +23,14 @@ public class Planets extends Card{
     private Player currentPlayer;
     private ViewInterface currentPlayerView = null;
     private boolean chosen;
-    private GoodsChecker goodsChecker;
+    private Map<String,GoodsChecker> goodsChecker;
     public Map<String,Planet> playerChosenPlanets = new HashMap<>();
     private int playerIndex = -1;
 
     @JsonCreator
     public Planets(@JsonProperty("level") int level, @JsonProperty("requiredDays") int requiredDays, @JsonProperty("listOfPlanets") ArrayList<Planet> listOfPlanets) {
         super(level, requiredDays);
+        this.goodsChecker=new HashMap<>();
         this.listOfPlanets = listOfPlanets;
         this.currentPlayer = null;
         this.chosen = false;
@@ -49,12 +50,15 @@ public class Planets extends Card{
             }catch(Exception ignored) {}
             return;
         }
-        if (goodsChecker.check(clientCredits, updatedCargos)) {
+        if (goodsChecker.get(playerName).check(clientCredits, updatedCargos)) {
             game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
+            playerIndex++;
             notifyMovement(currentPlayer);
             ArrayList<Tile> updatedTiles = new ArrayList<>(updatedCargos);
             notifyModifiedTiles(playerName, updatedTiles);
-            nextPlayer();
+            if (playerIndex==goodsChecker.size()) {
+                nextPlayer();
+            }
         }
         else {
             try {
@@ -87,11 +91,26 @@ public class Planets extends Card{
         listOfPlanets.get(planet - 1).setOccupationStatus();
         playerChosenPlanets.put(playerName, listOfPlanets.get(planet - 1));
         notifyPlayerLanded(playerName, planet);
-        this.goodsChecker = new GoodsChecker(currentPlayer, listOfPlanets.get(planet-1).getListOfGoods());
-        chosen = true;
-        try {
-            currentPlayerView.setClientState(ClientState.MANAGE_GOODS);
-        } catch (Exception ignored) {}
+        goodsChecker.put(currentPlayer.getPlayerName(), new GoodsChecker(currentPlayer,listOfPlanets.get(planet - 1).getListOfGoods()));
+        if(playerIndex==game.getListOfInFlightPlayers().size()-1) {
+            chosen = true;
+            for (Player player: game.getListOfInFlightPlayers()) {
+                if (goodsChecker.containsKey(player.getPlayerName())) {
+                    try {
+                        currentPlayerView.setClientState(ClientState.MANAGE_GOODS);
+                    } catch (Exception ignored) {
+                    }
+                }else {
+                    try {
+                        currentPlayerView.setClientState(ClientState.WAIT);
+                    } catch (Exception ignored) {
+                    }
+                }
+            }
+            playerIndex=0;
+            return;
+        }
+        nextPlayer();
     }
 
     public void notifyPlayerLanded(String playerName, int planet) {

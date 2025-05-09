@@ -56,7 +56,6 @@ public class TUI implements DisplayableView {
         System.out.println(errorMessage);
     }
 
-
     @Override
     public void showDrawnTile(Tile drawnTile) {
         System.out.println(drawnTile.toString());
@@ -110,7 +109,6 @@ public class TUI implements DisplayableView {
         System.out.println("please, make a choice");
     }
 
-
     @Override
     public void showScores(ArrayList<Player> players) throws RemoteException {
         for (Player player : players) {
@@ -126,8 +124,50 @@ public class TUI implements DisplayableView {
     }
 
     @Override
-    public void printShipboard(LightShipBoard lightShipBoard){
-        System.out.println("this is your shipboard now:\n" + lightShipBoard.toString());
+    public void printShipboard(LightShipBoard lightShipBoard) throws RemoteException {
+        System.out.println("this is your shipboard now:\n");
+        for(int x=0;x<=4;x++){
+            if(x==0)
+                System.out.println("┌────────┬────────┬────────┬────────┬────────┬────────┬────────┐");
+            else
+                System.out.println("├────────┼────────┼────────┼────────┼────────┼────────┼────────┤");
+            for(int r=0;r<=2;r++){
+                for (int y = 0; y <= 6; y++) {
+                    if (lightShipBoard.getTilesTable()[x][y].isEmpty()) {
+                        System.out.print("│        ");
+                    } else {
+                        if (r == 0)
+                            System.out.print("│" + lightShipBoard.getTile(x, y).toString1());
+                        if (r == 1)
+                            System.out.print("│" + lightShipBoard.getTile(x, y).toString2());
+                        if (r == 2)
+                            System.out.print("│" + lightShipBoard.getTile(x, y).toString3());
+                    }
+                }
+                System.out.println("│");
+            }
+        }
+        System.out.println("└────────┴────────┴────────┴────────┴────────┴────────┴────────┘");
+    }
+
+    public void printBooked(LightShipBoard lightShipBoard) throws RemoteException {
+        System.out.println("┌────────┬────────┐");
+            for(int r=0;r<=2;r++){
+                if (lightShipBoard.getBookedTiles().isEmpty())
+                    System.out.print("│        │        ");
+                for (Tile tile: lightShipBoard.getBookedTiles()) {
+                        if (r == 0)
+                            System.out.print("│" + tile.toString1());
+                        if (r == 1)
+                            System.out.print("│" + tile.toString2());
+                        if (r == 2)
+                            System.out.print("│" + tile.toString3());
+                }
+                if (lightShipBoard.getBookedTiles().size()==1)
+                    System.out.print("│        ");
+                System.out.println("│");
+            }
+        System.out.println("└────────┴────────┘");
     }
 
     @Override
@@ -144,7 +184,6 @@ public class TUI implements DisplayableView {
     public void setGameMode(GameMode gameMode) {
         System.out.println("your gameMode is: " + gameMode.toString());
     }
-
 
     @Override
     public void goodsPrinter(ArrayList<Goods> goodsArray) {

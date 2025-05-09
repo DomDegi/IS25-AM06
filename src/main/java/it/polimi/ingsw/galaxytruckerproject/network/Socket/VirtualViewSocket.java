@@ -78,6 +78,11 @@ public class VirtualViewSocket implements VirtualView {
     }
 
     @Override
+    public void notifyNotAvailableColor(PlayersColor color) throws RemoteException {
+        clientHandler.sendServerMessageToClient(new NotAvailableColorMessage(color));
+    }
+
+    @Override
     public void notifyModifiedTiles(String playerName, ArrayList<Tile> tiles) throws RemoteException {
         clientHandler.sendServerMessageToClient(new ModifiedTilesMessage(playerName, tiles));
     }
@@ -101,6 +106,11 @@ public class VirtualViewSocket implements VirtualView {
     @Override
     public void notifyFlightBoardCards(Map<Integer, ArrayList<Card>> cards) throws RemoteException {
         clientHandler.sendServerMessageToClient(new FlightBoardCardsMessage(cards));
+    }
+
+    @Override
+    public void initializeShipBoards(GameMode gameMode) throws RemoteException {
+        clientHandler.sendServerMessageToClient(new SetGameModeMessage(gameMode));
     }
 
     @Override

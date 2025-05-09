@@ -17,12 +17,12 @@ public enum GoodsColor implements Serializable {
     @Override
     public String toString() {
         if(this == RED)
-            return "Red";
+            return "R";
         if(this == YELLOW)
-            return "Yellow";
+            return "Y";
         if (this == GREEN)
-            return "Green";
-        return "Blue";
+            return "G";
+        return "B";
     }
 
     public int getValue() {

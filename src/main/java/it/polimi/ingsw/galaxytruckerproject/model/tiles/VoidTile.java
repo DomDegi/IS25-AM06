@@ -11,5 +11,21 @@ public class VoidTile extends Tile {
         return true;
     }
     public boolean fillable(){return false;}
-}
 
+    @Override
+    public String toString() {
+        return "\n┌────────┐\n│"+toString1()+"│\n│"+toString2()+"│\n│"+toString3()+"│\n└────────┘";
+    }
+    @Override
+    public String toString1() {
+        return "▓▓▓▓▓▓▓▓";
+    }
+    @Override
+    public String toString2(){
+        return "▓▓▓▓▓▓▓▓";
+    }
+    @Override
+    public String toString3(){
+        return "▓▓▓▓▓▓▓▓";
+    }
+}

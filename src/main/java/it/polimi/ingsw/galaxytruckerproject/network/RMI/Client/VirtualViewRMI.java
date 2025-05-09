@@ -107,6 +107,11 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     }
 
     @Override
+    public void notifyNotAvailableColor(PlayersColor color) throws RemoteException {
+        clientController.colorsNotAvailable(color);
+    }
+
+    @Override
     public void notifyDrawnCard(Card card) throws RemoteException {
         view.notifyDrawnCard(card);
         clientController.setState(ClientState.WAIT);
@@ -125,6 +130,11 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     public void connected() throws RemoteException{
         view.connected();
         clientController.setConnected(true);
+    }
+
+    @Override
+    public void initializeShipBoards(GameMode gameMode) throws RemoteException{
+        clientController.setGameMode(gameMode);
     }
 
     @Override
@@ -239,7 +249,4 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     public void showScores(ArrayList<Player> players) throws RemoteException {
         view.showScores(players);
     }
-
-
-
 }

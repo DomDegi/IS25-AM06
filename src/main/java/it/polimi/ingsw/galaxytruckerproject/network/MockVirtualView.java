@@ -59,6 +59,11 @@ public class MockVirtualView implements VirtualView {
     }
 
     @Override
+    public void notifyNotAvailableColor(PlayersColor color) throws RemoteException {
+
+    }
+
+    @Override
     public void notifyModifiedTiles(String playerName, ArrayList<Tile> tiles) throws RemoteException {
         // Implement mock behavior or leave empty
     }
@@ -84,12 +89,16 @@ public class MockVirtualView implements VirtualView {
     }
 
     @Override
+    public void initializeShipBoards(GameMode gameMode) throws RemoteException {
+
+    }
+
+    @Override
     public void ping() throws RemoteException {
 
     }
 
     // --- ViewInterface methods ---
-
 
     @Override
     public void showLoginResponse(boolean success) throws RemoteException {
@@ -218,7 +227,6 @@ public class MockVirtualView implements VirtualView {
         return null;
     }
 
-
     @Override
     public void notifyTurnedHourglass(int i) throws RemoteException {
     }
@@ -227,7 +235,5 @@ public class MockVirtualView implements VirtualView {
     public void notifyEndOfTime() throws RemoteException {
 
     }
-
-
 }
 

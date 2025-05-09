@@ -183,6 +183,11 @@ public class GUI implements DisplayableView {
     }
 
     @Override
+    public void printBooked(LightShipBoard lightShipBoard) throws RemoteException {
+
+    }
+
+    @Override
     public void printProjectile(Projectile projectile) {
 
     }
