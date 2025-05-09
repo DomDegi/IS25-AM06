@@ -385,12 +385,16 @@ public class GameController implements Observer, Serializable {
                 else {
                     try{
                     playersView.setClientState(ClientState.MANAGE_CABINS);
-                    } catch(Exception ignored) {}
+                    } catch(Exception e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             } else {
                 try{
                 playersView.asksToInputCoordinates(CoordReqType.CHOOSE_TO_BREAK);
-                } catch(Exception ignored) {}
+                } catch(Exception e) {
+                    throw new RuntimeException(e);
+                }
                 playersWithErrors.add(player.getPlayerName());
             }
         }
