@@ -572,24 +572,26 @@ public class GameController implements Observer, Serializable {
         Tile settedTile;
         if (!tile.isBooked()) {
             if (clientsStatesMap.get(playerName) != ClientState.S_MANAGE_DRAWN_TILE) {
-                try{
-                playersView.showWrongInputMessage();
-                } catch(Exception ignored) {}
+                try {
+                    playersView.showWrongInputMessage();
+                } catch (Exception ignored) {
+                }
                 return;
             }
-        }
-        else {
-            if (playerStateIs(playerName,ClientState.S_MANAGE_CARDS) || playerStateIs(playerName,ClientState.S_FINISHED)) {
-                try{
-                playersView.showWrongInputMessage();
-                } catch(Exception ignored) {}
+        } else {
+            if (playerStateIs(playerName, ClientState.S_MANAGE_CARDS) || playerStateIs(playerName, ClientState.S_FINISHED)) {
+                try {
+                    playersView.showWrongInputMessage();
+                } catch (Exception ignored) {
+                }
                 return;
             }
             settedTile = game.drawAndPositionBookedTile(playerName, tile);
             if (settedTile == null) {
-                try{
-                playersView.showWrongInputMessage();
-                } catch(Exception ignored) {}
+                try {
+                    playersView.showWrongInputMessage();
+                } catch (Exception ignored) {
+                }
                 return;
             }
             notifyRemovedBookedTile(playerName, settedTile);
@@ -599,11 +601,11 @@ public class GameController implements Observer, Serializable {
         if (settedTile != null) {
             updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
             notifyPositionedTile(playerName, settedTile.send());
-        }
-        else {
-            try{
-            playersView.showWrongInputMessage();
-            } catch(Exception ignored) {}
+        } else {
+            try {
+                playersView.showWrongInputMessage();
+            } catch (Exception ignored) {
+            }
         }
     }
 
