@@ -17,7 +17,7 @@ public class Pipe extends Tile{
     }
     @Override
     public String toString2(){
-        return "  "+getWest()+"PP"+getEast()+" ";
+        return " "+getWest()+" PP "+getEast()+" ";
     }
     @Override
     public String toString3(){

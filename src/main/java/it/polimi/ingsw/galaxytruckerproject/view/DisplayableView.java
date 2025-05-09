@@ -34,6 +34,8 @@ public interface DisplayableView extends ViewInterface{
 
     void printCabins(Tile cabins);
 
+    public void printDrawnTiles(Map<Integer, Tile> drawnTiles);
+
     void goodsPrinter (ArrayList<Goods> goodsArray);
 
     void printBooked(LightShipBoard shipBoard);

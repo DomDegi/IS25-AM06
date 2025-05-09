@@ -244,6 +244,11 @@ public class GUI extends Application implements DisplayableView {
     }
 
     @Override
+    public void printDrawnTiles(Map<Integer, Tile> drawnTiles) {
+
+    }
+
+    @Override
     public void connected() {
 
     }

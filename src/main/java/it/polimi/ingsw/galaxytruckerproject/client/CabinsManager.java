@@ -15,15 +15,18 @@ public class CabinsManager {
     private final LightPlayer lightPlayer;
     private final DisplayableView view;
     private final ArrayList<Coordinates> cabins;
-    ArrayList<Tile> modifiedCabins = new ArrayList<>();
-    private int index=0;
+    ArrayList<Tile> modifiedCabins;
+    private int index;
+
     public CabinsManager(LightPlayer lightPlayer, DisplayableView view) {
         this.view = view;
         this.lightPlayer = lightPlayer;
         this.cabins = lightPlayer.getShipBoard().getCabinsCoordinates();
+        this.modifiedCabins = new ArrayList<>();
+        this.index=0;
     }
 
-    public ArrayList<Tile> manageCabins(CrewType crewType) throws RemoteException {
+    public ArrayList<Tile> manageCabins(CrewType crewType) {
         if(lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.NO){
             if(crewType!=CrewType.HUMAN) {
                 view.wrongLocalInput();
@@ -53,18 +56,34 @@ public class CabinsManager {
         return null;
     }
 
-    public void setup() throws RemoteException {
+    public void setup() {
         if(cabins.get(index).equals( new Coordinates(2, 3))) {
             index++;
         }
         if(lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.NO){
-            view.showGenericMessage(cabins.get(index).toString()+" - Only Human are allowed here");
+            try {
+                view.showGenericMessage(cabins.get(index).toString()+" - Only Human are allowed here");
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.PURPLE){
-            view.showGenericMessage(cabins.get(index).toString()+" - Human and Purple aliens are allowed here");
+            try {
+                view.showGenericMessage(cabins.get(index).toString()+" - Human and Purple aliens are allowed here");
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.BROWN){
-            view.showGenericMessage(cabins.get(index).toString()+" - Human and Brown aliens are allowed here");
+            try {
+                view.showGenericMessage(cabins.get(index).toString()+" - Human and Brown aliens are allowed here");
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.BOTH){
-            view.showGenericMessage(cabins.get(index).toString()+" - Everyone is allowed here");
+            try {
+                view.showGenericMessage(cabins.get(index).toString()+" - Everyone is allowed here");
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
