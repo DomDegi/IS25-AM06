@@ -1,5 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.view;
 
+import it.polimi.ingsw.galaxytruckerproject.client.ClientController;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
@@ -12,10 +13,8 @@ import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -47,7 +46,7 @@ public class TUI implements DisplayableView {
     }
 
     @Override
-    public void showGenericMessage(String genericMessage) throws RemoteException {
+    public void showGenericMessage(String genericMessage)  {
         System.out.println(genericMessage);
     }
 
@@ -62,11 +61,17 @@ public class TUI implements DisplayableView {
     }
 
     @Override
+    public void run() {
+
+    }
+
+    @Override
     public void showTurnedTiles(Map<Integer, Tile> turnedTiles) {
-        for (int i : turnedTiles.keySet()) {
-            System.out.println(i + " " + turnedTiles.get(i).toString());
-            System.out.println("\n");
-        }
+//        for (int i : turnedTiles.keySet()) {
+//            System.out.println(i + " " + turnedTiles.get(i).toString());
+//            System.out.println("\n");
+//        }
+        printDrawnTiles(turnedTiles);
     }
 
     @Override
@@ -125,13 +130,13 @@ public class TUI implements DisplayableView {
 
     @Override
     public void printShipboard(LightShipBoard lightShipBoard) {
-        System.out.println("this is your shipboard now:\n");
         for(int x=0;x<=4;x++){
             if(x==0)
-                System.out.println("┌────────┬────────┬────────┬────────┬────────┬────────┬────────┐");
+                System.out.println("         ┌────────┬────────┬────────┬────────┬────────┬────────┬────────┐");
             else
-                System.out.println("├────────┼────────┼────────┼────────┼────────┼────────┼────────┤");
+                System.out.println("         ├────────┼────────┼────────┼────────┼────────┼────────┼────────┤");
             for(int r=0;r<=2;r++){
+                System.out.print("         ");
                 for (int y = 0; y <= 6; y++) {
                     if (lightShipBoard.getTilesTable()[x][y].isEmpty()) {
                         System.out.print("│        ");
@@ -147,12 +152,13 @@ public class TUI implements DisplayableView {
                 System.out.println("│");
             }
         }
-        System.out.println("└────────┴────────┴────────┴────────┴────────┴────────┴────────┘");
+        System.out.println("         └────────┴────────┴────────┴────────┴────────┴────────┴────────┘");
     }
 
     public void printBooked(LightShipBoard lightShipBoard) {
-        System.out.println("┌────────┬────────┐");
+        System.out.println("         ┌────────┬────────┐");
             for(int r=0;r<=2;r++){
+                System.out.print("         ");
                 if (lightShipBoard.getBookedTiles().isEmpty())
                     System.out.print("│        │        ");
                 for (Tile tile: lightShipBoard.getBookedTiles()) {
@@ -167,7 +173,61 @@ public class TUI implements DisplayableView {
                     System.out.print("│        ");
                 System.out.println("│");
             }
-        System.out.println("└────────┴────────┘");
+        System.out.println("         └────────┴────────┘");
+    }
+
+    @Override
+    public void crewPositioned() {
+        System.out.println("crew positioned");
+    }
+
+    public void printDrawnTiles(Map<Integer, Tile> drawnTiles) {
+        ArrayList<Tile> tilesList = new ArrayList<>(drawnTiles.values());
+        boolean limit=false;
+        int index1=0;
+        int index2=0;
+        int index3=0;
+        System.out.println("┌────────┬────────┬────────┬────────┬────────┬────────┬────────┬────────┬────────┐");
+        while (true) {
+            for (int i = 0; i < 9; i++) {
+                if (index1 == drawnTiles.size()) {
+                    System.out.print("│        ");
+                }else{
+                    System.out.print("│" + tilesList.get(index1).toString1());
+                    index1++;
+                }
+            }
+            System.out.println("│");
+            for (int i = 0; i < 9; i++) {
+                if (index2 == drawnTiles.size()) {
+                    System.out.print("│        ");
+                }else{
+                    System.out.print("│" + tilesList.get(index2).toString2());
+                    index2++;
+                }
+            }
+            System.out.println("│");
+            for (int i = 0; i < 9; i++) {
+                if (index3 == drawnTiles.size()) {
+                    System.out.print("│        ");
+                    limit=true;
+                }else{
+                    System.out.print("│" + tilesList.get(index3).toString3());
+                    index3++;
+                }
+            }
+            System.out.println("│");
+            if (limit) {
+                System.out.println("└────────┴────────┴────────┴────────┴────────┴────────┴────────┴────────┴────────┘");
+                break;
+            }
+            System.out.println("├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤");
+        }
+    }
+
+    @Override
+    public void setClientController(ClientController clientController) {
+
     }
 
     @Override

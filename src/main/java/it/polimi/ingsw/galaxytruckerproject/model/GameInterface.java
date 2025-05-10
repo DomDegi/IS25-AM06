@@ -51,4 +51,6 @@ public interface GameInterface extends Serializable {
     //Card phase cards
     int getCardsLeft();
     Card getDrawnCard();
+
+    void setGameState(GameState gameState);
 }

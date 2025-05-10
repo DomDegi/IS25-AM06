@@ -9,6 +9,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.TileFactory;
+import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class Game implements GameInterface{
         this.tileStack = new TileFactory().getStack(TileFactory.loadTilesFromJson("Tiles.json"));
 
         if (this.mode == GameMode.LEVEL2) {
-            CardDeck cardDeck = new CardDeck("cards.json");
+            CardDeck cardDeck = new CardDeck("simpleCards.json");
             this.inGameCards = cardDeck.getTier2FlightCards();
         }
         else {
@@ -228,9 +229,8 @@ public class Game implements GameInterface{
 
 
     public void endShipCreation() {
-        Collections.shuffle(inGameCards);
+       // Collections.shuffle(inGameCards);
         setGameState(VERIFY_SHIP_CORRECTNESS);
-
     }
 
     //VERIFY_SHIP_CORRECTNESS METHODS
@@ -242,7 +242,6 @@ public class Game implements GameInterface{
 
     public void drawCard() {
         this.drawnCard = inGameCards.removeFirst();
-        setGameState(CARD_EVENT);
     }
 
     public void endCardPhase() {

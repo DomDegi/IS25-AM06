@@ -132,11 +132,6 @@ public class MockVirtualView implements VirtualView {
     }
 
     @Override
-    public void showGenericMessage(String genericMessage) {
-        // Implement mock behavior or leave empty
-    }
-
-    @Override
     public void showErrorMessage(String errorMessage) {
         // Implement mock behavior or leave empty
     }

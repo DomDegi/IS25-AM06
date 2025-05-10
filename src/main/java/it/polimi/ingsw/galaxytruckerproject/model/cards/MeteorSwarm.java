@@ -12,6 +12,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
+import java.rmi.RemoteException;
 import java.util.*;
 
 public class MeteorSwarm extends Card {
@@ -51,7 +52,9 @@ public class MeteorSwarm extends Card {
         VirtualView currentView = viewsMap.get(currentPlayerRolling.getPlayerName());
         try {
             currentView.setClientState(ClientState.ROLL_DICE);
-        }catch(Exception ignored) {}
+        }catch(RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void applyMeteorToPlayers() {

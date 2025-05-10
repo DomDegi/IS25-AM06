@@ -39,7 +39,7 @@ public class CoordInputManager {
     }
 
     //needed serve per sapere quante coordinate servono (ad esempio per quando bisogna scegliere quali crewMate eliminare), se non è necessario un numero indicare -1
-    public boolean checkCoord(Coordinates coordinate) throws RemoteException {
+    public boolean checkCoord(Coordinates coordinate) {
         Tile tile = lightShipBoard.getTile(coordinate);
         if(tile == null) {
             return false;
@@ -154,30 +154,42 @@ public class CoordInputManager {
         return true;
     }
 
-    public boolean endCheckingFase() throws RemoteException {
+    public boolean endCheckingFase(){
         if(coordReqType == CoordReqType.CHOOSE_DOUBLE_CANNON && needed == 0 ) {
-            clientController.getVirtualController().sendDoubleCannonUsed(fireStrength,coordinates);
+            clientController.setState(ClientState.WAIT);
+            try {
+                clientController.getVirtualController().sendDoubleCannonUsed(fireStrength,coordinates);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
             coordinates.clear();
             fireStrength = 0;
             numEngine = 0;
-            clientController.getView().setClientState(ClientState.WAIT);
             return true;
         }
         if (coordReqType == CoordReqType.CHOOSE_DOUBLE_ENGINE && needed == 0  ) {
-            clientController.getVirtualController().sendNumDoubleEngineUsed(numEngine, coordinates);
+            clientController.setState(ClientState.WAIT);
+            try {
+                clientController.getVirtualController().sendNumDoubleEngineUsed(numEngine, coordinates);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
             coordinates.clear();
             numEngine = 0;
             fireStrength = 0;
-            clientController.getView().setClientState(ClientState.WAIT);
             return true;
         }
         if(needed==coordinates.size()) {
-            clientController.getVirtualController().sendCoordinates(coordinates);
+            clientController.setState(ClientState.WAIT);
+            try {
+                clientController.getVirtualController().sendCoordinates(coordinates);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
             coordinates.clear();
             fireStrength = 0;
             needed = 0;
             numEngine = 0;
-            clientController.getView().setClientState(ClientState.WAIT);
             return true;
         }
         clientController.getView().wrongLocalInput();

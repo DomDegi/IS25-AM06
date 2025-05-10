@@ -5,6 +5,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
+import it.polimi.ingsw.galaxytruckerproject.network.PingPong;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
@@ -13,10 +14,11 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MultiGameController implements Serializable {
 
-    private final Map<String, GameController> gamesMap = new HashMap<>();
+    private final ConcurrentHashMap<String, GameController> gamesMap = new ConcurrentHashMap<>();
 
     private final Map<String, VirtualView> viewsMap = new HashMap<>();
 
@@ -95,11 +97,6 @@ public class MultiGameController implements Serializable {
                 controller.setGameController(gameController);
                 gamesMap.put(gameName, gameController); //adds game to open games
                 viewsMap.remove(creator);
-                try {
-                    creatorView.showGenericMessage("created game");
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
                 //remove player from map of the views of player joining a game
                 gameController.addToPlayersViewMap(creator, creatorView, false);
                 notifyNewGame(creator, creatorView);
@@ -234,14 +231,7 @@ public class MultiGameController implements Serializable {
     }
 
     public void playPingPong(){
-        while(true){
-            if(gamesMap!=null)
-                for(GameController game : gamesMap.values()){
-                    if(game.getActivePlayers()!=null)
-                        for(String playerName : game.getActivePlayers().keySet()){
-                            game.pingPong(playerName,game.getViewFromNickname(playerName));
-                        }
-                }
-        }
+       PingPong pingPong = new PingPong(this.gamesMap);
+       pingPong.run();
     }
 }

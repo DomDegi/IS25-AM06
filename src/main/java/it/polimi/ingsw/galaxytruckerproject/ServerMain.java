@@ -11,7 +11,6 @@ import java.net.Socket;
 public class ServerMain {
 
     public static void main(String[] args) {
-
         try (Socket socket = new Socket()) {
             socket.connect(new InetSocketAddress("google.com",80));
             String ip = socket.getLocalAddress().getHostAddress();
@@ -20,10 +19,8 @@ public class ServerMain {
             System.out.println("Error connecting to server via socket");
         }
         MultiGameController multiGameController = new MultiGameController();
-
         SocketServer socketServer = new SocketServer();
         socketServer.connect(multiGameController);
-
         RMIServer rmi = new RMIServer();
         rmi.connect(multiGameController);
     }

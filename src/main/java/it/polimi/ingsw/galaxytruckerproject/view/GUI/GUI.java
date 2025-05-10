@@ -1,5 +1,6 @@
-package it.polimi.ingsw.galaxytruckerproject.view;
+package it.polimi.ingsw.galaxytruckerproject.view.GUI;
 
+import it.polimi.ingsw.galaxytruckerproject.client.ClientController;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
@@ -11,20 +12,45 @@ import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
-public class GUI implements DisplayableView {
+public class GUI extends Application implements DisplayableView {
+
+    private Stage primaryStage;
+
+    ClientController  clientController;
+
+    public void run() {
+        launch();
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        this.primaryStage = primaryStage;
+        primaryStage.setTitle("Galaxy Trucker");
+
+        GridPane gridPane =  new GridPane();
+        gridPane.setPadding(new Insets(10,10,10,10));
+        gridPane.setVgap(8);
+        gridPane.setHgap(10);
+
+
+        primaryStage.show();
+    }
 
     @Override
     public void showLoginResponse(boolean success) {
@@ -46,7 +72,7 @@ public class GUI implements DisplayableView {
     }
 
     @Override
-    public void showGenericMessage(String genericMessage) throws RemoteException {
+    public void showGenericMessage(String genericMessage) {
 
     }
 
@@ -192,6 +218,11 @@ public class GUI implements DisplayableView {
     }
 
     @Override
+    public void crewPositioned() {
+
+    }
+
+    @Override
     public void printProjectile(Projectile projectile) {
 
     }
@@ -222,6 +253,11 @@ public class GUI implements DisplayableView {
     }
 
     @Override
+    public void printDrawnTiles(Map<Integer, Tile> drawnTiles) {
+
+    }
+
+    @Override
     public void connected() {
 
     }
@@ -231,7 +267,15 @@ public class GUI implements DisplayableView {
 
     }
 
-    public void start() {
+    public void setClientController(ClientController clientController) {
+        this.clientController = clientController;
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    public void start2() {
         try{
             Stage stage = new Stage();
             stage.setTitle("Galaxy Trucker");

@@ -63,11 +63,6 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     }
 
     @Override
-    public void showGenericMessage(String genericMessage)throws RemoteException {
-        view.showGenericMessage(genericMessage);
-    }
-
-    @Override
     public void showErrorMessage(String errorMessage) throws RemoteException {view.showErrorMessage(errorMessage);}
 
 

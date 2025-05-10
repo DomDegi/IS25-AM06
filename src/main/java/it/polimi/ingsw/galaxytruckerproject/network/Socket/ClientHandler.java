@@ -86,7 +86,6 @@ public class ClientHandler implements Runnable {
                 output.writeObject(message);
             } catch (IOException e) {
                 System.out.println("Could not send message to " + clientSocket.getInetAddress());
-                e.printStackTrace();
             }
     };
 
