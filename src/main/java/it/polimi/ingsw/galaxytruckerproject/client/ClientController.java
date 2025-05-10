@@ -956,6 +956,7 @@ public class ClientController {
     public void setGUI(GUI gui) {
         this.view = gui;
         gui.setClientController(this);
+        gui.run();
     }
 }
 
