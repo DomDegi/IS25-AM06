@@ -1130,14 +1130,14 @@ public class ClientController {
 
     public void setConnected(boolean connected) {this.connected = connected;}
 
-    public void connectRMI() throws MalformedURLException, NotBoundException, RemoteException {
+    void connectRMI() throws MalformedURLException, NotBoundException, RemoteException {
         VirtualViewRMI viewRMI=new VirtualViewRMI(this,view);
         ControllerFactory controllerFactory=(ControllerFactory) Naming.lookup("rmi://localhost/ControllerFactory");
         this.virtualController=controllerFactory.createController();
         virtualController.setView(viewRMI);
     }
 
-    public void connectSocket() throws IOException {
+    void connectSocket() throws IOException {
         Socket server;
         try{
             server = new Socket("localhost",12345);

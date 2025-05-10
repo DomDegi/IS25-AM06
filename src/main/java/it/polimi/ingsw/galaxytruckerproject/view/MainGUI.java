@@ -1,6 +1,5 @@
 package it.polimi.ingsw.galaxytruckerproject.view;
 
-import it.polimi.ingsw.galaxytruckerproject.client.ClientController;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -21,24 +20,15 @@ import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 import javafx.util.Duration;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.util.Arrays;
 import java.util.function.Consumer;
 
 import static javafx.application.Application.launch;
 
 public class MainGUI extends Application implements EventHandler<ActionEvent> {
-    ClientController clientController;
+
     Button button1, button2, button3, button4, button5, button6, button7, button8, button9;
     Scene scene, scene1, scene2, scene3, getNameScene;
     VBox vbox1;
-
-    final String[] selectedColorHolder = new String[1];
-
-
     public static void main(String[] args) {
         launch(args);
     }
@@ -173,7 +163,6 @@ public class MainGUI extends Application implements EventHandler<ActionEvent> {
 
     //lo stage è la finestra che mi compare
     public void start(Stage primaryStage) {
-        clientController = new ClientController();
 
         //chooseConnection Layout
         Label label = new Label("Choose connection");
@@ -228,22 +217,12 @@ public class MainGUI extends Application implements EventHandler<ActionEvent> {
 
 
         button1.setOnAction(e -> {
-            try {
-                clientController.connectRMI();
-                scene.setRoot(rmiLayout);
-            } catch (MalformedURLException | NotBoundException | RemoteException e2) {
-                throw new RuntimeException(e2);
-            }
+            scene.setRoot(rmiLayout);
             startAutoTransition(primaryStage, scene, nicknameLayout, 2);
         });
 
         button2.setOnAction(e -> {
-            try {
-                clientController.connectSocket();
-                scene.setRoot(socketLayout);
-            } catch (IOException e1) {
-                System.out.println("Error connecting to server via socket");
-            }
+            scene.setRoot(socketLayout);
             startAutoTransition(primaryStage, scene, nicknameLayout, 2);
         });
 
@@ -251,19 +230,16 @@ public class MainGUI extends Application implements EventHandler<ActionEvent> {
             String nickname = nicknameField.getText().trim();
             if (!nickname.isEmpty()) {
                 System.out.println("Nickname inserito: " + nickname);
-
                 // AGGIUNGEREMO QUI LA LOGICA PER GESTIRE IL NICKNAME(SET STATE E ROBE COSì IMMAGINO)
 
 
                 VBox colorLayout = chooseColor(selectedColor -> {
-                    selectedColorHolder[0] = selectedColor;
                     System.out.println("Colore scelto per " + nicknameField.getText() + ": " + selectedColor);
-
-                    VBox createJoinGame = createJoinGame(nickname, selectedColor);
-                    scene.setRoot(createJoinGame);
 
                 });
                 scene.setRoot(colorLayout);
+
+
 
             } else {
                 System.out.println("Nickname vuoto.");
@@ -278,7 +254,6 @@ public class MainGUI extends Application implements EventHandler<ActionEvent> {
         primaryStage.setFullScreen(true);
         primaryStage.show();
     }
-
 
 
     public VBox chooseColor(Consumer<String> colorSelected){
@@ -313,44 +288,6 @@ public class MainGUI extends Application implements EventHandler<ActionEvent> {
     }
 
 
-    public VBox createJoinGame(String nickname, String color) {
-        VBox gameLayout = new VBox(20);
-        gameLayout.setAlignment(Pos.CENTER);
-
-        Label welcomeLabel = new Label("Welcome, " + nickname + "!");
-        welcomeLabel.setStyle("-fx-font-size: 28px;");
-
-        Label colorLabel = new Label("Your selected color: " + color);
-        colorLabel.setStyle("-fx-font-size: 20px;");
-
-        Label createLabel = new Label("Create a New Game or...");
-        Label joinLabel = new Label("...join an existente Game");
-
-
-        TextField gameNameField = new TextField();
-        gameNameField.setPromptText("Enter your new Game Name here");
-        gameNameField.setMaxWidth(300);
-        Button confirmButton = new Button("Confirm");
-        confirmButton.setDefaultButton(true);
-        confirmButton.setVisible(false);
-        gameNameField.textProperty().addListener((obs, oldVal, newVal) -> {
-            confirmButton.setVisible(!newVal.trim().isEmpty());
-        });
-
-
-        button1 = new Button("Joinable Game");
-        button2 = new Button("JOinable Game");
-
-        button1.setPrefSize(120, 50);
-        button2.setPrefSize(120, 50);
-
-        gameLayout.getChildren().addAll(welcomeLabel, colorLabel,createLabel, gameNameField, confirmButton, joinLabel, button1, button2);
-
-        return gameLayout;
-    }
-
-
-
 
 
 
@@ -367,7 +304,7 @@ public class MainGUI extends Application implements EventHandler<ActionEvent> {
 
 
     // Metodo per gestire la transizione automatica
-    public void startAutoTransition(Stage stage, Scene scene, Parent nextRoot, int seconds) {
+    private void startAutoTransition(Stage stage, Scene scene, Parent nextRoot, int seconds) {
         PauseTransition pause = new PauseTransition(Duration.seconds(seconds));
         pause.setOnFinished(e -> scene.setRoot(nextRoot));
         pause.play();
