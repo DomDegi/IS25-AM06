@@ -326,14 +326,13 @@ public class ControllerTUI implements ControllerUI {
                 }
                 if (words[0].equals("done")) {
                     return clientController.doneCoord();
-                }
-                else {
+                } else {
                     //gestire il -1 in base alla carta
                     Coordinates coords;
                     coords = clientController.transformCoordinates(words);
-                    if(coords==null)
+                    if (coords == null)
                         return false;
-                    if(!clientController.checkCoord(coords)) {
+                    if (!clientController.checkCoord(coords)) {
                         view.wrongLocalInput();
                         return false;
                     }

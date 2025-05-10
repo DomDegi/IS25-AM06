@@ -179,7 +179,7 @@ public class CoordInputManager {
             fireStrength = 0;
             return true;
         }
-        if (coordReqType == CoordReqType.CHOOSE_TO_BREAK && needed == 0  ) {
+        if (coordReqType == CoordReqType.CHOOSE_TO_BREAK && needed != 0  ) {
             clientController.setState(ClientState.WAIT);
             try {
                 clientController.getVirtualController().shipErrorManagement(coordinates);

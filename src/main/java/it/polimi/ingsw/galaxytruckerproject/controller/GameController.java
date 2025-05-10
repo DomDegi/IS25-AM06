@@ -419,7 +419,6 @@ public class GameController implements Observer, Serializable {
             player.getShipBoard().destroyForCorrection(coord);
         }
         notifyBrokenTile(playerName,toRemove);
-
         boolean correctness = player.getShipBoard().verifyCorrectness();
         if (correctness) {
             if(game.getMode()== TRIAL) {

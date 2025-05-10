@@ -16,6 +16,7 @@ public interface DisplayableView extends ViewInterface{
 
     void run();
 
+    void sendingCoordinates();
     /**
      * shows the player the tiles that got turned from player refusing them
      * @param turnedTiles the current array in the model

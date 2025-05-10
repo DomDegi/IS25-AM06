@@ -459,6 +459,7 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
     public void destroy(ArrayList<Coordinates> coordinatesDestroyed){
         for (Coordinates coordinates : coordinatesDestroyed) {
             getTile(coordinates).destroy();
+            tilesTable[coordinates.getX()][coordinates.getY()]=Optional.empty();
         }
     }
 

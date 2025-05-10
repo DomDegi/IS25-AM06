@@ -35,6 +35,11 @@ public class GUI extends Application implements DisplayableView {
     }
 
     @Override
+    public void sendingCoordinates() {
+
+    }
+
+    @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         primaryStage.setTitle("Galaxy Trucker");

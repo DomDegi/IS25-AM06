@@ -435,6 +435,7 @@ public class ClientController{
     }
 
     public boolean doneCoord(){
+        view.sendingCoordinates();
         return coordInputManager.endCheckingFase();
     }
 

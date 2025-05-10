@@ -66,6 +66,11 @@ public class TUI implements DisplayableView {
     }
 
     @Override
+    public void sendingCoordinates() {
+        System.out.println("i'm sending the coordinates");
+    }
+
+    @Override
     public void showTurnedTiles(Map<Integer, Tile> turnedTiles) {
 //        for (int i : turnedTiles.keySet()) {
 //            System.out.println(i + " " + turnedTiles.get(i).toString());
