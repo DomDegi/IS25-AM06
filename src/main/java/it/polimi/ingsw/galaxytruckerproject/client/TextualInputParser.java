@@ -37,25 +37,36 @@ public class TextualInputParser {
             case CHOOSE_CONNECTION_TYPE->{
                 switch(words[0]) {
                     case "rmi","r"->{
-                        try {
-                            clientController.connectRMI();
-                        } catch (MalformedURLException | NotBoundException | RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        clientController.setState(ClientState.CHOOSE_IP_AND_PORT_RMI);
                     }
                     case "socket","s"-> {
-                        try {
-                            clientController.connectSocket();
-                        } catch (IOException e) {
-                            System.out.println("Error connecting to server via socket");
-                        }
+                        clientController.setState(ClientState.CHOOSE_IP_AND_PORT_SOCKET);
                     }
                     default->{
                         view.wrongLocalInput();
                         return false;
                     }
                 }
-                clientController.setState(ClientState.LOGIN);
+            }
+
+            case CHOOSE_IP_AND_PORT_RMI -> {
+                try {
+                    clientController.connectRMI();
+                    clientController.setState(ClientState.LOGIN);
+                } catch (MalformedURLException | NotBoundException | RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            case CHOOSE_IP_AND_PORT_SOCKET -> {
+                try {
+                    clientController.connectSocket(words[0],Integer.parseInt(words[1]));
+                    clientController.setState(ClientState.LOGIN);
+                } catch (IOException e) {
+                    System.out.println("Error connecting to SOCKET server");
+                    view.wrongLocalInput();
+                    return false;
+                }
             }
 
             case LOGIN->{

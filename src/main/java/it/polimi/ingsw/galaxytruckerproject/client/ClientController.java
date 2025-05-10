@@ -909,11 +909,10 @@ public class ClientController {
         virtualController.setView(viewRMI);
     }
 
-    void connectSocket() throws IOException {
+    void connectSocket(String ip, int port) throws IOException {
         Socket server;
         try {
-            server = new Socket("localhost", 12345);
-            // server = new Socket("192.168.193.47", 12345);
+            server = new Socket(ip, port);
         } catch (Exception e) {
             System.out.println("Server unreachable, check the port and the ip address");
             return;
