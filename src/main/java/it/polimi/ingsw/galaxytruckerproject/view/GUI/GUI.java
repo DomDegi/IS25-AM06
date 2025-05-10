@@ -50,6 +50,25 @@ public class GUI extends Application implements DisplayableView {
 
 
         primaryStage.show();
+
+
+        /*try{
+            Stage stage = new Stage();
+            stage.setTitle("Galaxy Trucker");
+            BorderPane root = new BorderPane();
+            Scene scene = new Scene(root,400,300);
+            scene.setFill(Color.AQUAMARINE);
+            stage.setScene(scene);
+            stage.show();
+
+            stage.setMaxHeight(1000);
+            stage.setMinHeight(200);
+            stage.setMaxWidth(600);
+            stage.setMinWidth(200);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        } */
     }
 
     @Override
@@ -275,25 +294,7 @@ public class GUI extends Application implements DisplayableView {
         launch(args);
     }
 
-    public void start2() {
-        try{
-            Stage stage = new Stage();
-            stage.setTitle("Galaxy Trucker");
-            BorderPane root = new BorderPane();
-            Scene scene = new Scene(root,400,300);
-            scene.setFill(Color.AQUAMARINE);
-            stage.setScene(scene);
-            stage.show();
 
-            stage.setMaxHeight(1000);
-            stage.setMinHeight(200);
-            stage.setMaxWidth(600);
-            stage.setMinWidth(200);
-
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
 
 
 }
