@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject;
 
 import it.polimi.ingsw.galaxytruckerproject.client.ClientController;
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.network.Client;
 
 import java.util.Scanner;
@@ -14,7 +15,10 @@ public class ClientMain implements Client {
         System.out.println("You want to use TUI or GUI? [tui] [gui]");
         while(true) {
             String in = scanner.nextLine();
-            clientController.input(in);
+            if(clientController.getState()== ClientState.CHOOSE_UI)
+                clientController.chooseUI(in);
+            else
+                clientController.input(in);
         }
     }
     

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.view;
 
+import it.polimi.ingsw.galaxytruckerproject.client.ClientController;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
@@ -57,6 +58,11 @@ public class TUI implements DisplayableView {
     @Override
     public void showDrawnTile(Tile drawnTile) {
         System.out.println(drawnTile.toString());
+    }
+
+    @Override
+    public void run() {
+
     }
 
     @Override
@@ -217,6 +223,11 @@ public class TUI implements DisplayableView {
             }
             System.out.println("├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤");
         }
+    }
+
+    @Override
+    public void setClientController(ClientController clientController) {
+
     }
 
     @Override

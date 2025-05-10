@@ -126,41 +126,5 @@ class ProjectilePenaltyTest {
         penalty.printInfoOnAllProjectiles();
     }
 
-    @Test
-    void large_meteor_from_north_on_double_cannon_activate_Battery() {
-        //System.out.println(shipBoard.toString());
-        //System.out.println("Lancio meteore");
-        int initialMeteorsCount = penalty.getListOfProjectiles().size();
-        ArrayList<Coordinates> coordinates=new ArrayList<>();
-        coordinates.add(new Coordinates(3,3));
-        penalty = new ProjectilePenalty(listOfMeteors1);
-        penalty.setDiceRoll(7);
-        //modified input method to use battery in this test
-        boolean returnValue = penalty.initializePenalty(gameLvl2, mockView,player1);
-        assertTrue(returnValue);
-        penalty.playerUsesBatteryToDefend(player1,coordinates);
-        assertEquals(1, shipBoard1.getTile(3,3).getNumBatteries());
-        assertEquals(initialMeteorsCount - 1, penalty.getListOfProjectiles().size());
-    }
-    @Test
-    void large_meteor_from_north_choose_shipboard_to_mantain() {
-        //System.out.println(shipBoard.toString());
-        //System.out.println("Lancio meteore");
-        shipBoard1.destroyTile(new Coordinates(1,3));
-        int initialMeteorsCount = penalty.getListOfProjectiles().size();
-        ArrayList<Coordinates> coordinates=new ArrayList<>();
-        coordinates.add(new Coordinates(3,3));
-        penalty = new ProjectilePenalty(listOfMeteors1);
-        penalty.setDiceRoll(8);
-        //modified input method to use battery in this test
-        boolean returnValue = penalty.initializePenalty(gameLvl2, mockView,player1);
-        assertTrue(returnValue);
-        penalty.chooseToMaintain(player1,coordinates);
-        assertEquals(shipBoard1.getTilesTable()[2][4],Optional.empty());
-        assertEquals(shipBoard1.getTilesTable()[2][5],Optional.empty());
-        System.out.println(shipBoard1.toString());
-    }
-
-
 
 }

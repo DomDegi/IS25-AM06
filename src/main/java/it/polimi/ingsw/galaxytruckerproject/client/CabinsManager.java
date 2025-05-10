@@ -15,12 +15,15 @@ public class CabinsManager {
     private final LightPlayer lightPlayer;
     private final DisplayableView view;
     private final ArrayList<Coordinates> cabins;
-    ArrayList<Tile> modifiedCabins = new ArrayList<>();
-    private int index=0;
+    ArrayList<Tile> modifiedCabins;
+    private int index;
+
     public CabinsManager(LightPlayer lightPlayer, DisplayableView view) {
         this.view = view;
         this.lightPlayer = lightPlayer;
         this.cabins = lightPlayer.getShipBoard().getCabinsCoordinates();
+        this.modifiedCabins = new ArrayList<>();
+        this.index=0;
     }
 
     public ArrayList<Tile> manageCabins(CrewType crewType) {
@@ -53,7 +56,7 @@ public class CabinsManager {
         return null;
     }
 
-    public void setup(){
+    public void setup() {
         if(cabins.get(index).equals( new Coordinates(2, 3))) {
             index++;
         }

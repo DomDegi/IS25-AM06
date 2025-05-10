@@ -6,6 +6,8 @@ public enum ClientState implements Serializable {
     CHOOSE_UI,
     CHOOSE_CONNECTION_TYPE,
     LOBBY,//choose game
+    LOBBY0,
+    LOBBY1,
     LOGIN,//choose name
     COLOR_CHOICE,
     ACTION,// yes or no
@@ -27,17 +29,19 @@ public enum ClientState implements Serializable {
         switch(this) {
             case CHOOSE_UI -> {return "You want to use TUI or GUI? [tui] [gui]";}
             case CHOOSE_CONNECTION_TYPE -> {return "You want to use RMI connection or Socket connection? [rmi] [socket]";}
-            case LOBBY -> {return"You're in the lobby [createGame name numPlayer gameMode] [joinGame name]";}
             case LOGIN -> {return "Choose your nickname [name] [done] [reset]";}
+            case LOBBY -> {return"You're in the lobby [createGame] [joinGame]";}
+            case LOBBY0 ->{return"Enter gameName, player number and gameMode [gameName numPlayer gameMode]";}
+            case LOBBY1 -> {return "Enter gameName [gameName]";}
             case COLOR_CHOICE -> {return "Choose your color [red] [yellow] [green] [blue]";}
             case ACTION -> {return "You can accept or deny [yes] [no]";}
             case COORD_REQUEST -> {return "Coordinates requested [coordinates]";}
             case MANAGE_GOODS -> {return  "Going to manage goods of the planet";}
             case PLANET_CHOICE -> {return "Choose one of the planets to land [planetNumber]";}
-            case S_END_DRAW_TILE_CARD -> {return "Now you can draw a tile or a card [done flightBoardPosition] [draw tile|draw tile new] [draw tile b1] [draw tile b2] [draw tile turnedTileNum] [draw card numDeck] [check playerNum] [turn]";}
+            case S_END_DRAW_TILE_CARD -> {return "Now you can draw a tile or a card [done] [draw tile|draw tile new] [draw tile b1] [draw tile b2] [draw tile turnedTileNum] [draw deck numDeck] [check playerNum] [turn]";}
             case S_MANAGE_CARDS -> {return "You're seeing the cards [done]";}
-            case S_MANAGE_DRAWN_TILE -> {return "You can rotate, position, book or refuse this tile [rotate] [position] [book] [refuse] [check playerNum] [turn]";}
-            case S_FINISHED -> {return "You've finished the ship creation, wait to know if your ship is correct [check playerNum] [turn]";}
+            case S_MANAGE_DRAWN_TILE -> {return "You can rotate, position, book or refuse this tile [rotate] [put] [book] [refuse] [check playerNum] [turn]";}
+            case S_FINISHED -> {return "You've finished the ship creation, wait to know if your ship is correct [flightBoardPosition] [check playerNum] [turn]";}
             case WAIT -> {return "Waiting for server";}
             case START_SHIP_CREATION -> {return "Turn the hourglass to start the ship creation [start|turn]";}
             case DRAW_CARD -> {return "Draw a card [draw]";}

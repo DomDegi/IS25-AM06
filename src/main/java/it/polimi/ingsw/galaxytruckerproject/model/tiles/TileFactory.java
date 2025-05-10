@@ -33,10 +33,9 @@ public class TileFactory {
                 }
             }
 
-            System.out.println("✅ File " + fileName + " caricato correttamente! Tiles trovate: " + tiles.size());
 
         } catch (IOException e) {
-            System.err.println("Errore durante il caricamento del file JSON: " + fileName);
+            System.err.println("Error during loading of tiles json " + fileName);
             e.printStackTrace();
         }
 
