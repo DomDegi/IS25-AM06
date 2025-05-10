@@ -111,7 +111,9 @@ public abstract class Card implements Serializable {
     public ArrayList<Projectile> getListOfProjectiles() { return null;}
     public float getEnemiesFirePower() {return 0f;}
     public LinkedHashMap<ChallengeType, Penalty> getChallenges() {return null;}
-
+    public ArrayList<Planet> getListOfPlanets() {
+        return null;
+    }
     @Override
     public String toString() {
         return "level: " +  level + ", required days: " + requiredDays;

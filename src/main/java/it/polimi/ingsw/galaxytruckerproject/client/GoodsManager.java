@@ -31,11 +31,7 @@ public class GoodsManager {
         this.coordinatesToPut=new Coordinates(0,0);
     }
     public HashSet<CargoHold> doneGoods(){
-        try {
-            view.showGenericMessage("\nYou stopped positioning your cargo\n");
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+        view.showGenericMessage("\nYou stopped positioning your cargo\n");
         if (changes.isEmpty()) {
             changes.add(new CargoRed(-1,null,null,null,null));
         }
@@ -52,18 +48,10 @@ public class GoodsManager {
 
     public void pickGoods() {
         if (currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut).isEmpty()) {
-            try {
-                view.showGenericMessage("\nCargo Hold is empty");
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
+            view.showGenericMessage("\nCargo Hold is empty");
         }
         view.goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
-        try {
-            view.showGenericMessage("Input witch good to pick:");
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+        view.showGenericMessage("Input witch good to pick:");
         changes.add((CargoHold)currentPlayer.getShipBoard().getTile(coordinatesToPut));
         state = -1;
     }
@@ -87,74 +75,35 @@ public class GoodsManager {
                 int positioned = currentPlayer.getShipBoard().gainGoods(possibleGoodsGain.get(goodsToGet - 1), coordinatesToPut);
                 if (positioned == 0) {
                     if(possibleGoodsGain.get(goodsToGet - 1).getColor()==GoodsColor.BLUE){
-                        try {
-                            view.showGenericMessage("\nYou've successfully put the "+ ANSI_BLUE +possibleGoodsGain.get(goodsToGet - 1).getColor()+ ANSI_RESET+" good in the "+coordinatesToPut.getX()+","+coordinatesToPut.getY()+" cargo\n\n");
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        view.showGenericMessage("\nYou've successfully put the "+ ANSI_BLUE +possibleGoodsGain.get(goodsToGet - 1).getColor()+ ANSI_RESET+" good in the "+coordinatesToPut.getX()+","+coordinatesToPut.getY()+" cargo\n\n");
                     }else if(possibleGoodsGain.get(goodsToGet - 1).getColor()==GoodsColor.GREEN){
-                        try {
-                            view.showGenericMessage("\nYou've successfully put the "+ ANSI_GREEN +possibleGoodsGain.get(goodsToGet - 1).getColor()+ ANSI_RESET+" good in the "+coordinatesToPut.getX()+","+coordinatesToPut.getY()+" cargo\n\n");
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        view.showGenericMessage("\nYou've successfully put the "+ ANSI_GREEN +possibleGoodsGain.get(goodsToGet - 1).getColor()+ ANSI_RESET+" good in the "+coordinatesToPut.getX()+","+coordinatesToPut.getY()+" cargo\n\n");
                     }else if(possibleGoodsGain.get(goodsToGet - 1).getColor()==GoodsColor.YELLOW){
-                        try {
-                            view.showGenericMessage("\nYou've successfully put the "+ ANSI_YELLOW +possibleGoodsGain.get(goodsToGet - 1).getColor()+ ANSI_RESET+" good in the "+coordinatesToPut.getX()+","+coordinatesToPut.getY()+" cargo\n\n");
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        view.showGenericMessage("\nYou've successfully put the "+ ANSI_YELLOW +possibleGoodsGain.get(goodsToGet - 1).getColor()+ ANSI_RESET+" good in the "+coordinatesToPut.getX()+","+coordinatesToPut.getY()+" cargo\n\n");
                     }else if(possibleGoodsGain.get(goodsToGet - 1).getColor()==GoodsColor.RED){
-                        try {
-                            view.showGenericMessage("\nYou've successfully put the "+ ANSI_RED +possibleGoodsGain.get(goodsToGet - 1).getColor()+ ANSI_RESET+" good in the "+coordinatesToPut.getX()+","+coordinatesToPut.getY()+" cargo\n\n");
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        view.showGenericMessage("\nYou've successfully put the "+ ANSI_RED +possibleGoodsGain.get(goodsToGet - 1).getColor()+ ANSI_RESET+" good in the "+coordinatesToPut.getX()+","+coordinatesToPut.getY()+" cargo\n\n");
                     }
                     changes.add((CargoHold)currentPlayer.getShipBoard().getTile(coordinatesToPut));
                     possibleGoodsGain.remove(goodsToGet - 1);
                     if(possibleGoodsGain.isEmpty()) {
-                        try {
-                            view.showGenericMessage("\nGoods stock is empty, input 'done' to stop,'pick  x y' to pick one good from your cargo: ");
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        view.showGenericMessage("\nGoods stock is empty, input 'done' to stop,'pick  x y' to pick one good from your cargo: ");
                         goodsToGet=0;
                         return;
                     }
                     view.goodsPrinter(possibleGoodsGain);
-                    try {
                         view.showGenericMessage("Chose for each good where to put it, input 'no' to stop:\n");
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
-                    goodsToGet=0;
+                        goodsToGet=0;
                     return;
                 } else if (positioned == 1) {
                     if(possibleGoodsGain.get(goodsToGet - 1).getColor()==GoodsColor.BLUE){
-                        try {
-                            view.showGenericMessage("\nSorry, you can't put the "+ ANSI_BLUE +possibleGoodsGain.get(goodsToGet - 1).getColor()+ ANSI_RESET+" good in the "+coordinatesToPut.getX()+","+coordinatesToPut.getY()+" cargo, it is full, chose what good to remove (input 'no' to select an other good and cargo coordinates)\n");
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        view.showGenericMessage("\nSorry, you can't put the "+ ANSI_BLUE +possibleGoodsGain.get(goodsToGet - 1).getColor()+ ANSI_RESET+" good in the "+coordinatesToPut.getX()+","+coordinatesToPut.getY()+" cargo, it is full, chose what good to remove (input 'no' to select an other good and cargo coordinates)\n");
+
                     }else if(possibleGoodsGain.get(goodsToGet - 1).getColor()==GoodsColor.GREEN){
-                        try {
-                            view.showGenericMessage("\nSorry, you can't put the "+ ANSI_GREEN +possibleGoodsGain.get(goodsToGet - 1).getColor()+ ANSI_RESET+" good in the "+coordinatesToPut.getX()+","+coordinatesToPut.getY()+" cargo, it is full, chose what good to remove (input 'no' to select an other good and cargo coordinates)\n");
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        view.showGenericMessage("\nSorry, you can't put the "+ ANSI_GREEN +possibleGoodsGain.get(goodsToGet - 1).getColor()+ ANSI_RESET+" good in the "+coordinatesToPut.getX()+","+coordinatesToPut.getY()+" cargo, it is full, chose what good to remove (input 'no' to select an other good and cargo coordinates)\n");
                     }else if(possibleGoodsGain.get(goodsToGet - 1).getColor()==GoodsColor.YELLOW){
-                        try {
-                            view.showGenericMessage("\nSorry, you can't put the "+ ANSI_YELLOW +possibleGoodsGain.get(goodsToGet - 1).getColor()+ ANSI_RESET+" good in the "+coordinatesToPut.getX()+","+coordinatesToPut.getY()+" cargo, it is full, chose what good to remove (input 'no' to select an other good and cargo coordinates)\n");
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        view.showGenericMessage("\nSorry, you can't put the "+ ANSI_YELLOW +possibleGoodsGain.get(goodsToGet - 1).getColor()+ ANSI_RESET+" good in the "+coordinatesToPut.getX()+","+coordinatesToPut.getY()+" cargo, it is full, chose what good to remove (input 'no' to select an other good and cargo coordinates)\n");
                     }else if(possibleGoodsGain.get(goodsToGet - 1).getColor()==GoodsColor.RED){
-                        try {
-                            view.showGenericMessage("\nSorry, you can't put the "+ ANSI_RED +possibleGoodsGain.get(goodsToGet - 1).getColor()+ ANSI_RESET+" good in the "+coordinatesToPut.getX()+","+coordinatesToPut.getY()+" cargo, it is full, chose what good to remove (input 'no' to select an other good and cargo coordinates)\n");
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        view.showGenericMessage("\nSorry, you can't put the "+ ANSI_RED +possibleGoodsGain.get(goodsToGet - 1).getColor()+ ANSI_RESET+" good in the "+coordinatesToPut.getX()+","+coordinatesToPut.getY()+" cargo, it is full, chose what good to remove (input 'no' to select an other good and cargo coordinates)\n");
                     }
                     view.goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
                     changes.add((CargoHold)currentPlayer.getShipBoard().getTile(coordinatesToPut));
@@ -184,22 +133,14 @@ public class GoodsManager {
         Goods goodToSwap;
         switch (chose){
             case 0:
-                try {
-                    view.showGenericMessage("\nNo action performed, select a good to remove from the cargo\n");
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+                view.showGenericMessage("\nNo action performed, select a good to remove from the cargo\n");
                 state =0;
                 return;
             case 1:
                 if(cargo.isEmpty()) {
                     view.wrongLocalInput();
                     view.goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
-                    try {
-                        view.showGenericMessage("Chose what good to swap, input 'no' to stop\n");
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
+                    view.showGenericMessage("Chose what good to swap, input 'no' to stop\n");
                     return;
                 }
                 goodToSwap= cargo.getFirst();
@@ -209,11 +150,7 @@ public class GoodsManager {
                 if(cargo.size()<2) {
                     view.wrongLocalInput();
                     view.goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
-                    try {
-                        view.showGenericMessage("Chose what good to swap, input 'no' to stop\n");
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
+                    view.showGenericMessage("Chose what good to swap, input 'no' to stop\n");
                     return;
                 }
                 goodToSwap= cargo.get(1);
@@ -223,11 +160,7 @@ public class GoodsManager {
                 if(cargo.size()<3) {
                     view.wrongLocalInput();
                     view.goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
-                    try {
-                        view.showGenericMessage("Chose what good to swap, input 'no' to stop\n");
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
+                    view.showGenericMessage("Chose what good to swap, input 'no' to stop\n");
                     return;
                 }
                 goodToSwap= cargo.get(2);
@@ -236,11 +169,7 @@ public class GoodsManager {
             default:
                 view.wrongLocalInput();
                 view.goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
-                try {
-                    view.showGenericMessage("Chose what good to swap, input 'no' to stop\n");
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+                view.showGenericMessage("Chose what good to swap, input 'no' to stop\n");
                 return;
         }
         if(state ==1) {
@@ -248,23 +177,11 @@ public class GoodsManager {
             possibleGoodsGain.remove(goodsToGet - 1);
         }
         possibleGoodsGain.add(goodToSwap);
-        try {
-            view.showGenericMessage("\nCargoHold"+coordinatesToPut+":\n");
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+        view.showGenericMessage("\nCargoHold"+coordinatesToPut+":\n");
         view.goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
-        try {
-            view.showGenericMessage("Planet:\n");
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+        view.showGenericMessage("Planet:\n");
         view.goodsPrinter(possibleGoodsGain);
-        try {
-            view.showGenericMessage("Chose for each good where to put it, input 'done' to stop,'pick  x y' to pick one good from your cargo:\n\n");
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+        view.showGenericMessage("Chose for each good where to put it, input 'done' to stop,'pick  x y' to pick one good from your cargo:\n\n");
         state =0;
     }
 

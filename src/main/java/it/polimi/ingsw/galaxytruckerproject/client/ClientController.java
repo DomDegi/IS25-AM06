@@ -82,6 +82,7 @@ public class ClientController{
         availableColors.put(PlayersColor.BLUE,Boolean.TRUE);
         this.indexDeckInHandOrPlanet = 0;
         this.hourglassTurns = 0;
+        displayedCard=new ArrayList<>();
     }
 
 
@@ -358,7 +359,7 @@ public class ClientController{
     }
 
     public void choosePlanet(int chose){
-        Planets planet=(Planets) displayedCard.getFirst();
+        Card planet= displayedCard.getFirst();
         if (chose >= 0 && chose <planet.getListOfPlanets().size()) {
             indexDeckInHandOrPlanet = chose;
             setState(ClientState.WAIT);

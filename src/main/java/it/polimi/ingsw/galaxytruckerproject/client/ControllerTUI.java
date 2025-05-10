@@ -343,11 +343,7 @@ public class ControllerTUI implements ControllerUI {
             case WAIT ->{
                 switch(clientController.getPhase()){
                     case LOGIN -> {
-                        try {
-                            view.showGenericMessage("Wrong input in wait");
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        view.showGenericMessage("Wrong input in wait");
                     }
                     case SHIPBOARD -> {
                         if (clientController.checkShipBoards(words))
