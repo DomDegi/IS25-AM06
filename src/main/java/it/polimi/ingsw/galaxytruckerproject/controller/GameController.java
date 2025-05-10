@@ -40,6 +40,8 @@ public class GameController implements Observer, Serializable {
     private final ArrayList<Player> playersToEarlyLand = new ArrayList<>();
     private final ConcurrentHashMap<String, Integer> lockedSmallDecks = new ConcurrentHashMap<>();
     private int hourglassTurns = 0;
+    private TimerTask hourglassTask;
+    private Timer hourglassTimer;
     private boolean hourglassON = false;
 
 
@@ -721,17 +723,13 @@ public class GameController implements Observer, Serializable {
 
     private void checkIfAllPlayersReady() {
         if (game.getListOfAllPlayer().size() == game.getListOfInFlightPlayers().size()) {
+            cancelTimer();
             this.endShipCreation();
         } else if (hourglassTurns == 3 && !hourglassON) {
             for (Player player : game.getListOfAllPlayer()) {
                 if (player.getPlayerRanking() == 0 && player.getPlayerPosition() == 0) {
                     if (player.IsDisconnected()) {
                         removePlayer(player.getPlayerName());
-                    }
-                    try {
-                        playersViewMap.get(player.getPlayerName()).asksToChooseStartingPosition();
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
                     }
                 }
             }
@@ -764,7 +762,6 @@ public class GameController implements Observer, Serializable {
             case 1->{
                 startTimer();
             }
-
             case 2-> {
                 if (playerStateIs(playerName, ClientState.S_FINISHED)) {
                     startTimer();
@@ -781,22 +778,35 @@ public class GameController implements Observer, Serializable {
     }
 
     public void startTimer() {
-        Timer hourglass = new Timer();
+        hourglassTimer = new Timer();
         this.hourglassTurns++;
         hourglassON = true;
         notifyTurnedHourglass();
-        hourglass.schedule(new TimerTask() {
+
+        hourglassTask = new TimerTask() {
             @Override
             public void run() {
                 hourglassON = false;
                 notifyEndOfTime();
-                hourglass.cancel();
                 if (hourglassTurns == 3) {
                     updateEveryView(ClientState.S_FINISHED);
                     checkIfAllPlayersReady();
                 }
             }
-        }, 95000); //95 seconds
+        };
+        hourglassTimer.schedule(hourglassTask, 95000); //95 seconds
+    }
+
+    public void cancelTimer() {
+        if (hourglassTask != null) {
+            hourglassTask.cancel();
+        }
+        if (hourglassTimer != null) {
+            hourglassTimer.cancel();
+            hourglassTimer.purge();
+            hourglassTimer =  null;
+        }
+        hourglassON = false;
     }
 
     public void notifyTurnedHourglass() {
