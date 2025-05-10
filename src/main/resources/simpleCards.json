@@ -1,0 +1,77 @@
+{
+  "cards": [
+    {
+      "type": "MeteorSwarm",
+      "level": 1,
+      "listOfMeteors": [
+        {
+          "type": "LargeMeteor",
+          "direction": "NORTH"
+        },
+        {
+          "type": "SmallMeteor",
+          "direction": "WEST"
+        },
+        {
+          "type": "SmallMeteor",
+          "direction": "EAST"
+        }
+      ]
+    },
+    {
+      "type": "Slavers",
+      "level": 1,
+      "requiredDays": 1,
+      "cannonStrength": 1,
+      "rewardCredits": 5,
+      "lostCrew": 3
+    },
+    {
+      "type": "Smugglers",
+      "level": 1,
+      "requiredDays": 1,
+      "cannonStrength": 1,
+      "lostGoods": 2,
+      "rewardGoods": [
+        {
+          "color" : "YELLOW"
+        },
+        {
+          "color" : "GREEN"
+        },
+        {
+          "color" : "BLUE"
+        }
+      ]
+    },
+    {
+      "type": "Pirates",
+      "level": 1,
+      "requiredDays": 1,
+      "cannonStrength": 5,
+      "rewardCredits": 4,
+      "listOfShots": [
+        {
+          "type": "SmallCannonShot",
+          "direction": "NORTH"
+        },
+        {
+          "type": "LargeCannonShot",
+          "direction": "NORTH"
+        },
+        {
+          "type": "SmallCannonShot",
+          "direction": "NORTH"
+        }
+      ]
+    },
+    {
+      "type": "StarDust",
+      "level": 1
+    },
+    {
+      "type": "OpenSpace",
+      "level": 1
+    },
+
+}

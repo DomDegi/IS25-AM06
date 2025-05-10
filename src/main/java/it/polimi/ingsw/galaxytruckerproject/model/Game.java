@@ -42,7 +42,7 @@ public class Game implements GameInterface{
         this.tileStack = new TileFactory().getStack(TileFactory.loadTilesFromJson("Tiles.json"));
 
         if (this.mode == GameMode.LEVEL2) {
-            CardDeck cardDeck = new CardDeck("cards.json");
+            CardDeck cardDeck = new CardDeck("simpleCards.json");
             this.inGameCards = cardDeck.getTier2FlightCards();
         }
         else {
