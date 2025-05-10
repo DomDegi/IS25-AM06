@@ -179,17 +179,64 @@ public class CoordInputManager {
             fireStrength = 0;
             return true;
         }
-        if(needed==coordinates.size()) {
+        if (coordReqType == CoordReqType.CHOOSE_TO_BREAK && needed == 0  ) {
             clientController.setState(ClientState.WAIT);
             try {
-                clientController.getVirtualController().sendCoordinates(coordinates);
+                clientController.getVirtualController().shipErrorManagement(coordinates);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
             coordinates.clear();
-            fireStrength = 0;
-            needed = 0;
             numEngine = 0;
+            fireStrength = 0;
+            return true;
+        }
+        if (coordReqType == CoordReqType.CHOOSE_TO_MAINTAIN && needed == 0  ) {
+            clientController.setState(ClientState.WAIT);
+            try {
+                clientController.getVirtualController().chooseBranch(coordinates);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+            coordinates.clear();
+            numEngine = 0;
+            fireStrength = 0;
+            return true;
+        }
+        if (coordReqType == CoordReqType.CHOOSE_BATTERY && needed == coordinates.size()  ) {
+            clientController.setState(ClientState.WAIT);
+            try {
+                clientController.getVirtualController().useBattery(coordinates);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+            coordinates.clear();
+            numEngine = 0;
+            fireStrength = 0;
+            return true;
+        }
+        if (coordReqType == CoordReqType.REMOVE_GOODS && needed == coordinates.size()  ) {
+            clientController.setState(ClientState.WAIT);
+            try {
+                clientController.getVirtualController().removeGoods(coordinates);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+            coordinates.clear();
+            numEngine = 0;
+            fireStrength = 0;
+            return true;
+        }
+        if (coordReqType == CoordReqType.CHOOSE_CREW& needed == coordinates.size()  ) {
+            clientController.setState(ClientState.WAIT);
+            try {
+                clientController.getVirtualController().removeCrew(coordinates);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+            coordinates.clear();
+            numEngine = 0;
+            fireStrength = 0;
             return true;
         }
         clientController.getView().wrongLocalInput();

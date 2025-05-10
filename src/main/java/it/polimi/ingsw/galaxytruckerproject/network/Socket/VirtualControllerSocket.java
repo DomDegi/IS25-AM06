@@ -106,11 +106,6 @@ public class VirtualControllerSocket implements VirtualController{
     }
 
     @Override
-    public void sendCoordinates(ArrayList<Coordinates> coordinates) throws RemoteException {
-        //??
-    }
-
-    @Override
     public void sendDoubleCannonUsed(float Strength, ArrayList<Coordinates> coordinates) throws RemoteException {
         serverHandler.sendClientMessage(new CannonMessage(Strength, coordinates));
     }
@@ -179,7 +174,32 @@ public class VirtualControllerSocket implements VirtualController{
     }
 
     @Override
+    public void shipErrorManagement(ArrayList<Coordinates> toRemove) throws RemoteException {
+        serverHandler.sendClientMessage(new ShipErrorManagementMessage(toRemove));
+    }
+
+    @Override
     public void ping() throws RemoteException {
         serverHandler.sendClientMessage(new ClientPingMessage());
+    }
+
+    @Override
+    public void removeGoods(ArrayList<Coordinates> fromHere) throws RemoteException {
+        serverHandler.sendClientMessage(new RemoveGoodsMessage(fromHere));
+    }
+
+    @Override
+    public void chooseBranch(ArrayList<Coordinates> thisOne) throws RemoteException {
+        serverHandler.sendClientMessage(new ChooseBranchMessage(thisOne));
+    }
+
+    @Override
+    public void useBattery(ArrayList<Coordinates> batteries) throws RemoteException {
+        serverHandler.sendClientMessage(new UseBatteryMessage(batteries));
+    }
+
+    @Override
+    public void removeCrew(ArrayList<Coordinates> toRemoveFrom) throws RemoteException {
+        serverHandler.sendClientMessage(new RemoveCrewMessage(toRemoveFrom));
     }
 }

@@ -28,7 +28,7 @@ public class TrialCardDeck {
             CardCollection cardCollection = objectMapper.readValue(inputStream, CardCollection.class);
 
             trialDeck = cardCollection.getCards();
-            Collections.shuffle(trialDeck);
+            //Collections.shuffle(trialDeck);
         }
         catch(IOException e){
             System.out.println("Error loading JSON file");
