@@ -14,11 +14,11 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 
-public class ControllerTUI implements ControllerUI {
+public class TextualInputParser {
     private final ClientController clientController;
     private DisplayableView view;
 
-    public ControllerTUI(ClientController clientController) {
+    public TextualInputParser(ClientController clientController) {
         this.clientController = clientController;
         view=this.clientController.getView();
     }
@@ -33,23 +33,6 @@ public class ControllerTUI implements ControllerUI {
         }
 
         switch (clientController.getState()) {
-            case CHOOSE_UI->{
-                switch(words[0]) {
-                    case "gui","g"-> {
-                        clientController.setView(new GUI());
-                        view = this.clientController.getView();
-                    }
-                    case "tui","t"-> {
-                        clientController.setView(new TUI());
-                        view=this.clientController.getView();
-                    }
-                    default->{
-                        view.wrongLocalInput();
-                        return false;
-                    }
-                }
-                clientController.setState(ClientState.CHOOSE_CONNECTION_TYPE);
-            }
 
             case CHOOSE_CONNECTION_TYPE->{
                 switch(words[0]) {
