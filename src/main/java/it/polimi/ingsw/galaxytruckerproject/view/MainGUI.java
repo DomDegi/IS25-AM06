@@ -160,7 +160,11 @@ public class MainGUI extends Application implements EventHandler<ActionEvent> {
         primaryStage.setFullScreen(true); // Modalità fullscreen
         primaryStage.show();
     }*/
+
+    //lo stage è la finestra che mi compare
     public void start(Stage primaryStage) {
+
+        //chooseConnection Layout
         Label label = new Label("Choose connection");
         label.setStyle("-fx-font-size: 30px; -fx-font-weight: bold;");
 
@@ -170,58 +174,42 @@ public class MainGUI extends Application implements EventHandler<ActionEvent> {
         button1.setPrefSize(120, 50);
         button2.setPrefSize(120, 50);
 
-        VBox layout = new VBox(20);
-        layout.setAlignment(Pos.CENTER);
+        VBox connectionLayout = new VBox(20);
+        connectionLayout.setAlignment(Pos.CENTER);
 
         HBox buttonsLayout = new HBox(30);
         buttonsLayout.setAlignment(Pos.CENTER);
         buttonsLayout.getChildren().addAll(button1, button2);
-        layout.getChildren().addAll(label, buttonsLayout);
+        connectionLayout.getChildren().addAll(label, buttonsLayout);
 
+        Scene scene = new Scene(connectionLayout);
 
-        Scene scene = new Scene(layout);
-
-        // Layout per la "pagina" RMI
+        // RMI LAYOUT
         VBox rmiLayout = new VBox(20);
         rmiLayout.setAlignment(Pos.CENTER);
         Label label1 = new Label("RMI Successfully connected");
         rmiLayout.getChildren().add(label1);
 
-        // Layout per la "pagina" Socket
+        // SOCKET LAYOUT
         VBox socketLayout = new VBox(20);
         socketLayout.setAlignment(Pos.CENTER);
         Label label2 = new Label("Socket successfully Connected");
         socketLayout.getChildren().add(label2);
 
-        // Layout per la scena successiva
+        // Choose your nickname Layout
         VBox nicknameLayout = new VBox(20);
         nicknameLayout.setAlignment(Pos.CENTER);
         Label nicknameLabel = new Label("Enter your nickname");
         nicknameLabel.setStyle("-fx-font-size: 28px;");
 
         TextField nicknameField = new TextField();
-        nicknameField.setPromptText("Enter your nickname here");
+        nicknameField.setPromptText("Enter here");
         nicknameField.setMaxWidth(300);
         Button confirmButton = new Button("Confirm");
         confirmButton.setDefaultButton(true);
         confirmButton.setVisible(false);
         nicknameField.textProperty().addListener((obs, oldVal, newVal) -> {
             confirmButton.setVisible(!newVal.trim().isEmpty());
-        });
-        confirmButton.setOnAction(event -> {
-            String nickname = nicknameField.getText().trim();
-            if (!nickname.isEmpty()) {
-                System.out.println("Nickname inserito: " + nickname);
-                // AGGIUNGEREMO QUI LA LOGICA PER GESTIRE IL NICKNAME(SET STATE E ROBE COSì IMMAGINO)
-
-                VBox colorLayout = chooseColor(selectedColor -> {
-                    System.out.println("Colore scelto per " + nicknameField.getText() + ": " + selectedColor);
-                    // Qui puoi procedere con il gioco o salvare il colore scelto
-                });
-                scene.setRoot(colorLayout);
-            } else {
-                System.out.println("Nickname vuoto.");
-            }
         });
 
         nicknameLayout.getChildren().addAll(nicknameLabel, nicknameField, confirmButton);
@@ -236,6 +224,26 @@ public class MainGUI extends Application implements EventHandler<ActionEvent> {
         button2.setOnAction(e -> {
             scene.setRoot(socketLayout);
             startAutoTransition(primaryStage, scene, nicknameLayout, 2);
+        });
+
+        confirmButton.setOnAction(event -> {
+            String nickname = nicknameField.getText().trim();
+            if (!nickname.isEmpty()) {
+                System.out.println("Nickname inserito: " + nickname);
+                // AGGIUNGEREMO QUI LA LOGICA PER GESTIRE IL NICKNAME(SET STATE E ROBE COSì IMMAGINO)
+
+
+                VBox colorLayout = chooseColor(selectedColor -> {
+                    System.out.println("Colore scelto per " + nicknameField.getText() + ": " + selectedColor);
+
+                });
+                scene.setRoot(colorLayout);
+
+
+
+            } else {
+                System.out.println("Nickname vuoto.");
+            }
         });
 
 
@@ -278,6 +286,8 @@ public class MainGUI extends Application implements EventHandler<ActionEvent> {
         colorLayout.getChildren().addAll(label, imagesBox);
         return colorLayout;
     }
+
+
 
 
 
