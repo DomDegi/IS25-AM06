@@ -239,7 +239,7 @@ public class MainGUI extends Application implements EventHandler<ActionEvent> {
 
         button2.setOnAction(e -> {
             try {
-                clientController.connectSocket();
+                clientController.connectSocket("localhost",12345);
                 scene.setRoot(socketLayout);
             } catch (IOException e1) {
                 System.out.println("Error connecting to server via socket");

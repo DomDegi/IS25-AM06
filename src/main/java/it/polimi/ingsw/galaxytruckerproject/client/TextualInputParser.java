@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.Objects;
 
 
 public class TextualInputParser {
@@ -60,7 +61,12 @@ public class TextualInputParser {
 
             case CHOOSE_IP_AND_PORT_SOCKET -> {
                 try {
-                    clientController.connectSocket(words[0],Integer.parseInt(words[1]));
+                    if (Objects.equals(words[0], "d")) {
+                        clientController.connectSocket("localhost",12345);
+                    }
+                    else {
+                        clientController.connectSocket(words[0], Integer.parseInt(words[1]));
+                    }
                     clientController.setState(ClientState.LOGIN);
                 } catch (IOException e) {
                     System.out.println("Error connecting to SOCKET server");
