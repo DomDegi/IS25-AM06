@@ -1,51 +1,85 @@
 package it.polimi.ingsw.galaxytruckerproject.view.GUI.Controllers;
 
 
+import it.polimi.ingsw.galaxytruckerproject.client.ClientController;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
+import java.net.MalformedURLException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+
+
+
+
 public class ConnectionController {
-    // Riferimenti agli elementi FXML (assicurati di impostare gli fx:id in Scene Builder)
+
+    private ClientController clientController;
+
+    private String connectionType;
+
+    //per la gang: vanno inseriti anche nel corrispondente fxml sotto la denominazione fx: id = "nome variabile"
     @FXML
     private Button rmiButton;
 
     @FXML
     private Button socketButton;
 
-    // Metodo chiamato automaticamente dopo il caricamento dell'FXML
+
     @FXML
-    private void initialize() {
-        // Configura le azioni dei pulsanti
-        rmiButton.setOnAction(event -> handleRMIConnection());
-        socketButton.setOnAction(event -> handleSocketConnection());
+    private void handleRMIClick(ActionEvent event) {
+            connectionType = "RMI";
+            goToIpAndPortScene();
+        }
+
+
+    @FXML
+    private void handleSocketClick(ActionEvent event) {
+        connectionType = "Socket";
+        goToIpAndPortScene();
     }
 
-    // Gestisce la connessione RMI
-    private void handleRMIConnection() {
-        System.out.println("Avvio connessione RMI...");
-        // Sostituisci con la tua logica RMI
-        // Esempio: NetworkService.startRMIConnection();
-        loadNextScene();
-    }
 
-    // Gestisce la connessione Socket
-    private void handleSocketConnection() {
-        System.out.println("Avvio connessione Socket...");
-        // Sostituisci con la tua logica Socket
-        // Esempio: NetworkService.startSocketConnection();
-        loadNextScene();
-    }
-
-    // Carica la prossima scena (es. login o lobby)
-    private void loadNextScene() {
+    @FXML
+    private void goToIpAndPortScene() {
         try {
-            Stage currentStage = (Stage) rmiButton.getScene().getWindow();
-            // Sostituisci con il percorso del tuo prossimo FXML
-            // FXMLLoader loader = new FXMLLoader(getClass().getResource("next_scene.fxml"));
-            // currentStage.setScene(new Scene(loader.load()));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("src/main/resources/GUI/IpAndPort.fxml"));
+            Parent root = loader.load();
+
+            // Passaggio del tipo di connessione al controller successivo
+            IpAndPortController controller = loader.getController();
+            controller.setConnectionType(connectionType);
+
+            //copre anche il caso in cui viene cliccato socketButton perché tanto i due pulsanti si trovano
+            //nella stessa scena
+            Stage stage = (Stage) rmiButton.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public void setClientController(ClientController clientController) {
+        this.clientController = clientController;
+
     }
 }
