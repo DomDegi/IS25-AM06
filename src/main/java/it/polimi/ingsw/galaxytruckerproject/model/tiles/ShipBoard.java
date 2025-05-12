@@ -472,6 +472,7 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
         for(int j=0;j<i;j++) {
             addPenalty();
         }
+        countExposedConnectors();
         return true;
     }
 

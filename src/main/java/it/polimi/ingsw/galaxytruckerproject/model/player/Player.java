@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.model.player;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
+import it.polimi.ingsw.galaxytruckerproject.model.persistence.TileLoader;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 
 import java.io.Serializable;
@@ -10,14 +11,13 @@ import java.util.Map;
 
 public class Player implements PlayerInterface , Serializable {
     private int playerRanking;
-    private final String playerName;
+    private String playerName;
     private int playerPosition;
-    private final PlayersColor playerColor;
+    private PlayersColor playerColor;
     private int credit;
     private boolean landed;
     private ShipBoard playerShip;
     private Tile drawnTile;
-    private ArrayList<Coordinates> firstCoordinatesChoice = new ArrayList<>();
     private boolean isDisconnected;
 
     public Player(String playerName, PlayersColor playerColor) {
@@ -104,24 +104,6 @@ public class Player implements PlayerInterface , Serializable {
         this.drawnTile = drawnTile;
     }
 
-
-    //translates an array of strings in an array of coordinates if possible
-    public ArrayList<Coordinates> parseCoordinates(String[] input) {
-        ArrayList<Coordinates> coordinates = new ArrayList<>();
-        if (input.length % 2 == 0 && input.length > 0) {
-            try {
-                for (int i = 0; i < input.length; i += 2) {
-                    coordinates.add(new Coordinates(Integer.parseInt(input[i]), Integer.parseInt(input[i + 1])));
-                }
-                return coordinates;
-            } catch (NumberFormatException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        System.out.println("Invalid input\n");
-        //returns empty list
-        return coordinates;
-    }
 
     //ENGINE METHODS
     public Map<Integer, ArrayList<Tile>> useEngines(int numberOfDoubleEngines, ArrayList<Coordinates> batteries) {
@@ -407,5 +389,89 @@ public class Player implements PlayerInterface , Serializable {
 
     public void setDisconnected(boolean disconnected) {
         isDisconnected = disconnected;
+    }
+
+    public String toStringData() {
+        StringBuilder sb = new StringBuilder();
+        //First 5 word divided by " " space (attributes[0-4])
+        sb.append(playerName).append(" ").append(playerColor.toString()).append(" ")
+                .append(playerPosition).append(" ").append(playerRanking).append(" ")
+                .append(credit).append(" ");
+        //attribute[5]
+        if (landed) {
+            sb.append("L").append(" ");
+        }
+        else {
+            sb.append("N").append(" ");
+        }
+        //attribute[6]
+        if (isDisconnected){
+            sb.append("D").append(" ");
+        }
+        else {
+            sb.append("N").append(" ");
+        }
+        //attribute[7 - depends on the tile]
+        if (drawnTile == null) {
+            sb.append("N");
+        }
+        else {
+            sb.append(drawnTile.toStringData());
+        }
+        return sb.toString();
+    }
+
+    //No parameter builder for deserialization
+    public Player() {}
+
+    public void playerLoader(String[] attributes) {
+        if (attributes.length < 8) {
+            throw new IllegalArgumentException("Insufficient attributes: at least 8 are needed " + attributes.length);
+        }
+        this.playerName = attributes[0];
+        this.playerColor = PlayersColor.fromString(attributes[1]);
+        this.playerPosition = Integer.parseInt(attributes[2]);
+        this.playerRanking = Integer.parseInt(attributes[3]);
+        this.credit = Integer.parseInt(attributes[4]);
+        this.landed = attributes[5].equals("L");
+        this.isDisconnected = attributes[6].equals("D");
+        if (attributes[7].equals("N")) {
+            this.drawnTile = null;
+        }
+        else {
+            StringBuilder tileData = new StringBuilder();
+            for (int i = 7; i < attributes.length; i++) {
+                tileData.append(attributes[i]).append(" ");
+            }
+            TileLoader tileLoader = new TileLoader();
+            this.drawnTile = tileLoader.load(tileData.toString());
+        }
+        this.playerShip = new ShipBoard(this);
+    }
+
+    //Needed for testing
+
+    public void setCredit(int credit) {
+        this.credit = credit;
+    }
+
+    public void setDrawnTile(Tile drawnTile) {
+        this.drawnTile = drawnTile;
+    }
+
+    public boolean isDisconnected() {
+        return isDisconnected;
+    }
+
+    public ShipBoard getPlayerShip() {
+        return playerShip;
+    }
+
+    public void setPlayerColor(PlayersColor playerColor) {
+        this.playerColor = playerColor;
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
     }
 }

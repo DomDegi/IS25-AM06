@@ -31,7 +31,7 @@ import static it.polimi.ingsw.galaxytruckerproject.model.GameState.CARD_EVENT;
 
 public class GameController implements Observer, Serializable {
     private final String gameName;
-    private final GameInterface game;
+    private GameInterface game;
     private final ArrayList<String> playersWithErrors;
     private final Map<String, ClientState> clientsStatesMap = new HashMap<>();
     private final Map<String, VirtualView> playersViewMap;
@@ -69,6 +69,19 @@ public class GameController implements Observer, Serializable {
         this.playersViewMap = new HashMap<>();
         this.activePlayers = new HashMap<>();
         this.disconnectedPlayers = new HashMap<>();
+    }
+
+    public GameController(String gameName) {
+        this.gameName = gameName;
+        this.playersWithErrors = new ArrayList<>();
+        this.playersViewMap = new HashMap<>();
+        this.activePlayers = new HashMap<>();
+        this.disconnectedPlayers = new HashMap<>();
+    }
+
+    public void setGameInterface(GameInterface game) {
+        this.game = game;
+        game.addObserver(this);
     }
 
     /**
@@ -1057,7 +1070,7 @@ public class GameController implements Observer, Serializable {
         return playersViewMap;
     }
 
-    public Map<String, Player> getPlayers() {
+    public Map<String, Player> getActivePlayers() {
         return activePlayers;
     }
 
@@ -1127,11 +1140,16 @@ public class GameController implements Observer, Serializable {
         }
     }
 
-    public Map<String, Player> getActivePlayers() {
-        return activePlayers;
-    }
-
     public ConcurrentHashMap<String, Integer> getLockedSmallDecks() {
         return lockedSmallDecks;
     }
+
+    public Map<String, Player> getDisconnectedPlayers() {
+        return disconnectedPlayers;
+    }
+
+    /*
+    public String toStringData() {
+
+    }*/
 }

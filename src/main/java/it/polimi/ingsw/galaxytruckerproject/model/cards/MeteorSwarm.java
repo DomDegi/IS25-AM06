@@ -174,7 +174,7 @@ public class MeteorSwarm extends Card {
     @Override
     public String toString() {
         StringBuilder string = new StringBuilder();
-        string.append("MeteorSwarm: ");
+        string.append("MeteorSwarm: ").append(super.toString()).append(" ");
         for (Projectile projectile : listOfMeteors) {
             string.append(projectile.toString());
         }

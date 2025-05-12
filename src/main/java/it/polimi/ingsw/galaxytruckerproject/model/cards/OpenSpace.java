@@ -92,6 +92,6 @@ public class OpenSpace extends Card {
     }
 
     public String toString() {
-        return "OpenSpace";
+        return "OpenSpace" + " id: " + id;
     }
 }

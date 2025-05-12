@@ -8,6 +8,7 @@ module it.polimi.ingsw.galaxytruckerproject {
     requires java.compiler;
     requires java.desktop;
     requires java.rmi;
+    requires net.bytebuddy;
 
     opens it.polimi.ingsw.galaxytruckerproject.controller to com.fasterxml.jackson.databind;
     opens it.polimi.ingsw.galaxytruckerproject.model.tiles to com.fasterxml.jackson.databind;

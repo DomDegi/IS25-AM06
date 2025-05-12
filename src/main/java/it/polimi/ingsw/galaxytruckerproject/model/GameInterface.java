@@ -53,4 +53,6 @@ public interface GameInterface extends Serializable {
     Card getDrawnCard();
 
     void setGameState(GameState gameState);
+
+    public ArrayList<Card> getInGameCards();
 }
