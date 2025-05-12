@@ -120,9 +120,9 @@ public class TUI implements DisplayableView {
     }
 
     @Override
-    public void showScores(ArrayList<Player> players) throws RemoteException {
-        for (Player player : players) {
-            System.out.println(player.getPlayerName() + ": " + player.getCredit());
+    public void showScores(Map<String, Integer> scores) throws RemoteException {
+        for (String playerName : scores.keySet()) {
+            System.out.println(playerName + ": " + scores.get(playerName));
         }
     }
 

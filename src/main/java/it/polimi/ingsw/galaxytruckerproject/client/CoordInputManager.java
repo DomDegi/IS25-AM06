@@ -30,8 +30,8 @@ public class CoordInputManager {
     public void setCoordReqType(CoordReqType coordReqType) {
         this.coordinates.clear();
         switch (coordReqType) {
-            case CHOOSE_DOUBLE_CANNON, CHOOSE_DOUBLE_ENGINE, CHOOSE_TO_BREAK -> needed=0;
-            case CHOOSE_BATTERY, REMOVE_GOODS -> needed= clientController.getDisplayedCard().getFirst().getGoodsPenalty();
+            case CHOOSE_DOUBLE_CANNON, CHOOSE_DOUBLE_ENGINE, CHOOSE_TO_BREAK, CHOOSE_BATTERY -> needed=0;
+            case REMOVE_GOODS -> needed= clientController.getDisplayedCard().getFirst().getGoodsPenalty();
             case CHOOSE_TO_MAINTAIN -> needed=1;
             case CHOOSE_CREW -> needed=clientController.getDisplayedCard().getFirst().getCrewNumber();
         }
@@ -58,7 +58,7 @@ public class CoordInputManager {
                 needed++;
             }
             case CHOOSE_TO_MAINTAIN -> {
-                if(coordinates.isEmpty()) {
+                if(clientController.getMe().getShipBoard().getTilesTable()[coordinate.getX()][coordinate.getY()].isPresent()) {
                     coordinates.add(coordinate);
                 } else {
                     return false;
@@ -143,14 +143,19 @@ public class CoordInputManager {
                         return false;
                     }
                 } else if(lightShipBoard.cargoHoldContainsGood(new Goods(GoodsColor.RED)).isEmpty()&&lightShipBoard.cargoHoldContainsGood(new Goods(GoodsColor.YELLOW)).isEmpty()&&lightShipBoard.cargoHoldContainsGood(new Goods(GoodsColor.GREEN)).isEmpty()&&lightShipBoard.cargoHoldContainsGood(new Goods(GoodsColor.BLUE)).isEmpty()){
-                    setCoordReqType(CoordReqType.CHOOSE_BATTERY);
-                    checkCoord(coordinate);
+                    if(tile.getNumBatteries()>0) {
+                        clientController.getView().showGenericMessage("battery added correctly");
+                        clientController.getMe().getShipBoard().chooseBatteryUse(coordinate);
+                        coordinates.add(coordinate);
+                    } else {
+                        return false;
+                    }
                 } else {
                     return false;
                 }
             }
         }
-        if(coordinates.size()==needed && (coordReqType != CoordReqType.CHOOSE_DOUBLE_ENGINE && coordReqType != CoordReqType.CHOOSE_DOUBLE_CANNON && coordReqType != CoordReqType.CHOOSE_TO_BREAK )) {
+        if(coordinates.size()==needed && (coordReqType != CoordReqType.CHOOSE_DOUBLE_ENGINE && coordReqType != CoordReqType.CHOOSE_DOUBLE_CANNON && coordReqType != CoordReqType.CHOOSE_TO_BREAK && coordReqType != CoordReqType.CHOOSE_BATTERY )) {
             endCheckingFase();
         }
         return true;
@@ -164,10 +169,6 @@ public class CoordInputManager {
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
-            coordinates.clear();
-            fireStrength = 0;
-            numEngine = 0;
-            return true;
         } else if (coordReqType == CoordReqType.CHOOSE_DOUBLE_ENGINE && needed == 0) {
             clientController.setState(ClientState.WAIT);
             try {
@@ -175,10 +176,6 @@ public class CoordInputManager {
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
-            coordinates.clear();
-            numEngine = 0;
-            fireStrength = 0;
-            return true;
         } else if (coordReqType == CoordReqType.CHOOSE_TO_BREAK && needed != 0) {
             clientController.setState(ClientState.WAIT);
             try {
@@ -186,32 +183,20 @@ public class CoordInputManager {
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
-            coordinates.clear();
-            numEngine = 0;
-            fireStrength = 0;
-            return true;
-        } else if (coordReqType == CoordReqType.CHOOSE_TO_MAINTAIN && needed == 0) {
+        } else if (coordReqType == CoordReqType.CHOOSE_TO_MAINTAIN && needed == coordinates.size()) {
             clientController.setState(ClientState.WAIT);
             try {
                 clientController.getVirtualController().chooseBranch(coordinates);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
-            coordinates.clear();
-            numEngine = 0;
-            fireStrength = 0;
-            return true;
-        } else if (coordReqType == CoordReqType.CHOOSE_BATTERY && needed == coordinates.size()) {
+        } else if (coordReqType == CoordReqType.CHOOSE_BATTERY ) {
             clientController.setState(ClientState.WAIT);
             try {
                 clientController.getVirtualController().useBattery(coordinates);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
-            coordinates.clear();
-            numEngine = 0;
-            fireStrength = 0;
-            return true;
         } else if (coordReqType == CoordReqType.REMOVE_GOODS && needed == coordinates.size()) {
             clientController.setState(ClientState.WAIT);
             try {
@@ -219,10 +204,6 @@ public class CoordInputManager {
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
-            coordinates.clear();
-            numEngine = 0;
-            fireStrength = 0;
-            return true;
         } else if (coordReqType == CoordReqType.CHOOSE_CREW & needed == coordinates.size()) {
             clientController.setState(ClientState.WAIT);
             try {
@@ -230,13 +211,13 @@ public class CoordInputManager {
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
-            coordinates.clear();
-            numEngine = 0;
-            fireStrength = 0;
-            return true;
         } else {
             clientController.getView().wrongLocalInput();
             return false;
         }
+        coordinates.clear();
+        numEngine = 0;
+        fireStrength = 0;
+        return true;
     }
 }

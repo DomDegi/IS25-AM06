@@ -1034,9 +1034,12 @@ public class GameController implements Observer, Serializable {
     }
 
     public void showScores() {
+        Map<String,Integer> scores = new HashMap<>();
+        for (Player player: game.getListOfAllPlayer())
+            scores.put(player.getPlayerName(), player.getCredit());
         for (VirtualView view: playersViewMap.values()) {
             try {
-                view.showScores(game.getListOfAllPlayer());
+                view.showScores(scores);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }

@@ -323,7 +323,7 @@ public class Player implements PlayerInterface , Serializable {
             }
         }
         ArrayList<Tile> updated = new ArrayList<>();
-        for (Coordinates coord: coordinates) {
+        for (Coordinates coord: new ArrayList<>(coordinates)) {
             playerShip.chooseCrewToRemove(coord);
             updated.add(playerShip.getTile(coord));
         }

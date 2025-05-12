@@ -52,16 +52,16 @@ public class EquipCabin extends Cabin {
                 && !shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].get().getAlienLifeSupportSystemColor().equals(CrewType.NotSupportSystem))
             adjacentLifeSupport.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].get().getCoordinates());
 */
-        if(shipBoard.getTilesTable()[this.coordinates.getX() - 1][this.coordinates.getY()].isPresent())
+        if(this.coordinates.getX() - 1 >=0 && this.coordinates.getX() - 1 <= 4 && this.coordinates.getY()>=0 && this.coordinates.getY()<=6 && shipBoard.getTilesTable()[this.coordinates.getX() - 1][this.coordinates.getY()].isPresent())
             adjacentLifeSupport.add(shipBoard.getTilesTable()[this.coordinates.getX() - 1][this.coordinates.getY()].get().getCoordinates());
 
-        if(shipBoard.getTilesTable()[this.coordinates.getX() + 1][this.coordinates.getY()].isPresent())
+        if(this.coordinates.getX() + 1 >=0 && this.coordinates.getX() + 1 <= 4 && this.coordinates.getY()>=0 && this.coordinates.getY()<=6 && shipBoard.getTilesTable()[this.coordinates.getX() + 1][this.coordinates.getY()].isPresent())
             adjacentLifeSupport.add(shipBoard.getTilesTable()[this.coordinates.getX() + 1][this.coordinates.getY()].get().getCoordinates());
 
-        if(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].isPresent())
+        if(this.coordinates.getX() >=0 && this.coordinates.getX() <= 4 && this.coordinates.getY()-1>=0 && this.coordinates.getY()-1<=6&&shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].isPresent())
             adjacentLifeSupport.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()-1].get().getCoordinates());
 
-        if(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].isPresent())
+        if(this.coordinates.getX() >=0 && this.coordinates.getX() <= 4 && this.coordinates.getY()+1>=0 && this.coordinates.getY()+1<=6&&shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].isPresent())
             adjacentLifeSupport.add(shipBoard.getTilesTable()[this.coordinates.getX()][this.coordinates.getY()+1].get().getCoordinates());
         return adjacentLifeSupport;
     }

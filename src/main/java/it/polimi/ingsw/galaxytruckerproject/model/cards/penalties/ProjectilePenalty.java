@@ -175,7 +175,7 @@ public class ProjectilePenalty extends Penalty {
             return toRemove;
         }
         else {
-            return null;
+            return new ArrayList<>();
         }
     }
 

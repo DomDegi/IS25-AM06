@@ -10,18 +10,13 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
-import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -195,7 +190,7 @@ public class GUI extends Application implements DisplayableView {
     }
 
     @Override
-    public void showScores(ArrayList<Player> players) throws RemoteException {
+    public void showScores(Map<String, Integer> scores) throws RemoteException {
 
     }
 

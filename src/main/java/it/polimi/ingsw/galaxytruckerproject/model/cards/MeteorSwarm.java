@@ -146,7 +146,7 @@ public class MeteorSwarm extends Card {
             return;
         }
         ArrayList<Coordinates> removedTiles = activePenalties.get(player).chooseToMaintain(player, branchChoices);
-        if (removedTiles == null) {
+        if (removedTiles.isEmpty()) {
             try {
                 viewsMap.get(playerName).showWrongInputMessage();
             }catch(Exception ignored) {}

@@ -65,7 +65,12 @@ public class TextualInputParser {
                         clientController.connectSocket("localhost",12345);
                     }
                     else {
-                        clientController.connectSocket(words[0], Integer.parseInt(words[1]));
+                        if(words.length==2)
+                            clientController.connectSocket(words[0], Integer.parseInt(words[1]));
+                        else {
+                            view.wrongLocalInput();
+                            return false;
+                        }
                     }
                     clientController.setState(ClientState.LOGIN);
                 } catch (IOException e) {
@@ -339,7 +344,6 @@ public class TextualInputParser {
                 if (words[0].equals("done")) {
                     return clientController.doneCoord();
                 } else {
-                    //gestire il -1 in base alla carta
                     Coordinates coords;
                     coords = clientController.transformCoordinates(words);
                     if (coords == null)

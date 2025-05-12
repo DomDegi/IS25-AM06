@@ -457,8 +457,6 @@ public class ClientController {
         state = newState;
         switch (newState) {
             case START_SHIP_CREATION -> {
-                this.coordInputManager = new CoordInputManager(me.getShipBoard(), this);
-                //me.setShipboard(new LightShipBoard(me));
                 phase = GamePhases.SHIPBOARD;
             }
 
@@ -473,6 +471,9 @@ public class ClientController {
                     previousState = state;
                 }
             }
+            case COORD_REQUEST ->
+                    this.coordInputManager = new CoordInputManager(me.getShipBoard(), this);
+
             case MANAGE_CABINS -> {
                 if (!inManager) {
                     cabinsManager = new CabinsManager(me, view);
@@ -681,7 +682,6 @@ public class ClientController {
                 player.getShipBoard().initializeTestFlight();
             }
         }
-        this.coordInputManager = new CoordInputManager(me.getShipBoard(), this);
     }
 
     public boolean land(String[] input) {
