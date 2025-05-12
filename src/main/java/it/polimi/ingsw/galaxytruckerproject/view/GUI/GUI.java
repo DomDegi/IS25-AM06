@@ -13,6 +13,10 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -51,6 +55,25 @@ public class GUI extends Application implements DisplayableView {
 
 
         primaryStage.show();
+
+
+        /*try{
+            Stage stage = new Stage();
+            stage.setTitle("Galaxy Trucker");
+            BorderPane root = new BorderPane();
+            Scene scene = new Scene(root,400,300);
+            scene.setFill(Color.AQUAMARINE);
+            stage.setScene(scene);
+            stage.show();
+
+            stage.setMaxHeight(1000);
+            stage.setMinHeight(200);
+            stage.setMaxWidth(600);
+            stage.setMinWidth(200);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        } */
     }
 
     @Override
@@ -275,5 +298,8 @@ public class GUI extends Application implements DisplayableView {
     public static void main(String[] args) {
         launch(args);
     }
+
+
+
 
 }

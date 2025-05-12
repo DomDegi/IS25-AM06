@@ -4,8 +4,8 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 
 public class StartingCabin extends Cabin {
 
-
     PlayersColor playerColor;
+
     public StartingCabin(Link nord, Link east, Link south, Link west,int key) {
         super(nord, east, south, west,key);
         crew = 2;
@@ -71,4 +71,21 @@ public class StartingCabin extends Cabin {
             return "   " + getSouth() + "  " + getKey() + " ";
     }
 
+    @Override
+    public String toStringData() {
+        return "ST " + playerColor.toString() + " " + crew;
+    }
+
+    public StartingCabin() {}
+
+    @Override
+    public void tileLoader(String[] attributes) {
+        this.north = new Link(Connectors.UNIVERSAL);
+        this.east = new Link(Connectors.UNIVERSAL);
+        this.south = new Link(Connectors.UNIVERSAL);
+        this.west = new Link(Connectors.UNIVERSAL);
+        this.playerColor = PlayersColor.fromString(attributes[1]);
+        this.crew = Integer.parseInt(attributes[2]);
+        this.key = 0;
+    }
 }

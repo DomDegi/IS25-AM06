@@ -88,6 +88,18 @@ public class SingleCannon extends Cannon {
         else
             this.fireStrength=0.5f;
     }
+
+    @Override
+    public String toStringData() {
+        return "SC " + key + " " + north.toString() + " " + east.toString() + " " + south.toString() + " " + west.toString() + " " + direction.toString();
+    }
+
+    public SingleCannon(){}
+
+    @Override
+    public void tileLoader(String[] attributes) {
+        super.tileLoader(attributes);
+    }
 }
 
 

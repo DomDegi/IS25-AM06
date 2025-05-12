@@ -54,4 +54,14 @@ public abstract class Cannon extends Tile {
         }
         this.direction = Direction.values()[i];
     }
+
+    public Cannon() {
+        super();
+    }
+
+    @Override
+    public void tileLoader(String[] attributes) {
+        super.tileLoader(attributes);
+        this.direction = Direction.fromString(attributes[6]);
+    }
 }

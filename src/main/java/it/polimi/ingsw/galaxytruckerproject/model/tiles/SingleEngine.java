@@ -44,4 +44,16 @@ public class SingleEngine extends Engine{
     public int getEngineStrength(){
         return 1;
     }
+
+    @Override
+    public String toStringData() {
+        return "SE " + key + " " + north.toString() + " " + east.toString() + " " + south.toString() + " " + west.toString() + " " + direction.toString();
+    }
+
+    public SingleEngine(){}
+
+    @Override
+    public void tileLoader(String[] attributes) {
+        super.tileLoader(attributes);
+    }
 }

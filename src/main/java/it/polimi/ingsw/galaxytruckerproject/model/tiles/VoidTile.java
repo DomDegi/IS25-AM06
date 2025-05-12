@@ -6,6 +6,10 @@ public class VoidTile extends Tile {
         super(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH),-1);
     }
 
+    public VoidTile() {
+        super(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH),-1);
+    }
+
     @Override
     public boolean isCorrect() {
         return true;
@@ -27,5 +31,14 @@ public class VoidTile extends Tile {
     @Override
     public String toString3(){
         return "▓▓▓▓▓▓▓▓";
+    }
+
+    @Override
+    public String toStringData() {
+        return "VT";
+    }
+
+    @Override
+    public void tileLoader(String[] attributes) {
     }
 }

@@ -13,4 +13,5 @@ public abstract class Cabin extends Tile {
     public int getCrew() {
         return crew;
     }
+    public Cabin() { super(); }
 }
