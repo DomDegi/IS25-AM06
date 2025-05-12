@@ -10,6 +10,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -61,6 +62,11 @@ public class OpenSpace extends Card {
     private void moveOrEarlyLand(int engineStrength) {
         if (engineStrength == 0) {
             playersToEarlyLand.add(currentPlayer);
+            try {
+                currentPlayerView.notifyEarlyLanding();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
         else {
             game.getFlightBoard().moveForward(currentPlayer, engineStrength);

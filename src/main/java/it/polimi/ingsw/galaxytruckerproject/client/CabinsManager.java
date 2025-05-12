@@ -60,8 +60,9 @@ public class CabinsManager {
         if(cabins.get(index).equals( new Coordinates(2, 3))) {
             index++;
         }
-        if(index>=cabins.size())
+        if(index >= cabins.size()) {
             return;
+        }
         if(lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.NO){
             view.showGenericMessage(cabins.get(index).toString()+" - Only Human are allowed here");
         }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.PURPLE){

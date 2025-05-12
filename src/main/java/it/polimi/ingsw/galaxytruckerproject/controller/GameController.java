@@ -839,6 +839,14 @@ public class GameController implements Observer, Serializable {
 
     public void askFirstPlayerToDraw() {
         updatePlayerView(DRAW_CARD,game.getListOfInFlightPlayers().getFirst().getPlayerName());
+
+        /*
+        if(game.getListOfInFlightPlayers()!=null&& !game.getListOfInFlightPlayers().isEmpty()) {
+            updatePlayerView(DRAW_CARD, game.getListOfInFlightPlayers().getFirst().getPlayerName());
+        }
+        else{
+            concludeGame();
+        }*/
     }
 
     public void initializeDrawnCard () {

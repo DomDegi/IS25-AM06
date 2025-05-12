@@ -272,6 +272,11 @@ public class GUI extends Application implements DisplayableView {
     }
 
     @Override
+    public void notifyEarlyLanding() throws RemoteException {
+
+    }
+
+    @Override
     public void printCabins(Tile cabins) {
 
     }

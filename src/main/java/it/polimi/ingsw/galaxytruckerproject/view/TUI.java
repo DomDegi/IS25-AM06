@@ -283,6 +283,11 @@ public class TUI implements DisplayableView {
     }
 
     @Override
+    public void notifyEarlyLanding() throws RemoteException {
+        System.out.println("we're sorry, you landed");
+    }
+
+    @Override
     public void printCabins(Tile cabins) {
         System.out.println("choose equip type of:" + cabins.toString());
     }

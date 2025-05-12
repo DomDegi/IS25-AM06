@@ -468,7 +468,7 @@ public class ClientController {
                 view.printBooked(me.getShipBoard());
             }
             case S_MANAGE_CARDS -> {
-                if (gameMode == GameMode.TRIAL) {
+                if(gameMode==GameMode.TRIAL) {
                     setState(ClientState.S_END_DRAW_TILE_CARD);
                     previousState = state;
                 }
@@ -527,9 +527,10 @@ public class ClientController {
             }
             case DRAW_CARD -> {
                 phase = GamePhases.CARDS;
-                if (me.getRank() != 1) {
-                    setState(ClientState.WAIT);
-                }
+
+                /*if(me.getRank()!=1){
+                    setState( ClientState.WAIT);
+                } //MI FIDO DI QUELLO CHE MI DICE IL SERVER(prova)*/
             }
             case MANAGE_GOODS -> {
                 if (!inManager) {
