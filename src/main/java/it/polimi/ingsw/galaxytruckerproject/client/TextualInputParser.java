@@ -100,13 +100,24 @@ public class TextualInputParser {
                 int numberOfPlayers;
                 if(!(words.length > 1)){
                     view.wrongLocalInput();
+                    clientController.rollBackState();
                     return false;
                 }
-                numberOfPlayers = clientController.numerate(clientController.scroll(words,1));
-                if(numberOfPlayers==-1||numberOfPlayers>4)
+                try {
+                    numberOfPlayers = Integer.parseInt(words[1]);
+                } catch (NumberFormatException e) {
+                    view.wrongLocalInput();
+                    clientController.rollBackState();
                     return false;
+                }
+                if(numberOfPlayers==-1||numberOfPlayers>4) {
+                    view.wrongLocalInput();
+                    clientController.rollBackState();
+                    return false;
+                }
                 if(!(words.length > 2)){
                     view.wrongLocalInput();
+                    clientController.rollBackState();
                     return false;
                 }
                 GameMode mode;
@@ -115,6 +126,7 @@ public class TextualInputParser {
                     case "level2mode","2"-> mode=GameMode.LEVEL2;
                     default->{
                         view.wrongLocalInput();
+                        clientController.rollBackState();
                         return false;
                     }
                 }
@@ -305,9 +317,9 @@ public class TextualInputParser {
             case MANAGE_CABINS -> {
                 CrewType type;
                 switch (words[0]) {
-                    case "humans" -> type = CrewType.HUMAN;
-                    case "brownalien" -> type = CrewType.BROWN;
-                    case "purplealien" -> type = CrewType.PURPLE;
+                    case "humans", "h" -> type = CrewType.HUMAN;
+                    case "brownalien", "b" -> type = CrewType.BROWN;
+                    case "purplealien", "p" -> type = CrewType.PURPLE;
                     default -> {
                         view.wrongLocalInput();
                         clientController.setUpCabins();

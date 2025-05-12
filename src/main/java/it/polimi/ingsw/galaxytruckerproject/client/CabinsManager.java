@@ -47,7 +47,7 @@ public class CabinsManager {
             }
         }
         lightPlayer.getShipBoard().getTile(cabins.get(index)).setCrewType(crewType);
-        modifiedCabins.add(lightPlayer.getShipBoard().getTile(cabins.get(index)));
+        modifiedCabins.add(lightPlayer.getShipBoard().getTile(cabins.get(index)).send());
         index++;
         if (index >= cabins.size()) {
             return modifiedCabins;
@@ -60,6 +60,8 @@ public class CabinsManager {
         if(cabins.get(index).equals( new Coordinates(2, 3))) {
             index++;
         }
+        if(index>=cabins.size())
+            return;
         if(lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.NO){
             view.showGenericMessage(cabins.get(index).toString()+" - Only Human are allowed here");
         }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.PURPLE){

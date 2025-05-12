@@ -415,39 +415,40 @@ public class GameController implements Observer, Serializable {
 
     public void shipErrorManagement(String playerName, VirtualView playersView, ArrayList<Coordinates> toRemove) {
         Player player = game.identifyPlayerByName(playerName);
-        if(player==null){
+        if (player == null)
             return;
-        }
-        if(!playersWithErrors.contains(playerName)){
+        if (!playersWithErrors.contains(playerName)) {
             try {
                 playersView.showWrongInputMessage();
-            } catch(Exception ignored) {}
+            } catch (Exception ignored) {
+            }
             return;
         }
-        for (Coordinates coord: toRemove) {
+        for (Coordinates coord : toRemove) {
             player.getShipBoard().destroyForCorrection(coord);
         }
-        notifyBrokenTile(playerName,toRemove);
+        notifyBrokenTile(playerName, toRemove);
         boolean correctness = player.getShipBoard().verifyCorrectness();
         if (correctness) {
-            if(game.getMode()== TRIAL) {
+            if (game.getMode() == TRIAL) {
                 game.getFlightBoard().setPlayerToLast(player);
-                notifyPlayerMovement(playerName,player.getPlayerColor(),player.getPlayerPosition(),player.getPlayerRanking());
+                notifyPlayerMovement(playerName, player.getPlayerColor(), player.getPlayerPosition(), player.getPlayerRanking());
             }
             playersWithErrors.remove(playerName);
-
             if (player.IsDisconnected()) {
                 this.setCrewForDisconnectedPlayer(player);
+            } else {
+                try {
+                    updatePlayerView(ClientState.MANAGE_CABINS,playerName);
+                } catch (Exception ignored) {
+                }
             }
-            else{
-                try{
-                    playersView.setClientState(ClientState.MANAGE_CABINS);
-                } catch(Exception ignored) {}}
-            return;
+        } else {
+            try {
+                playersView.asksToInputCoordinates(CoordReqType.CHOOSE_TO_BREAK);
+            } catch (Exception ignored) {
+            }
         }
-        try{
-        playersView.asksToInputCoordinates(CoordReqType.CHOOSE_TO_BREAK);
-        } catch(Exception ignored) {}
     }
 
     public void notifyBrokenTile(String playerName, ArrayList<Coordinates> removed) {
@@ -513,11 +514,6 @@ public class GameController implements Observer, Serializable {
 
     public void endShipVerification() {
         game.endShipVerification();
-        try {
-            playersViewMap.get(game.getFlightBoard().getAllPlayers().getFirst().getPlayerName()).setClientState(ClientState.DRAW_CARD);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
     }
 
 
@@ -1084,9 +1080,9 @@ public class GameController implements Observer, Serializable {
     }
 
     public void updatePlayerView (ClientState newState, String playerName) {
-        try{
-        playersViewMap.get(playerName).setClientState(newState);
-        } catch(RemoteException e) {
+        try {
+            playersViewMap.get(playerName).setClientState(newState);
+        } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
         clientsStatesMap.put(playerName, newState);
@@ -1116,7 +1112,7 @@ public class GameController implements Observer, Serializable {
         } catch (InterruptedException | RemoteException | ExecutionException | TimeoutException e) {
             activePlayers.remove(playerName);
             disconnectedPlayers.put(playerName,player);
-            player.setDisconnected(true);
+            player.playerDisconnects();
             System.out.println(playerName+" disconnected");
         } finally {
             pendingPongs.remove(playerName);

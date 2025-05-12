@@ -142,6 +142,7 @@ public class ClientController {
     public void joinGame(String gameName) {
         if (gameInfo == null) {
             view.wrongLocalInput();
+            rollBackState();
             return;
         }
         for (GameInfo games : gameInfo) {
@@ -157,15 +158,20 @@ public class ClientController {
             }
         }
         view.wrongLocalInput();
+        rollBackState();
     }
 
     public void colorChoice(PlayersColor color) {
-        me.setColor(color);
-        setState(ClientState.WAIT);
-        try {
-            virtualController.chooseColor(color);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
+        if(getAvailableColors().get(color)) {
+            me.setColor(color);
+            setState(ClientState.WAIT);
+            try {
+                virtualController.chooseColor(color);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            view.wrongLocalInput();
         }
     }
 
@@ -306,6 +312,7 @@ public class ClientController {
     public void positionOnFlightBoard(int chose) {
         if (gameMode == GameMode.LEVEL2) {
             if (chose > 0 && chose <= numPlayer) {
+                me.getShipBoard().setGetStat();
                 setState(ClientState.WAIT);
                 try {
                     virtualController.notifySetPosition(chose);
@@ -423,11 +430,12 @@ public class ClientController {
                 if (newTiles != null) {
                     setState(ClientState.WAIT);
                     try {
+                        inManager = false;
+                        me.getShipBoard().setGetStat();
                         virtualController.notifyNewCrewArrangement(newTiles);
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
-                    inManager = false;
                 }
             }
         }
@@ -472,6 +480,12 @@ public class ClientController {
                 }
                 if (gameMode == GameMode.LEVEL2) {
                     if (me.getShipBoard().getCabinsCoordinates() == null || me.getShipBoard().getCabinsCoordinates().isEmpty() || me.getShipBoard().getCabinsCoordinates().size() == 1) {
+                        if(me.getShipBoard().getCabinsCoordinates() == null)
+                            System.out.println("null");
+                        if(me.getShipBoard().getCabinsCoordinates().isEmpty())
+                            System.out.println("empty");
+                        if(me.getShipBoard().getCabinsCoordinates().size() == 1)
+                            System.out.println("1");
                         setState(ClientState.WAIT);
                         try {
                             virtualController.notifyNewCrewArrangement(new ArrayList<>());
@@ -962,6 +976,10 @@ public class ClientController {
         this.view = gui;
         gui.setClientController(this);
         gui.run();
+    }
+
+    public Map<PlayersColor, Boolean> getAvailableColors() {
+        return availableColors;
     }
 }
 

@@ -50,6 +50,8 @@ public class CoordInputManager {
         switch (coordReqType) {
             case CHOOSE_TO_BREAK -> {
                 ArrayList<Coordinates> remove=new ArrayList<>();
+                if(coordinate.equals(new Coordinates(2, 3)))
+                    return false;
                 remove.add(coordinate);
                 clientController.getMe().getShipBoard().destroy(remove);
                 coordinates.add(coordinate);
@@ -154,11 +156,11 @@ public class CoordInputManager {
         return true;
     }
 
-    public boolean endCheckingFase(){
-        if(coordReqType == CoordReqType.CHOOSE_DOUBLE_CANNON && needed == 0 ) {
+    public boolean endCheckingFase() {
+        if (coordReqType == CoordReqType.CHOOSE_DOUBLE_CANNON && needed == 0) {
             clientController.setState(ClientState.WAIT);
             try {
-                clientController.getVirtualController().sendDoubleCannonUsed(fireStrength,coordinates);
+                clientController.getVirtualController().sendDoubleCannonUsed(fireStrength, coordinates);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -166,8 +168,7 @@ public class CoordInputManager {
             fireStrength = 0;
             numEngine = 0;
             return true;
-        }
-        if (coordReqType == CoordReqType.CHOOSE_DOUBLE_ENGINE && needed == 0  ) {
+        } else if (coordReqType == CoordReqType.CHOOSE_DOUBLE_ENGINE && needed == 0) {
             clientController.setState(ClientState.WAIT);
             try {
                 clientController.getVirtualController().sendNumDoubleEngineUsed(numEngine, coordinates);
@@ -178,8 +179,7 @@ public class CoordInputManager {
             numEngine = 0;
             fireStrength = 0;
             return true;
-        }
-        if (coordReqType == CoordReqType.CHOOSE_TO_BREAK && needed != 0  ) {
+        } else if (coordReqType == CoordReqType.CHOOSE_TO_BREAK && needed != 0) {
             clientController.setState(ClientState.WAIT);
             try {
                 clientController.getVirtualController().shipErrorManagement(coordinates);
@@ -190,8 +190,7 @@ public class CoordInputManager {
             numEngine = 0;
             fireStrength = 0;
             return true;
-        }
-        if (coordReqType == CoordReqType.CHOOSE_TO_MAINTAIN && needed == 0  ) {
+        } else if (coordReqType == CoordReqType.CHOOSE_TO_MAINTAIN && needed == 0) {
             clientController.setState(ClientState.WAIT);
             try {
                 clientController.getVirtualController().chooseBranch(coordinates);
@@ -202,8 +201,7 @@ public class CoordInputManager {
             numEngine = 0;
             fireStrength = 0;
             return true;
-        }
-        if (coordReqType == CoordReqType.CHOOSE_BATTERY && needed == coordinates.size()  ) {
+        } else if (coordReqType == CoordReqType.CHOOSE_BATTERY && needed == coordinates.size()) {
             clientController.setState(ClientState.WAIT);
             try {
                 clientController.getVirtualController().useBattery(coordinates);
@@ -214,8 +212,7 @@ public class CoordInputManager {
             numEngine = 0;
             fireStrength = 0;
             return true;
-        }
-        if (coordReqType == CoordReqType.REMOVE_GOODS && needed == coordinates.size()  ) {
+        } else if (coordReqType == CoordReqType.REMOVE_GOODS && needed == coordinates.size()) {
             clientController.setState(ClientState.WAIT);
             try {
                 clientController.getVirtualController().removeGoods(coordinates);
@@ -226,8 +223,7 @@ public class CoordInputManager {
             numEngine = 0;
             fireStrength = 0;
             return true;
-        }
-        if (coordReqType == CoordReqType.CHOOSE_CREW& needed == coordinates.size()  ) {
+        } else if (coordReqType == CoordReqType.CHOOSE_CREW & needed == coordinates.size()) {
             clientController.setState(ClientState.WAIT);
             try {
                 clientController.getVirtualController().removeCrew(coordinates);
@@ -238,8 +234,9 @@ public class CoordInputManager {
             numEngine = 0;
             fireStrength = 0;
             return true;
+        } else {
+            clientController.getView().wrongLocalInput();
+            return false;
         }
-        clientController.getView().wrongLocalInput();
-        return false;
     }
 }

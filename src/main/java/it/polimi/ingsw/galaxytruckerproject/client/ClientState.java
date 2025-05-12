@@ -49,7 +49,7 @@ public enum ClientState implements Serializable {
             case WAIT -> {return "Waiting for server";}
             case START_SHIP_CREATION -> {return "Turn the hourglass to start the ship creation [start|turn]";}
             case DRAW_CARD -> {return "Draw a card [draw]";}
-            case MANAGE_CABINS -> {return "Select the crew type in yours equip cabins [human] [purpleAlien] [brownAlien]";}
+            case MANAGE_CABINS -> {return "Select the crew type in yours equip cabins [humans] [purpleAlien] [brownAlien]";}
             case ROLL_DICE -> {return"Roll the dice [roll]";}
         }
         return "Error in client state to string";

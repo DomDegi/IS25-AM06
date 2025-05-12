@@ -52,7 +52,7 @@ public class GoodsManager {
         }
         view.goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
         view.showGenericMessage("Input witch good to pick:");
-        changes.add((CargoHold)currentPlayer.getShipBoard().getTile(coordinatesToPut));
+        changes.add((CargoHold)currentPlayer.getShipBoard().getTile(coordinatesToPut).send());
         state = -1;
     }
 
@@ -83,7 +83,7 @@ public class GoodsManager {
                     }else if(possibleGoodsGain.get(goodsToGet - 1).getColor()==GoodsColor.RED){
                         view.showGenericMessage("\nYou've successfully put the "+ ANSI_RED +possibleGoodsGain.get(goodsToGet - 1).getColor()+ ANSI_RESET+" good in the "+coordinatesToPut.getX()+","+coordinatesToPut.getY()+" cargo\n\n");
                     }
-                    changes.add((CargoHold)currentPlayer.getShipBoard().getTile(coordinatesToPut));
+                    changes.add((CargoHold)currentPlayer.getShipBoard().getTile(coordinatesToPut).send());
                     possibleGoodsGain.remove(goodsToGet - 1);
                     if(possibleGoodsGain.isEmpty()) {
                         view.showGenericMessage("\nGoods stock is empty, input 'done' to stop,'x y' to pick one good from your cargo: ");
@@ -97,7 +97,6 @@ public class GoodsManager {
                 } else if (positioned == 1) {
                     if(possibleGoodsGain.get(goodsToGet - 1).getColor()==GoodsColor.BLUE){
                         view.showGenericMessage("\nSorry, you can't put the "+ ANSI_BLUE +possibleGoodsGain.get(goodsToGet - 1).getColor()+ ANSI_RESET+" good in the "+coordinatesToPut.getX()+","+coordinatesToPut.getY()+" cargo, it is full, chose what good to remove (input 'no' to select an other good and cargo coordinates)\n");
-
                     }else if(possibleGoodsGain.get(goodsToGet - 1).getColor()==GoodsColor.GREEN){
                         view.showGenericMessage("\nSorry, you can't put the "+ ANSI_GREEN +possibleGoodsGain.get(goodsToGet - 1).getColor()+ ANSI_RESET+" good in the "+coordinatesToPut.getX()+","+coordinatesToPut.getY()+" cargo, it is full, chose what good to remove (input 'no' to select an other good and cargo coordinates)\n");
                     }else if(possibleGoodsGain.get(goodsToGet - 1).getColor()==GoodsColor.YELLOW){
@@ -106,7 +105,7 @@ public class GoodsManager {
                         view.showGenericMessage("\nSorry, you can't put the "+ ANSI_RED +possibleGoodsGain.get(goodsToGet - 1).getColor()+ ANSI_RESET+" good in the "+coordinatesToPut.getX()+","+coordinatesToPut.getY()+" cargo, it is full, chose what good to remove (input 'no' to select an other good and cargo coordinates)\n");
                     }
                     view.goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
-                    changes.add((CargoHold)currentPlayer.getShipBoard().getTile(coordinatesToPut));
+                    changes.add((CargoHold)currentPlayer.getShipBoard().getTile(coordinatesToPut).send());
                     state = 1;
                     goodsToGet=0;
                     return;

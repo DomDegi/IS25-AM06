@@ -134,7 +134,7 @@ public class FlightBoard implements Serializable {
     }
     public void earlyLanding(Player player) {
         if (player.isLanded()) {
-            throw new IllegalArgumentException("Player already landed: " + player);
+            return;
         }
         int playerRank=player.getPlayerRanking()-1;
         if (playerRank < 0 || playerRank >= inGamePlayers.size()) {
@@ -143,7 +143,6 @@ public class FlightBoard implements Serializable {
         if (freePodiumPosition > inGamePlayers.size() || freePodiumPosition <= 0) {
             throw new IllegalStateException("freePodiumPosition out of bounds: " + freePodiumPosition);
         }
-
         player.setPlayerRanking(freePodiumPosition);
         player.setLanded(true);
         inGamePlayers.remove(player);
@@ -208,12 +207,12 @@ public class FlightBoard implements Serializable {
         }
     }
 
-    public void concludeMovement() {
+    public boolean concludeMovement() {
         ArrayList<Player> landed=new ArrayList<>();
         Player firstPlayer;
         if (inGamePlayers.size() <= 1) {
             System.err.println("Error: inGamePlayers is either null or does not have enough players");
-            return;
+            return true;
         }
         for (Player player:  inGamePlayers) {
             if (player.getShipBoard().getNumHumanCrew() == 0)
@@ -223,10 +222,13 @@ public class FlightBoard implements Serializable {
             earlyLanding(player);
         }
         rearrange();
+        if(freePodiumPosition==0){
+            return false;
+        }
         firstPlayer = inGamePlayers.getFirst();
         if (firstPlayer == null) {
             System.err.println("Error: No player with rank 1 found");
-            return;
+            return true;
         }
         for (int i = 1; i < inGamePlayers.size(); i++) {
             Player player = inGamePlayers.get(i) ;
@@ -244,6 +246,6 @@ public class FlightBoard implements Serializable {
 
             }
         }
-
+        return true;
     }
 }
