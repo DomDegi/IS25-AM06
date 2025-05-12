@@ -604,10 +604,10 @@ public class GameController implements Observer, Serializable {
             notifyRemovedBookedTile(playerName, settedTile);
         }
         settedTile = game.playerSetTile(playerName, tile);
-
         if (settedTile != null) {
             updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
             notifyPositionedTile(playerName, settedTile.send());
+
         } else {
             try {
                 playersView.showWrongInputMessage();

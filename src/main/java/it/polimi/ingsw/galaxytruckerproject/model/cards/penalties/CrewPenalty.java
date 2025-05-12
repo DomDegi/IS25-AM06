@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards.penalties;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
@@ -9,6 +10,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class CrewPenalty extends Penalty {
@@ -67,7 +69,13 @@ public class CrewPenalty extends Penalty {
 
     @Override
     public boolean initializePenalty(GameInterface game, VirtualView view, Player player) {
-        if (player.getTotalCrew() == 0) {
+        if (player.getTotalCrew() <= numberOfLostCrew) {
+            player.setCrewToZero();
+            try {
+                view.setClientState(ClientState.WAIT);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
             return false;
         }
         numberOfCrew = Math.min(player.getTotalCrew(), numberOfLostCrew);

@@ -182,12 +182,10 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
     }
 
     public boolean positionTile(Optional<Tile> tile, Coordinates coordinates) {
-        if (tile.isPresent() && tilesTable[coordinates.getX()][coordinates.getY()].isEmpty()) {
+        if (tile.isPresent() && tilesTable[coordinates.getX()][coordinates.getY()].isEmpty()){
             tilesTable[coordinates.getX()][coordinates.getY()] = tile;
             tile.get().setShipBoard(this);
             tile.get().setCoordinates(coordinates);
-
-
             /*we're going to add the class tile also in the client. IF so we need to add this:
             //Personally I don't think we should but we'll see
             tile.get().setShipBoard(this);
@@ -458,8 +456,10 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
 
     public void destroy(ArrayList<Coordinates> coordinatesDestroyed){
         for (Coordinates coordinates : coordinatesDestroyed) {
-            getTile(coordinates).destroy();
-            tilesTable[coordinates.getX()][coordinates.getY()]=Optional.empty();
+            if(getTile(coordinates)!=null) {
+                getTile(coordinates).destroy();
+                tilesTable[coordinates.getX()][coordinates.getY()]=Optional.empty();
+            }
         }
     }
 

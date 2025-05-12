@@ -573,11 +573,16 @@ public class ClientController{
             int chose=numerate(scroll(input,1));
             if (chose==-1)
                 return false;
+            /*
             if (chose == 0) {
                 view.printShipboard(me.getShipBoard());
-            }
-            if (chose >= 1 && chose <= 4) {
-                view.printShipboard(flightBoard.getInGamePlayers().get(indexDeckInHandOrPlanet).getShipBoard());
+            }*/
+            if (chose >= 0 && chose <= 4) {
+                if(flightBoard.getInGamePlayers().size()>chose) {
+                    view.printShipboard(flightBoard.getInGamePlayers().get(chose).getShipBoard());
+                }
+                else
+                    return false;
             }
             return true;
         }
