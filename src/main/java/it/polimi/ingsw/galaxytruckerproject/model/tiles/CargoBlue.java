@@ -1,5 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
+
 public class CargoBlue extends CargoHold {
 
     public CargoBlue(int totSpaces, Link north, Link east, Link west, Link south,int key) {
@@ -64,5 +65,31 @@ public class CargoBlue extends CargoHold {
             else
                 return "   " + getSouth() + "  " + getKey() + " ";
         }
+    }
+
+    @Override
+    public String toStringData() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("CB ").append(key).append(" ").append(north.toString())
+                .append(" ").append(east.toString()).append(" ").append(south.toString()).
+                append(" ").append(west.toString()).append(" ").append(totSpaces).append(" ");
+        for(int i = 0; i < totSpaces; i++) {
+            if (i < cargo.size())
+                sb.append(cargo.get(i)).append(" ");
+            else {
+                sb.append("N ");
+            }
+        }
+        return sb.toString();
+    }
+
+    public CargoBlue() {
+        super();
+    }
+
+    @Override
+    public void tileLoader(String[] attributes) {
+        super.tileLoader(attributes);
+        this.hazard = false;
     }
 }

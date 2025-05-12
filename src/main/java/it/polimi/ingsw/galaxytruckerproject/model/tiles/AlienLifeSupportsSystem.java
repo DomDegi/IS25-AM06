@@ -123,4 +123,18 @@ public class AlienLifeSupportsSystem extends Tile {
             return "   "+getSouth()+"  "+getKey()+" ";
     }
 
+    @Override
+    public String toStringData() {
+        return "AL " + key + " " + north.toString() + " " + east.toString() + " " + south.toString() + " " + west.toString() + " " + colorAlienSupported.toString();
+    }
+
+    public AlienLifeSupportsSystem() {
+        super();
+    }
+
+    @Override
+    public void tileLoader(String[] attributes) {
+        super.tileLoader(attributes);
+        this.colorAlienSupported = CrewType.fromString(attributes[6]);
+    }
 }

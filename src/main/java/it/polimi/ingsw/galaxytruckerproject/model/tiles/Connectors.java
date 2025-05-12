@@ -26,7 +26,16 @@ public enum Connectors implements Serializable {
     @JsonCreator
     public static Connectors fromString(String value) {
         for (Connectors connector : Connectors.values()) {
-            if (connector.name().equalsIgnoreCase(value)) {
+            if (connector.name().equals(value)) {
+                return connector;
+            }
+        }
+        throw new IllegalArgumentException("Unknown connector type: " + value);
+    }
+
+    public static Connectors fromValue(int value) {
+        for (Connectors connector : Connectors.values()) {
+            if (connector.ordinal() == value) {
                 return connector;
             }
         }

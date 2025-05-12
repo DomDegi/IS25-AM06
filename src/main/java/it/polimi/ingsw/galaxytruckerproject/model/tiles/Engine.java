@@ -17,6 +17,9 @@ public abstract class Engine extends Tile{
         direction = Direction.SOUTH;
     }
 
+    public Engine() {
+    }
+
     @Override
     public String toString() {
         return "direction:"+direction.toString()+" " + super.toString();
@@ -49,5 +52,11 @@ public abstract class Engine extends Tile{
         }
 
         return super.isCorrect();
+    }
+
+    @Override
+    public void tileLoader(String[] attributes) {
+        super.tileLoader(attributes);
+        this.direction = Direction.fromString(attributes[6]);
     }
 }

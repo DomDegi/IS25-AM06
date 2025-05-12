@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
+import java.util.Objects;
+
 public class Shields extends Tile{
     Coverage coveredArea;
     public Shields(Link north, Link east, Link south, Link west, int key) {
@@ -89,6 +91,23 @@ public class Shields extends Tile{
                 super.destroy();
                 return;
             }
+        }
+    }
+
+    @Override
+    public String toStringData() {
+        return "SH "+ key + " " + north.toString() + " " + east.toString() + " " + south.toString() + " " + west.toString() + " " + coveredArea.toStringData();
+    }
+
+    public Shields() {}
+
+    @Override
+    public void tileLoader(String[] attributes) {
+        super.tileLoader(attributes);
+        this.coveredArea = Coverage.fromStringData(attributes[6]);
+        if (Objects.equals(attributes[6], "NONE")) {
+            System.out.println("Why this shield has no coverage?");
+            throw new IllegalArgumentException();
         }
     }
 }

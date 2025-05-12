@@ -67,4 +67,28 @@ public class CargoRed extends CargoHold{
                 return "   " + getSouth() + "  " + getKey() + " ";
         }
     }
+
+    public CargoRed(){}
+
+    @Override
+    public String toStringData() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("CR ").append(key).append(" ").append(north.toString())
+                .append(" ").append(east.toString()).append(" ").append(south.toString()).
+                append(" ").append(west.toString()).append(" ").append(totSpaces).append(" ");
+        for(int i = 0; i < totSpaces; i++) {
+            if (i < cargo.size())
+                sb.append(cargo.get(i)).append(" ");
+            else {
+                sb.append("N ");
+            }
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public void tileLoader(String[] attributes) {
+        super.tileLoader(attributes);
+        this.hazard = true;
+    }
 }

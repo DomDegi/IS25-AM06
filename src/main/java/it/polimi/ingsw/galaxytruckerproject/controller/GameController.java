@@ -24,6 +24,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 import static it.polimi.ingsw.galaxytruckerproject.client.ClientState.DRAW_CARD;
+import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.LEVEL2;
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.TRIAL;
 import static it.polimi.ingsw.galaxytruckerproject.model.GameState.CARD_EVENT;
 
@@ -388,10 +389,16 @@ public class GameController implements Observer, Serializable {
                     this.setCrewForDisconnectedPlayer(player);
                 }
                 else {
-                    try{
-                    playersView.setClientState(ClientState.MANAGE_CABINS);
-                    } catch(Exception e) {
-                        throw new RuntimeException(e);
+                    if (game.getMode().equals(LEVEL2)) {
+                        try {
+                            playersView.setClientState(ClientState.MANAGE_CABINS);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    else {
+                        player.setAllCrewToHuman();
+                        checkIfPlayersPickedCrew();
                     }
                 }
             } else {
@@ -471,9 +478,12 @@ public class GameController implements Observer, Serializable {
             playersView.showWrongInputMessage();
             } catch(Exception ignored) {}
         }
+        checkIfPlayersPickedCrew();
+    }
 
-        ArrayList<Coordinates> cabinsToCheck;
+    public void checkIfPlayersPickedCrew() {
         ShipBoard shipBoard;
+        ArrayList<Coordinates> cabinsToCheck;
         for (Player p1: activePlayers.values()) {
             shipBoard = p1.getShipBoard();
             cabinsToCheck = shipBoard.getCabinsCoordinates();

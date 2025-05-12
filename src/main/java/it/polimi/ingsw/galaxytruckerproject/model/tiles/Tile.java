@@ -14,7 +14,7 @@ public abstract class Tile implements Serializable,Cloneable {
     protected Coordinates coordinates;
 
     protected ShipBoardInterface shipBoard;
-    protected final int key;
+    protected int key;
     protected boolean booked;
 
     public Tile(Link north, Link east, Link south, Link west, int key) {
@@ -35,6 +35,11 @@ public abstract class Tile implements Serializable,Cloneable {
         this.coordinates = new Coordinates(0,0);
         this.key = 0;
         this.booked = false;
+    }
+
+    //Empty constructor for deserialization
+    public Tile() {
+        key = -1;
     }
 
     public int getKey() {
@@ -192,5 +197,16 @@ public abstract class Tile implements Serializable,Cloneable {
     }
     public String toString3(){
         return "   ";
+    }
+    public String toStringData() {
+        return "   ";
+    }
+
+    public void tileLoader(String[] attributes) {
+        key = Integer.parseInt(attributes[1]);
+        north = new Link(Connectors.fromValue(Integer.parseInt(attributes[2])));
+        east = new Link(Connectors.fromValue(Integer.parseInt(attributes[3])));
+        south = new Link(Connectors.fromValue(Integer.parseInt(attributes[4])));
+        west = new Link(Connectors.fromValue(Integer.parseInt(attributes[5])));
     }
 }

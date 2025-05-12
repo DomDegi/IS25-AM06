@@ -12,5 +12,16 @@ public enum CrewType {
             default -> "▓";
         };
     }
+
+    public static CrewType fromString(String value) {
+        return switch (value) {
+            case "H" -> HUMAN;
+            case "P" -> PURPLE;
+            case "B" -> BROWN;
+            case "/" -> NotAcabin;
+            case "▓" -> NotSupportSystem;
+            default -> throw new IllegalArgumentException("Unknown crew type: " + value);
+        };
+    }
 }
 

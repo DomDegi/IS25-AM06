@@ -45,4 +45,16 @@ public class DoubleEngine extends Engine{
     public int getEngineStrength(){
         return 2;
     }
+
+    @Override
+    public String toStringData() {
+        return "DE " + key + " " + north.toString() + " " + east.toString() + " " + south.toString() + " " + west.toString() + " " + direction.toString();
+    }
+
+    @Override
+    public void tileLoader(String[] attributes) {
+        super.tileLoader(attributes);
+    }
+
+    public DoubleEngine() {}
 }

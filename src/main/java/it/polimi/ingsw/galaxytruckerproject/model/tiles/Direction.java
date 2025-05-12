@@ -14,6 +14,22 @@ public enum Direction implements Serializable {
                 case WEST -> "W";
             };
         }
+
+    // Metodo per deserializzare la stringa in un enum
+    public static Direction fromString(String value) {
+        switch (value.toUpperCase()) {
+            case "N":
+                return Direction.NORTH;
+            case "E":
+                return Direction.EAST;
+            case "S":
+                return Direction.SOUTH;
+            case "W":
+                return Direction.WEST;
+            default:
+                throw new IllegalArgumentException("Unknown direction: " + value);
+        }
+    }
 }
 
 

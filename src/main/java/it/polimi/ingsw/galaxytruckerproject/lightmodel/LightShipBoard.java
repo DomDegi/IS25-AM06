@@ -45,8 +45,7 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         this.crewCoordinates = new ArrayList<>();
         this.credit = 0;
         this. player = new LightPlayer(this.shipBoard.getPlayer());
-
-
+        this.tilesTable = shipBoard.getTilesTable();
     }
 
     public LightShipBoard(LightPlayer player) {
