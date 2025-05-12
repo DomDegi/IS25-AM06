@@ -1,6 +1,8 @@
 package it.polimi.ingsw.galaxytruckerproject.model.persistence;
 
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
@@ -32,6 +34,11 @@ class ShipBoardSerializerDeserializerTest {
         } catch (IOException e) {
             System.out.println("Error while clearing file: " + e.getMessage());
         }
+
+        Goods red = new Goods(GoodsColor.RED);
+        Goods yellow = new Goods(GoodsColor.YELLOW);
+        Goods green = new Goods(GoodsColor.GREEN);
+        Goods blue = new Goods(GoodsColor.BLUE);
 
         ShipBoard shipBoard1 = player.getShipBoard();
         shipBoard1.initializeLevel2();
@@ -85,10 +92,13 @@ class ShipBoardSerializerDeserializerTest {
         shipBoard1.verifyCorrectness();
         tile2.setCrewType(CrewType.BROWN);
         tile9.setCrewType(CrewType.BROWN);
-        //tile12.setCrewType(CrewType.HUMAN);
-        //tile8.setCrewType(CrewType.HUMAN);
-        //tile12.removeCrew();
+        tile12.setCrewType(CrewType.HUMAN);
+        tile8.setCrewType(CrewType.HUMAN);
+        tile12.removeCrew();
         shipBoard1.getTile(new Coordinates(2,3)).removeCrew();
+
+        tile4.addGood(blue); tile4.addGood(green); tile4.addGood(yellow);
+        tile16.addGood(red);
     }
 
     @Test
@@ -121,6 +131,25 @@ class ShipBoardSerializerDeserializerTest {
         assertEquals(player.getShipBoard().getNumPurpleAliens(), playerCopy.getShipBoard().getNumPurpleAliens());
         assertEquals(player.getShipBoard().getNumHumanCrew(), playerCopy.getShipBoard().getNumHumanCrew());
         assertEquals(player.getTotalCrew(),playerCopy.getTotalCrew());
+    }
+
+    @Test
+    void print_stuff_to_check() {
+        load_test();
+        player.printCurrentInfoCabins();
+        playerCopy.printCurrentInfoCabins();
+
+        player.printCurrentInfoEngines();
+        playerCopy.printCurrentInfoEngines();
+
+        player.printCurrentInfoCannons();
+        playerCopy.printCurrentInfoCannons();
+
+        player.printCurrentInfoCargoHolds();
+        playerCopy.printCurrentInfoCargoHolds();
+
+        player.printCurrentInfoBatteries();
+        playerCopy.printCurrentInfoBatteries();
     }
 
 }

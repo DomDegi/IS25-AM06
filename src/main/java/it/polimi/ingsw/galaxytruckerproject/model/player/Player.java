@@ -151,7 +151,7 @@ public class Player implements PlayerInterface , Serializable {
         for (Coordinates Coordinates : playerShip.getDoubleEngine()) {
             System.out.println(Coordinates.getX() + " " + Coordinates.getY());
         }
-        System.out.println("Current number of Brown Aliens" + playerShip.getNumBrownAliens());
+        System.out.println("Current number of Brown Aliens " + playerShip.getNumBrownAliens());
     }
 
     //CANNON METHODS
@@ -190,6 +190,7 @@ public class Player implements PlayerInterface , Serializable {
 
     public void printCurrentInfoCannons() {
         System.out.println(playerName + ": Current number of Single Cannon Strength: " + playerShip.getSingleCannonPower());
+        System.out.println(playerName + ": Current number of purple Aliens " +  playerShip.getNumPurpleAliens());
         System.out.println(playerName + ": Current Coordinates of Straight Double Cannons:");
         for (Coordinates Coordinates : playerShip.getDoubleCannon()) {
             if (playerShip.getTilesTable()[Coordinates.getX()][Coordinates.getY()].get().getStrength() == 2) {
@@ -301,18 +302,30 @@ public class Player implements PlayerInterface , Serializable {
 
 
     public void printCurrentInfoCargoHolds() {
+        ArrayList<Coordinates> toPrint;
         System.out.println("RED goods are at: ");
-        playerShip.cargoHoldContainsGood(new Goods(GoodsColor.RED));
-        System.out.println("\n");
+        toPrint = playerShip.cargoHoldContainsGood(new Goods(GoodsColor.RED));
+        coordinatesPrinter(toPrint);
         System.out.println("YELLOW goods are at: ");
-        playerShip.cargoHoldContainsGood(new Goods(GoodsColor.YELLOW));
-        System.out.println("\n");
+        toPrint = playerShip.cargoHoldContainsGood(new Goods(GoodsColor.YELLOW));
+        coordinatesPrinter(toPrint);
         System.out.println("GREEN goods are at: ");
-        playerShip.cargoHoldContainsGood(new Goods(GoodsColor.GREEN));
-        System.out.println("\n");
+        toPrint = playerShip.cargoHoldContainsGood(new Goods(GoodsColor.GREEN));
+        coordinatesPrinter(toPrint);
         System.out.println("BLUE goods are at: ");
-        playerShip.cargoHoldContainsGood(new Goods(GoodsColor.BLUE));
-        System.out.println("\n");
+        toPrint = playerShip.cargoHoldContainsGood(new Goods(GoodsColor.BLUE));
+        coordinatesPrinter(toPrint);
+    }
+
+    void coordinatesPrinter(ArrayList<Coordinates> coordinates) {
+        int i = 0;
+        for (Coordinates c : coordinates) {
+            System.out.print(c.toString());
+            i ++;
+            if (i % 5 == 0)
+                System.out.print("\n");
+        }
+        System.out.print("\n");
     }
 
     //CREW METHODS

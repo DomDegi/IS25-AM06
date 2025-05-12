@@ -163,7 +163,7 @@ public class EquipCabin extends Cabin {
             switch (crewType) {
                 case PURPLE -> shipBoard.addBreakPurpleAliens(true);
                 case BROWN -> shipBoard.addBreakBrownAliens(true);
-                case HUMAN -> shipBoard.addBreakHumanCrew(crewToLoad);
+                case HUMAN -> shipBoard.addBreakHumanCrew(crew);
             }
         }
     }
