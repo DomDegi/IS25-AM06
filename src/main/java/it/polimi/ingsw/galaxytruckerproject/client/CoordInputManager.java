@@ -102,12 +102,10 @@ public class CoordInputManager {
                 }
             }
             case CHOOSE_CREW -> {
-                if(tile.getCrew()>0 && !coordinates.contains(coordinate)) {
+                if(tile.getCrew()>0) {
                     ArrayList<Coordinates> remove=new ArrayList<>();
                     remove.add(coordinate);
                     clientController.getMe().getShipBoard().removeCrew(remove);
-                    coordinates.add(coordinate);
-                } else if (tile.getCrew()>1 && coordinates.contains(coordinate)){
                     coordinates.add(coordinate);
                 } else{
                     return false;

@@ -9,6 +9,12 @@ public class DoubleEngine extends Engine{
     public DoubleEngine(Link north,Link south,Link east,Link west){
         super(north,south,east,west,0);
     }
+
+    @Override
+    public Direction getDirection(){
+        return direction;
+    }
+
     @Override
     public String toString() {
         return "DoubleEngine"+ super.toString()+"\n┌────────┐\n│"+toString1()+"│\n│"+toString2()+"│\n│"+toString3()+"│\n└────────┘";
@@ -16,6 +22,20 @@ public class DoubleEngine extends Engine{
 
     @Override
     public String toString1(){
+        switch (getDirection()){
+            case NORTH->{
+                return " ↑  "+getNorth()+"   ";
+            }
+            case EAST->{
+                return " →  "+getNorth()+"   ";
+            }
+            case SOUTH->{
+                return " ↓  "+getNorth()+"   ";
+            }
+            case WEST->{
+                return " ←  "+getNorth()+"   ";
+            }
+        }
         return "    "+getNorth()+"   ";
     }
     @Override

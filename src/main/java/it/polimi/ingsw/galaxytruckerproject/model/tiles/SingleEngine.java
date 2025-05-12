@@ -15,7 +15,26 @@ public class SingleEngine extends Engine{
     }
 
     @Override
+    public Direction getDirection(){
+        return direction;
+    }
+
+    @Override
     public String toString1(){
+        switch (getDirection()){
+            case NORTH->{
+                return " ↑  "+getNorth()+"   ";
+            }
+            case EAST->{
+                return " →  "+getNorth()+"   ";
+            }
+            case SOUTH->{
+                return " ↓  "+getNorth()+"   ";
+            }
+            case WEST->{
+                return " ←  "+getNorth()+"   ";
+            }
+        }
         return "    "+getNorth()+"   ";
     }
     @Override

@@ -27,6 +27,9 @@ public class CabinsManager {
     }
 
     public ArrayList<Tile> manageCabins(CrewType crewType) {
+        if (index >= cabins.size()) {
+            return modifiedCabins;
+        }
         if(lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.NO){
             if(crewType!=CrewType.HUMAN) {
                 view.wrongLocalInput();
