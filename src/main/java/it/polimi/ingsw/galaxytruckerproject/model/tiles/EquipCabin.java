@@ -256,4 +256,29 @@ public class EquipCabin extends Cabin {
             this.crew = 1;
         }
     }
+
+    @Override
+    public String toStringData() {
+        String string = "EC " + key + " " + north.toString() + " " + east.toString() + " " + south.toString() + " " + west.toString() + " " + crew + " ";
+        if (crewType != null) {
+            string = string + crewType.toString();
+        }
+        else string = string + "N";
+        return string;
+    }
+
+    @Override
+    public void tileLoader(String[] attributes) {
+        super.tileLoader(attributes);
+        this.crew =  Integer.parseInt(attributes[6]);
+        if (!attributes[7].equals("N")) {
+            this.crewType = CrewType.fromString(attributes[7]);
+        }
+        if (crewType != CrewType.HUMAN && crew > 1) {
+            System.out.println("This equip cabin has something wrong going on");
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public EquipCabin() {}
 }

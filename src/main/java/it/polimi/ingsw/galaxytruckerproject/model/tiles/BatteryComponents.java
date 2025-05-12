@@ -83,6 +83,17 @@ public class BatteryComponents extends Tile{
         super.destroy();
     }
 
+    public BatteryComponents(){
+    }
 
+    @Override
+    public String toStringData() {
+        return "BC " + key + " " + north.toString() + " " + east.toString() + " " + south.toString() + " " + west.toString() + " " + batteryCells;
+    }
 
+    @Override
+    public void tileLoader(String[] attributes) {
+        super.tileLoader(attributes);
+        this.batteryCells = Integer.parseInt(attributes[6]);
+    }
 }

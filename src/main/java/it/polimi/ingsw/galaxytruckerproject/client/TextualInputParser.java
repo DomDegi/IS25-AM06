@@ -12,13 +12,14 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.Objects;
 
 
-public class ControllerTUI implements ControllerUI {
+public class TextualInputParser {
     private final ClientController clientController;
     private DisplayableView view;
 
-    public ControllerTUI(ClientController clientController) {
+    public TextualInputParser(ClientController clientController) {
         this.clientController = clientController;
         view=this.clientController.getView();
     }
@@ -33,46 +34,45 @@ public class ControllerTUI implements ControllerUI {
         }
 
         switch (clientController.getState()) {
-            case CHOOSE_UI->{
-                switch(words[0]) {
-                    case "gui","g"-> {
-                        clientController.setView(new GUI());
-                        view = this.clientController.getView();
-                    }
-                    case "tui","t"-> {
-                        clientController.setView(new TUI());
-                        view=this.clientController.getView();
-                    }
-                    default->{
-                        view.wrongLocalInput();
-                        return false;
-                    }
-                }
-                clientController.setState(ClientState.CHOOSE_CONNECTION_TYPE);
-            }
 
             case CHOOSE_CONNECTION_TYPE->{
                 switch(words[0]) {
                     case "rmi","r"->{
-                        try {
-                            clientController.connectRMI();
-                        } catch (MalformedURLException | NotBoundException | RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        clientController.setState(ClientState.CHOOSE_IP_AND_PORT_RMI);
                     }
                     case "socket","s"-> {
-                        try {
-                            clientController.connectSocket();
-                        } catch (IOException e) {
-                            System.out.println("Error connecting to server via socket");
-                        }
+                        clientController.setState(ClientState.CHOOSE_IP_AND_PORT_SOCKET);
                     }
                     default->{
                         view.wrongLocalInput();
                         return false;
                     }
                 }
-                clientController.setState(ClientState.LOGIN);
+            }
+
+            case CHOOSE_IP_AND_PORT_RMI -> {
+                try {
+                    clientController.connectRMI();
+                    clientController.setState(ClientState.LOGIN);
+                } catch (MalformedURLException | NotBoundException | RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            case CHOOSE_IP_AND_PORT_SOCKET -> {
+                try {
+                    if (Objects.equals(words[0], "d")) {
+                        clientController.connectSocket("localhost",12345);
+                    }
+                    else {
+                        clientController.connectSocket(words[0], Integer.parseInt(words[1]));
+                    }
+                    clientController.setState(ClientState.LOGIN);
+                } catch (IOException e) {
+                    System.out.println("Error connecting to SOCKET server");
+                    view.wrongLocalInput();
+                    return false;
+                }
             }
 
             case LOGIN->{
@@ -100,13 +100,24 @@ public class ControllerTUI implements ControllerUI {
                 int numberOfPlayers;
                 if(!(words.length > 1)){
                     view.wrongLocalInput();
+                    clientController.rollBackState();
                     return false;
                 }
-                numberOfPlayers = clientController.numerate(clientController.scroll(words,1));
-                if(numberOfPlayers==-1||numberOfPlayers>4)
+                try {
+                    numberOfPlayers = Integer.parseInt(words[1]);
+                } catch (NumberFormatException e) {
+                    view.wrongLocalInput();
+                    clientController.rollBackState();
                     return false;
+                }
+                if(numberOfPlayers==-1||numberOfPlayers>4) {
+                    view.wrongLocalInput();
+                    clientController.rollBackState();
+                    return false;
+                }
                 if(!(words.length > 2)){
                     view.wrongLocalInput();
+                    clientController.rollBackState();
                     return false;
                 }
                 GameMode mode;
@@ -115,6 +126,7 @@ public class ControllerTUI implements ControllerUI {
                     case "level2mode","2"-> mode=GameMode.LEVEL2;
                     default->{
                         view.wrongLocalInput();
+                        clientController.rollBackState();
                         return false;
                     }
                 }
@@ -305,9 +317,9 @@ public class ControllerTUI implements ControllerUI {
             case MANAGE_CABINS -> {
                 CrewType type;
                 switch (words[0]) {
-                    case "humans" -> type = CrewType.HUMAN;
-                    case "brownalien" -> type = CrewType.BROWN;
-                    case "purplealien" -> type = CrewType.PURPLE;
+                    case "humans", "h" -> type = CrewType.HUMAN;
+                    case "brownalien", "b" -> type = CrewType.BROWN;
+                    case "purplealien", "p" -> type = CrewType.PURPLE;
                     default -> {
                         view.wrongLocalInput();
                         clientController.setUpCabins();

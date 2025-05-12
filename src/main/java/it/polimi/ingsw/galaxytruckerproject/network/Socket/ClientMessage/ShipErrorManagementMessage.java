@@ -18,5 +18,5 @@ public class ShipErrorManagementMessage extends ClientMessage {
             throw new RuntimeException(e);
         }
     }
-    }
+}
 

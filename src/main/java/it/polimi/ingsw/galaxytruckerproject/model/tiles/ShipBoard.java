@@ -231,6 +231,14 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
         return false;
     }
 
+    public boolean positionNullTile(Optional<Tile> tile, Coordinates coordinates) {
+        if (tilesTable[coordinates.getX()][coordinates.getY()].isEmpty() && tile.isEmpty()) {
+            tilesTable[coordinates.getX()][coordinates.getY()] = Optional.empty();
+            return true;
+        }
+        return false;
+    }
+
     //Used only for testing (toEnnio: why brotha?)
     public Tile getTile(int x, int y) {
         if(tilesTable[x][y].isPresent())
@@ -296,6 +304,15 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
         positionTile(Optional.of(tile), new Coordinates(2, 3));
 
         this.tilesTable = tilesTable;
+    }
+
+    public void simpleInitialize() {
+        this.tilesTable = new Optional[5][7];
+        for (int i = 0; i < tilesTable.length; i++) {
+            for (int j = 0; j < tilesTable[i].length; j++) {
+                tilesTable[i][j] = Optional.empty();  // Inizializza con Optional vuoti
+            }
+        }
     }
 
 

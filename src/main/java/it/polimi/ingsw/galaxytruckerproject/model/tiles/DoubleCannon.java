@@ -69,4 +69,16 @@ public class DoubleCannon extends Cannon{
             return 2;
         return 1;
     }
+
+    @Override
+    public String toStringData() {
+        return "DC " + key + " " + north.toString() + " " + east.toString() + " " + south.toString() + " " + west.toString() + " " + direction.toString();
+    }
+
+    @Override
+    public void tileLoader(String[] attributes) {
+        super.tileLoader(attributes);
+    }
+
+    public DoubleCannon(){}
 }

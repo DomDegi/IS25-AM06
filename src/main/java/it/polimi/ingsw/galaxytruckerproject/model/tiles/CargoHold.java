@@ -7,14 +7,13 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public abstract class CargoHold extends Tile{
-    private final int totSpaces;
+    protected int totSpaces;
     protected boolean hazard;
-    protected ArrayList<Goods> cargo;
+    protected ArrayList<Goods> cargo = new ArrayList<>();
 
     public CargoHold(int totSpaces, Link north, Link east, Link south, Link west,int key) {
         super(north, east, south, west, key);
         this.totSpaces = totSpaces;
-        this.cargo = new ArrayList<>();
         // It makes more sense to use an ArrayList since they are much easier to manage in Java.
         // Instead of dealing with null values, we can simply use an ArrayList.
         // and to check if there are goods and how many, we just get the size of the ArrayList and compare it with totSpaces.
@@ -74,6 +73,10 @@ public abstract class CargoHold extends Tile{
         super.destroy();
     }
 
+    public CargoHold() {
+        super();
+    }
+
     public ArrayList<Goods> getCargo() {
         return cargo;
     }
@@ -86,6 +89,21 @@ public abstract class CargoHold extends Tile{
         return totSpaces;
     }
 
+    @Override
+    public void tileLoader(String[] attributes) {
+        super.tileLoader(attributes);
+        super.tileLoader(attributes);
+        this.totSpaces = Integer.parseInt(attributes[6]);
+        if (attributes.length < 7 + totSpaces) {
+            throw new IllegalArgumentException("Malformed data: not enough attributes.");
+        }
+        for (int i = 0; i < totSpaces; i++) {
+            int goodsAttribute = 7 + i;
+            if (!attributes[goodsAttribute].equals("N")) {
+                cargo.add(new Goods(GoodsColor.forValue(attributes[goodsAttribute])));
+            }
+        }
+    }
     @Override
     public CargoHold send()
     {

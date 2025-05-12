@@ -24,6 +24,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 import static it.polimi.ingsw.galaxytruckerproject.client.ClientState.DRAW_CARD;
+import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.LEVEL2;
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.TRIAL;
 import static it.polimi.ingsw.galaxytruckerproject.model.GameState.CARD_EVENT;
 
@@ -40,6 +41,8 @@ public class GameController implements Observer, Serializable {
     private final ArrayList<Player> playersToEarlyLand = new ArrayList<>();
     private final ConcurrentHashMap<String, Integer> lockedSmallDecks = new ConcurrentHashMap<>();
     private int hourglassTurns = 0;
+    private TimerTask hourglassTask;
+    private Timer hourglassTimer;
     private boolean hourglassON = false;
 
 
@@ -386,10 +389,16 @@ public class GameController implements Observer, Serializable {
                     this.setCrewForDisconnectedPlayer(player);
                 }
                 else {
-                    try{
-                    playersView.setClientState(ClientState.MANAGE_CABINS);
-                    } catch(Exception e) {
-                        throw new RuntimeException(e);
+                    if (game.getMode().equals(LEVEL2)) {
+                        try {
+                            playersView.setClientState(ClientState.MANAGE_CABINS);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    else {
+                        player.setAllCrewToHuman();
+                        checkIfPlayersPickedCrew();
                     }
                 }
             } else {
@@ -406,39 +415,40 @@ public class GameController implements Observer, Serializable {
 
     public void shipErrorManagement(String playerName, VirtualView playersView, ArrayList<Coordinates> toRemove) {
         Player player = game.identifyPlayerByName(playerName);
-        if(player==null){
+        if (player == null)
             return;
-        }
-        if(!playersWithErrors.contains(playerName)){
+        if (!playersWithErrors.contains(playerName)) {
             try {
                 playersView.showWrongInputMessage();
-            } catch(Exception ignored) {}
+            } catch (Exception ignored) {
+            }
             return;
         }
-        for (Coordinates coord: toRemove) {
+        for (Coordinates coord : toRemove) {
             player.getShipBoard().destroyForCorrection(coord);
         }
-        notifyBrokenTile(playerName,toRemove);
+        notifyBrokenTile(playerName, toRemove);
         boolean correctness = player.getShipBoard().verifyCorrectness();
         if (correctness) {
-            if(game.getMode()== TRIAL) {
+            if (game.getMode() == TRIAL) {
                 game.getFlightBoard().setPlayerToLast(player);
-                notifyPlayerMovement(playerName,player.getPlayerColor(),player.getPlayerPosition(),player.getPlayerRanking());
+                notifyPlayerMovement(playerName, player.getPlayerColor(), player.getPlayerPosition(), player.getPlayerRanking());
             }
             playersWithErrors.remove(playerName);
-
             if (player.IsDisconnected()) {
                 this.setCrewForDisconnectedPlayer(player);
+            } else {
+                try {
+                    updatePlayerView(ClientState.MANAGE_CABINS,playerName);
+                } catch (Exception ignored) {
+                }
             }
-            else{
-                try{
-                    playersView.setClientState(ClientState.MANAGE_CABINS);
-                } catch(Exception ignored) {}}
-            return;
+        } else {
+            try {
+                playersView.asksToInputCoordinates(CoordReqType.CHOOSE_TO_BREAK);
+            } catch (Exception ignored) {
+            }
         }
-        try{
-        playersView.asksToInputCoordinates(CoordReqType.CHOOSE_TO_BREAK);
-        } catch(Exception ignored) {}
     }
 
     public void notifyBrokenTile(String playerName, ArrayList<Coordinates> removed) {
@@ -470,9 +480,12 @@ public class GameController implements Observer, Serializable {
             playersView.showWrongInputMessage();
             } catch(Exception ignored) {}
         }
+        checkIfPlayersPickedCrew();
+    }
 
-        ArrayList<Coordinates> cabinsToCheck;
+    public void checkIfPlayersPickedCrew() {
         ShipBoard shipBoard;
+        ArrayList<Coordinates> cabinsToCheck;
         for (Player p1: activePlayers.values()) {
             shipBoard = p1.getShipBoard();
             cabinsToCheck = shipBoard.getCabinsCoordinates();
@@ -501,11 +514,6 @@ public class GameController implements Observer, Serializable {
 
     public void endShipVerification() {
         game.endShipVerification();
-        /*try {
-            playersViewMap.get(game.getFlightBoard().getAllPlayers().getFirst().getPlayerName()).setClientState(ClientState.DRAW_CARD);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }*/
     }
 
 
@@ -723,17 +731,13 @@ public class GameController implements Observer, Serializable {
 
     private void checkIfAllPlayersReady() {
         if (game.getListOfAllPlayer().size() == game.getListOfInFlightPlayers().size()) {
+            cancelTimer();
             this.endShipCreation();
         } else if (hourglassTurns == 3 && !hourglassON) {
             for (Player player : game.getListOfAllPlayer()) {
                 if (player.getPlayerRanking() == 0 && player.getPlayerPosition() == 0) {
                     if (player.IsDisconnected()) {
                         removePlayer(player.getPlayerName());
-                    }
-                    try {
-                        playersViewMap.get(player.getPlayerName()).asksToChooseStartingPosition();
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
                     }
                 }
             }
@@ -766,7 +770,6 @@ public class GameController implements Observer, Serializable {
             case 1->{
                 startTimer();
             }
-
             case 2-> {
                 if (playerStateIs(playerName, ClientState.S_FINISHED)) {
                     startTimer();
@@ -783,22 +786,35 @@ public class GameController implements Observer, Serializable {
     }
 
     public void startTimer() {
-        Timer hourglass = new Timer();
+        hourglassTimer = new Timer();
         this.hourglassTurns++;
         hourglassON = true;
         notifyTurnedHourglass();
-        hourglass.schedule(new TimerTask() {
+
+        hourglassTask = new TimerTask() {
             @Override
             public void run() {
                 hourglassON = false;
                 notifyEndOfTime();
-                hourglass.cancel();
                 if (hourglassTurns == 3) {
                     updateEveryView(ClientState.S_FINISHED);
                     checkIfAllPlayersReady();
                 }
             }
-        }, 95000); //95 seconds
+        };
+        hourglassTimer.schedule(hourglassTask, 95000); //95 seconds
+    }
+
+    public void cancelTimer() {
+        if (hourglassTask != null) {
+            hourglassTask.cancel();
+        }
+        if (hourglassTimer != null) {
+            hourglassTimer.cancel();
+            hourglassTimer.purge();
+            hourglassTimer =  null;
+        }
+        hourglassON = false;
     }
 
     public void notifyTurnedHourglass() {
@@ -822,12 +838,15 @@ public class GameController implements Observer, Serializable {
     }
 
     public void askFirstPlayerToDraw() {
+        updatePlayerView(DRAW_CARD,game.getListOfInFlightPlayers().getFirst().getPlayerName());
+
+        /*
         if(game.getListOfInFlightPlayers()!=null&& !game.getListOfInFlightPlayers().isEmpty()) {
             updatePlayerView(DRAW_CARD, game.getListOfInFlightPlayers().getFirst().getPlayerName());
         }
         else{
             concludeGame();
-        }
+        }*/
     }
 
     public void initializeDrawnCard () {
@@ -1069,9 +1088,9 @@ public class GameController implements Observer, Serializable {
     }
 
     public void updatePlayerView (ClientState newState, String playerName) {
-        try{
-        playersViewMap.get(playerName).setClientState(newState);
-        } catch(RemoteException e) {
+        try {
+            playersViewMap.get(playerName).setClientState(newState);
+        } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
         clientsStatesMap.put(playerName, newState);
@@ -1101,7 +1120,7 @@ public class GameController implements Observer, Serializable {
         } catch (InterruptedException | RemoteException | ExecutionException | TimeoutException e) {
             activePlayers.remove(playerName);
             disconnectedPlayers.put(playerName,player);
-            player.setDisconnected(true);
+            player.playerDisconnects();
             System.out.println(playerName+" disconnected");
         } finally {
             pendingPongs.remove(playerName);

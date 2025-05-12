@@ -13,5 +13,26 @@ public enum Coverage {
             case NONE -> "NONE";
         };
     }
+
+    public String toStringData() {
+        return switch (this) {
+            case NORTH_EAST -> "NE";
+            case SOUTH_EAST -> "SE";
+            case SOUTH_WEST -> "SW";
+            case NORTH_WEST -> "NW";
+            case NONE -> "N";
+        };
+    }
+
+    public static Coverage fromStringData(String value) {
+        return switch (value.toUpperCase()) {
+            case "NE" -> NORTH_EAST;
+            case "SE" -> SOUTH_EAST;
+            case "SW" -> SOUTH_WEST;
+            case "NW" -> NORTH_WEST;
+            case "N" -> NONE;
+            default -> throw new IllegalArgumentException("Unknown coverage value: " + value);
+        };
+    }
 }
 

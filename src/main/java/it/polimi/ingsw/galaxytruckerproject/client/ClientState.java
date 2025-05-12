@@ -5,6 +5,8 @@ import java.io.Serializable;
 public enum ClientState implements Serializable {
     CHOOSE_UI,
     CHOOSE_CONNECTION_TYPE,
+    CHOOSE_IP_AND_PORT_SOCKET,
+    CHOOSE_IP_AND_PORT_RMI,
     LOBBY,//choose game
     LOBBY0,
     LOBBY1,
@@ -28,7 +30,9 @@ public enum ClientState implements Serializable {
     public String toString() {
         switch(this) {
             case CHOOSE_UI -> {return "You want to use TUI or GUI? [tui] [gui]";}
-            case CHOOSE_CONNECTION_TYPE -> {return "You want to use RMI connection or Socket connection? [rmi] [socket]";}
+            case CHOOSE_CONNECTION_TYPE -> {return "You want to use RMI connection or Socket connection? [rmi] [socket] (choice not implemented)";}
+            case CHOOSE_IP_AND_PORT_RMI -> {return "You chose RMI: type the server information's [ip] [port]";}
+            case CHOOSE_IP_AND_PORT_SOCKET -> {return "You chose SOCKET: type the server information's [ip] [port] (type d to default to localhost)";}
             case LOGIN -> {return "Choose your nickname [name] [done] [reset]";}
             case LOBBY -> {return"You're in the lobby [createGame] [joinGame]";}
             case LOBBY0 ->{return"Enter gameName, player number and gameMode [gameName numPlayer gameMode]";}
@@ -45,7 +49,7 @@ public enum ClientState implements Serializable {
             case WAIT -> {return "Waiting for server";}
             case START_SHIP_CREATION -> {return "Turn the hourglass to start the ship creation [start|turn]";}
             case DRAW_CARD -> {return "Draw a card [draw]";}
-            case MANAGE_CABINS -> {return "Select the crew type in yours equip cabins [human] [purpleAlien] [brownAlien]";}
+            case MANAGE_CABINS -> {return "Select the crew type in yours equip cabins [humans] [purpleAlien] [brownAlien]";}
             case ROLL_DICE -> {return"Roll the dice [roll]";}
         }
         return "Error in client state to string";

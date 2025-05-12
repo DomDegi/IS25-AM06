@@ -365,7 +365,7 @@ public class Player implements PlayerInterface , Serializable {
         ArrayList<Coordinates> cabins = playerShip.getCabinsCoordinates();
         removeCrew(cabins);
         cabins = playerShip.getCabinsCoordinates();
-        if(cabins.size() != 0){
+        if(!cabins.isEmpty()){
             removeCrew(cabins);
         }
         playerShip.setCrewNumberToZero();
@@ -386,6 +386,7 @@ public class Player implements PlayerInterface , Serializable {
     //Disconnected flag methods
     public void playerDisconnects() {
         this.isDisconnected = true;
+        System.out.println("Player disconnected");
     }
 
     public void playerReconnects() {
@@ -397,12 +398,7 @@ public class Player implements PlayerInterface , Serializable {
     }
 
     //methods for testing
-
     public void setPlayerShip(ShipBoard shipBoard) {
         this.playerShip = shipBoard;
-    }
-
-    public void setDisconnected(boolean disconnected) {
-        isDisconnected = disconnected;
     }
 }

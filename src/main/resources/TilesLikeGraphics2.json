@@ -1,0 +1,1124 @@
+[
+  {
+    "type": "DoubleCannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "1"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "DoubleCannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "DoubleCannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": "3"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "DoubleCannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "3" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "DoubleCannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "3" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "DoubleCannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "DoubleCannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "DoubleCannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "3"},
+    "west": {"connectorsType": "2"}
+  },
+  {
+    "type": "DoubleCannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": "1"},
+    "west": {"connectorsType": "2"}
+  },
+  {
+    "type": "DoubleCannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "DoubleCannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "1"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "1"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "1"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": "3"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "2"},
+    "south": {"connectorsType": "1"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": "3"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "3" },
+    "south": {"connectorsType": "1"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "3"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": "1"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": "3"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "3" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "2"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "1"},
+    "west": {"connectorsType": "2"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "3"},
+    "west": {"connectorsType": "2"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "2"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": "3"},
+    "west": {"connectorsType": "2"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": "2"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "1Cannon",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "Shields",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": "3"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "Shields",
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "1"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "Shields",
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "Shields",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "3"},
+    "west": {"connectorsType": "2"}
+  },
+  {
+    "type": "Shields",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": "2"}
+  },
+  {
+    "type": "Shields",
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": "1"},
+    "west": {"connectorsType": "2"}
+  },
+  {
+    "type": "Shields",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "1"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "Shields",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "1Engine",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "3" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "1Engine",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "3" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "1Engine",
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "1Engine",
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "1Engine",
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "1Engine",
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "1Engine",
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "1Engine",
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": "3" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "1Engine",
+    "north": { "connectorsType" : "3"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "1Engine",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "3" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "1Engine",
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "1Engine",
+    "north": { "connectorsType" : "3"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "1Engine",
+    "north": { "connectorsType" : "3"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "1Engine",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "2"}
+  },
+  {
+    "type": "1Engine",
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "2"}
+  },
+  {
+    "type": "1Engine",
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "2"}
+  },
+  {
+    "type": "1Engine",
+    "north": { "connectorsType" : "3"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "2"}
+  },
+  {
+    "type": "1Engine",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "1Engine",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "1Engine",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "1Engine",
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "DoubleEngine",
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "DoubleEngine",
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": "3" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "DoubleEngine",
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "DoubleEngine",
+    "north": { "connectorsType" : "3"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "DoubleEngine",
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "DoubleEngine",
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "2"}
+  },
+  {
+    "type": "DoubleEngine",
+    "north": { "connectorsType" : "3"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "2"}
+  },
+  {
+    "type": "DoubleEngine",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "3" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "DoubleEngine",
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "Pipe",
+    "north": { "connectorsType" : "3"},
+    "east": {"connectorsType": "3" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "Pipe",
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": "3" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "Pipe",
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": "3" },
+    "south": {"connectorsType": "1"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "Pipe",
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": "3" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "Pipe",
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": "3" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "Pipe",
+    "north": { "connectorsType" : "3"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "Pipe",
+    "north": { "connectorsType" : "3"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "Pipe",
+    "north": { "connectorsType" : "3"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "EquipCabin",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "3"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "EquipCabin",
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": "2"},
+    "south": {"connectorsType": "1"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "EquipCabin",
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": "2"},
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "EquipCabin",
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "EquipCabin",
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "EquipCabin",
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "EquipCabin",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": "3"},
+    "west": {"connectorsType": "2"}
+  },
+  {
+    "type": "EquipCabin",
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "2"}
+  },
+  {
+    "type": "EquipCabin",
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": "2"}
+  },
+  {
+    "type": "EquipCabin",
+    "north": { "connectorsType" : "3"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "2"}
+  },
+  {
+    "type": "EquipCabin",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "EquipCabin",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": "1"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "EquipCabin",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "EquipCabin",
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "1"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "EquipCabin",
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "EquipCabin",
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "EquipCabin",
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "3"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": " 0"},
+    "numCells":2
+  },
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "3"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": " 0"},
+    "numCells":2
+  },
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "3"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": "1"},
+    "west": {"connectorsType": " 0"},
+    "numCells":2
+  },
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": "1"},
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": "1"},
+    "numCells":2
+  },
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "3"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "1"},
+    "numCells":2
+  },
+
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "3"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": "1"},
+    "west": {"connectorsType": "1"},
+    "numCells":2
+  },
+
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "3"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": "2"},
+    "numCells":2
+  },
+
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"},
+    "numCells":2
+  },
+
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"},
+    "numCells":2
+  },
+
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "3" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"},
+    "numCells":2
+  },
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "3"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"},
+    "numCells":2
+  },
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": " 0"},
+    "numCells":3
+  },
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": "1"},
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": " 0"},
+    "numCells":3
+  },
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": " 0"},
+    "numCells":3
+  },
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": " 0"},
+    "numCells":3
+  },
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": "1"},
+    "west": {"connectorsType": " 0"},
+    "numCells":3
+  },
+  {
+    "type": "BatteryComponents",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "1"},
+    "numCells":3
+  },
+  {
+    "type": "AlienLifeSupportsSystem",
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "2"},
+    "alienType":"PURPLE"
+  },
+  {
+    "type": "AlienLifeSupportsSystem",
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "2"},
+    "alienType":"PURPLE"
+  },
+  {
+    "type": "AlienLifeSupportsSystem",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"},
+    "alienType":"PURPLE"
+  },
+  {
+    "type": "AlienLifeSupportsSystem",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": "3"},
+    "alienType":"PURPLE"
+  },
+  {
+    "type": "AlienLifeSupportsSystem",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"},
+    "alienType":"PURPLE"
+  },
+  {
+    "type": "AlienLifeSupportsSystem",
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"},
+    "alienType":"PURPLE"
+  },
+  {
+    "type": "AlienLifeSupportsSystem",
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "1"},
+    "alienType":"BROWN"
+  },
+  {
+    "type": "AlienLifeSupportsSystem",
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "1"},
+    "alienType":"BROWN"
+  },
+  {
+    "type": "AlienLifeSupportsSystem",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"},
+    "alienType":"BROWN"
+  },
+  {
+    "type": "AlienLifeSupportsSystem",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "1"},
+    "west": {"connectorsType": "3"},
+    "alienType":"BROWN"
+  },
+  {
+    "type": "AlienLifeSupportsSystem",
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"},
+    "alienType":"BROWN"
+  },
+  {
+    "type": "AlienLifeSupportsSystem",
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"},
+    "alienType":"BROWN"
+  },
+  {
+    "type": "CargoBlue",
+    "totSpaces":2,
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": "3"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "CargoBlue",
+    "totSpaces":2,
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": "3"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "CargoBlue",
+    "totSpaces":2,
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": "3" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "CargoBlue",
+    "totSpaces":2,
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "CargoBlue",
+    "totSpaces":2,
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "CargoBlue",
+    "totSpaces":2,
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "CargoBlue",
+    "totSpaces":2,
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "CargoBlue",
+    "totSpaces":2,
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "CargoBlue",
+    "totSpaces":2,
+    "north": { "connectorsType" : "3"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "CargoBlue",
+    "totSpaces":3,
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "CargoBlue",
+    "totSpaces":3,
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "1"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "CargoBlue",
+    "totSpaces":3,
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "2"}
+  },
+  {
+    "type": "CargoBlue",
+    "totSpaces":3,
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": " 0"}
+  },
+  {
+    "type": "CargoBlue",
+    "totSpaces":3,
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "CargoBlue",
+    "totSpaces":3,
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": "1"},
+    "west": {"connectorsType": "2"}
+  },
+  {
+    "type": "CargoRed",
+    "totSpaces":1,
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": "1"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "CargoRed",
+    "totSpaces": 1,
+    "north": { "connectorsType": " 0" },
+    "east": { "connectorsType": "3" },
+    "south": { "connectorsType": " 0" },
+    "west": { "connectorsType": "3" }
+  },
+  {
+    "type": "CargoRed",
+    "totSpaces":1,
+    "north": { "connectorsType" : "1"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": "1"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "CargoRed",
+    "totSpaces":1,
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": "1" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "CargoRed",
+    "totSpaces":1,
+    "north": { "connectorsType" : "2"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": "2"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "CargoRed",
+    "totSpaces":1,
+    "north": { "connectorsType" : "3"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "3"}
+  },
+  {
+    "type": "CargoRed",
+    "totSpaces":2,
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "CargoRed",
+    "totSpaces":2,
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": "2" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "1"}
+  },
+  {
+    "type": "CargoRed",
+    "totSpaces":2,
+    "north": { "connectorsType" : " 0"},
+    "east": {"connectorsType": " 0" },
+    "south": {"connectorsType": " 0"},
+    "west": {"connectorsType": "2"}
+  }
+]
