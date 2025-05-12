@@ -221,6 +221,11 @@ public class VirtualViewSocket implements VirtualView {
     }
 
     @Override
+    public void notifyEarlyLanding() throws RemoteException {
+        clientHandler.sendServerMessageToClient(new EarlyLandingMessage());
+    }
+
+    @Override
     public DisplayableView getDisplayedView() throws RemoteException {
         return null;
     }

@@ -87,9 +87,12 @@ public class Smugglers extends Enemies{
                     if (!lostGoods.initializePenalty(game,playersView, currentPlayer)) {
                         nextPlayer();
                     }
-                    try {
-                        playersView.asksToInputCoordinates(CoordReqType.REMOVE_GOODS);
-                    }catch(Exception ignored) {}
+                    else {
+                        try {
+                            playersView.asksToInputCoordinates(CoordReqType.REMOVE_GOODS);
+                        } catch (Exception ignored) {
+                        }
+                    }
                 }
             }
             else {

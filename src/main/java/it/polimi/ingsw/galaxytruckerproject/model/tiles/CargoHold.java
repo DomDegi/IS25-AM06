@@ -86,4 +86,15 @@ public abstract class CargoHold extends Tile{
         return totSpaces;
     }
 
+    @Override
+    public CargoHold send()
+    {
+        try {
+            CargoHold cloned= (CargoHold) super.clone();
+            cloned.setShipBoard(null);
+            return cloned;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    };
 }

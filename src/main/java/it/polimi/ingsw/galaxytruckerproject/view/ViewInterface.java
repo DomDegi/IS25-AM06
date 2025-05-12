@@ -81,7 +81,9 @@ public interface ViewInterface extends Remote, Serializable {
     void setGameMode(GameMode gameMode) throws RemoteException;
     void notifyTurnedHourglass( int i) throws RemoteException;
     void notifyEndOfTime() throws RemoteException;
+    void notifyEarlyLanding() throws RemoteException;
 
     //METHOD NECESSARY ONLY FOR TESTING
     DisplayableView getDisplayedView()throws RemoteException;
+
 }

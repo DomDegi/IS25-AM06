@@ -230,5 +230,10 @@ public class MockVirtualView implements VirtualView {
     public void notifyEndOfTime() throws RemoteException {
 
     }
+
+    @Override
+    public void notifyEarlyLanding() throws RemoteException {
+
+    }
 }
 

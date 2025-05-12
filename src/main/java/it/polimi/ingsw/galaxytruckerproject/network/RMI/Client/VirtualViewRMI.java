@@ -155,6 +155,12 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     }
 
     @Override
+    public void notifyEarlyLanding() throws RemoteException {
+        view.notifyEarlyLanding();
+        clientController.setState(ClientState.WAIT);
+    }
+
+    @Override
     public DisplayableView getDisplayedView() throws RemoteException {
         return view;
     }

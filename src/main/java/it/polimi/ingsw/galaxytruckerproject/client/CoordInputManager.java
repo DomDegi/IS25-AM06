@@ -203,7 +203,7 @@ public class CoordInputManager {
             fireStrength = 0;
             return true;
         }
-        if (coordReqType == CoordReqType.CHOOSE_BATTERY && needed == coordinates.size()  ) {
+        if (coordReqType == CoordReqType.CHOOSE_BATTERY && needed == coordinates.size()){
             clientController.setState(ClientState.WAIT);
             try {
                 clientController.getVirtualController().useBattery(coordinates);
