@@ -514,9 +514,10 @@ public class ClientController{
             }
             case DRAW_CARD -> {
                 phase = GamePhases.CARDS;
+                /*
                 if(me.getRank()!=1){
                     setState( ClientState.WAIT);
-                }
+                } MI FIDO DI QUELLO CHE MI DICE IL SERVER(prova)*/
             }
             case MANAGE_GOODS -> {
                 if(!inManager){

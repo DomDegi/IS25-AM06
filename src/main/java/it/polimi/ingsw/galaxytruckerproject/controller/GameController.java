@@ -423,15 +423,17 @@ public class GameController implements Observer, Serializable {
         if (correctness) {
             if(game.getMode()== TRIAL) {
                 game.getFlightBoard().setPlayerToLast(player);
+                notifyPlayerMovement(playerName,player.getPlayerColor(),player.getPlayerPosition(),player.getPlayerRanking());
             }
             playersWithErrors.remove(playerName);
+
             if (player.IsDisconnected()) {
                 this.setCrewForDisconnectedPlayer(player);
             }
-            else
+            else{
                 try{
-                playersView.setClientState(ClientState.MANAGE_CABINS);
-                } catch(Exception ignored) {}
+                    playersView.setClientState(ClientState.MANAGE_CABINS);
+                } catch(Exception ignored) {}}
             return;
         }
         try{
@@ -619,6 +621,7 @@ public class GameController implements Observer, Serializable {
     private void notifyPositionedTile(String playerName, Tile tile) {
         for (VirtualView view: playersViewMap.values()) {
             try {
+
                 view.notifyPositionedTile(playerName, tile.send());
             } catch (Exception ignored) {}
         }
