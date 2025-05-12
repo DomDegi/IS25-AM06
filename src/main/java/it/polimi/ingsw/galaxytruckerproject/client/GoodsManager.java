@@ -115,7 +115,7 @@ public class GoodsManager {
                     possibleGoodsGain.remove(goodsToGet - 1);
                     if(possibleGoodsGain.isEmpty()) {
                         try {
-                            view.showGenericMessage("\nGoods stock is empty, input 'done' to stop,'pick  x y' to pick one good from your cargo: ");
+                            view.showGenericMessage("\nGoods stock is empty, input 'done' to stop,'x y' to pick one good from your cargo: ");
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
                         }
@@ -261,7 +261,7 @@ public class GoodsManager {
         }
         view.goodsPrinter(possibleGoodsGain);
         try {
-            view.showGenericMessage("Chose for each good where to put it, input 'done' to stop,'pick  x y' to pick one good from your cargo:\n\n");
+            view.showGenericMessage("Chose for each good where to put it[first the good, then x y], input 'done' to stop,'x y' to pick one good from your cargo:\n\n");
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
