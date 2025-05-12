@@ -981,5 +981,9 @@ public class ClientController {
     public Map<PlayersColor, Boolean> getAvailableColors() {
         return availableColors;
     }
+
+    public ClientState getPreviousState() {
+        return previousState;
+    }
 }
 

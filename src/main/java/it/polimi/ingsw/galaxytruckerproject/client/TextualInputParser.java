@@ -359,12 +359,17 @@ public class TextualInputParser {
                     case SHIPBOARD -> {
                         if (clientController.checkShipBoards(words))
                             return true;
+                        if (clientController.getPreviousState()==ClientState.S_FINISHED)
+                            if(clientController.thirdHourglassTurn(words))
+                                return true;
+                        view.showGenericMessage("Wrong input in wait");
                     }
                     case CARDS -> {
                         if (clientController.checkShipBoards(words))
                             return true;
                         if(clientController.land(words))
                             return true;
+                        view.showGenericMessage("Wrong input in wait");
                     }
                 }
                 return false;
