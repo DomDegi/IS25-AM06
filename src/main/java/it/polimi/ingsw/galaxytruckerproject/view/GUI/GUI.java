@@ -52,6 +52,7 @@ public class GUI extends Application implements DisplayableView {
         primaryStage.show();
         */
 
+
         try{
             Stage stage = new Stage();
             stage.setTitle("Galaxy Trucker");
