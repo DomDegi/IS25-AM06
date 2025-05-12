@@ -40,7 +40,7 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        this.primaryStage = primaryStage;
+      /*  this.primaryStage = primaryStage;
         primaryStage.setTitle("Galaxy Trucker");
 
         GridPane gridPane =  new GridPane();
@@ -50,9 +50,9 @@ public class GUI extends Application implements DisplayableView {
 
 
         primaryStage.show();
+        */
 
-
-        /*try{
+        try{
             Stage stage = new Stage();
             stage.setTitle("Galaxy Trucker");
             BorderPane root = new BorderPane();
@@ -68,7 +68,7 @@ public class GUI extends Application implements DisplayableView {
 
         }catch(Exception e){
             e.printStackTrace();
-        } */
+        }
     }
 
     @Override
