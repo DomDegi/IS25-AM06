@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ChooseColor">
    <children>
       <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0">
@@ -25,22 +24,22 @@
                <children>
                   <ImageView fitHeight="123.0" fitWidth="118.0" layoutX="14.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/red_starting_cabin.png" />
+                        <Image url="@../images/startingCabins/red_starting_cabin.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="123.0" fitWidth="118.0" layoutX="162.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/blue_starting_cabin.png" />
+                        <Image url="@../images/startingCabins/blue_starting_cabin.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="123.0" fitWidth="118.0" layoutX="315.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/green_starting_cabin.png" />
+                        <Image url="@../images/startingCabins/green_starting_cabin.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="123.0" fitWidth="118.0" layoutX="466.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/yellow_starting_cabin.png" />
+                        <Image url="@../images/startingCabins/yellow_starting_cabin.png" />
                      </image>
                   </ImageView>
                </children>
