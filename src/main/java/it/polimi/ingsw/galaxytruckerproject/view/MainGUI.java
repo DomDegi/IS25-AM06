@@ -238,12 +238,12 @@ public class MainGUI extends Application implements EventHandler<ActionEvent> {
         });
 
         button2.setOnAction(e -> {
-            try {
-                clientController.connectSocket();
+
+                //clientController.connectSocket();
                 scene.setRoot(socketLayout);
-            } catch (IOException e1) {
+
                 System.out.println("Error connecting to server via socket");
-            }
+
             startAutoTransition(primaryStage, scene, nicknameLayout, 2);
         });
 
@@ -254,13 +254,14 @@ public class MainGUI extends Application implements EventHandler<ActionEvent> {
 
                 // AGGIUNGEREMO QUI LA LOGICA PER GESTIRE IL NICKNAME(SET STATE E ROBE COSì IMMAGINO)
 
+                VBox createJoinGame = createJoinGame(nickname);
+                scene.setRoot(createJoinGame);
+
 
                 VBox colorLayout = chooseColor(selectedColor -> {
                     selectedColorHolder[0] = selectedColor;
                     System.out.println("Colore scelto per " + nicknameField.getText() + ": " + selectedColor);
 
-                    VBox createJoinGame = createJoinGame(nickname, selectedColor);
-                    scene.setRoot(createJoinGame);
 
                 });
                 scene.setRoot(colorLayout);
@@ -313,15 +314,14 @@ public class MainGUI extends Application implements EventHandler<ActionEvent> {
     }
 
 
-    public VBox createJoinGame(String nickname, String color) {
+    public VBox createJoinGame(String nickname) {
         VBox gameLayout = new VBox(20);
         gameLayout.setAlignment(Pos.CENTER);
 
         Label welcomeLabel = new Label("Welcome, " + nickname + "!");
         welcomeLabel.setStyle("-fx-font-size: 28px;");
 
-        Label colorLabel = new Label("Your selected color: " + color);
-        colorLabel.setStyle("-fx-font-size: 20px;");
+
 
         Label createLabel = new Label("Create a New Game or...");
         Label joinLabel = new Label("...join an existente Game");
@@ -344,7 +344,7 @@ public class MainGUI extends Application implements EventHandler<ActionEvent> {
         button1.setPrefSize(120, 50);
         button2.setPrefSize(120, 50);
 
-        gameLayout.getChildren().addAll(welcomeLabel, colorLabel,createLabel, gameNameField, confirmButton, joinLabel, button1, button2);
+        gameLayout.getChildren().addAll(welcomeLabel,createLabel, gameNameField, confirmButton, joinLabel, button1, button2);
 
         return gameLayout;
     }

@@ -902,14 +902,14 @@ public class ClientController {
         this.connected = connected;
     }
 
-    void connectRMI() throws MalformedURLException, NotBoundException, RemoteException {
+    public void connectRMI() throws MalformedURLException, NotBoundException, RemoteException {
         VirtualViewRMI viewRMI = new VirtualViewRMI(this, view);
         ControllerFactory controllerFactory = (ControllerFactory) Naming.lookup("rmi://localhost/ControllerFactory");
         this.virtualController = controllerFactory.createController();
         virtualController.setView(viewRMI);
     }
 
-    void connectSocket(String ip, int port) throws IOException {
+    public void connectSocket(String ip, int port) throws IOException {
         Socket server;
         try {
             server = new Socket(ip, port);
