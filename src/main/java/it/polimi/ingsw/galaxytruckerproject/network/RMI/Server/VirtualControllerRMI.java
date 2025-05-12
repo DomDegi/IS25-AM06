@@ -86,7 +86,7 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
 
 
     //TILE METHODS
-    public void notifySetTile( Tile tile){
+    public void notifySetTile(Tile tile){
         try {
             controller.setTile(tile);
         } catch (RuntimeException e) {
@@ -164,10 +164,34 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
     }
 
     @Override
+    public void shipErrorManagement(ArrayList<Coordinates> toRemove) throws RemoteException {
+        controller.shipErrorManagement(toRemove);
+    }
+
+    @Override
     public void ping() throws RemoteException{
         controller.ping();
     }
 
+    @Override
+    public void removeGoods(ArrayList<Coordinates> fromHere) throws RemoteException {
+        controller.removeGoods(fromHere);
+    }
+
+    @Override
+    public void chooseBranch(ArrayList<Coordinates> thisOne) throws RemoteException {
+        controller.chooseBranch(thisOne);
+    }
+
+    @Override
+    public void useBattery(ArrayList<Coordinates> batteries) throws RemoteException {
+        controller.useBatteries(batteries);
+    }
+
+    @Override
+    public void removeCrew(ArrayList<Coordinates> toRemoveFrom) throws RemoteException {
+        controller.removeCrew(toRemoveFrom);
+    }
 
 
 }

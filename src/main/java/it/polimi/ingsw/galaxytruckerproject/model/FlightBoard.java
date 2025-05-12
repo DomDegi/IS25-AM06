@@ -11,7 +11,6 @@ public class FlightBoard implements Serializable {
     private int freePodiumPosition;
     private final GameMode gameMode;    //needed to check if pos in inGamePlayers is free or not
     private final ArrayList<Integer> occupiedPos = new ArrayList<>();
-
     public FlightBoard(GameMode gameMode) {
         for (int i=0;i<4;i++){
             occupiedPos.add(-1);

@@ -15,7 +15,7 @@ public class LargeCannonShot extends Projectile  {
     @Override
     public Defense throwProjectile(Player player, int DiceRoll, GameInterface game) {
         Throw(player, DiceRoll);
-        if(coordinatesToDestroy != null){
+        if(coordinatesToDestroy == null){
             return Defense.PROTECTED;
         }
         return Defense.HIT;

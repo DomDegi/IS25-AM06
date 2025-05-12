@@ -1,5 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.view;
 
+import it.polimi.ingsw.galaxytruckerproject.client.ClientController;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
@@ -45,7 +46,7 @@ public class TUI implements DisplayableView {
     }
 
     @Override
-    public void showGenericMessage(String genericMessage) throws RemoteException {
+    public void showGenericMessage(String genericMessage)  {
         System.out.println(genericMessage);
     }
 
@@ -57,6 +58,16 @@ public class TUI implements DisplayableView {
     @Override
     public void showDrawnTile(Tile drawnTile) {
         System.out.println(drawnTile.toString());
+    }
+
+    @Override
+    public void run() {
+
+    }
+
+    @Override
+    public void sendingCoordinates() {
+        System.out.println("i'm sending the coordinates");
     }
 
     @Override
@@ -170,6 +181,11 @@ public class TUI implements DisplayableView {
         System.out.println("         └────────┴────────┘");
     }
 
+    @Override
+    public void crewPositioned() {
+        System.out.println("crew positioned");
+    }
+
     public void printDrawnTiles(Map<Integer, Tile> drawnTiles) {
         ArrayList<Tile> tilesList = new ArrayList<>(drawnTiles.values());
         boolean limit=false;
@@ -212,6 +228,11 @@ public class TUI implements DisplayableView {
             }
             System.out.println("├────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤");
         }
+    }
+
+    @Override
+    public void setClientController(ClientController clientController) {
+
     }
 
     @Override

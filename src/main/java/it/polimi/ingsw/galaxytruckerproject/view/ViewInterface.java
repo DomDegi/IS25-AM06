@@ -38,7 +38,6 @@ public interface ViewInterface extends Remote, Serializable {
      * shows on the view a generic message sent by the server
      * @param genericMessage the message to be shown
      */
-    void showGenericMessage (String genericMessage) throws RemoteException;
 
     /**
      * shows on the view a error message sent by the server

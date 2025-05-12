@@ -38,7 +38,6 @@ public interface VirtualController extends Remote{
 
 
     // COORDINATES RELATED METHODS
-    void sendCoordinates( ArrayList<Coordinates> coordinates) throws RemoteException;
     void sendDoubleCannonUsed( float Strength, ArrayList<Coordinates> coordinates) throws RemoteException;
     void sendNumDoubleEngineUsed( int NumEngine, ArrayList<Coordinates> coordinates) throws RemoteException;
 
@@ -58,16 +57,16 @@ public interface VirtualController extends Remote{
     void notifyEarlyLanding() throws RemoteException;
     void notifyCompleted() throws RemoteException;
     void notifySetPosition( int position) throws RemoteException;
-
-
     void notifyNewGoodsArrangement( int clientGoodsValue, ArrayList<CargoHold> updatedCargos) throws RemoteException;
     void notifyNewCrewArrangement( ArrayList<Tile> updatedCabin) throws RemoteException;
 
     void setView(VirtualView virtualView) throws RemoteException;
-
+    void shipErrorManagement(ArrayList<Coordinates> toRemove) throws RemoteException;
     void ping() throws RemoteException;
-
-
+    void removeGoods(ArrayList<Coordinates> fromHere) throws RemoteException;
+    void chooseBranch(ArrayList<Coordinates> thisOne) throws RemoteException;
+    void useBattery(ArrayList<Coordinates> batteries) throws RemoteException;
+    void removeCrew(ArrayList<Coordinates> toRemoveFrom) throws RemoteException;
     //METODI CON USAGE CHE SONO STATI MODIFICATI(DA CONTROLLARE CON FEDERICO)
     //void notifySetTile( String playerName, Coordinates coordinates, Tile tile) throws RemoteException;
     //void sendEndShipBoardCreation(String playerName) throws RemoteException;

@@ -361,6 +361,16 @@ public class Player implements PlayerInterface , Serializable {
         return updatedTiles;
     }
 
+    public void setCrewToZero(){
+        ArrayList<Coordinates> cabins = playerShip.getCabinsCoordinates();
+        removeCrew(cabins);
+        cabins = playerShip.getCabinsCoordinates();
+        if(cabins.size() != 0){
+            removeCrew(cabins);
+        }
+        playerShip.setCrewNumberToZero();
+    }
+
     //IT ADDS CREDIT
     public void gainCredit(int credit) {
         this.credit += credit;

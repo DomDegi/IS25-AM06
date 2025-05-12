@@ -17,7 +17,7 @@ import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerHandler;
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.VirtualControllerSocket;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
-import it.polimi.ingsw.galaxytruckerproject.view.GUI;
+import it.polimi.ingsw.galaxytruckerproject.view.GUI.GUI;
 import it.polimi.ingsw.galaxytruckerproject.view.TUI;
 
 import java.io.IOException;
@@ -82,6 +82,7 @@ public class ClientController{
         availableColors.put(PlayersColor.BLUE,Boolean.TRUE);
         this.indexDeckInHandOrPlanet = 0;
         this.hourglassTurns = 0;
+        displayedCard=new ArrayList<>();
     }
 
 
@@ -98,8 +99,9 @@ public class ClientController{
             return;
         }
         switch(words[0]) {
-            case "gui","g"->
+            case "gui","g"-> {
                     setView(new GUI());
+            }
             case "tui","t"->
                     setView(new TUI());
             default->{
@@ -357,7 +359,7 @@ public class ClientController{
     }
 
     public void choosePlanet(int chose){
-        Planets planet=(Planets) displayedCard.getFirst();
+        Card planet= displayedCard.getFirst();
         if (chose >= 0 && chose <planet.getListOfPlanets().size()) {
             indexDeckInHandOrPlanet = chose;
             setState(ClientState.WAIT);
@@ -433,6 +435,7 @@ public class ClientController{
     }
 
     public boolean doneCoord(){
+        view.sendingCoordinates();
         return coordInputManager.endCheckingFase();
     }
 
@@ -486,6 +489,7 @@ public class ClientController{
                     for (Coordinates _ : me.getShipBoard().getCabinsCoordinates()) {
                         newTiles = cabinsManager.manageCabins(type);
                     }
+                    view.crewPositioned();
                     setState (ClientState.WAIT);
                     try {
                         virtualController.notifyNewCrewArrangement(newTiles);
@@ -520,11 +524,7 @@ public class ClientController{
                     inManager=true;
                 }
                 view.goodsPrinter(goodsList);
-                try {
-                    view.showGenericMessage("Chose for each good where to put it, input 'no' to stop:\n");
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+                view.showGenericMessage("Chose for each good where to put it, input 'no' to stop:\n");
             }
         }
         try {
@@ -573,11 +573,16 @@ public class ClientController{
             int chose=numerate(scroll(input,1));
             if (chose==-1)
                 return false;
+            /*
             if (chose == 0) {
                 view.printShipboard(me.getShipBoard());
-            }
-            if (chose >= 1 && chose <= 4) {
-                view.printShipboard(flightBoard.getInGamePlayers().get(indexDeckInHandOrPlanet).getShipBoard());
+            }*/
+            if (chose >= 0 && chose <= 4) {
+                if(flightBoard.getInGamePlayers().size()>chose) {
+                    view.printShipboard(flightBoard.getInGamePlayers().get(chose).getShipBoard());
+                }
+                else
+                    return false;
             }
             return true;
         }

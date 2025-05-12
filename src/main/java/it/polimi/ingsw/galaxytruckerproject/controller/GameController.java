@@ -23,7 +23,9 @@ import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.*;
 
+import static it.polimi.ingsw.galaxytruckerproject.client.ClientState.DRAW_CARD;
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.TRIAL;
+import static it.polimi.ingsw.galaxytruckerproject.model.GameState.CARD_EVENT;
 
 
 public class GameController implements Observer, Serializable {
@@ -398,6 +400,7 @@ public class GameController implements Observer, Serializable {
                 }
                 playersWithErrors.add(player.getPlayerName());
             }
+
         }
     }
 
@@ -416,7 +419,6 @@ public class GameController implements Observer, Serializable {
             player.getShipBoard().destroyForCorrection(coord);
         }
         notifyBrokenTile(playerName,toRemove);
-
         boolean correctness = player.getShipBoard().verifyCorrectness();
         if (correctness) {
             if(game.getMode()== TRIAL) {
@@ -497,6 +499,11 @@ public class GameController implements Observer, Serializable {
 
     public void endShipVerification() {
         game.endShipVerification();
+        try {
+            playersViewMap.get(game.getFlightBoard().getAllPlayers().getFirst().getPlayerName()).setClientState(ClientState.DRAW_CARD);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -597,10 +604,10 @@ public class GameController implements Observer, Serializable {
             notifyRemovedBookedTile(playerName, settedTile);
         }
         settedTile = game.playerSetTile(playerName, tile);
-
         if (settedTile != null) {
             updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
             notifyPositionedTile(playerName, settedTile.send());
+
         } else {
             try {
                 playersView.showWrongInputMessage();
@@ -659,6 +666,7 @@ public class GameController implements Observer, Serializable {
             for (Player player : game.getFlightBoard().getAllPlayers()) {
                 if (player.getPlayerName().equals(playerName)) {
                     game.getFlightBoard().addToTrialFlightBoard(player);
+                    notifyPlayerMovement(playerName, player.getPlayerColor(), player.getPlayerPosition(), player.getPlayerRanking());
                     //It's not important for trial flight, so 0 is a placeholder value
                     break;
                 }
@@ -811,7 +819,7 @@ public class GameController implements Observer, Serializable {
     }
 
     public void askFirstPlayerToDraw() {
-        updatePlayerView(ClientState.DRAW_CARD,game.getListOfInFlightPlayers().getFirst().getPlayerName());
+        updatePlayerView(DRAW_CARD,game.getListOfInFlightPlayers().getFirst().getPlayerName());
     }
 
     public void initializeDrawnCard () {
@@ -846,6 +854,7 @@ public class GameController implements Observer, Serializable {
         else {
             game.drawCard();
             notifyDrawnCard(game.getDrawnCard());
+            game.setGameState(CARD_EVENT);
         }
     }
 
@@ -855,6 +864,7 @@ public class GameController implements Observer, Serializable {
                 view.notifyDrawnCard(card);
             } catch (Exception ignored) {}
         }
+
     }
 
 
@@ -1053,7 +1063,9 @@ public class GameController implements Observer, Serializable {
     public void updatePlayerView (ClientState newState, String playerName) {
         try{
         playersViewMap.get(playerName).setClientState(newState);
-        } catch(Exception ignored) {}
+        } catch(RemoteException e) {
+            throw new RuntimeException(e);
+        }
         clientsStatesMap.put(playerName, newState);
     }
 

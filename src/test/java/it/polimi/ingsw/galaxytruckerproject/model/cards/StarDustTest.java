@@ -3,10 +3,6 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
-import it.polimi.ingsw.galaxytruckerproject.model.GameState;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.LargeMeteor;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.SmallMeteor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
@@ -15,22 +11,19 @@ import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
-class MeteorSwarmTest {
-
-    Game game;
-    Player player1;
-    Player player2;
-    Player player3;
-    ShipBoard shipBoard1;
-    ShipBoard shipBoard2;
-    ShipBoard shipBoard3;
-    FlightBoard flightBoard;
-    MeteorSwarm meteorSwarm;
+class StarDustTest {
+    private StarDust starDust;
+    private Game game;
+    private Player player1;
+    private Player player2;
+    private Player player3;
+    private FlightBoard flightBoard;
     private final VirtualView mockView1 = new MockVirtualView();
     private final VirtualView mockView2 = new MockVirtualView();
     private final VirtualView mockView3 = new MockVirtualView();
@@ -38,32 +31,19 @@ class MeteorSwarmTest {
 
     @BeforeEach
     void setUp() {
-        int level = 2;
-        ArrayList<Projectile> listOfMeteors = new ArrayList<> (Arrays.asList(
-                new LargeMeteor(Direction.NORTH),
-                new SmallMeteor(Direction.EAST)/*,
-                new SmallMeteor(Direction.NORTH),
-                new LargeMeteor(Direction.EAST),
-                new SmallMeteor(Direction.EAST),
-                new LargeMeteor(Direction.SOUTH),
-                new SmallMeteor(Direction.SOUTH),
-                new LargeMeteor(Direction.WEST),
-                new SmallMeteor(Direction.WEST)*/
-        ));
-
-        meteorSwarm = new MeteorSwarm(level, listOfMeteors);
-
         game = new Game(GameMode.LEVEL2,3);
+        flightBoard = game.getFlightBoard();
         player1 = new Player("MimmoPericoloso", PlayersColor.BLUE);
         player2 = new Player("FedeGalattico", PlayersColor.RED);
         player3 = new Player("EnnioVolante", PlayersColor.YELLOW);
+        starDust = new StarDust(1);
 
         viewMap.put("MimmoPericoloso", mockView1);
         viewMap.put("FedeGalattico", mockView2);
         viewMap.put("EnnioVolante", mockView3);
 
         //shipboard 5 to player1
-        shipBoard1 = new ShipBoard(player1);
+        ShipBoard shipBoard1 = new ShipBoard(player1);
         player1.setPlayerShip(shipBoard1);
         shipBoard1.initializeLevel2();
         Tile tile1=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
@@ -116,7 +96,7 @@ class MeteorSwarmTest {
         shipBoard1.verifyCorrectness();
 
         //shipboard4 to player2
-        shipBoard2 = new ShipBoard(player2);
+        ShipBoard shipBoard2 = new ShipBoard(player2);
         player2.setPlayerShip(shipBoard2);
         shipBoard2.initializeLevel2();
         Tile tile23=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
@@ -126,6 +106,8 @@ class MeteorSwarmTest {
         Tile tile25=new EquipCabin( new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE));
         shipBoard2.positionTile(Optional.of(tile25), new Coordinates(2,4));
         tile25.setCrewType(CrewType.HUMAN);
+        Tile tile26=new Shields( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL));
+        shipBoard2.positionTile(Optional.of(tile26), new Coordinates(2,5));
         Tile tile27=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),3);
         shipBoard2.positionTile(Optional.of(tile27), new Coordinates(3,2));
         Tile tile28=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),2);
@@ -135,7 +117,7 @@ class MeteorSwarmTest {
         shipBoard2.verifyCorrectness();
 
         //shipboard1 to player3
-        shipBoard3 = new ShipBoard(player3);
+        ShipBoard shipBoard3 = new ShipBoard(player3);
         player3.setPlayerShip(shipBoard3);
         shipBoard3.initializeLevel2();
         Tile tile30=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
@@ -156,25 +138,22 @@ class MeteorSwarmTest {
         shipBoard3.positionTile(Optional.of(tile35), new Coordinates(3,3));
         shipBoard3.verifyCorrectness();
 
-        flightBoard = game.getFlightBoard();
         flightBoard.addPlayerToGame(player1);
         flightBoard.addPlayerToGame(player2);
         flightBoard.addPlayerToGame(player3);
         flightBoard.addToFlightBoard(player1, 2);
         flightBoard.addToFlightBoard(player2, 3);
         flightBoard.addToFlightBoard(player3, 1);
+    }
 
-    }
     @Test
-    void testMeteorSwarm() {
-        int player1_initialBatteries = player1.getShipBoard().getNumBatteries();
-        game.setDrawnCard(meteorSwarm);
+    void successfully_initialize_card_and_execute () {
+        game.setDrawnCard(starDust);
         game.getDrawnCard().initializeCard(game, viewMap);
-        assertEquals(meteorSwarm, game.getDrawnCard());
-        meteorSwarm.setDiceRoll(2);
-        //assertEquals(player1_initialBatteries - 1, player1.getShipBoard().getNumBatteries());
-        System.out.println(meteorSwarm.toString());
-        meteorSwarm.setDiceRoll(2);
-        assertEquals(GameState.DRAW_CARD, game.getGameState());
+
+        assertEquals(-2, player1.getPlayerPosition());
+        assertEquals(-6, player2.getPlayerPosition());
+        assertEquals(5, player3.getPlayerPosition());
     }
+
 }

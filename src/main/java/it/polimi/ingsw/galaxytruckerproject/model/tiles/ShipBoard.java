@@ -470,6 +470,13 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
         return false;
     }
 
+    public void setCrewNumberToZero() {
+        this.numHumanCrew=0;
+        this.numBrownAliens=0;
+        this.numPurpleAliens=0;
+        return;
+    }
+
     public ArrayList<Tile> epidemic(){
         HashSet<Coordinates> InfectedCabin = new HashSet<>();
         for(Coordinates coordinates : crewCoordinates){

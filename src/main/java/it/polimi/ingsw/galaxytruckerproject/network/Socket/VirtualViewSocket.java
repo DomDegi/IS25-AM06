@@ -131,11 +131,6 @@ public class VirtualViewSocket implements VirtualView {
     }
 
     @Override
-    public void showGenericMessage(String genericMessage) throws RemoteException {
-        clientHandler.sendServerMessageToClient(new GenericServerMessage(genericMessage));
-    }
-
-    @Override
     public void showErrorMessage(String errorMessage) throws RemoteException {
         clientHandler.sendServerMessageToClient(new ErrorMessage(errorMessage));
     }

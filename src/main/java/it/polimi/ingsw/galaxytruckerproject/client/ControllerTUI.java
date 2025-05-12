@@ -5,7 +5,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CrewType;
 import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
-import it.polimi.ingsw.galaxytruckerproject.view.GUI;
+import it.polimi.ingsw.galaxytruckerproject.view.GUI.GUI;
 import it.polimi.ingsw.galaxytruckerproject.view.TUI;
 
 import java.io.IOException;
@@ -13,7 +13,6 @@ import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
-import static it.polimi.ingsw.galaxytruckerproject.client.ClientState.*;
 
 public class ControllerTUI implements ControllerUI {
     private final ClientController clientController;
@@ -327,14 +326,13 @@ public class ControllerTUI implements ControllerUI {
                 }
                 if (words[0].equals("done")) {
                     return clientController.doneCoord();
-                }
-                else {
+                } else {
                     //gestire il -1 in base alla carta
                     Coordinates coords;
                     coords = clientController.transformCoordinates(words);
-                    if(coords==null)
+                    if (coords == null)
                         return false;
-                    if(!clientController.checkCoord(coords)) {
+                    if (!clientController.checkCoord(coords)) {
                         view.wrongLocalInput();
                         return false;
                     }
@@ -344,11 +342,7 @@ public class ControllerTUI implements ControllerUI {
             case WAIT ->{
                 switch(clientController.getPhase()){
                     case LOGIN -> {
-                        try {
-                            view.showGenericMessage("Wrong input in wait");
-                        } catch (RemoteException e) {
-                            throw new RuntimeException(e);
-                        }
+                        view.showGenericMessage("Wrong input in wait");
                     }
                     case SHIPBOARD -> {
                         if (clientController.checkShipBoards(words))

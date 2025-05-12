@@ -1,5 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.view;
 
+import it.polimi.ingsw.galaxytruckerproject.client.ClientController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
@@ -12,6 +13,10 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public interface DisplayableView extends ViewInterface{
+
+    void run();
+
+    void sendingCoordinates();
     /**
      * shows the player the tiles that got turned from player refusing them
      * @param turnedTiles the current array in the model
@@ -35,4 +40,10 @@ public interface DisplayableView extends ViewInterface{
     void goodsPrinter (ArrayList<Goods> goodsArray);
 
     void printBooked(LightShipBoard shipBoard);
+
+    void setClientController(ClientController clientController);
+
+    void crewPositioned();
+
+    void showGenericMessage (String genericMessage);
 }

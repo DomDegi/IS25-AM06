@@ -21,8 +21,8 @@ public class LargeMeteor extends Projectile {
     public Defense throwProjectile(Player player, int diceRoll, GameInterface game) {
         Throw(player,diceRoll);
 
-        if(coordinatesToDestroy != null){
-            System.out.println("YOU WERE JUST LUCKY, SORRY MAN");
+        if(coordinatesToDestroy == null){
+            //miss
             return Defense.PROTECTED;
         }
         else if(game.getMode().equals(GameMode.TRIAL))
@@ -178,7 +178,7 @@ public class LargeMeteor extends Projectile {
             if (temp == Defense.CHOOSETOUSEBATTERY)
                 defense = temp;
         }
-        if(diceRoll!=5) {
+        if(diceRoll!=0) {
             temp = checkEastLev1(player, diceRoll - 1);
             if (temp == Defense.PROTECTED)
                 return temp;
@@ -202,7 +202,7 @@ public class LargeMeteor extends Projectile {
             if (temp == Defense.CHOOSETOUSEBATTERY)
                 defense = temp;
         }
-        if(diceRoll!=5) {
+        if(diceRoll!=0) {
             temp = checkWestLev1(player, diceRoll - 1);
             if (temp == Defense.PROTECTED)
                 return temp;
