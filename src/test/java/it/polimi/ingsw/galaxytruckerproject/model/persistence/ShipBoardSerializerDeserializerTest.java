@@ -83,7 +83,12 @@ class ShipBoardSerializerDeserializerTest {
         shipBoard1.positionTile(Optional.of(tile22), new Coordinates(4,4));
 
         shipBoard1.verifyCorrectness();
-
+        tile2.setCrewType(CrewType.BROWN);
+        tile9.setCrewType(CrewType.BROWN);
+        //tile12.setCrewType(CrewType.HUMAN);
+        //tile8.setCrewType(CrewType.HUMAN);
+        //tile12.removeCrew();
+        shipBoard1.getTile(new Coordinates(2,3)).removeCrew();
     }
 
     @Test
@@ -98,7 +103,24 @@ class ShipBoardSerializerDeserializerTest {
         int expectedEndOfLine = 35;
         int trueEndOfLine = shipBoardSerializer.load(playerCopy, 0);
         assertEquals(expectedEndOfLine, trueEndOfLine);
+    }
+
+    @Test
+    void print_test() {
+        load_test();
+        shipPrinter.printShipboard(new LightShipBoard(player.getShipBoard()));
         shipPrinter.printShipboard(new LightShipBoard(playerCopy.getShipBoard()));
+        System.out.println("actual " + player.getTotalCrew());
+        System.out.println("copy " + playerCopy.getTotalCrew());
+    }
+
+    @Test
+    void crew_test() {
+        load_test();
+        assertEquals(player.getShipBoard().getNumBrownAliens(), playerCopy.getShipBoard().getNumBrownAliens());
+        assertEquals(player.getShipBoard().getNumPurpleAliens(), playerCopy.getShipBoard().getNumPurpleAliens());
+        assertEquals(player.getShipBoard().getNumHumanCrew(), playerCopy.getShipBoard().getNumHumanCrew());
+        assertEquals(player.getTotalCrew(),playerCopy.getTotalCrew());
     }
 
 }

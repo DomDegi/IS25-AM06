@@ -152,9 +152,9 @@ public class ShipBoardSerializerDeserializer {
                 return se;
             }
             case "ST" -> {
-                StartingCabin s =  new StartingCabin();
-                s.tileLoader(lineSplit);
-                return s;
+                StartingCabin st =  new StartingCabin();
+                st.tileLoader(lineSplit);
+                return st;
             }
             case "VT" -> {
                 return new VoidTile();
