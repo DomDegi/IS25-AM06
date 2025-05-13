@@ -265,8 +265,8 @@ public class ClientController {
     }
 
     public boolean positionTile(Coordinates coordinates) {
-        if (coordinates != null) {
-            me.getShipBoard().positionTile(Optional.ofNullable(this.tileInHand), coordinates);
+        if (coordinates != null && me.getShipBoard().positionTile(Optional.ofNullable(this.tileInHand), coordinates)) {
+
             setState(ClientState.WAIT);
             try {
                 virtualController.notifySetTile(this.tileInHand.send());

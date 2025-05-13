@@ -36,6 +36,7 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
     private int numPurpleAliens;
     private int numHumanCrew;
     private int credit;
+    private boolean first=true;
 
 
     public LightShipBoard(ShipBoard shipBoard) {
@@ -182,18 +183,34 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
 
     public boolean positionTile(Optional<Tile> tile, Coordinates coordinates) {
         if (tile.isPresent() && tilesTable[coordinates.getX()][coordinates.getY()].isEmpty()){
-            tilesTable[coordinates.getX()][coordinates.getY()] = tile;
-            tile.get().setShipBoard(this);
-            tile.get().setCoordinates(coordinates);
+            if (!first&&(coordinates.getX() - 1 >= 0 && coordinates.getX() - 1 <= 4 && coordinates.getY() >= 0 && coordinates.getY() <= 6 && getTilesTable()[coordinates.getX() - 1][coordinates.getY()].isPresent()
+                    && ((getTilesTable()[coordinates.getX() - 1][coordinates.getY()].get().getSouth().getConnectorsType()==Connectors.SMOOTH && tile.get().getNorth().getConnectorsType()!=Connectors.SMOOTH)||(getTilesTable()[coordinates.getX() - 1][coordinates.getY()].get().getSouth().getConnectorsType()!=Connectors.SMOOTH && tile.get().getNorth().getConnectorsType()==Connectors.SMOOTH)||(getTilesTable()[coordinates.getX() - 1][coordinates.getY()].get().getSouth().getConnectorsType()!=Connectors.SMOOTH && tile.get().getNorth().getConnectorsType()!=Connectors.SMOOTH)))
+                    ||(coordinates.getX() + 1 >= 0 && coordinates.getX() + 1 <= 4 && coordinates.getY() >= 0 && coordinates.getY() <= 6 && getTilesTable()[coordinates.getX() + 1][coordinates.getY()].isPresent()
+                    && ((getTilesTable()[coordinates.getX() + 1][coordinates.getY()].get().getNorth().getConnectorsType()==Connectors.SMOOTH && tile.get().getSouth().getConnectorsType()!=Connectors.SMOOTH)||(getTilesTable()[coordinates.getX() + 1][coordinates.getY()].get().getNorth().getConnectorsType()!=Connectors.SMOOTH && tile.get().getSouth().getConnectorsType()==Connectors.SMOOTH)||(getTilesTable()[coordinates.getX() + 1][coordinates.getY()].get().getNorth().getConnectorsType()!=Connectors.SMOOTH && tile.get().getSouth().getConnectorsType()!=Connectors.SMOOTH)))
+                    ||(coordinates.getX() >= 0 && coordinates.getX() <= 4 && coordinates.getY() - 1 >= 0 && coordinates.getY() - 1 <= 6 && getTilesTable()[coordinates.getX()][coordinates.getY() - 1].isPresent()
+                    && ((getTilesTable()[coordinates.getX()][coordinates.getY() - 1].get().getEast().getConnectorsType()==Connectors.SMOOTH && tile.get().getWest().getConnectorsType()!=Connectors.SMOOTH)||(getTilesTable()[coordinates.getX()][coordinates.getY() - 1].get().getEast().getConnectorsType()!=Connectors.SMOOTH && tile.get().getWest().getConnectorsType()==Connectors.SMOOTH)||(getTilesTable()[coordinates.getX()][coordinates.getY() - 1].get().getEast().getConnectorsType()!=Connectors.SMOOTH && tile.get().getWest().getConnectorsType()!=Connectors.SMOOTH)))
+                    ||(coordinates.getX() >= 0 && coordinates.getX() <= 4 && coordinates.getY() + 1 >= 0 && coordinates.getY() + 1 <= 6 && getTilesTable()[coordinates.getX()][coordinates.getY() + 1].isPresent()
+                    && ((getTilesTable()[coordinates.getX()][coordinates.getY() + 1].get().getWest().getConnectorsType()==Connectors.SMOOTH && tile.get().getEast().getConnectorsType()!=Connectors.SMOOTH)||(getTilesTable()[coordinates.getX()][coordinates.getY() + 1].get().getWest().getConnectorsType()!=Connectors.SMOOTH && tile.get().getEast().getConnectorsType()==Connectors.SMOOTH)||(getTilesTable()[coordinates.getX()][coordinates.getY() + 1].get().getWest().getConnectorsType()!=Connectors.SMOOTH && tile.get().getEast().getConnectorsType()!=Connectors.SMOOTH)))) {
+                tilesTable[coordinates.getX()][coordinates.getY()] = tile;
+                tile.get().setShipBoard(this);
+                tile.get().setCoordinates(coordinates);
             /*we're going to add the class tile also in the client. IF so we need to add this:
             //Personally I don't think we should but we'll see
             tile.get().setShipBoard(this);
 
             //EDIT: I think we should, */
-            return true;
+                return true;
+            }else if(first){
+                tilesTable[coordinates.getX()][coordinates.getY()] = tile;
+                tile.get().setShipBoard(this);
+                tile.get().setCoordinates(coordinates);
+                first=false;
+                return true;
+            }
         }
         return false;
     }
+
     public void setCargoHoldCoordinates(ArrayList<Coordinates> cargoHoldCoordinates) {
         this.cargoHoldCoordinates = cargoHoldCoordinates;
     }
