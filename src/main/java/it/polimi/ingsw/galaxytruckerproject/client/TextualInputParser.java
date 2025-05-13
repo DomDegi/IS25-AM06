@@ -211,6 +211,10 @@ public class TextualInputParser {
                                     }
                                 }
                             }
+                            default -> {
+                                view.wrongLocalInput();
+                                return false;
+                            }
                         }
                     }
                     default -> {
