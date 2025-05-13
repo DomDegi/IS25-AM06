@@ -102,6 +102,7 @@ public class TextualInputParser {
 
             case LOBBY0 -> {
                 String gameName = words[0];
+                PlayersColor color;
                 int numberOfPlayers;
                 if(!(words.length > 1)){
                     view.wrongLocalInput();
@@ -135,7 +136,27 @@ public class TextualInputParser {
                         return false;
                     }
                 }
+                if(!(words.length > 3)){
+                    view.wrongLocalInput();
+                    clientController.rollBackState();
+                    return false;
+                }
+                switch(words[3]){
+                    case "red","r"->
+                            color = PlayersColor.RED;
+                    case "yellow","y"->
+                            color = PlayersColor.YELLOW;
+                    case "green","g"->
+                            color = PlayersColor.GREEN;
+                    case "blue","b"->
+                            color = PlayersColor.BLUE;
+                    default-> {
+                        view.wrongLocalInput();
+                        return false;
+                    }
+                }
                 clientController.createGame(gameName,numberOfPlayers,mode);
+                clientController.colorChoice(color);
             }
 
             case LOBBY1 -> {

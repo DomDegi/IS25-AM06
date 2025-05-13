@@ -92,7 +92,7 @@ public class GameController implements Observer, Serializable {
      * @param reconnecting true if player used to be in the lobby
      */
 
-    //ASSOCIA IL PLAYER ALLA VIEW
+    // ASSOCIA IL PLAYER ALLA VIEW
     public void addToPlayersViewMap(String playerName, VirtualView view, boolean reconnecting) {
         try {
             view.setGameMode(this.game.getMode());
@@ -105,10 +105,12 @@ public class GameController implements Observer, Serializable {
         else {
             if (this.getGameState().equals(GameState.LOBBY_PHASE)){
                 playersViewMap.put(playerName, view);
+                if(playersViewMap.size()!=1){
                 try {
                     view.setClientState(ClientState.COLOR_CHOICE);
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
+                }
                 }
             }
             else{
