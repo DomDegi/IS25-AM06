@@ -635,7 +635,6 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
 
     public void setNumSingleEngine() {
         this.numSingleEngine = shipBoard.getNumSingleEngine();
-    }
 
     public void setDoubleEngine() {
         this.DoubleEngine = shipBoard.getDoubleEngine();
