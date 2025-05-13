@@ -53,10 +53,9 @@ class GameSerializerDeserializerTest {
         }
 
         //the following assert only works if we don't shuffle the deck
-        /*
         for (int i = 0; i < original.size(); i++) {
             assertEquals(original.get(i).getId(), copy.get(i).getId());
-        } */
+        }
     }
 
 }
