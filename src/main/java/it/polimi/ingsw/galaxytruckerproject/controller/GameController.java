@@ -1134,7 +1134,7 @@ public class GameController implements Observer, Serializable {
         pendingPongs.put(playerName, future);
         try{
             view.ping();
-            future.get(5, TimeUnit.SECONDS);
+            future.get(15, TimeUnit.SECONDS);
         } catch (InterruptedException | RemoteException | ExecutionException | TimeoutException e) {
             activePlayers.remove(playerName);
             disconnectedPlayers.put(playerName,player);

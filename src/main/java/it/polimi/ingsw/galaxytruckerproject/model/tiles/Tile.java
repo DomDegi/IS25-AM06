@@ -131,24 +131,40 @@ public abstract class Tile implements Serializable,Cloneable {
     }
 
     //METHOD THAT GETS OVERRIDE ONLY BY THE SPECIFIC CLASSES
-    public void setCrewType(CrewType crewType) {System.out.println("THIS TILE IS NOT A CABIN"); }
-    public void consumeBattery(){System.out.println("THIS TILE IS NOT A BATTERYCOMPONENT"); }
-    public boolean removeCrew(){ System.out.println("THIS TILE IS NOT A CABIN");return false; }
-    public void removeGood(Goods good){System.out.println("THIS TILE IS NOT A GOOD");}
-    public Coverage getCoveredArea(){System.out.println("THIS TILE IS NOT A SHIELD"); return Coverage.NONE;}
-    public int addGood(Goods good){System.out.println("THIS TILE IS NOT A CARGO_HOLD"); return 0;}
+    public void setCrewType(CrewType crewType) {
+
+    }
+    public void consumeBattery(){
+
+    }
+    public boolean removeCrew(){
+        return false;
+    }
+    public void removeGood(Goods good){
+
+    }
+    public Coverage getCoveredArea(){
+
+        return Coverage.NONE;
+    }
+    public int addGood(Goods good){
+        return 0;
+    }
     public void addBattery(){
-        return;
+
     }
     //
-    public ArrayList<Goods> getCargo(){System.out.println("THIS TILE IS NOT A CARGO_HOLD");return null;}
+    public ArrayList<Goods> getCargo(){
+        return null;
+    }
     public int getNumBatteries() {
-        System.out.println("THIS TILE IS NOT A BATTERY_COMPONENT");
+
         return 0;
     }
     public void getStat(){
     }
     public Direction getDirection(){
+
         return null;
     }
 
@@ -161,22 +177,31 @@ public abstract class Tile implements Serializable,Cloneable {
     }
     public boolean fillable(){return true;}
     public CrewType getAlienLifeSupportSystemColor(){
-        //System.out.println("THIS TILE IS NOT A ALIEN LIFE SUPPORT SYSTEM");
+
         return CrewType.NotSupportSystem;
     }
-    public ArrayList<Coordinates> adjacentLifeSupport(){System.out.println("THIS TILE IS NOT A CABIN"); return new ArrayList<>();}
+    public ArrayList<Coordinates> adjacentLifeSupport(){
+        return new ArrayList<>();
+    }
 
 
-    public CrewType getCrewType(){System.out.println("THIS TILE IS NOT A CABIN"); return CrewType.NotAcabin;}
+    public CrewType getCrewType(){
+        return CrewType.NotAcabin;
+    }
     public AlienOptions getAlienability() { return AlienOptions.NO;}
-    public void checkAlienability(){System.out.println("THIS TILE IS NOT A CABIN");}
-    public int getCrew() {return 0;}
+    public void checkAlienability(){
+
+    }
+    public int getCrew() {
+        return 0;
+    }
 
     public boolean isBooked() {
         return booked;
     }
 
     public void setBooked(boolean booked) {
+
         this.booked = booked;
     }
     public Tile send(){
