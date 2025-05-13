@@ -58,8 +58,8 @@ public class BatteryComponents extends Tile{
             this.batteryCells--;
             shipBoard.addBreakBatteries(-1);
             if(this.batteryCells == 0){
-                if(shipBoard.getBatteryCoordinates()!=null){
-                    shipBoard.getBatteryCoordinates().remove(this.batteryCells);
+                if(shipBoard.getBatteryCoordinates()!=null&&shipBoard.getBatteryCoordinates().contains(this.coordinates)){
+                    shipBoard.getBatteryCoordinates().remove(this.coordinates);
                 }
             }
         }
