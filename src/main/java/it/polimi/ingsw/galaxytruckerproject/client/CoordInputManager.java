@@ -31,9 +31,27 @@ public class CoordInputManager {
         this.coordinates.clear();
         switch (coordReqType) {
             case CHOOSE_DOUBLE_CANNON, CHOOSE_DOUBLE_ENGINE, CHOOSE_TO_BREAK, CHOOSE_BATTERY -> needed=0;
-            case REMOVE_GOODS -> needed= clientController.getDisplayedCard().getFirst().getGoodsPenalty();
+            case REMOVE_GOODS ->{
+                needed= clientController.getDisplayedCard().getFirst().getGoodsPenalty();
+                if (lightShipBoard.isCargoEmpty()) {
+                    if (lightShipBoard.getNumBatteries() == 0) {
+                        needed = 0;
+                        return;
+                    }
+                    this.needed = Math.min(lightShipBoard.getNumBatteries(),needed);
+                }
+                else if (lightShipBoard.getAllGoods().size() < needed) {
+                        needed= lightShipBoard.getAllGoods().size();
+                        needed += needed - lightShipBoard.getAllGoods().size();
+                        needed = Math.min(lightShipBoard.getNumBatteries()+lightShipBoard.getAllGoods().size(),needed);
+                    }
+                return;
+            }
             case CHOOSE_TO_MAINTAIN -> needed=1;
-            case CHOOSE_CREW -> needed=clientController.getDisplayedCard().getFirst().getCrewNumber();
+            case CHOOSE_CREW -> {
+                needed = clientController.getDisplayedCard().getFirst().getCrewNumber();
+                needed = Math.min (lightShipBoard.getNumTotalCrew(),needed);
+            }
         }
         this.coordReqType = coordReqType;
     }

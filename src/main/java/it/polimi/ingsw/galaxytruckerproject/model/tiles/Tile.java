@@ -216,7 +216,6 @@ public abstract class Tile implements Serializable,Cloneable {
                 (west.getConnectorsType()!=Connectors.SMOOTH && coord.getY()!=0 && shipBoard.getTile(coord.getX(), coord.getY()-1)!=null && shipBoard.getTile(coord.getX(), coord.getY()-1).getEast().getConnectorsType()!=Connectors.SMOOTH))
             return true;
         return false;
-
     }
 }
 

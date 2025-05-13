@@ -232,6 +232,7 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
     //forse non serve il batteryCoordinates perché tanto se non è una batteryTile stampo il fatto che non lo è
 
 
+
     //SHIELD METHODS
     //This method takes as input the coordinates of the Shield to be used and the coordinates of the BatteryComponents
     // from which it wants to consume the battery to activate the Shield.
@@ -345,6 +346,14 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
 
     public void removeGood(Goods good, Coordinates coordinates){
         tilesTable[coordinates.getX()][coordinates.getY()].get().removeGood(good);
+    }
+
+    public int getNumTotalCrew(){
+        return this.numHumanCrew+this.numBrownAliens+this.numPurpleAliens;
+    }
+
+    public int getNumBatteries(){
+        return numBatteries;
     }
 
     public boolean addBookedTile(Tile tile) {
