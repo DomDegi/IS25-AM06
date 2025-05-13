@@ -209,7 +209,7 @@ public abstract class Tile implements Serializable,Cloneable {
         south = new Link(Connectors.fromValue(Integer.parseInt(attributes[4])));
         west = new Link(Connectors.fromValue(Integer.parseInt(attributes[5])));
     }
-    public boolean canPosition(Coordinates coord, ShipBoard shipBoard) {
+    public boolean canPosition(Coordinates coord, ShipBoardInterface shipBoard) {
         if((north.getConnectorsType()!=Connectors.SMOOTH && coord.getX()!=0 && shipBoard.getTile(coord.getX()-1, coord.getY())!=null && shipBoard.getTile(coord.getX()-1, coord.getY()).getSouth().getConnectorsType()!=Connectors.SMOOTH)||
                 (south.getConnectorsType()!=Connectors.SMOOTH && coord.getX()!=4 && shipBoard.getTile(coord.getX()+1, coord.getY())!=null && shipBoard.getTile(coord.getX()+1, coord.getY()).getNorth().getConnectorsType()!=Connectors.SMOOTH)||
                 (east.getConnectorsType()!=Connectors.SMOOTH && coord.getY()!=6 && shipBoard.getTile(coord.getX(), coord.getY()+1)!=null && shipBoard.getTile(coord.getX(), coord.getY()+1).getWest().getConnectorsType()!=Connectors.SMOOTH)||
