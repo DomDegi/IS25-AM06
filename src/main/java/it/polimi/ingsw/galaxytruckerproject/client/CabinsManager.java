@@ -39,6 +39,7 @@ public class CabinsManager {
         }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.PURPLE){
             if(crewType==CrewType.BROWN) {
                 view.wrongLocalInput();
+
                 setup();
                 return null;
             }

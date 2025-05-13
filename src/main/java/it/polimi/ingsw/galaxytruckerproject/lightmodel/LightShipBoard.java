@@ -594,6 +594,13 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
             }
     }
 
+    public void setCabinStat(){
+        for(Coordinates coordinates: getCabinsCoordinates())
+        {
+            tilesTable[coordinates.getX()][coordinates.getY()].get().getStat();
+        }
+    }
+
     /*
     public void setTilesTable(Coordinates coordinates) {
         tilesTable = shipBoard.getTilesTable();

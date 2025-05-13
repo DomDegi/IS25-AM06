@@ -58,7 +58,9 @@ public class BatteryComponents extends Tile{
             this.batteryCells--;
             shipBoard.addBreakBatteries(-1);
             if(this.batteryCells == 0){
-                shipBoard.getBatteryCoordinates().remove(this.batteryCells);
+                if(shipBoard.getBatteryCoordinates()!=null){
+                    shipBoard.getBatteryCoordinates().remove(this.batteryCells);
+                }
             }
         }
         else{System.out.println("Run out of batteries in this Tile");}
