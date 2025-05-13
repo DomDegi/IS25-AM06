@@ -155,7 +155,8 @@ public class EquipCabin extends Cabin {
 
     public void getStat(){
         checkAlienability();
-        shipBoard.getCabinsCoordinates().add(this.coordinates);
+        if(!shipBoard.getCabinsCoordinates().contains(this.coordinates))
+            shipBoard.getCabinsCoordinates().add(this.coordinates);
     }
 
 
@@ -174,6 +175,7 @@ public class EquipCabin extends Cabin {
                     break;
             }
             if(this.crew==0)
+                if(shipBoard.getCabinsCoordinates()!=null && !shipBoard.getCabinsCoordinates().isEmpty())
                 shipBoard.getCabinsCoordinates().remove(this.coordinates);
         }
         else {

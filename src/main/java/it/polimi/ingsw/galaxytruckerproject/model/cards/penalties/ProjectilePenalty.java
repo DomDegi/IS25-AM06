@@ -13,6 +13,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
@@ -126,6 +127,14 @@ public class ProjectilePenalty extends Penalty {
         ArrayList<Set<Coordinates>> returned = player.getShipBoard().destroyTile(toDestroy);
         if (!returned.isEmpty()) {
             this.branch = returned;
+        }
+        else{
+            try {
+                view.notifyEarlyLanding();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+            game.getFlightBoard().earlyLanding(player);
         }
         return toDestroy;
     }

@@ -466,6 +466,7 @@ public class ClientController {
                 view.printBooked(me.getShipBoard());
             }
             case S_MANAGE_CARDS -> {
+                me.getShipBoard().setGetStat();
                 if(gameMode==GameMode.TRIAL) {
                     setState(ClientState.S_END_DRAW_TILE_CARD);
                     previousState = state;
