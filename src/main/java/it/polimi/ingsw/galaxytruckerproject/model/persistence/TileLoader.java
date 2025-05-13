@@ -64,6 +64,11 @@ public class TileLoader {
                 st.tileLoader(lineSplit);
                 return st;
             }
+            case "PP" -> {
+                Pipe pp = new Pipe();
+                pp.tileLoader(lineSplit);
+                return pp;
+            }
             case "VT" -> {
                 return new VoidTile();
             }

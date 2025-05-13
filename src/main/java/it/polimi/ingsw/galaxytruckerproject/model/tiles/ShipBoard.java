@@ -224,19 +224,11 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
     //false: tile occupied
     public boolean positionTile(Optional<Tile> tile, Coordinates coordinates) {
         if (tile.isPresent() && tilesTable[coordinates.getX()][coordinates.getY()].isEmpty()) {
-            if (first){
-                    tilesTable[coordinates.getX()][coordinates.getY()] = tile;
+            tilesTable[coordinates.getX()][coordinates.getY()] = tile;
             tile.get().setShipBoard(this);
             tile.get().setCoordinates(coordinates);
             first=false;
             return true;
-            }
-            else if (tile.get().canPosition( coordinates, this)) {
-                tilesTable[coordinates.getX()][coordinates.getY()] = tile;
-                tile.get().setShipBoard(this);
-                tile.get().setCoordinates(coordinates);
-                return true;
-            }
         }
         return false;
     }
@@ -250,13 +242,13 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
     //Used only for testing (toEnnio: why brotha?)
     public Tile getTile(int x, int y) {
         if(tilesTable[x][y].isPresent())
-        return tilesTable[x][y].get();
+            return tilesTable[x][y].get();
         return null;
     }
 
     public Tile getTile(Coordinates coordinates){
         if (tilesTable[coordinates.getX()][coordinates.getY()].isPresent())
-        return tilesTable[coordinates.getX()][coordinates.getY()].get();
+            return tilesTable[coordinates.getX()][coordinates.getY()].get();
         return null;
     }
 

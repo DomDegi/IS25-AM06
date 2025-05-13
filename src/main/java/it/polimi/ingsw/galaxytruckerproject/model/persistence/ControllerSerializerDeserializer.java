@@ -15,7 +15,7 @@ public class ControllerSerializerDeserializer {
     public void save(GameController gameController) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename,true))) {
 
-            String controllerData = gameController.toString();
+            String controllerData = gameController.toStringData();
             writer.write(controllerData);
             writer.newLine();
 

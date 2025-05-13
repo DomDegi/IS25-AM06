@@ -28,12 +28,11 @@ class GameSaverTest {
     @BeforeEach
     void setUp() {
         game = new Game(LEVEL2,4);
-        game.setGameState(GameState.DRAW_CARD);
         gameController = new GameController(game, "GameSaverTest");
         game.addPlayer("pluto", PlayersColor.RED);
         game.addPlayer("pippo", PlayersColor.GREEN);
-        game.addPlayer("paperino", PlayersColor.GREEN);
-        game.addPlayer("topolino", PlayersColor.GREEN);
+        game.addPlayer("paperino", PlayersColor.YELLOW);
+        game.addPlayer("topolino", PlayersColor.BLUE);
 
         player1 = game.identifyPlayerByName("pluto");
         player2 = game.identifyPlayerByName("pippo");
@@ -42,8 +41,6 @@ class GameSaverTest {
 
 
         player1.setCredit(25);
-        player1.setPlayerName("Giorgio");
-        player1.setPlayerColor(PlayersColor.YELLOW);
         Tile tile1=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
         player1.setDrawnTile(tile1);
         player1.setDisconnected(false);
@@ -169,7 +166,6 @@ class GameSaverTest {
 
         game.drawCard();
         game.drawCard();
-        game.setGameState(GameState.DRAW_CARD);
     }
 
     @Test

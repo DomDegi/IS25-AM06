@@ -90,7 +90,7 @@ public class Game implements GameInterface{
         }
         for (Player player: flightBoard.getAllPlayers()){
             if (color.equals(player.getPlayerColor())){
-                System.out.println(color + "has already been chosen\n");
+                System.out.println(color + " has already been chosen\n");
                 return;
             }
         }
