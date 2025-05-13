@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class TileFactory {
@@ -77,6 +76,35 @@ public class TileFactory {
         return new ConcurrentLinkedDeque<>(tiles);
     }
 
+    public ConcurrentLinkedDeque<Tile> stackFromIDs(ArrayList<Integer> ids) {
+        Map<Integer,Tile> tileMap = this.tileMap();
+        ConcurrentLinkedDeque<Tile> stack = new ConcurrentLinkedDeque<>();
+        for (Integer id : ids) {
+            stack.add(tileMap.get(id));
+        }
+        return stack;
+    }
+
+    public ConcurrentHashMap<Integer, Tile> mapFromIDs(ArrayList<Integer> ids) {
+        Map<Integer,Tile> tileMap = this.tileMap();
+        ConcurrentHashMap<Integer,Tile> newMap = new ConcurrentHashMap<>(ids.size());
+        for (Integer id : ids) {
+            newMap.put(id,tileMap.get(id));
+        }
+        return newMap;
+    }
+
+
+    public Map<Integer,Tile> tileMap() {
+        ArrayList<Tile> tileArray = loadTilesFromJson("Tiles.json");
+
+        Map<Integer,Tile> tileMap = new HashMap<>(tileArray.size());
+        for(Tile tile: tileArray) {
+            tileMap.put(tile.getKey(),tile);
+        }
+        return tileMap;
+    }
+
     // Classe JSON per il mapping dei dati
     public static class JsonTile {
         private String type;
@@ -108,6 +136,5 @@ public class TileFactory {
         public void setTotSpaces(int totSpaces) { this.totSpaces = totSpaces; }
         public int getKey() {return key;}
         public void setKey(int key) {this.key = key;}
-
     }
 }

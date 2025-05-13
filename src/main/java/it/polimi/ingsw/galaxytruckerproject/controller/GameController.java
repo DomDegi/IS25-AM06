@@ -15,6 +15,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.network.Client;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
@@ -23,7 +24,7 @@ import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.*;
 
-import static it.polimi.ingsw.galaxytruckerproject.client.ClientState.DRAW_CARD;
+import static it.polimi.ingsw.galaxytruckerproject.client.ClientState.*;
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.LEVEL2;
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.TRIAL;
 import static it.polimi.ingsw.galaxytruckerproject.model.GameState.CARD_EVENT;
@@ -45,6 +46,8 @@ public class GameController implements Observer, Serializable {
     private Timer hourglassTimer;
     private boolean hourglassON = false;
 
+    //This attribute indicates that a game was loaded from disk
+    private boolean restarted;
 
     public String toString(){
         return gameName+"\ngame state:"+game.getGameState().toString()+"\nplayer needed: "+game.getPlayerCount()+"\nplatyer in game: "+game.getNumberOfPlayers();
@@ -69,6 +72,7 @@ public class GameController implements Observer, Serializable {
         this.playersViewMap = new HashMap<>();
         this.activePlayers = new HashMap<>();
         this.disconnectedPlayers = new HashMap<>();
+        this.restarted = false;
     }
 
     public GameController(String gameName) {
@@ -77,6 +81,7 @@ public class GameController implements Observer, Serializable {
         this.playersViewMap = new HashMap<>();
         this.activePlayers = new HashMap<>();
         this.disconnectedPlayers = new HashMap<>();
+        this.restarted = true;
     }
 
     public void setGameInterface(GameInterface game) {
@@ -94,6 +99,21 @@ public class GameController implements Observer, Serializable {
 
     //ASSOCIA IL PLAYER ALLA VIEW
     public void addToPlayersViewMap(String playerName, VirtualView view, boolean reconnecting) {
+        if (restarted) {
+            if (activePlayers.containsKey(playerName) || reconnectPlayer(playerName, view)) {
+                updateReconnectedPlayer(view);
+                updatePlayerView(WAIT, playerName);
+                checkIfAllJoinedAgain();
+            }
+            else {
+                try {
+                    System.out.println("Player "+playerName+" can't reconnect because they were never inGame");
+                    view.showWrongInputMessage();
+                }catch (RemoteException e){
+                    throw new RuntimeException(e);
+                }
+            }
+        }
         try {
             view.setGameMode(this.game.getMode());
         } catch (RemoteException e) {
@@ -122,6 +142,25 @@ public class GameController implements Observer, Serializable {
 
     }
 
+    public void checkIfAllJoinedAgain() {
+        if (playersViewMap.size() == activePlayers.size()) {
+            switch (game.getGameState()) {
+                case START_GAME -> startGame();
+                case SHIPS_CREATION -> {
+                    updateEveryView(S_END_DRAW_TILE_CARD);
+                }
+                case VERIFY_SHIP_CORRECTNESS -> {
+                    verifyShipCorrectness();
+                }
+                case DRAW_CARD -> askFirstPlayerToDraw();
+                case CARD_EVENT,CONCLUDE_GAME -> {
+                    System.out.println("The game shouldn't be able to be restarted from here");
+                    throw new IllegalArgumentException();
+                }
+            }
+        }
+    }
+
     /**
      * only reconnects player if either it's still verify_ship phase or they have already
      * corrected their ship and chosen a starting position. If they disconnected after their
@@ -130,8 +169,8 @@ public class GameController implements Observer, Serializable {
      * @param view their view
      */
 
-    //RICONNETTE IL PLAYER SE DISCONNESSO
-    public void reconnectPlayer(String playerName, VirtualView view)  {
+    //Reconnects disconnected player
+    public boolean reconnectPlayer(String playerName, VirtualView view)  {
         if (disconnectedPlayers.containsKey(playerName)) {
             //If player disconnected during ships verification without fixing the ship
             if (playersWithErrors.contains(playerName)) {
@@ -141,7 +180,7 @@ public class GameController implements Observer, Serializable {
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
-                    return;
+                    return false;
                 }
                 else{
                     try {
@@ -161,7 +200,7 @@ public class GameController implements Observer, Serializable {
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
-                    return;
+                    return false;
                 }
                 else {
                     try {
@@ -179,10 +218,15 @@ public class GameController implements Observer, Serializable {
                 updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
             }
             updateReconnectedPlayer(view);
+            if (!lockedSmallDecks.isEmpty()) {
+                notifyNotAvailableCardDeck();
+            }
+            return true;
         }
         else {
             try {
                 view.showWrongInputMessage();
+                return false;
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -238,7 +282,7 @@ public class GameController implements Observer, Serializable {
         if (activePlayers.containsKey(playerName)) {
             Player removedPlayer = activePlayers.get(playerName);
             if (removedPlayer.getDrawnTile() != null) {
-                removedPlayer.removeDrawnTile();
+                refuseTile(playerName);
             }
             disconnectedPlayers.put(playerName, removedPlayer);
             activePlayers.remove(playerName);
@@ -531,6 +575,9 @@ public class GameController implements Observer, Serializable {
 
 
     public void refuseTile(String playerName) {
+        if (!game.getGameState().equals(GameState.SHIPS_CREATION)) {
+            return;
+        }
         if (!playerStateIs(playerName, ClientState.S_MANAGE_DRAWN_TILE)) {
             try {
                 playersViewMap.get(playerName).showWrongInputMessage();
@@ -1157,8 +1204,20 @@ public class GameController implements Observer, Serializable {
         return disconnectedPlayers;
     }
 
-    /*
-    public String toStringData() {
 
-    }*/
+    public String toStringData() {
+        //First gameName and hourglassTurns, second clientStates, third playersWithErrors
+        StringBuilder sb = new  StringBuilder();
+        sb.append(gameName).append(" ").append(hourglassTurns).append(" ");
+        if (!playersWithErrors.isEmpty()) {
+            playersWithErrors.forEach(player->{sb.append(player).append(" ");});
+        }
+        return sb.toString();
+    }
+
+    public void dataLoader(String[] attributes) {
+        // GameName should be taken from game file name or should be used to create the gameController
+        this.hourglassTurns = Integer.parseInt(attributes[1]);
+        playersWithErrors.addAll(Arrays.asList(attributes).subList(2, attributes.length));
+    }
 }

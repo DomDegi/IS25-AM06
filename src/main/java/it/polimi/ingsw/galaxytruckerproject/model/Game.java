@@ -11,13 +11,9 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.TileFactory;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.GameState.*;
 
@@ -27,8 +23,8 @@ public class Game implements GameInterface{
     private GameState gameState;
     private int playerCount;
     private ArrayList<Card> inGameCards;
-    private final ConcurrentLinkedDeque<Tile> tileStack;
-    private final ConcurrentHashMap<Integer,Tile> turnedTiles;
+    private ConcurrentLinkedDeque<Tile> tileStack;
+    private ConcurrentHashMap<Integer,Tile> turnedTiles;
     private FlightBoard flightBoard;
     private Card drawnCard;
 
@@ -162,7 +158,7 @@ public class Game implements GameInterface{
         return removedTile;
     }
 
-    public Map<Integer, Tile> getTurnedTiles() {
+    public ConcurrentHashMap<Integer, Tile> getTurnedTiles() {
         return turnedTiles;
     }
 
@@ -330,20 +326,39 @@ public class Game implements GameInterface{
         return drawnCard;
     }
 
-    public String toStringData() {
+    public String toStringGameData() {
         StringBuilder sb = new StringBuilder();
-        sb.append(mode.toString()).append(" ").append(playerCount).append(" ");
-
-        //attributes[0] = mode; attributes[1] = playerCount; [2+] cardsLeft
-        sb.append(cardsToDrawData());
+        sb.append(mode.toString()).append(" ").append(playerCount).append(" ").append(gameState.toString()).append(" ");
+        //attributes[0] = mode; attributes[1] = playerCount; attributes[2] = gameState
         return sb.toString();
     }
 
     public String cardsToDrawData() {
+        if (inGameCards.isEmpty()) {
+            return "";
+        }
         StringBuilder sb = new StringBuilder();
         for (Card card: inGameCards) {
             sb.append(card.getId()).append(" ");
         }
+        return sb.toString();
+    }
+
+    public String tileStackData() {
+        if (tileStack.isEmpty()) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        tileStack.forEach(tile -> {sb.append(tile.getKey()).append(" ");});
+        return sb.toString();
+    }
+
+    public String turnedTileData() {
+        if (turnedTiles.isEmpty()) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        turnedTiles.keySet().forEach(key -> {sb.append(key).append(" ");});
         return sb.toString();
     }
 
@@ -352,13 +367,17 @@ public class Game implements GameInterface{
         this.turnedTiles = new ConcurrentHashMap<>();
     }
 
-    //Only works at loading if the game is in DrawCard
     public void gameLoader(String[] attributes) {
         this.mode = GameMode.valueOf(attributes[0]);
         this.playerCount = Integer.parseInt(attributes[1]);
+        this.setGameState(GameState.fromString(attributes[2]));
+        this.flightBoard = new FlightBoard(mode);
+    }
+
+    public void cardLoader(String[] attributes) {
         ArrayList<Integer> cardsLeftID = new ArrayList<>();
-        for (int i = 2; i < attributes.length; i++) {
-            cardsLeftID.add(Integer.parseInt(attributes[i]));
+        for (String attribute : attributes) {
+            cardsLeftID.add(Integer.parseInt(attribute));
         }
         if (mode == GameMode.LEVEL2) {
             this.inGameCards = new CardDeck("cards.json").deckFromIDs(cardsLeftID);
@@ -368,7 +387,27 @@ public class Game implements GameInterface{
         }
     }
 
+    public void tileStackLoader(String[] attributes) {
+        ArrayList<Integer> keyStack = new ArrayList<>();
+        for (String attribute : attributes) {
+            keyStack.add(Integer.parseInt(attribute));
+        }
+        this.tileStack = new TileFactory().stackFromIDs(keyStack);
+    }
+
+    public void turnedTileLoader(String[] attributes) {
+        ArrayList<Integer> keyMap = new ArrayList<>();
+        for (String attribute : attributes) {
+            keyMap.add(Integer.parseInt(attribute));
+        }
+        this.turnedTiles = new TileFactory().mapFromIDs(keyMap);
+    }
+
     public ArrayList<Card> getInGameCards() {
         return inGameCards;
+    }
+
+    public ConcurrentLinkedDeque<Tile> getTileStack() {
+        return tileStack;
     }
 }
