@@ -19,7 +19,7 @@ public class GameSaver {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
         String timeStamp = now.format(dtf);
 
-        return gameName + " " + timeStamp + ".txt";
+        return gameName + "_" + timeStamp + ".txt";
     }
 
     public static void save(GameController gameController) {
