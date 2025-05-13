@@ -100,7 +100,7 @@ public abstract class CargoHold extends Tile{
         for (int i = 0; i < totSpaces; i++) {
             int goodsAttribute = 7 + i;
             if (!attributes[goodsAttribute].equals("N")) {
-                cargo.add(new Goods(GoodsColor.forValue(attributes[goodsAttribute])));
+                cargo.add(new Goods(GoodsColor.fromString(attributes[goodsAttribute])));
             }
         }
     }

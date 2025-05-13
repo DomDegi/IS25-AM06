@@ -329,6 +329,7 @@ public class CombatZone extends Card {
     @Override
     public String toString() {
         StringBuilder string = new StringBuilder("Combat Zone: ");
+        string.append("id ").append(id).append(" ");
         for (ChallengeType challengeType: listOfChallenges.keySet()) {
             string.append(challengeType).append(" ").append(listOfChallenges.get(challengeType).toString()).append(" ");;
             }

@@ -45,19 +45,19 @@ class GameControllerTest {
         trialController.addToPlayersViewMap(player1.getPlayerName(), view1, false);
         assertTrue(trialController.checkColorAvailable(player1.getPlayerName(),view1,RED));
         trialController.playerAddition("p1", RED);
-        assertEquals(1, trialController.getPlayers().size());
+        assertEquals(1, trialController.getActivePlayers().size());
         trialController.addToPlayersViewMap(player2.getPlayerName(), view2, false);
         assertTrue(trialController.checkColorAvailable(player2.getPlayerName(),view2,YELLOW));
         trialController.playerAddition("p2", YELLOW);
-        assertEquals(2, trialController.getPlayers().size());
+        assertEquals(2, trialController.getActivePlayers().size());
         trialController.addToPlayersViewMap(player3.getPlayerName(), view3, false);
         assertTrue(trialController.checkColorAvailable(player3.getPlayerName(),view3,GREEN));
         trialController.playerAddition("p3", GREEN);
-        assertEquals(3, trialController.getPlayers().size());
+        assertEquals(3, trialController.getActivePlayers().size());
         trialController.addToPlayersViewMap(player4.getPlayerName(), view4, false);
         assertTrue(trialController.checkColorAvailable(player4.getPlayerName(),view4,BLUE));
         trialController.playerAddition("p4", BLUE);
-        assertEquals(4, trialController.getPlayers().size());
+        assertEquals(4, trialController.getActivePlayers().size());
     }
 
     @Test
@@ -74,19 +74,19 @@ class GameControllerTest {
         gameController.addToPlayersViewMap(player1.getPlayerName(), view1, false);
         assertTrue(gameController.checkColorAvailable(player1.getPlayerName(),view1,RED));
         gameController.playerAddition("p1", RED);
-        assertEquals(1, gameController.getPlayers().size());
+        assertEquals(1, gameController.getActivePlayers().size());
         gameController.addToPlayersViewMap(player2.getPlayerName(), view2, false);
         assertTrue(gameController.checkColorAvailable(player2.getPlayerName(),view2,YELLOW));
         gameController.playerAddition("p2", YELLOW);
-        assertEquals(2, gameController.getPlayers().size());
+        assertEquals(2, gameController.getActivePlayers().size());
         gameController.addToPlayersViewMap(player3.getPlayerName(), view3, false);
         assertTrue(gameController.checkColorAvailable(player3.getPlayerName(),view3,GREEN));
         gameController.playerAddition("p3", GREEN);
-        assertEquals(3, gameController.getPlayers().size());
+        assertEquals(3, gameController.getActivePlayers().size());
         gameController.addToPlayersViewMap(player4.getPlayerName(), view4, false);
         assertTrue(gameController.checkColorAvailable(player4.getPlayerName(),view4,BLUE));
         gameController.playerAddition("p4", BLUE);
-        assertEquals(4, gameController.getPlayers().size());
+        assertEquals(4, gameController.getActivePlayers().size());
     }
 
     @Test

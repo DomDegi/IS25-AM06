@@ -38,6 +38,16 @@ public enum GoodsColor implements Serializable {
     public static GoodsColor forValue(String value) {
         return GoodsColor.valueOf(value.toUpperCase());
     }
+
+    public static GoodsColor fromString(String s) {
+        return switch (s.toUpperCase()) {
+            case "R" -> RED;
+            case "Y" -> YELLOW;
+            case "G" -> GREEN;
+            case "B" -> BLUE;
+            default -> throw new IllegalArgumentException("Unknown color code: " + s);
+        };
+    }
 }
 
 

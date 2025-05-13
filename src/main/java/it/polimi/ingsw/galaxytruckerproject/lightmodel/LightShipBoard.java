@@ -46,7 +46,7 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         this.crewCoordinates = new ArrayList<>();
         this.credit = 0;
         this. player = new LightPlayer(this.shipBoard.getPlayer());
-        this.tilesTable = shipBoard.getTilesTable();
+        convertToLightShipBoard(shipBoard);
     }
 
     public LightShipBoard(LightPlayer player) {
@@ -615,6 +615,16 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         for(Coordinates coordinates: getCabinsCoordinates())
         {
             tilesTable[coordinates.getX()][coordinates.getY()].get().getStat();
+        }
+    }
+
+    public  void convertToLightShipBoard(ShipBoard shipBoard) {
+        this.tilesTable =  shipBoard.getTilesTable();
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 7; j++) {
+                Optional<Tile> tile = tilesTable[i][j];
+                tile.ifPresent(value -> value.setShipBoard(this));
+            }
         }
     }
 

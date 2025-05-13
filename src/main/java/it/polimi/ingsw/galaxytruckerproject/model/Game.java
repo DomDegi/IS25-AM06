@@ -9,7 +9,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.TileFactory;
-import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -18,18 +17,19 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.GameState.*;
 
 public class Game implements GameInterface{
     private final ArrayList<Observer> observers = new ArrayList<>();
-    private final GameMode mode;
+    private GameMode mode;
     private GameState gameState;
     private int playerCount;
-    private final ArrayList<Card> inGameCards;
+    private ArrayList<Card> inGameCards;
     private final ConcurrentLinkedDeque<Tile> tileStack;
     private final ConcurrentHashMap<Integer,Tile> turnedTiles;
-    private final FlightBoard flightBoard;
+    private FlightBoard flightBoard;
     private Card drawnCard;
 
 
@@ -229,7 +229,7 @@ public class Game implements GameInterface{
 
 
     public void endShipCreation() {
-       // Collections.shuffle(inGameCards);
+        Collections.shuffle(inGameCards);
         setGameState(VERIFY_SHIP_CORRECTNESS);
     }
 
@@ -328,5 +328,47 @@ public class Game implements GameInterface{
 
     public Card getDrawnCard() {
         return drawnCard;
+    }
+
+    public String toStringData() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(mode.toString()).append(" ").append(playerCount).append(" ");
+
+        //attributes[0] = mode; attributes[1] = playerCount; [2+] cardsLeft
+        sb.append(cardsToDrawData());
+        return sb.toString();
+    }
+
+    public String cardsToDrawData() {
+        StringBuilder sb = new StringBuilder();
+        for (Card card: inGameCards) {
+            sb.append(card.getId()).append(" ");
+        }
+        return sb.toString();
+    }
+
+    public Game() {
+        this.tileStack = new ConcurrentLinkedDeque<>();
+        this.turnedTiles = new ConcurrentHashMap<>();
+    }
+
+    //Only works at loading if the game is in DrawCard
+    public void gameLoader(String[] attributes) {
+        this.mode = GameMode.valueOf(attributes[0]);
+        this.playerCount = Integer.parseInt(attributes[1]);
+        ArrayList<Integer> cardsLeftID = new ArrayList<>();
+        for (int i = 2; i < attributes.length; i++) {
+            cardsLeftID.add(Integer.parseInt(attributes[i]));
+        }
+        if (mode == GameMode.LEVEL2) {
+            this.inGameCards = new CardDeck("cards.json").deckFromIDs(cardsLeftID);
+        }
+        else {
+            this.inGameCards = new TrialCardDeck("trialFlightCards.json").deckFromIDs(cardsLeftID);
+        }
+    }
+
+    public ArrayList<Card> getInGameCards() {
+        return inGameCards;
     }
 }

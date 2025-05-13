@@ -1,6 +1,10 @@
 package it.polimi.ingsw.galaxytruckerproject.model.persistence;
 
+import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.Game;
+import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
@@ -10,28 +14,40 @@ import it.polimi.ingsw.galaxytruckerproject.view.TUI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ShipBoardSerializerDeserializerTest {
+class PlayerSerializerDeserializerTest {
 
     String fileName = "serializerTest";
-    Player player = new Player("Giorgio", PlayersColor.RED);
-    ShipBoardSerializerDeserializer shipBoardSerializer;
-    Player playerCopy = new Player("Copy", PlayersColor.RED);
+    GameController gameController = new GameController(new Game(GameMode.LEVEL2,3), "Test");
+    Player player = new Player("Giorgio", PlayersColor.YELLOW);
+    PlayerSerializerDeserializer playerSerializerDeserializer;
     TUI shipPrinter = new TUI();
+    FlightBoard flightBoard = new FlightBoard(GameMode.LEVEL2);
 
     @BeforeEach
     void setUp() {
-
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, false))) {
             // This will clear the file content by opening it in overwrite mode
             writer.write("");  // Optional: explicitly write to ensure file is cleared.
         } catch (IOException e) {
             System.out.println("Error while clearing file: " + e.getMessage());
         }
+
+        player.setCredit(25);
+        player.setPlayerName("Giorgio");
+        player.setPlayerColor(PlayersColor.YELLOW);
+        Tile tile1=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
+        player.setDrawnTile(tile1);
+        player.setDisconnected(false);
+        player.setLanded(true);
+        player.setPlayerPosition(7);
+        player.setPlayerRanking(2);
 
         Goods red = new Goods(GoodsColor.RED);
         Goods yellow = new Goods(GoodsColor.YELLOW);
@@ -40,7 +56,6 @@ class ShipBoardSerializerDeserializerTest {
 
         ShipBoard shipBoard1 = player.getShipBoard();
         shipBoard1.initializeLevel2();
-        Tile tile1=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
         shipBoard1.positionTile(Optional.of(tile1), new Coordinates(0,4));
         Tile tile2=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE));
         shipBoard1.positionTile(Optional.of(tile2), new Coordinates(1,1));
@@ -100,67 +115,38 @@ class ShipBoardSerializerDeserializerTest {
     }
 
     @Test
-    void save_test() {
-        shipBoardSerializer = new ShipBoardSerializerDeserializer();
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
-            shipBoardSerializer.save(player.getShipBoard(),writer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void save_test() {
+        playerSerializerDeserializer = new PlayerSerializerDeserializer(fileName);
+        playerSerializerDeserializer.save(player);
     }
 
     @Test
-    void load_test() {
+    public void load_test() {
         save_test();
         int expectedEndOfLine = 35;
-        try {
-            int trueEndOfLine = shipBoardSerializer.load(playerCopy, 0, new BufferedReader(new FileReader(fileName)));
-            assertEquals(expectedEndOfLine, trueEndOfLine);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        int endOfLine = playerSerializerDeserializer.load(gameController, 0);
+        assertEquals(expectedEndOfLine, endOfLine);
     }
 
     @Test
-    void print_test() {
+    public void attributes_test() {
         load_test();
-        shipPrinter.printShipboard(new LightShipBoard(player.getShipBoard()));
+        Player playerCopy = gameController.getActivePlayers().values().iterator().next();
+        assertEquals(playerCopy.getPlayerName(), player.getPlayerName());
+        assertEquals(playerCopy.getPlayerColor(),player.getPlayerColor());
+        assertEquals(playerCopy.getPlayerPosition(), player.getPlayerPosition());
+        assertEquals(playerCopy.getPlayerRanking(),player.getPlayerRanking());
+        assertEquals(playerCopy.getCredit(), player.getCredit());
+        assertEquals(playerCopy.isLanded(), player.isLanded());
+        assertEquals(playerCopy.isDisconnected(),player.isDisconnected());
+        assertEquals(playerCopy.toStringData(),playerCopy.toStringData());
+        System.out.println("playerCopy drawn tile:");
+        System.out.println(playerCopy.getDrawnTile().toString());
+        System.out.println("player drawn tile:");
+        System.out.println(player.getDrawnTile().toString());
         shipPrinter.printShipboard(new LightShipBoard(playerCopy.getShipBoard()));
-        System.out.println("actual " + player.getTotalCrew());
-        System.out.println("copy " + playerCopy.getTotalCrew());
+        shipPrinter.printShipboard(new LightShipBoard(player.getShipBoard()));
     }
 
-    @Test
-    void crew_test() {
-        load_test();
-        assertEquals(player.getShipBoard().getNumBrownAliens(), playerCopy.getShipBoard().getNumBrownAliens());
-        assertEquals(player.getShipBoard().getNumPurpleAliens(), playerCopy.getShipBoard().getNumPurpleAliens());
-        assertEquals(player.getShipBoard().getNumHumanCrew(), playerCopy.getShipBoard().getNumHumanCrew());
-        assertEquals(player.getTotalCrew(),playerCopy.getTotalCrew());
-    }
-
-    @Test
-    void print_stuff_to_check() {
-        load_test();
-        System.out.println("Player cabins: ");
-        player.printCurrentInfoCabins();
-        System.out.println("Copy cabins: ");
-        playerCopy.printCurrentInfoCabins();
-
-        player.printCurrentInfoEngines();
-        playerCopy.printCurrentInfoEngines();
-
-        player.printCurrentInfoCannons();
-        playerCopy.printCurrentInfoCannons();
-
-        player.printCurrentInfoCargoHolds();
-        playerCopy.printCurrentInfoCargoHolds();
-
-        player.printCurrentInfoBatteries();
-        playerCopy.printCurrentInfoBatteries();
-
-        assertEquals(player.getShipBoard().getNumExposedConnectors(), playerCopy.getShipBoard(). getNumExposedConnectors());
-    }
 
 }

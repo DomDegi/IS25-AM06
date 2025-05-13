@@ -10,6 +10,7 @@ public class EquipCabin extends Cabin {
 
     private AlienOptions alienability = AlienOptions.NO;
     private CrewType crewType;
+    private int crewToLoad;
 
     public EquipCabin(Link north, Link east, Link south, Link west, int key) {
 
@@ -157,6 +158,15 @@ public class EquipCabin extends Cabin {
         checkAlienability();
         if(!shipBoard.getCabinsCoordinates().contains(this.coordinates))
             shipBoard.getCabinsCoordinates().add(this.coordinates);
+        if (crewToLoad > 0) {
+            this.crew = crewToLoad;
+            crewToLoad = 0;
+            switch (crewType) {
+                case PURPLE -> shipBoard.addBreakPurpleAliens(true);
+                case BROWN -> shipBoard.addBreakBrownAliens(true);
+                case HUMAN -> shipBoard.addBreakHumanCrew(crew);
+            }
+        }
     }
 
 
@@ -176,7 +186,7 @@ public class EquipCabin extends Cabin {
             }
             if(this.crew==0)
                 if(shipBoard.getCabinsCoordinates()!=null && !shipBoard.getCabinsCoordinates().isEmpty())
-                shipBoard.getCabinsCoordinates().remove(this.coordinates);
+                    shipBoard.getCabinsCoordinates().remove(this.coordinates);
         }
         else {
             System.out.println("THIS CABIN IS EMPTY");
@@ -262,21 +272,18 @@ public class EquipCabin extends Cabin {
     @Override
     public String toStringData() {
         String string = "EC " + key + " " + north.toString() + " " + east.toString() + " " + south.toString() + " " + west.toString() + " " + crew + " ";
-        if (crewType != null) {
-            string = string + crewType.toString();
-        }
-        else string = string + "N";
+        string = string + Objects.requireNonNullElse(crewType, "N");
         return string;
     }
 
     @Override
     public void tileLoader(String[] attributes) {
         super.tileLoader(attributes);
-        this.crew =  Integer.parseInt(attributes[6]);
+        this.crewToLoad =  Integer.parseInt(attributes[6]);
         if (!attributes[7].equals("N")) {
             this.crewType = CrewType.fromString(attributes[7]);
         }
-        if (crewType != CrewType.HUMAN && crew > 1) {
+        if (crewType != CrewType.HUMAN && crewToLoad > 1) {
             System.out.println("This equip cabin has something wrong going on");
             throw new IllegalArgumentException();
         }

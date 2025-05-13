@@ -247,12 +247,10 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
         return false;
     }
 
-    public boolean positionNullTile(Optional<Tile> tile, Coordinates coordinates) {
+    public void positionNullTile(Optional<Tile> tile, Coordinates coordinates) {
         if (tilesTable[coordinates.getX()][coordinates.getY()].isEmpty() && tile.isEmpty()) {
             tilesTable[coordinates.getX()][coordinates.getY()] = Optional.empty();
-            return true;
         }
-        return false;
     }
 
     //Used only for testing (toEnnio: why brotha?)
@@ -490,6 +488,7 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
         for(int j=0;j<i;j++) {
             addPenalty();
         }
+        countExposedConnectors();
         return true;
     }
 

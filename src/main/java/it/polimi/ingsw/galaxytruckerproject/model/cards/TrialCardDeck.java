@@ -13,6 +13,9 @@ public class TrialCardDeck {
     public TrialCardDeck(String filename) {
         this.trialDeck = new ArrayList<>();
         loadTrialCards(filename);
+        int[] idsToGive = {2, 4, 5, 9, 13, 16, 18, 19};
+        giveIds(idsToGive);
+
     }
 
     public void loadTrialCards(String filename){
@@ -36,11 +39,27 @@ public class TrialCardDeck {
         }
     }
 
+    public void giveIds(int[] idsToGive) {
+        for (int i = 0; i < idsToGive.length; i++) {
+            trialDeck.get(i).setId(idsToGive[i]);
+        }
+    }
+
     public ArrayList<Card> getTrialDeck() {
         return trialDeck;
     }
 
     public Card drawCard(){
         return trialDeck.removeFirst();
+    }
+
+    public ArrayList<Card> deckFromIDs(ArrayList<Integer> ids){
+        ArrayList<Card> deckFromIDs = new ArrayList<>();
+        for (Card card : trialDeck){
+            if (ids.contains(card.getId())){
+                deckFromIDs.add(card);
+            }
+        }
+        return deckFromIDs;
     }
 }

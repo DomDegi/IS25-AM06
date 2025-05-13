@@ -18,7 +18,7 @@ public class StartingCabin extends Cabin {
 
     public void getStat(){
         shipBoard.getCabinsCoordinates().add(this.coordinates);
-        shipBoard.addBreakHumanCrew(+2);
+        shipBoard.addBreakHumanCrew(crew);
     }
     public boolean removeCrew(){
         if(crew > 0) {

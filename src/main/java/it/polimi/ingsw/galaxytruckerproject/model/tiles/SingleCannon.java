@@ -5,12 +5,7 @@ public class SingleCannon extends Cannon {
 
     public SingleCannon(Link north, Link east, Link south, Link west, int key) {
         super(north, east, south, west,key);
-        if(direction == Direction.NORTH) {
-            this.fireStrength = 1;
-        }
-        else {
-            this.fireStrength= 0.5F;
-        }
+        updateFireStrength();
     }
     //CONSTRUCTOR METHOD FOR THE TESTING
     public SingleCannon(Link north, Link east, Link south, Link west) {
@@ -83,10 +78,7 @@ public class SingleCannon extends Cannon {
     @Override
     public void rotate(){
         super.rotate();
-        if (this.direction == Direction.NORTH)
-            this.fireStrength = 1;
-        else
-            this.fireStrength=0.5f;
+        updateFireStrength();
     }
 
     @Override
@@ -99,6 +91,14 @@ public class SingleCannon extends Cannon {
     @Override
     public void tileLoader(String[] attributes) {
         super.tileLoader(attributes);
+        updateFireStrength();
+    }
+
+    void updateFireStrength () {
+        if (this.direction == Direction.NORTH)
+            this.fireStrength = 1;
+        else
+            this.fireStrength=0.5f;
     }
 }
 

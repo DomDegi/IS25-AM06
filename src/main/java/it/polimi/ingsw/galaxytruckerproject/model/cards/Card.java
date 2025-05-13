@@ -33,6 +33,7 @@ import java.util.Map;
 })
 
 public abstract class Card implements Serializable {
+    protected int id;
     protected final int level;
     protected final int requiredDays;
     protected GameInterface game = null;
@@ -114,8 +115,12 @@ public abstract class Card implements Serializable {
     public ArrayList<Planet> getListOfPlanets() {
         return null;
     }
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) { this.id = id; }
     @Override
     public String toString() {
-        return "level: " +  level + ", required days: " + requiredDays;
+        return "id: " + id + " level: " +  level + ", required days: " + requiredDays;
     }
 }

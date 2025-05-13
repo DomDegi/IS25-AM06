@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 class CardDeckTest {
 
@@ -20,6 +21,7 @@ class CardDeckTest {
         cardsLvl1 = cardDeck.getDeckLvl1();
         cardsLvl2 = cardDeck.getDeckLvl2();
         trialCards = new TrialCardDeck("trialFlightCards.json").getTrialDeck();
+        Collections.shuffle(trialCards);
     }
 
     @Test

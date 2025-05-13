@@ -34,6 +34,6 @@ public class Epidemic extends Card {
 
     @Override
     public String toString() {
-        return "Epidemic";
+        return "Epidemic " + super.toString();
     }
 }
