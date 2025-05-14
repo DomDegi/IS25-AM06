@@ -5,8 +5,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CrewType;
 import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
-import it.polimi.ingsw.galaxytruckerproject.view.GUI.GUI;
-import it.polimi.ingsw.galaxytruckerproject.view.TUI;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -53,7 +51,6 @@ public class TextualInputParser {
             case CHOOSE_IP_AND_PORT_RMI -> {
                 try {
                     clientController.connectRMI();
-                    clientController.setState(ClientState.LOGIN);
                 } catch (MalformedURLException | NotBoundException | RemoteException e) {
                     throw new RuntimeException(e);
                 }
@@ -72,11 +69,8 @@ public class TextualInputParser {
                             return false;
                         }
                     }
-                    clientController.setState(ClientState.LOGIN);
-                } catch (IOException e) {
-                    System.out.println("Error connecting to SOCKET server");
-                    view.wrongLocalInput();
-                    return false;
+                } catch (IOException | NotBoundException e) {
+                    throw new RuntimeException(e);
                 }
             }
 

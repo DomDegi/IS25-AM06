@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.galaxytruckerproject.view.gui.WelcomeController">
+   <center>
+      <VBox alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Benvenuti in GALAXY TRUCKER" />
+            <Button mnemonicParsing="false" onAction="#startNewGame" text="New Game" />
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
