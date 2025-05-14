@@ -894,6 +894,18 @@ public class GameController implements Observer, Serializable {
             } catch(Exception ignored) {}
         }
         else {
+            /*for(String st: clientsStatesMap.keySet()) {
+                if(clientsStatesMap.get(st).equals(ClientState.S_FINISHED))
+                    try{
+                        playersView.showWrongInputMessage();
+                        //Show wrong input causa il rollBack dello state quindi devo rimettere il bro che pesca
+                        //la carta nello stato di wait
+                        clientsStatesMap.put(playerName, ClientState.WAIT);
+                        return;
+                    } catch(Exception ignored) {}
+
+            }*/
+
             game.drawCard();
             notifyDrawnCard(game.getDrawnCard());
             game.setGameState(CARD_EVENT);
