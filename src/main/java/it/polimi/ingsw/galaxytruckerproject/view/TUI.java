@@ -305,12 +305,17 @@ public class TUI implements DisplayableView {
 
     @Override
     public void notifyPlayerLandedOnPlanet(String playerName, int planet) throws RemoteException {
-        System.out.println(playerName + "landed on planet " + planet);
+        System.out.println(playerName + " landed on planet " + planet);
     }
 
     @Override
     public void wrongLocalInput() {
         System.out.println("You entered a wrong input");
+    }
+
+    @Override
+    public void coordinateSelected() {
+        System.out.println("coordinate selected correctly");
     }
 
     @Override

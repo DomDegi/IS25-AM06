@@ -25,6 +25,8 @@ public interface DisplayableView extends ViewInterface{
 
     void wrongLocalInput();
 
+    void coordinateSelected();
+
     void showCard(ArrayList<Card> cards);
 
     void printFlightboard(LightFlightboard lightFlightboard);

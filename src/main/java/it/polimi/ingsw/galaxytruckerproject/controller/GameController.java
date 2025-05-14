@@ -851,15 +851,13 @@ public class GameController implements Observer, Serializable {
     }
 
     public void askFirstPlayerToDraw() {
-        updatePlayerView(DRAW_CARD,game.getListOfInFlightPlayers().getFirst().getPlayerName());
-
-        /*
+        //updatePlayerView(DRAW_CARD,game.getListOfInFlightPlayers().getFirst().getPlayerName());
         if(game.getListOfInFlightPlayers()!=null&& !game.getListOfInFlightPlayers().isEmpty()) {
             updatePlayerView(DRAW_CARD, game.getListOfInFlightPlayers().getFirst().getPlayerName());
         }
         else{
             concludeGame();
-        }*/
+        }
     }
 
     public void initializeDrawnCard () {
@@ -1132,7 +1130,7 @@ public class GameController implements Observer, Serializable {
         pendingPongs.put(playerName, future);
         try{
             view.ping();
-            future.get(5, TimeUnit.SECONDS);
+            future.get(10, TimeUnit.SECONDS);
         } catch (InterruptedException | RemoteException | ExecutionException | TimeoutException e) {
             activePlayers.remove(playerName);
             disconnectedPlayers.put(playerName,player);

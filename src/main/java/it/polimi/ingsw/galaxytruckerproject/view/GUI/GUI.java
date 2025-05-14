@@ -221,6 +221,11 @@ public class GUI extends Application implements DisplayableView {
     }
 
     @Override
+    public void coordinateSelected() {
+
+    }
+
+    @Override
     public void showCard(ArrayList<Card> cards) {
 
     }

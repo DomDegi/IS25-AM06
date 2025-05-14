@@ -84,7 +84,6 @@ public class CoordInputManager {
             }
             case CHOOSE_BATTERY -> {
                 if(tile.getNumBatteries()>0) {
-                    clientController.getView().showGenericMessage("battery added correctly");
                     clientController.getMe().getShipBoard().chooseBatteryUse(coordinate);
                     coordinates.add(coordinate);
                 } else {
@@ -93,11 +92,9 @@ public class CoordInputManager {
             }
             case CHOOSE_DOUBLE_CANNON ->{
                 if(tile.getStrength()>0) {
-                    clientController.getView().showGenericMessage("double cannon added correctly");
                     fireStrength += tile.getStrength();
                     needed++;
                 } else if(tile.getNumBatteries()>0 && needed >0) {
-                    clientController.getView().showGenericMessage("battery added correctly");
                     clientController.getMe().getShipBoard().chooseBatteryUse(coordinate);
                     coordinates.add(coordinate);
                     needed--;
@@ -107,11 +104,9 @@ public class CoordInputManager {
             }
             case CHOOSE_DOUBLE_ENGINE -> {
                 if(tile.getEngineStrength()==2) {
-                    clientController.getView().showGenericMessage("double engine added correctly");
                     numEngine++;
                     needed++;
                 } else if(tile.getNumBatteries()>0 && needed >0) {
-                    clientController.getView().showGenericMessage("battery added correctly");
                     clientController.getMe().getShipBoard().chooseBatteryUse(coordinate);
                     coordinates.add(coordinate);
                     needed--;
@@ -171,6 +166,7 @@ public class CoordInputManager {
                 }
             }
         }
+        clientController.getView().coordinateSelected();
         if(coordinates.size()==needed && (coordReqType != CoordReqType.CHOOSE_DOUBLE_ENGINE && coordReqType != CoordReqType.CHOOSE_DOUBLE_CANNON && coordReqType != CoordReqType.CHOOSE_TO_BREAK && coordReqType != CoordReqType.CHOOSE_BATTERY )) {
             endCheckingFase();
         }

@@ -39,7 +39,7 @@ public enum ClientState implements Serializable {
             case LOBBY1 -> {return "Enter gameName [gameName]";}
             case COLOR_CHOICE -> {return "Choose your color [red] [yellow] [green] [blue]";}
             case ACTION -> {return "You can accept or deny [yes] [no]";}
-            case COORD_REQUEST -> {return "Coordinates requested [coordinates]";}
+            case COORD_REQUEST -> {return "Coordinates requested [coordinates] and insert [done] to complete the operation";}
             case MANAGE_GOODS -> {return  "Going to manage goods of the planet";}
             case PLANET_CHOICE -> {return "Choose one of the planets to land [planetNumber]";}
             case S_END_DRAW_TILE_CARD -> {return "Now you can draw a tile or a card [done] [draw tile|draw tile new] [draw tile b1] [draw tile b2] [draw tile turnedTileNum] [draw deck numDeck] [check playerNum] [turn]";}

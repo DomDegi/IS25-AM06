@@ -23,7 +23,7 @@ public class Planets extends Card{
     private Player currentPlayer;
     private ViewInterface currentPlayerView = null;
     private boolean chosen;
-    private Map<String,GoodsChecker> goodsChecker;
+    private Map<String,GoodsChecker> goodsChecker=new HashMap<>();
     public Map<String,Planet> playerChosenPlanets = new HashMap<>();
     private int playerIndex = -1;
 
@@ -91,7 +91,7 @@ public class Planets extends Card{
         listOfPlanets.get(planet - 1).setOccupationStatus();
         playerChosenPlanets.put(playerName, listOfPlanets.get(planet - 1));
         notifyPlayerLanded(playerName, planet);
-        goodsChecker.put(currentPlayer.getPlayerName(), new GoodsChecker(currentPlayer,listOfPlanets.get(planet - 1).getListOfGoods()));
+        goodsChecker.put(playerName, new GoodsChecker(currentPlayer,listOfPlanets.get(planet - 1).getListOfGoods()));
         if(playerIndex==game.getListOfInFlightPlayers().size()-1) {
             chosen = true;
             for (Player player: game.getListOfInFlightPlayers()) {
@@ -139,7 +139,8 @@ public class Planets extends Card{
         }
         currentPlayer= game.getListOfInFlightPlayers().get(playerIndex);
         currentPlayerView=viewsMap.get(currentPlayer.getPlayerName());
-        this.goodsChecker = null;
+        //this.goodsChecker = null; tentativo di sistemare
+        this.goodsChecker.clear();
 
         if (currentPlayer.IsDisconnected()) {
             nextPlayer();
