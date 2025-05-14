@@ -15,6 +15,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.network.Client;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
@@ -528,6 +529,7 @@ public class GameController implements Observer, Serializable {
     }
 
     public void endShipVerification() {
+
         game.endShipVerification();
     }
 
@@ -660,7 +662,7 @@ public class GameController implements Observer, Serializable {
 
     //set currently drawn tile as booked for the player
     public void bookTile(ViewInterface playersView, String playerName) {
-        if (playerStateIs(playerName,  ClientState.S_MANAGE_DRAWN_TILE)) {
+        if (playerStateIs(playerName, ClientState.S_MANAGE_DRAWN_TILE)) {
             Tile toBook = game.playerBookTile(playerName);
             if (toBook != null) {
                 updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
@@ -853,15 +855,13 @@ public class GameController implements Observer, Serializable {
     }
 
     public void askFirstPlayerToDraw() {
-        updatePlayerView(DRAW_CARD,game.getListOfInFlightPlayers().getFirst().getPlayerName());
 
-        /*
         if(game.getListOfInFlightPlayers()!=null&& !game.getListOfInFlightPlayers().isEmpty()) {
             updatePlayerView(DRAW_CARD, game.getListOfInFlightPlayers().getFirst().getPlayerName());
         }
         else{
             concludeGame();
-        }*/
+        }
     }
 
     public void initializeDrawnCard () {
@@ -895,12 +895,12 @@ public class GameController implements Observer, Serializable {
         }
         else {
             /*for(String st: clientsStatesMap.keySet()) {
-                if(clientsStatesMap.get(st).equals(ClientState.S_FINISHED))
+                if(clientsStatesMap.get(st).equals(ClientState.S_FINISHED)) {}
                     try{
                         playersView.showWrongInputMessage();
                         //Show wrong input causa il rollBack dello state quindi devo rimettere il bro che pesca
                         //la carta nello stato di wait
-                        clientsStatesMap.put(playerName, ClientState.WAIT);
+                        clientsStatesMap.put(playerName, ClientState.DRAW_CARD);
                         return;
                     } catch(Exception ignored) {}
 
