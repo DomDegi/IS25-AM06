@@ -296,6 +296,10 @@ public class ClientController {
     }
 
     public void bookTile() {
+        if(this.gameMode == GameMode.TRIAL) {
+            view.wrongLocalInput();
+            return;
+        }
         if (!me.getShipBoard().addBookedTile(this.tileInHand)) {
             view.wrongLocalInput();
             return;
@@ -365,7 +369,7 @@ public class ClientController {
 
     public void choosePlanet(int chose) {
         Card planet = displayedCard.getFirst();
-        if (chose >= 0 && chose < planet.getListOfPlanets().size()) {
+        if (chose >= 0 && chose <= planet.getListOfPlanets().size()) {
             indexDeckInHandOrPlanet = chose;
             setState(ClientState.WAIT);
             try {

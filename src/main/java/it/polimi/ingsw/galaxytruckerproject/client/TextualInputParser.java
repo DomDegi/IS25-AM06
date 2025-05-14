@@ -295,7 +295,6 @@ public class TextualInputParser {
                     return false;
                 clientController.choosePlanet(chose);
             }
-
             case MANAGE_GOODS-> {
                 if (clientController.checkShipBoards(words))
                     return true;
@@ -322,7 +321,6 @@ public class TextualInputParser {
                     return false;
                 }
             }
-
             case MANAGE_CABINS -> {
                 CrewType type;
                 switch (words[0]) {
@@ -337,7 +335,6 @@ public class TextualInputParser {
                 }
                 clientController.manageCabins(type);
             }
-
             case COORD_REQUEST -> {
                 if (clientController.checkShipBoards(words))
                     return true;
@@ -358,7 +355,6 @@ public class TextualInputParser {
                     }
                 }
             }
-
             case WAIT ->{
                 switch(clientController.getPhase()){
                     case LOGIN -> {
