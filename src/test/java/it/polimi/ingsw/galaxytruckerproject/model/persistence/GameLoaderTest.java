@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.LEVEL2;
-import static it.polimi.ingsw.galaxytruckerproject.model.GameState.DRAW_CARD;
+import static it.polimi.ingsw.galaxytruckerproject.model.GameState.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameLoaderTest {
 
-    String fileName = "GameSaverTest.txt";
+    String fileName = "GameSaverTest";
     GameController gameController;
     Player player1;
     Player player2;
@@ -29,6 +29,7 @@ class GameLoaderTest {
         gameController = GameLoader.findSavedGame(fileName).get();
     }
 
+    //This test works only if you run gameSaverTest not more than 2 hours ago
     @Test
     void load_Game() {
         String[] names = new String[]{"pippo","pluto","paperino","topolino"};
@@ -49,10 +50,10 @@ class GameLoaderTest {
         assertEquals("pippo G 0 0 0 N N N",player3.toStringData());
 
         assertEquals(0,gameController.getHourglassTurns());
-        assertEquals("GameSaverTest.txt",gameController.getGameName());
+        assertEquals("GameSaverTest",gameController.getGameName());
 
         assertEquals(LEVEL2,gameController.getGame().getMode());
-        assertEquals(DRAW_CARD,gameController.getGameState());
+        assertEquals(SHIPS_CREATION,gameController.getGameState());
 
         for (Player player:  players) {
             shipPrinter.printShipboard(new LightShipBoard(player.getShipBoard()));

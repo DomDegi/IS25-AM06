@@ -29,6 +29,25 @@ public class ShipBoardSerializerDeserializer {
                 writer.newLine();
             }
         }
+        ArrayList<Tile> bookedTiles = shipBoard.getBookedTiles();
+        switch(bookedTiles.size()) {
+            case 0 -> {
+                for (int i = 0; i < 2; i++) {
+                    writer.write("NullTile");
+                    writer.newLine();
+                }
+            }
+            case 1 -> {
+                writer.write(bookedTiles.getFirst().toStringData());
+                writer.newLine();
+            }
+            case 2 -> {
+                for (Tile tile : bookedTiles) {
+                    writer.write(bookedTiles.getFirst().toStringData());
+                    writer.newLine();
+                }
+            }
+        }
         writer.close();
     }
 
@@ -60,6 +79,13 @@ public class ShipBoardSerializerDeserializer {
         if (loadedTiles.size() != 35) {
             System.out.println("Error: not enough tiles to fill shipboard or too many tiles in shipBoard.");
             return;
+        }
+
+        for (int i = 0; i < 2; i++) {
+            line = reader.readLine();
+            if (!line.equals("NullTile")) {
+                shipBoard.addBookedTile(TileLoader.load(line));
+            }
         }
 
         shipBoard.simpleInitialize();

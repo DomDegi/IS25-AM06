@@ -53,8 +53,8 @@ public class GameLoader {
         for (File file : Objects.requireNonNull(fileDir.listFiles())) {
             String[] splitName =  file.getName().split("_");
             if (splitName.length > 1) {
-                checkDataAndDelete(file);
-                continue;
+                if (checkDataAndDelete(file))
+                    continue;
             }
             if (splitName[0].equals(gameName)) {
                 return Optional.of(loadGame(file));
@@ -63,12 +63,18 @@ public class GameLoader {
         return Optional.empty();
     }
 
-    private static void checkDataAndDelete(File file) {
+    /**
+     * this method checks if a save file is older than today's date or, if it was made today, if it's older than 2 hours
+     * if one of those conditions is true, deletes the file
+     * @param file the file that gets checked
+     * @return true if the file gets deleted
+     */
+    private static boolean checkDataAndDelete(File file) {
         String[] splitName =  file.getName().split("_");
 
         if (splitName.length < 3) {
             System.out.println("Invalid file name format: " + file.getName());
-            return;
+            return false;
         }
 
         try {
@@ -89,13 +95,14 @@ public class GameLoader {
             if (isBeforeToday || isOlderThan2Hours) {
                 if (file.delete()) {
                     System.out.println("Deleted old file: " + file.getName());
+                    return true;
                 } else {
                     System.out.println("Failed to delete file: " + file.getName());
                 }
             }
-
         } catch (Exception e) {
             System.out.println("Error parsing file date: " + file.getName() + " -> " + e.getMessage());
         }
+        return false;
     }
 }
