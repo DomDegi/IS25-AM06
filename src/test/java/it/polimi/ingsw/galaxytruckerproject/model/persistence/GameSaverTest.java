@@ -2,7 +2,6 @@ package it.polimi.ingsw.galaxytruckerproject.model.persistence;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
-import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Optional;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.LEVEL2;
-import static it.polimi.ingsw.galaxytruckerproject.model.persistence.GameSaver.save;
 
 class GameSaverTest {
 

@@ -251,7 +251,7 @@ public class FlightBoard implements Serializable {
         return true;
     }
 
-    public void loadShipBoard(ArrayList<Player> players) {
+    public void loadFlightBoard(ArrayList<Player> players) {
         players.sort(Comparator.comparingInt(Player::getPlayerRanking));
         podium.addAll(players);
         for (Player player: podium) {

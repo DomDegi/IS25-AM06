@@ -7,8 +7,10 @@ import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
+import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.persistence.GameSaver;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
@@ -48,6 +50,12 @@ public class GameController implements Observer, Serializable {
 
     //This attribute indicates that a game was loaded from disk
     private boolean restarted;
+
+    /**
+     * Autosave attributes. Only on when not in card phase
+     */
+    private ScheduledExecutorService autoSaveExecutor;
+    private volatile boolean autoSaveEnabled;
 
     public String toString(){
         return gameName+"\ngame state:"+game.getGameState().toString()+"\nplayer needed: "+game.getPlayerCount()+"\nplatyer in game: "+game.getNumberOfPlayers();
@@ -144,10 +152,12 @@ public class GameController implements Observer, Serializable {
 
     public void checkIfAllJoinedAgain() {
         if (playersViewMap.size() == activePlayers.size()) {
+            restarted = false;
             switch (game.getGameState()) {
                 case START_GAME -> startGame();
                 case SHIPS_CREATION -> {
                     updateEveryView(S_END_DRAW_TILE_CARD);
+                    flightBoardReposition();
                 }
                 case VERIFY_SHIP_CORRECTNESS -> {
                     verifyShipCorrectness();
@@ -158,6 +168,35 @@ public class GameController implements Observer, Serializable {
                     throw new IllegalArgumentException();
                 }
             }
+        }
+    }
+
+    public void flightBoardReposition() {
+        FlightBoard flightBoard = game.getFlightBoard();
+        ArrayList<Player> players = this.getAllPlayers();
+        if (game.getMode().equals(GameMode.LEVEL2)) {
+            for (Player player: players) {
+                int position = player.getPlayerPosition();
+                int ranking = player.getPlayerRanking();
+                if (position != 0 || ranking != 0) {
+                    switch(position) {
+                        case 9 -> flightBoard.addToFlightBoard(player,1);
+                        case 5 -> flightBoard.addToFlightBoard(player,2);
+                        case 2 -> flightBoard.addToFlightBoard(player,3);
+                        case 0 -> flightBoard.addToFlightBoard(player,4);
+                    }
+                }
+            }
+        }
+        else {
+            ArrayList<Player> orderedPlayers = new ArrayList<>();
+            for (Player player: players) {
+                if (player.getPlayerRanking() != 0) {
+                    orderedPlayers.add(player);
+                }
+            }
+            orderedPlayers.sort(Comparator.comparingInt(Player::getPlayerRanking));
+            orderedPlayers.forEach(flightBoard::addToTrialFlightBoard);
         }
     }
 
@@ -332,6 +371,7 @@ public class GameController implements Observer, Serializable {
      * if TRIAL starts the game without hourglass
      */
     public void startGame () {
+        startAutoSave();
         game.startShipCreation();
         if (game.getMode() == TRIAL) {
             for (Player player : game.getListOfAllPlayer()) {
@@ -898,6 +938,7 @@ public class GameController implements Observer, Serializable {
     }
 
     public void askFirstPlayerToDraw() {
+        stopAutoSave();
         updatePlayerView(DRAW_CARD,game.getListOfInFlightPlayers().getFirst().getPlayerName());
 
         /*
@@ -1209,15 +1250,45 @@ public class GameController implements Observer, Serializable {
         //First gameName and hourglassTurns, second clientStates, third playersWithErrors
         StringBuilder sb = new  StringBuilder();
         sb.append(gameName).append(" ").append(hourglassTurns).append(" ");
-        if (!playersWithErrors.isEmpty()) {
-            playersWithErrors.forEach(player->{sb.append(player).append(" ");});
-        }
+
         return sb.toString();
     }
 
     public void dataLoader(String[] attributes) {
         // GameName should be taken from game file name or should be used to create the gameController
         this.hourglassTurns = Integer.parseInt(attributes[1]);
-        playersWithErrors.addAll(Arrays.asList(attributes).subList(2, attributes.length));
+    }
+
+    public ArrayList<Player> getAllPlayers() {
+        ArrayList<Player> players = new ArrayList<>();
+        players.addAll(activePlayers.values());
+        players.addAll(disconnectedPlayers.values());
+        return players;
+    }
+
+    public boolean isRestarted() {
+        return restarted;
+    }
+
+
+    public void startAutoSave() {
+        autoSaveExecutor = Executors.newSingleThreadScheduledExecutor();
+        autoSaveExecutor.scheduleAtFixedRate(() -> {
+            if (autoSaveEnabled) {
+                System.out.println("Auto-saving game...");
+                GameSaver.save(this);  // Saves game state
+            }
+        }, 0, 2, TimeUnit.MINUTES);
+    }
+
+    public void stopAutoSave() {
+        autoSaveEnabled = false;
+        if (autoSaveExecutor != null && !autoSaveExecutor.isShutdown()) {
+            autoSaveExecutor.shutdown();
+        }
+    }
+
+    public int getHourglassTurns() {
+        return hourglassTurns;
     }
 }

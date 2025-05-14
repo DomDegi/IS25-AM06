@@ -11,9 +11,9 @@ public class ShipBoardSerializerDeserializer {
 
 
 
-    public ShipBoardSerializerDeserializer() {}
+    private ShipBoardSerializerDeserializer() {}
 
-    public void save(ShipBoard shipBoard, BufferedWriter writer)  throws IOException {
+    public static void save(ShipBoard shipBoard, BufferedWriter writer)  throws IOException {
         Optional<Tile>[][] tilesTable = shipBoard.getTilesTable();
 
         for (int i = 0; i < 5; i++) {
@@ -32,27 +32,20 @@ public class ShipBoardSerializerDeserializer {
         writer.close();
     }
 
-    public int load(Player player, int startLine, BufferedReader reader) throws IOException {
-
-        TileLoader tileLoader = new TileLoader();
+    public static void load(Player player, int startLine, BufferedReader reader) throws IOException {
         ShipBoard shipBoard = player.getShipBoard();
         Tile[][] tilesTable = new Tile[5][7];
         ArrayList<Tile> loadedTiles = new ArrayList<>();
 
 
         String line;
-        int currentLine = 0;
-        int endLine = 0;
 
-        while ((line = reader.readLine()) != null) {
-            currentLine++;
-            if (currentLine < startLine) continue;
-
+        while ((line = reader.readLine()) != null || loadedTiles.size() < 35) {
 
             if (line.equals("NullTile")) {
                 loadedTiles.add(null);
             } else {
-                Tile tile = tileLoader.load(line);
+                Tile tile = TileLoader.load(line);
                 if (tile == null) {
                     System.out.println("Tile parsing failed, line: " + line);
                     loadedTiles.add(null); // oppure fai qualcosa di più robusto
@@ -63,11 +56,10 @@ public class ShipBoardSerializerDeserializer {
 
             if (loadedTiles.size() == 35) break;
         }
-        endLine = currentLine;
 
         if (loadedTiles.size() != 35) {
             System.out.println("Error: not enough tiles to fill shipboard or too many tiles in shipBoard.");
-            return -1;
+            return;
         }
 
         shipBoard.simpleInitialize();
@@ -86,6 +78,5 @@ public class ShipBoardSerializerDeserializer {
         }
 
         shipBoard.verifyCorrectness();
-        return endLine;
     }
 }

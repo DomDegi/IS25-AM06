@@ -453,8 +453,7 @@ public class Player implements PlayerInterface , Serializable {
             for (int i = 7; i < attributes.length; i++) {
                 tileData.append(attributes[i]).append(" ");
             }
-            TileLoader tileLoader = new TileLoader();
-            this.drawnTile = tileLoader.load(tileData.toString());
+            this.drawnTile = TileLoader.load(tileData.toString());
         }
         this.playerShip = new ShipBoard(this);
     }

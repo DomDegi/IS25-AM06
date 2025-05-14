@@ -6,35 +6,36 @@ import java.io.*;
 
 public class ControllerSerializerDeserializer {
 
-    String filename;
-
-    public ControllerSerializerDeserializer(String filename) {
-        this.filename = filename;
+    private ControllerSerializerDeserializer() {
     }
 
-    public void save(GameController gameController) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename,true))) {
-
+    public static void save(GameController gameController, Writer writer) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
             String controllerData = gameController.toStringData();
-            writer.write(controllerData);
-            writer.newLine();
-
+            bufferedWriter.write(controllerData);
+            bufferedWriter.newLine();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public int load(GameController gameController) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-            int currentLine = 0;
+    public static void save(GameController gameController, File file) {
+        try {
+            FileWriter fileWriter = new FileWriter(file, true); // append = true
+            save(gameController, fileWriter);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void load(GameController gameController, BufferedReader reader) {
+        try {
 
             String line = reader.readLine();
-            currentLine++;
 
             String[] controllerData = line.split(" ");
             gameController.dataLoader(controllerData);
 
-            return currentLine;
 
         } catch (IOException e) {
             throw new RuntimeException(e);

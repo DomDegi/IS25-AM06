@@ -4,9 +4,9 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 
 public class TileLoader {
 
-    public TileLoader() {}
+    private TileLoader() {}
 
-    public Tile load(String line) {
+    public static Tile load(String line) {
         String[] lineSplit = line.split(" ");
         switch(lineSplit[0]) {
             case "AL" -> {

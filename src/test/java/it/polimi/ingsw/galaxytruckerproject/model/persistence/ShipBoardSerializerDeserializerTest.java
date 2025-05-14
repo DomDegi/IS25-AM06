@@ -22,6 +22,7 @@ class ShipBoardSerializerDeserializerTest {
     ShipBoardSerializerDeserializer shipBoardSerializer;
     Player playerCopy = new Player("Copy", PlayersColor.RED);
     TUI shipPrinter = new TUI();
+    File file = new File(fileName);
 
     @BeforeEach
     void setUp() {
@@ -101,10 +102,9 @@ class ShipBoardSerializerDeserializerTest {
 
     @Test
     void save_test() {
-        shipBoardSerializer = new ShipBoardSerializerDeserializer();
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
-            shipBoardSerializer.save(player.getShipBoard(),writer);
+            ShipBoardSerializerDeserializer.save(player.getShipBoard(),writer);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -114,9 +114,8 @@ class ShipBoardSerializerDeserializerTest {
     void load_test() {
         save_test();
         int expectedEndOfLine = 35;
-        try {
-            int trueEndOfLine = shipBoardSerializer.load(playerCopy, 0, new BufferedReader(new FileReader(fileName)));
-            assertEquals(expectedEndOfLine, trueEndOfLine);
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            ShipBoardSerializerDeserializer.load(playerCopy, 0, new BufferedReader(new FileReader(fileName)));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -9,9 +9,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,7 +22,7 @@ class GameSerializerDeserializerTest {
     GameController gameController;
     Game game = new Game(GameMode.LEVEL2,4);
     String fileName =  "serializerTest";
-    GameSerializerDeserializer gameSerializerDeserializer = new GameSerializerDeserializer(fileName);
+    File file = new File(fileName);
 
     @BeforeEach
     void setUp() {
@@ -44,10 +42,15 @@ class GameSerializerDeserializerTest {
 
     @Test
     void serializeGame() {
-        gameSerializerDeserializer.save(game);
-        gameSerializerDeserializer.load(gameController,0);
-        assertEquals(gameController.getGame().getMode(), game.getMode());
-        assertEquals(gameController.getGame().getPlayerCount(), game.getPlayerCount());
+        GameSerializerDeserializer.save(game,file);
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            GameSerializerDeserializer.load(gameController, reader);
+            assertEquals(gameController.getGame().getMode(), game.getMode());
+            assertEquals(gameController.getGame().getPlayerCount(), game.getPlayerCount());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Test
