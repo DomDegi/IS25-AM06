@@ -47,7 +47,7 @@ public class ClientController {
     private Map<Integer, ArrayList<Card>> deck;
     private final Map<Integer, Boolean> availableDeck;
     private final Map<PlayersColor, Boolean> availableColors;
-    private final ArrayList<Goods> goodsList;
+    private ArrayList<Goods> goodsList;
     private TextualInputParser inputParser;
 
     private int numPlayer;
@@ -382,6 +382,7 @@ public class ClientController {
         }
     }
 
+
     public void doneGoods() {
         if (inManager) {
             HashSet<CargoHold> newTilesGoods;
@@ -541,6 +542,8 @@ public class ClientController {
             }
             case MANAGE_GOODS -> {
                 if (!inManager) {
+                    me.getShipBoard().setGetStat();
+                    this.goodsList =displayedCard.getFirst().getChosenPlanets(indexDeckInHandOrPlanet - 1);
                     goodsManager = new GoodsManager(me, goodsList, view);
                     inManager = true;
                 }

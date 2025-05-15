@@ -98,6 +98,10 @@ public abstract class Card implements Serializable {
 
     public void rollTheDices(String playerName) {}
 
+    public ArrayList<Goods> getChosenPlanets(int index) {
+        return null;
+    }
+
     public void branchChoice(String playerName, ArrayList<Coordinates> branchChoices){}
 
     //Getter methods needed for view
@@ -123,4 +127,5 @@ public abstract class Card implements Serializable {
     public String toString() {
         return "id: " + id + " level: " +  level + ", required days: " + requiredDays;
     }
+
 }

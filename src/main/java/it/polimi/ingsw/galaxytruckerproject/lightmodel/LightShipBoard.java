@@ -602,11 +602,24 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
     }
 
     public void setGetStat(){
+        resetStat();
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 7; j++) {
                 if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable())
                     tilesTable[i][j].get().getStat();
             }
+    }
+
+    public void resetStat() {
+        numBatteries=0;
+        singleCannonPower=0;
+        DoubleCannon= new ArrayList<>();
+        cargoHoldCoordinates=new ArrayList<>();
+        numSingleEngine=0;
+        DoubleEngine = new ArrayList<>();
+        shields = new ArrayList<>();
+        batteryCoordinates = new ArrayList<>();
+        crewCoordinates = new ArrayList<>();
     }
 
     public void setCabinStat(){

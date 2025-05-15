@@ -57,6 +57,10 @@ public class GoodsManager {
     }
 
     public void chooseCargo(Coordinates coordinates) {
+        if (currentPlayer.getShipBoard().getTile(coordinates)==null) {
+            view.wrongLocalInput();
+            return;
+        }
         coordinatesToPut=coordinates;
         if(goodsToGet==0)
             pickGoods();
@@ -129,6 +133,7 @@ public class GoodsManager {
 
     public void swapGoods(int chose) {
         ArrayList<Goods> cargo = currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut);
+        view.showGenericMessage("you're trying to swap the goods\n");
         Goods goodToSwap;
         switch (chose){
             case 0:

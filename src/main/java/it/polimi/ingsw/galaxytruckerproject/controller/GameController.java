@@ -893,7 +893,7 @@ public class GameController implements Observer, Serializable {
             } catch(Exception ignored) {}
         }
         else {
-            for(String st: clientsStatesMap.keySet()) {
+           /* for(String st: clientsStatesMap.keySet()) {
                 if(clientsStatesMap.get(st).equals(ClientState.S_FINISHED)) {}
                     try{
                         playersView.showWrongInputMessage();
@@ -903,7 +903,7 @@ public class GameController implements Observer, Serializable {
                         return;
                     } catch(Exception ignored) {}
 
-            }
+            }*/
 
             game.drawCard();
             notifyDrawnCard(game.getDrawnCard());
