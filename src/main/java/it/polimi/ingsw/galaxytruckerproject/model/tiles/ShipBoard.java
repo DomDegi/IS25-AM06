@@ -37,7 +37,15 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
     private int numBrownAliens;
     private int numPurpleAliens;
     private int numHumanCrew;
+    private boolean completed=false;
 
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
     public String toString() {
         StringBuilder s = new StringBuilder("Schipboard: ");
         for (int i = 0; i < 5; i++) {

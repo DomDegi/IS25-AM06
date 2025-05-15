@@ -47,6 +47,7 @@ public class GameController implements Observer, Serializable {
     private boolean hourglassON = false;
 
 
+
     public String toString(){
         return gameName+"\ngame state:"+game.getGameState().toString()+"\nplayer needed: "+game.getPlayerCount()+"\nplatyer in game: "+game.getNumberOfPlayers();
     }
@@ -414,7 +415,7 @@ public class GameController implements Observer, Serializable {
                     }
                     else {
                         player.setAllCrewToHuman();
-                        //checkIfPlayersPickedCrew();
+                        checkIfPlayersPickedCrew();
                     }
                 }
             } else {
@@ -488,6 +489,7 @@ public class GameController implements Observer, Serializable {
             return;
         }
         if (player.verifyAndSetupCrew(cabins)) {
+            player.getPlayerShip().setCompleted(true);
             notifyModifiedTiles(playerName, cabins);
             updatePlayerView(ClientState.WAIT, player.getPlayerName());
         }
@@ -496,6 +498,7 @@ public class GameController implements Observer, Serializable {
             playersView.showWrongInputMessage();
             } catch(Exception ignored) {}
         }
+
         checkIfPlayersPickedCrew();
     }
 
@@ -505,6 +508,8 @@ public class GameController implements Observer, Serializable {
         for (Player p1: activePlayers.values()) {
             shipBoard = p1.getShipBoard();
             cabinsToCheck = shipBoard.getCabinsCoordinates();
+            if(!shipBoard.isCompleted())
+                return;
             for (Coordinates coord: cabinsToCheck) {
                 if (shipBoard.getTile(coord).getCrew() == 0)
                     return;
@@ -524,7 +529,7 @@ public class GameController implements Observer, Serializable {
                 }
             }
         }
-        if(playersWithErrors.isEmpty())
+        if(playersWithErrors.isEmpty()){}
             this.endShipVerification();
     }
 
