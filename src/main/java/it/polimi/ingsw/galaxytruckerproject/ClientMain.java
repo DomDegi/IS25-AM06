@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class ClientMain implements Client {
 
-    public static void main (String[] args) throws IOException {
+    public static void main (String[] args){
         Scanner scanner = new Scanner(System.in);
         ClientController clientController;
         clientController = new ClientController();
@@ -20,9 +20,7 @@ public class ClientMain implements Client {
         while(true) {
             String in = scanner.nextLine();
             if(clientController.getState()== ClientState.CHOOSE_UI) {
-                if(clientController.chooseUI(in)==-1) {
-                    break;
-                }
+                clientController.chooseUI(in);
             }else
                 clientController.input(in);
         }

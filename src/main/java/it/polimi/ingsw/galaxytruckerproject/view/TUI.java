@@ -61,11 +61,6 @@ public class TUI implements DisplayableView {
     }
 
     @Override
-    public void run() {
-
-    }
-
-    @Override
     public void sendingCoordinates() {
         System.out.println("i'm sending the coordinates");
     }

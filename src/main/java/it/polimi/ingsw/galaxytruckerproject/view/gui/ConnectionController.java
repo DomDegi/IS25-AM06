@@ -8,11 +8,11 @@ public class ConnectionController{
 
     @FXML
     public void setRMI() throws IOException{
-        GUI.setRMI();
+        GUI.setConnection("r");
     }
 
     @FXML
     public void setSocket() throws IOException{
-        GUI.setSocket();
+        GUI.setConnection("s");
     }
 }

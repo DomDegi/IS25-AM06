@@ -89,26 +89,23 @@ public class ClientController {
         return virtualController;
     }
 
-    public int chooseUI(String input) {
+    public void chooseUI(String input) {
         input = input.toLowerCase();
         input = input.replaceAll("\\s+", " ");
         String[] words = input.split(" ");
         if (words.length == 0 || words[0].isEmpty()) {
             view.wrongLocalInput();
-            return 0;
+            return;
         }
         switch (words[0]) {
             case "gui", "g" -> {
-                setGUI();
-                return -1;
+                setGUI(new GUI());
             }
             case "tui", "t" -> {
                 setTUI(new TUI());
-                return 1;
             }
             default -> {
                 view.wrongLocalInput();
-                return 0;
             }
         }
     }
@@ -119,6 +116,9 @@ public class ClientController {
 
     //METODI PER FARE ANDARE TUTTO
     public boolean doneNaming() {
+        if(state!=ClientState.LOGIN){
+            return false;
+        }
         if (!Objects.equals(me.getPlayerName(), "")) {
             setState(ClientState.WAIT);
             try {
@@ -133,7 +133,10 @@ public class ClientController {
         return true;
     }
 
-    public void createGame(String gameName, int numberOfPlayers, GameMode mode) {
+    public boolean createGame(String gameName, int numberOfPlayers, GameMode mode) {
+        if(state!=ClientState.LOBBY&&state!=ClientState.LOBBY0&&state!=ClientState.LOBBY1){
+            return false;
+        }
         numPlayer = numberOfPlayers;
         gameMode = mode;
         setState(ClientState.WAIT);
@@ -142,9 +145,13 @@ public class ClientController {
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
+        return true;
     }
 
     public boolean joinGame(String gameName) {
+        if(state!=ClientState.LOBBY&&state!=ClientState.LOBBY0&&state!=ClientState.LOBBY1){
+            return false;
+        }
         if (gameInfo == null) {
             view.wrongLocalInput();
             rollBackState();
@@ -168,6 +175,9 @@ public class ClientController {
     }
 
     public boolean colorChoice(PlayersColor color) {
+        if(state!=ClientState.COLOR_CHOICE){
+            return false;
+        }
         if(getAvailableColors().get(color)) {
             me.setColor(color);
             setState(ClientState.WAIT);
@@ -184,6 +194,9 @@ public class ClientController {
     }
 
     public boolean drawDeck(int chose) {
+        if(state!=ClientState.S_END_DRAW_TILE_CARD){
+            return false;
+        }
         if (gameMode == GameMode.LEVEL2) {
             if (chose > 0 && chose < 4 && availableDeck.get(chose)) {
                 setState(ClientState.WAIT);
@@ -206,6 +219,9 @@ public class ClientController {
     }
 
     public boolean drawTile() {
+        if(state!=ClientState.S_END_DRAW_TILE_CARD){
+            return false;
+        }
         setState(ClientState.WAIT);
         try {
             virtualController.reqDrawTileFromStack();
@@ -216,6 +232,9 @@ public class ClientController {
     }
 
     public boolean drawBooked(int index) {
+        if(state!=ClientState.S_END_DRAW_TILE_CARD){
+            return false;
+        }
         if (!me.getShipBoard().getBookedTiles().isEmpty()) {
             if (me.getShipBoard().getBookedTiles().size() > index) {
                 tileInHand = me.getShipBoard().getBookedTiles().get(index);
@@ -238,6 +257,9 @@ public class ClientController {
     }
 
     public boolean drawDrawn(int chose) {
+        if(state!=ClientState.S_END_DRAW_TILE_CARD){
+            return false;
+        }
         if (chose > 0 && turnedTiles.containsKey(chose)) {
             tileInHand = turnedTiles.get(chose);
             setState(ClientState.WAIT);
@@ -253,34 +275,49 @@ public class ClientController {
         return true;
     }
 
-    public void doneShipboard() {
+    public boolean doneShipboard() {
+        if(state!=ClientState.S_END_DRAW_TILE_CARD){
+            return false;
+        }
         setState(ClientState.WAIT);
         try {
             virtualController.notifyCompleted();
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
+        return true;
     }
 
-    public void stopLookingAtCards() {
+    public boolean stopLookingAtCards() {
+        if(state!=ClientState.S_MANAGE_CARDS){
+            return false;
+        }
         setState(ClientState.S_END_DRAW_TILE_CARD);
         try {
             virtualController.stopLookingAtCardsRequest();
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
+        return true;
     }
 
-    public void rotateTile() {
+    public boolean rotateTile() {
+        if(state!=ClientState.S_MANAGE_DRAWN_TILE){
+            return false;
+        }
         this.tileInHand.rotate();
         try {
             view.showDrawnTile(tileInHand);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
+        return true;
     }
 
     public boolean positionTile(Coordinates coordinates) {
+        if(state!=ClientState.S_MANAGE_DRAWN_TILE){
+            return false;
+        }
         if (coordinates != null && me.getShipBoard().positionTile(Optional.ofNullable(this.tileInHand), coordinates)) {
             setState(ClientState.WAIT);
             try {
@@ -296,6 +333,9 @@ public class ClientController {
     }
 
     public boolean refuseTile() {
+        if(state!=ClientState.S_MANAGE_DRAWN_TILE){
+            return false;
+        }
         if (this.tileInHand.isBooked()) {
             if (!me.getShipBoard().addBookedTile(this.tileInHand)) {
                 view.wrongLocalInput();
@@ -315,6 +355,9 @@ public class ClientController {
     }
 
     public boolean bookTile() {
+        if(state!=ClientState.S_MANAGE_DRAWN_TILE){
+            return false;
+        }
         if (!me.getShipBoard().addBookedTile(this.tileInHand)) {
             view.wrongLocalInput();
             return false;
@@ -330,6 +373,9 @@ public class ClientController {
     }
 
     public boolean positionOnFlightBoard(int chose) {
+        if(state!=ClientState.S_FINISHED){
+            return false;
+        }
         if (gameMode == GameMode.LEVEL2) {
             if (chose > 0 && chose <= numPlayer) {
                 me.getShipBoard().setGetStat();
@@ -350,43 +396,62 @@ public class ClientController {
         return true;
     }
 
-    public void rollDice() {
+    public boolean rollDice() {
+        if(state!=ClientState.ROLL_DICE){
+            return false;
+        }
         setState(ClientState.WAIT);
         try {
             virtualController.rollTheDices();
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
+        return true;
     }
 
-    public void drawCard() {
+    public boolean drawCard() {
+        if(state!=ClientState.DRAW_CARD){
+            return false;
+        }
         setState(ClientState.WAIT);
         try {
             virtualController.drawCards();
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
+        return true;
     }
 
-    public void sayYes() {
+    public boolean sayYes() {
+        if(state!=ClientState.ACTION){
+            return false;
+        }
         setState(ClientState.WAIT);
         try {
             virtualController.sendYes();
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
+        return false;
     }
 
-    public void sayNo() {
+    public boolean sayNo() {
+        if(state!=ClientState.ACTION){
+            return false;
+        }
         setState(ClientState.WAIT);
         try {
             virtualController.sendNo();
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
+        return true;
     }
 
     public boolean choosePlanet(int chose) {
+        if(state!=ClientState.PLANET_CHOICE){
+            return false;
+        }
         Card planet = displayedCard.getFirst();
         if (chose >= 0 && chose < planet.getListOfPlanets().size()) {
             indexDeckInHandOrPlanet = chose;
@@ -403,7 +468,10 @@ public class ClientController {
         return true;
     }
 
-    public void doneGoods() {
+    public boolean doneGoods() {
+        if(state!=ClientState.MANAGE_GOODS){
+            return false;
+        }
         if (inManager) {
             HashSet<CargoHold> newTilesGoods;
             newTilesGoods = goodsManager.doneGoods();
@@ -423,9 +491,13 @@ public class ClientController {
                 inManager = false;
             }
         }
+        return true;
     }
 
     public boolean chooseGoods(int chose) {
+        if(state!=ClientState.MANAGE_GOODS){
+            return false;
+        }
         if (inManager) {
             goodsManager.chooseGoods(chose);
             return true;
@@ -435,6 +507,9 @@ public class ClientController {
     }
 
     public boolean chooseCargo(Coordinates coords) {
+        if(state!=ClientState.MANAGE_GOODS){
+            return false;
+        }
         if (inManager) {
             goodsManager.chooseCargo(coords);
             return true;
@@ -443,11 +518,18 @@ public class ClientController {
         }
     }
 
-    public void setUpCabins() {
+    public boolean setUpCabins() {
+        if(state!=ClientState.MANAGE_CABINS){
+            return false;
+        }
         cabinsManager.setup();
+        return true;
     }
 
-    public void manageCabins(CrewType type) {
+    public boolean manageCabins(CrewType type) {
+        if(state!=ClientState.MANAGE_CABINS){
+            return false;
+        }
         if (gameMode == GameMode.LEVEL2 && inManager) {
             ArrayList<Tile> newTiles;
             if (!(me.getShipBoard().getCabinsCoordinates().isEmpty() || me.getShipBoard().getCabinsCoordinates().size() == 1)) {
@@ -464,14 +546,21 @@ public class ClientController {
                 }
             }
         }
+        return true;
     }
 
     public boolean doneCoord() {
+        if(state!=ClientState.COORD_REQUEST) {
+            return false;
+        }
         view.sendingCoordinates();
         return coordInputManager.endCheckingFase();
     }
 
     public boolean checkCoord(Coordinates coords) {
+        if(state!=ClientState.COORD_REQUEST) {
+            return false;
+        }
         return coordInputManager.checkCoord(coords);
     }
 
@@ -949,21 +1038,28 @@ public class ClientController {
         this.connected = connected;
     }
 
-    public void connectRMI() throws MalformedURLException, NotBoundException, RemoteException {
+    public boolean connectRMI() throws MalformedURLException, NotBoundException, RemoteException {
+        if(state!=ClientState.CHOOSE_CONNECTION_TYPE&&state!=ClientState.CHOOSE_IP_AND_PORT_RMI){
+            return false;
+        }
         VirtualViewRMI viewRMI = new VirtualViewRMI(this, view);
         ControllerFactory controllerFactory = (ControllerFactory) Naming.lookup("rmi://localhost/ControllerFactory");
         this.virtualController = controllerFactory.createController();
         virtualController.setView(viewRMI);
         setState(ClientState.LOGIN);
+        return true;
     }
 
-    public void connectSocket(String ip, int port) throws IOException,NotBoundException {
+    public boolean connectSocket(String ip, int port) throws IOException,NotBoundException {
+        if(state!=ClientState.CHOOSE_CONNECTION_TYPE&&state!=ClientState.CHOOSE_IP_AND_PORT_SOCKET){
+            return false;
+        }
         Socket server;
         try {
             server = new Socket(ip, port);
         } catch (Exception e) {
             System.out.println("Server unreachable, check the port and the ip address");
-            return;
+            return false;
         }
         ServerHandler serverHandler = new ServerHandler(server);
         virtualController = new VirtualControllerSocket(view, serverHandler);
@@ -980,6 +1076,7 @@ public class ClientController {
         serverHandler.setView(view);
         serverHandler.setClientController(this);
         setState(ClientState.LOGIN);
+        return true;
     }
 
     public void ping() {
@@ -994,9 +1091,9 @@ public class ClientController {
         hourglassTurns = i;
     }
 
-    public void setGUI() {
-        state = ClientState.CHOOSE_CONNECTION_TYPE;
-        GUI.startGui();
+    public void setGUI(GUI gui) {
+        this.view =gui;
+        GUI.startGui(this);
     }
 
     public void setTUI(TUI tui) {

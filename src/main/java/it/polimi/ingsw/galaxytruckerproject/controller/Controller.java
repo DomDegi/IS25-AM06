@@ -121,9 +121,7 @@ public class Controller implements ControllerInterface, Serializable {
     }
 
     public void sendCoordinates( ArrayList<Coordinates> coordinates){
-        switch (gameController.getGameState()){
 
-        }
     }
 
     @Override
