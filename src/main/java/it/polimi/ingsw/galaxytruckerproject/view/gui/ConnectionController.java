@@ -7,12 +7,12 @@ import java.io.IOException;
 public class ConnectionController{
 
     @FXML
-    public void setRMI() throws IOException{
+    public void setRMI(){
         GUI.setConnection("r");
     }
 
     @FXML
-    public void setSocket() throws IOException{
+    public void setSocket(){
         GUI.setConnection("s");
     }
 }

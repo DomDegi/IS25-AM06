@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class WelcomeController {
     @FXML
-    public void startNewGame() throws IOException {
+    public void startNewGame() {
         GUI.startNewGame();
     }
 }

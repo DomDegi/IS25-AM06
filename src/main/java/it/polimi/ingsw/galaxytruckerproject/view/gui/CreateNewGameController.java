@@ -8,8 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 
-import java.io.IOException;
-
 public class CreateNewGameController {
 
     ObservableList<String> gameModes= FXCollections.observableArrayList("Trial","Level1","Level2","Level3");
@@ -28,13 +26,11 @@ public class CreateNewGameController {
     }
 
     @FXML
-    public void createNewGame() throws IOException {
+    public void createNewGame() {
         try {
             int i= Integer.parseInt(playerNum.getText());
             if (gameMode.getValue().equals("Trial")){
-
                 GUI.createGame(gameName.getText(),i,GameMode.TRIAL);
-
             }else if (gameMode.getValue().equals("Level2")) {
                 try {
                     GUI.createGame(gameName.getText(),i,GameMode.LEVEL2);
@@ -42,7 +38,7 @@ public class CreateNewGameController {
 
                 }
             }else{
-                GUI.showIncomingFeature();
+                GUI.showMessage("Upcoming feature, try something else");
             }
         }catch (NumberFormatException _) {
 

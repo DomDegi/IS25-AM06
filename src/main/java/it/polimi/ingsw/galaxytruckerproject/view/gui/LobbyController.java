@@ -11,7 +11,7 @@ public class LobbyController {
     public TextField gameName;
 
     @FXML
-    public void showCreateNewGame() throws IOException {
+    public void showCreateNewGame(){
         GUI.showCreateNewGame();
     }
 

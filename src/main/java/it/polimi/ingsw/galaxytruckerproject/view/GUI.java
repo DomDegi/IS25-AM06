@@ -10,13 +10,15 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
-import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -26,6 +28,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 public class GUI extends Application implements DisplayableView {
     private static Stage primaryStage;
@@ -66,37 +69,42 @@ public class GUI extends Application implements DisplayableView {
     public static void setConnection(String connectionTipe) {
         if (connectionTipe.equals("r")) {
             try {
-                if(controller.connectRMI());
+                controller.connectRMI();
             } catch (NotBoundException | MalformedURLException | RemoteException e) {
                 throw new RuntimeException(e);
             }
         } else {
             try {
-                if(controller.connectSocket("localhost",12345));
+                controller.connectSocket("localhost",12345);
             } catch (NotBoundException | IOException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
-    public static void setName(String name) throws IOException {
+    public static void setName(String name) {
         controller.getMe().setPlayerName(name);
-        if(controller.doneNaming()){
-        }
+        controller.doneNaming();
     }
 
-    public static void createGame(String gameName, int  playerNum, GameMode gameMode) throws IOException {
-        if(controller.createGame(gameName,playerNum,gameMode));
+    public static void createGame(String gameName, int  playerNum, GameMode gameMode){
+        controller.createGame(gameName,playerNum,gameMode);
     }
 
-    public static void setColor(PlayersColor color) throws IOException {
-        if(controller.colorChoice(color));
+    public static void setColor(PlayersColor color){
+        controller.colorChoice(color);
     }
 //showMethods---------------------------------------------------------------------------------------------------------------
+    private static void clear(){
+        layout.setBottom(null);
+        layout.setLeft(null);
+        layout.setRight(null);
+        layout.setTop(null);
+    }
     private static void showConnection() {
         Platform.runLater(() -> {
             FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/gui/connection.fxml"));
-            BorderPane newLayer = null;
+            BorderPane newLayer;
             try {
                 newLayer = loader.load();
             } catch (IOException e) {
@@ -109,7 +117,7 @@ public class GUI extends Application implements DisplayableView {
     public static void showLogin() {
         Platform.runLater(() -> {
             FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/gui/login.fxml"));
-            BorderPane newLayer = null;
+            BorderPane newLayer;
             try {
                 newLayer = loader.load();
             } catch (IOException e) {
@@ -122,7 +130,7 @@ public class GUI extends Application implements DisplayableView {
     public static void showLobby() {
         Platform.runLater(() -> {
             FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/gui/lobby.fxml"));
-            BorderPane newLayer = null;
+            BorderPane newLayer;
             try {
                 newLayer = loader.load();
             } catch (IOException e) {
@@ -135,7 +143,7 @@ public class GUI extends Application implements DisplayableView {
     public static void showCreateNewGame(){
         Platform.runLater(() -> {
             FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/gui/createNewGame.fxml"));
-            BorderPane newLayer = null;
+            BorderPane newLayer;
             try {
                 newLayer = loader.load();
             } catch (IOException e) {
@@ -148,7 +156,7 @@ public class GUI extends Application implements DisplayableView {
     public static void showChooseColor(){
         Platform.runLater(() -> {
             FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/gui/chooseColor.fxml"));
-            BorderPane newLayer = null;
+            BorderPane newLayer;
             try {
                 newLayer = loader.load();
             } catch (IOException e) {
@@ -161,7 +169,7 @@ public class GUI extends Application implements DisplayableView {
     public static void showWait(){
         Platform.runLater(() -> {
             FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/gui/wait.fxml"));
-            BorderPane newLayer = null;
+            BorderPane newLayer;
             try {
                 newLayer = loader.load();
             } catch (IOException e) {
@@ -171,14 +179,24 @@ public class GUI extends Application implements DisplayableView {
         });
     }
 
-    public static void showIncomingFeature(){
+    public static void showMessage(String message) {
         Platform.runLater(() -> {
-            FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/gui/incomingFeature.fxml"));
-            BorderPane newLayer = null;
+            FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/gui/message.fxml"));
+            AnchorPane newLayer;
             try {
                 newLayer = loader.load();
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            }
+            Label stringLabel = new Label(message);
+            AnchorPane.setBottomAnchor(stringLabel, 20.0);
+            AnchorPane.setLeftAnchor(stringLabel, 0.0);
+            AnchorPane.setRightAnchor(stringLabel, 0.0);
+            stringLabel.setAlignment(Pos.CENTER);
+            try {
+                newLayer.getChildren().add(1, stringLabel);
+            } catch (IndexOutOfBoundsException e) {
+                newLayer.getChildren().add(stringLabel);
             }
             layout.setBottom(newLayer);
         });
@@ -187,6 +205,7 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void setClientState(ClientState newState){
+        clear();
         switch (newState){
             case CHOOSE_CONNECTION_TYPE ->{
                 showConnection();
@@ -254,7 +273,7 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void wrongLocalInput() {
-
+        showMessage("Wrong input!");
     }
 
     @Override
@@ -324,7 +343,7 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void showErrorMessage(String errorMessage) throws RemoteException {
-
+        showMessage("Wrong input!");
     }
 
     @Override
@@ -334,7 +353,7 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void showWrongInputMessage() throws RemoteException {
-
+        showMessage("Wrong input!");
     }
 
     @Override
