@@ -416,6 +416,7 @@ public class ClientController {
     public boolean chooseCargo(Coordinates coords) {
         if (inManager) {
             goodsManager.chooseCargo(coords);
+            view.cargoSelected(coords);
             return true;
         } else {
             return false;

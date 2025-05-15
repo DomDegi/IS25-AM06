@@ -121,6 +121,11 @@ public class GUI extends Application implements DisplayableView {
 
     }
 
+    @Override
+    public void cargoSelected(Coordinates coordinates) {
+
+    }
+
     public void showTurnedTiles(ArrayList<Tile> turnedTiles) {
 
     }

@@ -13,6 +13,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
 import java.rmi.RemoteException;
@@ -77,6 +78,11 @@ public class TUI implements DisplayableView {
 //            System.out.println("\n");
 //        }
         printDrawnTiles(turnedTiles);
+    }
+
+    @Override
+    public void cargoSelected(Coordinates coordinates) {
+        System.out.println("you selected the cargo in: "+ coordinates.toString());
     }
 
     @Override
