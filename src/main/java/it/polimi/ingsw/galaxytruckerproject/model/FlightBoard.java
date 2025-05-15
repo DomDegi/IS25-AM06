@@ -4,6 +4,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class FlightBoard implements Serializable {
     private final ArrayList<Player> inGamePlayers;
@@ -11,6 +12,7 @@ public class FlightBoard implements Serializable {
     private int freePodiumPosition;
     private final GameMode gameMode;    //needed to check if pos in inGamePlayers is free or not
     private final ArrayList<Integer> occupiedPos = new ArrayList<>();
+
     public FlightBoard(GameMode gameMode) {
         for (int i=0;i<4;i++){
             occupiedPos.add(-1);
@@ -247,5 +249,16 @@ public class FlightBoard implements Serializable {
             }
         }
         return true;
+    }
+
+    public void loadFlightBoard(ArrayList<Player> players) {
+        players.sort(Comparator.comparingInt(Player::getPlayerRanking));
+        podium.addAll(players);
+        for (Player player: podium) {
+            if (!player.isLanded()) {
+                inGamePlayers.add(player);
+            }
+        }
+        freePodiumPosition = inGamePlayers.size();
     }
 }

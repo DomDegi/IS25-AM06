@@ -9,6 +9,7 @@ public class GameInfo implements Serializable {
     private final GameMode gameMode;
     private final int maxPlayerCount;
     private final int currentPlayerCount;
+    private boolean restarted = false;
 
     public GameInfo(GameController gameController) {
         this.gameName = gameController.getGameName();
@@ -31,6 +32,15 @@ public class GameInfo implements Serializable {
     }
     @Override
     public String toString(){
-        return gameName + " GameMode: " + gameMode + " " + currentPlayerCount + "/" + maxPlayerCount;
+        if (!restarted) {
+            return gameName + " GameMode: " + gameMode + " " + currentPlayerCount + "/" + maxPlayerCount;
+        }
+        else {
+            return gameName + " GameMode: " + gameMode + " " + currentPlayerCount + "/" + maxPlayerCount + " re-starting game";
+        }
+    }
+
+    public void setRestarted() {
+        this.restarted = true;
     }
 }

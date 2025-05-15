@@ -693,6 +693,10 @@ public class ClientController {
         }
     }
 
+    public void setGameModeWithoutInitializing(GameMode gameMode) {
+        this.gameMode = gameMode;
+    }
+
     public boolean land(String[] input) {
         if (input[0].equals("earlyland") && !me.isLanded()) {
             try {
@@ -850,15 +854,8 @@ public class ClientController {
         player.gainCredits(credits);
     }
 
-    public void updateModel(Map<String, LightShipBoard> lightShipBoardMap, LightFlightboard flightBoard, Card card, int hourglassTurns, Map<Integer, Tile> newTurnedTiles, ArrayList<Integer> notAvailableDecks) {
-        this.flightBoard = flightBoard;
-        for (LightPlayer player : flightBoard.getInGamePlayers()) {
-            player.setShipboard(lightShipBoardMap.get(player.getPlayerName()));
-        }
-        displayedCard.add(card);
-        this.hourglassTurns = hourglassTurns;
-        turnedTiles = newTurnedTiles;
-        decksNotAvailable(notAvailableDecks);
+    public void updateModel(String currentGameStatus) {
+        UpdateDeserializer.unpack(this,currentGameStatus);
     }
 
     public void decksNotAvailable(ArrayList<Integer> notAvailableDecks) {
@@ -994,6 +991,19 @@ public class ClientController {
 
     public ClientState getPreviousState() {
         return previousState;
+    }
+
+    public void setHourglassTurns(int hourglassTurns) {
+        this.hourglassTurns = hourglassTurns;
+    }
+
+    public void setTurnedTiles(Map<Integer, Tile> turnedTiles) {
+        this.turnedTiles = turnedTiles;
+    }
+
+    public void putInStandby () {
+        this.previousState = ClientState.WAIT;
+        this.state = ClientState.WAIT;
     }
 }
 

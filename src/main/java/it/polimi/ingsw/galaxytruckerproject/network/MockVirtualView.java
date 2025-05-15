@@ -2,8 +2,6 @@ package it.polimi.ingsw.galaxytruckerproject.network;
 
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
-import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
-import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
@@ -74,7 +72,7 @@ public class MockVirtualView implements VirtualView {
     }
 
     @Override
-    public void notifyChangesWhileGone(Map<String, LightShipBoard> updatedShipBoards, LightFlightboard updatedFlightBoard, Card drawnCard, int hourglassTurns, Map<Integer, Tile> turnedTiles, ArrayList<Integer> notAvailable) throws RemoteException {
+    public void notifyChangesWhileGone(String currentGameStatus) throws RemoteException {
         // Implement mock behavior or leave empty
     }
 
