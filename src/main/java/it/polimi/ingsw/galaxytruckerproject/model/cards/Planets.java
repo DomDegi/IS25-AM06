@@ -206,6 +206,9 @@ public class Planets extends Card{
         return sb.toString();
     }
 
+    public ArrayList<Goods> getChosenPlanets(int index) {
+        return this.listOfPlanets.get(index).getListOfGoods();
+    }
     public ArrayList<Planet> getListOfPlanets() {
         return listOfPlanets;
     }

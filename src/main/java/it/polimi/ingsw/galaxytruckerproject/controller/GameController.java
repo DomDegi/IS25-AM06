@@ -47,6 +47,7 @@ public class GameController implements Observer, Serializable {
     private boolean hourglassON = false;
 
 
+
     public String toString(){
         return gameName+"\ngame state:"+game.getGameState().toString()+"\nplayer needed: "+game.getPlayerCount()+"\nplatyer in game: "+game.getNumberOfPlayers();
     }
@@ -488,6 +489,7 @@ public class GameController implements Observer, Serializable {
             return;
         }
         if (player.verifyAndSetupCrew(cabins)) {
+            player.getPlayerShip().setCompleted(true);
             notifyModifiedTiles(playerName, cabins);
             updatePlayerView(ClientState.WAIT, player.getPlayerName());
         }
@@ -496,6 +498,7 @@ public class GameController implements Observer, Serializable {
             playersView.showWrongInputMessage();
             } catch(Exception ignored) {}
         }
+
         checkIfPlayersPickedCrew();
     }
 
@@ -505,6 +508,8 @@ public class GameController implements Observer, Serializable {
         for (Player p1: activePlayers.values()) {
             shipBoard = p1.getShipBoard();
             cabinsToCheck = shipBoard.getCabinsCoordinates();
+            if(!shipBoard.isCompleted())
+                return;
             for (Coordinates coord: cabinsToCheck) {
                 if (shipBoard.getTile(coord).getCrew() == 0)
                     return;
@@ -524,12 +529,11 @@ public class GameController implements Observer, Serializable {
                 }
             }
         }
-        if(playersWithErrors.isEmpty())
+        if(playersWithErrors.isEmpty()){}
             this.endShipVerification();
     }
 
     public void endShipVerification() {
-
         game.endShipVerification();
     }
 
@@ -894,13 +898,13 @@ public class GameController implements Observer, Serializable {
             } catch(Exception ignored) {}
         }
         else {
-            /*for(String st: clientsStatesMap.keySet()) {
+           /* for(String st: clientsStatesMap.keySet()) {
                 if(clientsStatesMap.get(st).equals(ClientState.S_FINISHED)) {}
                     try{
                         playersView.showWrongInputMessage();
                         //Show wrong input causa il rollBack dello state quindi devo rimettere il bro che pesca
                         //la carta nello stato di wait
-                        clientsStatesMap.put(playerName, ClientState.WAIT);
+                        clientsStatesMap.put(playerName, ClientState.DRAW_CARD);
                         return;
                     } catch(Exception ignored) {}
 

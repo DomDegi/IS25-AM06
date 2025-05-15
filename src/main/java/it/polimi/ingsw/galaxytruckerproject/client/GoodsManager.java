@@ -57,6 +57,11 @@ public class GoodsManager {
     }
 
     public void chooseCargo(Coordinates coordinates) {
+        if (currentPlayer.getShipBoard().getTile(coordinates)==null) {
+            view.wrongLocalInput();
+            return;
+        }
+        view.cargoSelected(coordinates);
         coordinatesToPut=coordinates;
         if(goodsToGet==0)
             pickGoods();
@@ -129,6 +134,14 @@ public class GoodsManager {
 
     public void swapGoods(int chose) {
         ArrayList<Goods> cargo = currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut);
+        if(cargo.isEmpty())
+        {
+            state =0;
+            getReward();
+            return;
+        }
+        view.showGenericMessage("you're trying to swap the goods\n");
+
         Goods goodToSwap;
         switch (chose){
             case 0:
@@ -137,9 +150,8 @@ public class GoodsManager {
                 return;
             case 1:
                 if(cargo.isEmpty()) {
-                    view.wrongLocalInput();
                     view.goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
-                    view.showGenericMessage("Chose what good to swap, input 'no' to stop\n");
+                    view.showGenericMessage("Non dovrei essere qui\n");
                     return;
                 }
                 goodToSwap= cargo.getFirst();

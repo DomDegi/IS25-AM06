@@ -353,6 +353,7 @@ public class Player implements PlayerInterface , Serializable {
             playerShip.getTile(coord).setCrewType(CrewType.HUMAN);
             updatedTiles.add(playerShip.getTile(coord));
         }
+        playerShip.setCompleted(true);
         return updatedTiles;
     }
 
