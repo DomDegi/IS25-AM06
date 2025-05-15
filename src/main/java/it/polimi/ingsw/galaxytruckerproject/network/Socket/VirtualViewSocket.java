@@ -221,6 +221,21 @@ public class VirtualViewSocket implements VirtualView {
     }
 
     @Override
+    public void notifyCombatZoneStrength(String playerName, float strength) throws RemoteException {
+        clientHandler.sendServerMessageToClient(new CombatZoneStrengthMessage(playerName,strength));
+    }
+
+    @Override
+    public void notifyCombatZoneEngine(String playerName, float strength) throws RemoteException {
+        clientHandler.sendServerMessageToClient(new NotifyCombatZoneEngineMessage(playerName,strength));
+    }
+
+    @Override
+    public void notifyCombatZoneCrew(String playerName, int crew) throws RemoteException {
+        clientHandler.sendServerMessageToClient(new NotifyCombatZoneCrewMessage(playerName, crew));
+    }
+
+    @Override
     public DisplayableView getDisplayedView() throws RemoteException {
         return null;
     }

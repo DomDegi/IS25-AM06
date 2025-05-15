@@ -156,6 +156,21 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     }
 
     @Override
+    public void notifyCombatZoneStrength(String playerName, float strength) throws RemoteException {
+        view.notifyCombatZoneStrength(playerName, strength);
+    }
+
+    @Override
+    public void notifyCombatZoneEngine(String playerName, float strength) throws RemoteException {
+        view.notifyCombatZoneEngine(playerName, strength);
+    }
+
+    @Override
+    public void notifyCombatZoneCrew(String playerName, int crew) throws RemoteException {
+        view.notifyCombatZoneCrew(playerName, crew);
+    }
+
+    @Override
     public DisplayableView getDisplayedView() throws RemoteException {
         return view;
     }
@@ -245,4 +260,6 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     public void showScores(Map<String, Integer> scores) throws RemoteException {
         view.showScores(scores);
     }
+
+
 }

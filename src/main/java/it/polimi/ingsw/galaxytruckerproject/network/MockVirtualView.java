@@ -230,5 +230,20 @@ public class MockVirtualView implements VirtualView {
     public void notifyEarlyLanding() throws RemoteException {
 
     }
+
+    @Override
+    public void notifyCombatZoneStrength(String playerName, float strength) throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyCombatZoneEngine(String playerName, float strength) throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyCombatZoneCrew(String playerName, int crew) throws RemoteException {
+
+    }
 }
 
