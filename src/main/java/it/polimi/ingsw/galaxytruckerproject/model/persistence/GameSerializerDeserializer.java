@@ -38,9 +38,12 @@ public class GameSerializerDeserializer {
     public static void saveForUpdates(GameInterface game, Writer writer) {
         try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
             String gameData = game.toStringGameData(); //Saves gameMode playerCount gameSate
+            String cardData = game.cardsToDrawData(); //Saves cards left to draw ID
             String turnedTileData = game.turnedTileData(); //Saves tiles left in the stack map keys
 
             bufferedWriter.write(gameData);
+            bufferedWriter.newLine();
+            bufferedWriter.write(cardData);
             bufferedWriter.newLine();
             bufferedWriter.write(turnedTileData);
             bufferedWriter.newLine();

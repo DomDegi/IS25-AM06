@@ -3,8 +3,6 @@ package it.polimi.ingsw.galaxytruckerproject.controller;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.Observer;
-import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
-import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
@@ -18,7 +16,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.network.Client;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
@@ -60,7 +57,7 @@ public class GameController implements Observer, Serializable {
      * Autosave attributes. Only on when not in card phase
      */
     private ScheduledExecutorService autoSaveExecutor;
-    private volatile boolean autoSaveEnabled;
+    private volatile boolean autoSaveEnabled = true;
 
     public String toString(){
         return gameName+"\ngame state:"+game.getGameState().toString()+"\nplayer needed: "+game.getPlayerCount()+"\nplatyer in game: "+game.getNumberOfPlayers();
@@ -113,10 +110,16 @@ public class GameController implements Observer, Serializable {
     //ASSOCIA IL PLAYER ALLA VIEW
     public void addToPlayersViewMap(String playerName, VirtualView view, boolean reconnecting) {
         if (restarted) {
-            if (activePlayers.containsKey(playerName) || reconnectPlayer(playerName, view)) {
+            if (activePlayers.containsKey(playerName)) {
+                playersViewMap.put(playerName, view);
                 updateReconnectedPlayer(view);
-                updatePlayerView(WAIT, playerName);
                 checkIfAllJoinedAgain();
+                return;
+            }
+            else if (reconnectPlayer(playerName,view)) {
+                playersViewMap.put(playerName, view);
+                checkIfAllJoinedAgain();
+                return;
             }
             else {
                 try {
@@ -169,9 +172,15 @@ public class GameController implements Observer, Serializable {
                         }
                     }
                     flightBoardReposition();
+                    if (hourglassTurns == 3) {
+                        hourglassTurns--;
+                        startTimer();
+                    }
+                    startAutoSave();
                 }
                 case VERIFY_SHIP_CORRECTNESS -> {
                     verifyShipCorrectness();
+                    startAutoSave();
                 }
                 case DRAW_CARD -> askFirstPlayerToDraw();
                 case CARD_EVENT,CONCLUDE_GAME -> {
@@ -183,7 +192,6 @@ public class GameController implements Observer, Serializable {
     }
 
     public void flightBoardReposition() {
-        FlightBoard flightBoard = game.getFlightBoard();
         ArrayList<Player> players = this.getAllPlayers();
         if (game.getMode().equals(GameMode.LEVEL2)) {
             for (Player player: players) {
@@ -191,10 +199,10 @@ public class GameController implements Observer, Serializable {
                 int ranking = player.getPlayerRanking();
                 if (position != 0 || ranking != 0) {
                     switch(position) {
-                        case 9 -> flightBoard.addToFlightBoard(player,1);
-                        case 5 -> flightBoard.addToFlightBoard(player,2);
-                        case 2 -> flightBoard.addToFlightBoard(player,3);
-                        case 0 -> flightBoard.addToFlightBoard(player,4);
+                        case 9 -> this.setPosition(player.getPlayerName(),getViewFromNickname(player.getPlayerName()), 1);
+                        case 5 -> this.setPosition(player.getPlayerName(),getViewFromNickname(player.getPlayerName()), 2);
+                        case 2 -> this.setPosition(player.getPlayerName(),getViewFromNickname(player.getPlayerName()), 3);
+                        case 0 -> this.setPosition(player.getPlayerName(),getViewFromNickname(player.getPlayerName()), 4);
                     }
                 }
             }
@@ -207,7 +215,7 @@ public class GameController implements Observer, Serializable {
                 }
             }
             orderedPlayers.sort(Comparator.comparingInt(Player::getPlayerRanking));
-            orderedPlayers.forEach(flightBoard::addToTrialFlightBoard);
+            orderedPlayers.forEach(game.getFlightBoard()::addToTrialFlightBoard);
         }
     }
 
@@ -990,6 +998,7 @@ public class GameController implements Observer, Serializable {
             } catch(Exception ignored) {}
         }
         else {
+            GameSaver.save(this);
             game.drawCard();
             notifyDrawnCard(game.getDrawnCard());
             game.setGameState(CARD_EVENT);
@@ -1233,6 +1242,7 @@ public class GameController implements Observer, Serializable {
             future.get(5, TimeUnit.SECONDS);
         } catch (InterruptedException | RemoteException | ExecutionException | TimeoutException e) {
             activePlayers.remove(playerName);
+            playersViewMap.remove(playerName);
             disconnectedPlayers.put(playerName,player);
             player.playerDisconnects();
             System.out.println(playerName+" disconnected");

@@ -3,7 +3,8 @@ package it.polimi.ingsw.galaxytruckerproject.client;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
-import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.CardDeck;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.TileFactory;
@@ -11,9 +12,8 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.TileFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class UpdateDeserializer {
 
@@ -27,8 +27,26 @@ public class UpdateDeserializer {
             controller.setHourglassTurns(Integer.parseInt(controllerData[0]));
 
             String[] firstGameData =  writer.readLine().split(" ");
-            controller.setGameMode(GameMode.valueOf(firstGameData[0]));
+            controller.setGameModeWithoutInitializing(GameMode.valueOf(firstGameData[0]));
             int playerCount = Integer.parseInt(firstGameData[1]);
+
+            String[] cardData =  writer.readLine().split(" ");
+
+            List<Integer> cardIDs = Arrays.stream(cardData)
+                    .map(Integer::parseInt)
+                    .toList();
+
+            Map<Integer,ArrayList<Card>> deck = new HashMap<>();
+
+            ArrayList<Card> deckCards = new CardDeck("cards.json").deckFromIDs(new ArrayList<>(cardIDs));
+
+            for (int i = 0; i < 3; i++) {
+                int deckNumber = i + 1;
+                List<Card> subDeck = deckCards.subList(i * 3, (i + 1) * 3);
+                deck.put(deckNumber, new ArrayList<>(subDeck));
+            }
+
+            controller.setDeck(deck);
 
             String[] turnedTileLine =  writer.readLine().split(" ");
             ArrayList<Integer>  turnedTileIds = new ArrayList<>();

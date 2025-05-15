@@ -6,6 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.persistence.GameLoader;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.network.PingPong;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
@@ -94,7 +95,8 @@ public class MultiGameController implements Serializable {
                 }
             }
             else {
-                Optional<GameController> oldGame = GameLoader.findSavedGame(gameName);
+                Optional<GameController> oldGame
+                        = GameLoader.findSavedGame(gameName);
                 if (oldGame.isEmpty()) {
                     Game game = new Game(chosenMode, playerCount);
                     GameController newGameController = new GameController(game, gameName);
@@ -108,12 +110,7 @@ public class MultiGameController implements Serializable {
                     controller.setGameController(oldGame.get());
                     gamesMap.put(gameName, oldGame.get());
                     viewsMap.remove(creator);
-                    if (!isAlreadyInAGame(creator)) {
-                        oldGame.get().addToPlayersViewMap(creator, creatorView, false);
-                    }
-                    else {
-                        oldGame.get().addToPlayersViewMap(creator, creatorView, true);
-                    }
+                    oldGame.get().addToPlayersViewMap(creator, creatorView, isAlreadyInAGame(creator));
                 }
                 notifyNewGame(creator, creatorView);
             }
@@ -207,10 +204,12 @@ public class MultiGameController implements Serializable {
      */
     public GameController gameFromNickname(String nickname) {
         return gamesMap.values().stream()
-                .filter(gameController -> gameController.getGame().identifyPlayerByName(nickname) != null)
+                .filter(gameController -> gameController.getAllPlayers().stream()
+                        .anyMatch(player -> player.getPlayerName().equals(nickname)))
                 .findFirst()
                 .orElse(null);
     }
+
 
     /**
      * shows the player the games still in lobby phase and adds player to the viewsMap

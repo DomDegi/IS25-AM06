@@ -19,7 +19,15 @@ public class GameLoader {
     public static GameController loadGame(File file) {
 
         int currentLine =  0;
-        String gameName = file.getName().split("_")[0];
+        String[] nameData = file.getName().split("_");
+        String gameName;
+        if (nameData.length > 1) {
+            gameName = nameData[0];
+        }
+        else {
+            nameData = file.getName().split("\\.");
+            gameName = nameData[0];
+        }
         GameController restartedGame = new GameController(gameName);
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -55,6 +63,12 @@ public class GameLoader {
             if (splitName.length > 1) {
                 if (checkDataAndDelete(file))
                     continue;
+            }
+            else {
+                splitName =  splitName[0].split("\\.");
+                if (splitName.length < 2) {
+                    System.out.println("Recheck how game loading looks up gameName");
+                }
             }
             if (splitName[0].equals(gameName)) {
                 return Optional.of(loadGame(file));

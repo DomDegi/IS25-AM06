@@ -685,6 +685,10 @@ public class ClientController {
         }
     }
 
+    public void setGameModeWithoutInitializing(GameMode gameMode) {
+        this.gameMode = gameMode;
+    }
+
     public boolean land(String[] input) {
         if (input[0].equals("earlyland") && !me.isLanded()) {
             try {

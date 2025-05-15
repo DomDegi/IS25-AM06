@@ -177,6 +177,8 @@ class GameSaverTest {
 
     @Test
     public void client_updater_test() {
-        System.out.println(ClientUpdater.currentGameStatus(gameController));
+        String update = ClientUpdater.currentGameStatus(gameController);
+        System.out.println(update);
+
     }
 }
