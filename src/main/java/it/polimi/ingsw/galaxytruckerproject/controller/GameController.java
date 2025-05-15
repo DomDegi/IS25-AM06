@@ -15,6 +15,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.network.Client;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
@@ -92,7 +93,7 @@ public class GameController implements Observer, Serializable {
      * @param reconnecting true if player used to be in the lobby
      */
 
-    //ASSOCIA IL PLAYER ALLA VIEW
+    // ASSOCIA IL PLAYER ALLA VIEW
     public void addToPlayersViewMap(String playerName, VirtualView view, boolean reconnecting) {
         try {
             view.setGameMode(this.game.getMode());
@@ -105,10 +106,12 @@ public class GameController implements Observer, Serializable {
         else {
             if (this.getGameState().equals(GameState.LOBBY_PHASE)){
                 playersViewMap.put(playerName, view);
+                if(playersViewMap.size()!=1){
                 try {
                     view.setClientState(ClientState.COLOR_CHOICE);
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
+                }
                 }
             }
             else{
@@ -890,6 +893,18 @@ public class GameController implements Observer, Serializable {
             } catch(Exception ignored) {}
         }
         else {
+            for(String st: clientsStatesMap.keySet()) {
+                if(clientsStatesMap.get(st).equals(ClientState.S_FINISHED)) {}
+                    try{
+                        playersView.showWrongInputMessage();
+                        //Show wrong input causa il rollBack dello state quindi devo rimettere il bro che pesca
+                        //la carta nello stato di wait
+                        clientsStatesMap.put(playerName, ClientState.DRAW_CARD);
+                        return;
+                    } catch(Exception ignored) {}
+
+            }
+
             game.drawCard();
             notifyDrawnCard(game.getDrawnCard());
             game.setGameState(CARD_EVENT);
@@ -1130,7 +1145,7 @@ public class GameController implements Observer, Serializable {
         pendingPongs.put(playerName, future);
         try{
             view.ping();
-            future.get(10, TimeUnit.SECONDS);
+            future.get(15, TimeUnit.SECONDS);
         } catch (InterruptedException | RemoteException | ExecutionException | TimeoutException e) {
             activePlayers.remove(playerName);
             disconnectedPlayers.put(playerName,player);

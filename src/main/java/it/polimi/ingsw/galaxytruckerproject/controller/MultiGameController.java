@@ -99,7 +99,7 @@ public class MultiGameController implements Serializable {
                 viewsMap.remove(creator);
                 //remove player from map of the views of player joining a game
                 gameController.addToPlayersViewMap(creator, creatorView, false);
-                notifyNewGame(creator, creatorView);
+                notifyNewGame(creator, creatorView); /**/
             }
         }
     }

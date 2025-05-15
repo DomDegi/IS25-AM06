@@ -35,7 +35,7 @@ public enum ClientState implements Serializable {
             case CHOOSE_IP_AND_PORT_SOCKET -> {return "You chose SOCKET: type the server information's [ip] [port] (type d to default to localhost)";}
             case LOGIN -> {return "Choose your nickname [name] [done] [reset]";}
             case LOBBY -> {return"You're in the lobby [createGame] [joinGame]";}
-            case LOBBY0 ->{return"Enter gameName, player number and gameMode [gameName numPlayer gameMode]";}
+            case LOBBY0 ->{return"Enter gameName, player number, gameMode and color [gameName numPlayer gameMode color]";}
             case LOBBY1 -> {return "Enter gameName [gameName]";}
             case COLOR_CHOICE -> {return "Choose your color [red] [yellow] [green] [blue]";}
             case ACTION -> {return "You can accept or deny [yes] [no]";}

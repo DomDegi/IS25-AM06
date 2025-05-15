@@ -25,7 +25,7 @@ public class PingPong implements Runnable {
                 }
 
                 try {
-                    Thread.sleep(6000);
+                    Thread.sleep(15000);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     break;
