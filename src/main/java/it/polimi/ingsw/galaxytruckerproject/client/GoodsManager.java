@@ -61,6 +61,7 @@ public class GoodsManager {
             view.wrongLocalInput();
             return;
         }
+        view.cargoSelected(coordinates);
         coordinatesToPut=coordinates;
         if(goodsToGet==0)
             pickGoods();
