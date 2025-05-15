@@ -64,7 +64,7 @@ public class ShipBoardSerializerDeserializer {
             if (line.equals("NullTile")) {
                 loadedTiles.add(null);
             } else {
-                Tile tile = TileLoader.load(line);
+                Tile tile = TileFactory.load(line);
                 if (tile == null) {
                     System.out.println("Tile parsing failed, line: " + line);
                     loadedTiles.add(null); // oppure fai qualcosa di più robusto
@@ -84,7 +84,7 @@ public class ShipBoardSerializerDeserializer {
         for (int i = 0; i < 2; i++) {
             line = reader.readLine();
             if (!line.equals("NullTile")) {
-                shipBoard.addBookedTile(TileLoader.load(line));
+                shipBoard.addBookedTile(TileFactory.load(line));
             }
         }
 

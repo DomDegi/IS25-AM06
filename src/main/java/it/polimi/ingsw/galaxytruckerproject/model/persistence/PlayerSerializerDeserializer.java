@@ -9,12 +9,15 @@ public class PlayerSerializerDeserializer {
 
     private PlayerSerializerDeserializer() {}
 
-    public static void save(Player player, Writer writer) throws IOException {
-        BufferedWriter bufferedWriter = new BufferedWriter(writer);
-        bufferedWriter.write(player.toStringData());
-        bufferedWriter.newLine();
-        ShipBoardSerializerDeserializer.save(player.getShipBoard(), bufferedWriter);
-        bufferedWriter.flush();
+    public static void save(Player player, Writer writer)  {
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(writer);
+            bufferedWriter.write(player.toStringData());
+            bufferedWriter.newLine();
+            ShipBoardSerializerDeserializer.save(player.getShipBoard(), bufferedWriter);
+        }  catch (IOException e) {
+            System.out.println("Was not able to serialize player");
+        }
     }
 
     public static void save(Player player,File file) {

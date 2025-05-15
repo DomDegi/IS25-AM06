@@ -19,6 +19,16 @@ public class ControllerSerializerDeserializer {
         }
     }
 
+    public static void saveForUpdates (GameController gameController, Writer writer) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
+            String controllerData = String.valueOf(gameController.getHourglassTurns());
+            bufferedWriter.write(controllerData);
+            bufferedWriter.newLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void save(GameController gameController, File file) {
         try {
             FileWriter fileWriter = new FileWriter(file, true); // append = true

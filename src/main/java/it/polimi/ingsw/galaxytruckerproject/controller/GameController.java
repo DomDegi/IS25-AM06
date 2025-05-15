@@ -10,6 +10,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.persistence.ClientUpdater;
 import it.polimi.ingsw.galaxytruckerproject.model.persistence.GameSaver;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
@@ -50,6 +51,10 @@ public class GameController implements Observer, Serializable {
 
     //This attribute indicates that a game was loaded from disk
     private boolean restarted;
+
+    //This attributes contains the string generated when game gets restarted or a player reconnects
+    //It gets set to null as soon as every player that had to use it is done getting the currentGameStatus
+    private String currentGameStatus;
 
     /**
      * Autosave attributes. Only on when not in card phase
@@ -152,11 +157,17 @@ public class GameController implements Observer, Serializable {
 
     public void checkIfAllJoinedAgain() {
         if (playersViewMap.size() == activePlayers.size()) {
+            currentGameStatus = null;
             restarted = false;
             switch (game.getGameState()) {
                 case START_GAME -> startGame();
                 case SHIPS_CREATION -> {
                     updateEveryView(S_END_DRAW_TILE_CARD);
+                    for (Player player : this.getAllPlayers()) {
+                        if (player.getDrawnTile() != null) {
+                            refuseTile(player.getPlayerName());
+                        }
+                    }
                     flightBoardReposition();
                 }
                 case VERIFY_SHIP_CORRECTNESS -> {
@@ -257,6 +268,7 @@ public class GameController implements Observer, Serializable {
                 updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
             }
             updateReconnectedPlayer(view);
+            currentGameStatus = null;
             if (!lockedSmallDecks.isEmpty()) {
                 notifyNotAvailableCardDeck();
             }
@@ -273,13 +285,11 @@ public class GameController implements Observer, Serializable {
     }
 
     public void updateReconnectedPlayer(VirtualView view) {
-        Map<String, LightShipBoard> updatedShipBoards = new HashMap<>();
-        for (Player player: game.getListOfAllPlayer()) {
-            updatedShipBoards.put(player.getPlayerName(), new LightShipBoard(player.getShipBoard()));
+        if (currentGameStatus == null) {
+            currentGameStatus = ClientUpdater.currentGameStatus(this);
         }
         try {
-            view.notifyChangesWhileGone(updatedShipBoards, new LightFlightboard(game.getFlightBoard()),
-                    game.getDrawnCard(), hourglassTurns, game.getTurnedTiles(), notAvailableCardDecks());
+            view.notifyChangesWhileGone(currentGameStatus);
         } catch(Exception ignored) {}
     }
 

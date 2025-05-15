@@ -36,6 +36,10 @@ class GameSaverTest {
         player2 = game.identifyPlayerByName("pippo");
         player3 = game.identifyPlayerByName("paperino");
         player4 = game.identifyPlayerByName("topolino");
+        gameController.getActivePlayers().put(player1.getPlayerName(),player1);
+        gameController.getActivePlayers().put(player2.getPlayerName(),player2);
+        gameController.getActivePlayers().put(player3.getPlayerName(),player3);
+        gameController.getActivePlayers().put(player4.getPlayerName(),player4);
 
 
         player1.setCredit(25);
@@ -169,5 +173,10 @@ class GameSaverTest {
     @Test
     public void save_test(){
         GameSaver.save(gameController);
+    }
+
+    @Test
+    public void client_updater_test() {
+        System.out.println(ClientUpdater.currentGameStatus(gameController));
     }
 }

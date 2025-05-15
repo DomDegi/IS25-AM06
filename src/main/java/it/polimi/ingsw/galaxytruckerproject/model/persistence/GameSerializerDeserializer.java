@@ -16,7 +16,7 @@ public class GameSerializerDeserializer {
 
     public static void save(GameInterface game, Writer writer) {
         try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
-            String gameData = game.toStringGameData(); //Saves gameMode playerCount
+            String gameData = game.toStringGameData(); //Saves gameMode playerCount gameState
             String cardData = game.cardsToDrawData(); //Saves cards left to draw ID
             String tileStackData = game.tileStackData(); //Saves tiles left in the stack keys
             String turnedTileData = game.turnedTileData(); //Saves tiles left in the stack map keys
@@ -26,6 +26,21 @@ public class GameSerializerDeserializer {
             bufferedWriter.write(cardData);
             bufferedWriter.newLine();
             bufferedWriter.write(tileStackData);
+            bufferedWriter.newLine();
+            bufferedWriter.write(turnedTileData);
+            bufferedWriter.newLine();
+        } catch (IOException e) {
+            System.out.println("Error writing game data");
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void saveForUpdates(GameInterface game, Writer writer) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
+            String gameData = game.toStringGameData(); //Saves gameMode playerCount gameSate
+            String turnedTileData = game.turnedTileData(); //Saves tiles left in the stack map keys
+
+            bufferedWriter.write(gameData);
             bufferedWriter.newLine();
             bufferedWriter.write(turnedTileData);
             bufferedWriter.newLine();

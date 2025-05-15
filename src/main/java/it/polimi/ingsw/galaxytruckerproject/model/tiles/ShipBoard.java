@@ -310,7 +310,7 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
         this.tilesTable = new Optional[5][7];
         for (int i = 0; i < tilesTable.length; i++) {
             for (int j = 0; j < tilesTable[i].length; j++) {
-                tilesTable[i][j] = Optional.empty();  // Inizializza con Optional vuoti
+                tilesTable[i][j] = Optional.empty();  // Initializes with empty optionals
             }
         }
     }
@@ -755,4 +755,7 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
         this.getTile(coordinates).setShipBoard(this);
     }
 
+    public void setPenalty(int penalty) {
+        this.penalty = penalty;
+    }
 }
