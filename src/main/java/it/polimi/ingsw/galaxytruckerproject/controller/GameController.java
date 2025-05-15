@@ -414,7 +414,7 @@ public class GameController implements Observer, Serializable {
                     }
                     else {
                         player.setAllCrewToHuman();
-                        checkIfPlayersPickedCrew();
+                        //checkIfPlayersPickedCrew();
                     }
                 }
             } else {
