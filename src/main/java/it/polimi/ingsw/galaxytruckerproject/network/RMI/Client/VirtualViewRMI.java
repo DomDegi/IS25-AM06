@@ -169,6 +169,11 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     }
 
     @Override
+    public void victimOfThePenalty(String playerName) throws RemoteException {
+        clientController.victimOfThePenalty(playerName);
+    }
+
+    @Override
     public DisplayableView getDisplayedView() throws RemoteException {
         return view;
     }

@@ -629,9 +629,9 @@ public class GameController implements Observer, Serializable {
                 }
             }
         }
-        if(playersWithErrors.isEmpty()){
+        if(playersWithErrors.isEmpty()) {
             this.endShipVerification();
-            }
+        }
     }
 
     public void endShipVerification() {

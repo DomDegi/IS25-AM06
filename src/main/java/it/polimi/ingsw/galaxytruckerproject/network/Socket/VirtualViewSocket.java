@@ -107,6 +107,11 @@ public class VirtualViewSocket implements VirtualView {
     }
 
     @Override
+    public void victimOfThePenalty(String playerName) throws RemoteException {
+        clientHandler.sendServerMessageToClient((new VictimOfThePenaltyMessage(playerName)));
+    }
+
+    @Override
     public void showLoginResponse(boolean success) throws RemoteException {
         LoginResponseMessage message = new LoginResponseMessage(success);
         clientHandler.sendServerMessageToClient(message);

@@ -141,7 +141,7 @@ public class CombatZone extends Card {
             }
         }
         minPlayerView = viewsMap.get(minPlayer.getPlayerName());
-        System.out.println(minPlayer.getPlayerName());
+        notifyVictim(minPlayer.getPlayerName());
         if (!currentPenalty.initializePenalty(game,minPlayerView, minPlayer)) {
             resetForNextPenalty();
         }
@@ -374,4 +374,11 @@ public class CombatZone extends Card {
             }
         }
     }
+
+    @Override
+    public Penalty getPenalty() {
+        ChallengeType key = listOfChallenges.sequencedKeySet().getFirst();
+        return listOfChallenges.remove(key);
+    }
+
 }

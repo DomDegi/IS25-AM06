@@ -9,6 +9,7 @@ import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.Penalty;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
@@ -49,6 +50,11 @@ public class TUI implements DisplayableView {
     @Override
     public void showGenericMessage(String genericMessage)  {
         System.out.println(genericMessage);
+    }
+
+    @Override
+    public void victimOfThePenalty(String playerName, Penalty penalty) {
+        System.out.println(playerName +"has received the following penalty:"+ penalty.toString());
     }
 
     @Override

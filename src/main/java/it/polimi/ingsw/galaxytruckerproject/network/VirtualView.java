@@ -28,5 +28,6 @@ public interface VirtualView extends ViewInterface, Serializable {
     void notifyChangesWhileGone(String currentGameStatus) throws RemoteException;
     void notifyFlightBoardCards(Map<Integer, ArrayList<Card>> cards) throws RemoteException;
     void initializeShipBoards(GameMode gameMode) throws RemoteException;
+    void victimOfThePenalty(String playerName) throws RemoteException;
     void ping() throws RemoteException;
 }

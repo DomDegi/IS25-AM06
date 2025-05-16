@@ -87,6 +87,11 @@ public class MockVirtualView implements VirtualView {
     }
 
     @Override
+    public void victimOfThePenalty(String playerName) throws RemoteException {
+
+    }
+
+    @Override
     public void ping() throws RemoteException {
 
     }

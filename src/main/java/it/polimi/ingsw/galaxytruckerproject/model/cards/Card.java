@@ -13,6 +13,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -104,6 +105,16 @@ public abstract class Card implements Serializable {
 
     public void branchChoice(String playerName, ArrayList<Coordinates> branchChoices){}
 
+    public void notifyVictim(String playerName) {
+        for (VirtualView view : viewsMap.values()) {
+            try {
+                view.victimOfThePenalty(playerName);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     //Getter methods needed for view
     public int getLevel() {
         return level;
@@ -127,5 +138,7 @@ public abstract class Card implements Serializable {
     public String toString() {
         return "id: " + id + " level: " +  level + ", required days: " + requiredDays;
     }
-
+    public  Penalty getPenalty() {
+        return null;
+    }
 }

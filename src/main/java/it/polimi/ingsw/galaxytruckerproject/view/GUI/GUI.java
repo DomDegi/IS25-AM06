@@ -8,6 +8,7 @@ import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.Penalty;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
@@ -18,8 +19,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.scene.layout.GridPane;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -297,6 +296,11 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void notifyCombatZoneCrew(String playerName, int crew) throws RemoteException {
+
+    }
+
+    @Override
+    public void victimOfThePenalty(String playerName, Penalty penalty){
 
     }
 

@@ -1005,5 +1005,9 @@ public class ClientController {
         this.previousState = ClientState.WAIT;
         this.state = ClientState.WAIT;
     }
+
+    public void victimOfThePenalty(String playerName) {
+        view.victimOfThePenalty(playerName,this.displayedCard.getFirst().getPenalty());
+    }
 }
 
