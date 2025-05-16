@@ -51,4 +51,6 @@ public interface DisplayableView extends ViewInterface{
     void crewPositioned();
 
     void showGenericMessage (String genericMessage);
+
+    void notifyPlayerJoined(int expectedPlayer, int currentPlayer,boolean reconnected);
 }

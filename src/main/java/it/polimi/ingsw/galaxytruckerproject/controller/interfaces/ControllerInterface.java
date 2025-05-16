@@ -50,11 +50,6 @@ public interface ControllerInterface {
      */
     void leaveGame () throws Exception;
 
-    /**
-     * this method when call makes the player leave the game in whatever state it is
-     * @throws Exception
-     */
-    void leave () throws Exception;
 
     /**
      * this method is used by the player to choose a color after entering a game

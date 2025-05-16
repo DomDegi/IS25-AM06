@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameLoaderTest {
 
-    String fileName = "GameSaverTest";
+    String fileName = "c";
     GameController gameController;
     Player player1;
     Player player2;
@@ -44,13 +44,13 @@ class GameLoaderTest {
         player3 = players.get(2);
         player4 = players.get(3);
 
-        assertEquals("pluto R 7 2 25 L N N",player2.toStringData());
-        assertEquals("topolino B 0 0 0 N N N",player1.toStringData());
-        assertEquals("paperino Y 0 0 0 N N N",player4.toStringData());
-        assertEquals("pippo G 0 0 0 N N N",player3.toStringData());
+        assertEquals("pluto R 7 2 25 L N 0 N",player2.toStringData());
+        assertEquals("topolino B 0 0 0 N N 0 N",player1.toStringData());
+        assertEquals("paperino Y 0 0 0 N N 0 N",player4.toStringData());
+        assertEquals("pippo G 0 0 0 N N 0 N",player3.toStringData());
 
         assertEquals(0,gameController.getHourglassTurns());
-        assertEquals("GameSaverTest",gameController.getGameName());
+        assertEquals("c",gameController.getGameName());
 
         assertEquals(LEVEL2,gameController.getGame().getMode());
         assertEquals(SHIPS_CREATION,gameController.getGameState());

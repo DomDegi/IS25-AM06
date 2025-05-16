@@ -423,7 +423,14 @@ public class Player implements PlayerInterface , Serializable {
         }
         //attribute[7]
         sb.append(playerShip.getPenalty()).append(" ");
-        //attribute[8 - depends on the tile]
+        //attributes[8]
+        if (playerShip.isCompleted()) {
+            sb.append("C").append(" ");
+        }
+        else {
+            sb.append("N").append(" ");
+        }
+        //attribute[9 - depends on the tile]
         if (drawnTile == null) {
             sb.append("N");
         }
@@ -434,10 +441,13 @@ public class Player implements PlayerInterface , Serializable {
     }
 
     //No parameter builder for deserialization
-    public Player() {}
+    public Player() {
+        this.playerRanking = 0;
+        this.playerPosition = 0;
+    }
 
     public void playerLoader(String[] attributes) {
-        if (attributes.length < 8) {
+        if (attributes.length < 10) {
             throw new IllegalArgumentException("Insufficient attributes: at least 8 are needed " + attributes.length);
         }
         this.playerName = attributes[0];
@@ -450,7 +460,8 @@ public class Player implements PlayerInterface , Serializable {
 
         this.playerShip = new ShipBoard(this);
         this.playerShip.setPenalty(Integer.parseInt(attributes[7]));
-        if (attributes[8].equals("N")) {
+        this.playerShip.setCompleted(attributes[8].equals("C"));
+        if (attributes[9].equals("N")) {
             this.drawnTile = null;
         }
         else {

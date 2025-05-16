@@ -51,7 +51,7 @@ public class PlayerSerializerDeserializer {
 
             // Rebuilds player from txt file through player loader method
             Player player = new Player();
-            String[] playerData = playerLine.split(" ", -1);
+            String[] playerData = playerLine.split(" ");
             player.playerLoader(playerData);
 
 

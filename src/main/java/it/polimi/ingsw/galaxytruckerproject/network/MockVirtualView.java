@@ -91,6 +91,11 @@ public class MockVirtualView implements VirtualView {
 
     }
 
+    @Override
+    public void notifyPlayerJoined(int expected, int current, boolean reconnected) throws RemoteException {
+
+    }
+
     // --- ViewInterface methods ---
 
     @Override

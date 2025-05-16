@@ -100,6 +100,11 @@ public class GUI extends Application implements DisplayableView {
     }
 
     @Override
+    public void notifyPlayerJoined(int expectedPlayer, int currentPlayer, boolean reconnected) {
+
+    }
+
+    @Override
     public void showErrorMessage(String errorMessage) {
 
     }

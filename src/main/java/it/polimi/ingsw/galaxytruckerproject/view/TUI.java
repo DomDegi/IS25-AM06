@@ -346,5 +346,12 @@ public class TUI implements DisplayableView {
         }
     }
 
-
+    @Override
+    public void notifyPlayerJoined(int expectedPlayer, int currentPlayer, boolean reconnected) {
+        if (!reconnected) {
+            System.out.println("new player joined the game: " + currentPlayer + "/" + expectedPlayer);
+        } else  {
+            System.out.println("player reconnected: " + currentPlayer + "/" + expectedPlayer);
+        }
+    }
 }

@@ -261,4 +261,19 @@ public class FlightBoard implements Serializable {
         }
         freePodiumPosition = inGamePlayers.size();
     }
+
+    public void autoSetInFreeLastPosition(Player player, int playerCount) {
+        if (gameMode == GameMode.LEVEL2) {
+            for (int i = playerCount - 1; i >= 0; i--) {
+                if (!occupiedPos.contains(i)) {
+                    addToFlightBoard(player, i + 1);
+                    return;
+                }
+            }
+        }
+        else {
+            addToTrialFlightBoard(player);
+            setPlayerToLast(player);
+        }
+    }
 }
