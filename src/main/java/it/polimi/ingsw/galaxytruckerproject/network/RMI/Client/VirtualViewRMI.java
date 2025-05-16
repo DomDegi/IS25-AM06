@@ -3,6 +3,8 @@ package it.polimi.ingsw.galaxytruckerproject.network.RMI.Client;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientController;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
@@ -154,21 +156,6 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     }
 
     @Override
-    public void notifyCombatZoneStrength(String playerName, float strength) throws RemoteException {
-        view.notifyCombatZoneStrength(playerName, strength);
-    }
-
-    @Override
-    public void notifyCombatZoneEngine(String playerName, float strength) throws RemoteException {
-        view.notifyCombatZoneEngine(playerName, strength);
-    }
-
-    @Override
-    public void notifyCombatZoneCrew(String playerName, int crew) throws RemoteException {
-        view.notifyCombatZoneCrew(playerName, crew);
-    }
-
-    @Override
     public DisplayableView getDisplayedView() throws RemoteException {
         return view;
     }
@@ -228,8 +215,8 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     }
 
     @Override
-    public void notifyChangesWhileGone(String currentGameStatus) throws RemoteException {
-        clientController.updateModel(currentGameStatus);
+    public void notifyChangesWhileGone(Map<String, LightShipBoard> updatedShipBoards, LightFlightboard updatedFlightBoard, Card drawnCard, int hourglassTurns, Map<Integer, Tile> turnedTiles, ArrayList<Integer> notAvailable) throws RemoteException {
+        clientController.updateModel(updatedShipBoards, updatedFlightBoard, drawnCard, hourglassTurns, turnedTiles, notAvailable);
     }
 
     @Override
@@ -258,6 +245,4 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     public void showScores(Map<String, Integer> scores) throws RemoteException {
         view.showScores(scores);
     }
-
-
 }

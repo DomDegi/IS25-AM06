@@ -250,13 +250,13 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
     //Used only for testing (toEnnio: why brotha?)
     public Tile getTile(int x, int y) {
         if(tilesTable[x][y].isPresent())
-            return tilesTable[x][y].get();
+        return tilesTable[x][y].get();
         return null;
     }
 
     public Tile getTile(Coordinates coordinates){
         if (tilesTable[coordinates.getX()][coordinates.getY()].isPresent())
-            return tilesTable[coordinates.getX()][coordinates.getY()].get();
+        return tilesTable[coordinates.getX()][coordinates.getY()].get();
         return null;
     }
 
@@ -318,7 +318,7 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
         this.tilesTable = new Optional[5][7];
         for (int i = 0; i < tilesTable.length; i++) {
             for (int j = 0; j < tilesTable[i].length; j++) {
-                tilesTable[i][j] = Optional.empty();  // Initializes with empty optionals
+                tilesTable[i][j] = Optional.empty();  // Inizializza con Optional vuoti
             }
         }
     }
@@ -763,7 +763,4 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
         this.getTile(coordinates).setShipBoard(this);
     }
 
-    public void setPenalty(int penalty) {
-        this.penalty = penalty;
-    }
 }

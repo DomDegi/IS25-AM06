@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.model.player;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
+import it.polimi.ingsw.galaxytruckerproject.model.persistence.TileLoader;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 
 import java.io.Serializable;
@@ -421,9 +422,7 @@ public class Player implements PlayerInterface , Serializable {
         else {
             sb.append("N").append(" ");
         }
-        //attribute[7]
-        sb.append(playerShip.getPenalty()).append(" ");
-        //attribute[8 - depends on the tile]
+        //attribute[7 - depends on the tile]
         if (drawnTile == null) {
             sb.append("N");
         }
@@ -447,10 +446,7 @@ public class Player implements PlayerInterface , Serializable {
         this.credit = Integer.parseInt(attributes[4]);
         this.landed = attributes[5].equals("L");
         this.isDisconnected = attributes[6].equals("D");
-
-        this.playerShip = new ShipBoard(this);
-        this.playerShip.setPenalty(Integer.parseInt(attributes[7]));
-        if (attributes[8].equals("N")) {
+        if (attributes[7].equals("N")) {
             this.drawnTile = null;
         }
         else {
@@ -458,8 +454,10 @@ public class Player implements PlayerInterface , Serializable {
             for (int i = 7; i < attributes.length; i++) {
                 tileData.append(attributes[i]).append(" ");
             }
-            this.drawnTile = TileFactory.load(tileData.toString());
+            TileLoader tileLoader = new TileLoader();
+            this.drawnTile = tileLoader.load(tileData.toString());
         }
+        this.playerShip = new ShipBoard(this);
     }
 
     //Needed for testing

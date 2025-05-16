@@ -11,9 +11,9 @@ public class ShipBoardSerializerDeserializer {
 
 
 
-    private ShipBoardSerializerDeserializer() {}
+    public ShipBoardSerializerDeserializer() {}
 
-    public static void save(ShipBoard shipBoard, BufferedWriter writer)  throws IOException {
+    public void save(ShipBoard shipBoard, BufferedWriter writer)  throws IOException {
         Optional<Tile>[][] tilesTable = shipBoard.getTilesTable();
 
         for (int i = 0; i < 5; i++) {
@@ -29,42 +29,30 @@ public class ShipBoardSerializerDeserializer {
                 writer.newLine();
             }
         }
-        ArrayList<Tile> bookedTiles = shipBoard.getBookedTiles();
-        switch(bookedTiles.size()) {
-            case 0 -> {
-                for (int i = 0; i < 2; i++) {
-                    writer.write("NullTile");
-                    writer.newLine();
-                }
-            }
-            case 1 -> {
-                writer.write(bookedTiles.getFirst().toStringData());
-                writer.newLine();
-            }
-            case 2 -> {
-                for (Tile tile : bookedTiles) {
-                    writer.write(bookedTiles.getFirst().toStringData());
-                    writer.newLine();
-                }
-            }
-        }
         writer.close();
     }
 
-    public static void load(Player player, int startLine, BufferedReader reader) throws IOException {
+    public int load(Player player, int startLine, BufferedReader reader) throws IOException {
+
+        TileLoader tileLoader = new TileLoader();
         ShipBoard shipBoard = player.getShipBoard();
         Tile[][] tilesTable = new Tile[5][7];
         ArrayList<Tile> loadedTiles = new ArrayList<>();
 
 
         String line;
+        int currentLine = 0;
+        int endLine = 0;
 
-        while ((line = reader.readLine()) != null || loadedTiles.size() < 35) {
+        while ((line = reader.readLine()) != null) {
+            currentLine++;
+            if (currentLine < startLine) continue;
+
 
             if (line.equals("NullTile")) {
                 loadedTiles.add(null);
             } else {
-                Tile tile = TileFactory.load(line);
+                Tile tile = tileLoader.load(line);
                 if (tile == null) {
                     System.out.println("Tile parsing failed, line: " + line);
                     loadedTiles.add(null); // oppure fai qualcosa di più robusto
@@ -75,17 +63,11 @@ public class ShipBoardSerializerDeserializer {
 
             if (loadedTiles.size() == 35) break;
         }
+        endLine = currentLine;
 
         if (loadedTiles.size() != 35) {
             System.out.println("Error: not enough tiles to fill shipboard or too many tiles in shipBoard.");
-            return;
-        }
-
-        for (int i = 0; i < 2; i++) {
-            line = reader.readLine();
-            if (!line.equals("NullTile")) {
-                shipBoard.addBookedTile(TileFactory.load(line));
-            }
+            return -1;
         }
 
         shipBoard.simpleInitialize();
@@ -104,5 +86,6 @@ public class ShipBoardSerializerDeserializer {
         }
 
         shipBoard.verifyCorrectness();
+        return endLine;
     }
 }

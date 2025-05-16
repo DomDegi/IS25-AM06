@@ -10,7 +10,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -91,7 +90,6 @@ public class CombatZone extends Card {
                 if (power > 0) {
                     power += 2*currentPlayer.getShipBoard().getNumPurpleAliens();
                 }
-                notifyStrength(currentPlayer.getPlayerName(),power);
                 savedValues.put(currentPlayer, power);
             }
             else {
@@ -109,7 +107,6 @@ public class CombatZone extends Card {
                 if (power > 0) {
                     power += 2*currentPlayer.getShipBoard().getNumBrownAliens();
                 }
-                notifyEngine(currentPlayer.getPlayerName(),power);
                 savedValues.put(currentPlayer, power);
             }
             else {
@@ -122,7 +119,6 @@ public class CombatZone extends Card {
 
     public void crewNumberCheck () {
         for (Player player: game.getListOfInFlightPlayers()) {
-            notifyCrew(player.getPlayerName(),player.getTotalCrew());
             savedValues.put(player, (float) player.getTotalCrew());
         }
     }
@@ -175,7 +171,7 @@ public class CombatZone extends Card {
         }
         float strength = valueMap.keySet().iterator().next();
         ArrayList<Tile> updatedTiles = valueMap.get(strength);
-        notifyStrength(currentPlayer.getPlayerName(),strength);
+
         savedValues.put(currentPlayer, strength);
         if (!updatedTiles.isEmpty()) {
             notifyModifiedTiles(playerName, valueMap.get(strength));
@@ -200,7 +196,7 @@ public class CombatZone extends Card {
         }
         int strength = valueMap.keySet().iterator().next();
         ArrayList<Tile> updatedTiles = valueMap.get(strength);
-        notifyEngine(currentPlayer.getPlayerName(),strength);
+
         savedValues.put(currentPlayer, (float) strength);
         if (!updatedTiles.isEmpty()) {
             notifyModifiedTiles(playerName, valueMap.values().iterator().next());
@@ -343,35 +339,5 @@ public class CombatZone extends Card {
     @Override
     public LinkedHashMap<ChallengeType, Penalty> getChallenges() {
         return listOfChallenges;
-    }
-
-    public void notifyStrength(String playerName, float strength) {
-        for (VirtualView view : viewsMap.values()) {
-            try {
-                view.notifyCombatZoneStrength(playerName,strength);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-    public void notifyEngine(String playerName, float strength) {
-        for (VirtualView view : viewsMap.values()) {
-            try {
-                view.notifyCombatZoneEngine(playerName,strength);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-    public void notifyCrew(String playerName, int crew) {
-        for (VirtualView view : viewsMap.values()) {
-            try {
-                view.notifyCombatZoneCrew(playerName,crew);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
-        }
     }
 }

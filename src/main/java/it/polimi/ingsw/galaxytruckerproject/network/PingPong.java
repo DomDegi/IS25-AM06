@@ -17,7 +17,7 @@ public class PingPong implements Runnable {
                 if (games != null) {
                     for (GameController game : games.values()) {
                         if (game.getActivePlayers() != null) {
-                            for (String playerName : game.getPlayersViewMap().keySet()) {
+                            for (String playerName : game.getActivePlayers().keySet()) {
                                 game.pingPong(playerName, game.getViewFromNickname(playerName));
                             }
                         }

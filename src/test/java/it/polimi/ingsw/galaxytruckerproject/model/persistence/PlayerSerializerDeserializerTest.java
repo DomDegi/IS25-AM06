@@ -14,7 +14,9 @@ import it.polimi.ingsw.galaxytruckerproject.view.TUI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,11 +29,10 @@ class PlayerSerializerDeserializerTest {
     PlayerSerializerDeserializer playerSerializerDeserializer;
     TUI shipPrinter = new TUI();
     FlightBoard flightBoard = new FlightBoard(GameMode.LEVEL2);
-    File file = new File(fileName);
 
     @BeforeEach
     void setUp() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, false))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, false))) {
             // This will clear the file content by opening it in overwrite mode
             writer.write("");  // Optional: explicitly write to ensure file is cleared.
         } catch (IOException e) {
@@ -115,18 +116,16 @@ class PlayerSerializerDeserializerTest {
 
     @Test
     public void save_test() {
-        PlayerSerializerDeserializer.save(player,file);
+        playerSerializerDeserializer = new PlayerSerializerDeserializer(fileName);
+        playerSerializerDeserializer.save(player);
     }
 
     @Test
     public void load_test() {
         save_test();
         int expectedEndOfLine = 35;
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            PlayerSerializerDeserializer.load(gameController, reader);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        int endOfLine = playerSerializerDeserializer.load(gameController, 0);
+        assertEquals(expectedEndOfLine, endOfLine);
     }
 
     @Test
