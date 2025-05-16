@@ -109,7 +109,7 @@ public class MultiGameController implements Serializable {
         VirtualView joinerView = viewsMap.get(joiner);
 
         if (joinerView != null && controller != null) {
-            if (gameToJoin == null /*|| (gameToJoin.getActivePlayers().size() == gameToJoin.getGame().getPlayerCount())*/) {
+            if (gameToJoin == null || (gameToJoin.getActivePlayers().size() == gameToJoin.getGame().getPlayerCount())) {
                 try {
                     joinerView.showWrongInputMessage();
                 } catch (RemoteException e) {

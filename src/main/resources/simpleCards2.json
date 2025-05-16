@@ -1,6 +1,10 @@
 {
   "cards": [
     {
+      "type": "OpenSpace",
+      "level": 1
+    },
+    {
       "type": "Planets",
       "level": 1,
       "requiredDays": 2,
@@ -75,10 +79,7 @@
       "type": "StarDust",
       "level": 1
     },
-    {
-      "type": "OpenSpace",
-      "level": 1
-    },
+
     {
       "type": "MeteorSwarm",
       "level": 1,

@@ -49,9 +49,13 @@ public abstract class Card implements Serializable {
     public abstract void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap);
 
     public void notifyModifiedTiles (String playerName, ArrayList<Tile> tiles) {
+        ArrayList<Tile> sendableTiles = new ArrayList<>();
+        for (Tile tile : tiles) {
+            sendableTiles.add(tile.send());
+        }
         for (VirtualView view : viewsMap.values()) {
             try {
-                view.notifyModifiedTiles(playerName, tiles);
+                view.notifyModifiedTiles(playerName, sendableTiles);
             } catch (Exception ignored) {}
         }
     }
