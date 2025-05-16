@@ -286,6 +286,21 @@ public class GUI extends Application implements DisplayableView {
     }
 
     @Override
+    public void notifyCombatZoneStrength(String playerName, float strength) throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyCombatZoneEngine(String playerName, float strength) throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyCombatZoneCrew(String playerName, int crew) throws RemoteException {
+
+    }
+
+    @Override
     public void printCabins(Tile cabins) {
 
     }

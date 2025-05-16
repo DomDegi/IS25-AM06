@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class TileFactory {
@@ -77,6 +76,105 @@ public class TileFactory {
         return new ConcurrentLinkedDeque<>(tiles);
     }
 
+    public ConcurrentLinkedDeque<Tile> stackFromIDs(ArrayList<Integer> ids) {
+        Map<Integer,Tile> tileMap = this.tileMap();
+        ConcurrentLinkedDeque<Tile> stack = new ConcurrentLinkedDeque<>();
+        for (Integer id : ids) {
+            stack.add(tileMap.get(id));
+        }
+        return stack;
+    }
+
+    public ConcurrentHashMap<Integer, Tile> mapFromIDs(ArrayList<Integer> ids) {
+        Map<Integer,Tile> tileMap = this.tileMap();
+        ConcurrentHashMap<Integer,Tile> newMap = new ConcurrentHashMap<>(ids.size());
+        for (Integer id : ids) {
+            newMap.put(id,tileMap.get(id));
+        }
+        return newMap;
+    }
+
+
+    public Map<Integer,Tile> tileMap() {
+        ArrayList<Tile> tileArray = loadTilesFromJson("Tiles.json");
+
+        Map<Integer,Tile> tileMap = new HashMap<>(tileArray.size());
+        for(Tile tile: tileArray) {
+            tileMap.put(tile.getKey(),tile);
+        }
+        return tileMap;
+    }
+
+    public static Tile load(String line) {
+        String[] lineSplit = line.split(" ");
+        switch(lineSplit[0]) {
+            case "AL" -> {
+                AlienLifeSupportsSystem al = new AlienLifeSupportsSystem();
+                al.tileLoader(lineSplit);
+                return al;
+            }
+            case "BC" -> {
+                BatteryComponents bc = new BatteryComponents();
+                bc.tileLoader(lineSplit);
+                return bc;
+            }
+            case "CB" -> {
+                CargoBlue cb = new CargoBlue();
+                cb.tileLoader(lineSplit);
+                return cb;
+            }
+            case "CR" -> {
+                CargoRed cr = new CargoRed();
+                cr.tileLoader(lineSplit);
+                return cr;
+            }
+            case "DC"  -> {
+                DoubleCannon dc = new DoubleCannon();
+                dc.tileLoader(lineSplit);
+                return dc;
+            }
+            case "DE" -> {
+                DoubleEngine de = new DoubleEngine();
+                de.tileLoader(lineSplit);
+                return de;
+            }
+            case "EC"  -> {
+                EquipCabin ec = new EquipCabin();
+                ec.tileLoader(lineSplit);
+                return ec;
+            }
+            case "SH" -> {
+                Shields sh = new Shields();
+                sh.tileLoader(lineSplit);
+                return sh;
+            }
+            case "SC" -> {
+                SingleCannon sc = new SingleCannon();
+                sc.tileLoader(lineSplit);
+                return sc;
+            }
+            case "SE"  -> {
+                SingleEngine se = new SingleEngine();
+                se.tileLoader(lineSplit);
+                return se;
+            }
+            case "ST" -> {
+                StartingCabin st =  new StartingCabin();
+                st.tileLoader(lineSplit);
+                return st;
+            }
+            case "PP" -> {
+                Pipe pp = new Pipe();
+                pp.tileLoader(lineSplit);
+                return pp;
+            }
+            case "VT" -> {
+                return new VoidTile();
+            }
+        }
+        return null;
+    }
+
     // Classe JSON per il mapping dei dati
     public static class JsonTile {
         private String type;
@@ -108,6 +206,5 @@ public class TileFactory {
         public void setTotSpaces(int totSpaces) { this.totSpaces = totSpaces; }
         public int getKey() {return key;}
         public void setKey(int key) {this.key = key;}
-
     }
 }

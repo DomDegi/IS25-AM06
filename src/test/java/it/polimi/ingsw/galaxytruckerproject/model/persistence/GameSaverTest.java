@@ -1,59 +1,62 @@
 package it.polimi.ingsw.galaxytruckerproject.model.persistence;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
-import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
-import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
-import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
-import it.polimi.ingsw.galaxytruckerproject.view.TUI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.LEVEL2;
 
-class PlayerSerializerDeserializerTest {
+class GameSaverTest {
 
-    String fileName = "serializerTest";
-    GameController gameController = new GameController(new Game(GameMode.LEVEL2,3), "Test");
-    Player player = new Player("Giorgio", PlayersColor.YELLOW);
-    PlayerSerializerDeserializer playerSerializerDeserializer;
-    TUI shipPrinter = new TUI();
-    FlightBoard flightBoard = new FlightBoard(GameMode.LEVEL2);
-    File file = new File(fileName);
+    GameController gameController;
+    Game game;
+    Player player1;
+    Player player2;
+    Player player3;
+    Player player4;
 
     @BeforeEach
     void setUp() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, false))) {
-            // This will clear the file content by opening it in overwrite mode
-            writer.write("");  // Optional: explicitly write to ensure file is cleared.
-        } catch (IOException e) {
-            System.out.println("Error while clearing file: " + e.getMessage());
-        }
+        game = new Game(LEVEL2,4);
+        gameController = new GameController(game, "GameSaverTest");
+        game.addPlayer("pluto", PlayersColor.RED);
+        game.addPlayer("pippo", PlayersColor.GREEN);
+        game.addPlayer("paperino", PlayersColor.YELLOW);
+        game.addPlayer("topolino", PlayersColor.BLUE);
 
-        player.setCredit(25);
-        player.setPlayerName("Giorgio");
-        player.setPlayerColor(PlayersColor.YELLOW);
+        player1 = game.identifyPlayerByName("pluto");
+        player2 = game.identifyPlayerByName("pippo");
+        player3 = game.identifyPlayerByName("paperino");
+        player4 = game.identifyPlayerByName("topolino");
+        gameController.getActivePlayers().put(player1.getPlayerName(),player1);
+        gameController.getActivePlayers().put(player2.getPlayerName(),player2);
+        gameController.getActivePlayers().put(player3.getPlayerName(),player3);
+        gameController.getActivePlayers().put(player4.getPlayerName(),player4);
+
+
+        player1.setCredit(25);
         Tile tile1=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
-        player.setDrawnTile(tile1);
-        player.setDisconnected(false);
-        player.setLanded(true);
-        player.setPlayerPosition(7);
-        player.setPlayerRanking(2);
+        player1.setDrawnTile(tile1);
+        player1.setDisconnected(false);
+        player1.setLanded(true);
+        player1.setPlayerPosition(7);
+        player1.setPlayerRanking(2);
 
         Goods red = new Goods(GoodsColor.RED);
         Goods yellow = new Goods(GoodsColor.YELLOW);
         Goods green = new Goods(GoodsColor.GREEN);
         Goods blue = new Goods(GoodsColor.BLUE);
 
-        ShipBoard shipBoard1 = player.getShipBoard();
+        //Shipboard 5 to player 1
+        ShipBoard shipBoard1 = player1.getShipBoard();
         shipBoard1.initializeLevel2();
         shipBoard1.positionTile(Optional.of(tile1), new Coordinates(0,4));
         Tile tile2=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE));
@@ -111,43 +114,71 @@ class PlayerSerializerDeserializerTest {
 
         tile4.addGood(blue); tile4.addGood(green); tile4.addGood(yellow);
         tile16.addGood(red);
-    }
 
-    @Test
-    public void save_test() {
-        PlayerSerializerDeserializer.save(player,file);
-    }
+        //shipboard4 to player2
+        ShipBoard shipBoard2 = player2.getShipBoard();
+        shipBoard2.initializeLevel2();
+        Tile tile23=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
+        shipBoard2.positionTile(Optional.of(tile23), new Coordinates(1,3));
+        Tile tile24=new CargoRed(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE));
+        shipBoard2.positionTile(Optional.of(tile24), new Coordinates(2,2));
+        Tile tile25=new EquipCabin( new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE));
+        shipBoard2.positionTile(Optional.of(tile25), new Coordinates(2,4));
+        tile25.setCrewType(CrewType.HUMAN);
+        Tile tile26=new Shields( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL));
+        shipBoard2.positionTile(Optional.of(tile26), new Coordinates(2,5));
+        Tile tile27=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),3);
+        shipBoard2.positionTile(Optional.of(tile27), new Coordinates(3,2));
+        Tile tile28=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),2);
+        shipBoard2.positionTile(Optional.of(tile28), new Coordinates(3,3));
+        Tile tile29=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
+        shipBoard2.positionTile(Optional.of(tile29), new Coordinates(3,4));
+        shipBoard2.verifyCorrectness();
 
-    @Test
-    public void load_test() {
-        save_test();
-        int expectedEndOfLine = 35;
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            PlayerSerializerDeserializer.load(gameController, reader);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        //shipboard1 to player3
+        ShipBoard shipBoard3 = player3.getShipBoard();
+        shipBoard3.initializeLevel2();
+        Tile tile30=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
+        shipBoard3.positionTile(Optional.of(tile30), new Coordinates(1,3));
+        Tile tile31=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH));
+        shipBoard3.positionTile(Optional.of(tile31), new Coordinates(1,4));
+        Tile tile32=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE));
+        tile32.rotate();
+        shipBoard3.positionTile(Optional.of(tile32), new Coordinates(2,5));
+        Tile tile33=new Pipe( new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL));
+        shipBoard3.positionTile(Optional.of(tile33), new Coordinates(2,4));
+        Tile tile34=new SingleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
+        tile34.rotate();
+        tile34.rotate();
+        tile34.rotate();
+        shipBoard3.positionTile(Optional.of(tile34), new Coordinates(2,2));
+        Tile tile35=new SingleEngine( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH));
+        shipBoard3.positionTile(Optional.of(tile35), new Coordinates(3,3));
+        shipBoard3.verifyCorrectness();
+        player3.setAllCrewToHuman();
+
+        player4.getShipBoard().initializeLevel2();
+
+        for (int i = 0; i < 10; i++) {
+            game.drawTile("pluto");
+            game.refuseTile("pluto");
+            game.drawTile("pippo");
+            game.refuseTile("pippo");
         }
+
+        game.drawCard();
+        game.drawCard();
     }
 
     @Test
-    public void attributes_test() {
-        load_test();
-        Player playerCopy = gameController.getActivePlayers().values().iterator().next();
-        assertEquals(playerCopy.getPlayerName(), player.getPlayerName());
-        assertEquals(playerCopy.getPlayerColor(),player.getPlayerColor());
-        assertEquals(playerCopy.getPlayerPosition(), player.getPlayerPosition());
-        assertEquals(playerCopy.getPlayerRanking(),player.getPlayerRanking());
-        assertEquals(playerCopy.getCredit(), player.getCredit());
-        assertEquals(playerCopy.isLanded(), player.isLanded());
-        assertEquals(playerCopy.isDisconnected(),player.isDisconnected());
-        assertEquals(playerCopy.toStringData(),playerCopy.toStringData());
-        System.out.println("playerCopy drawn tile:");
-        System.out.println(playerCopy.getDrawnTile().toString());
-        System.out.println("player drawn tile:");
-        System.out.println(player.getDrawnTile().toString());
-        shipPrinter.printShipboard(new LightShipBoard(playerCopy.getShipBoard()));
-        shipPrinter.printShipboard(new LightShipBoard(player.getShipBoard()));
+    public void save_test(){
+        GameSaver.save(gameController);
     }
 
+    @Test
+    public void client_updater_test() {
+        String update = ClientUpdater.currentGameStatus(gameController);
+        System.out.println(update);
 
+    }
 }

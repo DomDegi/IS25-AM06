@@ -5,6 +5,8 @@ import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
+import it.polimi.ingsw.galaxytruckerproject.model.persistence.GameLoader;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.network.PingPong;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
@@ -14,6 +16,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MultiGameController implements Serializable {
@@ -76,7 +79,7 @@ public class MultiGameController implements Serializable {
     public void createGame (String creator, String gameName, int playerCount, Controller controller, GameMode chosenMode) {
         VirtualView creatorView = viewsMap.get(creator);
 
-        if (creator != null && creatorView != null && controller != null && !isAlreadyInAGame(gameName)) {
+        if (creator != null && creatorView != null && controller != null && !isAlreadyInAGame(creator)) {
             if (gamesMap.get(gameName) != null) {
                 try {
                     creatorView.showWrongInputMessage();
@@ -92,14 +95,24 @@ public class MultiGameController implements Serializable {
                 }
             }
             else {
-                Game game = new Game(chosenMode, playerCount);
-                GameController gameController = new GameController(game, gameName);
-                controller.setGameController(gameController);
-                gamesMap.put(gameName, gameController); //adds game to open games
-                viewsMap.remove(creator);
-                //remove player from map of the views of player joining a game
-                gameController.addToPlayersViewMap(creator, creatorView, false);
-                notifyNewGame(creator, creatorView); /**/
+                Optional<GameController> oldGame
+                        = GameLoader.findSavedGame(gameName);
+                if (oldGame.isEmpty()) {
+                    Game game = new Game(chosenMode, playerCount);
+                    GameController newGameController = new GameController(game, gameName);
+                    controller.setGameController(newGameController);
+                    gamesMap.put(gameName, newGameController); //adds game to open games
+                    //remove player from map of the views of player joining a game
+                    viewsMap.remove(creator);
+                    newGameController.addToPlayersViewMap(creator, creatorView, false);
+                }
+                else {
+                    controller.setGameController(oldGame.get());
+                    gamesMap.put(gameName, oldGame.get());
+                    viewsMap.remove(creator);
+                    oldGame.get().addToPlayersViewMap(creator, creatorView, isAlreadyInAGame(creator));
+                }
+                notifyNewGame(creator, creatorView);
             }
         }
     }
@@ -191,10 +204,12 @@ public class MultiGameController implements Serializable {
      */
     public GameController gameFromNickname(String nickname) {
         return gamesMap.values().stream()
-                .filter(gameController -> gameController.getGame().identifyPlayerByName(nickname) != null)
+                .filter(gameController -> gameController.getAllPlayers().stream()
+                        .anyMatch(player -> player.getPlayerName().equals(nickname)))
                 .findFirst()
                 .orElse(null);
     }
+
 
     /**
      * shows the player the games still in lobby phase and adds player to the viewsMap
@@ -205,8 +220,12 @@ public class MultiGameController implements Serializable {
     public void joinableGamesList(String nickname, VirtualView view) {
         ArrayList<GameInfo> joinableGames = new ArrayList<>();
         for (GameController gameController : gamesMap.values()) {
-            if (gameController.getGameState().equals(GameState.LOBBY_PHASE)) {
-                joinableGames.add(new GameInfo(gameController));
+            if (gameController.getGameState().equals(GameState.LOBBY_PHASE) || gameController.isRestarted()) {
+                GameInfo currentGame = new GameInfo(gameController);
+                if (gameController.isRestarted()) {
+                    currentGame.setRestarted();
+                }
+                joinableGames.add(currentGame);
             }
         }
         try {

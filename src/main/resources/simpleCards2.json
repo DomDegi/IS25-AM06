@@ -1,31 +1,5 @@
 {
-  "cards": [
-    {
-      "type": "Planets",
-      "level": 1,
-      "requiredDays": 2,
-      "listOfPlanets": [
-        {
-          "listOfGoods": [
-            { "color": "RED"},
-            { "color": "RED"}
-          ]
-        },
-        {
-          "listOfGoods": [
-            { "color": "RED"},
-            { "color": "BLUE"},
-            { "color": "BLUE"}
-          ]
-        },
-        {
-          "listOfGoods": [
-            { "color": "YELLOW"}
-          ]
-        }
-      ]
-    },
-
+  "cards":[
     {
       "type": "CombatZone",
       "level": 1,
@@ -53,6 +27,32 @@
         }
       }
     },
+    {
+      "type": "Planets",
+      "level": 1,
+      "requiredDays": 2,
+      "listOfPlanets": [
+        {
+          "listOfGoods": [
+            { "color": "RED"},
+            { "color": "RED"}
+          ]
+        },
+        {
+          "listOfGoods": [
+            { "color": "RED"},
+            { "color": "BLUE"},
+            { "color": "BLUE"}
+          ]
+        },
+        {
+          "listOfGoods": [
+            { "color": "YELLOW"}
+          ]
+        }
+      ]
+    },
+
     {
       "type": "Smugglers",
       "level": 1,
