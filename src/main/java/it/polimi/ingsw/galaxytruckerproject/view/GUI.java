@@ -12,8 +12,11 @@ import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.view.gui.LobbyController;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -34,6 +37,7 @@ public class GUI extends Application implements DisplayableView {
     private static Stage primaryStage;
     private static BorderPane layout;
     private static ClientController controller;
+    private static FXMLLoader loader;
 
     public static void startGui(ClientController controller) {
         GUI.controller =controller;
@@ -56,7 +60,7 @@ public class GUI extends Application implements DisplayableView {
     }
 
     public static void showWelcome() throws IOException {
-        FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/gui/welcome.fxml"));
+        loader = new FXMLLoader(GUI.class.getResource("/gui/welcome.fxml"));
         BorderPane newLayer=loader.load();
         layout.setCenter(newLayer);
     }
@@ -91,19 +95,27 @@ public class GUI extends Application implements DisplayableView {
         controller.createGame(gameName,playerNum,gameMode);
     }
 
+    public static void join(String gameName){
+        controller.joinGame(gameName);
+    }
+
     public static void setColor(PlayersColor color){
         controller.colorChoice(color);
     }
+    public static void start(){
+        controller.firstHourglassTurn();
+    }
 //showMethods---------------------------------------------------------------------------------------------------------------
     private static void clear(){
-        layout.setBottom(null);
+        showMessage("");
         layout.setLeft(null);
         layout.setRight(null);
         layout.setTop(null);
     }
+
     private static void showConnection() {
         Platform.runLater(() -> {
-            FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/gui/connection.fxml"));
+            loader = new FXMLLoader(GUI.class.getResource("/gui/connection.fxml"));
             BorderPane newLayer;
             try {
                 newLayer = loader.load();
@@ -116,7 +128,7 @@ public class GUI extends Application implements DisplayableView {
 
     public static void showLogin() {
         Platform.runLater(() -> {
-            FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/gui/login.fxml"));
+            loader = new FXMLLoader(GUI.class.getResource("/gui/login.fxml"));
             BorderPane newLayer;
             try {
                 newLayer = loader.load();
@@ -129,7 +141,7 @@ public class GUI extends Application implements DisplayableView {
 
     public static void showLobby() {
         Platform.runLater(() -> {
-            FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/gui/lobby.fxml"));
+            loader = new FXMLLoader(GUI.class.getResource("/gui/lobby.fxml"));
             BorderPane newLayer;
             try {
                 newLayer = loader.load();
@@ -142,7 +154,7 @@ public class GUI extends Application implements DisplayableView {
 
     public static void showCreateNewGame(){
         Platform.runLater(() -> {
-            FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/gui/createNewGame.fxml"));
+            loader = new FXMLLoader(GUI.class.getResource("/gui/createNewGame.fxml"));
             BorderPane newLayer;
             try {
                 newLayer = loader.load();
@@ -155,7 +167,7 @@ public class GUI extends Application implements DisplayableView {
 
     public static void showChooseColor(){
         Platform.runLater(() -> {
-            FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/gui/chooseColor.fxml"));
+            loader = new FXMLLoader(GUI.class.getResource("/gui/chooseColor.fxml"));
             BorderPane newLayer;
             try {
                 newLayer = loader.load();
@@ -168,7 +180,33 @@ public class GUI extends Application implements DisplayableView {
 
     public static void showWait(){
         Platform.runLater(() -> {
-            FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/gui/wait.fxml"));
+            loader = new FXMLLoader(GUI.class.getResource("/gui/wait.fxml"));
+            BorderPane newLayer;
+            try {
+                newLayer = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            layout.setCenter(newLayer);
+        });
+    }
+
+    private static void showStart() {
+        Platform.runLater(() -> {
+            loader = new FXMLLoader(GUI.class.getResource("/gui/start.fxml"));
+            BorderPane newLayer;
+            try {
+                newLayer = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            layout.setCenter(newLayer);
+        });
+    }
+
+    private static void showS_EndDrawTilesCards() {
+        Platform.runLater(() -> {
+            loader = new FXMLLoader(GUI.class.getResource("/gui/sEndDrawTilesCards.fxml"));
             BorderPane newLayer;
             try {
                 newLayer = loader.load();
@@ -181,7 +219,7 @@ public class GUI extends Application implements DisplayableView {
 
     public static void showMessage(String message) {
         Platform.runLater(() -> {
-            FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/gui/message.fxml"));
+            loader = new FXMLLoader(GUI.class.getResource("/gui/message.fxml"));
             AnchorPane newLayer;
             try {
                 newLayer = loader.load();
@@ -201,6 +239,23 @@ public class GUI extends Application implements DisplayableView {
             layout.setBottom(newLayer);
         });
     }
+
+    public static void addJoinableGame(ArrayList<GameInfo> joinableGames) {
+        if (joinableGames == null) {
+            return;
+        }
+        if(controller.getState()==ClientState.LOBBY) {
+            ArrayList<String> games = new ArrayList<>();
+            for (GameInfo gameInfo : joinableGames) {
+                String gameName = gameInfo.getGameName();
+                String game = gameName + "\t" + gameInfo.getCurrentPlayerCount() + "/" + gameInfo.getMaxPlayerCount() + "\t" + gameInfo.getGameMode();
+                games.add(game);
+            }
+            LobbyController lobbyController = loader.getController();
+            if (lobbyController != null)
+                lobbyController.update(games);
+        }
+    }
 //Overrides--------------------------------------------------------------------------------------------------------------
 
     @Override
@@ -216,14 +271,17 @@ public class GUI extends Application implements DisplayableView {
             case LOBBY ->{
                 showLobby();
             }
+            case LOBBY0 -> {
+                showCreateNewGame();
+            }
             case COLOR_CHOICE ->{
                 showChooseColor();
             }
             case START_SHIP_CREATION -> {
-
+                showStart();
             }
             case S_END_DRAW_TILE_CARD ->{
-
+                showS_EndDrawTilesCards();
             }
             case S_MANAGE_DRAWN_TILE ->{
 
@@ -338,12 +396,12 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void showJoinableGamesList(ArrayList<GameInfo> joinableGames) throws RemoteException {
-
+        addJoinableGame(joinableGames);
     }
 
     @Override
     public void showErrorMessage(String errorMessage) throws RemoteException {
-        showMessage("Wrong input!");
+        showMessage(errorMessage);
     }
 
     @Override
@@ -353,7 +411,7 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void showWrongInputMessage() throws RemoteException {
-        showMessage("Wrong input!");
+        showMessage("wrong input!");
     }
 
     @Override
@@ -434,6 +492,10 @@ public class GUI extends Application implements DisplayableView {
     @Override
     public DisplayableView getDisplayedView() throws RemoteException {
         return null;
+    }
+
+    public static ClientController getController() {
+        return controller;
     }
 }
 

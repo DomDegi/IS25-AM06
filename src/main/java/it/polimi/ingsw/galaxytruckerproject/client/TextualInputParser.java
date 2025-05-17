@@ -157,10 +157,13 @@ public class TextualInputParser {
             }
 
             case START_SHIP_CREATION -> {
-                if (clientController.firstHourglassTurn(words))
+                if (((clientController.getGameMode() == GameMode.LEVEL2 && words[0].equals("turn")) || words[0].equals("start")) && clientController.getHourglassTurns() == 0) {
+                    clientController.firstHourglassTurn();
                     return true;
-                view.wrongLocalInput();
-                return false;
+                }else {
+                    view.wrongLocalInput();
+                    return false;
+                }
             }
 
             case S_END_DRAW_TILE_CARD -> {

@@ -17,8 +17,8 @@ public class ShowJoinableGamesMessage extends ServerMessage{
     @Override
     public void processMessage(ServerHandler serverHandler) {
         try {
-            serverHandler.getView().showJoinableGamesList(joinableGames);
             serverHandler.getClientController().setGameInfo(joinableGames);
+            serverHandler.getView().showJoinableGamesList(joinableGames);
         } catch (RemoteException e) {
             e.printStackTrace();
         }

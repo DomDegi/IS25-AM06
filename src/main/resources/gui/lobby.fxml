@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
+
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.galaxytruckerproject.view.gui.LobbyController">
    <center>
       <VBox alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
@@ -15,7 +16,7 @@
             <Label text="or Join an existing one" />
             <AnchorPane>
                <children>
-                  <ListView layoutX="170.0" prefHeight="206.0" prefWidth="261.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="170.0" AnchorPane.rightAnchor="170.0" AnchorPane.topAnchor="0.0" />
+                  <ListView fx:id="joinableGames" layoutX="170.0" onMouseClicked="#join" prefHeight="206.0" prefWidth="261.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="170.0" AnchorPane.rightAnchor="170.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
          </children>

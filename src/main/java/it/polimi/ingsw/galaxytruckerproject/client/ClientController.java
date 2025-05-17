@@ -137,6 +137,16 @@ public class ClientController {
         if(state!=ClientState.LOBBY&&state!=ClientState.LOBBY0&&state!=ClientState.LOBBY1){
             return false;
         }
+        for (GameInfo games : gameInfo) {
+            if (Objects.equals(gameName, games.getGameName())) {
+                view.wrongLocalInput();
+                return false;
+            }
+        }
+        if (numberOfPlayers<2||numberOfPlayers>4) {
+            view.wrongLocalInput();
+            return false;
+        }
         numPlayer = numberOfPlayers;
         gameMode = mode;
         setState(ClientState.WAIT);
@@ -154,7 +164,7 @@ public class ClientController {
         }
         if (gameInfo == null) {
             view.wrongLocalInput();
-            rollBackState();
+            setState(ClientState.LOBBY);
             return false;
         }
         for (GameInfo games : gameInfo) {
@@ -170,7 +180,7 @@ public class ClientController {
             }
         }
         view.wrongLocalInput();
-        rollBackState();
+        setState(ClientState.LOBBY);
         return false;
     }
 
@@ -719,8 +729,7 @@ public class ClientController {
         return false;
     }
 
-    public boolean firstHourglassTurn(String[] input) {
-        if (((gameMode == GameMode.LEVEL2 && input[0].equals("turn")) || input[0].equals("start")) && hourglassTurns == 0) {
+    public boolean firstHourglassTurn() {
             hourglassTurns = 1;
             setState(ClientState.WAIT);
             try {
@@ -729,8 +738,6 @@ public class ClientController {
                 throw new RuntimeException(e);
             }
             return true;
-        }
-        return false;
     }
 
     public boolean secondHourglassTurn(String[] input) {
@@ -1100,6 +1107,10 @@ public class ClientController {
         this.view = tui;
         inputParser = new TextualInputParser(this);
         setState(ClientState.CHOOSE_CONNECTION_TYPE);
+    }
+
+    public ArrayList<GameInfo> getGameInfo() {
+        return gameInfo;
     }
 
     public Map<PlayersColor, Boolean> getAvailableColors() {
