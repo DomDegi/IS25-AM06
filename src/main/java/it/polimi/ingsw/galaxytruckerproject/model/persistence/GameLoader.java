@@ -39,9 +39,7 @@ public class GameLoader {
                 PlayerSerializerDeserializer.load(restartedGame, reader);
             }
 
-            if (restartedGame.getGameState() != GameState.START_GAME
-                    && restartedGame.getGameState() != GameState.SHIPS_CREATION)
-                restartedGame.getGame().getFlightBoard().loadFlightBoard(restartedGame.getAllPlayers());
+            restartedGame.getGame().getFlightBoard().loadFlightBoard(restartedGame.getAllPlayers());
 
             return restartedGame;
 

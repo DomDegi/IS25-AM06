@@ -44,10 +44,10 @@ class GameLoaderTest {
         player3 = players.get(2);
         player4 = players.get(3);
 
-        assertEquals("pluto R 7 2 25 L N 0 N",player2.toStringData());
-        assertEquals("topolino B 0 0 0 N N 0 N",player1.toStringData());
-        assertEquals("paperino Y 0 0 0 N N 0 N",player4.toStringData());
-        assertEquals("pippo G 0 0 0 N N 0 N",player3.toStringData());
+        assertEquals("pluto R 7 2 25 L N 0 N N",player2.toStringData());
+        assertEquals("topolino B 0 0 0 N N 0 N N",player1.toStringData());
+        assertEquals("paperino Y 0 0 0 N N 0 N N",player4.toStringData());
+        assertEquals("pippo G 0 0 0 N N 0 N N",player3.toStringData());
 
         assertEquals(0,gameController.getHourglassTurns());
         assertEquals("c",gameController.getGameName());
@@ -59,6 +59,8 @@ class GameLoaderTest {
             shipPrinter.printShipboard(new LightShipBoard(player.getShipBoard()));
             System.out.println("\n\n\n\n\n");
         }
+
+        gameController.getGame().drawTile("pluto");
     }
 
 }
