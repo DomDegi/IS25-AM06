@@ -398,7 +398,7 @@ public class Game implements GameInterface{
     }
 
     public void turnedTileLoader(String[] attributes) {
-        if(Objects.equals(attributes[0], "")) {
+        if (attributes[0].isEmpty()) {
             return;
         }
         ArrayList<Integer> keyMap = new ArrayList<>();
@@ -414,5 +414,9 @@ public class Game implements GameInterface{
 
     public ConcurrentLinkedDeque<Tile> getTileStack() {
         return tileStack;
+    }
+
+    public void setGameStateWithoutUpdating(GameState gameState) {
+        this.gameState = gameState;
     }
 }

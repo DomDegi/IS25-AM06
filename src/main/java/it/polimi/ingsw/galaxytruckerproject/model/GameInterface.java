@@ -63,4 +63,7 @@ public interface GameInterface extends Serializable {
     public String tileStackData();
     public String turnedTileData();
 
+
+    public void setGameStateWithoutUpdating(GameState gameState);
+
 }

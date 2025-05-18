@@ -242,4 +242,9 @@ public class VirtualViewSocket implements VirtualView {
     public DisplayableView getDisplayedView() throws RemoteException {
         return null;
     }
+
+    @Override
+    public void notifyPlayerJoined(int expected, int current, boolean reconnected) throws RemoteException {
+        clientHandler.sendServerMessageToClient(new PlayerJoinedMessage(expected,current,reconnected));
+    }
 }

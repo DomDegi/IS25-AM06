@@ -55,4 +55,6 @@ public interface DisplayableView extends ViewInterface{
 
     void victimOfThePenalty(String playerName, Penalty penalty);
 
+
+    void notifyPlayerJoined(int expectedPlayer, int currentPlayer,boolean reconnected);
 }

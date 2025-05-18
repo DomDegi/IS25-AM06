@@ -95,8 +95,7 @@ public class MultiGameController implements Serializable {
                 }
             }
             else {
-                Optional<GameController> oldGame
-                        = GameLoader.findSavedGame(gameName);
+                Optional<GameController> oldGame = GameLoader.findSavedGame(gameName);
                 if (oldGame.isEmpty()) {
                     Game game = new Game(chosenMode, playerCount);
                     GameController newGameController = new GameController(game, gameName);
@@ -138,7 +137,7 @@ public class MultiGameController implements Serializable {
     }
 
     /**
-     * removes player from game adn if game is empty removes game from gamesMap
+     * removes player from game and if game is empty removes game from gamesMap
      * returns leaver to joinableGamesList so that their view visualizes all the open lobbies
      * @param leaver player to leave
      */
@@ -146,28 +145,18 @@ public class MultiGameController implements Serializable {
         GameController gameToLeave = this.gameFromNickname(leaver);
 
         if (gameToLeave != null) {
-             VirtualView leaverView = gameToLeave.removePlayer(leaver);
+             VirtualView leaverView = gameToLeave.getPlayersViewMap().get(leaver);
+             gameToLeave.playerLeaves(leaver);
 
             if (gameToLeave.isGameEmpty()) {
                 gamesMap.remove(gameToLeave.getGameName());
             }
+            try {
+                leaverView.setClientState(ClientState.LOGIN);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
             joinableGamesList(leaver, leaverView);
-        }
-    }
-
-    /**
-     * completely leaves the game also the game selection
-     * @param leaver nickname of the leaver
-     */
-    public void leave (String leaver) {
-        if (allConnectedPlayers().containsKey(leaver)) {
-            if (this.isAlreadyInAGame(leaver)) {
-                GameController gameToLeave = gameFromNickname(leaver);
-                gameToLeave.removePlayer(leaver);
-            }
-            else if (isLookingToJoinAGame(leaver)) {
-                viewsMap.remove(leaver);
-            }
         }
     }
 
@@ -220,7 +209,8 @@ public class MultiGameController implements Serializable {
     public void joinableGamesList(String nickname, VirtualView view) {
         ArrayList<GameInfo> joinableGames = new ArrayList<>();
         for (GameController gameController : gamesMap.values()) {
-            if (gameController.getGameState().equals(GameState.LOBBY_PHASE) || gameController.isRestarted()) {
+            if (gameController.getGameState().equals(GameState.LOBBY_PHASE) || gameController.isRestarted()
+            || isAlreadyInAGame(nickname)) {
                 GameInfo currentGame = new GameInfo(gameController);
                 if (gameController.isRestarted()) {
                     currentGame.setRestarted();

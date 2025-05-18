@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.model.persistence;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
+import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 
 import java.io.*;
@@ -51,12 +52,14 @@ public class PlayerSerializerDeserializer {
 
             // Rebuilds player from txt file through player loader method
             Player player = new Player();
-            String[] playerData = playerLine.split(" ", -1);
+            String[] playerData = playerLine.split(" ");
             player.playerLoader(playerData);
+
+            boolean verify = !(gameController.getGameState().equals(GameState.SHIPS_CREATION) || !gameController.getGameState().equals(GameState.START_GAME));
 
 
             // Loads ShipBoard
-            ShipBoardSerializerDeserializer.load(player, currentLine, reader);
+            ShipBoardSerializerDeserializer.load(player, currentLine, reader,verify);
 
             if (player.isDisconnected()) {
                 gameController.getDisconnectedPlayers().put(player.getPlayerName(), player);

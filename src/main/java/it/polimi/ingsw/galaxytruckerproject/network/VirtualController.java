@@ -19,7 +19,6 @@ public interface VirtualController extends Remote{
     void createGame( String gameName, int playerCount, GameMode chooseMode) throws RemoteException;
     void joinGame(String gameName) throws RemoteException;
     void leaveGame() throws RemoteException;
-    void leave() throws RemoteException;
     void chooseColor( PlayersColor color) throws RemoteException;
 
 

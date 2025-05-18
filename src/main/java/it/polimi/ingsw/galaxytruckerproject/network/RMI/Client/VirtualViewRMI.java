@@ -264,5 +264,8 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
         view.showScores(scores);
     }
 
-
+    @Override
+    public void notifyPlayerJoined(int expected, int current,boolean reconnected) throws RemoteException {
+        view.notifyPlayerJoined(expected, current,reconnected);
+    }
 }

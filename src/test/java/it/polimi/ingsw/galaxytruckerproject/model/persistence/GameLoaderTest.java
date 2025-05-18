@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.model.persistence;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.network.MockVirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.TUI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,17 +17,23 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameLoaderTest {
 
-    String fileName = "GameSaverTest";
+    String fileName = "c";
     GameController gameController;
     Player player1;
     Player player2;
     Player player3;
     Player player4;
     TUI shipPrinter = new TUI();
+    MockVirtualView viewPluto = new MockVirtualView();
+    MockVirtualView viewPippo = new MockVirtualView();
+    MockVirtualView viewPaperino = new MockVirtualView();
+    MockVirtualView viewTopolino = new MockVirtualView();
+
 
     @BeforeEach
     void setUp() {
         gameController = GameLoader.findSavedGame(fileName).get();
+
     }
 
     //This test works only if you run gameSaverTest not more than 2 hours ago
@@ -43,22 +50,35 @@ class GameLoaderTest {
         player2 = players.get(1);
         player3 = players.get(2);
         player4 = players.get(3);
+        gameController.getActivePlayers().put("pluto", player2);
+        gameController.getActivePlayers().put("pippo", player3);
+        gameController.getActivePlayers().put("paperino", player4);
+        gameController.getActivePlayers().put("topolino", player1);
+        gameController.addToPlayersViewMap("pluto",viewPluto,false);
+        gameController.addToPlayersViewMap("pippo",viewPippo,false);
+        gameController.addToPlayersViewMap("paperino",viewPaperino,false);
+        gameController.addToPlayersViewMap("topolino",viewTopolino,false);
 
-        assertEquals("pluto R 7 2 25 L N N",player2.toStringData());
-        assertEquals("topolino B 0 0 0 N N N",player1.toStringData());
-        assertEquals("paperino Y 0 0 0 N N N",player4.toStringData());
-        assertEquals("pippo G 0 0 0 N N N",player3.toStringData());
+        assertEquals("pluto R 7 2 25 L N 0 N N",player2.toStringData());
+        assertEquals("topolino B 0 0 0 N N 0 N N",player1.toStringData());
+        assertEquals("paperino Y 0 0 0 N N 0 N N",player4.toStringData());
+        assertEquals("pippo G 0 0 0 N N 0 N N",player3.toStringData());
 
-        assertEquals(0,gameController.getHourglassTurns());
-        assertEquals("GameSaverTest",gameController.getGameName());
+        assertEquals(1,gameController.getHourglassTurns());
+        assertEquals("c",gameController.getGameName());
 
         assertEquals(LEVEL2,gameController.getGame().getMode());
         assertEquals(SHIPS_CREATION,gameController.getGameState());
 
-        for (Player player:  players) {
-            shipPrinter.printShipboard(new LightShipBoard(player.getShipBoard()));
-            System.out.println("\n\n\n\n\n");
-        }
+
+        gameController.completed("pluto",viewPluto);
+        gameController.setPosition("pluto",viewPluto,1);
+        gameController.completed("pippo",viewPippo);
+        gameController.setPosition("pippo",viewPippo,2);
+        gameController.completed("paperino",viewPaperino);
+        gameController.setPosition("paperino",viewPaperino,3);
+        gameController.completed("topolino",viewTopolino);
+        gameController.setPosition("topolino",viewTopolino,4);
     }
 
 }

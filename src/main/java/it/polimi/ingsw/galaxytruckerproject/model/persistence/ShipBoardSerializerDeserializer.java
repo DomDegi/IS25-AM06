@@ -51,7 +51,7 @@ public class ShipBoardSerializerDeserializer {
         writer.close();
     }
 
-    public static void load(Player player, int startLine, BufferedReader reader) throws IOException {
+    public static void load(Player player, int startLine, BufferedReader reader, boolean verify) throws IOException {
         ShipBoard shipBoard = player.getShipBoard();
         Tile[][] tilesTable = new Tile[5][7];
         ArrayList<Tile> loadedTiles = new ArrayList<>();
@@ -103,6 +103,8 @@ public class ShipBoardSerializerDeserializer {
             }
         }
 
-        shipBoard.verifyCorrectness();
+        if (verify) {
+            shipBoard.verifyCorrectness();
+        }
     }
 }

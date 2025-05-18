@@ -161,6 +161,22 @@ public class ClientController {
         rollBackState();
     }
 
+    public boolean leaveGame() {
+        if (gameMode != null) {
+            try {
+                virtualController.leaveGame();
+                return true;
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        else {
+            view.wrongLocalInput();
+            rollBackState();
+        }
+        return false;
+    }
+
     public void colorChoice(PlayersColor color) {
         if(getAvailableColors().get(color)) {
             me.setColor(color);
@@ -467,11 +483,13 @@ public class ClientController {
             }
 
             case S_END_DRAW_TILE_CARD -> {
+                phase = GamePhases.SHIPBOARD;
                 view.showTurnedTiles(turnedTiles);
                 view.printShipboard(me.getShipBoard());
                 view.printBooked(me.getShipBoard());
             }
             case S_MANAGE_CARDS -> {
+                phase = GamePhases.SHIPBOARD;
                 me.getShipBoard().setGetStat();
                 if(gameMode==GameMode.TRIAL) {
                     setState(ClientState.S_END_DRAW_TILE_CARD);
@@ -1002,7 +1020,6 @@ public class ClientController {
     }
 
     public void putInStandby () {
-        this.previousState = ClientState.WAIT;
         this.state = ClientState.WAIT;
     }
 

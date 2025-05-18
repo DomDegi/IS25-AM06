@@ -23,20 +23,20 @@ public class UpdateDeserializer {
 
             controller.putInStandby();
 
-            String[] controllerData =  writer.readLine().split(" ");
+            String[] controllerData = writer.readLine().split(" ");
             controller.setHourglassTurns(Integer.parseInt(controllerData[0]));
 
-            String[] firstGameData =  writer.readLine().split(" ");
+            String[] firstGameData = writer.readLine().split(" ");
             controller.setGameModeWithoutInitializing(GameMode.valueOf(firstGameData[0]));
             int playerCount = Integer.parseInt(firstGameData[1]);
 
-            String[] cardData =  writer.readLine().split(" ");
+            String[] cardData = writer.readLine().split(" ");
 
             List<Integer> cardIDs = Arrays.stream(cardData)
                     .map(Integer::parseInt)
                     .toList();
 
-            Map<Integer,ArrayList<Card>> deck = new HashMap<>();
+            Map<Integer, ArrayList<Card>> deck = new HashMap<>();
 
             ArrayList<Card> deckCards = new CardDeck("cards.json").deckFromIDs(new ArrayList<>(cardIDs));
 
@@ -48,14 +48,17 @@ public class UpdateDeserializer {
 
             controller.setDeck(deck);
 
-            String[] turnedTileLine =  writer.readLine().split(" ");
-            ArrayList<Integer>  turnedTileIds = new ArrayList<>();
+            String[] turnedTileLine = writer.readLine().split(" ");
+            if (!turnedTileLine[0].isEmpty()) {
+
+            ArrayList<Integer> turnedTileIds = new ArrayList<>();
             Map<Integer, Tile> turnedTiles;
             for (String tileData : turnedTileLine) {
                 turnedTileIds.add(Integer.parseInt(tileData));
             }
             turnedTiles = new TileFactory().mapFromIDs(turnedTileIds);
             controller.setTurnedTiles(turnedTiles);
+            }
 
             String myName = controller.getName();
             ArrayList<LightPlayer> otherPlayers = new ArrayList<>();

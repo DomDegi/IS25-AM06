@@ -255,10 +255,25 @@ public class FlightBoard implements Serializable {
         players.sort(Comparator.comparingInt(Player::getPlayerRanking));
         podium.addAll(players);
         for (Player player: podium) {
-            if (!player.isLanded()) {
+            if (!player.isLanded() && player.getPlayerRanking() == 0) {
                 inGamePlayers.add(player);
             }
         }
         freePodiumPosition = inGamePlayers.size();
+    }
+
+    public void autoSetInFreeLastPosition(Player player, int playerCount) {
+        if (gameMode == GameMode.LEVEL2) {
+            for (int i = playerCount - 1; i >= 0; i--) {
+                if (!occupiedPos.contains(i)) {
+                    addToFlightBoard(player, i + 1);
+                    return;
+                }
+            }
+        }
+        else {
+            addToTrialFlightBoard(player);
+            setPlayerToLast(player);
+        }
     }
 }
