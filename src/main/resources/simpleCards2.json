@@ -1,6 +1,20 @@
 {
   "cards":[
     {
+      "type": "AbandonedShip",
+      "level": 1,
+      "requiredDays": 1,
+      "crewNumberRequired": 3,
+      "possibleCreditGains": 4
+    },
+    {
+        "type": "AbandonedShip",
+        "level": 1,
+        "requiredDays": 1,
+        "crewNumberRequired": 3,
+        "possibleCreditGains": 4
+    },
+    {
       "type": "CombatZone",
       "level": 1,
       "listOfChallenges": {
@@ -10,7 +24,7 @@
         },
         "MINIMUM_ENGINE_POWER": {
           "type": "CrewPenalty",
-          "numberOfLostCrew": 2
+          "numberOfLostCrew": 4
         },
         "MINIMUM_CANNON_STRENGTH": {
           "type": "CannonPenalty",
@@ -96,13 +110,6 @@
           "direction": "EAST"
         }
       ]
-    },
-    {
-      "type": "AbandonedShip",
-      "level": 1,
-      "requiredDays": 1,
-      "crewNumberRequired": 3,
-      "possibleCreditGains": 4
     },
     {
       "type": "AbandonedStation",

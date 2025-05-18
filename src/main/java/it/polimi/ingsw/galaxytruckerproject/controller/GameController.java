@@ -994,8 +994,22 @@ public class GameController implements Observer, Serializable {
 
     public void askFirstPlayerToDraw() {
         stopAutoSave();
-        //updatePlayerView(DRAW_CARD,game.getListOfInFlightPlayers().getFirst().getPlayerName());
-        if(game.getListOfInFlightPlayers()!=null&& !game.getListOfInFlightPlayers().isEmpty() ) {
+        //updatePlayerView(DRAW_CARD,game.getListOfInFlightPlayers().getFirst().getPlayerName())
+        // ;
+        for(Player player : game.getListOfInFlightPlayers()) {
+            if(player.getShipBoard().getNumHumanCrew()<=0)
+                playersToEarlyLand.add(player);
+        }
+        for (Player player: playersToEarlyLand) {
+            game.getFlightBoard().earlyLanding(player);
+            try {
+                playersViewMap.get(player.getPlayerName()).notifyEarlyLanding();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        playersToEarlyLand.clear();
+        if(game.getFlightBoard().concludeMovement() &&game.getListOfInFlightPlayers()!=null&& !game.getListOfInFlightPlayers().isEmpty() ) {
             updatePlayerView(DRAW_CARD, game.getListOfInFlightPlayers().getFirst().getPlayerName());
         }
         else{
@@ -1017,14 +1031,6 @@ public class GameController implements Observer, Serializable {
             concludeGame();
             return;
         }
-        for(Player player : game.getListOfInFlightPlayers()) {
-            if(player.getShipBoard().getNumHumanCrew()<=0)
-                playersToEarlyLand.add(player);
-        }
-        for (Player player: playersToEarlyLand) {
-            game.getFlightBoard().earlyLanding(player);
-        }
-        playersToEarlyLand.clear();
 
         if (game.getListOfInFlightPlayers().isEmpty()) {
             concludeGame();

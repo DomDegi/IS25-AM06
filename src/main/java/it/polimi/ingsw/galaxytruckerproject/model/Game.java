@@ -248,10 +248,8 @@ public class Game implements GameInterface{
     //CARD_EVENT METHODS
 
     public void endCardEvent() {
-        if(this.getFlightBoard().concludeMovement())
-            setGameState(DRAW_CARD);
-        else
-            setGameState(CONCLUDE_GAME);
+
+        setGameState(DRAW_CARD);
     }
 
 

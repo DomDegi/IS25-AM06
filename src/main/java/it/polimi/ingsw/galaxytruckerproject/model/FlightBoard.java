@@ -245,7 +245,6 @@ public class FlightBoard implements Serializable {
                             earlyLanding(player);
                         }
                 }
-
             }
         }
         return true;
