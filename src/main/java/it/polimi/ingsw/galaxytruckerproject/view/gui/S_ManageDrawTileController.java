@@ -1,11 +1,17 @@
 package it.polimi.ingsw.galaxytruckerproject.view.gui;
 
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
+
+import java.io.InputStream;
+import java.util.ArrayList;
 
 public class S_ManageDrawTileController {
     private int index=0;
@@ -24,6 +30,52 @@ public class S_ManageDrawTileController {
 
     @FXML
     public GridPane bookedTiles;
+
+    @FXML
+    public void initialize() {
+        String inHandImagePath = GUI.getController().getTileInHand().getImagePath();
+        InputStream inHandImageStream = getClass().getResourceAsStream(inHandImagePath);
+        if (inHandImageStream == null) {
+            System.err.println("Impossibile trovare l'immagine: " + inHandImagePath);
+            drawnTile.setText("Img non trovata");
+        } else {
+            Image inHandImage = new Image(inHandImageStream);
+            ImageView inHandImageView = new ImageView(inHandImage);
+            inHandImageView.setFitWidth(175);
+            inHandImageView.setFitHeight(175);
+            drawnTile.setPadding(Insets.EMPTY);
+            drawnTile.setGraphic(inHandImageView);
+        }
+        ArrayList<Tile> tiles=new ArrayList<>();
+        for(int i=0;i<=6;i++){
+            for(int j=0;j<=4;j++) {
+                if(GUI.getController().getMe().getShipBoard().getTilesTable()[j][i].isPresent()&&GUI.getController().getMe().getShipBoard().getTilesTable()[j][i].get().fillable())
+                    tiles.add(GUI.getController().getMe().getShipBoard().getTilesTable()[j][i].get());
+            }
+        }
+        for(Tile tile:tiles){
+            Button imageButton = new Button();
+            String imagePath = tile.getImagePath();
+            InputStream imageStream = getClass().getResourceAsStream(imagePath);
+            if (imageStream == null) {
+                System.err.println("Impossibile trovare l'immagine: " + imagePath);
+                imageButton.setText("Img non trovata");
+            } else {
+                Image image = new Image(imageStream);
+                ImageView imageView = new ImageView(image);
+                imageView.rotateProperty().setValue(tile.getRotation()*90);
+                imageView.setFitWidth(80);
+                imageView.setFitHeight(80);
+                imageButton.setGraphic(imageView);
+                imageButton.setPrefWidth(80);
+                imageButton.setPrefHeight(80);
+                imageButton.setMaxWidth(80);
+                imageButton.setMaxHeight(80);
+                imageButton.setPadding(Insets.EMPTY);
+                tilesTable.add(imageButton,tile.getCoordinates().getY(),tile.getCoordinates().getX());
+            }
+        }
+    }
 
     @FXML
     public void refuse(){

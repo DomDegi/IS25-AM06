@@ -11,6 +11,7 @@ public abstract class Tile implements Serializable,Cloneable {
     protected Link east;
     protected Link south;
     protected Link west;
+    protected int rotation;
     protected String imagePath = null;
     protected Coordinates coordinates;
 
@@ -72,6 +73,10 @@ public abstract class Tile implements Serializable,Cloneable {
         return west;
     }
 
+    public String getImagePath(){
+        return imagePath;
+    }
+
     public boolean isCorrect(){
         Optional<Tile> other;
         Optional<Tile>[][] tileTable= shipBoard.getTilesTable();
@@ -110,12 +115,17 @@ public abstract class Tile implements Serializable,Cloneable {
         return true;
     }
     public void rotate(){
+        rotation++;
         Link tmp= north;
         north =west;
         Link tmp2=east;
         east=tmp;
         west=south;
         south=tmp2;
+    }
+
+    public int getRotation() {
+        return rotation;
     }
 
     public void setCoordinates(Coordinates coordinates) {

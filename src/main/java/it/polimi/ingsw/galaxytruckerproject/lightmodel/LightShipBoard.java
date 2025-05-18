@@ -96,9 +96,9 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         }
         Tile tile;
         String blue="/images/startingCabins/blue_starting_cabin.png";
-        String yellow="/images/startingCabins/blue_starting_cabin.png";
-        String green="/images/startingCabins/blue_starting_cabin.png";
-        String red="/images/startingCabins/blue_starting_cabin.png";
+        String yellow="/images/startingCabins/yellow_starting_cabin.png";
+        String green="/images/startingCabins/green_starting_cabin.png";
+        String red="/images/startingCabins/red_starting_cabin.png";
         if(player.getPlayerColor()== PlayersColor.BLUE)
             tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),blue, 0);
         else if(player.getPlayerColor()== PlayersColor.YELLOW)
@@ -133,9 +133,9 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         }
         Tile tile;
         String blue="/images/startingCabins/blue_starting_cabin.png";
-        String yellow="/images/startingCabins/blue_starting_cabin.png";
-        String green="/images/startingCabins/blue_starting_cabin.png";
-        String red="/images/startingCabins/blue_starting_cabin.png";
+        String yellow="/images/startingCabins/yellow_starting_cabin.png";
+        String green="/images/startingCabins/green_starting_cabin.png";
+        String red="/images/startingCabins/red_starting_cabin.png";
         if(player.getPlayerColor()== PlayersColor.BLUE)
             tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),blue, 0);
         else if(player.getPlayerColor()== PlayersColor.YELLOW)

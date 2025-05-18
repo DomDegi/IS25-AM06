@@ -39,7 +39,7 @@ public class S_EndDrawTilesCardsController {
         }
         for(Tile tile:tiles){
             Button imageButton = new Button();
-            String imagePath = "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web.jpg";
+            String imagePath = tile.getImagePath();
             InputStream imageStream = getClass().getResourceAsStream(imagePath);
             if (imageStream == null) {
                 System.err.println("Impossibile trovare l'immagine: " + imagePath);
@@ -47,6 +47,7 @@ public class S_EndDrawTilesCardsController {
             } else {
                 Image image = new Image(imageStream);
                 ImageView imageView = new ImageView(image);
+                imageView.rotateProperty().setValue(tile.getRotation()*90);
                 imageView.setFitWidth(80);
                 imageView.setFitHeight(80);
                 imageButton.setGraphic(imageView);

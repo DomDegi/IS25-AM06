@@ -111,7 +111,7 @@
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                               </GridPane>
-                              <GridPane fx:id="bookedTiles" layoutX="434.0" layoutY="14.0" prefHeight="80.0" prefWidth="164.0">
+                              <GridPane fx:id="bookedTiles" layoutX="438.0" layoutY="14.0" prefHeight="80.0" prefWidth="160.0" AnchorPane.rightAnchor="14.0">
                                 <columnConstraints>
                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="118.0" minWidth="10.0" prefWidth="83.0" />
                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="80.0" />
@@ -120,8 +120,8 @@
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Button mnemonicParsing="false" onAction="#drawBookedTile1" prefHeight="106.0" prefWidth="84.0" style="-fx-background-color: null;" />
-                                    <Button mnemonicParsing="false" onAction="#drawBookedTile2" prefHeight="106.0" prefWidth="84.0" style="-fx-background-color: null;" GridPane.columnIndex="1" />
+                                    <Button mnemonicParsing="false" onAction="#drawBookedTile1" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: null;" />
+                                    <Button mnemonicParsing="false" onAction="#drawBookedTile2" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: null;" GridPane.columnIndex="1" />
                                  </children>
                               </GridPane>
                            </children>
