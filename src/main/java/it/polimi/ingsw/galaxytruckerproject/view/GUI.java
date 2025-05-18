@@ -11,18 +11,21 @@ import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.view.gui.LobbyController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -104,6 +107,61 @@ public class GUI extends Application implements DisplayableView {
     }
     public static void start(){
         controller.firstHourglassTurn();
+    }
+    public static void drawTile(){
+        controller.drawTile();
+    }
+
+    public static void drawBookedTile(int index){
+        controller.drawBooked(index);
+    }
+
+    public void drawDrawnTile(int index){
+        controller.drawDrawn(index);
+    }
+
+    public static void refuseTile(){
+        controller.refuseTile();
+    }
+
+    public static void putTile(int x, int y){
+        Coordinates coordinates = new Coordinates(x,y);
+        controller.positionTile(coordinates);
+    }
+
+    public static void bookTile(){
+        controller.bookTile();
+    }
+
+    public static void drawDeck(int index){
+        controller.drawDeck(index);
+    }
+
+    public static void endShip(){
+        controller.doneShipboard();
+    }
+
+    public static void turnHourglass(){
+        switch (controller.getState()){
+            case S_END_DRAW_TILE_CARD,S_MANAGE_DRAWN_TILE ->{
+                controller.secondHourglassTurn();
+            }
+            case S_FINISHED -> {
+                controller.thirdHourglassTurn();
+            }
+            case WAIT -> {
+                if(controller.getPreviousState()==ClientState.S_FINISHED)
+                    controller.thirdHourglassTurn();
+            }
+        }
+    }
+
+    public static void checkShip(int index){
+        controller.check(index);
+    }
+
+    public static void rotate(){
+        controller.rotateTile();
     }
 //showMethods---------------------------------------------------------------------------------------------------------------
     private static void clear(){
@@ -206,7 +264,20 @@ public class GUI extends Application implements DisplayableView {
 
     private static void showS_EndDrawTilesCards() {
         Platform.runLater(() -> {
-            loader = new FXMLLoader(GUI.class.getResource("/gui/sEndDrawTilesCards.fxml"));
+            loader = new FXMLLoader(GUI.class.getResource("/gui/s_EndDrawTilesCards.fxml"));
+            BorderPane newLayer;
+            try {
+                newLayer = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            layout.setCenter(newLayer);
+        });
+    }
+
+    private static void showS_ManageDrawTilesCards() {
+        Platform.runLater(() -> {
+            loader = new FXMLLoader(GUI.class.getResource("/gui/s_ManageDrawnTile.fxml"));
             BorderPane newLayer;
             try {
                 newLayer = loader.load();
@@ -284,7 +355,7 @@ public class GUI extends Application implements DisplayableView {
                 showS_EndDrawTilesCards();
             }
             case S_MANAGE_DRAWN_TILE ->{
-
+                showS_ManageDrawTilesCards();
             }
             case S_MANAGE_CARDS -> {
 
@@ -386,7 +457,7 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void showGenericMessage(String genericMessage) {
-
+        showMessage(genericMessage);
     }
 
     @Override

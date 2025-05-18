@@ -713,23 +713,23 @@ public class ClientController {
             int chose = numerate(scroll(input, 1));
             if (chose == -1)
                 return false;
-            /*
-            if (chose == 0) {
-                view.printShipboard(me.getShipBoard());
-            }*/
-            if (chose >= 0 && chose < 4) {
-                if(flightBoard.getInGamePlayers().size()>chose) {
-                    view.printShipboard(flightBoard.getInGamePlayers().get(chose).getShipBoard());
-                }
-                else
-                    return false;
-            }
-            return true;
+            return check(chose);
+        } else {
+            return false;
         }
-        return false;
+    }
+
+    public boolean check(int chose){
+        if (chose >= 0 && chose < flightBoard.getInGamePlayers().size()) {
+            view.printShipboard(flightBoard.getInGamePlayers().get(chose).getShipBoard());
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean firstHourglassTurn() {
+        if(hourglassTurns == 0) {
             hourglassTurns = 1;
             setState(ClientState.WAIT);
             try {
@@ -738,10 +738,14 @@ public class ClientController {
                 throw new RuntimeException(e);
             }
             return true;
+        } else {
+            view.wrongLocalInput();
+            return false;
+        }
     }
 
-    public boolean secondHourglassTurn(String[] input) {
-        if (input[0].equals("turn") && hourglassTurns == 1) {
+    public boolean secondHourglassTurn() {
+        if (hourglassTurns == 1) {
             if (gameMode == GameMode.TRIAL) {
                 view.wrongLocalInput();
                 return false;
@@ -758,8 +762,8 @@ public class ClientController {
         return false;
     }
 
-    public boolean thirdHourglassTurn(String[] input) {
-        if (input[0].equals("turn") && hourglassTurns >= 1 && hourglassTurns < 3) {
+    public boolean thirdHourglassTurn() {
+        if (hourglassTurns >= 1 && hourglassTurns < 3) {
             if (gameMode == GameMode.TRIAL) {
                 view.wrongLocalInput();
                 return false;

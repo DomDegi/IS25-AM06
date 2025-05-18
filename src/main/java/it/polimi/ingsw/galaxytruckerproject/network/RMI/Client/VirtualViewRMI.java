@@ -185,8 +185,8 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
 
     @Override
     public void showWrongInputMessage() throws RemoteException {
-        view.showWrongInputMessage();
         clientController.rollBackState();
+        view.showWrongInputMessage();
     }
 
     @Override

@@ -14,11 +14,12 @@
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="1080.0" prefWidth="1980.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+
+<BorderPane prefHeight="1080.0" prefWidth="1980.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.galaxytruckerproject.view.gui.S_EndDrawTilesCardsController">
    <center>
       <HBox alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
-            <TilePane alignment="CENTER_RIGHT" prefHeight="1028.0" prefWidth="700.0" />
+            <TilePane fx:id="drawnTiles1" alignment="CENTER_RIGHT" prefHeight="1028.0" prefWidth="700.0" />
             <VBox alignment="CENTER" spacing="30.0">
                <children>
                   <AnchorPane prefHeight="339.0" prefWidth="612.0">
@@ -33,7 +34,7 @@
                                     <Rectangle2D />
                                  </viewport>
                               </ImageView>
-                              <Button layoutX="127.0" layoutY="228.5" mnemonicParsing="false" prefHeight="98.0" prefWidth="36.0">
+                              <Button layoutX="127.0" layoutY="228.5" mnemonicParsing="false" onAction="#drawDeck2" prefHeight="98.0" prefWidth="36.0">
                                  <graphic>
                                     <ImageView fitHeight="87.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -42,7 +43,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button layoutX="24.0" layoutY="202.0" mnemonicParsing="false" prefHeight="98.0" prefWidth="36.0" rotate="26.0">
+                              <Button layoutX="24.0" layoutY="202.0" mnemonicParsing="false" onAction="#drawDeck1" prefHeight="98.0" prefWidth="36.0" rotate="26.0">
                                  <graphic>
                                     <ImageView fitHeight="87.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -51,7 +52,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button layoutX="230.0" layoutY="202.0" mnemonicParsing="false" prefHeight="98.0" prefWidth="36.0" rotate="-26.0">
+                              <Button layoutX="230.0" layoutY="202.0" mnemonicParsing="false" onAction="#drawDeck3" prefHeight="98.0" prefWidth="36.0" rotate="-26.0">
                                  <graphic>
                                     <ImageView fitHeight="87.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -69,11 +70,13 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
+                              <Button layoutX="265.0" layoutY="77.0" mnemonicParsing="false" onAction="#turnHourglass" text="Turn" />
+                              <Button layoutX="24.0" layoutY="78.0" mnemonicParsing="false" onAction="#endShip" text="End" />
                            </children>
                         </Group>
                      </children>
                   </AnchorPane>
-                  <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="75.0" prefWidth="75.0">
+                  <Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#drawTile" prefHeight="75.0" prefWidth="75.0">
                      <graphic>
                         <ImageView fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -89,7 +92,7 @@
                               <Image url="@../images/grafiche/grafiche/cardboard/cardboard-1b.jpg" />
                            </image>
                         </ImageView>
-                        <GridPane layoutX="76.0" layoutY="18.0" prefHeight="405.0" prefWidth="498.0" style="-fx-background-image:url('../images/grafiche/grafiche/cardboard/cardboard-1b.jpg');" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+                        <GridPane fx:id="tilesTable" layoutX="76.0" layoutY="18.0" prefHeight="405.0" prefWidth="498.0" style="-fx-background-image:url('../images/grafiche/grafiche/cardboard/cardboard-1b.jpg');" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                           <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -107,7 +110,7 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                         </GridPane>
-                        <GridPane layoutX="434.0" layoutY="14.0" prefHeight="80.0" prefWidth="164.0">
+                        <GridPane fx:id="bookedTiles" layoutX="434.0" layoutY="14.0" prefHeight="80.0" prefWidth="164.0">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="118.0" minWidth="10.0" prefWidth="83.0" />
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="80.0" />
@@ -115,22 +118,26 @@
                           <rowConstraints>
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#drawBookedTile1" prefHeight="106.0" prefWidth="84.0" style="-fx-background-color: null;" />
+                              <Button mnemonicParsing="false" onAction="#drawBookedTile2" prefHeight="106.0" prefWidth="84.0" style="-fx-background-color: null;" GridPane.columnIndex="1" />
+                           </children>
                         </GridPane>
                      </children>
                   </AnchorPane>
                </children>
             </VBox>
-            <TilePane alignment="CENTER_LEFT" prefHeight="890.0" prefWidth="700.0" />
+            <TilePane fx:id="drawnTiles2" alignment="CENTER_LEFT" prefHeight="1028.0" prefWidth="700.0" />
          </children>
       </HBox>
    </center>
    <left>
-      <Button mnemonicParsing="false" prefHeight="681.0" prefWidth="52.0" text="1" BorderPane.alignment="CENTER" />
+      <Button mnemonicParsing="false" onAction="#checkShip1" prefHeight="614.0" prefWidth="52.0" text="1" BorderPane.alignment="CENTER" />
    </left>
    <right>
-      <Button mnemonicParsing="false" prefHeight="614.0" prefWidth="52.0" text="3" BorderPane.alignment="CENTER" />
+      <Button mnemonicParsing="false" onAction="#checkShip3" prefHeight="614.0" prefWidth="52.0" text="3" BorderPane.alignment="CENTER" />
    </right>
    <top>
-      <Button mnemonicParsing="false" prefHeight="52.0" prefWidth="614.0" text="2" BorderPane.alignment="CENTER" />
+      <Button mnemonicParsing="false" onAction="#checkShip2" prefHeight="52.0" prefWidth="614.0" text="2" BorderPane.alignment="CENTER" />
    </top>
 </BorderPane>

@@ -157,8 +157,7 @@ public class TextualInputParser {
             }
 
             case START_SHIP_CREATION -> {
-                if (((clientController.getGameMode() == GameMode.LEVEL2 && words[0].equals("turn")) || words[0].equals("start")) && clientController.getHourglassTurns() == 0) {
-                    clientController.firstHourglassTurn();
+                if (((clientController.getGameMode() == GameMode.LEVEL2 && words[0].equals("turn")) || words[0].equals("start")) && clientController.firstHourglassTurn()) {
                     return true;
                 }else {
                     view.wrongLocalInput();
@@ -167,7 +166,7 @@ public class TextualInputParser {
             }
 
             case S_END_DRAW_TILE_CARD -> {
-                if (clientController.secondHourglassTurn(words))
+                if (words[0].equals("turn") && clientController.secondHourglassTurn())
                     return true;
                 if (clientController.checkShipBoards(words))
                     return true;
@@ -228,7 +227,7 @@ public class TextualInputParser {
             }
 
             case S_MANAGE_DRAWN_TILE-> {
-                if (clientController.secondHourglassTurn(words))
+                if (words[0].equals("turn") &&clientController.secondHourglassTurn())
                     return true;
                 if (clientController.checkShipBoards(words))
                     return true;
@@ -251,7 +250,7 @@ public class TextualInputParser {
             case S_FINISHED-> {
                 if (clientController.checkShipBoards(words))
                     return true;
-                if (clientController.thirdHourglassTurn(words))
+                if (words[0].equals("turn") &&clientController.thirdHourglassTurn())
                     return true;
                 int chose;
                 chose = clientController.numerate(words);
@@ -365,7 +364,7 @@ public class TextualInputParser {
                         if (clientController.checkShipBoards(words))
                             return true;
                         if (clientController.getPreviousState()==ClientState.S_FINISHED)
-                            if(clientController.thirdHourglassTurn(words))
+                            if(words[0].equals("turn") &&clientController.thirdHourglassTurn())
                                 return true;
                         view.showGenericMessage("Wrong input in wait");
                     }
