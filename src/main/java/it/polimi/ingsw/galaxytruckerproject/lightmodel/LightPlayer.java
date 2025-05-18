@@ -102,5 +102,13 @@ public class LightPlayer implements PlayerInterface , Serializable {
         return updatedTiles;
     }
 
+    public void loadFromData(String[] data) throws RemoteException {
+        this.position = Integer.parseInt(data[2]);
+        this.rank = Integer.parseInt(data[3]);
+        this.credits = Integer.parseInt(data[4]);
+        this.landed = data[5].equals("L");
+        this.shipboard.setPenalty(Integer.parseInt(data[7]));
+    }
+
 
 }
