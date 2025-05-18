@@ -1,6 +1,24 @@
 {
   "cards": [
     {
+      "type": "AbandonedShip",
+      "level": 1,
+      "requiredDays": 1,
+      "crewNumberRequired": 3,
+      "possibleCreditGains": 4
+    },
+    {
+      "type": "AbandonedShip",
+      "level": 1,
+      "requiredDays": 2,
+      "crewNumberRequired": 3,
+      "possibleCreditGains": 4
+    },
+    {
+      "type": "OpenSpace",
+      "level": 1
+    },
+    {
       "type": "OpenSpace",
       "level": 1
     },
@@ -98,13 +116,7 @@
         }
       ]
     },
-    {
-      "type": "AbandonedShip",
-      "level": 1,
-      "requiredDays": 1,
-      "crewNumberRequired": 3,
-      "possibleCreditGains": 4
-    },
+
     {
       "type": "AbandonedStation",
       "level": 1,

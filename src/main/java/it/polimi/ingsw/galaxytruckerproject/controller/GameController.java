@@ -414,7 +414,18 @@ public class GameController implements Observer, Serializable {
                         }
                     }
                     else {
+
+
                         player.setAllCrewToHuman();
+                        /*
+                        try {
+                            playersView.setClientState(ClientState.MANAGE_CABINS);
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                        System.out.println(player.getTotalCrew());
+                        */
+
                         checkIfPlayersPickedCrew();
                     }
                 }
@@ -743,9 +754,13 @@ public class GameController implements Observer, Serializable {
     }
 
     private void notifyModifiedTiles(String playerName, ArrayList<Tile> modifiedTiles) {
+        ArrayList<Tile> sendableTiles = new ArrayList<>();
+        for(Tile tile: modifiedTiles) {
+            sendableTiles.add(tile.send());
+        }
         for (VirtualView view: playersViewMap.values()) {
             try {
-                view.notifyModifiedTiles(playerName, modifiedTiles);
+                view.notifyModifiedTiles(playerName, sendableTiles);
             } catch (Exception ignored) {}
         }
     }

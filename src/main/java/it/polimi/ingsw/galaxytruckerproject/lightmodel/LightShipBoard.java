@@ -37,7 +37,7 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
     private int numHumanCrew;
     private int credit;
     private boolean first=true;
-
+    private boolean completed=false;
 
     public LightShipBoard(ShipBoard shipBoard) {
         this.shipBoard = shipBoard;
@@ -608,6 +608,9 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
                 if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable())
                     tilesTable[i][j].get().getStat();
             }
+
+
+        System.out.println("sono nel client" + numHumanCrew);
     }
 
     public void resetStat() {
@@ -637,6 +640,10 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
                 tile.ifPresent(value -> value.setShipBoard(this));
             }
         }
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 
     /*

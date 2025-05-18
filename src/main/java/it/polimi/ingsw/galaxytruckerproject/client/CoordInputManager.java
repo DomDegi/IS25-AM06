@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.client;
 
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
@@ -17,6 +18,7 @@ public class CoordInputManager {
     private int numEngine;
     private final ArrayList<Coordinates> coordinates;
     private int needed;
+    private boolean set=true;
 
     public CoordInputManager(LightShipBoard lightShipBoard, ClientController clientController) {
         this.lightShipBoard = lightShipBoard;
@@ -115,6 +117,11 @@ public class CoordInputManager {
                 }
             }
             case CHOOSE_CREW -> {
+                if(set && clientController.getGameMode()==GameMode.TRIAL)
+                {
+                    lightShipBoard.getPlayer().setAllCrewToHuman();
+                    set = false;
+                }
                 if(tile.getCrew()>0) {
                     ArrayList<Coordinates> remove=new ArrayList<>();
                     remove.add(coordinate);
