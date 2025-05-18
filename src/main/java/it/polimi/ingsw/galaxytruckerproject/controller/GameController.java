@@ -264,6 +264,7 @@ public class GameController implements Observer, Serializable {
                 case START_GAME, SHIPS_CREATION, VERIFY_SHIP_CORRECTNESS -> {
                     playersViewMap.put(playerName, view);
                     activePlayers.put(playerName, disconnectedPlayers.remove(playerName));
+                    activePlayers.get(playerName).playerReconnects();
                     return true;
                 }
                 case DRAW_CARD,CARD_EVENT -> {
@@ -275,6 +276,7 @@ public class GameController implements Observer, Serializable {
                     else {
                         playersViewMap.put(playerName, view);
                         activePlayers.put(playerName, disconnectedPlayers.remove(playerName));
+                        activePlayers.get(playerName).playerReconnects();
                         return true;
                     }
                 }
@@ -315,7 +317,7 @@ public class GameController implements Observer, Serializable {
                 }
             }
             case DRAW_CARD,CARD_EVENT -> {
-                // Card should put player in the right state
+                updatePlayerView(WAIT,playerName);
             }
         }
     }
@@ -1377,4 +1379,5 @@ public class GameController implements Observer, Serializable {
         }
         playersViewMap.remove(playerName);
     }
+
 }

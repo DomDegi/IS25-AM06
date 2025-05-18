@@ -415,4 +415,8 @@ public class Game implements GameInterface{
     public ConcurrentLinkedDeque<Tile> getTileStack() {
         return tileStack;
     }
+
+    public void setGameStateWithoutUpdating(GameState gameState) {
+        this.gameState = gameState;
+    }
 }

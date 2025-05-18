@@ -5,6 +5,7 @@ import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
@@ -37,6 +38,7 @@ class PlayerSerializerDeserializerTest {
         } catch (IOException e) {
             System.out.println("Error while clearing file: " + e.getMessage());
         }
+        gameController.getGame().setGameStateWithoutUpdating(GameState.VERIFY_SHIP_CORRECTNESS);
 
         player.setCredit(25);
         player.setPlayerName("Giorgio");

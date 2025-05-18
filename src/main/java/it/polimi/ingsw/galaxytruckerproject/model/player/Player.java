@@ -466,7 +466,7 @@ public class Player implements PlayerInterface , Serializable {
         }
         else {
             StringBuilder tileData = new StringBuilder();
-            for (int i = 7; i < attributes.length; i++) {
+            for (int i = 9; i < attributes.length; i++) {
                 tileData.append(attributes[i]).append(" ");
             }
             this.drawnTile = TileFactory.load(tileData.toString());
