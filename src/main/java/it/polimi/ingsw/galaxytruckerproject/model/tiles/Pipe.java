@@ -29,16 +29,4 @@ public class Pipe extends Tile{
             return "   " + getSouth() + "  " + getKey() + " ";
     }
 
-    @Override
-    public String toStringData() {
-        return "PP " + key + " " + north.toString() + " " + east.toString() + " " + south.toString() + " " + west.toString();
-    }
-
-    @Override
-    public void tileLoader(String[] attributes) {
-        super.tileLoader(attributes);
-    }
-
-    public Pipe() {}
-
 }

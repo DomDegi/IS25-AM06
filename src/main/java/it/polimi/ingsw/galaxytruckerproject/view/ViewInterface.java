@@ -75,9 +75,6 @@ public interface ViewInterface extends Remote, Serializable {
     void notifyTurnedHourglass( int i) throws RemoteException;
     void notifyEndOfTime() throws RemoteException;
     void notifyEarlyLanding() throws RemoteException;
-    void notifyCombatZoneStrength(String playerName, float strength) throws RemoteException;
-    void notifyCombatZoneEngine(String playerName, float strength) throws RemoteException;
-    void notifyCombatZoneCrew(String playerName, int crew) throws RemoteException;
 
     //METHOD NECESSARY ONLY FOR TESTING
     DisplayableView getDisplayedView()throws RemoteException;

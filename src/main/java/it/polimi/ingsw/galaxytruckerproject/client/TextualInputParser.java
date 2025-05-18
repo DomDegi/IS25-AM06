@@ -281,6 +281,7 @@ public class TextualInputParser {
                 chose = clientController.numerate(words);
                 if (chose == -1)
                     return false;
+
                 clientController.positionOnFlightBoard(chose);
             }
 

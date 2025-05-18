@@ -37,7 +37,7 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
     private int numHumanCrew;
     private int credit;
     private boolean first=true;
-
+    private boolean completed=false;
 
     public LightShipBoard(ShipBoard shipBoard) {
         this.shipBoard = shipBoard;
@@ -198,23 +198,6 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
             }
         }
         return false;
-    }
-
-    public boolean positionTileWithoutAdjacencyCheck(Optional<Tile> tile, Coordinates coordinates) {
-        if (tile.isPresent() && tilesTable[coordinates.getX()][coordinates.getY()].isEmpty()) {
-            tilesTable[coordinates.getX()][coordinates.getY()] = tile;
-            tile.get().setShipBoard(this);
-            tile.get().setCoordinates(coordinates);
-            first=false;
-            return true;
-        }
-        return false;
-    }
-
-    public void positionNullTile(Optional<Tile> tile, Coordinates coordinates) {
-        if (tilesTable[coordinates.getX()][coordinates.getY()].isEmpty() && tile.isEmpty()) {
-            tilesTable[coordinates.getX()][coordinates.getY()] = Optional.empty();
-        }
     }
 
     public void setCargoHoldCoordinates(ArrayList<Coordinates> cargoHoldCoordinates) {
@@ -625,6 +608,9 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
                 if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable())
                     tilesTable[i][j].get().getStat();
             }
+
+
+        System.out.println("sono nel client" + numHumanCrew);
     }
 
     public void resetStat() {
@@ -656,46 +642,8 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         }
     }
 
-    public void setPenalty(int penalty) {
-        this.penalty = penalty;
-    }
-
-    public void loadFromTiles(ArrayList<Tile> tiles) {
-        if (tiles.size() < 37) {
-            System.out.println("Error deserializing ship");
-        }
-        simpleInitialize();
-
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 7; j++) {
-                Tile currentTile = tiles.removeFirst();
-                if (currentTile == null) {
-                    this.positionNullTile(Optional.empty(), new Coordinates(i, j));
-                }
-                else {
-                    this.positionTileWithoutAdjacencyCheck(Optional.of(currentTile), new Coordinates(i, j));
-                }
-            }
-        }
-        if (tiles.size() < 2) {
-            System.out.println("Error deserializing ship: no booked tiles");
-        }
-        for (int i = 0; i < 2; i++) {
-            Tile currentTile = tiles.removeFirst();
-            if (currentTile != null) {
-                this.bookedTiles.add(currentTile);
-            }
-        }
-        this.verifyCorrectness();
-    }
-
-    public void simpleInitialize() {
-        this.tilesTable = new Optional[5][7];
-        for (int i = 0; i < tilesTable.length; i++) {
-            for (int j = 0; j < tilesTable[i].length; j++) {
-                tilesTable[i][j] = Optional.empty();  // Initializes with empty optionals
-            }
-        }
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 
     /*

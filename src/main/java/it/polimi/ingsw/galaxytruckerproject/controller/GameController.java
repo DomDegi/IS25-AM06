@@ -3,13 +3,12 @@ package it.polimi.ingsw.galaxytruckerproject.controller;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.Observer;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
-import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
-import it.polimi.ingsw.galaxytruckerproject.model.persistence.ClientUpdater;
-import it.polimi.ingsw.galaxytruckerproject.model.persistence.GameSaver;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
@@ -24,7 +23,7 @@ import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.*;
 
-import static it.polimi.ingsw.galaxytruckerproject.client.ClientState.*;
+import static it.polimi.ingsw.galaxytruckerproject.client.ClientState.DRAW_CARD;
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.LEVEL2;
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.TRIAL;
 import static it.polimi.ingsw.galaxytruckerproject.model.GameState.CARD_EVENT;
@@ -610,7 +609,6 @@ public class GameController implements Observer, Serializable {
 
     public void setCrewForDisconnectedPlayer(Player player) {
         notifyModifiedTiles(player.getPlayerName(), player.setAllCrewToHuman());
-        player.getShipBoard().setCompleted(true);
         updatePlayerView(ClientState.WAIT, player.getPlayerName());
     }
 
@@ -877,9 +875,13 @@ public class GameController implements Observer, Serializable {
     }
 
     private void notifyModifiedTiles(String playerName, ArrayList<Tile> modifiedTiles) {
+        ArrayList<Tile> sendableTiles = new ArrayList<>();
+        for(Tile tile: modifiedTiles) {
+            sendableTiles.add(tile.send());
+        }
         for (VirtualView view: playersViewMap.values()) {
             try {
-                view.notifyModifiedTiles(playerName, modifiedTiles);
+                view.notifyModifiedTiles(playerName, sendableTiles);
             } catch (Exception ignored) {}
         }
     }

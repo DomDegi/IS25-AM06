@@ -199,7 +199,6 @@ public class MultiGameController implements Serializable {
                 .orElse(null);
     }
 
-
     /**
      * shows the player the games still in lobby phase and adds player to the viewsMap
      * in the multiGameController.

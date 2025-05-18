@@ -12,6 +12,7 @@ public class EquipCabin extends Cabin {
     private CrewType crewType;
     private int crewToLoad;
 
+
     public EquipCabin(Link north, Link east, Link south, Link west, int key) {
 
         super(north, east, south, west, key);
@@ -167,6 +168,10 @@ public class EquipCabin extends Cabin {
                 case HUMAN -> shipBoard.addBreakHumanCrew(crew);
             }
         }
+
+
+
+
     }
 
 

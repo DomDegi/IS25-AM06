@@ -2,11 +2,11 @@ package it.polimi.ingsw.galaxytruckerproject.lightmodel;
 
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.PlayerInterface;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public class LightPlayer implements PlayerInterface , Serializable {
     private int position; //position on the board
@@ -16,6 +16,7 @@ public class LightPlayer implements PlayerInterface , Serializable {
     private boolean landed = false;
     private PlayersColor color;
     private int credits;
+
 
     public LightPlayer(String playerName, PlayersColor color) {
         this.playerName = playerName;
@@ -86,11 +87,18 @@ public class LightPlayer implements PlayerInterface , Serializable {
         this.shipboard = shipBoard;
     }
 
-    public void loadFromData(String[] data) throws RemoteException {
-        this.position = Integer.parseInt(data[2]);
-        this.rank = Integer.parseInt(data[3]);
-        this.credits = Integer.parseInt(data[4]);
-        this.landed = data[5].equals("L");
-        this.shipboard.setPenalty(Integer.parseInt(data[7]));
+
+    public ArrayList<Tile> setAllCrewToHuman () {
+        ArrayList<Coordinates> cabins = shipboard.getCabinsCoordinates();
+        ArrayList<Tile> updatedTiles = new ArrayList<>();
+        for (Coordinates coord: cabins) {
+
+                shipboard.getTile(coord).setCrewType(CrewType.HUMAN);
+                updatedTiles.add(shipboard.getTile(coord));
+
+
+        }
+        shipboard.setCompleted(true);
+        return updatedTiles;
     }
 }

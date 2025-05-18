@@ -523,6 +523,9 @@ public class ClientController {
                         cabinsManager.setup();
                     }
                 } else if (gameMode == GameMode.TRIAL) {
+
+                    me.getShipBoard().setGetStat();
+                    me.setAllCrewToHuman();
                     CrewType type = CrewType.HUMAN;
                     ArrayList<Tile> newTiles = new ArrayList<>();
                     for (Coordinates _ : me.getShipBoard().getCabinsCoordinates()) {
@@ -541,6 +544,8 @@ public class ClientController {
             case S_FINISHED -> {
                 if (gameMode == GameMode.TRIAL) {
                     try {
+                        me.getShipBoard().setGetStat();
+                        me.setAllCrewToHuman();
                         virtualController.notifySetPosition(0);
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);

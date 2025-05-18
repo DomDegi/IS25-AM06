@@ -300,21 +300,6 @@ public class TUI implements DisplayableView {
     }
 
     @Override
-    public void notifyCombatZoneStrength(String playerName, float strength) throws RemoteException {
-        System.out.println(playerName+" cannon strength is "+strength);
-    }
-
-    @Override
-    public void notifyCombatZoneEngine(String playerName, float strength) throws RemoteException {
-        System.out.println(playerName+" engine power is "+strength);
-    }
-
-    @Override
-    public void notifyCombatZoneCrew(String playerName, int crew) throws RemoteException {
-        System.out.println(playerName+" num of crewmates is "+crew);
-    }
-
-    @Override
     public void printCabins(Tile cabins) {
         System.out.println("choose equip type of:" + cabins.toString());
     }

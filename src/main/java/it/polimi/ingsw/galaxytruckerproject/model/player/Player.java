@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.model.player;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
+import it.polimi.ingsw.galaxytruckerproject.model.persistence.TileLoader;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 
 import java.io.Serializable;
