@@ -354,6 +354,7 @@ public class Player implements PlayerInterface , Serializable {
             updatedTiles.add(playerShip.getTile(coord));
         }
         playerShip.setCompleted(true);
+        System.out.println("Sono nel server: "+ playerShip.getNumHumanCrew());
         return updatedTiles;
     }
 

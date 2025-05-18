@@ -47,7 +47,7 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
         return completed;
     }
     public String toString() {
-        StringBuilder s = new StringBuilder("Schipboard: ");
+        StringBuilder s = new StringBuilder("Shipboard: ");
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 7; j++) {
                 if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable()) {

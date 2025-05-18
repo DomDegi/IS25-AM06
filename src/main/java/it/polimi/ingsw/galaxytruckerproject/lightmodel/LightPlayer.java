@@ -2,10 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.lightmodel;
 
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.CrewType;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.PlayerInterface;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -95,8 +92,11 @@ public class LightPlayer implements PlayerInterface , Serializable {
         ArrayList<Coordinates> cabins = shipboard.getCabinsCoordinates();
         ArrayList<Tile> updatedTiles = new ArrayList<>();
         for (Coordinates coord: cabins) {
-            shipboard.getTile(coord).setCrewType(CrewType.HUMAN);
-            updatedTiles.add(shipboard.getTile(coord));
+
+                shipboard.getTile(coord).setCrewType(CrewType.HUMAN);
+                updatedTiles.add(shipboard.getTile(coord));
+
+
         }
         shipboard.setCompleted(true);
         return updatedTiles;

@@ -168,6 +168,10 @@ public class EquipCabin extends Cabin {
                 case HUMAN -> shipBoard.addBreakHumanCrew(crew);
             }
         }
+
+
+
+
     }
 
 
