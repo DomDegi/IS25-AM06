@@ -11,18 +11,20 @@ public abstract class Tile implements Serializable,Cloneable {
     protected Link east;
     protected Link south;
     protected Link west;
+    protected String imagePath = null;
     protected Coordinates coordinates;
 
     protected ShipBoardInterface shipBoard;
     protected int key;
     protected boolean booked;
 
-    public Tile(Link north, Link east, Link south, Link west, int key) {
+    public Tile(Link north, Link east, Link south, Link west,String imagePath , int key) {
         this.north =north;
         this.east=east;
         this.south=south;
         this.west=west;
         this.coordinates = new Coordinates(0,0);
+        this.imagePath=imagePath;
         this.key = key;
         this.booked = false;
     }

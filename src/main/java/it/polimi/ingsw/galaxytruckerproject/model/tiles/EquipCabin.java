@@ -12,15 +12,15 @@ public class EquipCabin extends Cabin {
     private CrewType crewType;
     private int crewToLoad;
 
-    public EquipCabin(Link north, Link east, Link south, Link west, int key) {
+    public EquipCabin(Link north, Link east, Link south, Link west,String imagePath, int key) {
 
-        super(north, east, south, west, key);
+        super(north, east, south, west,imagePath, key);
         alienability=null;
     }
     //CONSTRUCTOR METHOD FOR THE TESTING
-    public EquipCabin(Link north, Link east, Link south, Link west) {
+    public EquipCabin(Link north, Link east, Link south, Link west, String imagePath) {
 
-        super(north, east, south, west, 0);
+        super(north, east, south, west, imagePath,0);
         alienability=null;
     }
 

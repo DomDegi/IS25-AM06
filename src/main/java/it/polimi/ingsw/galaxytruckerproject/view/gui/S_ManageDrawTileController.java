@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.view.gui;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
 
@@ -25,7 +26,7 @@ public class S_ManageDrawTileController {
     public GridPane bookedTiles;
 
     @FXML
-    public void refuseTile(){
+    public void refuse(){
         Button button = new Button();
         button.setOnAction(event -> {
             System.out.println("Button clicked! (Lambda)");
@@ -178,13 +179,13 @@ public class S_ManageDrawTileController {
 
     @FXML
     public void rotateDx(){
-        drawnTile.rotateProperty().add(-90);
+        drawnTile.rotateProperty().setValue(drawnTile.rotateProperty().getValue()+90);
         GUI.rotate();
     }
 
     @FXML
     public void rotateSx(){
-        drawnTile.rotateProperty().add(90);
+        drawnTile.rotateProperty().setValue(drawnTile.rotateProperty().getValue()-90);
         GUI.rotate();
         GUI.rotate();
         GUI.rotate();

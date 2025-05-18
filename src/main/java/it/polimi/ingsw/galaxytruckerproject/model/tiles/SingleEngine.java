@@ -1,12 +1,12 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
 public class SingleEngine extends Engine{
-    public SingleEngine(Link north, Link east, Link south, Link west,int key) {
-        super(north, east, south, west,key);
+    public SingleEngine(Link north, Link east, Link south, Link west,String imagePath, int key) {
+        super(north, east, south, west,imagePath,key);
     }
     //CONSTRUCTOR METHOD FOR THE TESTING
-    public SingleEngine(Link north, Link east, Link south, Link west) {
-        super(north, east, south, west,0);
+    public SingleEngine(Link north, Link east, Link south, Link west,String imagePath) {
+        super(north, east, south, west,imagePath,0);
     }
 
     @Override

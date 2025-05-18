@@ -2,14 +2,15 @@ package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
 public class BatteryComponents extends Tile{
     int batteryCells;
-    public BatteryComponents(Link nord, Link east, Link south, Link west, int key, int numCells) {
-        super(nord,east,south,west,key);
+    public BatteryComponents(Link north, Link east, Link south, Link west, String imagePath, int key, int numCells) {
+        super(north, east, south, west, imagePath, key);
+
         this.batteryCells = numCells;
     }
 
     //METODO COSTRUTTORE PER IL TESTING
-    public BatteryComponents(Link nord, Link east, Link south, Link west, int numCells) {
-        super(nord,east,south,west,0);
+    public BatteryComponents(Link north, Link east, Link south, Link west, String imagePath, int numCells) {
+        super(north,east,south,west, imagePath,0);
         this.batteryCells = numCells;
     }
 

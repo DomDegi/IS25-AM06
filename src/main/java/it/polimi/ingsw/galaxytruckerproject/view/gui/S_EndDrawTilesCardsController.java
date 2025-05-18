@@ -1,10 +1,17 @@
 package it.polimi.ingsw.galaxytruckerproject.view.gui;
 
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.TilePane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class S_EndDrawTilesCardsController {
     private int index=0;
@@ -22,7 +29,36 @@ public class S_EndDrawTilesCardsController {
     public TilePane drawnTiles2;
 
     @FXML
-    public void initialize() {}
+    public void initialize() {
+        ArrayList<Tile> tiles=new ArrayList<>();
+        for(int i=0;i<=6;i++){
+            for(int j=0;j<=4;j++) {
+                if(GUI.getController().getMe().getShipBoard().getTilesTable()[j][i].isPresent()&&GUI.getController().getMe().getShipBoard().getTilesTable()[j][i].get().fillable())
+                    tiles.add(GUI.getController().getMe().getShipBoard().getTilesTable()[j][i].get());
+            }
+        }
+        for(Tile tile:tiles){
+            Button imageButton = new Button();
+            String imagePath = "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web.jpg";
+            InputStream imageStream = getClass().getResourceAsStream(imagePath);
+            if (imageStream == null) {
+                System.err.println("Impossibile trovare l'immagine: " + imagePath);
+                imageButton.setText("Img non trovata");
+            } else {
+                Image image = new Image(imageStream);
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(80);
+                imageView.setFitHeight(80);
+                imageButton.setGraphic(imageView);
+                imageButton.setPrefWidth(80);
+                imageButton.setPrefHeight(80);
+                imageButton.setMaxWidth(80);
+                imageButton.setMaxHeight(80);
+                imageButton.setPadding(Insets.EMPTY);
+                tilesTable.add(imageButton,tile.getCoordinates().getY(),tile.getCoordinates().getX());
+            }
+        }
+    }
 
     @FXML
     public void drawTile(){

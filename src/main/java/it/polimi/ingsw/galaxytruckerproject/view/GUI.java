@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.view;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientController;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
+import it.polimi.ingsw.galaxytruckerproject.client.GamePhases;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
@@ -238,14 +239,25 @@ public class GUI extends Application implements DisplayableView {
 
     public static void showWait(){
         Platform.runLater(() -> {
-            loader = new FXMLLoader(GUI.class.getResource("/gui/wait.fxml"));
-            BorderPane newLayer;
-            try {
-                newLayer = loader.load();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            if(controller.getPhase()== GamePhases.LOGIN){
+                loader = new FXMLLoader(GUI.class.getResource("/gui/wait.fxml"));
+                BorderPane newLayer;
+                try {
+                    newLayer = loader.load();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                layout.setCenter(newLayer);
+            }else{
+                loader = new FXMLLoader(GUI.class.getResource("/gui/wait2.fxml"));
+                BorderPane newLayer;
+                try {
+                    newLayer = loader.load();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                layout.setBottom(newLayer);
             }
-            layout.setCenter(newLayer);
         });
     }
 

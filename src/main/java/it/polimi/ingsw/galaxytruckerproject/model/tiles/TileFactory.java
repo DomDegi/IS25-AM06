@@ -45,27 +45,27 @@ public class TileFactory {
     private static Tile createTileFromJson(JsonTile jsonTile, int key) {
         switch (jsonTile.getType()) {
             case "DoubleCannon":
-                return new DoubleCannon(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),key);
+                return new DoubleCannon(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),jsonTile.getImagePath(),key);
             case "SingleCannon":
-                return new SingleCannon(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),key);
+                return new SingleCannon(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),jsonTile.getImagePath(),key);
             case "Shields":
-                return new Shields(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),key);
+                return new Shields(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),jsonTile.getImagePath(),key);
             case "SingleEngine":
-                return new SingleEngine(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),key);
+                return new SingleEngine(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),jsonTile.getImagePath(),key);
             case "DoubleEngine":
-                return new DoubleEngine(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),key);
+                return new DoubleEngine(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),jsonTile.getImagePath(),key);
             case "Pipe":
-                return new Pipe(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),key);
+                return new Pipe(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),jsonTile.getImagePath(),key);
             case "EquipCabin":
-                return new EquipCabin(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),key);
+                return new EquipCabin(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),jsonTile.getImagePath(),key);
             case "BatteryComponents":
-                return new BatteryComponents(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),key, jsonTile.getNumCells());
+                return new BatteryComponents(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),jsonTile.getImagePath(),key, jsonTile.getNumCells());
             case "AlienLifeSupportsSystem":
-                return new AlienLifeSupportsSystem(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),key, jsonTile.getAlienType());
+                return new AlienLifeSupportsSystem(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),jsonTile.getImagePath(),key, jsonTile.getAlienType());
             case "CargoBlue":
-                return new CargoBlue(jsonTile.getTotSpaces(), jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),key);
+                return new CargoBlue(jsonTile.getTotSpaces(), jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),jsonTile.getImagePath(),key);
             case "CargoRed":
-                return new CargoRed(jsonTile.getTotSpaces(), jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(), key);
+                return new CargoRed(jsonTile.getTotSpaces(), jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(), jsonTile.getImagePath(),key);
             default:
                 System.err.println("⚠️ Tipo di tile sconosciuto: " + jsonTile.getType());
                 return null;
@@ -87,6 +87,7 @@ public class TileFactory {
         private int numCells;
         private CrewType alienType;
         private int totSpaces;
+        private String imagePath;
         private int key;
 
         // Getters e Setters
@@ -106,6 +107,7 @@ public class TileFactory {
         public void setAlienType(CrewType alienType) { this.alienType = alienType; }
         public int getTotSpaces() { return totSpaces; }
         public void setTotSpaces(int totSpaces) { this.totSpaces = totSpaces; }
+        public String getImagePath() { return imagePath; }
         public int getKey() {return key;}
         public void setKey(int key) {this.key = key;}
 

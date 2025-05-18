@@ -23,13 +23,13 @@
                             <children>
                         <AnchorPane layoutX="140.0" layoutY="156.0" AnchorPane.leftAnchor="130.0" AnchorPane.rightAnchor="130.0" AnchorPane.topAnchor="156.0">
                            <children>
-                                        <Button layoutX="275.0" layoutY="75.0" mnemonicParsing="false" onAction="#rotateDx" text="rotate v" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                        <Button layoutY="75.0" mnemonicParsing="false" onAction="#rotateSx" text="rotate^" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                              <Button fx:id="drawnTile" contentDisplay="CENTER" layoutX="79.0" mnemonicParsing="false" prefHeight="175.0" prefWidth="175.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="79.0" AnchorPane.rightAnchor="78.0" AnchorPane.topAnchor="0.0">
+                                        <Button layoutX="275.0" layoutY="75.0" mnemonicParsing="false" onAction="#rotateDx" text="rotate V" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                        <Button layoutY="75.0" mnemonicParsing="false" onAction="#rotateSx" text="rotate V" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <Button fx:id="drawnTile" contentDisplay="CENTER" layoutX="79.0" mnemonicParsing="false" prefHeight="175.0" prefWidth="178.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="88.0" AnchorPane.rightAnchor="89.0" AnchorPane.topAnchor="0.0">
                                  <graphic>
-                                    <ImageView fitHeight="168.0" fitWidth="179.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="168.0" fitWidth="156.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../images/grafiche/grafiche/tiles/GT-new_tiles_16_for%20web157.jpg" />
+                                          <Image url="@../images/grafiche/grafiche/tiles/GT-new_tiles_16_for%20web32.jpg" />
                                        </image>
                                     </ImageView>
                                  </graphic>

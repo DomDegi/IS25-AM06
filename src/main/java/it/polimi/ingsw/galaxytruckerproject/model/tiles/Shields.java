@@ -4,13 +4,13 @@ import java.util.Objects;
 
 public class Shields extends Tile{
     Coverage coveredArea;
-    public Shields(Link north, Link east, Link south, Link west, int key) {
-        super(north, east, south, west, key);
+    public Shields(Link north, Link east, Link south, Link west,String imagePath, int key) {
+        super(north, east, south, west,imagePath, key);
         this.coveredArea = Coverage.NORTH_EAST;
     }
     //CONSTRUCTOR METHOD FOR THE TESTING
-    public Shields(Link north, Link east, Link south, Link west) {
-        super(north, east, south, west, 0);
+    public Shields(Link north, Link east, Link south, Link west,String imagePath) {
+        super(north, east, south, west,imagePath, 0);
         this.coveredArea = Coverage.NORTH_EAST;
     }
 

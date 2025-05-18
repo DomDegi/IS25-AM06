@@ -6,13 +6,13 @@ public class StartingCabin extends Cabin {
 
     PlayersColor playerColor;
 
-    public StartingCabin(Link nord, Link east, Link south, Link west,int key) {
-        super(nord, east, south, west,key);
+    public StartingCabin(Link nord, Link east, Link south, Link west,String imagePath, int key) {
+        super(nord, east, south, west,imagePath,key);
         crew = 2;
     }
     //CONSTRUCTOR METHOD FOR THE TESTING
-    public StartingCabin(Link nord, Link east, Link south, Link west) {
-        super(nord, east, south, west,0);
+    public StartingCabin(Link nord, Link east, Link south, Link west,String imagePath) {
+        super(nord, east, south, west,imagePath,0);
         crew = 2;
     }
 

@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.lightmodel;
 
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
+import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 
 import java.io.Serializable;
@@ -91,9 +92,23 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
 
         // Initialize VoidTile
         for (int[] pos : voidPositions) {
-            tilesTable[pos[0]][pos[1]] = Optional.of(new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH)));
+            tilesTable[pos[0]][pos[1]] = Optional.of(new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH),null));
         }
-        Tile tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL), 0);
+        Tile tile;
+        String blue="/images/startingCabins/blue_starting_cabin.png";
+        String yellow="/images/startingCabins/blue_starting_cabin.png";
+        String green="/images/startingCabins/blue_starting_cabin.png";
+        String red="/images/startingCabins/blue_starting_cabin.png";
+        if(player.getPlayerColor()== PlayersColor.BLUE)
+            tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),blue, 0);
+        else if(player.getPlayerColor()== PlayersColor.YELLOW)
+            tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),yellow, 0);
+        else if(player.getPlayerColor()== PlayersColor.GREEN)
+            tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),green, 0);
+        else if(player.getPlayerColor()== PlayersColor.RED)
+            tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),red, 0);
+        else
+            tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),"/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web157.jpg", 0);
         positionTile(Optional.of(tile), new Coordinates(2, 3));
 
         this.tilesTable = tilesTable;
@@ -114,9 +129,23 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
 
         // Initialize VoidTile
         for (int[] pos : voidPositions) {
-            this.tilesTable[pos[0]][pos[1]] = Optional.of(new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH)));
+            this.tilesTable[pos[0]][pos[1]] = Optional.of(new VoidTile(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH),null));
         }
-        Tile tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL), 0);
+        Tile tile;
+        String blue="/images/startingCabins/blue_starting_cabin.png";
+        String yellow="/images/startingCabins/blue_starting_cabin.png";
+        String green="/images/startingCabins/blue_starting_cabin.png";
+        String red="/images/startingCabins/blue_starting_cabin.png";
+        if(player.getPlayerColor()== PlayersColor.BLUE)
+            tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),blue, 0);
+        else if(player.getPlayerColor()== PlayersColor.YELLOW)
+            tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),yellow, 0);
+        else if(player.getPlayerColor()== PlayersColor.GREEN)
+            tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),green, 0);
+        else if(player.getPlayerColor()== PlayersColor.RED)
+            tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),red, 0);
+        else
+            tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),"/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web157.jpg", 0);
         positionTile(Optional.of(tile), new Coordinates(2, 3));
     }
 
