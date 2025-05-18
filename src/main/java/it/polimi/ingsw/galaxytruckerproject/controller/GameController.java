@@ -58,7 +58,9 @@ public class GameController implements Observer, Serializable {
      * Autosave attributes. Only on when not in card phase
      */
     private ScheduledExecutorService autoSaveExecutor;
-    private volatile boolean autoSaveEnabled = true;
+
+    //need to be true for the project showing
+    private volatile boolean autoSaveEnabled = false;
 
     public String toString(){
         return gameName+"\ngame state:"+game.getGameState().toString()+"\nplayer needed: "+game.getPlayerCount()+"\nplatyer in game: "+game.getNumberOfPlayers();
@@ -987,7 +989,10 @@ public class GameController implements Observer, Serializable {
             concludeGame();
             return;
         }
-
+        for(Player player : game.getListOfInFlightPlayers()) {
+            if(player.getShipBoard().getNumHumanCrew()<=0)
+                playersToEarlyLand.add(player);
+        }
         for (Player player: playersToEarlyLand) {
             game.getFlightBoard().earlyLanding(player);
         }

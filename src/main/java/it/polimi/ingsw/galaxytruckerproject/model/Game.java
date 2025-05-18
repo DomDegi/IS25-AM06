@@ -398,6 +398,9 @@ public class Game implements GameInterface{
     }
 
     public void turnedTileLoader(String[] attributes) {
+        if(Objects.equals(attributes[0], "")) {
+            return;
+        }
         ArrayList<Integer> keyMap = new ArrayList<>();
         for (String attribute : attributes) {
             keyMap.add(Integer.parseInt(attribute));

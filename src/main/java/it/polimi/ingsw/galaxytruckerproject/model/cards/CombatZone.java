@@ -76,6 +76,9 @@ public class CombatZone extends Card {
         if (playerIndex < game.getNumberOfPlayers()) {
             this.initializeCurrentPlayer();
         }
+        else{
+            findMinPlayer();
+        }
         nextChallenge();
     }
 
@@ -93,6 +96,7 @@ public class CombatZone extends Card {
                 }
                 notifyStrength(currentPlayer.getPlayerName(),power);
                 savedValues.put(currentPlayer, power);
+                nextPlayer();
             }
             else {
                 try {
@@ -111,6 +115,7 @@ public class CombatZone extends Card {
                 }
                 notifyEngine(currentPlayer.getPlayerName(),power);
                 savedValues.put(currentPlayer, power);
+                nextPlayer();
             }
             else {
                 try {
@@ -142,9 +147,8 @@ public class CombatZone extends Card {
         }
         minPlayerView = viewsMap.get(minPlayer.getPlayerName());
         notifyVictim(minPlayer.getPlayerName());
-        if (!currentPenalty.initializePenalty(game,minPlayerView, minPlayer)) {
-            resetForNextPenalty();
-        }
+        currentPenalty.initializePenalty(game,minPlayerView, minPlayer);
+        resetForNextPenalty();
     }
 
 
