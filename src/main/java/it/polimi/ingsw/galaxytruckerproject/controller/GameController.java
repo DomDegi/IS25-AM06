@@ -6,9 +6,12 @@ import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.Observer;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.persistence.ClientUpdater;
+import it.polimi.ingsw.galaxytruckerproject.model.persistence.GameSaver;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
@@ -24,6 +27,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 import static it.polimi.ingsw.galaxytruckerproject.client.ClientState.DRAW_CARD;
+import static it.polimi.ingsw.galaxytruckerproject.client.ClientState.S_END_DRAW_TILE_CARD;
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.LEVEL2;
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.TRIAL;
 import static it.polimi.ingsw.galaxytruckerproject.model.GameState.CARD_EVENT;
@@ -290,7 +294,7 @@ public class GameController implements Observer, Serializable {
         updateReconnectedPlayer(view);
         switch(this.getGameState()) {
             case START_GAME -> {
-                updatePlayerView(START_SHIP_CREATION, playerName);
+                updatePlayerView(ClientState.START_SHIP_CREATION, playerName);
             }
             case SHIPS_CREATION -> {
                 Player player = activePlayers.get(playerName);
@@ -314,11 +318,11 @@ public class GameController implements Observer, Serializable {
                     }
                 }
                 else if (!player.getShipBoard().isCompleted()) {
-                    updatePlayerView(MANAGE_CABINS,playerName);
+                    updatePlayerView(ClientState.MANAGE_CABINS,playerName);
                 }
             }
             case DRAW_CARD,CARD_EVENT -> {
-                updatePlayerView(WAIT,playerName);
+                updatePlayerView(ClientState.WAIT,playerName);
             }
         }
     }
@@ -426,7 +430,7 @@ public class GameController implements Observer, Serializable {
             for (Player player : game.getListOfAllPlayer()) {
                 notifyStartPosition(player.getPlayerName(),player.getPlayerColor());
             }
-            updateEveryView(ClientState.S_END_DRAW_TILE_CARD);
+            updateEveryView(S_END_DRAW_TILE_CARD);
         }
         else {
             for (Player player : game.getListOfAllPlayer()) {
@@ -679,11 +683,11 @@ public class GameController implements Observer, Serializable {
         }
         Tile refused = game.refuseTile(playerName);
         notifyNewTurnedTile(refused);
-        updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
+        updatePlayerView(S_END_DRAW_TILE_CARD, playerName);
     }
 
     public synchronized void lookGameCards(String playerName, ViewInterface playersView, int cardsToLookAt)  {
-        if (playerStateIs(playerName, ClientState.S_END_DRAW_TILE_CARD)) {
+        if (playerStateIs(playerName, S_END_DRAW_TILE_CARD)) {
             for (Integer integer: lockedSmallDecks.values()) {
                 if (integer == cardsToLookAt) {
                     try{
@@ -733,7 +737,7 @@ public class GameController implements Observer, Serializable {
             return;
         }
         lockedSmallDecks.remove(playerName);
-        updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
+        updatePlayerView(S_END_DRAW_TILE_CARD, playerName);
         notifyNotAvailableCardDeck();
     }
 
@@ -768,7 +772,7 @@ public class GameController implements Observer, Serializable {
         }
         settedTile = game.playerSetTile(playerName, tile);
         if (settedTile != null) {
-            updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
+            updatePlayerView(S_END_DRAW_TILE_CARD, playerName);
             notifyPositionedTile(playerName, settedTile.send());
 
         } else {
@@ -801,7 +805,7 @@ public class GameController implements Observer, Serializable {
         if (playerStateIs(playerName,  ClientState.S_MANAGE_DRAWN_TILE)) {
             Tile toBook = game.playerBookTile(playerName);
             if (toBook != null) {
-                updatePlayerView(ClientState.S_END_DRAW_TILE_CARD, playerName);
+                updatePlayerView(S_END_DRAW_TILE_CARD, playerName);
                 notifyBookedTile(playerName, toBook);
             }
             else {
@@ -819,7 +823,7 @@ public class GameController implements Observer, Serializable {
 
     //now no input except hourglass and checkShipboard work and checks if the other player have completed
     public void completed (String playerName, ViewInterface playersView)  {
-        if (!playerStateIs(playerName, ClientState.S_END_DRAW_TILE_CARD)) {
+        if (!playerStateIs(playerName, S_END_DRAW_TILE_CARD)) {
             try{
             playersView.showWrongInputMessage();
             } catch(Exception ignored) {}
@@ -921,7 +925,7 @@ public class GameController implements Observer, Serializable {
         }
         switch (hourglassTurns) {
             case 0->{
-                updateEveryView(ClientState.S_END_DRAW_TILE_CARD);
+                updateEveryView(S_END_DRAW_TILE_CARD);
                 startTimer();
             }
             case 1->{

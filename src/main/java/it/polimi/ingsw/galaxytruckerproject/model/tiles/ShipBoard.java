@@ -763,4 +763,8 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
         this.getTile(coordinates).setShipBoard(this);
     }
 
+    public void setPenalty(int penalty) {
+        this.penalty = penalty;
+    }
+
 }

@@ -29,7 +29,7 @@ public interface VirtualView extends ViewInterface, Serializable {
     void notifyModifiedTiles(String playerName, ArrayList<Tile> tiles) throws RemoteException;
     void notifyGainedCredits (String playerName, int totalCredits) throws RemoteException;
     void notifyBrokenTile(String playerName, ArrayList<Coordinates> coordinates)throws RemoteException;
-    void notifyChangesWhileGone(Map<String, LightShipBoard> updatedShipBoards, LightFlightboard updatedFlightBoard, Card drawnCard, int hourglassTurns, Map<Integer, Tile> turnedTiles, ArrayList<Integer> notAvailable) throws RemoteException;
+    void notifyChangesWhileGone(String currentGameStatus) throws RemoteException;
     void notifyFlightBoardCards(Map<Integer, ArrayList<Card>> cards) throws RemoteException;
     void initializeShipBoards(GameMode gameMode) throws RemoteException;
     void victimOfThePenalty(String playerName) throws RemoteException;
