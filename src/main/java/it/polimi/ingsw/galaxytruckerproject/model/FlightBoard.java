@@ -4,6 +4,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class FlightBoard implements Serializable {
     private final ArrayList<Player> inGamePlayers;
