@@ -11,6 +11,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.Penalty;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import javafx.scene.Scene;
@@ -301,6 +302,11 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void notifyCombatZoneCrew(String playerName, int crew) throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyPodium(ArrayList<Player> players) throws RemoteException {
 
     }
 

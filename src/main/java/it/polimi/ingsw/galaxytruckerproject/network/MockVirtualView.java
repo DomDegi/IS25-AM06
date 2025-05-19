@@ -5,6 +5,7 @@ import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
@@ -251,6 +252,11 @@ public class MockVirtualView implements VirtualView {
 
     @Override
     public void notifyCombatZoneCrew(String playerName, int crew) throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyPodium(ArrayList<Player> players) throws RemoteException {
 
     }
 }

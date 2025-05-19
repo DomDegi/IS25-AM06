@@ -32,6 +32,17 @@ public class Player implements PlayerInterface , Serializable {
         this.isDisconnected = false;
     }
 
+    public Player send() {
+        try {
+            Player cloned = (Player) super.clone();
+            cloned.setPlayerShip(null);
+            cloned.setDrawnTile(null);
+            return cloned;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     //GETTER METHODS
     public String getPlayerName() {
         return playerName;

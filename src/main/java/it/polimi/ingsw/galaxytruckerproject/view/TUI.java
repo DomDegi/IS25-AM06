@@ -54,7 +54,7 @@ public class TUI implements DisplayableView {
 
     @Override
     public void victimOfThePenalty(String playerName, Penalty penalty) {
-        System.out.println(playerName +"has received the following penalty:"+ penalty.toString());
+        System.out.println(playerName +" has received the following penalty:"+ penalty.toString());
     }
 
     @Override
@@ -312,6 +312,14 @@ public class TUI implements DisplayableView {
     @Override
     public void notifyCombatZoneCrew(String playerName, int crew) throws RemoteException {
         System.out.println(playerName+" num of crewmates is "+crew);
+    }
+
+    @Override
+    public void notifyPodium(ArrayList<Player> players) throws RemoteException {
+        System.out.println("flightboard:");
+        for (Player player : players) {
+            System.out.println(player.getPlayerName()+" position:"+player.getPlayerPosition()+" rank:"+player.getPlayerRanking());
+        }
     }
 
     @Override
