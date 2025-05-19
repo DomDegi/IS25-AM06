@@ -42,7 +42,7 @@ public class GoodsPenalty extends Penalty {
             updatedTiles = player.removeGoods(toRemove);
         }
         else {
-            ArrayList<Coordinates> goodsToRemove = new ArrayList<>(toRemove.subList(0, numberOfLostGoods));
+            ArrayList<Coordinates> goodsToRemove = new ArrayList<>(toRemove.subList(0, Math.min( numberOfLostGoods, numberOfGoods )));
             ArrayList<Coordinates> batteriesToRemove = new ArrayList<>(toRemove.subList(numberOfGoods, toRemove.size()));
             updatedTiles = player.removeGoods(goodsToRemove);
             updatedTiles.addAll(player.chooseBatteriesUse(batteriesToRemove));

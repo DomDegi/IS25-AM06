@@ -2,6 +2,84 @@
 
   "cards":[
 
+    {
+      "type": "MeteorSwarm",
+      "level": 1,
+      "listOfMeteors": [
+        {
+          "type": "SmallMeteor",
+          "direction": "NORTH"
+        },
+        {
+          "type": "SmallMeteor",
+          "direction": "NORTH"
+        },
+        {
+          "type": "SmallMeteor",
+          "direction": "WEST"
+        },
+        {
+          "type": "SmallMeteor",
+          "direction": "EAST"
+        },
+        {
+          "type": "SmallMeteor",
+          "direction": "SOUTH"
+        }
+      ]
+    },
+    {
+      "type": "MeteorSwarm",
+      "level": 1,
+      "listOfMeteors": [
+        {
+          "type": "SmallMeteor",
+          "direction": "NORTH"
+        },
+        {
+          "type": "SmallMeteor",
+          "direction": "NORTH"
+        },
+        {
+          "type": "SmallMeteor",
+          "direction": "WEST"
+        },
+        {
+          "type": "SmallMeteor",
+          "direction": "EAST"
+        },
+        {
+          "type": "SmallMeteor",
+          "direction": "SOUTH"
+        }
+      ]
+    },
+    {
+      "type": "MeteorSwarm",
+      "level": 1,
+      "listOfMeteors": [
+        {
+          "type": "SmallMeteor",
+          "direction": "NORTH"
+        },
+        {
+          "type": "SmallMeteor",
+          "direction": "NORTH"
+        },
+        {
+          "type": "SmallMeteor",
+          "direction": "WEST"
+        },
+        {
+          "type": "SmallMeteor",
+          "direction": "EAST"
+        },
+        {
+          "type": "SmallMeteor",
+          "direction": "SOUTH"
+        }
+      ]
+    },
 
     {
       "type": "MeteorSwarm",
