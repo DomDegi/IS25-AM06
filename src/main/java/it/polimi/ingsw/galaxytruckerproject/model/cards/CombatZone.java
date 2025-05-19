@@ -172,9 +172,13 @@ public class CombatZone extends Card {
         }
         Map<Float,ArrayList<Tile>> valueMap = currentPlayer.useCannons(doubleCannonPower, batteries);
         if (valueMap == null) {
-            try{
-                currentView.showWrongInputMessage();
-            } catch (Exception ignored) {}
+            float power = currentPlayer.getShipBoard().getSingleCannonPower();
+            if (power > 0) {
+                power += 2*currentPlayer.getShipBoard().getNumPurpleAliens();
+            }
+            notifyStrength(currentPlayer.getPlayerName(),power);
+            savedValues.put(currentPlayer, power);
+            nextPlayer();
             return;
         }
         float strength = valueMap.keySet().iterator().next();
@@ -197,9 +201,13 @@ public class CombatZone extends Card {
         }
         Map<Integer,ArrayList<Tile>> valueMap = currentPlayer.useEngines(numDoubleEngine, batteriesToUse);
         if (valueMap == null) {
-            try{
-                currentView.showWrongInputMessage();
-            } catch (Exception ignored) {}
+            float power = currentPlayer.getShipBoard().getNumSingleEngine();
+            if (power > 0) {
+                power += 2*currentPlayer.getShipBoard().getNumBrownAliens();
+            }
+            notifyEngine(currentPlayer.getPlayerName(),power);
+            savedValues.put(currentPlayer, power);
+            nextPlayer();
             return;
         }
         int strength = valueMap.keySet().iterator().next();

@@ -38,9 +38,7 @@ public class OpenSpace extends Card {
     @Override
     public void engineChoice(String playerName, int numDoubleEngines, ArrayList<Coordinates> batteriesToUse) {
         if (!playerName.equals(currentPlayer.getPlayerName())) {
-            try {
-                viewsMap.get(playerName).showWrongInputMessage();
-            }catch(Exception ignored) {}
+            engineChoice(currentPlayer.getPlayerName(), 0, new ArrayList<>());
             return;
         }
         Map<Integer,ArrayList<Tile>> returned = currentPlayer.useEngines(numDoubleEngines, batteriesToUse);
