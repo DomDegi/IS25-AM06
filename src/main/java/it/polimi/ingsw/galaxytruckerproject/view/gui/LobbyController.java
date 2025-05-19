@@ -7,11 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
+import javafx.scene.input.MouseEvent;
 import java.util.ArrayList;
 
 public class LobbyController {
@@ -44,7 +40,7 @@ public class LobbyController {
     }
 
     @FXML
-    public void join(javafx.scene.input.MouseEvent mouseEvent) {
+    public void join(MouseEvent mouseEvent) {
         String gameName;
         ObservableList<String> gameInfos = joinableGames.getSelectionModel().getSelectedItems();
         if (!gameInfos.isEmpty()) {

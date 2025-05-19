@@ -16,7 +16,7 @@
     <center>
         <HBox alignment="CENTER" BorderPane.alignment="CENTER">
             <children>
-                <TilePane fx:id="drawnTiles1" alignment="CENTER_RIGHT" onMouseClicked="#refuse" prefHeight="1028.0" prefWidth="700.0" />
+                <TilePane fx:id="drawnTiles1" alignment="CENTER_RIGHT" hgap="10.0" onMouseClicked="#refuse" prefHeight="1028.0" prefWidth="700.0" vgap="10.0" />
                 <VBox alignment="CENTER" spacing="30.0">
                     <children>
                         <AnchorPane prefHeight="487.0" prefWidth="582.0">
@@ -109,7 +109,7 @@
                         </AnchorPane>
                     </children>
                 </VBox>
-                <TilePane fx:id="drawnTiles2" alignment="CENTER_LEFT" onMouseClicked="#refuse" prefHeight="1028.0" prefWidth="700.0" />
+                <TilePane fx:id="drawnTiles2" alignment="CENTER_LEFT" hgap="10.0" onMouseClicked="#refuse" prefHeight="1028.0" prefWidth="700.0" vgap="10.0" />
             </children>
         </HBox>
     </center>

@@ -117,7 +117,7 @@ public class GUI extends Application implements DisplayableView {
         controller.drawBooked(index);
     }
 
-    public void drawDrawnTile(int index){
+    public static void drawDrawnTile(int index){
         controller.drawDrawn(index);
     }
 

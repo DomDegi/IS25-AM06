@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class S_EndDrawTilesCardsController {
-    private int index=0;
 
     @FXML
     public GridPane tilesTable;
@@ -59,6 +58,62 @@ public class S_EndDrawTilesCardsController {
                 tilesTable.add(imageButton,tile.getCoordinates().getY(),tile.getCoordinates().getX());
             }
         }
+        int index=0;
+        for(Tile tile:GUI.getController().getTurnedTilesDisplayer()){
+            Button imageButton = new Button();
+            String imagePath = tile.getImagePath();
+            InputStream imageStream = getClass().getResourceAsStream(imagePath);
+            if (imageStream == null) {
+                System.err.println("Impossibile trovare l'immagine: " + imagePath);
+                imageButton.setText("Img non trovata");
+            } else {
+                Image image = new Image(imageStream);
+                ImageView imageView = new ImageView(image);
+                imageView.rotateProperty().setValue(tile.getRotation()*90);
+                imageView.setFitWidth(80);
+                imageView.setFitHeight(80);
+                imageButton.setGraphic(imageView);
+                imageButton.setPrefWidth(80);
+                imageButton.setPrefHeight(80);
+                imageButton.setMaxWidth(80);
+                imageButton.setMaxHeight(80);
+                imageButton.setPadding(Insets.EMPTY);
+                imageButton.setOnAction(event -> {
+                    drawDrawnTile(tile.getKey());
+                });
+                if(index%2==0){
+                    drawnTiles1.getChildren().add(imageButton);
+                }else {
+                    drawnTiles2.getChildren().add(imageButton);
+                }
+                index++;
+            }
+        }
+
+        int i=0;
+        for(Tile tile:GUI.getController().getLightShipBoard().getBookedTiles()){
+            Button imageButton = new Button();
+            String imagePath = tile.getImagePath();
+            InputStream imageStream = getClass().getResourceAsStream(imagePath);
+            if (imageStream == null) {
+                System.err.println("Impossibile trovare l'immagine: " + imagePath);
+                imageButton.setText("Img non trovata");
+            } else {
+                Image image = new Image(imageStream);
+                ImageView imageView = new ImageView(image);
+                imageView.rotateProperty().setValue(tile.getRotation()*90);
+                imageView.setFitWidth(80);
+                imageView.setFitHeight(80);
+                imageButton.setGraphic(imageView);
+                imageButton.setPrefWidth(80);
+                imageButton.setPrefHeight(80);
+                imageButton.setMaxWidth(80);
+                imageButton.setMaxHeight(80);
+                imageButton.setPadding(Insets.EMPTY);
+                bookedTiles.add(imageButton,i,0);
+            }
+            i++;
+        }
     }
 
     @FXML
@@ -76,8 +131,8 @@ public class S_EndDrawTilesCardsController {
     }
 
     @FXML
-    public void drawDrawnTile(){
-        GUI.drawTile();
+    public void drawDrawnTile(int index){
+        GUI.drawDrawnTile(index);
     }
 
     @FXML

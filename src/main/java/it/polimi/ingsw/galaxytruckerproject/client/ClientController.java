@@ -44,6 +44,7 @@ public class ClientController {
     private GoodsManager goodsManager;
     private CabinsManager cabinsManager;
     private Map<Integer, Tile> turnedTiles;
+    private ArrayList<Tile> turnedTilesDisplayer;
     private Map<Integer, ArrayList<Card>> deck;
     private final Map<Integer, Boolean> availableDeck;
     private final Map<PlayersColor, Boolean> availableColors;
@@ -67,6 +68,7 @@ public class ClientController {
         this.inManager = false;
         this.connected = false;
         this.turnedTiles = new HashMap<>();
+        this.turnedTilesDisplayer=new ArrayList<>();
         this.previousState = ClientState.CHOOSE_UI;
         this.state = ClientState.CHOOSE_UI;
         this.phase = GamePhases.LOGIN;
@@ -883,11 +885,13 @@ public class ClientController {
 
     public void addTurnedTile(Tile tile) {
         turnedTiles.put(tile.getKey(), tile);
+        turnedTilesDisplayer.add(tile);
         view.showTurnedTiles(turnedTiles);
     }
 
     public void removeTurnedTile(Tile tile) {
         turnedTiles.remove(tile.getKey());
+        turnedTilesDisplayer.removeIf(t -> t.getKey() == tile.getKey());
     }
 
     public String getName() {
@@ -975,6 +979,7 @@ public class ClientController {
         displayedCard.add(card);
         this.hourglassTurns = hourglassTurns;
         turnedTiles = newTurnedTiles;
+        turnedTilesDisplayer=new ArrayList<>(turnedTiles.values());
         decksNotAvailable(notAvailableDecks);
     }
 
@@ -1025,6 +1030,9 @@ public class ClientController {
         return turnedTiles;
     }
 
+    public ArrayList<Tile> getTurnedTilesDisplayer() {
+        return turnedTilesDisplayer;
+    }
     public Map<Integer, ArrayList<Card>> getDeck() {
         return deck;
     }
