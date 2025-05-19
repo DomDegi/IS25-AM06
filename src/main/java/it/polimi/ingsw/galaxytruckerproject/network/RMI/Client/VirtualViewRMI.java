@@ -8,6 +8,7 @@ import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
@@ -168,6 +169,11 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     @Override
     public void notifyCombatZoneCrew(String playerName, int crew) throws RemoteException {
         view.notifyCombatZoneCrew(playerName, crew);
+    }
+
+    @Override
+    public void notifyPodium(ArrayList<Player> players) throws RemoteException {
+        view.notifyPodium(players);
     }
 
     @Override

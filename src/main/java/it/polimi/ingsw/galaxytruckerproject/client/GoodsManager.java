@@ -184,8 +184,8 @@ public class GoodsManager {
                 return;
         }
         if(state ==1) {
-            currentPlayer.getShipBoard().gainGoods(possibleGoodsGain.get(goodsToGet - 1), coordinatesToPut);
-            possibleGoodsGain.remove(goodsToGet - 1);
+            currentPlayer.getShipBoard().gainGoods(possibleGoodsGain.get(goodsToGet), coordinatesToPut);
+            possibleGoodsGain.remove(goodsToGet);
         }
         possibleGoodsGain.add(goodToSwap);
         view.showGenericMessage("\nCargoHold"+coordinatesToPut+":\n");

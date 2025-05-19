@@ -246,7 +246,7 @@ public class ClientController {
             try {
                 virtualController.reqDrawTileFromTurned(chose);
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                view.wrongLocalInput();
             }
         } else {
             view.wrongLocalInput();

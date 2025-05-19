@@ -31,6 +31,7 @@ public class CoordInputManager {
 
     public void setCoordReqType(CoordReqType coordReqType) {
         this.coordinates.clear();
+        this.coordReqType = coordReqType;
         switch (coordReqType) {
             case CHOOSE_DOUBLE_CANNON, CHOOSE_DOUBLE_ENGINE, CHOOSE_TO_BREAK, CHOOSE_BATTERY -> needed=0;
             case REMOVE_GOODS ->{
@@ -55,7 +56,6 @@ public class CoordInputManager {
                 needed = Math.min (lightShipBoard.getNumTotalCrew(),needed);
             }
         }
-        this.coordReqType = coordReqType;
     }
 
     //needed serve per sapere quante coordinate servono (ad esempio per quando bisogna scegliere quali crewMate eliminare), se non è necessario un numero indicare -1

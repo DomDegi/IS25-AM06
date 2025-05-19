@@ -6,6 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.ControllerInte
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
@@ -236,6 +237,11 @@ public class VirtualViewSocket implements VirtualView {
     @Override
     public void notifyCombatZoneCrew(String playerName, int crew) throws RemoteException {
         clientHandler.sendServerMessageToClient(new NotifyCombatZoneCrewMessage(playerName, crew));
+    }
+
+    @Override
+    public void notifyPodium(ArrayList<Player> players) throws RemoteException {
+        clientHandler.sendServerMessageToClient((new PodiumMessage(players)));
     }
 
     @Override

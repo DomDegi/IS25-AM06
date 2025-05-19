@@ -1,5 +1,127 @@
 {
+
   "cards":[
+
+
+    {
+      "type": "MeteorSwarm",
+      "level": 1,
+      "listOfMeteors": [
+        {
+          "type": "SmallMeteor",
+          "direction": "NORTH"
+        },
+        {
+          "type": "SmallMeteor",
+          "direction": "NORTH"
+        },
+        {
+          "type": "SmallMeteor",
+          "direction": "WEST"
+        },
+        {
+          "type": "SmallMeteor",
+          "direction": "EAST"
+        },
+        {
+          "type": "SmallMeteor",
+          "direction": "SOUTH"
+        }
+      ]
+    },
+    {
+      "type": "Planets",
+      "level": 1,
+      "requiredDays": 2,
+      "listOfPlanets": [
+        {
+          "listOfGoods": [
+            { "color": "RED"},
+            { "color": "RED"}
+          ]
+        },
+        {
+          "listOfGoods": [
+            { "color": "RED"},
+            { "color": "BLUE"},
+            { "color": "BLUE"}
+          ]
+        },
+        {
+          "listOfGoods": [
+            { "color": "YELLOW"}
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Planets",
+      "level": 1,
+      "requiredDays": 2,
+      "listOfPlanets": [
+        {
+          "listOfGoods": [
+            { "color": "RED"},
+            { "color": "RED"}
+          ]
+        },
+        {
+          "listOfGoods": [
+            { "color": "RED"},
+            { "color": "BLUE"},
+            { "color": "BLUE"}
+          ]
+        },
+        {
+          "listOfGoods": [
+            { "color": "YELLOW"}
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Planets",
+      "level": 1,
+      "requiredDays": 2,
+      "listOfPlanets": [
+        {
+          "listOfGoods": [
+            { "color": "RED"},
+            { "color": "RED"}
+          ]
+        },
+        {
+          "listOfGoods": [
+            { "color": "RED"},
+            { "color": "BLUE"},
+            { "color": "BLUE"}
+          ]
+        },
+        {
+          "listOfGoods": [
+            { "color": "YELLOW"}
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Smugglers",
+      "level": 1,
+      "requiredDays": 1,
+      "cannonStrength": 4,
+      "lostGoods": 2,
+      "rewardGoods": [
+        {
+          "color" : "YELLOW"
+        },
+        {
+          "color" : "GREEN"
+        },
+        {
+          "color" : "BLUE"
+        }
+      ]
+    },
     {
       "type": "AbandonedShip",
       "level": 1,
@@ -40,50 +162,6 @@
           ]
         }
       }
-    },
-    {
-      "type": "Planets",
-      "level": 1,
-      "requiredDays": 2,
-      "listOfPlanets": [
-        {
-          "listOfGoods": [
-            { "color": "RED"},
-            { "color": "RED"}
-          ]
-        },
-        {
-          "listOfGoods": [
-            { "color": "RED"},
-            { "color": "BLUE"},
-            { "color": "BLUE"}
-          ]
-        },
-        {
-          "listOfGoods": [
-            { "color": "YELLOW"}
-          ]
-        }
-      ]
-    },
-
-    {
-      "type": "Smugglers",
-      "level": 1,
-      "requiredDays": 1,
-      "cannonStrength": 4,
-      "lostGoods": 2,
-      "rewardGoods": [
-        {
-          "color" : "YELLOW"
-        },
-        {
-          "color" : "GREEN"
-        },
-        {
-          "color" : "BLUE"
-        }
-      ]
     },
     {
       "type": "StarDust",
