@@ -11,8 +11,8 @@ public abstract class CargoHold extends Tile{
     protected boolean hazard;
     protected ArrayList<Goods> cargo = new ArrayList<>();
 
-    public CargoHold(int totSpaces, Link north, Link east, Link south, Link west,String imagePath, int key) {
-        super(north, east, south, west,imagePath, key);
+    public CargoHold(int totSpaces, Link north, Link east, Link south, Link west,String imagePath, int rotation, int key) {
+        super(north, east, south, west,imagePath,rotation, key);
         this.totSpaces = totSpaces;
         // It makes more sense to use an ArrayList since they are much easier to manage in Java.
         // Instead of dealing with null values, we can simply use an ArrayList.
@@ -20,8 +20,8 @@ public abstract class CargoHold extends Tile{
     }
 
     //CONSTRUCTOR METHOD FOR THE TESTING
-    public CargoHold(int totSpaces, Link north, Link east, Link south, Link west,String imagePath) {
-        super(north, east, south, west,imagePath, 0);
+    public CargoHold(int totSpaces, Link north, Link east, Link south, Link west, String imagePath) {
+        super(north, east, south, west,imagePath,0, 0);
         this.totSpaces = totSpaces;
         this.cargo = new ArrayList<>();
         // It makes more sense to use an ArrayList since they are much easier to manage in Java.
@@ -105,8 +105,7 @@ public abstract class CargoHold extends Tile{
         }
     }
     @Override
-    public CargoHold send()
-    {
+    public CargoHold send() {
         try {
             CargoHold cloned= (CargoHold) super.clone();
             cloned.setShipBoard(null);

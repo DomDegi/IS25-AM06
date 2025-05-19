@@ -5,14 +5,14 @@ import java.util.Optional;
 public abstract class Engine extends Tile{
     Direction direction;
 
-    public Engine(Link north, Link east, Link south, Link west, String imagePath, int key) {
-        super(north, east, south, west, imagePath, key);
+    public Engine(Link north, Link east, Link south, Link west, String imagePath,int rotation, int key) {
+        super(north, east, south, west, imagePath,rotation, key);
         south.connectorsType = Connectors.SMOOTH;
         direction = Direction.SOUTH;
     }
     //CONSTRUCTOR METHOD FOR THE TESTING
     public Engine(Link north, Link east, Link south, Link west, String imagePath) {
-        super(north, east, south, west, imagePath,0);
+        super(north, east, south, west, imagePath,0,0);
         south.connectorsType = Connectors.SMOOTH;
         direction = Direction.SOUTH;
     }

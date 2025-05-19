@@ -3,13 +3,13 @@ package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 public class CargoRed extends CargoHold{
 
 
-    public CargoRed(int totSpaces, Link north, Link east, Link west, Link south,String imagePath, int key) {
-        super(totSpaces, north, east, west, south, imagePath, key);
+    public CargoRed(int totSpaces, Link north, Link east, Link west, Link south,String imagePath, int rotation, int key) {
+        super(totSpaces, north, east, west, south, imagePath,rotation, key);
         hazard = true;
     }
     //CONSTRUCTOR METHOD FOR THE TESTING
     public CargoRed(int totSpaces, Link north, Link east, Link west, Link south, String imagePath) {
-        super(totSpaces, north, east, west, south, imagePath,0);
+        super(totSpaces, north, east, west, south, imagePath,0,0);
         hazard = true;
     }
 

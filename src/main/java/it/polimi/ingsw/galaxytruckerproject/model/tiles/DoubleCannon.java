@@ -2,12 +2,12 @@ package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
 public class DoubleCannon extends Cannon{
 
-    public DoubleCannon(Link north, Link east, Link south, Link west,String imagePath, int key) {
-        super(north, east, south, west, imagePath, key);
+    public DoubleCannon(Link north, Link east, Link south, Link west,String imagePath,int rotation, int key) {
+        super(north, east, south, west, imagePath,rotation, key);
     }
     //CONSTRUCTOR METHOD FOR THE TESTING
     public DoubleCannon(Link north, Link east, Link south, Link west,String imagePath) {
-        super(north, east, south, west, imagePath,0);
+        super(north, east, south, west, imagePath,0,0);
     }
 
     public boolean chooseToUse(){

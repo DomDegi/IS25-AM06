@@ -19,11 +19,12 @@ public abstract class Tile implements Serializable,Cloneable {
     protected int key;
     protected boolean booked;
 
-    public Tile(Link north, Link east, Link south, Link west,String imagePath , int key) {
+    public Tile(Link north, Link east, Link south, Link west,String imagePath , int rotation, int key) {
         this.north =north;
         this.east=east;
         this.south=south;
         this.west=west;
+        this.rotation=rotation;
         this.coordinates = new Coordinates(0,0);
         this.imagePath=imagePath;
         this.key = key;
@@ -126,6 +127,10 @@ public abstract class Tile implements Serializable,Cloneable {
 
     public int getRotation() {
         return rotation;
+    }
+
+    public void setRotation(int rotation) {
+        this.rotation = rotation;
     }
 
     public void setCoordinates(Coordinates coordinates) {

@@ -43,33 +43,34 @@ public class TileFactory {
     }
 
     private static Tile createTileFromJson(JsonTile jsonTile, int key) {
-        switch (jsonTile.getType()) {
-            case "DoubleCannon":
-                return new DoubleCannon(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),jsonTile.getImagePath(),key);
-            case "SingleCannon":
-                return new SingleCannon(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),jsonTile.getImagePath(),key);
-            case "Shields":
-                return new Shields(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),jsonTile.getImagePath(),key);
-            case "SingleEngine":
-                return new SingleEngine(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),jsonTile.getImagePath(),key);
-            case "DoubleEngine":
-                return new DoubleEngine(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),jsonTile.getImagePath(),key);
-            case "Pipe":
-                return new Pipe(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),jsonTile.getImagePath(),key);
-            case "EquipCabin":
-                return new EquipCabin(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),jsonTile.getImagePath(),key);
-            case "BatteryComponents":
-                return new BatteryComponents(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),jsonTile.getImagePath(),key, jsonTile.getNumCells());
-            case "AlienLifeSupportsSystem":
-                return new AlienLifeSupportsSystem(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),jsonTile.getImagePath(),key, jsonTile.getAlienType());
-            case "CargoBlue":
-                return new CargoBlue(jsonTile.getTotSpaces(), jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(),jsonTile.getImagePath(),key);
-            case "CargoRed":
-                return new CargoRed(jsonTile.getTotSpaces(), jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(), jsonTile.getImagePath(),key);
-            default:
+        return switch (jsonTile.getType()) {
+            case "DoubleCannon" ->
+                    new DoubleCannon(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(), jsonTile.getImagePath(), 0, key);
+            case "SingleCannon" ->
+                    new SingleCannon(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(), jsonTile.getImagePath(), 0, key);
+            case "Shields" ->
+                    new Shields(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(), jsonTile.getImagePath(), 0, key);
+            case "SingleEngine" ->
+                    new SingleEngine(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(), jsonTile.getImagePath(), 0, key);
+            case "DoubleEngine" ->
+                    new DoubleEngine(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(), jsonTile.getImagePath(), 0, key);
+            case "Pipe" ->
+                    new Pipe(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(), jsonTile.getImagePath(), 0, key);
+            case "EquipCabin" ->
+                    new EquipCabin(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(), jsonTile.getImagePath(), 0, key);
+            case "BatteryComponents" ->
+                    new BatteryComponents(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(), jsonTile.getImagePath(), 0, key, jsonTile.getNumCells());
+            case "AlienLifeSupportsSystem" ->
+                    new AlienLifeSupportsSystem(jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(), jsonTile.getImagePath(), 0, key, jsonTile.getAlienType());
+            case "CargoBlue" ->
+                    new CargoBlue(jsonTile.getTotSpaces(), jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(), jsonTile.getImagePath(), 0, key);
+            case "CargoRed" ->
+                    new CargoRed(jsonTile.getTotSpaces(), jsonTile.getNorth(), jsonTile.getEast(), jsonTile.getSouth(), jsonTile.getWest(), jsonTile.getImagePath(), 0, key);
+            default -> {
                 System.err.println("⚠️ Tipo di tile sconosciuto: " + jsonTile.getType());
-                return null;
-        }
+                yield null;
+            }
+        };
     }
 
     public ConcurrentLinkedDeque<Tile> getStack(ArrayList<Tile> tiles) {

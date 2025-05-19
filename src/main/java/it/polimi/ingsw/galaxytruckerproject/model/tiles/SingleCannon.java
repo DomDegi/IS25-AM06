@@ -3,13 +3,13 @@ package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 public class SingleCannon extends Cannon {
     private float fireStrength;
 
-    public SingleCannon(Link north, Link east, Link south, Link west,String imagePath, int key) {
-        super(north, east, south, west,imagePath,key);
+    public SingleCannon(Link north, Link east, Link south, Link west,String imagePath, int rotation, int key) {
+        super(north, east, south, west,imagePath,rotation,key);
         updateFireStrength();
     }
     //CONSTRUCTOR METHOD FOR THE TESTING
     public SingleCannon(Link north, Link east, Link south, Link west,String imagePath) {
-        super(north, east, south, west,imagePath,0);
+        super(north, east, south, west,imagePath,0,0);
         if(direction == Direction.NORTH) {
             this.fireStrength = 1;
         }

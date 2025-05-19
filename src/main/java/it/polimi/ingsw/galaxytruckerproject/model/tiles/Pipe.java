@@ -1,12 +1,12 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
 public class Pipe extends Tile{
-    public Pipe(Link north, Link east, Link south, Link west, String imagePath, int key){
-        super(north,east,south,west,imagePath,key);
+    public Pipe(Link north, Link east, Link south, Link west, String imagePath, int rotation,int key){
+        super(north,east,south,west,imagePath,rotation,key);
     }
     //CONSTRUCTOR METHOD FOR THE TESTING
     public Pipe(Link north, Link east, Link south, Link west, String imagePath){
-        super(north,east,south,west,imagePath,0);
+        super(north,east,south,west,imagePath,0,0);
     }
     public String toString() {
         return "Pipe" + " " + super.toString()+"\n┌────────┐\n│"+toString1()+"│\n│"+toString2()+"│\n│"+toString3()+"│\n└────────┘";
