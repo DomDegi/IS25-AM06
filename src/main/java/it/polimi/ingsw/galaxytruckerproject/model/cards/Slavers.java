@@ -106,7 +106,7 @@ public class Slavers extends Enemies{
             }
             else {
                 try {
-                    playersView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_ENGINE);
+                    playersView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_CANNON);
                 }catch(Exception ignored) {}
             }
         }

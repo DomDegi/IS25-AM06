@@ -123,6 +123,10 @@
       ]
     },
     {
+      "type": "StarDust",
+      "level": 1
+    },
+    {
       "type": "AbandonedShip",
       "level": 1,
       "requiredDays": 1,

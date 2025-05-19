@@ -219,9 +219,12 @@ public class Smugglers extends Enemies{
     }
 
     @Override
-    public ArrayList<Goods> getGoodsList(String playerName) {
+
+    public ArrayList<Goods> getChosenPlanets(int c) {
         return rewardGoods;
+
     }
+
 
     @Override
     public int getGoodsPenalty() {
