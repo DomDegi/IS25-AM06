@@ -110,6 +110,10 @@ public class S_EndDrawTilesCardsController {
                 imageButton.setMaxWidth(80);
                 imageButton.setMaxHeight(80);
                 imageButton.setPadding(Insets.EMPTY);
+                int finalI = i;
+                imageButton.setOnAction(event -> {
+                    drawBookedTile(finalI);
+                });
                 bookedTiles.add(imageButton,i,0);
             }
             i++;
@@ -122,12 +126,8 @@ public class S_EndDrawTilesCardsController {
     }
 
     @FXML
-    public void drawBookedTile1(){
-        GUI.drawBookedTile(0);
-    }
-
-    public void drawBookedTile2(){
-        GUI.drawBookedTile(1);
+    public void drawBookedTile(int index){
+        GUI.drawBookedTile(index);
     }
 
     @FXML
@@ -137,17 +137,17 @@ public class S_EndDrawTilesCardsController {
 
     @FXML
     public void drawDeck1(){
-        GUI.drawDeck(0);
-    }
-
-    @FXML
-    public void drawDeck2(){
         GUI.drawDeck(1);
     }
 
     @FXML
-    public void drawDeck3(){
+    public void drawDeck2(){
         GUI.drawDeck(2);
+    }
+
+    @FXML
+    public void drawDeck3(){
+        GUI.drawDeck(3);
     }
 
     @FXML

@@ -210,14 +210,14 @@ public class ClientController {
             return false;
         }
         if (gameMode == GameMode.LEVEL2) {
-            if (chose > 0 && chose < 4 && availableDeck.get(chose)) {
+            if (chose > 0 && chose < 4 && availableDeck.get(chose-1)) {
                 setState(ClientState.WAIT);
                 try {
                     virtualController.lookCardsRequest(chose);
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
-                indexDeckInHandOrPlanet = chose;
+                indexDeckInHandOrPlanet = chose-1;
                 displayedCard = this.deck.get(indexDeckInHandOrPlanet);
             } else {
                 view.wrongLocalInput();
@@ -374,12 +374,16 @@ public class ClientController {
             view.wrongLocalInput();
             return false;
         }
-        this.tileInHand.setBooked(true);
-        setState(ClientState.WAIT);
-        try {
-            virtualController.notifyTileBooking();
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
+        if(tileInHand.isBooked()){
+            setState(ClientState.S_END_DRAW_TILE_CARD);
+        }else{
+            this.tileInHand.setBooked(true);
+            setState(ClientState.WAIT);
+            try {
+                virtualController.notifyTileBooking();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
         return true;
     }
@@ -722,8 +726,15 @@ public class ClientController {
     }
 
     public boolean check(int chose){
+        ArrayList<LightPlayer>players=new ArrayList<>();
+        for(LightPlayer player:flightBoard.getInGamePlayers()){
+            if(Objects.equals(player.getPlayerName(), getMe().getPlayerName()))
+                continue;
+            players.add(player);
+        }
+        players.sort((p1, p2) -> Integer.compare(p2.getPlayerColor().toInt(), p1.getPlayerColor().toInt()));
         if (chose >= 0 && chose < flightBoard.getInGamePlayers().size()) {
-            view.printShipboard(flightBoard.getInGamePlayers().get(chose).getShipBoard());
+            view.printShipboard(players.get(chose-1).getShipBoard());
             return true;
         } else {
             return false;

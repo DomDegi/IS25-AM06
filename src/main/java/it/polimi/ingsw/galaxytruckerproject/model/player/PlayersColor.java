@@ -24,4 +24,13 @@ public enum PlayersColor implements Serializable {
             default -> throw new IllegalArgumentException("Unknown player color: " + value);
         };
     }
+
+    public int toInt() {
+        return switch (this) {
+            case RED -> 1;
+            case YELLOW -> 2;
+            case GREEN -> 3;
+            case BLUE -> 4;
+        };
+    }
 }

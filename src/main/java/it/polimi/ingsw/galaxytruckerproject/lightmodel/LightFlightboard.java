@@ -19,7 +19,6 @@ public class LightFlightboard implements Serializable {
 
     public ArrayList<LightPlayer> getInGamePlayers() {
         return inGamePlayers;
-
     }
 
     public LightPlayer getInGamePlayer(String playerName) {

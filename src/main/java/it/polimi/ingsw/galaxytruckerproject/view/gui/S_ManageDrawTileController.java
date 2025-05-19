@@ -7,6 +7,8 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
 
@@ -103,29 +105,40 @@ public class S_ManageDrawTileController {
             index++;
         }
 
-        int i=0;
-        for(Tile tile:GUI.getController().getLightShipBoard().getBookedTiles()){
+        for(int i=0;i<2;i++){
             Button imageButton = new Button();
-            String imagePath = tile.getImagePath();
-            InputStream imageStream = getClass().getResourceAsStream(imagePath);
-            if (imageStream == null) {
-                System.err.println("Impossibile trovare l'immagine: " + imagePath);
-                imageButton.setText("Img non trovata");
-            } else {
-                Image image = new Image(imageStream);
-                ImageView imageView = new ImageView(image);
-                imageView.rotateProperty().setValue(tile.getRotation()*90);
-                imageView.setFitWidth(80);
-                imageView.setFitHeight(80);
-                imageButton.setGraphic(imageView);
+            if(GUI.getController().getLightShipBoard().getBookedTiles().size()==i+1){
+                Tile tile = GUI.getController().getLightShipBoard().getBookedTiles().get(i);
+                String imagePath = tile.getImagePath();
+                InputStream imageStream = getClass().getResourceAsStream(imagePath);
+                if (imageStream == null) {
+                    System.err.println("Impossibile trovare l'immagine: " + imagePath);
+                    imageButton.setText("Img non trovata");
+                } else {
+                    Image image = new Image(imageStream);
+                    ImageView imageView = new ImageView(image);
+                    imageView.rotateProperty().setValue(tile.getRotation()*90);
+                    imageView.setFitWidth(80);
+                    imageView.setFitHeight(80);
+                    imageButton.setGraphic(imageView);
+                    imageButton.setPrefWidth(80);
+                    imageButton.setPrefHeight(80);
+                    imageButton.setMaxWidth(80);
+                    imageButton.setMaxHeight(80);
+                    imageButton.setPadding(Insets.EMPTY);
+                }
+            }else {
+                imageButton.setBackground(new Background(new BackgroundFill(null,null,null)));
                 imageButton.setPrefWidth(80);
                 imageButton.setPrefHeight(80);
                 imageButton.setMaxWidth(80);
                 imageButton.setMaxHeight(80);
                 imageButton.setPadding(Insets.EMPTY);
-                bookedTiles.add(imageButton,i,0);
+                imageButton.setOnAction(event -> {
+                    bookTile();
+                });
             }
-            i++;
+            bookedTiles.add(imageButton,i,0);
         }
     }
 

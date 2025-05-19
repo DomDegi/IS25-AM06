@@ -14,6 +14,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.view.gui.CheckShipController;
 import it.polimi.ingsw.galaxytruckerproject.view.gui.LobbyController;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -164,6 +165,10 @@ public class GUI extends Application implements DisplayableView {
     public static void rotate(){
         controller.rotateTile();
     }
+
+    public static void doneChecking(){
+        controller.stopLookingAtCards();
+    }
 //showMethods---------------------------------------------------------------------------------------------------------------
     private static void clear(){
         showMessage("");
@@ -274,7 +279,7 @@ public class GUI extends Application implements DisplayableView {
         });
     }
 
-    private static void showS_EndDrawTilesCards() {
+    public static void showS_EndDrawTilesCards() {
         Platform.runLater(() -> {
             loader = new FXMLLoader(GUI.class.getResource("/gui/s_EndDrawTilesCards.fxml"));
             BorderPane newLayer;
@@ -290,6 +295,19 @@ public class GUI extends Application implements DisplayableView {
     private static void showS_ManageDrawTilesCards() {
         Platform.runLater(() -> {
             loader = new FXMLLoader(GUI.class.getResource("/gui/s_ManageDrawnTile.fxml"));
+            BorderPane newLayer;
+            try {
+                newLayer = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            layout.setCenter(newLayer);
+        });
+    }
+
+    private static void showDeckCheck() {
+        Platform.runLater(() -> {
+            loader = new FXMLLoader(GUI.class.getResource("/gui/deckCheck.fxml"));
             BorderPane newLayer;
             try {
                 newLayer = loader.load();
@@ -370,7 +388,7 @@ public class GUI extends Application implements DisplayableView {
                 showS_ManageDrawTilesCards();
             }
             case S_MANAGE_CARDS -> {
-
+                showDeckCheck();
             }
             case S_FINISHED -> {
 
@@ -429,7 +447,18 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void printShipboard(LightShipBoard lightShipBoard) {
-
+        Platform.runLater(() -> {
+            loader = new FXMLLoader(GUI.class.getResource("/gui/checkShip.fxml"));
+            BorderPane newLayer;
+            try {
+                newLayer = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            CheckShipController checkShipController=loader.getController();
+            checkShipController.setPlayer(lightShipBoard);
+            layout.setCenter(newLayer);
+        });
     }
 
     @Override

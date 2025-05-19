@@ -119,10 +119,6 @@
                                 <rowConstraints>
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
-                                 <children>
-                                    <Button mnemonicParsing="false" onAction="#drawBookedTile1" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: null;" />
-                                    <Button mnemonicParsing="false" onAction="#drawBookedTile2" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: null;" GridPane.columnIndex="1" />
-                                 </children>
                               </GridPane>
                            </children>
                         </AnchorPane>
