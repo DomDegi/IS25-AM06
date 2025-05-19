@@ -1,25 +1,6 @@
 {
   "cards": [
     {
-      "type": "Slavers",
-      "level": 1,
-      "requiredDays": 1,
-      "cannonStrength": 1,
-      "rewardCredits": 5,
-      "lostCrew": 3
-    },
-
-    {
-      "type": "Epidemic",
-      "level": 2
-    },
-
-    {
-      "type": "Epidemic",
-      "level": 2
-    },
-
-    {
       "type": "Smugglers",
       "level": 1,
       "requiredDays": 1,
@@ -46,6 +27,43 @@
       "rewardCredits": 5,
       "lostCrew": 3
     },
+
+    {
+      "type": "Slavers",
+      "level": 1,
+      "requiredDays": 1,
+      "cannonStrength": 1,
+      "rewardCredits": 5,
+      "lostCrew": 3
+    },
+
+    {
+      "type": "Epidemic",
+      "level": 2
+    },
+
+    {
+      "type": "Epidemic",
+      "level": 2
+    },
+    {
+      "type": "Epidemic",
+      "level": 2
+    },
+    {
+      "type": "Epidemic",
+      "level": 2
+    },
+    {
+      "type": "Epidemic",
+      "level": 2
+    },
+    {
+      "type": "Epidemic",
+      "level": 2
+    },
+
+
 
 
     {
