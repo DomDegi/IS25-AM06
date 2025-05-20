@@ -5,6 +5,7 @@ import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
@@ -14,9 +15,7 @@ import it.polimi.ingsw.galaxytruckerproject.view.TUI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,15 +28,17 @@ class PlayerSerializerDeserializerTest {
     PlayerSerializerDeserializer playerSerializerDeserializer;
     TUI shipPrinter = new TUI();
     FlightBoard flightBoard = new FlightBoard(GameMode.LEVEL2);
+    File file = new File(fileName);
 
     @BeforeEach
     void setUp() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, false))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, false))) {
             // This will clear the file content by opening it in overwrite mode
             writer.write("");  // Optional: explicitly write to ensure file is cleared.
         } catch (IOException e) {
             System.out.println("Error while clearing file: " + e.getMessage());
         }
+        gameController.getGame().setGameStateWithoutUpdating(GameState.VERIFY_SHIP_CORRECTNESS);
 
         player.setCredit(25);
         player.setPlayerName("Giorgio");
@@ -116,16 +117,18 @@ class PlayerSerializerDeserializerTest {
 
     @Test
     public void save_test() {
-        playerSerializerDeserializer = new PlayerSerializerDeserializer(fileName);
-        playerSerializerDeserializer.save(player);
+        PlayerSerializerDeserializer.save(player,file);
     }
 
     @Test
     public void load_test() {
         save_test();
         int expectedEndOfLine = 35;
-        int endOfLine = playerSerializerDeserializer.load(gameController, 0);
-        assertEquals(expectedEndOfLine, endOfLine);
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            PlayerSerializerDeserializer.load(gameController, reader);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test

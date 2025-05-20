@@ -48,7 +48,7 @@ public class ClientController {
     private Map<Integer, ArrayList<Card>> deck;
     private final Map<Integer, Boolean> availableDeck;
     private final Map<PlayersColor, Boolean> availableColors;
-    private final ArrayList<Goods> goodsList;
+    private ArrayList<Goods> goodsList;
     private TextualInputParser inputParser;
 
     private int numPlayer;
@@ -186,6 +186,22 @@ public class ClientController {
         return false;
     }
 
+    public boolean leaveGame() {
+        if (gameMode != null) {
+            try {
+                virtualController.leaveGame();
+                return true;
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        else {
+            view.wrongLocalInput();
+            rollBackState();
+        }
+        return false;
+    }
+
     public boolean colorChoice(PlayersColor color) {
         if(state!=ClientState.COLOR_CHOICE){
             return false;
@@ -278,7 +294,8 @@ public class ClientController {
             try {
                 virtualController.reqDrawTileFromTurned(chose);
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                view.wrongLocalInput();
+                return false;
             }
         } else {
             view.wrongLocalInput();
@@ -368,6 +385,10 @@ public class ClientController {
 
     public boolean bookTile() {
         if(state!=ClientState.S_MANAGE_DRAWN_TILE){
+            return false;
+        }
+        if(this.gameMode == GameMode.TRIAL) {
+            view.wrongLocalInput();
             return false;
         }
         if (!me.getShipBoard().addBookedTile(this.tileInHand)) {
@@ -469,7 +490,7 @@ public class ClientController {
             return false;
         }
         Card planet = displayedCard.getFirst();
-        if (chose >= 0 && chose < planet.getListOfPlanets().size()) {
+        if (chose >= 0 && chose <= planet.getListOfPlanets().size()) {
             indexDeckInHandOrPlanet = chose;
             setState(ClientState.WAIT);
             try {
@@ -591,11 +612,13 @@ public class ClientController {
             }
 
             case S_END_DRAW_TILE_CARD -> {
+                phase = GamePhases.SHIPBOARD;
                 view.showTurnedTiles(turnedTiles);
                 view.printShipboard(me.getShipBoard());
                 view.printBooked(me.getShipBoard());
             }
             case S_MANAGE_CARDS -> {
+                phase = GamePhases.SHIPBOARD;
                 me.getShipBoard().setGetStat();
                 if(gameMode==GameMode.TRIAL) {
                     setState(ClientState.S_END_DRAW_TILE_CARD);
@@ -629,6 +652,8 @@ public class ClientController {
                         cabinsManager.setup();
                     }
                 } else if (gameMode == GameMode.TRIAL) {
+                    me.getShipBoard().setGetStat();
+                    me.setAllCrewToHuman();
                     CrewType type = CrewType.HUMAN;
                     ArrayList<Tile> newTiles = new ArrayList<>();
                     for (Coordinates _ : me.getShipBoard().getCabinsCoordinates()) {
@@ -647,6 +672,8 @@ public class ClientController {
             case S_FINISHED -> {
                 if (gameMode == GameMode.TRIAL) {
                     try {
+                        me.getShipBoard().setGetStat();
+                        me.setAllCrewToHuman();
                         virtualController.notifySetPosition(0);
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
@@ -666,6 +693,8 @@ public class ClientController {
             }
             case MANAGE_GOODS -> {
                 if (!inManager) {
+                    me.getShipBoard().setGetStat();
+                    this.goodsList =displayedCard.getFirst().getChosenPlanets(indexDeckInHandOrPlanet - 1);
                     goodsManager = new GoodsManager(me, goodsList, view);
                     inManager = true;
                 }
@@ -821,6 +850,10 @@ public class ClientController {
                 player.getShipBoard().initializeTestFlight();
             }
         }
+    }
+
+    public void setGameModeWithoutInitializing(GameMode gameMode) {
+        this.gameMode = gameMode;
     }
 
     public boolean land(String[] input) {
@@ -982,16 +1015,8 @@ public class ClientController {
         player.gainCredits(credits);
     }
 
-    public void updateModel(Map<String, LightShipBoard> lightShipBoardMap, LightFlightboard flightBoard, Card card, int hourglassTurns, Map<Integer, Tile> newTurnedTiles, ArrayList<Integer> notAvailableDecks) {
-        this.flightBoard = flightBoard;
-        for (LightPlayer player : flightBoard.getInGamePlayers()) {
-            player.setShipboard(lightShipBoardMap.get(player.getPlayerName()));
-        }
-        displayedCard.add(card);
-        this.hourglassTurns = hourglassTurns;
-        turnedTiles = newTurnedTiles;
-        turnedTilesDisplayer=new ArrayList<>(turnedTiles.values());
-        decksNotAvailable(notAvailableDecks);
+    public void updateModel(String currentGameStatus) {
+        UpdateDeserializer.unpack(this,currentGameStatus);
     }
 
     public void decksNotAvailable(ArrayList<Integer> notAvailableDecks) {
@@ -1142,6 +1167,22 @@ public class ClientController {
 
     public ClientState getPreviousState() {
         return previousState;
+    }
+
+    public void setHourglassTurns(int hourglassTurns) {
+        this.hourglassTurns = hourglassTurns;
+    }
+
+    public void setTurnedTiles(Map<Integer, Tile> turnedTiles) {
+        this.turnedTiles = turnedTiles;
+    }
+
+    public void putInStandby () {
+        this.state = ClientState.WAIT;
+    }
+
+    public void victimOfThePenalty(String playerName) {
+        view.victimOfThePenalty(playerName,this.displayedCard.getFirst().getPenalty());
     }
 }
 

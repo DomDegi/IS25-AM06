@@ -3,11 +3,10 @@ package it.polimi.ingsw.galaxytruckerproject.network.Socket;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.ControllerInterface;
-import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
-import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
@@ -94,8 +93,8 @@ public class VirtualViewSocket implements VirtualView {
 
     // DA FARE CON JSON
     @Override
-    public void notifyChangesWhileGone(Map<String, LightShipBoard> updatedShipBoards, LightFlightboard updatedFlightBoard, Card drawnCard, int hourglassTurns, Map<Integer, Tile> turnedTiles, ArrayList<Integer> notAvailable) throws RemoteException {
-
+    public void notifyChangesWhileGone(String currentGameStatus) throws RemoteException {
+        clientHandler.sendServerMessageToClient(new CurrentGameStatusMessage(currentGameStatus));
     }
 
     @Override
@@ -106,6 +105,11 @@ public class VirtualViewSocket implements VirtualView {
     @Override
     public void initializeShipBoards(GameMode gameMode) throws RemoteException {
         clientHandler.sendServerMessageToClient(new SetGameModeMessage(gameMode));
+    }
+
+    @Override
+    public void victimOfThePenalty(String playerName) throws RemoteException {
+        clientHandler.sendServerMessageToClient((new VictimOfThePenaltyMessage(playerName)));
     }
 
     @Override
@@ -221,7 +225,32 @@ public class VirtualViewSocket implements VirtualView {
     }
 
     @Override
+    public void notifyCombatZoneStrength(String playerName, float strength) throws RemoteException {
+        clientHandler.sendServerMessageToClient(new CombatZoneStrengthMessage(playerName,strength));
+    }
+
+    @Override
+    public void notifyCombatZoneEngine(String playerName, float strength) throws RemoteException {
+        clientHandler.sendServerMessageToClient(new NotifyCombatZoneEngineMessage(playerName,strength));
+    }
+
+    @Override
+    public void notifyCombatZoneCrew(String playerName, int crew) throws RemoteException {
+        clientHandler.sendServerMessageToClient(new NotifyCombatZoneCrewMessage(playerName, crew));
+    }
+
+    @Override
+    public void notifyPodium(ArrayList<Player> players) throws RemoteException {
+        clientHandler.sendServerMessageToClient((new PodiumMessage(players)));
+    }
+
+    @Override
     public DisplayableView getDisplayedView() throws RemoteException {
         return null;
+    }
+
+    @Override
+    public void notifyPlayerJoined(int expected, int current, boolean reconnected) throws RemoteException {
+        clientHandler.sendServerMessageToClient(new PlayerJoinedMessage(expected,current,reconnected));
     }
 }

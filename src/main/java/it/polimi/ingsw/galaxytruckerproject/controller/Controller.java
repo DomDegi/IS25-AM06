@@ -2,6 +2,7 @@ package it.polimi.ingsw.galaxytruckerproject.controller;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.ControllerInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
@@ -88,10 +89,6 @@ public class Controller implements ControllerInterface, Serializable {
         multiGameController.leaveGame(nickname);
     }
 
-    @Override
-    public void leave() {
-        multiGameController.leave(nickname);
-    }
 
     @Override
     public void chooseColor(PlayersColor color) {

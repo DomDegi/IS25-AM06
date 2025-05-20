@@ -97,7 +97,7 @@ public class Smugglers extends Enemies{
             }
             else {
                 try {
-                    playersView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_ENGINE);
+                    playersView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_CANNON);
                 }catch(Exception ignored) {}
             }
         }
@@ -114,9 +114,18 @@ public class Smugglers extends Enemies{
         }
         Map<Float,ArrayList<Tile>> returned = player.useCannons(doubleCannonPower, batteriesToUse);
         if (returned == null) {
-            try {
-                playersView.showWrongInputMessage();
-            }catch(Exception ignored) {}
+            if (player.getShipBoard().getSingleCannonPower() > cannonStrength) {
+                won = 1;
+                cannonChoice(playerName, 0, new ArrayList<>());
+            }
+            else if (player.getShipBoard().getSingleCannonPower()  == cannonStrength) {
+                nextPlayer();
+            }
+            else {
+                won = -1;
+                lostGoods.initializePenalty(game, playersView, currentPlayer);
+                nextPlayer();
+            }
             return;
         }
         float cannonPower = returned.keySet().iterator().next();
@@ -210,9 +219,12 @@ public class Smugglers extends Enemies{
     }
 
     @Override
-    public ArrayList<Goods> getGoodsList(String playerName) {
+
+    public ArrayList<Goods> getChosenPlanets(int c) {
         return rewardGoods;
+
     }
+
 
     @Override
     public int getGoodsPenalty() {

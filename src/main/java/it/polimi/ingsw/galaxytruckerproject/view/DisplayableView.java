@@ -4,8 +4,10 @@ import it.polimi.ingsw.galaxytruckerproject.client.ClientController;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.Penalty;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
 import java.rmi.RemoteException;
@@ -21,7 +23,11 @@ public interface DisplayableView extends ViewInterface{
      */
     void showTurnedTiles (Map<Integer, Tile> turnedTiles);
 
+    void cargoSelected(Coordinates coordinates);
+
     void wrongLocalInput();
+
+    void coordinateSelected();
 
     void showCard(ArrayList<Card> cards);
 
@@ -44,4 +50,9 @@ public interface DisplayableView extends ViewInterface{
     void crewPositioned();
 
     void showGenericMessage (String genericMessage);
+
+    void victimOfThePenalty(String playerName, Penalty penalty);
+
+
+    void notifyPlayerJoined(int expectedPlayer, int currentPlayer,boolean reconnected);
 }

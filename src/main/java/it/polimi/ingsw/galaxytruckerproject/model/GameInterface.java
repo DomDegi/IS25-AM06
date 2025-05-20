@@ -10,6 +10,8 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 public interface GameInterface extends Serializable {
 
@@ -44,7 +46,7 @@ public interface GameInterface extends Serializable {
     void endCardPhase();
     void endCardEvent();
     ArrayList<Card> getInGameCards (int number);
-    Map<Integer,Tile> getTurnedTiles();
+    ConcurrentHashMap<Integer,Tile> getTurnedTiles();
     Tile playerSetTile(String playerName, Tile tile);
     Tile playerBookTile(String playerName);
 
@@ -55,4 +57,13 @@ public interface GameInterface extends Serializable {
     void setGameState(GameState gameState);
 
     public ArrayList<Card> getInGameCards();
+    public ConcurrentLinkedDeque<Tile> getTileStack();
+    public String toStringGameData();
+    public String cardsToDrawData();
+    public String tileStackData();
+    public String turnedTileData();
+
+
+    public void setGameStateWithoutUpdating(GameState gameState);
+
 }

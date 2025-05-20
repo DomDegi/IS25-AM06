@@ -5,6 +5,7 @@ import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
 import java.io.Serializable;
@@ -75,6 +76,10 @@ public interface ViewInterface extends Remote, Serializable {
     void notifyTurnedHourglass( int i) throws RemoteException;
     void notifyEndOfTime() throws RemoteException;
     void notifyEarlyLanding() throws RemoteException;
+    void notifyCombatZoneStrength(String playerName, float strength) throws RemoteException;
+    void notifyCombatZoneEngine(String playerName, float strength) throws RemoteException;
+    void notifyCombatZoneCrew(String playerName, int crew) throws RemoteException;
+    void notifyPodium(ArrayList<Player> players) throws RemoteException;
 
     //METHOD NECESSARY ONLY FOR TESTING
     DisplayableView getDisplayedView()throws RemoteException;

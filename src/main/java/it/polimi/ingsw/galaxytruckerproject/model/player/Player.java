@@ -32,6 +32,17 @@ public class Player implements PlayerInterface , Serializable {
         this.isDisconnected = false;
     }
 
+    public Player send() {
+        try {
+            Player cloned = (Player) super.clone();
+            cloned.setPlayerShip(null);
+            cloned.setDrawnTile(null);
+            return cloned;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     //GETTER METHODS
     public String getPlayerName() {
         return playerName;
@@ -353,6 +364,7 @@ public class Player implements PlayerInterface , Serializable {
             playerShip.getTile(coord).setCrewType(CrewType.HUMAN);
             updatedTiles.add(playerShip.getTile(coord));
         }
+        playerShip.setCompleted(true);
         return updatedTiles;
     }
 
@@ -421,7 +433,16 @@ public class Player implements PlayerInterface , Serializable {
         else {
             sb.append("N").append(" ");
         }
-        //attribute[7 - depends on the tile]
+        //attribute[7]
+        sb.append(playerShip.getPenalty()).append(" ");
+        //attributes[8]
+        if (playerShip.isCompleted()) {
+            sb.append("C").append(" ");
+        }
+        else {
+            sb.append("N").append(" ");
+        }
+        //attribute[9 - depends on the tile]
         if (drawnTile == null) {
             sb.append("N");
         }
@@ -432,10 +453,13 @@ public class Player implements PlayerInterface , Serializable {
     }
 
     //No parameter builder for deserialization
-    public Player() {}
+    public Player() {
+        this.playerRanking = 0;
+        this.playerPosition = 0;
+    }
 
     public void playerLoader(String[] attributes) {
-        if (attributes.length < 8) {
+        if (attributes.length < 10) {
             throw new IllegalArgumentException("Insufficient attributes: at least 8 are needed " + attributes.length);
         }
         this.playerName = attributes[0];
@@ -445,18 +469,20 @@ public class Player implements PlayerInterface , Serializable {
         this.credit = Integer.parseInt(attributes[4]);
         this.landed = attributes[5].equals("L");
         this.isDisconnected = attributes[6].equals("D");
-        if (attributes[7].equals("N")) {
+
+        this.playerShip = new ShipBoard(this);
+        this.playerShip.setPenalty(Integer.parseInt(attributes[7]));
+        this.playerShip.setCompleted(attributes[8].equals("C"));
+        if (attributes[9].equals("N")) {
             this.drawnTile = null;
         }
         else {
             StringBuilder tileData = new StringBuilder();
-            for (int i = 7; i < attributes.length; i++) {
+            for (int i = 9; i < attributes.length; i++) {
                 tileData.append(attributes[i]).append(" ");
             }
-            TileLoader tileLoader = new TileLoader();
-            this.drawnTile = tileLoader.load(tileData.toString());
+            this.drawnTile = TileFactory.load(tileData.toString());
         }
-        this.playerShip = new ShipBoard(this);
     }
 
     //Needed for testing

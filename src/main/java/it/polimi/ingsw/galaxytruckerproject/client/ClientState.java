@@ -35,13 +35,13 @@ public enum ClientState implements Serializable {
             case CHOOSE_IP_AND_PORT_SOCKET -> {return "You chose SOCKET: type the server information's [ip] [port] (type d to default to localhost)";}
             case LOGIN -> {return "Choose your nickname [name] [done] [reset]";}
             case LOBBY -> {return"You're in the lobby [createGame] [joinGame]";}
-            case LOBBY0 ->{return"Enter gameName, player number and gameMode [gameName numPlayer gameMode]";}
+            case LOBBY0 ->{return"Enter gameName, player number, gameMode and color [gameName numPlayer gameMode color]";}
             case LOBBY1 -> {return "Enter gameName [gameName]";}
             case COLOR_CHOICE -> {return "Choose your color [red] [yellow] [green] [blue]";}
             case ACTION -> {return "You can accept or deny [yes] [no]";}
-            case COORD_REQUEST -> {return "Coordinates requested [coordinates]";}
-            case MANAGE_GOODS -> {return  "Going to manage goods of the planet";}
-            case PLANET_CHOICE -> {return "Choose one of the planets to land [planetNumber]";}
+            case COORD_REQUEST -> {return "Coordinates requested [coordinates] and insert [done] to complete the operation";}
+            case MANAGE_GOODS -> {return  "choose the good you want or the cargo hold that you need to modify ";}
+            case PLANET_CHOICE -> {return "Choose one of the planets to land (0 to not land) [planetNumber]";}
             case S_END_DRAW_TILE_CARD -> {return "Now you can draw a tile or a card [done] [draw tile|draw tile new] [draw tile b1] [draw tile b2] [draw tile turnedTileNum] [draw deck numDeck] [check playerNum] [turn]";}
             case S_MANAGE_CARDS -> {return "You're seeing the cards [done]";}
             case S_MANAGE_DRAWN_TILE -> {return "You can rotate, position, book or refuse this tile [rotate] [put] [book] [refuse] [check playerNum] [turn]";}

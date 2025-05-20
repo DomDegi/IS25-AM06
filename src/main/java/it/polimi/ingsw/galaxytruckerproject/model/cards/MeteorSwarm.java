@@ -147,15 +147,16 @@ public class MeteorSwarm extends Card {
         }
         ArrayList<Coordinates> removedTiles = activePenalties.get(player).chooseToMaintain(player, branchChoices);
         if (removedTiles.isEmpty()) {
-            try {
+            /*try {
                 viewsMap.get(playerName).showWrongInputMessage();
-            }catch(Exception ignored) {}
+            }catch(Exception ignored) {}*/
         }
         else {
             notifyBrokenTiles(playerName, removedTiles);
-            if (!activePenalties.get(player).initializePenalty(game,viewsMap.get(playerName), player)) {
-                playerCompletedMeteor(player);
-            }
+
+        }
+        if (!activePenalties.get(player).initializePenalty(game,viewsMap.get(playerName), player)) {
+            playerCompletedMeteor(player);
         }
     }
 

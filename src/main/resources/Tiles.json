@@ -1,6 +1,5 @@
 [
   {
-
     "type": "DoubleCannon",
     "north": { "connectorsType" : "SMOOTH"},
     "east": {"connectorsType": "SMOOTH" },

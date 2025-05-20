@@ -67,7 +67,7 @@ public class CabinsManager {
         if(index >= cabins.size()) {
             return;
         }
-        if(lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.NO){
+        if(lightPlayer.getShipBoard().getTile(cabins.get(index)) != null && lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.NO){
             view.showGenericMessage(cabins.get(index).toString()+" - Only Human are allowed here");
         }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.PURPLE){
             view.showGenericMessage(cabins.get(index).toString()+" - Human and Purple aliens are allowed here");

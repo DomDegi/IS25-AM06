@@ -54,9 +54,7 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
     public void leaveGame() throws RemoteException {
         controller.leaveGame();
     }
-    public void leave() throws RemoteException {
-        controller.leave();
-    }
+
     public void chooseColor( PlayersColor color) throws RemoteException {
         controller.chooseColor(color);
     }

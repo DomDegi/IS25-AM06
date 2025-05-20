@@ -38,9 +38,17 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
     private int numBrownAliens;
     private int numPurpleAliens;
     private int numHumanCrew;
+    private boolean completed=false;
 
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
     public String toString() {
-        StringBuilder s = new StringBuilder("Schipboard: ");
+        StringBuilder s = new StringBuilder("Shipboard: ");
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 7; j++) {
                 if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable()) {
@@ -225,25 +233,11 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
     //false: tile occupied
     public boolean positionTile(Optional<Tile> tile, Coordinates coordinates) {
         if (tile.isPresent() && tilesTable[coordinates.getX()][coordinates.getY()].isEmpty()) {
-            if (!first&&(coordinates.getX() - 1 >= 0 && coordinates.getX() - 1 <= 4 && coordinates.getY() >= 0 && coordinates.getY() <= 6 && getTilesTable()[coordinates.getX() - 1][coordinates.getY()].isPresent()
-                    && !(getTilesTable()[coordinates.getX() - 1][coordinates.getY()].get().getSouth().getConnectorsType()==Connectors.SMOOTH && tile.get().getNorth().getConnectorsType()==Connectors.SMOOTH))
-                    ||(coordinates.getX() + 1 >= 0 && coordinates.getX() + 1 <= 4 && coordinates.getY() >= 0 && coordinates.getY() <= 6 && getTilesTable()[coordinates.getX() + 1][coordinates.getY()].isPresent()
-                    && !(getTilesTable()[coordinates.getX() + 1][coordinates.getY()].get().getNorth().getConnectorsType()==Connectors.SMOOTH && tile.get().getSouth().getConnectorsType()==Connectors.SMOOTH))
-                    ||(coordinates.getX() >= 0 && coordinates.getX() <= 4 && coordinates.getY() - 1 >= 0 && coordinates.getY() - 1 <= 6 && getTilesTable()[coordinates.getX()][coordinates.getY() - 1].isPresent()
-                    && !(getTilesTable()[coordinates.getX()][coordinates.getY() - 1].get().getEast().getConnectorsType()==Connectors.SMOOTH && tile.get().getWest().getConnectorsType()==Connectors.SMOOTH))
-                    ||(coordinates.getX() >= 0 && coordinates.getX() <= 4 && coordinates.getY() + 1 >= 0 && coordinates.getY() + 1 <= 6 && getTilesTable()[coordinates.getX()][coordinates.getY() + 1].isPresent()
-                    && !((getTilesTable()[coordinates.getX()][coordinates.getY() + 1].get().getWest().getConnectorsType()==Connectors.SMOOTH && tile.get().getEast().getConnectorsType()==Connectors.SMOOTH)))){
-                tilesTable[coordinates.getX()][coordinates.getY()] = tile;
-                tile.get().setShipBoard(this);
-                tile.get().setCoordinates(coordinates);
-                return true;
-            }else if (first){
-                tilesTable[coordinates.getX()][coordinates.getY()] = tile;
-                tile.get().setShipBoard(this);
-                tile.get().setCoordinates(coordinates);
-                first=false;
-                return true;
-            }
+            tilesTable[coordinates.getX()][coordinates.getY()] = tile;
+            tile.get().setShipBoard(this);
+            tile.get().setCoordinates(coordinates);
+            first=false;
+            return true;
         }
         return false;
     }
@@ -795,6 +789,10 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
     public void updateTile(Coordinates coordinates, Tile newTile){
         tilesTable[coordinates.getX()][coordinates.getY()] = Optional.of(newTile);
         this.getTile(coordinates).setShipBoard(this);
+    }
+
+    public void setPenalty(int penalty) {
+        this.penalty = penalty;
     }
 
 }

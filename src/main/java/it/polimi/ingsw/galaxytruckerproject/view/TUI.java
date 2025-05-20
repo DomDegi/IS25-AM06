@@ -9,10 +9,12 @@ import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.Penalty;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
 import java.rmi.RemoteException;
@@ -51,6 +53,11 @@ public class TUI implements DisplayableView {
     }
 
     @Override
+    public void victimOfThePenalty(String playerName, Penalty penalty) {
+        System.out.println(playerName +" has received the following penalty:"+ penalty.toString());
+    }
+
+    @Override
     public void showErrorMessage(String errorMessage) {
         System.out.println(errorMessage);
     }
@@ -72,6 +79,11 @@ public class TUI implements DisplayableView {
 //            System.out.println("\n");
 //        }
         printDrawnTiles(turnedTiles);
+    }
+
+    @Override
+    public void cargoSelected(Coordinates coordinates) {
+        System.out.println("you selected the cargo in: "+ coordinates.toString());
     }
 
     @Override
@@ -283,6 +295,29 @@ public class TUI implements DisplayableView {
     }
 
     @Override
+    public void notifyCombatZoneStrength(String playerName, float strength) throws RemoteException {
+        System.out.println(playerName+" cannon strength is "+strength);
+    }
+
+    @Override
+    public void notifyCombatZoneEngine(String playerName, float strength) throws RemoteException {
+        System.out.println(playerName+" engine power is "+strength);
+    }
+
+    @Override
+    public void notifyCombatZoneCrew(String playerName, int crew) throws RemoteException {
+        System.out.println(playerName+" num of crewmates is "+crew);
+    }
+
+    @Override
+    public void notifyPodium(ArrayList<Player> players) throws RemoteException {
+        System.out.println("flightboard:");
+        for (Player player : players) {
+            System.out.println(player.getPlayerName()+" position:"+player.getPlayerPosition()+" rank:"+player.getPlayerRanking());
+        }
+    }
+
+    @Override
     public void printCabins(Tile cabins) {
         System.out.println("choose equip type of:" + cabins.toString());
     }
@@ -300,12 +335,17 @@ public class TUI implements DisplayableView {
 
     @Override
     public void notifyPlayerLandedOnPlanet(String playerName, int planet) throws RemoteException {
-        System.out.println(playerName + "landed on planet " + planet);
+        System.out.println(playerName + " landed on planet " + planet);
     }
 
     @Override
     public void wrongLocalInput() {
         System.out.println("You entered a wrong input");
+    }
+
+    @Override
+    public void coordinateSelected() {
+        System.out.println("coordinate selected correctly");
     }
 
     @Override
@@ -315,5 +355,12 @@ public class TUI implements DisplayableView {
         }
     }
 
-
+    @Override
+    public void notifyPlayerJoined(int expectedPlayer, int currentPlayer, boolean reconnected) {
+        if (!reconnected) {
+            System.out.println("new player joined the game: " + currentPlayer + "/" + expectedPlayer);
+        } else  {
+            System.out.println("player reconnected: " + currentPlayer + "/" + expectedPlayer);
+        }
+    }
 }

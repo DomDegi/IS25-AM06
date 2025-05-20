@@ -1,40 +1,5 @@
 {
   "cards": [
-
-    {
-      "type": "MeteorSwarm",
-      "level": 1,
-      "listOfMeteors": [
-        {
-          "type": "SmallMeteor",
-          "direction": "NORTH"
-        },
-        {
-          "type": "SmallMeteor",
-          "direction": "NORTH"
-        },
-        {
-          "type": "SmallMeteor",
-          "direction": "WEST"
-        },
-        {
-          "type": "SmallMeteor",
-          "direction": "EAST"
-        },
-        {
-          "type": "SmallMeteor",
-          "direction": "SOUTH"
-        }
-      ]
-    },
-    {
-      "type": "Slavers",
-      "level": 1,
-      "requiredDays": 1,
-      "cannonStrength": 1,
-      "rewardCredits": 5,
-      "lostCrew": 3
-    },
     {
       "type": "Smugglers",
       "level": 1,
@@ -53,6 +18,54 @@
         }
       ]
     },
+
+    {
+      "type": "Slavers",
+      "level": 1,
+      "requiredDays": 1,
+      "cannonStrength": 1,
+      "rewardCredits": 5,
+      "lostCrew": 3
+    },
+
+    {
+      "type": "Slavers",
+      "level": 1,
+      "requiredDays": 1,
+      "cannonStrength": 1,
+      "rewardCredits": 5,
+      "lostCrew": 3
+    },
+
+    {
+      "type": "Epidemic",
+      "level": 2
+    },
+
+    {
+      "type": "Epidemic",
+      "level": 2
+    },
+    {
+      "type": "Epidemic",
+      "level": 2
+    },
+    {
+      "type": "Epidemic",
+      "level": 2
+    },
+    {
+      "type": "Epidemic",
+      "level": 2
+    },
+    {
+      "type": "Epidemic",
+      "level": 2
+    },
+
+
+
+
     {
       "type": "Pirates",
       "level": 1,
@@ -113,6 +126,32 @@
       ]
     },
 
+    {
+      "type": "MeteorSwarm",
+      "level": 1,
+      "listOfMeteors": [
+        {
+          "type": "SmallMeteor",
+          "direction": "NORTH"
+        },
+        {
+          "type": "SmallMeteor",
+          "direction": "NORTH"
+        },
+        {
+          "type": "SmallMeteor",
+          "direction": "WEST"
+        },
+        {
+          "type": "SmallMeteor",
+          "direction": "EAST"
+        },
+        {
+          "type": "SmallMeteor",
+          "direction": "SOUTH"
+        }
+      ]
+    },
     {
       "type": "MeteorSwarm",
       "level": 1,

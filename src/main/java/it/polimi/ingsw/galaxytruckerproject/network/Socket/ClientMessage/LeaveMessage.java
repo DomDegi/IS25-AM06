@@ -10,7 +10,7 @@ public class LeaveMessage extends ClientMessage {
 
     public void processMessage(ClientHandler clientHandler) {
         try {
-            clientHandler.getController().leave();
+            clientHandler.getController().leaveGame();
         } catch (Exception e) {
             e.printStackTrace();
         }

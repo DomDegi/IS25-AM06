@@ -47,11 +47,6 @@ public class VirtualControllerSocket implements VirtualController{
         serverHandler.sendClientMessage(message);
     }
 
-    @Override
-    public void leave() throws RemoteException {
-        LeaveMessage message = new LeaveMessage();
-        serverHandler.sendClientMessage(message);
-    }
 
     @Override
     public void chooseColor(PlayersColor color) throws RemoteException {

@@ -26,6 +26,11 @@
             <version>17.0.6</version>
         </dependency>
 
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>1.14.10</version> <!-- o l'ultima disponibile -->
+        </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>

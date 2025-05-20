@@ -165,15 +165,20 @@ public class ProjectilePenalty extends Penalty {
     public ArrayList<Coordinates> chooseToMaintain(Player player, ArrayList<Coordinates> received) {
         int i = 0;
         ArrayList<Coordinates> toRemove = new ArrayList<>();
-
-        while (branch.size()>1 && i==0) {
+        ArrayList <Set<Coordinates>> b2 = new ArrayList<Set<Coordinates>>();
+        int j= branch.size();
+        while (j>1 && i==0) {
             for (Set<Coordinates> set : branch) {
                 if (set.contains(received.getFirst())) {
                     player.getShipBoard().SetNewShip(set);
                     i=1;
-                    branch.remove(set);
+                    j--;
+                    b2.add(set);
                 }
             }
+        }
+        for (Set<Coordinates> set : b2) {
+            branch.remove(set);
         }
         if (i == 1) {
             for (Set<Coordinates> set : branch) {

@@ -27,8 +27,8 @@ public class Game implements GameInterface{
     private GameState gameState;
     private int playerCount;
     private ArrayList<Card> inGameCards;
-    private final ConcurrentLinkedDeque<Tile> tileStack;
-    private final ConcurrentHashMap<Integer,Tile> turnedTiles;
+    private ConcurrentLinkedDeque<Tile> tileStack;
+    private ConcurrentHashMap<Integer,Tile> turnedTiles;
     private FlightBoard flightBoard;
     private Card drawnCard;
 
@@ -42,10 +42,11 @@ public class Game implements GameInterface{
         this.tileStack = new TileFactory().getStack(TileFactory.loadTilesFromJson("Tiles.json"));
 
         if (this.mode == GameMode.LEVEL2) {
-            CardDeck cardDeck = new CardDeck("simpleCards.json");
+            CardDeck cardDeck = new CardDeck("cards.json");
             this.inGameCards = cardDeck.getTier2FlightCards();
         }
         else {
+            //this.inGameCards = new TrialCardDeck("trialFlightCards.json").getTrialDeck(); quello corretto
             this.inGameCards = new TrialCardDeck("trialFlightCards.json").getTrialDeck();
         }
         this.playerCount = playerCount;
@@ -94,7 +95,7 @@ public class Game implements GameInterface{
         }
         for (Player player: flightBoard.getAllPlayers()){
             if (color.equals(player.getPlayerColor())){
-                System.out.println(color + "has already been chosen\n");
+                System.out.println(color + " has already been chosen\n");
                 return;
             }
         }
@@ -162,7 +163,7 @@ public class Game implements GameInterface{
         return removedTile;
     }
 
-    public Map<Integer, Tile> getTurnedTiles() {
+    public ConcurrentHashMap<Integer, Tile> getTurnedTiles() {
         return turnedTiles;
     }
 
@@ -251,10 +252,8 @@ public class Game implements GameInterface{
     //CARD_EVENT METHODS
 
     public void endCardEvent() {
-        if(this.getFlightBoard().concludeMovement())
-            setGameState(DRAW_CARD);
-        else
-            setGameState(CONCLUDE_GAME);
+
+        setGameState(DRAW_CARD);
     }
 
 
@@ -330,20 +329,39 @@ public class Game implements GameInterface{
         return drawnCard;
     }
 
-    public String toStringData() {
+    public String toStringGameData() {
         StringBuilder sb = new StringBuilder();
-        sb.append(mode.toString()).append(" ").append(playerCount).append(" ");
-
-        //attributes[0] = mode; attributes[1] = playerCount; [2+] cardsLeft
-        sb.append(cardsToDrawData());
+        sb.append(mode.toString()).append(" ").append(playerCount).append(" ").append(gameState.toString()).append(" ");
+        //attributes[0] = mode; attributes[1] = playerCount; attributes[2] = gameState
         return sb.toString();
     }
 
     public String cardsToDrawData() {
+        if (inGameCards.isEmpty()) {
+            return "";
+        }
         StringBuilder sb = new StringBuilder();
         for (Card card: inGameCards) {
             sb.append(card.getId()).append(" ");
         }
+        return sb.toString();
+    }
+
+    public String tileStackData() {
+        if (tileStack.isEmpty()) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        tileStack.forEach(tile -> {sb.append(tile.getKey()).append(" ");});
+        return sb.toString();
+    }
+
+    public String turnedTileData() {
+        if (turnedTiles.isEmpty()) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        turnedTiles.keySet().forEach(key -> {sb.append(key).append(" ");});
         return sb.toString();
     }
 
@@ -352,23 +370,55 @@ public class Game implements GameInterface{
         this.turnedTiles = new ConcurrentHashMap<>();
     }
 
-    //Only works at loading if the game is in DrawCard
     public void gameLoader(String[] attributes) {
         this.mode = GameMode.valueOf(attributes[0]);
         this.playerCount = Integer.parseInt(attributes[1]);
+        this.setGameState(GameState.fromString(attributes[2]));
+        this.flightBoard = new FlightBoard(mode);
+    }
+
+    public void cardLoader(String[] attributes) {
         ArrayList<Integer> cardsLeftID = new ArrayList<>();
-        for (int i = 2; i < attributes.length; i++) {
-            cardsLeftID.add(Integer.parseInt(attributes[i]));
+        for (String attribute : attributes) {
+            cardsLeftID.add(Integer.parseInt(attribute));
         }
         if (mode == GameMode.LEVEL2) {
             this.inGameCards = new CardDeck("cards.json").deckFromIDs(cardsLeftID);
         }
         else {
-            this.inGameCards = new TrialCardDeck("trialFlightCards.json").deckFromIDs(cardsLeftID);
+            //this.inGameCards = new TrialCardDeck("trialFlightCards.json").deckFromIDs(cardsLeftID);
+            this.inGameCards = new TrialCardDeck("trialFLightCards.json").deckFromIDs(cardsLeftID);
         }
+    }
+
+    public void tileStackLoader(String[] attributes) {
+        ArrayList<Integer> keyStack = new ArrayList<>();
+        for (String attribute : attributes) {
+            keyStack.add(Integer.parseInt(attribute));
+        }
+        this.tileStack = new TileFactory().stackFromIDs(keyStack);
+    }
+
+    public void turnedTileLoader(String[] attributes) {
+        if (attributes[0].isEmpty()) {
+            return;
+        }
+        ArrayList<Integer> keyMap = new ArrayList<>();
+        for (String attribute : attributes) {
+            keyMap.add(Integer.parseInt(attribute));
+        }
+        this.turnedTiles = new TileFactory().mapFromIDs(keyMap);
     }
 
     public ArrayList<Card> getInGameCards() {
         return inGameCards;
+    }
+
+    public ConcurrentLinkedDeque<Tile> getTileStack() {
+        return tileStack;
+    }
+
+    public void setGameStateWithoutUpdating(GameState gameState) {
+        this.gameState = gameState;
     }
 }

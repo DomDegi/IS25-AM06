@@ -2,11 +2,10 @@ package it.polimi.ingsw.galaxytruckerproject.network;
 
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
-import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
-import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
@@ -74,7 +73,7 @@ public class MockVirtualView implements VirtualView {
     }
 
     @Override
-    public void notifyChangesWhileGone(Map<String, LightShipBoard> updatedShipBoards, LightFlightboard updatedFlightBoard, Card drawnCard, int hourglassTurns, Map<Integer, Tile> turnedTiles, ArrayList<Integer> notAvailable) throws RemoteException {
+    public void notifyChangesWhileGone(String currentGameStatus) throws RemoteException {
         // Implement mock behavior or leave empty
     }
 
@@ -89,7 +88,17 @@ public class MockVirtualView implements VirtualView {
     }
 
     @Override
+    public void victimOfThePenalty(String playerName) throws RemoteException {
+
+    }
+
+    @Override
     public void ping() throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyPlayerJoined(int expected, int current, boolean reconnected) throws RemoteException {
 
     }
 
@@ -228,6 +237,26 @@ public class MockVirtualView implements VirtualView {
 
     @Override
     public void notifyEarlyLanding() throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyCombatZoneStrength(String playerName, float strength) throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyCombatZoneEngine(String playerName, float strength) throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyCombatZoneCrew(String playerName, int crew) throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyPodium(ArrayList<Player> players) throws RemoteException {
 
     }
 }

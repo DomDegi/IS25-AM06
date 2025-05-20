@@ -140,9 +140,20 @@ public class Pirates extends Enemies {
         }
         Map<Float,ArrayList<Tile>> returned = player.useCannons(doubleCannonPower, batteriesToUse);
         if (returned == null) {
-            try {
-                currentView.showWrongInputMessage();
-            }catch(Exception ignored) {}
+            if (player.getPlayerShip().getSingleCannonPower() > cannonStrength) {
+                won = 1;
+                cannonChoice(playerName, 0, new ArrayList<>());
+            }
+            else if (player.getPlayerShip().getSingleCannonPower() == cannonStrength) {
+                nextPlayer();
+            }
+            else {
+                won = -1;
+                if (penaltyIfLose.initializePenalty(game, currentView, currentPlayer)) {
+                    return;
+                }
+                nextPlayer();
+            }
             return;
         }
         notifyModifiedTiles(playerName, returned.values().iterator().next());

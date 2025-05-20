@@ -38,7 +38,7 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
     private int numHumanCrew;
     private int credit;
     private boolean first=true;
-
+    private boolean completed=false;
 
     public LightShipBoard(ShipBoard shipBoard) {
         this.shipBoard = shipBoard;
@@ -211,34 +211,42 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
     }
 
     public boolean positionTile(Optional<Tile> tile, Coordinates coordinates) {
-        if (tile.isPresent() && tilesTable[coordinates.getX()][coordinates.getY()].isEmpty()){
-            if (!first&&(coordinates.getX() - 1 >= 0 && coordinates.getX() - 1 <= 4 && coordinates.getY() >= 0 && coordinates.getY() <= 6 && getTilesTable()[coordinates.getX() - 1][coordinates.getY()].isPresent()
-                    && !(getTilesTable()[coordinates.getX() - 1][coordinates.getY()].get().getSouth().getConnectorsType()==Connectors.SMOOTH && tile.get().getNorth().getConnectorsType()==Connectors.SMOOTH))
-                    ||(coordinates.getX() + 1 >= 0 && coordinates.getX() + 1 <= 4 && coordinates.getY() >= 0 && coordinates.getY() <= 6 && getTilesTable()[coordinates.getX() + 1][coordinates.getY()].isPresent()
-                    && !(getTilesTable()[coordinates.getX() + 1][coordinates.getY()].get().getNorth().getConnectorsType()==Connectors.SMOOTH && tile.get().getSouth().getConnectorsType()==Connectors.SMOOTH))
-                    ||(coordinates.getX() >= 0 && coordinates.getX() <= 4 && coordinates.getY() - 1 >= 0 && coordinates.getY() - 1 <= 6 && getTilesTable()[coordinates.getX()][coordinates.getY() - 1].isPresent()
-                    && !(getTilesTable()[coordinates.getX()][coordinates.getY() - 1].get().getEast().getConnectorsType()==Connectors.SMOOTH && tile.get().getWest().getConnectorsType()==Connectors.SMOOTH))
-                    ||(coordinates.getX() >= 0 && coordinates.getX() <= 4 && coordinates.getY() + 1 >= 0 && coordinates.getY() + 1 <= 6 && getTilesTable()[coordinates.getX()][coordinates.getY() + 1].isPresent()
-                    && !((getTilesTable()[coordinates.getX()][coordinates.getY() + 1].get().getWest().getConnectorsType()==Connectors.SMOOTH && tile.get().getEast().getConnectorsType()==Connectors.SMOOTH)))){
-                tilesTable[coordinates.getX()][coordinates.getY()] = tile;
-                tile.get().setShipBoard(this);
-                tile.get().setCoordinates(coordinates);
-            /*we're going to add the class tile also in the client. IF so we need to add this:
-            //Personally I don't think we should but we'll see
-            tile.get().setShipBoard(this);
-
-            //EDIT: I think we should, */
-                return true;
-            }else if(first){
+        if (tile.isPresent() && tilesTable[coordinates.getX()][coordinates.getY()].isEmpty()) {
+            if (first){
                 tilesTable[coordinates.getX()][coordinates.getY()] = tile;
                 tile.get().setShipBoard(this);
                 tile.get().setCoordinates(coordinates);
                 first=false;
                 return true;
             }
+            else if (tile.get().canPosition( coordinates, this)) {
+                tilesTable[coordinates.getX()][coordinates.getY()] = tile;
+                tile.get().setShipBoard(this);
+                tile.get().setCoordinates(coordinates);
+                return true;
+            }
         }
         return false;
     }
+
+
+    public boolean positionTileWithoutAdjacencyCheck(Optional<Tile> tile, Coordinates coordinates) {
+        if (tile.isPresent() && tilesTable[coordinates.getX()][coordinates.getY()].isEmpty()) {
+            tilesTable[coordinates.getX()][coordinates.getY()] = tile;
+            tile.get().setShipBoard(this);
+            tile.get().setCoordinates(coordinates);
+            first=false;
+            return true;
+        }
+        return false;
+    }
+
+    public void positionNullTile(Optional<Tile> tile, Coordinates coordinates) {
+        if (tilesTable[coordinates.getX()][coordinates.getY()].isEmpty() && tile.isEmpty()) {
+            tilesTable[coordinates.getX()][coordinates.getY()] = Optional.empty();
+        }
+    }
+
 
     public void setCargoHoldCoordinates(ArrayList<Coordinates> cargoHoldCoordinates) {
         this.cargoHoldCoordinates = cargoHoldCoordinates;
@@ -259,6 +267,7 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
     }
 
     //forse non serve il batteryCoordinates perché tanto se non è una batteryTile stampo il fatto che non lo è
+
 
 
     //SHIELD METHODS
@@ -374,6 +383,14 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
 
     public void removeGood(Goods good, Coordinates coordinates){
         tilesTable[coordinates.getX()][coordinates.getY()].get().removeGood(good);
+    }
+
+    public int getNumTotalCrew(){
+        return this.numHumanCrew+this.numBrownAliens+this.numPurpleAliens;
+    }
+
+    public int getNumBatteries(){
+        return numBatteries;
     }
 
     public boolean addBookedTile(Tile tile) {
@@ -633,11 +650,27 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
     }
 
     public void setGetStat(){
+        resetStat();
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 7; j++) {
                 if (tilesTable[i][j].isPresent() && tilesTable[i][j].get().fillable())
                     tilesTable[i][j].get().getStat();
             }
+
+
+        System.out.println("sono nel client" + numHumanCrew);
+    }
+
+    public void resetStat() {
+        numBatteries=0;
+        singleCannonPower=0;
+        DoubleCannon= new ArrayList<>();
+        cargoHoldCoordinates=new ArrayList<>();
+        numSingleEngine=0;
+        DoubleEngine = new ArrayList<>();
+        shields = new ArrayList<>();
+        batteryCoordinates = new ArrayList<>();
+        crewCoordinates = new ArrayList<>();
     }
 
     public void setCabinStat(){
@@ -657,6 +690,52 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         }
     }
 
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    public void setPenalty(int penalty) {
+        this.penalty = penalty;
+    }
+
+    public void loadFromTiles(ArrayList<Tile> tiles) {
+        if (tiles.size() < 37) {
+            System.out.println("Error deserializing ship");
+        }
+        simpleInitialize();
+
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 7; j++) {
+                Tile currentTile = tiles.removeFirst();
+                if (currentTile == null) {
+                    this.positionNullTile(Optional.empty(), new Coordinates(i, j));
+                }
+                else {
+                    this.positionTileWithoutAdjacencyCheck(Optional.of(currentTile), new Coordinates(i, j));
+                }
+            }
+        }
+        if (tiles.size() < 2) {
+            System.out.println("Error deserializing ship: no booked tiles");
+        }
+        for (int i = 0; i < 2; i++) {
+            Tile currentTile = tiles.removeFirst();
+            if (currentTile != null) {
+                this.bookedTiles.add(currentTile);
+            }
+        }
+        this.verifyCorrectness();
+    }
+
+    public void simpleInitialize() {
+        this.tilesTable = new Optional[5][7];
+        for (int i = 0; i < tilesTable.length; i++) {
+            for (int j = 0; j < tilesTable[i].length; j++) {
+                tilesTable[i][j] = Optional.empty();  // Initializes with empty optionals
+            }
+        }
+    }
+
     /*
     public void setTilesTable(Coordinates coordinates) {
         tilesTable = shipBoard.getTilesTable();
@@ -664,7 +743,6 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
 
     public void setNumSingleEngine() {
         this.numSingleEngine = shipBoard.getNumSingleEngine();
-    }
 
     public void setDoubleEngine() {
         this.DoubleEngine = shipBoard.getDoubleEngine();

@@ -106,7 +106,7 @@ public class Slavers extends Enemies{
             }
             else {
                 try {
-                    playersView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_ENGINE);
+                    playersView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_CANNON);
                 }catch(Exception ignored) {}
             }
         }
@@ -123,9 +123,18 @@ public class Slavers extends Enemies{
         }
         Map<Float,ArrayList<Tile>> returned = player.useCannons(doubleCannonPower, batteriesToUse);
         if (returned == null) {
-            try {
-                playersView.showWrongInputMessage();
-            }catch(Exception ignored) {}
+            if (player.getPlayerShip().getSingleCannonPower() > cannonStrength) {
+                won = 1;
+                cannonChoice(playerName, 0, new ArrayList<>());
+            }
+            else if (player.getPlayerShip().getSingleCannonPower()  == cannonStrength) {
+                nextPlayer();
+            }
+            else {
+                won = -1;
+                penaltyIfLose.initializePenalty(game,playersView, currentPlayer);
+                nextPlayer();
+            }
             return;
         }
         notifyModifiedTiles(playerName, returned.values().iterator().next());
