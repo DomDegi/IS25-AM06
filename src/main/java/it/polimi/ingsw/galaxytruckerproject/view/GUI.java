@@ -9,8 +9,10 @@ import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.Penalty;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
@@ -521,8 +523,18 @@ public class GUI extends Application implements DisplayableView {
     }
 
     @Override
+    public void cargoSelected(Coordinates coordinates) {
+
+    }
+
+    @Override
     public void wrongLocalInput() {
         showMessage("Wrong input!");
+    }
+
+    @Override
+    public void coordinateSelected() {
+
     }
 
     @Override
@@ -589,6 +601,16 @@ public class GUI extends Application implements DisplayableView {
     @Override
     public void showGenericMessage(String genericMessage) {
         showMessage(genericMessage);
+    }
+
+    @Override
+    public void victimOfThePenalty(String playerName, Penalty penalty) {
+
+    }
+
+    @Override
+    public void notifyPlayerJoined(int expectedPlayer, int currentPlayer, boolean reconnected) {
+
     }
 
     @Override
@@ -688,6 +710,26 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void notifyEarlyLanding() throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyCombatZoneStrength(String playerName, float strength) throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyCombatZoneEngine(String playerName, float strength) throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyCombatZoneCrew(String playerName, int crew) throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyPodium(ArrayList<Player> players) throws RemoteException {
 
     }
 
