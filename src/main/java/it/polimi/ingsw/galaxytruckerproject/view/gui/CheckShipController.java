@@ -1,5 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.view.gui;
 
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
@@ -19,7 +20,45 @@ public class CheckShipController {
 
     @FXML
     public void done(){
-        GUI.showS_EndDrawTilesCards();
+        GUI.clear();
+        switch (GUI.getController().getState()){
+            case S_END_DRAW_TILE_CARD ->{
+                GUI.showS_EndDrawTilesCards();
+            }
+            case S_MANAGE_DRAWN_TILE ->{
+                GUI.showS_ManageDrawTilesCards();
+            }
+            case S_MANAGE_CARDS -> {
+                GUI.showDeckCheck();
+            }
+            case S_FINISHED -> {
+
+            }
+            case DRAW_CARD -> {
+
+            }
+            case ACTION -> {
+
+            }
+            case PLANET_CHOICE -> {
+
+            }
+            case MANAGE_GOODS -> {
+
+            }
+            case MANAGE_CABINS ->{
+
+            }
+            case COORD_REQUEST -> {
+
+            }
+            case ROLL_DICE -> {
+
+            }
+            case WAIT -> {
+                GUI.showWait();
+            }
+        }
     }
 
     public void setPlayer(LightShipBoard player) {

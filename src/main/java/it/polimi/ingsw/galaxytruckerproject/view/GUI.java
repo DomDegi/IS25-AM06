@@ -24,10 +24,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -43,6 +45,9 @@ public class GUI extends Application implements DisplayableView {
     private static BorderPane layout;
     private static ClientController controller;
     private static FXMLLoader loader;
+    private static Button ship1;
+    private static Button ship2;
+    private static Button ship3;
 
     public static void startGui(ClientController controller) {
         GUI.controller =controller;
@@ -170,11 +175,8 @@ public class GUI extends Application implements DisplayableView {
         controller.stopLookingAtCards();
     }
 //showMethods---------------------------------------------------------------------------------------------------------------
-    private static void clear(){
+    public static void clear(){
         showMessage("");
-        layout.setLeft(null);
-        layout.setRight(null);
-        layout.setTop(null);
     }
 
     private static void showConnection() {
@@ -292,7 +294,7 @@ public class GUI extends Application implements DisplayableView {
         });
     }
 
-    private static void showS_ManageDrawTilesCards() {
+    public static void showS_ManageDrawTilesCards() {
         Platform.runLater(() -> {
             loader = new FXMLLoader(GUI.class.getResource("/gui/s_ManageDrawnTile.fxml"));
             BorderPane newLayer;
@@ -305,7 +307,7 @@ public class GUI extends Application implements DisplayableView {
         });
     }
 
-    private static void showDeckCheck() {
+    public static void showDeckCheck() {
         Platform.runLater(() -> {
             loader = new FXMLLoader(GUI.class.getResource("/gui/deckCheck.fxml"));
             BorderPane newLayer;
@@ -357,6 +359,77 @@ public class GUI extends Application implements DisplayableView {
                 lobbyController.update(games);
         }
     }
+
+    public static void addCheckShip(){
+        Platform.runLater(() -> {
+            VBox top=new VBox();
+            VBox right=new VBox();
+            VBox left=new VBox();
+            top.setAlignment(Pos.CENTER);
+            right.setAlignment(Pos.CENTER);
+            left.setAlignment(Pos.CENTER);
+            if (controller.getFlightBoard().getInGamePlayers().size() == 2) {
+                ship1 = new Button();
+                ship1.setOnAction(event -> {
+                    checkShip(1);
+                });
+                ship1.setPrefHeight(52);
+                ship1.setPrefWidth(614);
+                ship1.setAlignment(Pos.CENTER);
+                top.getChildren().add(ship1);
+                layout.setTop(top);
+            }
+            if (controller.getFlightBoard().getInGamePlayers().size() == 3) {
+                ship1 = new Button();
+                ship2 = new Button();
+                ship1.setOnAction(event -> {
+                    checkShip(1);
+                });
+                ship2.setOnAction(event -> {
+                    checkShip(2);
+                });
+                ship1.setPrefWidth(52);
+                ship1.setPrefHeight(614);
+                ship2.setPrefWidth(52);
+                ship2.setPrefHeight(614);
+                ship1.setAlignment(Pos.CENTER);
+                ship2.setAlignment(Pos.CENTER);
+                left.getChildren().add(ship1);
+                right.getChildren().add(ship2);
+                layout.setLeft(left);
+                layout.setRight(right);
+            }
+            if (controller.getFlightBoard().getInGamePlayers().size() == 4) {
+                ship1 = new Button();
+                ship2 = new Button();
+                ship3 = new Button();
+                ship1.setOnAction(event -> {
+                    checkShip(1);
+                });
+                ship2.setOnAction(event -> {
+                    checkShip(2);
+                });
+                ship3.setOnAction(event -> {
+                    checkShip(3);
+                });
+                ship1.setPrefWidth(52);
+                ship1.setPrefHeight(614);
+                ship2.setPrefHeight(52);
+                ship2.setPrefWidth(614);
+                ship3.setPrefWidth(52);
+                ship3.setPrefHeight(614);
+                ship1.setAlignment(Pos.CENTER);
+                ship2.setAlignment(Pos.CENTER);
+                ship3.setAlignment(Pos.CENTER);
+                top.getChildren().add(ship2);
+                left.getChildren().add(ship1);
+                right.getChildren().add(ship3);
+                layout.setLeft(left);
+                layout.setTop(top);
+                layout.setRight(right);
+            }
+        });
+    }
 //Overrides--------------------------------------------------------------------------------------------------------------
 
     @Override
@@ -383,6 +456,7 @@ public class GUI extends Application implements DisplayableView {
             }
             case S_END_DRAW_TILE_CARD ->{
                 showS_EndDrawTilesCards();
+                addCheckShip();
             }
             case S_MANAGE_DRAWN_TILE ->{
                 showS_ManageDrawTilesCards();

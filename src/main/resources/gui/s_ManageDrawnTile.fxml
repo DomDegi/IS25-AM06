@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="1080.0" prefWidth="1980.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.galaxytruckerproject.view.gui.S_ManageDrawTileController">
+<BorderPane prefHeight="980.0" prefWidth="1870.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.galaxytruckerproject.view.gui.S_ManageDrawTileController">
     <center>
         <HBox alignment="CENTER" BorderPane.alignment="CENTER">
             <children>
@@ -110,16 +110,8 @@
                     </children>
                 </VBox>
                 <TilePane fx:id="drawnTiles2" alignment="CENTER_LEFT" hgap="10.0" onMouseClicked="#refuse" prefHeight="1028.0" prefWidth="700.0" vgap="10.0" />
+            <TilePane fx:id="drawnTiles11" alignment="CENTER_RIGHT" hgap="10.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#refuse" prefHeight="1028.0" prefWidth="700.0" vgap="10.0" />
             </children>
         </HBox>
     </center>
-    <left>
-        <Button mnemonicParsing="false" onAction="#checkShip1" prefHeight="614.0" prefWidth="52.0" text="1" BorderPane.alignment="CENTER" />
-    </left>
-    <right>
-        <Button mnemonicParsing="false" onAction="#checkShip3" prefHeight="614.0" prefWidth="52.0" text="3" BorderPane.alignment="CENTER" />
-    </right>
-    <top>
-        <Button mnemonicParsing="false" onAction="#checkShip2" prefHeight="52.0" prefWidth="614.0" text="2" BorderPane.alignment="CENTER" />
-    </top>
 </BorderPane>
