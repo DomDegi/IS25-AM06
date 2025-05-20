@@ -148,7 +148,7 @@ public class CombatZone extends Card {
         minPlayerView = viewsMap.get(minPlayer.getPlayerName());
         notifyVictim(minPlayer.getPlayerName());
         currentPenalty.initializePenalty(game,minPlayerView, minPlayer);
-        resetForNextPenalty();
+        //resetForNextPenalty();
     }
 
 
@@ -393,4 +393,18 @@ public class CombatZone extends Card {
         return listOfChallenges.remove(key);
     }
 
+    @Override
+    public void playerDisconnected(String playerName) {
+        if (minPlayer != null && minPlayer.getPlayerName().equals(playerName)) {
+            // if player is disconnected penalty should happen automatically
+            if (!currentPenalty.initializePenalty(game,minPlayerView,minPlayer)) {
+                resetForNextPenalty();
+            }
+            return;
+        }
+        if (currentPlayer != null && currentPlayer.getPlayerName().equals(playerName)) {
+            playerIndex--;
+            nextPlayer();
+        }
+    }
 }

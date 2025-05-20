@@ -23,7 +23,7 @@ public class Planets extends Card{
     private Player currentPlayer;
     private ViewInterface currentPlayerView = null;
     private boolean chosen;
-    private Map<String,GoodsChecker> goodsChecker=new HashMap<>();
+    private Map<String,GoodsChecker> goodsChecker;
     public Map<String,Planet> playerChosenPlanets = new HashMap<>();
     private int playerIndex = -1;
 
@@ -211,5 +211,19 @@ public class Planets extends Card{
     }
     public ArrayList<Planet> getListOfPlanets() {
         return listOfPlanets;
+    }
+
+    @Override
+    public void playerDisconnected(String playerName) {
+        if (currentPlayer != null && currentPlayer.getPlayerName().equals(playerName)) {
+            if (!chosen) {
+                nextPlayer();
+            } else {
+                playerIndex++;
+                if (playerIndex == goodsChecker.size()) {
+                    nextPlayer();
+                }
+            }
+        }
     }
 }

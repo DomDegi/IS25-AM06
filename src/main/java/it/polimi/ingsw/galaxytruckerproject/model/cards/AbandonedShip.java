@@ -138,4 +138,12 @@ public class AbandonedShip extends Card {
     public Player getPlayerToPlay() {
         return playerToPlay;
     }
+
+    @Override
+    public void playerDisconnected(String playerName) {
+        if (playerToPlay != null && playerToPlay.getPlayerName().equals(playerName)) {
+            playerIndex--;
+            nextPlayer();
+        }
+    }
 }

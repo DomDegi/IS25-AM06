@@ -161,4 +161,12 @@ public class AbandonedStation extends Card {
     public int getCrewNumber() {
         return crewNumberRequired;
     }
+
+    @Override
+    public void playerDisconnected(String playerName) {
+        if (currentPlayer != null && playerName.equals(currentPlayer.getPlayerName())) {
+            playerIndex--;
+            nextPlayer();
+        }
+    }
 }

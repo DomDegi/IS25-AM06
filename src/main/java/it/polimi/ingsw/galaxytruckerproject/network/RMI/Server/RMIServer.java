@@ -28,7 +28,6 @@ public class RMIServer implements Server {
             System.out.println("RMIServer pronto!");
             multiGameController.playPingPong();
         } catch (Exception e) {
-            e.printStackTrace();
         }
 
     }

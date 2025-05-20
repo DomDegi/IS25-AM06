@@ -198,4 +198,12 @@ public class MeteorSwarm extends Card {
     public ArrayList<Projectile> getListOfProjectiles() {
         return listOfMeteors;
     }
+
+    @Override
+    public void playerDisconnected(String playerName) {
+        if (activePenalties.containsKey(playerName)) {
+           if (activePenalties.get(playerName).initializePenalty(game,viewsMap.get(playerName),game.identifyPlayerByName(playerName)))
+               System.out.println("Error, player is disconnected but the penalty isn't completed");
+        }
+    }
 }
