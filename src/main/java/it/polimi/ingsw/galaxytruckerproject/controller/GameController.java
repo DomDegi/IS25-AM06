@@ -62,7 +62,7 @@ public class GameController implements Observer, Serializable {
     private ScheduledExecutorService autoSaveExecutor;
 
     //need to be true for the project showing
-    private volatile boolean autoSaveEnabled = false;
+    private volatile boolean autoSaveEnabled = true;
 
     public String toString(){
         return gameName+"\ngame state:"+game.getGameState().toString()+"\nplayer needed: "+game.getPlayerCount()+"\nplatyer in game: "+game.getNumberOfPlayers();
