@@ -42,12 +42,12 @@ public class Game implements GameInterface{
         this.tileStack = new TileFactory().getStack(TileFactory.loadTilesFromJson("Tiles.json"));
 
         if (this.mode == GameMode.LEVEL2) {
-            CardDeck cardDeck = new CardDeck("simpleCards.json");
+            CardDeck cardDeck = new CardDeck("cards.json");
             this.inGameCards = cardDeck.getTier2FlightCards();
         }
         else {
             //this.inGameCards = new TrialCardDeck("trialFlightCards.json").getTrialDeck(); quello corretto
-            this.inGameCards = new TrialCardDeck("simpleCards2.json").getTrialDeck();
+            this.inGameCards = new TrialCardDeck("trialFlightCards.json").getTrialDeck();
         }
         this.playerCount = playerCount;
         this.drawnCard = null;
@@ -230,7 +230,7 @@ public class Game implements GameInterface{
 
 
     public void endShipCreation() {
-        //Collections.shuffle(inGameCards);
+        Collections.shuffle(inGameCards);
         setGameState(VERIFY_SHIP_CORRECTNESS);
     }
 
@@ -387,7 +387,7 @@ public class Game implements GameInterface{
         }
         else {
             //this.inGameCards = new TrialCardDeck("trialFlightCards.json").deckFromIDs(cardsLeftID);
-            this.inGameCards = new TrialCardDeck("simpleCards2.json").deckFromIDs(cardsLeftID);
+            this.inGameCards = new TrialCardDeck("trialFLightCards.json").deckFromIDs(cardsLeftID);
         }
     }
 

@@ -68,8 +68,8 @@ public class CardDeck {
     }
 
     public ArrayList<Card> getTier2FlightCards() {
-        //Collections.shuffle(this.deckLvl1);
-       // Collections.shuffle(this.deckLvl2);
+        Collections.shuffle(this.deckLvl1);
+       Collections.shuffle(this.deckLvl2);
         ArrayList<Card> tier2FlightCards = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             tier2FlightCards.add(drawCardLvl1());
