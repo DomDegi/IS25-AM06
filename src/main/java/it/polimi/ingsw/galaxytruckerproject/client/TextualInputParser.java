@@ -16,6 +16,10 @@ import java.util.Objects;
 public class TextualInputParser {
     private final ClientController clientController;
     private DisplayableView view;
+    private String gameName;
+    private int numberOfPlayers;
+    private GameMode mode;
+
 
     public TextualInputParser(ClientController clientController) {
         this.clientController = clientController;
@@ -95,9 +99,7 @@ public class TextualInputParser {
             }
 
             case LOBBY0 -> {
-                String gameName = words[0];
-                PlayersColor color;
-                int numberOfPlayers;
+                gameName = words[0];
                 if(!(words.length > 1)){
                     view.wrongLocalInput();
                     clientController.rollBackState();
@@ -120,7 +122,6 @@ public class TextualInputParser {
                     clientController.rollBackState();
                     return false;
                 }
-                GameMode mode;
                 switch(words[2]) {
                     case "trialmode","t"-> mode=GameMode.TRIAL;
                     case "level2mode","2"-> mode=GameMode.LEVEL2;
@@ -130,12 +131,13 @@ public class TextualInputParser {
                         return false;
                     }
                 }
-                if(!(words.length > 3)){
-                    view.wrongLocalInput();
-                    clientController.rollBackState();
-                    return false;
-                }
-                switch(words[3]){
+                clientController.setState(ClientState.COLOR_CHOICE0);
+                return true;
+            }
+
+            case COLOR_CHOICE0->{
+                PlayersColor color;
+                switch (words[0]){
                     case "red","r"->
                             color = PlayersColor.RED;
                     case "yellow","y"->
@@ -144,7 +146,7 @@ public class TextualInputParser {
                             color = PlayersColor.GREEN;
                     case "blue","b"->
                             color = PlayersColor.BLUE;
-                    default-> {
+                    default->{
                         view.wrongLocalInput();
                         return false;
                     }
