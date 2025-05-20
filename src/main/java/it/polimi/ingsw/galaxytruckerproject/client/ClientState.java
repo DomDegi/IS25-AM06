@@ -24,7 +24,8 @@ public enum ClientState implements Serializable {
     START_SHIP_CREATION,
     DRAW_CARD,
     MANAGE_CABINS,
-    ROLL_DICE;
+    ROLL_DICE,
+    RECONNECTING;
 
     @Override
     public String toString() {
@@ -51,6 +52,7 @@ public enum ClientState implements Serializable {
             case DRAW_CARD -> {return "Draw a card [draw]";}
             case MANAGE_CABINS -> {return "Select the crew type in yours equip cabins [humans] [purpleAlien] [brownAlien]";}
             case ROLL_DICE -> {return"Roll the dice [roll]";}
+            case RECONNECTING ->  {return "Server disconnected: repeat the login or close the game? [login] [close]";}
         }
         return "Error in client state to string";
     }
