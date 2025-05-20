@@ -117,7 +117,7 @@ public class TextualInputParser {
                     clientController.rollBackState();
                     return false;
                 }
-                if(!(words.length == 2)){
+                if(!(words.length > 2)){
                     view.wrongLocalInput();
                     clientController.rollBackState();
                     return false;
@@ -131,6 +131,8 @@ public class TextualInputParser {
                         return false;
                     }
                 }
+                clientController.setState(ClientState.COLOR_CHOICE0);
+                return true;
             }
 
             case LOBBY1 -> {
