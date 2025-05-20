@@ -20,9 +20,6 @@ import it.polimi.ingsw.galaxytruckerproject.view.gui.CheckShipController;
 import it.polimi.ingsw.galaxytruckerproject.view.gui.LobbyController;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -30,7 +27,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -40,9 +36,14 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 public class GUI extends Application implements DisplayableView {
+
+    private static String gameName;
+    private static int numberOfPlayers;
+    private static GameMode mode;
+    private static PlayersColor color;
+
     private static Stage primaryStage;
     private static BorderPane layout;
     private static ClientController controller;
@@ -103,8 +104,8 @@ public class GUI extends Application implements DisplayableView {
         controller.doneNaming();
     }
 
-    public static void createGame(String gameName, int  playerNum, GameMode gameMode){
-        controller.createGame(gameName,playerNum,gameMode);
+    public static void createGame(){
+        controller.createGame(gameName,numberOfPlayers,mode);
     }
 
     public static void join(String gameName){
@@ -461,7 +462,7 @@ public class GUI extends Application implements DisplayableView {
             case LOBBY0 -> {
                 showCreateNewGame();
             }
-            case COLOR_CHOICE ->{
+            case COLOR_CHOICE,COLOR_CHOICE0 ->{
                 showChooseColor();
             }
             case START_SHIP_CREATION -> {
@@ -740,6 +741,30 @@ public class GUI extends Application implements DisplayableView {
 
     public static ClientController getController() {
         return controller;
+    }
+
+    public static void setGameName(String gameName) {
+        GUI.gameName = gameName;
+    }
+
+    public static void setNumberOfPlayers(int numberOfPlayers) {
+        GUI.numberOfPlayers = numberOfPlayers;
+    }
+
+    public static void setMode(GameMode mode) {
+        GUI.mode = mode;
+    }
+
+    public static int getNumberOfPlayers() {
+        return numberOfPlayers;
+    }
+
+    public static String getGameName() {
+        return gameName;
+    }
+
+    public static GameMode getMode() {
+        return mode;
     }
 }
 

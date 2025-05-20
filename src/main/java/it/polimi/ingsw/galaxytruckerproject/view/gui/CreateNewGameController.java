@@ -1,5 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.view.gui;
 
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import javafx.collections.FXCollections;
@@ -29,14 +30,14 @@ public class CreateNewGameController {
     public void createNewGame() {
         try {
             int i= Integer.parseInt(playerNum.getText());
+            GUI.setGameName(gameName.getText());
+            GUI.setNumberOfPlayers(i);
             if (gameMode.getValue().equals("Trial")){
-                GUI.createGame(gameName.getText(),i,GameMode.TRIAL);
+                GUI.setMode(GameMode.TRIAL);
+                GUI.getController().setState(ClientState.COLOR_CHOICE0);
             }else if (gameMode.getValue().equals("Level2")) {
-                try {
-                    GUI.createGame(gameName.getText(),i,GameMode.LEVEL2);
-                }catch (NumberFormatException _) {
-
-                }
+                GUI.setMode(GameMode.LEVEL2);
+                GUI.getController().setState(ClientState.COLOR_CHOICE0);
             }else{
                 GUI.showMessage("Upcoming feature, try something else");
             }
