@@ -320,6 +320,19 @@ public class GUI extends Application implements DisplayableView {
         });
     }
 
+    public static void showEndShip() {
+        Platform.runLater(() -> {
+            loader = new FXMLLoader(GUI.class.getResource("/gui/endShipBoard.fxml"));
+            BorderPane newLayer;
+            try {
+                newLayer = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            layout.setCenter(newLayer);
+        });
+    }
+
     public static void showMessage(String message) {
         Platform.runLater(() -> {
             loader = new FXMLLoader(GUI.class.getResource("/gui/message.fxml"));
@@ -431,9 +444,7 @@ public class GUI extends Application implements DisplayableView {
         });
     }
 //Overrides--------------------------------------------------------------------------------------------------------------
-
-    @Override
-    public void setClientState(ClientState newState){
+    public static void displayClientState(ClientState newState) {
         clear();
         switch (newState){
             case CHOOSE_CONNECTION_TYPE ->{
@@ -465,7 +476,7 @@ public class GUI extends Application implements DisplayableView {
                 showDeckCheck();
             }
             case S_FINISHED -> {
-
+                showEndShip();
             }
             case DRAW_CARD -> {
 
@@ -492,6 +503,11 @@ public class GUI extends Application implements DisplayableView {
                 showWait();
             }
         }
+    }
+
+    @Override
+    public void setClientState(ClientState newState){
+        displayClientState(newState);
     }
 
     @Override
