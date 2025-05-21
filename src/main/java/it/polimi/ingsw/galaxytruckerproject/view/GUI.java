@@ -177,6 +177,10 @@ public class GUI extends Application implements DisplayableView {
     public static void doneChecking(){
         controller.stopLookingAtCards();
     }
+
+    public static void position(int index){
+        controller.positionOnFlightBoard(index);
+    }
 //showMethods---------------------------------------------------------------------------------------------------------------
     public static void clear(){
         showMessage("");
@@ -336,6 +340,19 @@ public class GUI extends Application implements DisplayableView {
         });
     }
 
+    private static void showDrawCard() {
+        Platform.runLater(() -> {
+            loader = new FXMLLoader(GUI.class.getResource("/gui/drawCard.fxml"));
+            BorderPane newLayer;
+            try {
+                newLayer = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            layout.setCenter(newLayer);
+        });
+    }
+
     public static void showMessage(String message) {
         Platform.runLater(() -> {
             loader = new FXMLLoader(GUI.class.getResource("/gui/message.fxml"));
@@ -482,7 +499,7 @@ public class GUI extends Application implements DisplayableView {
                 showEndShip();
             }
             case DRAW_CARD -> {
-
+                showDrawCard();
             }
             case ACTION -> {
 

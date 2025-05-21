@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.shape.Polygon?>
 
-<BorderPane prefHeight="1030.0" prefWidth="1820.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="1030.0" prefWidth="1820.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.galaxytruckerproject.view.gui.EndShipController">
    <center>
       <AnchorPane>
          <children>
@@ -22,34 +22,10 @@
                         <Point3D x="1.0" z="1.0" />
                      </rotationAxis>
                   </ImageView>
-                  <Polygon fill="DODGERBLUE" layoutX="572.5" layoutY="564.5" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" stroke="BLACK" strokeType="INSIDE" />
-                  <Polygon fill="DODGERBLUE" layoutX="490.934814453125" layoutY="562.8699340820312" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="5.4" stroke="BLACK" strokeType="INSIDE" />
-                  <Polygon fill="DODGERBLUE" layoutX="409.6477355957031" layoutY="552.9575805664062" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="13.1" stroke="BLACK" strokeType="INSIDE">
-                     <rotationAxis>
-                        <Point3D z="2.0" />
-                     </rotationAxis>
-                  </Polygon>
-                  <Polygon fill="DODGERBLUE" layoutX="330.16619873046875" layoutY="531.6802978515625" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="20.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Polygon fill="DODGERBLUE" layoutX="253.0183563232422" layoutY="497.5426025390625" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="31.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Polygon fill="DODGERBLUE" layoutX="184.0" layoutY="447.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="45.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Polygon fill="DODGERBLUE" layoutX="138.0" layoutY="367.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="80.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Polygon fill="DODGERBLUE" layoutX="150.0" layoutY="274.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="120.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Polygon fill="DODGERBLUE" layoutX="206.0" layoutY="206.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="140.7" stroke="BLACK" strokeType="INSIDE" />
-                  <Polygon fill="DODGERBLUE" layoutX="277.0" layoutY="162.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="156.8" stroke="BLACK" strokeType="INSIDE" />
-                  <Polygon fill="DODGERBLUE" layoutX="355.0" layoutY="133.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="164.6" stroke="BLACK" strokeType="INSIDE" />
-                  <Polygon fill="DODGERBLUE" layoutX="435.0" layoutY="116.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="172.9" stroke="BLACK" strokeType="INSIDE" />
-                  <Polygon fill="DODGERBLUE" layoutX="514.0" layoutY="108.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="177.7" stroke="BLACK" strokeType="INSIDE" />
-                  <Polygon fill="DODGERBLUE" layoutX="597.84814453125" layoutY="109.64173889160156" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-176.3" stroke="BLACK" strokeType="INSIDE" />
-                  <Polygon fill="DODGERBLUE" layoutX="678.2427368164062" layoutY="119.64036560058594" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-168.7" stroke="BLACK" strokeType="INSIDE" />
-                  <Polygon fill="DODGERBLUE" layoutX="757.0747680664062" layoutY="139.92361450195312" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-162.4" stroke="BLACK" strokeType="INSIDE" />
-                  <Polygon fill="DODGERBLUE" layoutX="835.6832275390625" layoutY="174.38177490234375" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-150.3" stroke="BLACK" strokeType="INSIDE" />
-                  <Polygon fill="DODGERBLUE" layoutX="905.2264404296875" layoutY="226.06002807617188" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-132.8" stroke="BLACK" strokeType="INSIDE" />
-                  <Polygon fill="DODGERBLUE" layoutX="950.109619140625" layoutY="304.5400390625" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-101.3" stroke="BLACK" strokeType="INSIDE" />
-                  <Polygon fill="DODGERBLUE" layoutX="939.3626098632812" layoutY="398.8478698730469" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-63.4" stroke="BLACK" strokeType="INSIDE" />
-                  <Polygon fill="DODGERBLUE" layoutX="882.2899780273438" layoutY="467.3040466308594" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-36.3" stroke="BLACK" strokeType="INSIDE" />
-                  <Polygon fill="DODGERBLUE" layoutX="811.1474609375" layoutY="510.8095397949219" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-23.2" stroke="BLACK" strokeType="INSIDE" />
-                  <Polygon fill="DODGERBLUE" layoutX="733.558837890625" layoutY="540.2677001953125" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-15.3" stroke="BLACK" strokeType="INSIDE" />
-                  <Polygon fill="DODGERBLUE" layoutX="652.5518188476562" layoutY="556.9783325195312" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-7.1" stroke="BLACK" strokeType="INSIDE" />
+                  <Polygon fill="DODGERBLUE" layoutX="277.0" layoutY="162.0" onMouseClicked="#pos4" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="156.8" stroke="BLACK" strokeType="INSIDE" />
+                  <Polygon fill="DODGERBLUE" layoutX="355.0" layoutY="133.0" onMouseClicked="#pos3" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="164.6" stroke="BLACK" strokeType="INSIDE" />
+                  <Polygon fill="DODGERBLUE" layoutX="514.0" layoutY="108.0" onMouseClicked="#pos2" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="177.7" stroke="BLACK" strokeType="INSIDE" />
+                  <Polygon fill="DODGERBLUE" layoutX="757.0747680664062" layoutY="139.92361450195312" onMouseClicked="#pos1" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-162.4" stroke="BLACK" strokeType="INSIDE" />
                </children>
             </Group>
          </children>

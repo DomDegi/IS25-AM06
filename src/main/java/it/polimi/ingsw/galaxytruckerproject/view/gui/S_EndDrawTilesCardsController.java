@@ -160,18 +160,4 @@ public class S_EndDrawTilesCardsController {
         GUI.turnHourglass();
     }
 
-    @FXML
-    public void checkShip1(){
-        GUI.checkShip(1);
-    }
-
-    @FXML
-    public void checkShip2(){
-        GUI.checkShip(2);
-    }
-
-    @FXML
-    public void checkShip3(){
-        GUI.checkShip(3);
-    }
 }

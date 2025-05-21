@@ -226,7 +226,7 @@ public class ClientController {
             return false;
         }
         if (gameMode == GameMode.LEVEL2) {
-            if (chose > 0 && chose < 4 && availableDeck.get(chose-1)) {
+            if (chose > 0 && chose < 4 && availableDeck.get(chose)) {
                 setState(ClientState.WAIT);
                 try {
                     virtualController.lookCardsRequest(chose);
