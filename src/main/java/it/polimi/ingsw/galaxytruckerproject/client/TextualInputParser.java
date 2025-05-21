@@ -73,9 +73,7 @@ public class TextualInputParser {
                             return false;
                         }
                     }
-                } catch (IOException e ) {
-                    throw new RuntimeException(e);
-                } catch (NotBoundException e) {
+                } catch (IOException | NotBoundException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -137,6 +135,11 @@ public class TextualInputParser {
                 return true;
             }
 
+            case LOBBY1 -> {
+                String gameName = words[0];
+                clientController.joinGame(gameName);
+            }
+
             case COLOR_CHOICE0->{
                 PlayersColor color;
                 switch (words[0]){
@@ -155,11 +158,6 @@ public class TextualInputParser {
                 }
                 clientController.createGame(gameName,numberOfPlayers,mode);
                 clientController.colorChoice(color);
-            }
-
-            case LOBBY1 -> {
-                String gameName = words[0];
-                clientController.joinGame(gameName);
             }
 
             case COLOR_CHOICE->{

@@ -203,7 +203,7 @@ public class ClientController {
     }
 
     public boolean colorChoice(PlayersColor color) {
-        if(state!=ClientState.COLOR_CHOICE){
+        if(state!=ClientState.COLOR_CHOICE&&state!=ClientState.COLOR_CHOICE0&&state!=ClientState.WAIT){
             return false;
         }
         if(getAvailableColors().get(color)) {
