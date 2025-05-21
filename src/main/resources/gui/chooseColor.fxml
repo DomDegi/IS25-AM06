@@ -25,10 +25,10 @@
             </AnchorPane>
             <HBox alignment="CENTER" spacing="50.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#red" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: red; -fx-background-radius: 30;" textAlignment="CENTER" />
-                  <Button mnemonicParsing="false" onAction="#yellow" prefHeight="50.0" prefWidth="50.0" style="-fx-background-radius: 30; -fx-background-color: yellow;" textAlignment="CENTER" />
-                  <Button mnemonicParsing="false" onAction="#green" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: green; -fx-background-radius: 30;" />
-                  <Button mnemonicParsing="false" onAction="#blue" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: blue; -fx-background-radius: 30;" />
+                  <Button fx:id="r" mnemonicParsing="false" onAction="#red" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: red; -fx-background-radius: 30;" textAlignment="CENTER" />
+                  <Button fx:id="y" mnemonicParsing="false" onAction="#yellow" prefHeight="50.0" prefWidth="50.0" style="-fx-background-radius: 30; -fx-background-color: yellow;" textAlignment="CENTER" />
+                  <Button fx:id="g" mnemonicParsing="false" onAction="#green" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: green; -fx-background-radius: 30;" />
+                  <Button fx:id="b" mnemonicParsing="false" onAction="#blue" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: blue; -fx-background-radius: 30;" />
                </children>
             </HBox>
          </children>

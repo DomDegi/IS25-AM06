@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 public class NotAvailableColorMessage extends ServerMessage {
 
-    private PlayersColor color;
+    private ArrayList<PlayersColor> color;
 
-    public NotAvailableColorMessage(PlayersColor color) {
+    public NotAvailableColorMessage(ArrayList<PlayersColor> color) {
         this.color = color;
     }
 

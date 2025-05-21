@@ -16,6 +16,15 @@ import java.util.Objects;
 public class S_EndDrawTilesCardsController {
 
     @FXML
+    public Button deck1;
+
+    @FXML
+    public Button deck2;
+
+    @FXML
+    public Button deck3;
+
+    @FXML
     public GridPane tilesTable;
 
     @FXML
@@ -29,6 +38,9 @@ public class S_EndDrawTilesCardsController {
 
     @FXML
     public void initialize() {
+        deck1.setVisible(GUI.getController().getAvailableDeck().get(1));
+        deck2.setVisible(GUI.getController().getAvailableDeck().get(2));
+        deck3.setVisible(GUI.getController().getAvailableDeck().get(3));
         ArrayList<Tile> tiles=new ArrayList<>();
         for(int i=0;i<=6;i++){
             for(int j=0;j<=4;j++) {
@@ -41,8 +53,8 @@ public class S_EndDrawTilesCardsController {
             String imagePath = tile.getImagePath();
             InputStream imageStream = getClass().getResourceAsStream(imagePath);
             if (imageStream == null) {
-                System.err.println("Impossibile trovare l'immagine: " + imagePath);
-                imageButton.setText("Img non trovata");
+                System.err.println("not found" + imagePath);
+                imageButton.setText("MCS");
             } else {
                 Image image = new Image(imageStream);
                 ImageView imageView = new ImageView(image);
@@ -64,12 +76,12 @@ public class S_EndDrawTilesCardsController {
             String imagePath = tile.getImagePath();
             InputStream imageStream = getClass().getResourceAsStream(imagePath);
             if (imageStream == null) {
-                System.err.println("Impossibile trovare l'immagine: " + imagePath);
-                imageButton.setText("Img non trovata");
+                System.err.println("not found" + imagePath);
+                imageButton.setText("MCS");
             } else {
                 Image image = new Image(imageStream);
                 ImageView imageView = new ImageView(image);
-                imageView.rotateProperty().setValue(tile.getRotation()*90);
+                imageView.rotateProperty().setValue(tile.getRotation() * 90);
                 imageView.setFitWidth(80);
                 imageView.setFitHeight(80);
                 imageButton.setGraphic(imageView);
@@ -96,8 +108,8 @@ public class S_EndDrawTilesCardsController {
             String imagePath = tile.getImagePath();
             InputStream imageStream = getClass().getResourceAsStream(imagePath);
             if (imageStream == null) {
-                System.err.println("Impossibile trovare l'immagine: " + imagePath);
-                imageButton.setText("Img non trovata");
+                System.err.println("not found" + imagePath);
+                imageButton.setText("MCS");
             } else {
                 Image image = new Image(imageStream);
                 ImageView imageView = new ImageView(image);
@@ -160,4 +172,42 @@ public class S_EndDrawTilesCardsController {
         GUI.turnHourglass();
     }
 
+    public void update(){
+        deck1.setVisible(GUI.getController().getAvailableDeck().get(1));
+        deck2.setVisible(GUI.getController().getAvailableDeck().get(2));
+        deck3.setVisible(GUI.getController().getAvailableDeck().get(3));
+        drawnTiles1.getChildren().clear();
+        drawnTiles2.getChildren().clear();
+        int index=0;
+        for(Tile tile:GUI.getController().getTurnedTilesDisplayer()){
+            Button imageButton = new Button();
+            String imagePath = tile.getImagePath();
+            InputStream imageStream = getClass().getResourceAsStream(imagePath);
+            if (imageStream == null) {
+                System.err.println("not found" + imagePath);
+                imageButton.setText("MCS");
+            } else {
+                Image image = new Image(imageStream);
+                ImageView imageView = new ImageView(image);
+                imageView.rotateProperty().setValue(tile.getRotation() * 90);
+                imageView.setFitWidth(80);
+                imageView.setFitHeight(80);
+                imageButton.setGraphic(imageView);
+                imageButton.setPrefWidth(80);
+                imageButton.setPrefHeight(80);
+                imageButton.setMaxWidth(80);
+                imageButton.setMaxHeight(80);
+                imageButton.setPadding(Insets.EMPTY);
+                imageButton.setOnAction(event -> {
+                    drawDrawnTile(tile.getKey());
+                });
+                if(index%2==0){
+                    drawnTiles1.getChildren().add(imageButton);
+                }else {
+                    drawnTiles2.getChildren().add(imageButton);
+                }
+                index++;
+            }
+        }
+    }
 }

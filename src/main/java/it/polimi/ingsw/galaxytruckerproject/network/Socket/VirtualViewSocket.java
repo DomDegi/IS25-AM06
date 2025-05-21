@@ -72,7 +72,7 @@ public class VirtualViewSocket implements VirtualView {
     }
 
     @Override
-    public void notifyNotAvailableColor(PlayersColor color) throws RemoteException {
+    public void notifyNotAvailableColor(ArrayList<PlayersColor> color) throws RemoteException {
         clientHandler.sendServerMessageToClient(new NotAvailableColorMessage(color));
     }
 

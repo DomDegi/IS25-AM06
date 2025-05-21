@@ -74,10 +74,6 @@ public class TUI implements DisplayableView {
 
     @Override
     public void showTurnedTiles(Map<Integer, Tile> turnedTiles) {
-//        for (int i : turnedTiles.keySet()) {
-//            System.out.println(i + " " + turnedTiles.get(i).toString());
-//            System.out.println("\n");
-//        }
         printDrawnTiles(turnedTiles);
     }
 
@@ -138,6 +134,11 @@ public class TUI implements DisplayableView {
         for (LightPlayer player : lightFlightboard.getInGamePlayers()) {
             System.out.println("Player: " + player.toString());
         }
+    }
+
+    @Override
+    public void checkShipboard(LightShipBoard lightShipBoard) {
+        printShipboard(lightShipBoard);
     }
 
     @Override
@@ -362,5 +363,10 @@ public class TUI implements DisplayableView {
         } else  {
             System.out.println("player reconnected: " + currentPlayer + "/" + expectedPlayer);
         }
+    }
+
+    @Override
+    public void showAvailableDecks() {
+
     }
 }

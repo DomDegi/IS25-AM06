@@ -1,6 +1,5 @@
 package it.polimi.ingsw.galaxytruckerproject.view.gui;
 
-import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
@@ -15,20 +14,22 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 public class CheckShipController {
+
     @FXML
     public GridPane tilesTable;
 
     @FXML
     public void done(){
         GUI.displayClientState(GUI.getController().getState());
+        GUI.getController().setChecking(null);
     }
 
-    public void setPlayer(LightShipBoard player) {
+    public void setPlayer(LightShipBoard shipBoard) {
         ArrayList<Tile> tiles=new ArrayList<>();
         for(int i=0;i<=6;i++){
             for(int j=0;j<=4;j++) {
-                if(player.getTilesTable()[j][i].isPresent()&&player.getTilesTable()[j][i].get().fillable())
-                    tiles.add(player.getTilesTable()[j][i].get());
+                if(shipBoard.getTilesTable()[j][i].isPresent()&&shipBoard.getTilesTable()[j][i].get().fillable())
+                    tiles.add(shipBoard.getTilesTable()[j][i].get());
             }
         }
         for(Tile tile:tiles){
@@ -36,8 +37,8 @@ public class CheckShipController {
             String imagePath = tile.getImagePath();
             InputStream imageStream = getClass().getResourceAsStream(imagePath);
             if (imageStream == null) {
-                System.err.println("Impossibile trovare l'immagine: " + imagePath);
-                imageButton.setText("Img non trovata");
+                System.err.println("not found" + imagePath);
+                imageButton.setText("MCS");
             } else {
                 javafx.scene.image.Image image = new Image(imageStream);
                 ImageView imageView = new ImageView(image);
