@@ -27,7 +27,7 @@ public class MeteorSwarm extends Card {
     @JsonCreator
     public MeteorSwarm(@JsonProperty("level") int level,
                        @JsonProperty("listOfMeteors") ArrayList<Projectile> listOfMeteors,
-                       @JsonProperty("filePath") String filePath) {
+                       @JsonProperty("imagePath") String filePath) {
         super(level, 0,filePath);
         this.listOfMeteors = listOfMeteors;
         this.currentDiceRoll = 0;

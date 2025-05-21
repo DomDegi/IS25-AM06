@@ -28,8 +28,8 @@ public class Planets extends Card{
     private int playerIndex = -1;
 
     @JsonCreator
-    public Planets(@JsonProperty("level") int level, @JsonProperty("requiredDays") int requiredDays, @JsonProperty("listOfPlanets") ArrayList<Planet> listOfPlanets) {
-        super(level, requiredDays, null);
+    public Planets(@JsonProperty("level") int level, @JsonProperty("requiredDays") int requiredDays, @JsonProperty("listOfPlanets") ArrayList<Planet> listOfPlanets, @JsonProperty("imagePath") String filePath) {
+        super(level, requiredDays, filePath );
         this.goodsChecker=new HashMap<>();
         this.listOfPlanets = listOfPlanets;
         this.currentPlayer = null;

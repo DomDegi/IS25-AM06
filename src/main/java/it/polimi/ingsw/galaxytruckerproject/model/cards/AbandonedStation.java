@@ -27,7 +27,7 @@ public class AbandonedStation extends Card {
     private GoodsChecker goodsChecker = null;
 
     @JsonCreator
-    public AbandonedStation(@JsonProperty("level") int level, @JsonProperty("requiredDays") int requiredDays, @JsonProperty("crewNumberRequired") int crewNumberRequired, @JsonProperty("possibleGoodsGain") ArrayList<Goods> possibleGoodsGain, @JsonProperty("filePath") String filePath) {
+    public AbandonedStation(@JsonProperty("level") int level, @JsonProperty("requiredDays") int requiredDays, @JsonProperty("crewNumberRequired") int crewNumberRequired, @JsonProperty("possibleGoodsGain") ArrayList<Goods> possibleGoodsGain, @JsonProperty("imagePath") String filePath) {
         super(level, requiredDays,filePath);
         this.crewNumberRequired = crewNumberRequired;
         this.possibleGoodsGain = possibleGoodsGain;

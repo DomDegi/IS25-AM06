@@ -28,7 +28,7 @@ public class AbandonedShip extends Card {
             @JsonProperty("requiredDays") int requiredDays,
             @JsonProperty("crewNumberRequired") int crewNumberRequired,
             @JsonProperty("possibleCreditGains") int possibleCreditGains,
-            @JsonProperty("filePath") String filePath
+            @JsonProperty("imagePath") String filePath
     ) {
         super(level, requiredDays, filePath);
         this.crewNumberRequired = crewNumberRequired;

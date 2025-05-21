@@ -30,7 +30,7 @@ public class Slavers extends Enemies{
             @JsonProperty("cannonStrength") int cannonStrength,
             @JsonProperty("rewardCredits") int rewardCredits,
             @JsonProperty("lostCrew") int lostCrew,
-            @JsonProperty("filePath") String filePath
+            @JsonProperty("imagePath") String filePath
     ) {
         super(level, requiredDays, cannonStrength, filePath);
         this.rewardCredits = rewardCredits;

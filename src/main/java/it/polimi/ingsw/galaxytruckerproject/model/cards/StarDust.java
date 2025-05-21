@@ -12,7 +12,7 @@ import java.util.Map;
 public class StarDust extends Card {
 
     @JsonCreator
-    public StarDust(@JsonProperty("level") int level, @JsonProperty("filePath") String filePath) {
+    public StarDust(@JsonProperty("level") int level, @JsonProperty("imagePath") String filePath) {
         super(level, 0,filePath);
     }
 

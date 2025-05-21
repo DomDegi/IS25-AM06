@@ -13,7 +13,7 @@ import java.util.Map;
 public class Epidemic extends Card {
 
     @JsonCreator
-    public Epidemic(@JsonProperty("level") int level,  @JsonProperty("filePath") String filePath) {
+    public Epidemic(@JsonProperty("level") int level,  @JsonProperty("imagePath") String filePath) {
         super(level, 0, filePath);
     }
 
