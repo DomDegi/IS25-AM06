@@ -33,7 +33,6 @@ public class MeteorSwarm extends Card {
         this.currentDiceRoll = 0;
     }
 
-    @JsonCreator
     public MeteorSwarm(@JsonProperty("level") int level,
                        @JsonProperty("listOfMeteors") ArrayList<Projectile> listOfMeteors) {
         super(level, 0);

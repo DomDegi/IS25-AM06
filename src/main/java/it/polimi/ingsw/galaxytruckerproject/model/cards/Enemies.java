@@ -1,5 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -18,6 +19,7 @@ import java.util.Map;
 public abstract class Enemies extends Card {
     protected final int cannonStrength;
 
+    @JsonCreator
     public Enemies(int level, int requiredDays, int cannonStrength,String filePath) {
         super(level, requiredDays, filePath);
         this.cannonStrength = cannonStrength;

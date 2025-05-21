@@ -16,7 +16,6 @@ public class StarDust extends Card {
         super(level, 0,filePath);
     }
 
-    @JsonCreator
     public StarDust(@JsonProperty("level") int level) {
         super(level, 0, null);
     }

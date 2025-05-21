@@ -27,7 +27,7 @@ public class OpenSpace extends Card {
         super(level, 0,filePath);
     }
 
-    @JsonCreator
+
     public OpenSpace(@JsonProperty("level") int level) {
         super(level, 0);
     }

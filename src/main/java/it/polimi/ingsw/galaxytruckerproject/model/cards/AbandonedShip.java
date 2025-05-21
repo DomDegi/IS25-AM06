@@ -37,7 +37,6 @@ public class AbandonedShip extends Card {
         this.playerAccepted = false;
     }
 
-    @JsonCreator
     public AbandonedShip(
             @JsonProperty("level") int level,
             @JsonProperty("requiredDays") int requiredDays,

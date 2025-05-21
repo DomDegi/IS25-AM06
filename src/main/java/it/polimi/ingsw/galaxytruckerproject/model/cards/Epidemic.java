@@ -17,7 +17,6 @@ public class Epidemic extends Card {
         super(level, 0, filePath);
     }
 
-    @JsonCreator
     public Epidemic(@JsonProperty("level") int level) {
         super(level, 0);
     }

@@ -40,7 +40,6 @@ public class Slavers extends Enemies{
     }
 
 
-    @JsonCreator
     public Slavers(
             @JsonProperty("level") int level,
             @JsonProperty("requiredDays") int requiredDays,

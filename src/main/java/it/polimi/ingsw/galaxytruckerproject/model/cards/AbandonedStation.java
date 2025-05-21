@@ -34,7 +34,7 @@ public class AbandonedStation extends Card {
         this.currentPlayer = null;
         this.won = false;
     }
-    @JsonCreator
+
     public AbandonedStation(@JsonProperty("level") int level, @JsonProperty("requiredDays") int requiredDays, @JsonProperty("crewNumberRequired") int crewNumberRequired, @JsonProperty("possibleGoodsGain") ArrayList<Goods> possibleGoodsGain) {
         super(level, requiredDays,null);
         this.crewNumberRequired = crewNumberRequired;

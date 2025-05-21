@@ -37,7 +37,6 @@ public class Pirates extends Enemies {
         this.listOfCannonShots = listOfShots;
     }
 
-    @JsonCreator
     public Pirates(
             @JsonProperty("level") int level,
             @JsonProperty("requiredDays") int requiredDays,
