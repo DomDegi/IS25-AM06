@@ -13,9 +13,15 @@ import java.util.Map;
 public class Epidemic extends Card {
 
     @JsonCreator
+    public Epidemic(@JsonProperty("level") int level,  @JsonProperty("filePath") String filePath) {
+        super(level, 0, filePath);
+    }
+
+    @JsonCreator
     public Epidemic(@JsonProperty("level") int level) {
         super(level, 0);
     }
+
 
     @Override
     public void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap) {
@@ -23,6 +29,8 @@ public class Epidemic extends Card {
         this.viewsMap = viewsMap;
         executeCard();
     }
+
+
 
     public void executeCard() {
         for(Player player: game.getListOfInFlightPlayers()){

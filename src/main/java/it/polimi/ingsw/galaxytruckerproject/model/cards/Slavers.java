@@ -29,14 +29,32 @@ public class Slavers extends Enemies{
             @JsonProperty("requiredDays") int requiredDays,
             @JsonProperty("cannonStrength") int cannonStrength,
             @JsonProperty("rewardCredits") int rewardCredits,
-            @JsonProperty("lostCrew") int lostCrew
+            @JsonProperty("lostCrew") int lostCrew,
+            @JsonProperty("filePath") String filePath
     ) {
-        super(level, requiredDays, cannonStrength);
+        super(level, requiredDays, cannonStrength, filePath);
         this.rewardCredits = rewardCredits;
         this.lostCrew = lostCrew;
         this.playerIndex = 0;
         this.penaltyIfLose = new CrewPenalty(lostCrew);
     }
+
+
+    @JsonCreator
+    public Slavers(
+            @JsonProperty("level") int level,
+            @JsonProperty("requiredDays") int requiredDays,
+            @JsonProperty("cannonStrength") int cannonStrength,
+            @JsonProperty("rewardCredits") int rewardCredits,
+            @JsonProperty("lostCrew") int lostCrew
+    ) {
+        super(level, requiredDays, cannonStrength, null);
+        this.rewardCredits = rewardCredits;
+        this.lostCrew = lostCrew;
+        this.playerIndex = 0;
+        this.penaltyIfLose = new CrewPenalty(lostCrew);
+    }
+
 
     public String toString() {
         return "Slavers " + super.toString() + " rewardCredits: " + rewardCredits + "  lostCrew: " + lostCrew;

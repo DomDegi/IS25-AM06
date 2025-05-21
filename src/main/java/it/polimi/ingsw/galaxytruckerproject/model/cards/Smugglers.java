@@ -27,8 +27,17 @@ public class Smugglers extends Enemies{
     private GoodsChecker goodsChecker;
 
     @JsonCreator
+    public Smugglers(@JsonProperty("level") int level, @JsonProperty("requiredDays") int requiredDays, @JsonProperty("cannonStrength") int cannonStrength, @JsonProperty("lostGoods") int lostGoods, @JsonProperty("rewardGoods") ArrayList<Goods> rewardGoods,  @JsonProperty("filePath") String filePath) {
+        super(level, requiredDays, cannonStrength, filePath);
+        this.lostGoods =new GoodsPenalty(lostGoods);
+        this.rewardGoods = rewardGoods;
+        this.currentPlayer = null;
+        this.won = 0;
+    }
+
+    @JsonCreator
     public Smugglers(@JsonProperty("level") int level, @JsonProperty("requiredDays") int requiredDays, @JsonProperty("cannonStrength") int cannonStrength, @JsonProperty("lostGoods") int lostGoods, @JsonProperty("rewardGoods") ArrayList<Goods> rewardGoods) {
-        super(level, requiredDays, cannonStrength);
+        super(level, requiredDays, cannonStrength, null);
         this.lostGoods =new GoodsPenalty(lostGoods);
         this.rewardGoods = rewardGoods;
         this.currentPlayer = null;

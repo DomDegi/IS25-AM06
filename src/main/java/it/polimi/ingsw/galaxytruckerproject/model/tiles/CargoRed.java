@@ -8,8 +8,8 @@ public class CargoRed extends CargoHold{
         hazard = true;
     }
     //CONSTRUCTOR METHOD FOR THE TESTING
-    public CargoRed(int totSpaces, Link north, Link east, Link west, Link south, String imagePath) {
-        super(totSpaces, north, east, west, south, imagePath,0,0);
+    public CargoRed(int totSpaces, Link north, Link east, Link west, Link south) {
+        super(totSpaces, north, east, west, south, null,0,0);
         hazard = true;
     }
 

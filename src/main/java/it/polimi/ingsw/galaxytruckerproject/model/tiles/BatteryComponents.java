@@ -9,8 +9,8 @@ public class BatteryComponents extends Tile{
     }
 
     //METODO COSTRUTTORE PER IL TESTING
-    public BatteryComponents(Link north, Link east, Link south, Link west, String imagePath, int numCells) {
-        super(north,east,south,west, imagePath,0,0);
+    public BatteryComponents(Link north, Link east, Link south, Link west, int numCells) {
+        super(north,east,south,west, null,0,0);
         this.batteryCells = numCells;
     }
 

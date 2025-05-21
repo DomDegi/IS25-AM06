@@ -6,7 +6,8 @@
       "requiredDays": 1,
       "cannonStrength": 6,
       "rewardCredits": 5,
-      "lostCrew": 3
+      "lostCrew": 3,
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_01.jpg"
     },
     {
       "type": "Smugglers",
@@ -24,7 +25,8 @@
         {
           "color" : "BLUE"
         }
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_012.jpg"
     },
     {
       "type": "Pirates",
@@ -45,27 +47,33 @@
           "type": "SmallCannonShot",
           "direction": "NORTH"
         }
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_013.jpg"
     },
     {
       "type": "StarDust",
-      "level": 1
+      "level": 1,
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_014.jpg"
     },
     {
       "type": "OpenSpace",
-      "level": 1
+      "level": 1,
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_015.jpg"
     },
     {
       "type": "OpenSpace",
-      "level": 1
+      "level": 1,
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_016.jpg"
     },
     {
       "type": "OpenSpace",
-      "level": 1
+      "level": 1,
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_017.jpg"
     },
     {
       "type": "OpenSpace",
-      "level": 1
+      "level": 1,
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_018.jpg"
     },
     {
       "type": "MeteorSwarm",
@@ -83,7 +91,8 @@
           "type": "SmallMeteor",
           "direction": "EAST"
         }
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_019.jpg"
     },
     {
       "type": "MeteorSwarm",
@@ -109,7 +118,8 @@
           "type": "SmallMeteor",
           "direction": "SOUTH"
         }
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0110.jpg"
     },
     {
       "type": "MeteorSwarm",
@@ -127,7 +137,8 @@
           "type": "LargeMeteor",
           "direction": "NORTH"
         }
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0111.jpg"
     },
     {
       "type": "Planets",
@@ -164,7 +175,8 @@
             { "color": "GREEN"}
           ]
         }
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0112.jpg"
     },
     {
       "type": "Planets",
@@ -189,7 +201,8 @@
             { "color": "YELLOW"}
           ]
         }
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0113.jpg"
     },
     {
       "type": "Planets",
@@ -210,7 +223,8 @@
             { "color": "YELLOW" }
           ]
         }
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0114.jpg"
     },
     {
       "type": "Planets",
@@ -235,7 +249,8 @@
             { "color": "BLUE"}
           ]
         }
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0115.jpg"
     },
     {
       "type": "CombatZone",
@@ -262,21 +277,24 @@
             }
           ]
         }
-      }
+      },
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0116.jpg"
     },
     {
       "type": "AbandonedShip",
       "level": 1,
       "requiredDays": 1,
       "crewNumberRequired": 2,
-      "possibleCreditGains": 3
+      "possibleCreditGains": 3,
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0117.jpg"
     },
     {
       "type": "AbandonedShip",
       "level": 1,
       "requiredDays": 1,
       "crewNumberRequired": 3,
-      "possibleCreditGains": 4
+      "possibleCreditGains": 4,
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0118.jpg"
     },
     {
       "type": "AbandonedStation",
@@ -286,7 +304,8 @@
       "possibleGoodsGain": [
         { "color": "YELLOW"},
         { "color": "GREEN"}
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0119.jpg"
     },
     {
       "type": "AbandonedStation",
@@ -296,7 +315,8 @@
       "possibleGoodsGain": [
         { "color": "RED"},
         { "color": "RED"}
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0120.jpg"
     },
     {
       "type": "Slavers",
@@ -304,7 +324,8 @@
       "requiredDays": 2,
       "cannonStrength": 7,
       "rewardCredits": 8,
-      "lostCrew": 4
+      "lostCrew": 4,
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_II_IT_01.jpg"
     },
     {
       "type": "Smugglers",
@@ -322,7 +343,8 @@
         {
           "color" : "YELLOW"
         }
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_II_IT_012.jpg"
     },
     {
       "type": "Pirates",
@@ -343,27 +365,33 @@
           "type": "LargeCannonShot",
           "direction": "NORTH"
         }
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_II_IT_013.jpg"
     },
     {
       "type": "StarDust",
-      "level": 2
+      "level": 2,
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_II_IT_014.jpg"
     },
     {
       "type": "Epidemic",
-      "level": 2
+      "level": 2,
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_II_IT_015.jpg"
     },
     {
       "type": "OpenSpace",
-      "level": 2
+      "level": 2,
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_II_IT_016.jpg"
     },
     {
       "type": "OpenSpace",
-      "level": 2
+      "level": 2,
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_II_IT_017.jpg"
     },
     {
       "type": "OpenSpace",
-      "level": 2
+      "level": 2,
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_II_IT_018.jpg"
     },
     {
       "type": "MeteorSwarm",
@@ -389,7 +417,8 @@
           "type": "SmallMeteor",
           "direction": "WEST"
         }
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_II_IT_019.jpg"
     },
     {
       "type": "MeteorSwarm",
@@ -411,7 +440,8 @@
           "type": "SmallMeteor",
           "direction": "SOUTH"
         }
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_II_IT_0110.jpg"
     },
     {
       "type": "MeteorSwarm",
@@ -437,7 +467,8 @@
           "type": "SmallMeteor",
           "direction": "EAST"
         }
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_II_IT_0111.jpg"
     },
     {
       "type": "Planets",
@@ -469,7 +500,8 @@
             { "color": "BLUE"}
           ]
         }
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_II_IT_0112.jpg"
     },
     {
       "type": "Planets",
@@ -490,7 +522,8 @@
             { "color": "GREEN" }
           ]
         }
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_II_IT_0113.jpg"
     },
     {
       "type": "Planets",
@@ -521,7 +554,8 @@
             { "color": "YELLOW"}
           ]
         }
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_II_IT_0114.jpg"
     },
     {
       "type": "Planets",
@@ -550,7 +584,8 @@
             { "color": "BLUE"}
           ]
         }
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_II_IT_0115.jpg"
     },
     {
       "type": "CombatZone",
@@ -585,21 +620,24 @@
             }
           ]
         }
-      }
+      },
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_II_IT_0116.jpg"
     },
     {
       "type": "AbandonedShip",
       "level": 2,
       "requiredDays": 1,
       "crewNumberRequired": 4,
-      "possibleCreditGains": 6
+      "possibleCreditGains": 6,
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_II_IT_0117.jpg"
     },
     {
       "type": "AbandonedShip",
       "level": 2,
       "requiredDays": 2,
       "crewNumberRequired": 5,
-      "possibleCreditGains": 8
+      "possibleCreditGains": 8,
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_II_IT_0118.jpg"
     },
     {
       "type": "AbandonedStation",
@@ -609,7 +647,8 @@
       "possibleGoodsGain": [
         { "color": "RED"},
         { "color": "YELLOW"}
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_II_IT_0119.jpg"
     },
     {
       "type": "AbandonedStation",
@@ -620,7 +659,8 @@
         { "color": "YELLOW"},
         { "color": "YELLOW"},
         { "color": "GREEN"}
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_II_IT_0120.jpg"
     }
   ]
 }

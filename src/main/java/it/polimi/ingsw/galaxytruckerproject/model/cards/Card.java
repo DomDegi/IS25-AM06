@@ -38,6 +38,7 @@ public abstract class Card implements Serializable {
     protected final int level;
     protected final int requiredDays;
     protected GameInterface game = null;
+    protected String filePath;
 
     //This attribute is null until the card is initialized
     protected Map<String, VirtualView> viewsMap = new HashMap<>();
@@ -45,6 +46,12 @@ public abstract class Card implements Serializable {
     public Card(int level, int requiredDays) {
         this.level = level;
         this.requiredDays = requiredDays;
+    }
+
+    public Card(int level, int requiredDays, String filePath) {
+        this.level = level;
+        this.requiredDays = requiredDays;
+        this.filePath = filePath;
     }
 
     public abstract void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap);

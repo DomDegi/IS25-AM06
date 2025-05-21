@@ -8,8 +8,8 @@ public class SingleCannon extends Cannon {
         updateFireStrength();
     }
     //CONSTRUCTOR METHOD FOR THE TESTING
-    public SingleCannon(Link north, Link east, Link south, Link west,String imagePath) {
-        super(north, east, south, west,imagePath,0,0);
+    public SingleCannon(Link north, Link east, Link south, Link west) {
+        super(north, east, south, west,null,0,0);
         if(direction == Direction.NORTH) {
             this.fireStrength = 1;
         }

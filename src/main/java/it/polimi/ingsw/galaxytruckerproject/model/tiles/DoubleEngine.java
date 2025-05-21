@@ -6,8 +6,8 @@ public class DoubleEngine extends Engine{
         super(north,south,east,west,imagePath,rotation,key);
     }
     //CONSTRUCTOR METHOD FOR THE TESTING
-    public DoubleEngine(Link north,Link south,Link east,Link west,String imagePath){
-        super(north,south,east,west,imagePath,0,0);
+    public DoubleEngine(Link north,Link south,Link east,Link west){
+        super(north,south,east,west,null,0,0);
     }
 
     @Override

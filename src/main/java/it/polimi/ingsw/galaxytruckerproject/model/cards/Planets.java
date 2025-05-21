@@ -29,7 +29,7 @@ public class Planets extends Card{
 
     @JsonCreator
     public Planets(@JsonProperty("level") int level, @JsonProperty("requiredDays") int requiredDays, @JsonProperty("listOfPlanets") ArrayList<Planet> listOfPlanets) {
-        super(level, requiredDays);
+        super(level, requiredDays, null);
         this.goodsChecker=new HashMap<>();
         this.listOfPlanets = listOfPlanets;
         this.currentPlayer = null;

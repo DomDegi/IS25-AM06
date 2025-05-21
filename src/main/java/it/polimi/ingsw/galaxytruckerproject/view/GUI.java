@@ -181,6 +181,10 @@ public class GUI extends Application implements DisplayableView {
     public static void position(int index){
         controller.positionOnFlightBoard(index);
     }
+
+    public static void drawCard() {
+        controller.drawCard();
+    }
 //showMethods---------------------------------------------------------------------------------------------------------------
     public static void clear(){
         showMessage("");
@@ -788,5 +792,7 @@ public class GUI extends Application implements DisplayableView {
     public static GameMode getMode() {
         return mode;
     }
+
+
 }
 

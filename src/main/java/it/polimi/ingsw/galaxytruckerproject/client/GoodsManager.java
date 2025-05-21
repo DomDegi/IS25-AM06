@@ -33,7 +33,7 @@ public class GoodsManager {
     public HashSet<CargoHold> doneGoods(){
         view.showGenericMessage("\nYou stopped positioning your cargo\n");
         if (changes.isEmpty()) {
-            changes.add(new CargoRed(-1,null,null,null,null,null).send());
+            changes.add(new CargoRed(-1,null,null,null,null).send());
         }
         return changes;
     }

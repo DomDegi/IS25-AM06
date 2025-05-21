@@ -31,9 +31,20 @@ public class CombatZone extends Card {
     @JsonCreator
     public CombatZone(
             @JsonProperty("level") int level,
+            @JsonProperty("listOfChallenges") LinkedHashMap<ChallengeType, Penalty> listOfChallenges,
+            @JsonProperty("filePath") String filePath
+    ) {
+        super(level, 0, filePath);
+        this.listOfChallenges = listOfChallenges;
+        this.savedValues = new LinkedHashMap<>();
+    }
+
+    @JsonCreator
+    public CombatZone(
+            @JsonProperty("level") int level,
             @JsonProperty("listOfChallenges") LinkedHashMap<ChallengeType, Penalty> listOfChallenges
     ) {
-        super(level, 0);
+        super(level, 0, null);
         this.listOfChallenges = listOfChallenges;
         this.savedValues = new LinkedHashMap<>();
     }
