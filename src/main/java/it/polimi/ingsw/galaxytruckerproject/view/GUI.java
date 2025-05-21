@@ -512,6 +512,11 @@ public class GUI extends Application implements DisplayableView {
         displayClientState(newState);
     }
 
+
+    public void run() {
+
+    }
+
     @Override
     public void sendingCoordinates() {
 

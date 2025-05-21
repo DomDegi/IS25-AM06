@@ -73,7 +73,9 @@ public class TextualInputParser {
                             return false;
                         }
                     }
-                } catch (IOException | NotBoundException e) {
+                } catch (IOException e ) {
+                    throw new RuntimeException(e);
+                } catch (NotBoundException e) {
                     throw new RuntimeException(e);
                 }
             }

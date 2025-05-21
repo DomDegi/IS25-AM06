@@ -136,7 +136,7 @@ public class ClientController {
     }
 
     public boolean createGame(String gameName, int numberOfPlayers, GameMode mode) {
-        if(state!=ClientState.LOBBY&&state!=ClientState.LOBBY0&&state!=ClientState.LOBBY1){
+        if(state!=ClientState.LOBBY&&state!=ClientState.LOBBY0&&state!=ClientState.LOBBY1&&state!=ClientState.COLOR_CHOICE0){
             return false;
         }
         for (GameInfo games : gameInfo) {
