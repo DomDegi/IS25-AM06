@@ -33,6 +33,8 @@ public interface DisplayableView extends ViewInterface{
 
     void printFlightboard(LightFlightboard lightFlightboard);
 
+    void checkShipboard(LightShipBoard lightShipBoard);
+
     void printShipboard(LightShipBoard lightShipBoard);
 
     void printProjectile(Projectile projectile);
@@ -55,4 +57,6 @@ public interface DisplayableView extends ViewInterface{
 
 
     void notifyPlayerJoined(int expectedPlayer, int currentPlayer,boolean reconnected);
+
+    void showAvailableDecks();
 }

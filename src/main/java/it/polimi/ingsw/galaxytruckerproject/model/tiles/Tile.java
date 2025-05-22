@@ -224,6 +224,7 @@ public abstract class Tile implements Serializable,Cloneable {
     public Tile send(){
         try {
             Tile cloned= (Tile) super.clone();
+            cloned.setRotation(rotation);
             cloned.setShipBoard(null);
             return cloned;
         } catch (CloneNotSupportedException e) {

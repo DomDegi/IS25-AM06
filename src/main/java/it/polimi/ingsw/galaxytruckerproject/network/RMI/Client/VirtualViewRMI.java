@@ -98,7 +98,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     }
 
     @Override
-    public void notifyNotAvailableColor(PlayersColor color) throws RemoteException {
+    public void notifyNotAvailableColor(ArrayList<PlayersColor> color) throws RemoteException {
         clientController.colorsNotAvailable(color);
     }
 

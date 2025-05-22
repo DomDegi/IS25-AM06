@@ -37,11 +37,12 @@ public class S_ManageDrawTileController {
         String inHandImagePath = GUI.getController().getTileInHand().getImagePath();
         InputStream inHandImageStream = getClass().getResourceAsStream(inHandImagePath);
         if (inHandImageStream == null) {
-            System.err.println("Impossibile trovare l'immagine: " + inHandImagePath);
-            drawnTile.setText("Img non trovata");
+            System.err.println("not found" + inHandImagePath);
+            drawnTile.setText("MCS");
         } else {
             Image inHandImage = new Image(inHandImageStream);
             ImageView inHandImageView = new ImageView(inHandImage);
+            inHandImageView.rotateProperty().setValue(GUI.getController().getTileInHand().getRotation() * 90);
             inHandImageView.setFitWidth(175);
             inHandImageView.setFitHeight(175);
             drawnTile.setPadding(Insets.EMPTY);
@@ -59,8 +60,8 @@ public class S_ManageDrawTileController {
             String imagePath = tile.getImagePath();
             InputStream imageStream = getClass().getResourceAsStream(imagePath);
             if (imageStream == null) {
-                System.err.println("Impossibile trovare l'immagine: " + imagePath);
-                imageButton.setText("Img non trovata");
+                System.err.println("not found" + imagePath);
+                imageButton.setText("MCS");
             } else {
                 Image image = new Image(imageStream);
                 ImageView imageView = new ImageView(image);
@@ -82,8 +83,8 @@ public class S_ManageDrawTileController {
             String imagePath = tile.getImagePath();
             InputStream imageStream = getClass().getResourceAsStream(imagePath);
             if (imageStream == null) {
-                System.err.println("Impossibile trovare l'immagine: " + imagePath);
-                imageButton.setText("Img non trovata");
+                System.err.println("not found" + imagePath);
+                imageButton.setText("MCS");
             } else {
                 Image image = new Image(imageStream);
                 ImageView imageView = new ImageView(image);
@@ -299,5 +300,38 @@ public class S_ManageDrawTileController {
         GUI.rotate();
         GUI.rotate();
         GUI.rotate();
+    }
+
+    public void update () {
+        drawnTiles1.getChildren().clear();
+        drawnTiles2.getChildren().clear();
+        int index = 0;
+        for (Tile tile : GUI.getController().getTurnedTilesDisplayer()) {
+            Button imageButton = new Button();
+            String imagePath = tile.getImagePath();
+            InputStream imageStream = getClass().getResourceAsStream(imagePath);
+            if (imageStream == null) {
+                System.err.println("not found" + imagePath);
+                imageButton.setText("MCS");
+            } else {
+                Image image = new Image(imageStream);
+                ImageView imageView = new ImageView(image);
+                imageView.rotateProperty().setValue(tile.getRotation() * 90);
+                imageView.setFitWidth(80);
+                imageView.setFitHeight(80);
+                imageButton.setGraphic(imageView);
+                imageButton.setPrefWidth(80);
+                imageButton.setPrefHeight(80);
+                imageButton.setMaxWidth(80);
+                imageButton.setMaxHeight(80);
+                imageButton.setPadding(Insets.EMPTY);
+                if (index % 2 == 0) {
+                    drawnTiles1.getChildren().add(imageButton);
+                } else {
+                    drawnTiles2.getChildren().add(imageButton);
+                }
+            }
+            index++;
+        }
     }
 }

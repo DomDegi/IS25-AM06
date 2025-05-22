@@ -36,6 +36,7 @@ public class ClientController {
     private boolean connected;
     private GamePhases phase;
     private ArrayList<GameInfo> gameInfo;
+    private String checking;
 
     private GameMode gameMode;
     private DisplayableView view;
@@ -58,6 +59,7 @@ public class ClientController {
     private int hourglassTurns;
 
     public ClientController() {
+        this.checking= null;
         this.numPlayer = 0;
         this.gameInfo = new ArrayList<>();
         this.view = new TUI();
@@ -763,11 +765,20 @@ public class ClientController {
         }
         players.sort((p1, p2) -> Integer.compare(p2.getPlayerColor().toInt(), p1.getPlayerColor().toInt()));
         if (chose >= 0 && chose < flightBoard.getInGamePlayers().size()) {
-            view.printShipboard(players.get(chose-1).getShipBoard());
+            setChecking(players.get(chose-1).getPlayerName());
+            view.checkShipboard(players.get(chose-1).getShipBoard());
             return true;
         } else {
             return false;
         }
+    }
+
+    public String isChecking(){
+        return checking;
+    }
+
+    public void setChecking(String checking) {
+        this.checking = checking;
     }
 
     public boolean firstHourglassTurn() {
@@ -936,6 +947,7 @@ public class ClientController {
     public void removeTurnedTile(Tile tile) {
         turnedTiles.remove(tile.getKey());
         turnedTilesDisplayer.removeIf(t -> t.getKey() == tile.getKey());
+        view.showTurnedTiles(turnedTiles);
     }
 
     public String getName() {
@@ -949,6 +961,10 @@ public class ClientController {
     public void setTile(String playerName, Tile tile) {
         LightShipBoard lightShipBoard = flightBoard.getInGamePlayer(playerName).getShipBoard();
         lightShipBoard.positionTile(Optional.of(tile), tile.getCoordinates());
+        if(isChecking()!=null&& Objects.equals(isChecking(), playerName)){
+            LightPlayer player = playerFinder(playerName);
+            view.checkShipboard(player.getShipBoard());
+        }
     }
 
     public CoordInputManager getCoordInputManager() {
@@ -1027,6 +1043,7 @@ public class ClientController {
             if (notAvailableDecks.contains(index))
                 availableDeck.put(index, Boolean.FALSE);
         }
+        view.showAvailableDecks();
     }
 
     public DisplayableView getView() {
@@ -1041,8 +1058,13 @@ public class ClientController {
         this.gameInfo = gameInfo;
     }
 
-    public void colorsNotAvailable(PlayersColor notAvailableColors) {
-        this.availableColors.put(notAvailableColors, Boolean.FALSE);
+    public void colorsNotAvailable(ArrayList<PlayersColor> notAvailableColors) {
+        for(PlayersColor color:PlayersColor.values()){
+            availableColors.put(color,Boolean.TRUE);
+        }
+        for(PlayersColor color:notAvailableColors){
+            this.availableColors.put(color, Boolean.FALSE);
+        }
     }
 
     //Test getter
@@ -1183,6 +1205,10 @@ public class ClientController {
 
     public void victimOfThePenalty(String playerName) {
         view.victimOfThePenalty(playerName,this.displayedCard.getFirst().getPenalty());
+    }
+
+    public Map<Integer, Boolean> getAvailableDeck() {
+        return availableDeck;
     }
 }
 

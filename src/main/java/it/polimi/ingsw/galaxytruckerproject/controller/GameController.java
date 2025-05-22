@@ -149,6 +149,17 @@ public class GameController implements Observer, Serializable {
             if (this.getGameState().equals(GameState.LOBBY_PHASE)){
                 playersViewMap.put(playerName, view);
                 notifyPlayerJoined(false);
+                ArrayList<PlayersColor> notAvailableColors=new ArrayList<>();
+                for(PlayersColor color:PlayersColor.values()){
+                    if(!checkColorAvailable(color)){
+                        notAvailableColors.add(color);
+                    }
+                }
+                try {
+                    playersViewMap.get(playerName).notifyNotAvailableColor(notAvailableColors);
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
                 if(playersViewMap.size()!=1){
                 try {
                     view.setClientState(ClientState.COLOR_CHOICE);
@@ -349,7 +360,9 @@ public class GameController implements Observer, Serializable {
                 activePlayers.put(playerName, game.identifyPlayerByName(playerName));
                 for (Player player : activePlayers.values()) {
                     try {
-                        playersViewMap.get(player.getPlayerName()).notifyNotAvailableColor(playersColor);
+                        ArrayList<PlayersColor> color=new ArrayList<>();
+                        color.add(playersColor);
+                        playersViewMap.get(player.getPlayerName()).notifyNotAvailableColor(color);
                     } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
@@ -413,6 +426,14 @@ public class GameController implements Observer, Serializable {
                 } catch(RemoteException e) {
                     throw new RuntimeException(e);
                 }
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean checkColorAvailable (PlayersColor playersColor)  {
+        for (Player player : activePlayers.values()) {
+            if (player.getPlayerColor().equals(playersColor)) {
                 return false;
             }
         }

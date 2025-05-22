@@ -33,7 +33,7 @@
                                     <Rectangle2D />
                                  </viewport>
                               </ImageView>
-                              <Button layoutX="127.0" layoutY="228.5" mnemonicParsing="false" onAction="#drawDeck2" prefHeight="98.0" prefWidth="36.0">
+                              <Button fx:id="deck2" layoutX="127.0" layoutY="228.5" mnemonicParsing="false" onAction="#drawDeck2" prefHeight="98.0" prefWidth="36.0">
                                  <graphic>
                                     <ImageView fitHeight="87.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -42,7 +42,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button layoutX="24.0" layoutY="202.0" mnemonicParsing="false" onAction="#drawDeck1" prefHeight="98.0" prefWidth="36.0" rotate="26.0">
+                              <Button fx:id="deck1" layoutX="24.0" layoutY="202.0" mnemonicParsing="false" onAction="#drawDeck1" prefHeight="98.0" prefWidth="36.0" rotate="26.0">
                                  <graphic>
                                     <ImageView fitHeight="87.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -51,7 +51,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button layoutX="230.0" layoutY="202.0" mnemonicParsing="false" onAction="#drawDeck3" prefHeight="98.0" prefWidth="36.0" rotate="-26.0">
+                              <Button fx:id="deck3" layoutX="230.0" layoutY="202.0" mnemonicParsing="false" onAction="#drawDeck3" prefHeight="98.0" prefWidth="36.0" rotate="-26.0">
                                  <graphic>
                                     <ImageView fitHeight="87.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
                                        <image>

@@ -18,6 +18,8 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.view.gui.CheckShipController;
 import it.polimi.ingsw.galaxytruckerproject.view.gui.LobbyController;
+import it.polimi.ingsw.galaxytruckerproject.view.gui.S_EndDrawTilesCardsController;
+import it.polimi.ingsw.galaxytruckerproject.view.gui.S_ManageDrawTileController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -42,7 +44,6 @@ public class GUI extends Application implements DisplayableView {
     private static String gameName;
     private static int numberOfPlayers;
     private static GameMode mode;
-    private static PlayersColor color;
 
     private static Stage primaryStage;
     private static BorderPane layout;
@@ -534,11 +535,6 @@ public class GUI extends Application implements DisplayableView {
         displayClientState(newState);
     }
 
-
-    public void run() {
-
-    }
-
     @Override
     public void sendingCoordinates() {
 
@@ -546,7 +542,21 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void showTurnedTiles(Map<Integer, Tile> turnedTiles) {
-
+        Platform.runLater(() -> {
+            try {
+                if (controller.getState() == ClientState.S_END_DRAW_TILE_CARD) {
+                    S_EndDrawTilesCardsController sceneController = loader.getController();
+                    if (sceneController != null)
+                        sceneController.update();
+                } else if (controller.getState() == ClientState.S_MANAGE_DRAWN_TILE) {
+                    S_ManageDrawTileController sceneController = loader.getController();
+                    if (sceneController != null)
+                        sceneController.update();
+                }
+            } catch (Exception e) {
+                return;
+            }
+        });
     }
 
     @Override
@@ -575,8 +585,34 @@ public class GUI extends Application implements DisplayableView {
     }
 
     @Override
+    public void checkShipboard(LightShipBoard lightShipBoard) {
+        Platform.runLater(() -> {
+            loader = new FXMLLoader(GUI.class.getResource("/gui/checkShip.fxml"));
+            BorderPane newLayer;
+            try {
+                newLayer = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            CheckShipController checkShipController=loader.getController();
+            checkShipController.setPlayer(lightShipBoard);
+            layout.setCenter(newLayer);
+        });
+    }
+
+    @Override
     public void printShipboard(LightShipBoard lightShipBoard) {
 
+    }
+
+    @Override
+    public void showAvailableDecks(){
+        Platform.runLater(() -> {
+            if(controller.getState()==ClientState.S_END_DRAW_TILE_CARD){
+                S_EndDrawTilesCardsController sEndDrawTilesCardsController=loader.getController();
+                sEndDrawTilesCardsController.update();
+            }
+        });
     }
 
     @Override
@@ -781,7 +817,5 @@ public class GUI extends Application implements DisplayableView {
     public static GameMode getMode() {
         return mode;
     }
-
-
 }
 

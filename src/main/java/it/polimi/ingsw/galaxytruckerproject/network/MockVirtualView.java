@@ -53,7 +53,7 @@ public class MockVirtualView implements VirtualView {
     }
 
     @Override
-    public void notifyNotAvailableColor(PlayersColor color) throws RemoteException {
+    public void notifyNotAvailableColor(ArrayList<PlayersColor> color) throws RemoteException {
 
     }
 
