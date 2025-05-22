@@ -52,4 +52,9 @@ public class CordRequestController {
             }
         }
     }
+
+    @FXML
+    public void doneCoord(){
+        GUI.doneCoord();
+    }
 }
