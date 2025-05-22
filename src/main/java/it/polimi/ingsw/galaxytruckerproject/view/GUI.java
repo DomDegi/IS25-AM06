@@ -363,6 +363,18 @@ public class GUI extends Application implements DisplayableView {
         });
     }
 
+    private static void showCoordRequest() {
+        Platform.runLater(() -> {
+            loader = new FXMLLoader(GUI.class.getResource("/gui/cordShipRequest.fxml"));
+            BorderPane newLayer;
+            try {
+                newLayer = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            layout.setCenter(newLayer);
+        });
+    }
     public static void showMessage(String message) {
         Platform.runLater(() -> {
             loader = new FXMLLoader(GUI.class.getResource("/gui/message.fxml"));
@@ -525,7 +537,7 @@ public class GUI extends Application implements DisplayableView {
 
             }
             case COORD_REQUEST -> {
-
+                showCoordRequest();
             }
             case ROLL_DICE -> {
 
