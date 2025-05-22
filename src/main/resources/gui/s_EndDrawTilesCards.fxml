@@ -14,11 +14,11 @@
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="1030.0" prefWidth="1820.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.galaxytruckerproject.view.gui.S_EndDrawTilesCardsController">
+<BorderPane onKeyPressed="#K" prefHeight="1030.0" prefWidth="1820.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.galaxytruckerproject.view.gui.S_EndDrawTilesCardsController">
    <center>
       <HBox alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
-            <TilePane fx:id="drawnTiles1" alignment="CENTER_RIGHT" hgap="10.0" prefHeight="1028.0" prefWidth="700.0" vgap="10.0" />
+            <TilePane fx:id="drawnTiles1" alignment="CENTER_RIGHT" hgap="5.0" prefHeight="1028.0" prefWidth="700.0" vgap="5.0" />
             <VBox alignment="CENTER" spacing="30.0">
                <children>
                   <AnchorPane prefHeight="339.0" prefWidth="612.0">
@@ -126,7 +126,7 @@
                   </AnchorPane>
                </children>
             </VBox>
-            <TilePane fx:id="drawnTiles2" alignment="CENTER_LEFT" hgap="10.0" prefHeight="1028.0" prefWidth="700.0" vgap="10.0" />
+            <TilePane fx:id="drawnTiles2" alignment="CENTER_LEFT" hgap="5.0" prefHeight="1028.0" prefWidth="700.0" vgap="5.0" />
          </children>
       </HBox>
    </center>

@@ -16,10 +16,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.view.gui.CheckShipController;
-import it.polimi.ingsw.galaxytruckerproject.view.gui.LobbyController;
-import it.polimi.ingsw.galaxytruckerproject.view.gui.S_EndDrawTilesCardsController;
-import it.polimi.ingsw.galaxytruckerproject.view.gui.S_ManageDrawTileController;
+import it.polimi.ingsw.galaxytruckerproject.view.gui.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -27,6 +24,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -64,6 +62,7 @@ public class GUI extends Application implements DisplayableView {
         GUI.primaryStage.setTitle("Galaxy Trucker");
         showMainView();
         showWelcome();
+        GUI.primaryStage.setFullScreen(true);
     }
 
     private void showMainView() throws IOException {
@@ -489,6 +488,7 @@ public class GUI extends Application implements DisplayableView {
             case S_END_DRAW_TILE_CARD ->{
                 showS_EndDrawTilesCards();
                 addCheckShip();
+
             }
             case S_MANAGE_DRAWN_TILE ->{
                 showS_ManageDrawTilesCards();
@@ -577,7 +577,12 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void printFlightboard(LightFlightboard lightFlightboard) {
-
+        Platform.runLater(() -> {
+            if(controller.getState()==ClientState.S_FINISHED){
+                EndShipController endShipController=loader.getController();
+                endShipController.update();
+            }
+        });
     }
 
     @Override

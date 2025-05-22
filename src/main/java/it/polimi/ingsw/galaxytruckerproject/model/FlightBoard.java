@@ -88,13 +88,13 @@ public class FlightBoard implements Serializable {
         //makes sure that the position chosen is from 0 to 3 (after the offset) and sets the right value for starting pos
         switch (pos) {
             case 0:
-                newPlayer.setPlayerPosition(9);
+                newPlayer.setPlayerPosition(6);
                 break;
             case 1:
-                newPlayer.setPlayerPosition(5);
+                newPlayer.setPlayerPosition(3);
                 break;
             case 2:
-                newPlayer.setPlayerPosition(2);
+                newPlayer.setPlayerPosition(1);
                 break;
             case 3:
                 newPlayer.setPlayerPosition(0);

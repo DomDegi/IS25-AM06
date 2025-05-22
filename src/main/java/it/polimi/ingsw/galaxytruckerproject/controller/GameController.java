@@ -245,9 +245,9 @@ public class GameController implements Observer, Serializable {
                 int ranking = player.getPlayerRanking();
                 if (position != 0 || ranking != 0) {
                     switch(position) {
-                        case 9 -> this.setPosition(player.getPlayerName(),getViewFromNickname(player.getPlayerName()), 1);
-                        case 5 -> this.setPosition(player.getPlayerName(),getViewFromNickname(player.getPlayerName()), 2);
-                        case 2 -> this.setPosition(player.getPlayerName(),getViewFromNickname(player.getPlayerName()), 3);
+                        case 6 -> this.setPosition(player.getPlayerName(),getViewFromNickname(player.getPlayerName()), 1);
+                        case 3 -> this.setPosition(player.getPlayerName(),getViewFromNickname(player.getPlayerName()), 2);
+                        case 1 -> this.setPosition(player.getPlayerName(),getViewFromNickname(player.getPlayerName()), 3);
                         case 0 -> this.setPosition(player.getPlayerName(),getViewFromNickname(player.getPlayerName()), 4);
                     }
                 }

@@ -929,6 +929,7 @@ public class ClientController {
             if (player.getPlayerName().equals(name)) {
                 player.setPosition(pos);
                 player.setRank(ranking);
+                view.printFlightboard(flightBoard);
                 return;
             }
         addToFlightboard(name, color, pos, ranking);
@@ -1209,6 +1210,29 @@ public class ClientController {
 
     public Map<Integer, Boolean> getAvailableDeck() {
         return availableDeck;
+    }
+
+    public Map<Integer, PlayersColor> getAvailablePosition(){
+        Map<Integer,PlayersColor> availablePosition = new HashMap<>();
+        for(int i=1;i<=4;i++){
+            if(i<=flightBoard.getInGamePlayers().size())
+                availablePosition.put(i,null);
+        }
+        flightBoard.getInGamePlayers().forEach(p -> {
+            if(p.getPosition()==6&&p.getRank()!=0){
+                availablePosition.put(1,p.getPlayerColor());
+            }
+            if(p.getPosition()==3&&p.getRank()!=0){
+                availablePosition.put(2,p.getPlayerColor());
+            }
+            if(p.getPosition()==1&&p.getRank()!=0){
+                availablePosition.put(3,p.getPlayerColor());
+            }
+            if(p.getPosition()==0&&p.getRank()!=0){
+                availablePosition.put(4,p.getPlayerColor());
+            }
+        });
+        return availablePosition;
     }
 }
 
