@@ -62,6 +62,7 @@ public class GUI extends Application implements DisplayableView {
         GUI.primaryStage.setTitle("Galaxy Trucker");
         css= Objects.requireNonNull(GUI.class.getResource("/gui/css/style.css")).toExternalForm();
         showMainView();
+        showWelcome();
         GUI.primaryStage.setFullScreen(true);
     }
 
