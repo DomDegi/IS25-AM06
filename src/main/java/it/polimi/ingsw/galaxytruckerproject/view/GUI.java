@@ -24,7 +24,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -36,13 +35,14 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
 public class GUI extends Application implements DisplayableView {
 
     private static String gameName;
     private static int numberOfPlayers;
     private static GameMode mode;
-
+    private static String css;
     private static Stage primaryStage;
     private static BorderPane layout;
     private static ClientController controller;
@@ -60,14 +60,15 @@ public class GUI extends Application implements DisplayableView {
     public void start(Stage primaryStage) throws IOException {
         GUI.primaryStage = primaryStage;
         GUI.primaryStage.setTitle("Galaxy Trucker");
+        css= Objects.requireNonNull(GUI.class.getResource("/gui/css/style.css")).toExternalForm();
         showMainView();
-        showWelcome();
         GUI.primaryStage.setFullScreen(true);
     }
 
     private void showMainView() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/mainView.fxml"));
         layout = loader.load();
+        layout.getStylesheets().add(css);
         primaryStage.setScene(new Scene(layout));
         primaryStage.show();
     }
@@ -137,6 +138,15 @@ public class GUI extends Application implements DisplayableView {
     public static void putTile(int x, int y){
         Coordinates coordinates = new Coordinates(x,y);
         controller.positionTile(coordinates);
+    }
+
+    public static void selectTile(int x, int y){
+        Coordinates coordinates = new Coordinates(x,y);
+        controller.checkCoord(coordinates);
+    }
+
+    public static void doneCoord(){
+        controller.doneCoord();
     }
 
     public static void bookTile(){
