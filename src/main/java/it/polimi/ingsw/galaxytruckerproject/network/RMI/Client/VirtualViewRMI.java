@@ -104,9 +104,10 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
 
     @Override
     public void notifyDrawnCard(Card card) throws RemoteException {
+        clientController.setDisplayedCard(card);
         view.notifyDrawnCard(card);
         clientController.setState(ClientState.WAIT);
-        clientController.setDisplayedCard(card);
+
     }
 
     @Override

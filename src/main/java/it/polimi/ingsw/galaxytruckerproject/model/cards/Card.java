@@ -155,4 +155,5 @@ public abstract class Card implements Serializable {
     public  Penalty getPenalty() {
         return null;
     }
+    public String getFilePath() {return filePath;}
 }

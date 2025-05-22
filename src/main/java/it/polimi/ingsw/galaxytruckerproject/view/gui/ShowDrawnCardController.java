@@ -9,12 +9,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-public class DrawaCardController {
+public class ShowDrawnCardController {
 
+    @FXML
+    public ImageView card;
 
     @FXML
     public GridPane tilesTable;
@@ -51,10 +52,19 @@ public class DrawaCardController {
                 tilesTable.add(imageButton,tile.getCoordinates().getY(),tile.getCoordinates().getX());
             }
         }
+
+        card.setImage(loadImage(GUI.displayableCards().get(0).getFilePath()));
     }
 
-    @FXML
-    public void draw() throws IOException {
-       GUI.drawCard();
+    private Image loadImage(String path) {
+        InputStream stream = getClass().getResourceAsStream(path);
+        if (stream == null) {
+            System.err.println("Immagine non trovata: " + path);
+            return null;
+        }
+        return new Image(stream);
     }
+
+
+
 }

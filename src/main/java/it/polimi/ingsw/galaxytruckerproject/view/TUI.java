@@ -351,7 +351,10 @@ public class TUI implements DisplayableView {
 
     @Override
     public void showCard(ArrayList<Card> cards) {
+
+        if(cards!=null)
         for(Card card : cards) {
+            if( card !=null)
             System.out.println(card.toString());
         }
     }
