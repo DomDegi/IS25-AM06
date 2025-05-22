@@ -5,8 +5,8 @@ public class SingleEngine extends Engine{
         super(north, east, south, west,imagePath,rotation,key);
     }
     //CONSTRUCTOR METHOD FOR THE TESTING
-    public SingleEngine(Link north, Link east, Link south, Link west,String imagePath) {
-        super(north, east, south, west,imagePath,0,0);
+    public SingleEngine(Link north, Link east, Link south, Link west) {
+        super(north, east, south, west,null,0,0);
     }
 
     @Override

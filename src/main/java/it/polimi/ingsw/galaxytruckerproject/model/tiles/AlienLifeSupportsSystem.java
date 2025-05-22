@@ -16,8 +16,8 @@ public class AlienLifeSupportsSystem extends Tile {
     }
 
     //METODO COSTRUTTORE PER IL TEST
-    public AlienLifeSupportsSystem(Link north, Link east, Link south, Link west, String imagePath , CrewType colorAlienSupported) {
-        super(north, east, south, west, imagePath,0,0);
+    public AlienLifeSupportsSystem(Link north, Link east, Link south, Link west, CrewType colorAlienSupported) {
+        super(north, east, south, west, null,0,0);
         this.colorAlienSupported = colorAlienSupported;
         if (colorAlienSupported == CrewType.HUMAN)
             System.out.println("AlienLifeSupportsSystem only supports BROWN AND PURPLE");

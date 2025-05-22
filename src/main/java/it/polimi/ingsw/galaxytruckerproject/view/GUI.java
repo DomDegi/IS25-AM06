@@ -62,6 +62,7 @@ public class GUI extends Application implements DisplayableView {
         GUI.primaryStage.setTitle("Galaxy Trucker");
         css= Objects.requireNonNull(GUI.class.getResource("/gui/css/style.css")).toExternalForm();
         showMainView();
+        showWelcome();
         GUI.primaryStage.setFullScreen(true);
     }
 
@@ -191,6 +192,15 @@ public class GUI extends Application implements DisplayableView {
     public static void position(int index){
         controller.positionOnFlightBoard(index);
     }
+
+    public static void drawCard() {
+        controller.drawCard();
+    }
+
+    public static ArrayList<Card> displayableCards(){
+         return  controller.getDisplayedCard();
+    }
+
 //showMethods---------------------------------------------------------------------------------------------------------------
     public static void clear(){
         showMessage("");
@@ -594,6 +604,16 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void showCard(ArrayList<Card> cards) {
+        Platform.runLater(() -> {
+            loader = new FXMLLoader(GUI.class.getResource("/gui/showCard.fxml"));
+            BorderPane newLayer;
+            try {
+                newLayer = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            layout.setCenter(newLayer);
+        });
 
     }
 
@@ -755,7 +775,16 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void notifyDrawnCard(Card card) throws RemoteException {
-
+        Platform.runLater(() -> {
+            loader = new FXMLLoader(GUI.class.getResource("/gui/showCard.fxml"));
+            BorderPane newLayer;
+            try {
+                newLayer = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            layout.setCenter(newLayer);
+        });
     }
 
     @Override

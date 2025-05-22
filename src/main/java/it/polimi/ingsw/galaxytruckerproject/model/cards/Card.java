@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
@@ -38,6 +40,7 @@ public abstract class Card implements Serializable {
     protected final int level;
     protected final int requiredDays;
     protected GameInterface game = null;
+    protected String filePath;
 
     //This attribute is null until the card is initialized
     protected Map<String, VirtualView> viewsMap = new HashMap<>();
@@ -45,6 +48,13 @@ public abstract class Card implements Serializable {
     public Card(int level, int requiredDays) {
         this.level = level;
         this.requiredDays = requiredDays;
+    }
+
+    @JsonCreator
+    public Card(int level, int requiredDays, String filePath) {
+        this.level = level;
+        this.requiredDays = requiredDays;
+        this.filePath = filePath;
     }
 
     public abstract void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap);
@@ -145,4 +155,5 @@ public abstract class Card implements Serializable {
     public  Penalty getPenalty() {
         return null;
     }
+    public String getFilePath() {return filePath;}
 }

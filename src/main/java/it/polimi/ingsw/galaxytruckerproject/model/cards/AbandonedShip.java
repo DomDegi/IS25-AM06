@@ -27,9 +27,23 @@ public class AbandonedShip extends Card {
             @JsonProperty("level") int level,
             @JsonProperty("requiredDays") int requiredDays,
             @JsonProperty("crewNumberRequired") int crewNumberRequired,
+            @JsonProperty("possibleCreditGains") int possibleCreditGains,
+            @JsonProperty("imagePath") String filePath
+    ) {
+        super(level, requiredDays, filePath);
+        this.crewNumberRequired = crewNumberRequired;
+        this.possibleCreditGains = possibleCreditGains;
+        this.playerIndex = 0;
+        this.playerAccepted = false;
+    }
+
+    public AbandonedShip(
+            @JsonProperty("level") int level,
+            @JsonProperty("requiredDays") int requiredDays,
+            @JsonProperty("crewNumberRequired") int crewNumberRequired,
             @JsonProperty("possibleCreditGains") int possibleCreditGains
     ) {
-        super(level, requiredDays);
+        super(level, requiredDays, null);
         this.crewNumberRequired = crewNumberRequired;
         this.possibleCreditGains = possibleCreditGains;
         this.playerIndex = 0;

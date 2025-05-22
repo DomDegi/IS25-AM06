@@ -20,8 +20,8 @@ public abstract class CargoHold extends Tile{
     }
 
     //CONSTRUCTOR METHOD FOR THE TESTING
-    public CargoHold(int totSpaces, Link north, Link east, Link south, Link west, String imagePath) {
-        super(north, east, south, west,imagePath,0, 0);
+    public CargoHold(int totSpaces, Link north, Link east, Link south, Link west) {
+        super(north, east, south, west,null,0, 0);
         this.totSpaces = totSpaces;
         this.cargo = new ArrayList<>();
         // It makes more sense to use an ArrayList since they are much easier to manage in Java.

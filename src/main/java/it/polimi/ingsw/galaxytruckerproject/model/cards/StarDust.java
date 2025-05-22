@@ -12,9 +12,14 @@ import java.util.Map;
 public class StarDust extends Card {
 
     @JsonCreator
-    public StarDust(@JsonProperty("level") int level) {
-        super(level, 0);
+    public StarDust(@JsonProperty("level") int level, @JsonProperty("imagePath") String filePath) {
+        super(level, 0,filePath);
     }
+
+    public StarDust(@JsonProperty("level") int level) {
+        super(level, 0, null);
+    }
+
 
     //This cards doesn't need any input, so it gets instantly executed when initialized
     public void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap) {

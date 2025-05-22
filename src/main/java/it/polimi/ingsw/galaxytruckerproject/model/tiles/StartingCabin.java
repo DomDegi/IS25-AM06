@@ -11,8 +11,8 @@ public class StartingCabin extends Cabin {
         crew = 2;
     }
     //CONSTRUCTOR METHOD FOR THE TESTING
-    public StartingCabin(Link nord, Link east, Link south, Link west,String imagePath) {
-        super(nord, east, south, west,imagePath,0,0);
+    public StartingCabin(Link nord, Link east, Link south, Link west) {
+        super(nord, east, south, west,null,0,0);
         crew = 2;
     }
 

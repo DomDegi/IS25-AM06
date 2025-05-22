@@ -6,8 +6,8 @@ public class DoubleCannon extends Cannon{
         super(north, east, south, west, imagePath,rotation, key);
     }
     //CONSTRUCTOR METHOD FOR THE TESTING
-    public DoubleCannon(Link north, Link east, Link south, Link west,String imagePath) {
-        super(north, east, south, west, imagePath,0,0);
+    public DoubleCannon(Link north, Link east, Link south, Link west) {
+        super(north, east, south, west, null,0,0);
     }
 
     public boolean chooseToUse(){

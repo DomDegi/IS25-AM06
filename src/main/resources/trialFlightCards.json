@@ -16,15 +16,18 @@
         {
           "color" : "BLUE"
         }
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_012.jpg"
     },
     {
       "type": "StarDust",
-      "level": 1
+      "level": 1,
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_014.jpg"
     },
     {
       "type": "OpenSpace",
-      "level": 1
+      "level": 1,
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_015.jpg"
     },
     {
       "type": "MeteorSwarm",
@@ -42,7 +45,8 @@
           "type": "SmallMeteor",
           "direction": "EAST"
         }
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_019.jpg"
     },
     {
       "type": "Planets",
@@ -67,7 +71,8 @@
             { "color": "YELLOW"}
           ]
         }
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0113.jpg"
     },
     {
       "type": "CombatZone",
@@ -94,14 +99,16 @@
             }
           ]
         }
-      }
+      },
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0116.jpg"
     },
     {
       "type": "AbandonedShip",
       "level": 1,
       "requiredDays": 1,
       "crewNumberRequired": 3,
-      "possibleCreditGains": 4
+      "possibleCreditGains": 4,
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0118.jpg"
     },
     {
       "type": "AbandonedStation",
@@ -111,7 +118,8 @@
       "possibleGoodsGain": [
         { "color": "YELLOW"},
         { "color": "GREEN"}
-      ]
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0119.jpg"
     }
   ]
 }

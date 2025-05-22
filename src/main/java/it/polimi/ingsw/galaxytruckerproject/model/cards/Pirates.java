@@ -30,6 +30,18 @@ public class Pirates extends Enemies {
             @JsonProperty("requiredDays") int requiredDays,
             @JsonProperty("cannonStrength") int cannonStrength,
             @JsonProperty("rewardCredits") int rewardCredits,
+            @JsonProperty("listOfShots") ArrayList<Projectile> listOfShots,
+            @JsonProperty("imagePath") String filePath) {
+        super(level, requiredDays, cannonStrength, filePath);  // Chiamata al costruttore della classe base
+        this.rewardCredits = rewardCredits;
+        this.listOfCannonShots = listOfShots;
+    }
+
+    public Pirates(
+            @JsonProperty("level") int level,
+            @JsonProperty("requiredDays") int requiredDays,
+            @JsonProperty("cannonStrength") int cannonStrength,
+            @JsonProperty("rewardCredits") int rewardCredits,
             @JsonProperty("listOfShots") ArrayList<Projectile> listOfShots) {
         super(level, requiredDays, cannonStrength);  // Chiamata al costruttore della classe base
         this.rewardCredits = rewardCredits;

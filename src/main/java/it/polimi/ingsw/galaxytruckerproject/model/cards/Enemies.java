@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
@@ -11,11 +13,17 @@ import java.util.Map;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Slavers.class, name = "Slavers"),
         @JsonSubTypes.Type(value = Smugglers.class, name = "Smugglers"),
-        @JsonSubTypes.Type(value = Pirates.class, name = "Pirates")
+        @JsonSubTypes.Type(value = Pirates.class, name = "Pirates"),
 })
 
 public abstract class Enemies extends Card {
     protected final int cannonStrength;
+
+    @JsonCreator
+    public Enemies(int level, int requiredDays, int cannonStrength,String filePath) {
+        super(level, requiredDays, filePath);
+        this.cannonStrength = cannonStrength;
+    }
 
     public Enemies(int level, int requiredDays, int cannonStrength) {
         super(level, requiredDays);

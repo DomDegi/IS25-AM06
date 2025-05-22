@@ -9,8 +9,8 @@ public class Shields extends Tile{
         this.coveredArea = Coverage.NORTH_EAST;
     }
     //CONSTRUCTOR METHOD FOR THE TESTING
-    public Shields(Link north, Link east, Link south, Link west,String imagePath) {
-        super(north, east, south, west,imagePath,0, 0);
+    public Shields(Link north, Link east, Link south, Link west) {
+        super(north, east, south, west,null,0, 0);
         this.coveredArea = Coverage.NORTH_EAST;
     }
 

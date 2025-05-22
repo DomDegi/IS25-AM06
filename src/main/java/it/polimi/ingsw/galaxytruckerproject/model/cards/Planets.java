@@ -28,13 +28,22 @@ public class Planets extends Card{
     private int playerIndex = -1;
 
     @JsonCreator
-    public Planets(@JsonProperty("level") int level, @JsonProperty("requiredDays") int requiredDays, @JsonProperty("listOfPlanets") ArrayList<Planet> listOfPlanets) {
-        super(level, requiredDays);
+    public Planets(@JsonProperty("level") int level, @JsonProperty("requiredDays") int requiredDays, @JsonProperty("listOfPlanets") ArrayList<Planet> listOfPlanets, @JsonProperty("imagePath") String filePath) {
+        super(level, requiredDays, filePath );
         this.goodsChecker=new HashMap<>();
         this.listOfPlanets = listOfPlanets;
         this.currentPlayer = null;
         this.chosen = false;
     }
+
+    public Planets(@JsonProperty("level") int level, @JsonProperty("requiredDays") int requiredDays, @JsonProperty("listOfPlanets") ArrayList<Planet> listOfPlanets) {
+        super(level, requiredDays,null);
+        this.goodsChecker=new HashMap<>();
+        this.listOfPlanets = listOfPlanets;
+        this.currentPlayer = null;
+        this.chosen = false;
+    }
+
     @Override
     public void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap) {
         this.game = game;

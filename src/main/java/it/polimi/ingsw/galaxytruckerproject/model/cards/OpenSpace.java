@@ -23,9 +23,15 @@ public class OpenSpace extends Card {
 
     //the subclass OpenSpace needs the same parameters as the superclass
     @JsonCreator
+    public OpenSpace(@JsonProperty("level") int level,  @JsonProperty("imagePath") String filePath) {
+        super(level, 0,filePath);
+    }
+
+
     public OpenSpace(@JsonProperty("level") int level) {
         super(level, 0);
     }
+
 
     //Initialize card for the player at the index playerIndex of the flightBoard ranking
     @Override
