@@ -576,18 +576,7 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void printShipboard(LightShipBoard lightShipBoard) {
-        Platform.runLater(() -> {
-            loader = new FXMLLoader(GUI.class.getResource("/gui/checkShip.fxml"));
-            BorderPane newLayer;
-            try {
-                newLayer = loader.load();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            CheckShipController checkShipController=loader.getController();
-            checkShipController.setPlayer(lightShipBoard);
-            layout.setCenter(newLayer);
-        });
+
     }
 
     @Override
