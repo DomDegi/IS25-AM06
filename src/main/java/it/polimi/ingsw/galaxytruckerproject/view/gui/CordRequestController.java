@@ -45,7 +45,7 @@ public class CordRequestController {
                 imageButton.setMaxHeight(80);
                 imageButton.setPadding(Insets.EMPTY);
                 imageButton.setOnAction(event -> {
-                    GUI.putTile(tile.getCoordinates().getY(), tile.getCoordinates().getX());
+                    GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
                     initialize();
                 });
                 tilesTable.add(imageButton, tile.getCoordinates().getY(), tile.getCoordinates().getX());
