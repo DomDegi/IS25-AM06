@@ -7,6 +7,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import java.util.ArrayList;
 
@@ -16,6 +18,20 @@ public class LobbyController {
 
     @FXML
     public ListView<String> joinableGames;
+
+    @FXML
+    public void K(KeyEvent event){
+        if(event.getEventType().equals(KeyEvent.KEY_PRESSED)){
+            if(event.getCode().equals(KeyCode.J)){
+                join();
+            }
+        }
+        if(event.getEventType().equals(KeyEvent.KEY_PRESSED)){
+            if(event.getCode().equals(KeyCode.C)){
+                showCreateNewGame();
+            }
+        }
+    }
 
     @FXML
     public void initialize() {
@@ -40,7 +56,7 @@ public class LobbyController {
     }
 
     @FXML
-    public void join(MouseEvent mouseEvent) {
+    public void join() {
         String gameName;
         ObservableList<String> gameInfos = joinableGames.getSelectionModel().getSelectedItems();
         if (!gameInfos.isEmpty()) {

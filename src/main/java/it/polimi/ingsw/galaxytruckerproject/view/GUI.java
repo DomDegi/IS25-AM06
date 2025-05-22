@@ -16,10 +16,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
-import it.polimi.ingsw.galaxytruckerproject.view.gui.CheckShipController;
-import it.polimi.ingsw.galaxytruckerproject.view.gui.LobbyController;
-import it.polimi.ingsw.galaxytruckerproject.view.gui.S_EndDrawTilesCardsController;
-import it.polimi.ingsw.galaxytruckerproject.view.gui.S_ManageDrawTileController;
+import it.polimi.ingsw.galaxytruckerproject.view.gui.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -38,13 +35,14 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
 public class GUI extends Application implements DisplayableView {
 
     private static String gameName;
     private static int numberOfPlayers;
     private static GameMode mode;
-
+    private static String css;
     private static Stage primaryStage;
     private static BorderPane layout;
     private static ClientController controller;
@@ -62,13 +60,15 @@ public class GUI extends Application implements DisplayableView {
     public void start(Stage primaryStage) throws IOException {
         GUI.primaryStage = primaryStage;
         GUI.primaryStage.setTitle("Galaxy Trucker");
+        css= Objects.requireNonNull(GUI.class.getResource("/gui/css/style.css")).toExternalForm();
         showMainView();
-        showWelcome();
+        GUI.primaryStage.setFullScreen(true);
     }
 
     private void showMainView() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/mainView.fxml"));
         layout = loader.load();
+        layout.getStylesheets().add(css);
         primaryStage.setScene(new Scene(layout));
         primaryStage.show();
     }
@@ -138,6 +138,15 @@ public class GUI extends Application implements DisplayableView {
     public static void putTile(int x, int y){
         Coordinates coordinates = new Coordinates(x,y);
         controller.positionTile(coordinates);
+    }
+
+    public static void selectTile(int x, int y){
+        Coordinates coordinates = new Coordinates(x,y);
+        controller.checkCoord(coordinates);
+    }
+
+    public static void doneCoord(){
+        controller.doneCoord();
     }
 
     public static void bookTile(){
@@ -363,6 +372,18 @@ public class GUI extends Application implements DisplayableView {
         });
     }
 
+    private static void showCoordRequest() {
+        Platform.runLater(() -> {
+            loader = new FXMLLoader(GUI.class.getResource("/gui/cordShipRequest.fxml"));
+            BorderPane newLayer;
+            try {
+                newLayer = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            layout.setCenter(newLayer);
+        });
+    }
     public static void showMessage(String message) {
         Platform.runLater(() -> {
             loader = new FXMLLoader(GUI.class.getResource("/gui/message.fxml"));
@@ -498,6 +519,7 @@ public class GUI extends Application implements DisplayableView {
             case S_END_DRAW_TILE_CARD ->{
                 showS_EndDrawTilesCards();
                 addCheckShip();
+
             }
             case S_MANAGE_DRAWN_TILE ->{
                 showS_ManageDrawTilesCards();
@@ -524,7 +546,7 @@ public class GUI extends Application implements DisplayableView {
 
             }
             case COORD_REQUEST -> {
-
+                showCoordRequest();
             }
             case ROLL_DICE -> {
 
@@ -596,7 +618,12 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void printFlightboard(LightFlightboard lightFlightboard) {
-
+        Platform.runLater(() -> {
+            if(controller.getState()==ClientState.S_FINISHED){
+                EndShipController endShipController=loader.getController();
+                endShipController.update();
+            }
+        });
     }
 
     @Override

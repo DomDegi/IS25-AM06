@@ -7,6 +7,8 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 
 import java.io.InputStream;
@@ -35,6 +37,15 @@ public class S_EndDrawTilesCardsController {
 
     @FXML
     public TilePane drawnTiles2;
+
+    @FXML
+    public void K(KeyEvent event){
+        if(event.getEventType().equals(KeyEvent.KEY_PRESSED)){
+            if(event.getCode().equals(KeyCode.D)){
+                drawTile();
+            }
+        }
+    }
 
     @FXML
     public void initialize() {
@@ -131,6 +142,8 @@ public class S_EndDrawTilesCardsController {
             i++;
         }
     }
+
+
 
     @FXML
     public void drawTile(){

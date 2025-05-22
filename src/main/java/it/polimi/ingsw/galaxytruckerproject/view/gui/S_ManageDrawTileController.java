@@ -7,6 +7,8 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
@@ -97,6 +99,9 @@ public class S_ManageDrawTileController {
                 imageButton.setMaxWidth(80);
                 imageButton.setMaxHeight(80);
                 imageButton.setPadding(Insets.EMPTY);
+                imageButton.setOnAction(event -> {
+                    refuse();
+                });
                 if (index % 2 == 0) {
                     drawnTiles1.getChildren().add(imageButton);
                 } else {
@@ -140,6 +145,14 @@ public class S_ManageDrawTileController {
                 });
             }
             bookedTiles.add(imageButton, i, 0);
+        }
+    }
+    @FXML
+    public void K(KeyEvent event){
+        if(event.getEventType().equals(KeyEvent.KEY_PRESSED)){
+            if(event.getCode().equals(KeyCode.R)){
+                refuse();
+            }
         }
     }
 
