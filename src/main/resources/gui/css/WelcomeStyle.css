@@ -9,7 +9,7 @@
     -fx-text-fill:
             linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
     -fx-font-family: "Franklin Gothic Heavy", monospace;
-    -fx-font-style: bold;
+    -fx-font-weight: bold;
     -fx-font-size: 40px;
     -fx-padding: 15px 30px;
     -fx-border-width: 10;

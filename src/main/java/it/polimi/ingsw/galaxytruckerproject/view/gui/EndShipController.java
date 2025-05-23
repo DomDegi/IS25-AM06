@@ -4,12 +4,20 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
 public class EndShipController {
+
+    @FXML
+    public ProgressBar hourglass1;
+    @FXML
+    public ProgressBar hourglass2;
+    @FXML
+    public ProgressBar hourglass3;
 
     @FXML
     public Polygon first;
@@ -67,6 +75,26 @@ public class EndShipController {
     public void pos4(){
         GUI.position(4);
         update();
+    }
+
+    @FXML
+    public void turnHourglass(){
+        GUI.turnHourglass();
+    }
+
+    @FXML
+    public void goProgressBar(int index,int max,int turns){
+        double percentage= (double) index /max;
+        if(turns==1){
+            hourglass3.setProgress(1);
+            hourglass2.setProgress(1);
+            hourglass1.setProgress(1-percentage);
+        }else if(turns==2){
+            hourglass3.setProgress(1);
+            hourglass2.setProgress(1-percentage);
+        }else if(turns==3){
+            hourglass3.setProgress(1-percentage);
+        }
     }
 
     public void update(){

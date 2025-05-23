@@ -50,11 +50,27 @@ public class S_ManageDrawTileController {
             drawnTile.setPadding(Insets.EMPTY);
             drawnTile.setGraphic(inHandImageView);
         }
+        tilesTable.getChildren().clear();
         ArrayList<Tile> tiles = new ArrayList<>();
         for (int i = 0; i <= 6; i++) {
             for (int j = 0; j <= 4; j++) {
-                if (GUI.getController().getMe().getShipBoard().getTilesTable()[j][i].isPresent() && GUI.getController().getMe().getShipBoard().getTilesTable()[j][i].get().fillable())
-                    tiles.add(GUI.getController().getMe().getShipBoard().getTilesTable()[j][i].get());
+                if(!((j==0&&(i<=1||i==3||i>=5))||(j==1&&(i==0||i==6))||(j==4&&i==3))) {
+                    Button button = new Button();
+                    button.setPrefHeight(80);
+                    button.setPrefWidth(80);
+                    int finalI = i;
+                    int finalJ = j;
+                    button.setOnAction(event -> {
+                        GUI.putTile(finalJ, finalI);
+                    });
+                    tilesTable.add(button, finalI, finalJ);
+                }
+            }
+        }
+        for (int i = 0; i <= 6; i++) {
+            for (int j = 0; j <= 4; j++) {
+                    if (GUI.getController().getMe().getShipBoard().getTilesTable()[j][i].isPresent() && GUI.getController().getMe().getShipBoard().getTilesTable()[j][i].get().fillable())
+                        tiles.add(GUI.getController().getMe().getShipBoard().getTilesTable()[j][i].get());
             }
         }
         for (Tile tile : tiles) {
@@ -132,141 +148,6 @@ public class S_ManageDrawTileController {
     @FXML
     public void refuse() {
         GUI.refuseTile();
-    }
-
-    @FXML
-    public void putTile02() {
-        GUI.putTile(0, 2);
-    }
-
-    @FXML
-    public void putTile04() {
-        GUI.putTile(0, 4);
-    }
-
-    @FXML
-    public void putTile11() {
-        GUI.putTile(1, 1);
-    }
-
-    @FXML
-    public void putTile12() {
-        GUI.putTile(1, 2);
-    }
-
-    @FXML
-    public void putTile13() {
-        GUI.putTile(1, 3);
-    }
-
-    @FXML
-    public void putTile14() {
-        GUI.putTile(1, 4);
-    }
-
-    @FXML
-    public void putTile15() {
-        GUI.putTile(1, 5);
-    }
-
-    @FXML
-    public void putTile20() {
-        GUI.putTile(2, 0);
-    }
-
-    @FXML
-    public void putTile21() {
-        GUI.putTile(2, 1);
-    }
-
-    @FXML
-    public void putTile22() {
-        GUI.putTile(2, 2);
-    }
-
-    @FXML
-    public void putTile23() {
-        GUI.putTile(2, 3);
-    }
-
-    @FXML
-    public void putTile24() {
-        GUI.putTile(2, 4);
-    }
-
-    @FXML
-    public void putTile25() {
-        GUI.putTile(2, 5);
-    }
-
-    @FXML
-    public void putTile26() {
-        GUI.putTile(2, 6);
-    }
-
-    @FXML
-    public void putTile30() {
-        GUI.putTile(3, 0);
-    }
-
-    @FXML
-    public void putTile31() {
-        GUI.putTile(3, 1);
-    }
-
-    @FXML
-    public void putTile32() {
-        GUI.putTile(3, 2);
-    }
-
-    @FXML
-    public void putTile33() {
-        GUI.putTile(3, 3);
-    }
-
-    @FXML
-    public void putTile34() {
-        GUI.putTile(3, 4);
-    }
-
-    @FXML
-    public void putTile35() {
-        GUI.putTile(3, 5);
-    }
-
-    @FXML
-    public void putTile36() {
-        GUI.putTile(3, 6);
-    }
-
-    @FXML
-    public void putTile40() {
-        GUI.putTile(4, 0);
-    }
-
-    @FXML
-    public void putTile41() {
-        GUI.putTile(4, 1);
-    }
-
-    @FXML
-    public void putTile42() {
-        GUI.putTile(4, 2);
-    }
-
-    @FXML
-    public void putTile44() {
-        GUI.putTile(4, 4);
-    }
-
-    @FXML
-    public void putTile45() {
-        GUI.putTile(4, 5);
-    }
-
-    @FXML
-    public void putTile46() {
-        GUI.putTile(4, 6);
     }
 
     @FXML

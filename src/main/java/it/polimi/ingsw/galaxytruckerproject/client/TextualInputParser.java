@@ -54,7 +54,16 @@ public class TextualInputParser {
 
             case CHOOSE_IP_AND_PORT_RMI -> {
                 try {
-                    clientController.connectRMI();
+                    if (Objects.equals(words[0], "d")) {
+                        clientController.connectRMI("localhost");
+                    } else {
+                        if (words.length == 2)
+                            clientController.connectRMI(words[0]);
+                        else {
+                            view.wrongLocalInput();
+                            return false;
+                        }
+                    }
                 } catch (MalformedURLException | NotBoundException | RemoteException e) {
                     throw new RuntimeException(e);
                 }

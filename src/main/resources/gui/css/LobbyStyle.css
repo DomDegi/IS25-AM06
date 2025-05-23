@@ -5,7 +5,7 @@
     -fx-background-position: center;
 }
 .label{
-    -fx-font-size: 60px;
+    -fx-font-size: 40px;
     -fx-font-weight: bold;
     -fx-text-fill:
             linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
@@ -19,7 +19,7 @@
     -fx-text-fill:
             linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
     -fx-font-family: "Franklin Gothic Heavy", monospace;
-    -fx-font-style: bold;
+    -fx-font-weight: bold;
     -fx-font-size: 40px;
     -fx-padding: 15px 30px;
     -fx-border-width: 10;
@@ -81,7 +81,6 @@
     -fx-text-fill:
             linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
     -fx-font-family: "Franklin Gothic Heavy", monospace;
-    -fx-alignment: center;
     -fx-alignment: baseline-left;
     -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.2, 0, 0);
     -fx-font-weight: bold;
@@ -121,6 +120,10 @@
     -fx-border-color:
             linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
     -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.4, 0, 0);
+}
+.scroll-bar .increment-button .increment-arrow,.scroll-bar .decrement-button .decrement-arrow{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
 }
 .scroll-bar .increment-button, .scroll-bar .decrement-button {
     -fx-border-radius: 20;
@@ -178,5 +181,14 @@
             linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
     -fx-font-family: "Franklin Gothic Heavy", monospace;
     -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.2, 0, 0);
+}
+.progress-indicator{
+    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.2, 0, 0);
+}
+
+.separator .line{
+    -fx-border-color:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
     -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.2, 0, 0);
 }

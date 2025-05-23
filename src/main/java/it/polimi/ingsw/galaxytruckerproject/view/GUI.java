@@ -33,9 +33,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class GUI extends Application implements DisplayableView {
 
@@ -53,6 +51,8 @@ public class GUI extends Application implements DisplayableView {
     private static Button ship1;
     private static Button ship2;
     private static Button ship3;
+    private int counter = 0;
+    private Timer timer;
 
     public static void startGui(ClientController controller) {
         GUI.controller =controller;
@@ -90,16 +90,16 @@ public class GUI extends Application implements DisplayableView {
         controller.setState(ClientState.CHOOSE_CONNECTION_TYPE);
     }
 
-    public static void setConnection(String connectionTipe) {
+    public static void setConnection(String connectionTipe,String ip) {
         if (connectionTipe.equals("r")) {
             try {
-                controller.connectRMI();
+                controller.connectRMI(ip);
             } catch (NotBoundException | MalformedURLException | RemoteException e) {
                 throw new RuntimeException(e);
             }
         } else {
             try {
-                controller.connectSocket("localhost",12345);
+                controller.connectSocket(ip,12345);
             } catch (NotBoundException | IOException e) {
                 throw new RuntimeException(e);
             }
@@ -524,8 +524,8 @@ public class GUI extends Application implements DisplayableView {
                 showStart();
             }
             case S_END_DRAW_TILE_CARD ->{
-                layout.getStylesheets().add(css3);
                 showS_EndDrawTilesCards();
+                layout.getStylesheets().add(css3);
                 addCheckShip();
             }
             case S_MANAGE_DRAWN_TILE ->{
@@ -810,12 +810,40 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void notifyTurnedHourglass(int i) throws RemoteException {
-
+        timer= new Timer();
+        counter=0;
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                counter++;
+                Platform.runLater(() -> {
+                    if(controller.isChecking()==null) {
+                        if (controller.getState() == ClientState.S_END_DRAW_TILE_CARD) {
+                            S_EndDrawTilesCardsController sceneController = loader.getController();
+                            if (sceneController != null) {
+                                sceneController.goProgressBar(counter, 95, controller.getHourglassTurns());
+                            }
+                        } else if (controller.getState() == ClientState.S_FINISHED) {
+                            EndShipController sceneController = loader.getController();
+                            if (sceneController != null) {
+                                sceneController.goProgressBar(counter, 95, controller.getHourglassTurns());
+                            }
+                        }
+                    }
+                });
+                if (counter == 95) {
+                    timer.cancel();
+                    timer.purge();
+                }
+            }
+        };
+        timer.scheduleAtFixedRate(task, 0, 1000);
     }
 
     @Override
     public void notifyEndOfTime() throws RemoteException {
-
+        timer.cancel();
+        timer.purge();
     }
 
     @Override

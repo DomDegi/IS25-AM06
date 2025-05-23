@@ -3,8 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.view.gui;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -13,10 +12,15 @@ import javafx.scene.layout.*;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class S_EndDrawTilesCardsController {
 
+    @FXML
+    public ProgressBar hourglass1;
+    @FXML
+    public ProgressBar hourglass2;
+    @FXML
+    public ProgressBar hourglass3;
     @FXML
     public ImageView deck1;
 
@@ -49,6 +53,7 @@ public class S_EndDrawTilesCardsController {
 
     @FXML
     public void initialize() {
+        tilesTable.getChildren().clear();
         deck1.setVisible(GUI.getController().getAvailableDeck().get(1));
         deck2.setVisible(GUI.getController().getAvailableDeck().get(2));
         deck3.setVisible(GUI.getController().getAvailableDeck().get(3));
@@ -189,6 +194,21 @@ public class S_EndDrawTilesCardsController {
                 }
                 index++;
             }
+        }
+    }
+
+    @FXML
+    public void goProgressBar(int index,int max,int turns){
+        double percentage= (double) index /max;
+        if(turns==1){
+            hourglass3.setProgress(1);
+            hourglass2.setProgress(1);
+            hourglass1.setProgress(1-percentage);
+        }else if(turns==2){
+            hourglass3.setProgress(1);
+            hourglass2.setProgress(1-percentage);
+        }else if(turns==3){
+            hourglass3.setProgress(1-percentage);
         }
     }
 }
