@@ -235,7 +235,7 @@ public class ClientController {
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
-                indexDeckInHandOrPlanet = chose-1;
+                indexDeckInHandOrPlanet = chose;
                 displayedCard = this.deck.get(indexDeckInHandOrPlanet);
             } else {
                 view.wrongLocalInput();
