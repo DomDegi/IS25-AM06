@@ -33,25 +33,17 @@ public class CheckShipController {
             }
         }
         for(Tile tile:tiles){
-            javafx.scene.control.Button imageButton = new Button();
             String imagePath = tile.getImagePath();
             InputStream imageStream = getClass().getResourceAsStream(imagePath);
             if (imageStream == null) {
                 System.err.println("not found" + imagePath);
-                imageButton.setText("MCS");
             } else {
                 javafx.scene.image.Image image = new Image(imageStream);
                 ImageView imageView = new ImageView(image);
                 imageView.rotateProperty().setValue(tile.getRotation()*90);
                 imageView.setFitWidth(136);
                 imageView.setFitHeight(136);
-                imageButton.setGraphic(imageView);
-                imageButton.setPrefWidth(136);
-                imageButton.setPrefHeight(136);
-                imageButton.setMaxWidth(136);
-                imageButton.setMaxHeight(136);
-                imageButton.setPadding(Insets.EMPTY);
-                tilesTable.add(imageButton,tile.getCoordinates().getY(),tile.getCoordinates().getX());
+                tilesTable.add(imageView,tile.getCoordinates().getY(),tile.getCoordinates().getX());
             }
         }
     }
