@@ -5,10 +5,16 @@ import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.LinearGradient;
 import javafx.scene.shape.Polygon;
+
+import static javafx.scene.paint.Color.rgb;
 
 public class EndShipController {
 
@@ -35,11 +41,13 @@ public class EndShipController {
     public void initialize(){
         int i=1;
         for(Polygon p:new Polygon[]{first,second,third,fourth}){
-            p.opacityProperty().setValue(0);
             if(i>GUI.getController().getFlightBoard().getInGamePlayers().size())
                 p.setVisible(false);
+            p.setStroke(rgb(255, 169, 19));
+            p.setFill(Color.TRANSPARENT);
+            p.setStrokeWidth(5);
+            p.setEffect(new DropShadow(BlurType.GAUSSIAN,rgb(255, 169, 19), 30, 0.4, 0, 0));
             if(GUI.getController().getAvailablePosition().get(i)!=null) {
-                p.opacityProperty().setValue(100);
                 if(GUI.getController().getAvailablePosition().get(i)== PlayersColor.RED)
                     p.setFill(Color.RED);
                 if(GUI.getController().getAvailablePosition().get(i)== PlayersColor.YELLOW)

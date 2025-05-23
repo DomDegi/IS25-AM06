@@ -288,14 +288,25 @@ public class GUI extends Application implements DisplayableView {
                 }
                 layout.setCenter(newLayer);
             }else{
-                loader = new FXMLLoader(GUI.class.getResource("/gui/wait2.fxml"));
-                BorderPane newLayer;
-                try {
-                    newLayer = loader.load();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                if(controller.getState()==ClientState.S_FINISHED||(controller.getPreviousState()==ClientState.S_FINISHED)){
+                    loader = new FXMLLoader(GUI.class.getResource("/gui/endShipBoard.fxml"));
+                    BorderPane newLayer;
+                    try {
+                        newLayer = loader.load();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    layout.setCenter(newLayer);
+                }else {
+                    loader = new FXMLLoader(GUI.class.getResource("/gui/wait2.fxml"));
+                    BorderPane newLayer;
+                    try {
+                        newLayer = loader.load();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    layout.setBottom(newLayer);
                 }
-                layout.setBottom(newLayer);
             }
         });
     }
@@ -626,8 +637,8 @@ public class GUI extends Application implements DisplayableView {
     @Override
     public void printFlightboard(LightFlightboard lightFlightboard) {
         Platform.runLater(() -> {
-            if(controller.getState()==ClientState.S_FINISHED){
-                EndShipController endShipController=loader.getController();
+        if(controller.getState()==ClientState.S_FINISHED||(controller.getPreviousState()==ClientState.S_FINISHED&&controller.getState()==ClientState.WAIT)) {
+            EndShipController endShipController=loader.getController();
                 endShipController.update();
             }
         });
@@ -821,17 +832,17 @@ public class GUI extends Application implements DisplayableView {
                         if (controller.getState() == ClientState.S_END_DRAW_TILE_CARD) {
                             S_EndDrawTilesCardsController sceneController = loader.getController();
                             if (sceneController != null) {
-                                sceneController.goProgressBar(counter, 95, controller.getHourglassTurns());
+                                sceneController.goProgressBar(counter, 100, controller.getHourglassTurns());
                             }
-                        } else if (controller.getState() == ClientState.S_FINISHED) {
+                        } else if(controller.getState()==ClientState.S_FINISHED||(controller.getPreviousState()==ClientState.S_FINISHED&&controller.getState()==ClientState.WAIT)) {
                             EndShipController sceneController = loader.getController();
                             if (sceneController != null) {
-                                sceneController.goProgressBar(counter, 95, controller.getHourglassTurns());
+                                sceneController.goProgressBar(counter, 100, controller.getHourglassTurns());
                             }
                         }
                     }
                 });
-                if (counter == 95) {
+                if (counter == 100) {
                     timer.cancel();
                     timer.purge();
                 }
@@ -842,6 +853,22 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void notifyEndOfTime() throws RemoteException {
+        counter=100;
+        Platform.runLater(() -> {
+            if(controller.isChecking()==null) {
+                if (controller.getState() == ClientState.S_END_DRAW_TILE_CARD) {
+                    S_EndDrawTilesCardsController sceneController = loader.getController();
+                    if (sceneController != null) {
+                        sceneController.goProgressBar(counter, 100, controller.getHourglassTurns());
+                    }
+                } else if(controller.getState()==ClientState.S_FINISHED||(controller.getPreviousState()==ClientState.S_FINISHED&&controller.getState()==ClientState.WAIT)) {
+                    EndShipController sceneController = loader.getController();
+                    if (sceneController != null) {
+                        sceneController.goProgressBar(counter, 100, controller.getHourglassTurns());
+                    }
+                }
+            }
+        });
         timer.cancel();
         timer.purge();
     }
