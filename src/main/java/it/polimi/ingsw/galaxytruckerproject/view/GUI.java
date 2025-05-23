@@ -43,6 +43,9 @@ public class GUI extends Application implements DisplayableView {
     private static int numberOfPlayers;
     private static GameMode mode;
     private static String css;
+    private static String css2;
+    private static String css3;
+    private static String css4;
     private static Stage primaryStage;
     private static BorderPane layout;
     private static ClientController controller;
@@ -60,7 +63,9 @@ public class GUI extends Application implements DisplayableView {
     public void start(Stage primaryStage) throws IOException {
         GUI.primaryStage = primaryStage;
         GUI.primaryStage.setTitle("Galaxy Trucker");
-        css= Objects.requireNonNull(GUI.class.getResource("/gui/css/style.css")).toExternalForm();
+        css= Objects.requireNonNull(GUI.class.getResource("/gui/css/WelcomeStyle.css")).toExternalForm();
+        css2= Objects.requireNonNull(GUI.class.getResource("/gui/css/LobbyStyle.css")).toExternalForm();
+        css3= Objects.requireNonNull(GUI.class.getResource("/gui/css/ShipStyle.css")).toExternalForm();
         showMainView();
         showWelcome();
         GUI.primaryStage.setFullScreen(true);
@@ -501,6 +506,7 @@ public class GUI extends Application implements DisplayableView {
         switch (newState){
             case CHOOSE_CONNECTION_TYPE ->{
                 showConnection();
+                layout.getStylesheets().add(css2);
             }
             case LOGIN ->{
                 showLogin();
@@ -518,9 +524,9 @@ public class GUI extends Application implements DisplayableView {
                 showStart();
             }
             case S_END_DRAW_TILE_CARD ->{
+                layout.getStylesheets().add(css3);
                 showS_EndDrawTilesCards();
                 addCheckShip();
-
             }
             case S_MANAGE_DRAWN_TILE ->{
                 showS_ManageDrawTilesCards();
