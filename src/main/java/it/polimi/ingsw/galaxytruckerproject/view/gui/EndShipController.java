@@ -63,26 +63,35 @@ public class EndShipController {
 
     @FXML
     public void pos1(){
-        GUI.position(1);
-        update();
+        if(GUI.getController().getAvailablePosition().get(1)==null&&!GUI.getController().isPositioned()) {
+            GUI.position(1);
+            update();
+        }
     }
 
     @FXML
     public void pos2(){
-        GUI.position(2);
-        update();
+        if(GUI.getController().getAvailablePosition().get(2)==null&&!GUI.getController().isPositioned()) {
+            GUI.position(2);
+            update();
+        }
     }
 
     @FXML
     public void pos3(){
-        GUI.position(3);
-        update();
+        if(GUI.getController().getAvailablePosition().get(3)==null&&!GUI.getController().isPositioned()) {
+            GUI.position(3);
+            update();
+        }
     }
 
     @FXML
     public void pos4(){
-        GUI.position(4);
-        update();
+        if(GUI.getController().getAvailablePosition().get(4)==null&&!GUI.getController().isPositioned()) {
+            GUI.position(4);
+            update();
+        }
+
     }
 
     @FXML

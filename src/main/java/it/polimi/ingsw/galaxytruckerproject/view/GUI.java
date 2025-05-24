@@ -285,21 +285,12 @@ public class GUI extends Application implements DisplayableView {
                 circle.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
                 layout.setCenter(circle);
             }else{
-                if(controller.getState()==ClientState.S_FINISHED||(controller.getPreviousState()==ClientState.S_FINISHED)){
-                    loader = new FXMLLoader(GUI.class.getResource("/gui/endShipBoard.fxml"));
-                    BorderPane newLayer;
-                    try {
-                        newLayer = loader.load();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    layout.setCenter(newLayer);
-                }else {
+
                     ProgressIndicator circle = new ProgressIndicator();
                     circle.setPrefSize(20, 20);
                     circle.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
                     layout.setBottom(circle);
-                }
+
             }
         });
     }
@@ -821,7 +812,7 @@ public class GUI extends Application implements DisplayableView {
                             if (sceneController != null) {
                                 sceneController.goProgressBar(counter, 100, controller.getHourglassTurns());
                             }
-                        } else if(controller.getState()==ClientState.S_FINISHED||(controller.getPreviousState()==ClientState.S_FINISHED&&controller.getState()==ClientState.WAIT)) {
+                        } else if(controller.getState()==ClientState.S_FINISHED||(controller.getPreviousState()==ClientState.S_FINISHED&&controller.getState()==ClientState.WAIT&&controller.isChecking()==null)) {
                             EndShipController sceneController = loader.getController();
                             if (sceneController != null) {
                                 sceneController.goProgressBar(counter, 100, controller.getHourglassTurns());

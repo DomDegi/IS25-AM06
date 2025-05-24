@@ -37,6 +37,7 @@ public class ClientController {
     private GamePhases phase;
     private ArrayList<GameInfo> gameInfo;
     private String checking;
+    private boolean positioned;
 
     private GameMode gameMode;
     private DisplayableView view;
@@ -59,6 +60,7 @@ public class ClientController {
     private int hourglassTurns;
 
     public ClientController() {
+        positioned=false;
         this.checking= null;
         this.numPlayer = 0;
         this.gameInfo = new ArrayList<>();
@@ -412,14 +414,14 @@ public class ClientController {
     }
 
     public boolean positionOnFlightBoard(int chose) {
-        if(state!=ClientState.S_FINISHED){
+        if(state!=ClientState.S_FINISHED&&positioned){
             return false;
         }
         if (gameMode == GameMode.LEVEL2) {
             if (chose > 0 && chose <= numPlayer) {
                 me.getShipBoard().setGetStat();
-                setState(ClientState.WAIT);
                 try {
+                    positioned=true;
                     virtualController.notifySetPosition(chose);
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
@@ -1232,6 +1234,10 @@ public class ClientController {
             }
         });
         return availablePosition;
+    }
+
+    public boolean isPositioned() {
+        return positioned;
     }
 }
 
