@@ -1256,5 +1256,9 @@ public class ClientController {
     public boolean isPositioned() {
         return positioned;
     }
+
+    public CabinsManager getCabinsManager() {
+        return cabinsManager;
+    }
 }
 

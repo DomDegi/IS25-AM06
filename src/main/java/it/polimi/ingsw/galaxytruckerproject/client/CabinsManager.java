@@ -77,4 +77,24 @@ public class CabinsManager {
             view.showGenericMessage(cabins.get(index).toString()+" - Everyone is allowed here");
         }
     }
+
+    public AlienOptions crewType() {
+        if(lightPlayer.getShipBoard().getTile(cabins.get(index)) != null && lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.NO){
+            return AlienOptions.NO;
+        }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.PURPLE){
+            return AlienOptions.PURPLE;
+        }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.BROWN){
+            return AlienOptions.BROWN;
+        }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.BOTH){
+            return AlienOptions.BOTH;
+        }else
+            return AlienOptions.NO;
+    }
+    public ArrayList<Coordinates> getCabins() {
+        return cabins;
+    }
+
+    public int getIndex() {
+        return index;
+    }
 }

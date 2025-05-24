@@ -1,31 +1,28 @@
 package it.polimi.ingsw.galaxytruckerproject.view.gui;
 
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.Group;
-import javafx.scene.control.Button;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Light;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Objects;
 
 import static javafx.scene.paint.Color.rgb;
 
-public class DrawaCardController {
+public class DrawCardController {
     @FXML
     public Polygon p0;
     @FXML
@@ -112,6 +109,9 @@ public class DrawaCardController {
     public Polygon pt17;
 
     @FXML
+    public ImageView deck;
+
+    @FXML
     public Group flightImage;
 
     @FXML
@@ -133,6 +133,7 @@ public class DrawaCardController {
             flightImage.setVisible(true);
             shipImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/grafiche/cardboard/cardboard-1b.jpg"))));
         } else if (GUI.getController().getGameMode()==GameMode.TRIAL) {
+            deck.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/grafiche/cards/GT-cards_I_IT_0121.jpg"))));
             polygons=new Polygon[]{pt0,pt1,pt2,pt3,pt4,pt5,pt6,pt7,pt8,pt9,pt10,pt11,pt12,pt13,pt14,pt15,pt16,pt17};
             max=18;
             flightImage.setVisible(false);
@@ -182,6 +183,11 @@ public class DrawaCardController {
                 tilesTable.add(imageView,tile.getCoordinates().getY(),tile.getCoordinates().getX());
             }
         }
+
+        if(GUI.getController().getState()== ClientState.WAIT){
+            deck.setDisable(true);
+        }
+
     }
 
     @FXML

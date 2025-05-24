@@ -15,6 +15,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CrewType;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.view.gui.*;
 import javafx.application.Application;
@@ -207,6 +208,10 @@ public class GUI extends Application implements DisplayableView {
          return  controller.getDisplayedCard();
     }
 
+    public static void setCabin(CrewType type){
+        controller.manageCabins(type);
+    }
+
 //showMethods---------------------------------------------------------------------------------------------------------------
     public static void clear(){
         showMessage("");
@@ -375,7 +380,20 @@ public class GUI extends Application implements DisplayableView {
 
     private static void showCoordRequest() {
         Platform.runLater(() -> {
-            loader = new FXMLLoader(GUI.class.getResource("/gui/cordShipRequest.fxml"));
+            loader = new FXMLLoader(GUI.class.getResource("/gui/coordShipRequest.fxml"));
+            BorderPane newLayer;
+            try {
+                newLayer = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            layout.setCenter(newLayer);
+        });
+    }
+
+    private static void showChooseCrew() {
+        Platform.runLater(() -> {
+            loader = new FXMLLoader(GUI.class.getResource("/gui/chooseCrew.fxml"));
             BorderPane newLayer;
             try {
                 newLayer = loader.load();
@@ -539,7 +557,7 @@ public class GUI extends Application implements DisplayableView {
 
             }
             case MANAGE_CABINS ->{
-
+                showChooseCrew();
             }
             case COORD_REQUEST -> {
                 showCoordRequest();
@@ -548,6 +566,9 @@ public class GUI extends Application implements DisplayableView {
 
             }
             case WAIT -> {
+                if(controller.getPreviousState()==ClientState.S_FINISHED&&controller.getPhase()==GamePhases.CARDS) {
+                    showDrawCard();
+                }
                 showWait();
             }
         }
