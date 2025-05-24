@@ -24,8 +24,7 @@ import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.*;
 
-import static it.polimi.ingsw.galaxytruckerproject.client.ClientState.DRAW_CARD;
-import static it.polimi.ingsw.galaxytruckerproject.client.ClientState.S_END_DRAW_TILE_CARD;
+import static it.polimi.ingsw.galaxytruckerproject.client.ClientState.*;
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.LEVEL2;
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.TRIAL;
 import static it.polimi.ingsw.galaxytruckerproject.model.GameState.CARD_EVENT;
@@ -444,17 +443,11 @@ public class GameController implements Observer, Serializable {
     public void startGame () {
         startAutoSave();
         game.startShipCreation();
-        if (game.getMode() == TRIAL) {
             for (Player player : game.getListOfAllPlayer()) {
-                notifyStartPosition(player.getPlayerName(),player.getPlayerColor());
+                notifyStartPosition(player.getPlayerName(), player.getPlayerColor());
+                updateEveryView(START_SHIP_CREATION);
             }
-            updateEveryView(S_END_DRAW_TILE_CARD);
-        }
-        else {
-            for (Player player : game.getListOfAllPlayer()) {
-                notifyStartPosition(player.getPlayerName(),player.getPlayerColor());
-            }
-            updateEveryView(ClientState.START_SHIP_CREATION);
+        if (game.getMode() == LEVEL2) {
             notifyFlightBoardCards();
         }
     }
@@ -932,6 +925,10 @@ public class GameController implements Observer, Serializable {
     // if it's already been turned twice, player that turns it needs to have completed his ship
     public synchronized void turnHourglass(String playerName)  {
         ViewInterface playersView = this.getViewFromNickname(playerName);
+        if (game.getMode() == TRIAL) {
+            updateEveryView(S_END_DRAW_TILE_CARD);
+            return;
+        }
 
         if (hourglassON) {
             try {

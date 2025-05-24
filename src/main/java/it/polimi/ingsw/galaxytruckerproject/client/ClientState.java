@@ -49,7 +49,7 @@ public enum ClientState implements Serializable {
             case S_MANAGE_DRAWN_TILE -> {return "You can rotate, position, book or refuse this tile [rotate] [put] [book] [refuse] [check playerNum] [turn]";}
             case S_FINISHED -> {return "You've finished the ship creation, wait to know if your ship is correct [flightBoardPosition] [check playerNum] [turn]";}
             case WAIT -> {return "Waiting for server";}
-            case START_SHIP_CREATION -> {return "Turn the hourglass to start the ship creation [start|turn]";}
+            case START_SHIP_CREATION -> {return "TrialFlight: Start the ship creation [start] Level2Flight: Start the ship creation by turning the hourglass [Turn|Start]";}
             case DRAW_CARD -> {return "Draw a card [draw]";}
             case MANAGE_CABINS -> {return "Select the crew type in yours equip cabins [humans] [purpleAlien] [brownAlien]";}
             case ROLL_DICE -> {return"Roll the dice [roll]";}

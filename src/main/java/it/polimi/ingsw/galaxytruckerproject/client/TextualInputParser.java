@@ -191,7 +191,10 @@ public class TextualInputParser {
             }
 
             case START_SHIP_CREATION -> {
-                if (((clientController.getGameMode() == GameMode.LEVEL2 && words[0].equals("turn")) || words[0].equals("start")) && clientController.firstHourglassTurn()) {
+                if (((clientController.getGameMode() == GameMode.TRIAL && words[0].equals("start"))) && clientController.firstHourglassTurn()) {
+                    return true;
+                }
+                else if (((clientController.getGameMode() == GameMode.LEVEL2 && words[0].equals("turn")) || words[0].equals("start")) && clientController.firstHourglassTurn()) {
                     return true;
                 }else {
                     view.wrongLocalInput();

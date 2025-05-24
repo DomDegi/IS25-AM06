@@ -786,7 +786,9 @@ public class ClientController {
 
     public boolean firstHourglassTurn() {
         if(hourglassTurns == 0) {
-            hourglassTurns = 1;
+            if (gameMode == GameMode.LEVEL2) {
+                hourglassTurns = 1;
+            }
             setState(ClientState.WAIT);
             try {
                 virtualController.sendTurnHourGlass();
