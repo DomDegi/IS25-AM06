@@ -129,6 +129,8 @@ public abstract class Card implements Serializable {
         }
     }
 
+    public void playerDisconnected(String playerName) {}
+
     //Getter methods needed for view
     public int getLevel() {
         return level;

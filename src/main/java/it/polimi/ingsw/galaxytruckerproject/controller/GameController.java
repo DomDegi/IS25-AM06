@@ -3,8 +3,6 @@ package it.polimi.ingsw.galaxytruckerproject.controller;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.controller.interfaces.Observer;
-import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
-import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
@@ -62,7 +60,7 @@ public class GameController implements Observer, Serializable {
     private ScheduledExecutorService autoSaveExecutor;
 
     //need to be true for the project showing
-    private volatile boolean autoSaveEnabled = false;
+    private volatile boolean autoSaveEnabled = true;
 
     public String toString(){
         return gameName+"\ngame state:"+game.getGameState().toString()+"\nplayer needed: "+game.getPlayerCount()+"\nplatyer in game: "+game.getNumberOfPlayers();
@@ -272,7 +270,6 @@ public class GameController implements Observer, Serializable {
      * @param playerName reconnecting player
      * @param view their view
      */
-
     //Reconnects disconnected player
     public boolean checkIfReconnectionIsPossible(String playerName, VirtualView view)  {
         if (disconnectedPlayers.containsKey(playerName)) {
@@ -1037,7 +1034,16 @@ public class GameController implements Observer, Serializable {
         }
         playersToEarlyLand.clear();
         if(game.getFlightBoard().concludeMovement() &&game.getListOfInFlightPlayers()!=null&& !game.getListOfInFlightPlayers().isEmpty() ) {
-            updatePlayerView(DRAW_CARD, game.getListOfInFlightPlayers().getFirst().getPlayerName());
+            int i = 0;
+            Player currentPlayer =  game.getListOfInFlightPlayers().getFirst();
+            while (currentPlayer.IsDisconnected()) {
+                i++;
+                if (i > game.getListOfInFlightPlayers().size() - 1) {
+                    concludeGame();
+                }
+                currentPlayer = game.getListOfInFlightPlayers().get(i);
+            }
+            updatePlayerView(DRAW_CARD, currentPlayer.getPlayerName());
         }
         else{
             concludeGame();
@@ -1324,10 +1330,11 @@ public class GameController implements Observer, Serializable {
             view.ping();
             future.get(15, TimeUnit.SECONDS);
         } catch (InterruptedException | RemoteException | ExecutionException | TimeoutException e) {
+            player.playerDisconnects();
+            prepareForDisconnection(playerName);
             activePlayers.remove(playerName);
             playersViewMap.remove(playerName);
             disconnectedPlayers.put(playerName,player);
-            player.playerDisconnects();
             System.out.println(playerName+" disconnected");
         } finally {
             pendingPongs.remove(playerName);
@@ -1406,6 +1413,8 @@ public class GameController implements Observer, Serializable {
     public void playerLeaves(String playerName) {
         if (activePlayers.containsKey(playerName)) {
             Player removedPlayer = activePlayers.remove(playerName);
+            removedPlayer.playerDisconnects();
+            prepareForDisconnection(playerName);
             if (clientsStatesMap.get(playerName).equals(ClientState.S_MANAGE_CARDS)) {
                 stopLookingAtCards(getViewFromNickname(playerName), playerName);
             }
@@ -1416,6 +1425,23 @@ public class GameController implements Observer, Serializable {
             }
         }
         playersViewMap.remove(playerName);
+    }
+
+    public void prepareForDisconnection(String playerName) {
+        switch(this.getGameState()) {
+            case SHIPS_CREATION -> checkIfAllPlayersReady();
+            case VERIFY_SHIP_CORRECTNESS -> verifyShipCorrectness();
+            case DRAW_CARD -> {
+                if (playerName.equals(game.getListOfInFlightPlayers().getFirst().getPlayerName())) {
+                    this.askFirstPlayerToDraw();
+                }
+            }
+            case CARD_EVENT -> skipPlayersTurn(playerName);
+        }
+    }
+
+    public void  skipPlayersTurn(String playerName) {
+        game.getDrawnCard().playerDisconnected(playerName);
     }
 
 }

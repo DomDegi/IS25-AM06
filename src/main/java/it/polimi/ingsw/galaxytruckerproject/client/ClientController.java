@@ -58,6 +58,9 @@ public class ClientController {
     private int indexDeckInHandOrPlanet;
     private int hourglassTurns;
 
+    private Thread serverWatchdogThread;
+
+
     public ClientController() {
         this.checking= null;
         this.numPlayer = 0;
@@ -1159,10 +1162,31 @@ public class ClientController {
 
     public void ping() {
         try {
-            virtualController.ping();
+            virtualController.ping();  // pings server
+            restartServerWatchdog();  // restarts watchdog timer
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            this.setState(ClientState.RECONNECTING);
         }
+    }
+
+    private void restartServerWatchdog() {
+        // interrupts existing thread if it exists
+        if (serverWatchdogThread != null && serverWatchdogThread.isAlive()) {
+            serverWatchdogThread.interrupt();
+        }
+
+        // Creates new thread that awaits timeout
+        serverWatchdogThread = new Thread(() -> {
+            try {
+                Thread.sleep(30000);
+                // Se il thread non è stato interrotto in tempo, il server è considerato down
+                this.setState(ClientState.RECONNECTING);
+            } catch (InterruptedException ignored) {
+                // thread was interrupted from a new server ping: is all good
+            }
+        });
+
+        serverWatchdogThread.start();
     }
 
     public void turnHourglass(int i) {

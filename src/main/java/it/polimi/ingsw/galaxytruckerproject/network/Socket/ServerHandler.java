@@ -108,7 +108,6 @@ public class ServerHandler implements Runnable {
                 return;
             } catch (IOException e) {
                 System.out.println("Error handling inputStream from server");
-                e.printStackTrace();
                 return;
             }
             synchronized (this){

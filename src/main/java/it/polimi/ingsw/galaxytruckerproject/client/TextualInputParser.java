@@ -398,6 +398,13 @@ public class TextualInputParser {
                 }
                 return false;
             }
+            case RECONNECTING -> {
+                switch(words[0]) {
+                    case "login","l" -> clientController.setState(ClientState.CHOOSE_CONNECTION_TYPE);
+                    case "close","c" -> System.exit(0);
+                    default -> view.wrongLocalInput();
+                }
+            }
         }
         return true;
     }

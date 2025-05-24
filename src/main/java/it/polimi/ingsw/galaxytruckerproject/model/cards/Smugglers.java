@@ -249,4 +249,12 @@ public class Smugglers extends Enemies{
         }
         return string.toString();
     }
+
+    @Override
+    public void playerDisconnected(String playerName) {
+        if (currentPlayer != null && currentPlayer.getPlayerName().equals(playerName)) {
+            playerIndex--;
+            nextPlayer();
+        }
+    }
 }

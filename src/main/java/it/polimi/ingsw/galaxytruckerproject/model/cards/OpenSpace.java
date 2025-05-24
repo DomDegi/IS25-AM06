@@ -104,4 +104,12 @@ public class OpenSpace extends Card {
     public String toString() {
         return "OpenSpace" + " id: " + id;
     }
+
+    @Override
+    public void playerDisconnected(String playerName) {
+        if (currentPlayer != null && playerName.equals(currentPlayer.getPlayerName())) {
+            playerIndex--;
+            nextPlayer();
+        }
+    }
 }
