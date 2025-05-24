@@ -12,8 +12,10 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Polygon?>
 
 <BorderPane onKeyPressed="#K" prefHeight="1030.0" prefWidth="1820.0" stylesheets="@css/ShipStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.galaxytruckerproject.view.gui.S_EndDrawTilesCardsController">
    <center>
@@ -22,42 +24,67 @@
             <TilePane fx:id="drawnTiles1" alignment="CENTER_RIGHT" hgap="5.0" prefColumns="7" prefTileHeight="80.0" prefTileWidth="80.0" vgap="5.0" />
             <VBox alignment="CENTER" spacing="30.0">
                <children>
-                  <Group>
+                  <StackPane>
                      <children>
-                        <ImageView fitHeight="223.0" fitWidth="326.0" layoutX="5.0" layoutY="53.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/grafiche/grafiche/cardboard/cardboard-5.png" />
-                           </image>
-                           <viewport>
-                              <Rectangle2D />
-                           </viewport>
-                        </ImageView>
-                        <ImageView fx:id="deck1" fitHeight="87.0" fitWidth="57.0" layoutX="37.0" layoutY="207.0" onMouseClicked="#drawDeck1" pickOnBounds="true" preserveRatio="true" rotate="26.0">
-                           <image>
-                              <Image url="@../images/grafiche/grafiche/cards/GT-cards_II_IT_0121.jpg" />
-                           </image>
-                        </ImageView>
-                        <Button layoutX="5.0" layoutY="8.0" mnemonicParsing="false" onAction="#endShip" prefHeight="46.0" prefWidth="85.0" text="End" />
-                        <ImageView fx:id="deck2" fitHeight="87.0" fitWidth="57.0" layoutX="140.0" layoutY="231.0" onMouseClicked="#drawDeck2" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/grafiche/grafiche/cards/GT-cards_II_IT_0121.jpg" />
-                           </image>
-                        </ImageView>
-                        <ImageView fx:id="deck3" fitHeight="87.0" fitWidth="57.0" layoutX="243.0" layoutY="206.0" onMouseClicked="#drawDeck3" pickOnBounds="true" preserveRatio="true" rotate="-26.0">
-                           <image>
-                              <Image url="@../images/grafiche/grafiche/cards/GT-cards_II_IT_0121.jpg" />
-                           </image>
-                        </ImageView>
-                        <ImageView fitHeight="87.0" fitWidth="57.0" layoutX="140.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
-                           <image>
-                              <Image url="@../images/grafiche/grafiche/cards/GT-cards_II_IT_0121.jpg" />
-                           </image>
-                        </ImageView>
-                        <ProgressBar fx:id="hourglass2" layoutX="253.0" layoutY="53.0" onMouseClicked="#turnHourglass" prefHeight="18.0" prefWidth="75.0" progress="0.0" rotate="-90.0" />
-                        <ProgressBar fx:id="hourglass1" layoutX="227.0" layoutY="40.0" onMouseClicked="#turnHourglass" prefHeight="18.0" prefWidth="75.0" progress="0.0" rotate="-90.0" />
-                        <ProgressBar fx:id="hourglass3" layoutX="274.0" layoutY="79.0" onMouseClicked="#turnHourglass" prefHeight="18.0" prefWidth="75.0" progress="0.0" rotate="-90.0" />
+                         <Group fx:id="trialFlight">
+                           <children>
+                              <ImageView fitHeight="223.0" fitWidth="326.0" layoutX="5.0" layoutY="53.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/grafiche/grafiche/cardboard/cardboard-3.png" />
+                                 </image>
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
+                              </ImageView>
+                              <Button layoutX="5.0" layoutY="9.0" mnemonicParsing="false" onAction="#endShip" prefHeight="46.0" prefWidth="85.0" text="End" />
+                               <Polygon fx:id="fourthTrial" fill="DODGERBLUE" layoutX="99.0" layoutY="80.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="153.4" scaleX="0.3" scaleY="0.3" stroke="BLACK" strokeType="INSIDE" />
+                               <Polygon fx:id="thirdTrial" fill="DODGERBLUE" layoutX="129.0" layoutY="71.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="168.7" scaleX="0.3" scaleY="0.3" stroke="BLACK" strokeType="INSIDE" />
+                               <Polygon fx:id="secondTrial" fill="DODGERBLUE" layoutX="160.0" layoutY="68.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="180.0" scaleX="0.3" scaleY="0.3" stroke="BLACK" strokeType="INSIDE" />
+                               <Polygon fx:id="firstTrial" accessibleRole="TEXT" fill="DODGERBLUE" layoutX="221.0" layoutY="73.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-162.5" scaleX="0.3" scaleY="0.3" stroke="BLACK" strokeType="INSIDE" />
+                           </children>
+                        </Group>
+                        <Group fx:id="flightImage">
+                           <children>
+                              <ImageView fitHeight="223.0" fitWidth="326.0" layoutX="5.0" layoutY="53.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/grafiche/grafiche/cardboard/cardboard-5.png" />
+                                 </image>
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
+                              </ImageView>
+                              <ImageView fx:id="deck1" fitHeight="87.0" fitWidth="57.0" layoutX="37.0" layoutY="207.0" onMouseClicked="#drawDeck1" pickOnBounds="true" preserveRatio="true" rotate="26.0">
+                                 <image>
+                                    <Image url="@../images/grafiche/grafiche/cards/GT-cards_II_IT_0121.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Button layoutX="5.0" layoutY="9.0" mnemonicParsing="false" onAction="#endShip" prefHeight="46.0" prefWidth="85.0" text="End" />
+                              <ImageView fx:id="deck2" fitHeight="87.0" fitWidth="57.0" layoutX="140.0" layoutY="231.0" onMouseClicked="#drawDeck2" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/grafiche/grafiche/cards/GT-cards_II_IT_0121.jpg" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="deck3" fitHeight="87.0" fitWidth="57.0" layoutX="243.0" layoutY="206.0" onMouseClicked="#drawDeck3" pickOnBounds="true" preserveRatio="true" rotate="-26.0">
+                                 <image>
+                                    <Image url="@../images/grafiche/grafiche/cards/GT-cards_II_IT_0121.jpg" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="87.0" fitWidth="57.0" layoutX="140.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
+                                 <image>
+                                    <Image url="@../images/grafiche/grafiche/cards/GT-cards_II_IT_0121.jpg" />
+                                 </image>
+                              </ImageView>
+                              <ProgressBar fx:id="hourglass2" layoutX="253.0" layoutY="53.0" onMouseClicked="#turnHourglass" prefHeight="18.0" prefWidth="75.0" progress="0.0" rotate="-90.0" />
+                              <ProgressBar fx:id="hourglass1" layoutX="227.0" layoutY="40.0" onMouseClicked="#turnHourglass" prefHeight="18.0" prefWidth="75.0" progress="0.0" rotate="-90.0" />
+                              <ProgressBar fx:id="hourglass3" layoutX="274.0" layoutY="79.0" onMouseClicked="#turnHourglass" prefHeight="18.0" prefWidth="75.0" progress="0.0" rotate="-90.0" />
+                              <Polygon fx:id="fourth" fill="DODGERBLUE" layoutX="92.0" layoutY="86.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="153.4" scaleX="0.3" scaleY="0.3" stroke="BLACK" strokeType="INSIDE" />
+                              <Polygon fx:id="third" fill="DODGERBLUE" layoutX="115.0" layoutY="78.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="164.1" scaleX="0.3" scaleY="0.3" stroke="BLACK" strokeType="INSIDE" />
+                              <Polygon fx:id="second" fill="DODGERBLUE" layoutX="163.0" layoutY="70.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="180.0" scaleX="0.3" scaleY="0.3" stroke="BLACK" strokeType="INSIDE" />
+                              <Polygon fx:id="first" accessibleRole="TEXT" fill="DODGERBLUE" layoutX="236.0" layoutY="80.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-159.4" scaleX="0.3" scaleY="0.3" stroke="BLACK" strokeType="INSIDE" />
+                           </children>
+                        </Group>
                      </children>
-                  </Group>
+                  </StackPane>
                   <Button mnemonicParsing="false" onAction="#drawTile">
                      <graphic>
                         <ImageView fitHeight="75.0" fitWidth="75.0" onMouseClicked="#drawTile" pickOnBounds="true" preserveRatio="true">
@@ -69,7 +96,7 @@
                   </Button>
                    <AnchorPane prefHeight="443.0" prefWidth="532.0">
                        <children>
-                           <ImageView fitHeight="443.0" fitWidth="681.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                           <ImageView fx:id="shipImage" fitHeight="443.0" fitWidth="681.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                <image>
                                    <Image url="@../images/grafiche/grafiche/cardboard/cardboard-1b.jpg" />
                                </image>

@@ -619,6 +619,10 @@ public class GUI extends Application implements DisplayableView {
             EndShipController endShipController=loader.getController();
                 endShipController.update();
             }
+        else if(controller.getState()==ClientState.S_END_DRAW_TILE_CARD) {
+            S_EndDrawTilesCardsController sceneController=loader.getController();
+                sceneController.update();
+            }
         });
     }
 

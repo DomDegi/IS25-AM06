@@ -1219,20 +1219,37 @@ public class ClientController {
             if(i<=flightBoard.getInGamePlayers().size())
                 availablePosition.put(i,null);
         }
-        flightBoard.getInGamePlayers().forEach(p -> {
-            if(p.getPosition()==6&&p.getRank()!=0){
-                availablePosition.put(1,p.getPlayerColor());
-            }
-            if(p.getPosition()==3&&p.getRank()!=0){
-                availablePosition.put(2,p.getPlayerColor());
-            }
-            if(p.getPosition()==1&&p.getRank()!=0){
-                availablePosition.put(3,p.getPlayerColor());
-            }
-            if(p.getPosition()==0&&p.getRank()!=0){
-                availablePosition.put(4,p.getPlayerColor());
-            }
-        });
+        if(getGameMode()==GameMode.LEVEL2){
+            flightBoard.getInGamePlayers().forEach(p -> {
+                if (p.getPosition() == 6 && p.getRank() != 0) {
+                    availablePosition.put(1, p.getPlayerColor());
+                }
+                if (p.getPosition() == 3 && p.getRank() != 0) {
+                    availablePosition.put(2, p.getPlayerColor());
+                }
+                if (p.getPosition() == 1 && p.getRank() != 0) {
+                    availablePosition.put(3, p.getPlayerColor());
+                }
+                if (p.getPosition() == 0 && p.getRank() != 0) {
+                    availablePosition.put(4, p.getPlayerColor());
+                }
+            });
+        }else if(getGameMode()==GameMode.TRIAL){
+            flightBoard.getInGamePlayers().forEach(p -> {
+                if (p.getPosition() == 4 && p.getRank() != 0) {
+                    availablePosition.put(1, p.getPlayerColor());
+                }
+                if (p.getPosition() == 2 && p.getRank() != 0) {
+                    availablePosition.put(2, p.getPlayerColor());
+                }
+                if (p.getPosition() == 1 && p.getRank() != 0) {
+                    availablePosition.put(3, p.getPlayerColor());
+                }
+                if (p.getPosition() == 0 && p.getRank() != 0) {
+                    availablePosition.put(4, p.getPlayerColor());
+                }
+            });
+        }
         return availablePosition;
     }
 

@@ -1,9 +1,11 @@
 package it.polimi.ingsw.galaxytruckerproject.view.gui;
 
+import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,8 +18,12 @@ import javafx.scene.layout.TilePane;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class S_ManageDrawTileController {
+
+    @FXML
+    public ImageView shipImage;
 
     @FXML
     public Button drawnTile;
@@ -36,6 +42,12 @@ public class S_ManageDrawTileController {
 
     @FXML
     public void initialize() {
+        if(GUI.getController().getGameMode()== GameMode.LEVEL2){
+            shipImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/grafiche/cardboard/cardboard-1b.jpg"))));
+        } else if (GUI.getController().getGameMode()==GameMode.TRIAL) {
+            shipImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/grafiche/cardboard/cardboard-1.jpg"))));
+            bookedTiles.setVisible(false);
+        }
         String inHandImagePath = GUI.getController().getTileInHand().getImagePath();
         InputStream inHandImageStream = getClass().getResourceAsStream(inHandImagePath);
         if (inHandImageStream == null) {
@@ -54,7 +66,7 @@ public class S_ManageDrawTileController {
         ArrayList<Tile> tiles = new ArrayList<>();
         for (int i = 0; i <= 6; i++) {
             for (int j = 0; j <= 4; j++) {
-                if(!((j==0&&(i<=1||i==3||i>=5))||(j==1&&(i==0||i==6))||(j==4&&i==3))) {
+                if((GUI.getController().getGameMode()==GameMode.LEVEL2&&!((j==0&&(i<=1||i==3||i>=5))||(j==1&&(i==0||i==6))||(j==4&&i==3)))||(GUI.getController().getGameMode()==GameMode.TRIAL&&!(i==0||i==6||((j==0&&(i!=3))||(j==1&&(i<2||i>4))||(j==4&&i==3))))) {
                     Button button = new Button();
                     button.setPrefHeight(80);
                     button.setPrefWidth(80);
