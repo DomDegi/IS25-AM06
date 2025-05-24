@@ -60,51 +60,35 @@ public class EndShipController {
 
     @FXML
     public void initialize(){
+        Polygon[] polygons = new Polygon[]{first,second,third,fourth};
         int i=1;
         if(GUI.getController().getGameMode().equals(GameMode.LEVEL2)) {
             trialFlight.setVisible(false);
             flightImage.setVisible(true);
-            for (Polygon p : new Polygon[]{first, second, third, fourth}) {
-                if (i > GUI.getController().getFlightBoard().getInGamePlayers().size())
-                    p.setVisible(false);
-                p.setStroke(rgb(255, 169, 19));
-                p.setFill(Color.TRANSPARENT);
-                p.setStrokeWidth(5);
-                p.setEffect(new DropShadow(BlurType.GAUSSIAN, rgb(255, 169, 19), 30, 0.4, 0, 0));
-                if (GUI.getController().getAvailablePosition().get(i) != null) {
-                    if (GUI.getController().getAvailablePosition().get(i) == PlayersColor.RED)
-                        p.setFill(Color.RED);
-                    if (GUI.getController().getAvailablePosition().get(i) == PlayersColor.YELLOW)
-                        p.setFill(Color.YELLOW);
-                    if (GUI.getController().getAvailablePosition().get(i) == PlayersColor.GREEN)
-                        p.setFill(Color.GREEN);
-                    if (GUI.getController().getAvailablePosition().get(i) == PlayersColor.BLUE)
-                        p.setFill(Color.BLUE);
-                }
-                i++;
-            }
+            polygons=new Polygon[]{first,second,third,fourth};
         }else if(GUI.getController().getGameMode().equals(GameMode.TRIAL)){
             trialFlight.setVisible(true);
             flightImage.setVisible(false);
-            for (Polygon p : new Polygon[]{firstTrial, secondTrial, thirdTrial, fourthTrial}) {
-                if (i > GUI.getController().getFlightBoard().getInGamePlayers().size())
-                    p.setVisible(false);
-                p.setStroke(rgb(255, 169, 19));
-                p.setFill(Color.TRANSPARENT);
-                p.setStrokeWidth(5);
-                p.setEffect(new DropShadow(BlurType.GAUSSIAN, rgb(255, 169, 19), 30, 0.4, 0, 0));
-                if (GUI.getController().getAvailablePosition().get(i) != null) {
-                    if (GUI.getController().getAvailablePosition().get(i) == PlayersColor.RED)
-                        p.setFill(Color.RED);
-                    if (GUI.getController().getAvailablePosition().get(i) == PlayersColor.YELLOW)
-                        p.setFill(Color.YELLOW);
-                    if (GUI.getController().getAvailablePosition().get(i) == PlayersColor.GREEN)
-                        p.setFill(Color.GREEN);
-                    if (GUI.getController().getAvailablePosition().get(i) == PlayersColor.BLUE)
-                        p.setFill(Color.BLUE);
-                }
-                i++;
+            polygons=new Polygon[]{firstTrial,secondTrial,thirdTrial,fourthTrial};
+        }
+        for (Polygon p : polygons) {
+            if (i > GUI.getController().getFlightBoard().getInGamePlayers().size())
+                p.setVisible(false);
+            p.setStroke(rgb(255, 169, 19));
+            p.setFill(Color.TRANSPARENT);
+            p.setStrokeWidth(5);
+            p.setEffect(new DropShadow(BlurType.GAUSSIAN, rgb(255, 169, 19), 30, 0.4, 0, 0));
+            if (GUI.getController().getAvailablePosition().get(i) != null) {
+                if (GUI.getController().getAvailablePosition().get(i) == PlayersColor.RED)
+                    p.setFill(Color.RED);
+                if (GUI.getController().getAvailablePosition().get(i) == PlayersColor.YELLOW)
+                    p.setFill(Color.YELLOW);
+                if (GUI.getController().getAvailablePosition().get(i) == PlayersColor.GREEN)
+                    p.setFill(Color.GREEN);
+                if (GUI.getController().getAvailablePosition().get(i) == PlayersColor.BLUE)
+                    p.setFill(Color.BLUE);
             }
+            i++;
         }
     }
 

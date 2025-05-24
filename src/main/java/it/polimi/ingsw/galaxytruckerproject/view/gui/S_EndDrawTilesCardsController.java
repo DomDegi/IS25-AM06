@@ -97,56 +97,37 @@ public class S_EndDrawTilesCardsController {
 
     @FXML
     public void initialize() {
+        Polygon[] polygons = new Polygon[]{first,second,third,fourth};
         if(GUI.getController().getGameMode()==GameMode.LEVEL2){
+            polygons=new Polygon[]{first,second,third,fourth};
             trialFlight.setVisible(false);
             flightImage.setVisible(true);
             shipImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/grafiche/cardboard/cardboard-1b.jpg"))));
         } else if (GUI.getController().getGameMode()==GameMode.TRIAL) {
+            polygons=new Polygon[]{firstTrial,secondTrial,thirdTrial,fourthTrial};
             flightImage.setVisible(false);
             trialFlight.setVisible(true);
             shipImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/grafiche/cardboard/cardboard-1.jpg"))));
         }
         int index=1;
-        if(GUI.getController().getGameMode()== GameMode.LEVEL2){
-            for(Polygon p:new Polygon[]{first,second,third,fourth}){
-                if(index>GUI.getController().getFlightBoard().getInGamePlayers().size())
-                    p.setVisible(false);
-                p.setStroke(rgb(255, 169, 19));
-                p.setFill(Color.TRANSPARENT);
-                p.setStrokeWidth(5);
-                p.setEffect(new DropShadow(BlurType.GAUSSIAN,rgb(255, 169, 19), 30, 0.4, 0, 0));
-                if(GUI.getController().getAvailablePosition().get(index)!=null) {
-                    if(GUI.getController().getAvailablePosition().get(index)== PlayersColor.RED)
-                        p.setFill(Color.RED);
-                    if(GUI.getController().getAvailablePosition().get(index)== PlayersColor.YELLOW)
-                        p.setFill(Color.YELLOW);
-                    if(GUI.getController().getAvailablePosition().get(index)== PlayersColor.GREEN)
-                        p.setFill(Color.GREEN);
-                    if(GUI.getController().getAvailablePosition().get(index)== PlayersColor.BLUE)
-                        p.setFill(Color.BLUE);
-                }
-                index++;
+        for(Polygon p:polygons){
+            if(index>GUI.getController().getFlightBoard().getInGamePlayers().size())
+                p.setVisible(false);
+            p.setStroke(rgb(255, 169, 19));
+            p.setFill(Color.TRANSPARENT);
+            p.setStrokeWidth(5);
+            p.setEffect(new DropShadow(BlurType.GAUSSIAN,rgb(255, 169, 19), 30, 0.4, 0, 0));
+            if(GUI.getController().getAvailablePosition().get(index)!=null) {
+                if(GUI.getController().getAvailablePosition().get(index)== PlayersColor.RED)
+                    p.setFill(Color.RED);
+                if(GUI.getController().getAvailablePosition().get(index)== PlayersColor.YELLOW)
+                    p.setFill(Color.YELLOW);
+                if(GUI.getController().getAvailablePosition().get(index)== PlayersColor.GREEN)
+                    p.setFill(Color.GREEN);
+                if(GUI.getController().getAvailablePosition().get(index)== PlayersColor.BLUE)
+                    p.setFill(Color.BLUE);
             }
-        } else if (GUI.getController().getGameMode()==GameMode.TRIAL) {
-            for(Polygon p:new Polygon[]{firstTrial,secondTrial,thirdTrial,fourthTrial}){
-                if(index>GUI.getController().getFlightBoard().getInGamePlayers().size())
-                    p.setVisible(false);
-                p.setStroke(rgb(255, 169, 19));
-                p.setFill(Color.TRANSPARENT);
-                p.setStrokeWidth(5);
-                p.setEffect(new DropShadow(BlurType.GAUSSIAN,rgb(255, 169, 19), 30, 0.4, 0, 0));
-                if(GUI.getController().getAvailablePosition().get(index)!=null) {
-                    if(GUI.getController().getAvailablePosition().get(index)== PlayersColor.RED)
-                        p.setFill(Color.RED);
-                    if(GUI.getController().getAvailablePosition().get(index)== PlayersColor.YELLOW)
-                        p.setFill(Color.YELLOW);
-                    if(GUI.getController().getAvailablePosition().get(index)== PlayersColor.GREEN)
-                        p.setFill(Color.GREEN);
-                    if(GUI.getController().getAvailablePosition().get(index)== PlayersColor.BLUE)
-                        p.setFill(Color.BLUE);
-                }
-                index++;
-            }
+            index++;
         }
         tilesTable.getChildren().clear();
         deck1.setVisible(GUI.getController().getAvailableDeck().get(1));
