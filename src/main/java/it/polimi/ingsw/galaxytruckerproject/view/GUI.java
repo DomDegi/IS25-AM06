@@ -24,6 +24,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -279,14 +280,10 @@ public class GUI extends Application implements DisplayableView {
     public static void showWait(){
         Platform.runLater(() -> {
             if(controller.getPhase()== GamePhases.LOGIN){
-                loader = new FXMLLoader(GUI.class.getResource("/gui/wait.fxml"));
-                BorderPane newLayer;
-                try {
-                    newLayer = loader.load();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                layout.setCenter(newLayer);
+                ProgressIndicator circle = new ProgressIndicator();
+                circle.setPrefSize(100, 100);
+                circle.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+                layout.setCenter(circle);
             }else{
                 if(controller.getState()==ClientState.S_FINISHED||(controller.getPreviousState()==ClientState.S_FINISHED)){
                     loader = new FXMLLoader(GUI.class.getResource("/gui/endShipBoard.fxml"));
@@ -298,14 +295,10 @@ public class GUI extends Application implements DisplayableView {
                     }
                     layout.setCenter(newLayer);
                 }else {
-                    loader = new FXMLLoader(GUI.class.getResource("/gui/wait2.fxml"));
-                    BorderPane newLayer;
-                    try {
-                        newLayer = loader.load();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    layout.setBottom(newLayer);
+                    ProgressIndicator circle = new ProgressIndicator();
+                    circle.setPrefSize(20, 20);
+                    circle.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+                    layout.setBottom(circle);
                 }
             }
         });
@@ -403,24 +396,18 @@ public class GUI extends Application implements DisplayableView {
     }
     public static void showMessage(String message) {
         Platform.runLater(() -> {
-            loader = new FXMLLoader(GUI.class.getResource("/gui/message.fxml"));
-            AnchorPane newLayer;
-            try {
-                newLayer = loader.load();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
             Label stringLabel = new Label(message);
+            AnchorPane anchorPane = new AnchorPane();
+            stringLabel.setAlignment(Pos.CENTER);
+            stringLabel.setPrefHeight(50);
+            stringLabel.setStyle("fx-font-size: 16px;");
+            anchorPane.getChildren().add(stringLabel);
+            anchorPane.setPrefHeight(50);
+            anchorPane.setPrefWidth(300);
             AnchorPane.setBottomAnchor(stringLabel, 20.0);
             AnchorPane.setLeftAnchor(stringLabel, 0.0);
             AnchorPane.setRightAnchor(stringLabel, 0.0);
-            stringLabel.setAlignment(Pos.CENTER);
-            try {
-                newLayer.getChildren().add(1, stringLabel);
-            } catch (IndexOutOfBoundsException e) {
-                newLayer.getChildren().add(stringLabel);
-            }
-            layout.setBottom(newLayer);
+            layout.setBottom(anchorPane);
         });
     }
 

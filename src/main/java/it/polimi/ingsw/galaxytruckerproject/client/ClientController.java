@@ -783,7 +783,6 @@ public class ClientController {
 
     public boolean firstHourglassTurn() {
         if(hourglassTurns == 0) {
-            hourglassTurns = 1;
             setState(ClientState.WAIT);
             try {
                 virtualController.sendTurnHourGlass();
@@ -803,8 +802,6 @@ public class ClientController {
                 view.wrongLocalInput();
                 return false;
             }
-            hourglassTurns = 2;
-            setState(state);
             try {
                 virtualController.sendTurnHourGlass();
             } catch (RemoteException e) {
@@ -821,11 +818,6 @@ public class ClientController {
                 view.wrongLocalInput();
                 return false;
             }
-            if (hourglassTurns == 1)
-                hourglassTurns = 2;
-            else
-                hourglassTurns = 3;
-            setState(ClientState.S_FINISHED);
             try {
                 virtualController.sendTurnHourGlass();
             } catch (RemoteException e) {
