@@ -15,8 +15,29 @@ import java.io.StringReader;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Utility class responsible for deserializing the game update string sent by the server
+ * and applying it to the {@link ClientController} to synchronize the client-side state.
+ * <p>
+ * This class is not instantiable and exposes a single static method.
+ */
 public class UpdateDeserializer {
 
+    /**
+     * Parses the serialized game state string and updates the local {@link ClientController}
+     * accordingly. This method:
+     * <ul>
+     *   <li>Updates the hourglass turn counter</li>
+     *   <li>Restores the game mode and player count</li>
+     *   <li>Reconstructs the deck of cards and turned tiles</li>
+     *   <li>Loads each player's light model and ship board</li>
+     *   <li>Sorts and inserts players into the client-side flight board</li>
+     * </ul>
+     *
+     * @param controller         the client controller to update
+     * @param currentGameStatus  the serialized game state string received from the server
+     * @throws RuntimeException if any parsing or I/O error occurs during deserialization
+     */
     public static void unpack(ClientController controller, String currentGameStatus) {
 
         try (BufferedReader writer = new BufferedReader(new StringReader(currentGameStatus))) {

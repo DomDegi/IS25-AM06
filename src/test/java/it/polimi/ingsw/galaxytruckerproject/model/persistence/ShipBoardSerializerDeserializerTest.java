@@ -115,7 +115,7 @@ class ShipBoardSerializerDeserializerTest {
         save_test();
         int expectedEndOfLine = 35;
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            ShipBoardSerializerDeserializer.load(playerCopy, 0, new BufferedReader(new FileReader(fileName)),true);
+            ShipBoardSerializerDeserializer.load(playerCopy,new BufferedReader(new FileReader(fileName)),true);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

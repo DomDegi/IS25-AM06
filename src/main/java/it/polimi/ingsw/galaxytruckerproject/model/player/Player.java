@@ -1,7 +1,6 @@
 package it.polimi.ingsw.galaxytruckerproject.model.player;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
-import it.polimi.ingsw.galaxytruckerproject.model.persistence.TileLoader;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 
 import java.io.Serializable;
@@ -506,7 +505,7 @@ public class Player implements PlayerInterface , Serializable {
 
     public void playerLoader(String[] attributes) {
         if (attributes.length < 10) {
-            throw new IllegalArgumentException("Insufficient attributes: at least 8 are needed " + attributes.length);
+            throw new IllegalArgumentException("Insufficient attributes: at least 10 are needed " + attributes.length);
         }
         this.playerName = attributes[0];
         this.playerColor = PlayersColor.fromString(attributes[1]);
