@@ -8,6 +8,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Represents a player in the Galaxy Trucker game.
+ * A player has a name, color, ship, crew, cargo, credits, and various gameplay states like landing or disconnection.
+ *
+ * This class handles interactions with the ship, including:
+ * - managing crew
+ * - handling engines and cannons
+ * - placing and removing goods
+ * - using shields and batteries
+ * - serialization/deserialization for saving/loading game state
+ *
+ * Implements {@code PlayerInterface} and is {@code Serializable}.
+ */
 public class Player implements PlayerInterface , Serializable {
     private int playerRanking;
     private String playerName;
@@ -19,6 +32,12 @@ public class Player implements PlayerInterface , Serializable {
     private Tile drawnTile;
     private boolean isDisconnected;
 
+    /**
+     * Constructs a new Player with the specified name and color.
+     *
+     * @param playerName  the name of the player
+     * @param playerColor the color of the player
+     */
     public Player(String playerName, PlayersColor playerColor) {
         this.playerName = playerName;
         this.playerColor = playerColor;
@@ -31,6 +50,12 @@ public class Player implements PlayerInterface , Serializable {
         this.isDisconnected = false;
     }
 
+    /**
+     * Creates a shallow clone of the player with the ship and drawn tile set to null.
+     *
+     * @return a new Player instance used for transmission (e.g., to client)
+     * @throws RuntimeException if cloning fails
+     */
     public Player send() {
         try {
             Player cloned = (Player) super.clone();
@@ -116,6 +141,14 @@ public class Player implements PlayerInterface , Serializable {
 
 
     //ENGINE METHODS
+    /**
+     * Uses a specified number of double engines and the corresponding batteries.
+     * Computes total engine power.
+     *
+     * @param numberOfDoubleEngines the number of double engines to activate
+     * @param batteries coordinates of the batteries used
+     * @return map of engine power gained and the updated tiles; null if invalid
+     */
     public Map<Integer, ArrayList<Tile>> useEngines(int numberOfDoubleEngines, ArrayList<Coordinates> batteries) {
         if (numberOfDoubleEngines > playerShip.getDoubleEngine().size()) {
             return null;
@@ -147,6 +180,13 @@ public class Player implements PlayerInterface , Serializable {
     }
 
     //CANNON METHODS
+    /**
+     * Uses cannons to reach a desired firepower by consuming batteries.
+     *
+     * @param doubleFireStrength desired firepower from double cannons
+     * @param batteries coordinates of the batteries used
+     * @return map of firepower and updated tiles; null if invalid
+     */
     public Map<Float, ArrayList<Tile>> useCannons(float doubleFireStrength, ArrayList<Coordinates> batteries) {
         float possibleDoubleFireStrength = 0;
         int batteriesCounter = 0;
@@ -198,6 +238,12 @@ public class Player implements PlayerInterface , Serializable {
     }
 
     //BATTERIES METHODS
+    /**
+     * Tries to consume the given list of batteries in order.
+     *
+     * @param BatteriesToConsume list of battery coordinates to use
+     * @return list of tiles that were successfully updated; null if failed
+     */
     public ArrayList<Tile> chooseBatteriesUse(ArrayList<Coordinates> BatteriesToConsume) {
         ArrayList<Coordinates> used = new ArrayList<>();
         for (Coordinates Coordinates : BatteriesToConsume) {
@@ -222,6 +268,12 @@ public class Player implements PlayerInterface , Serializable {
         }
     }
 
+    /**
+     * Removes goods from the specified coordinates if valid.
+     *
+     * @param toRemoveFrom list of coordinates to remove goods from
+     * @return list of tiles updated after removal; null if invalid
+     */
     public ArrayList<Tile> removeGoods(ArrayList<Coordinates> toRemoveFrom) {
         ArrayList<Tile> updatedTiles = new ArrayList<>();
 
@@ -250,7 +302,12 @@ public class Player implements PlayerInterface , Serializable {
         }
         return updatedTiles;
     }
-
+    /**
+     * Checks whether goods can be removed from the given coordinates.
+     *
+     * @param toRemoveFrom list of coordinates
+     * @return true if the removal is valid
+     */
     public boolean removeGoodsCheck(ArrayList<Coordinates> toRemoveFrom) {
         int redGoods = playerShip.cargoHoldContainsGood(new Goods(GoodsColor.RED)).size();
         int yellowGoods = playerShip.cargoHoldContainsGood(new Goods(GoodsColor.YELLOW)).size();
@@ -291,11 +348,10 @@ public class Player implements PlayerInterface , Serializable {
     }
 
     /**
-     * Automatically positions the given list of goods into available CargoHold tiles.
-     * It attempts to fill all available CargoHolds by placing goods one at a time.
+     * Automatically places the given goods in the player's cargo holds.
      *
-     * @param goodsList the list of goods to be placed into the ship's cargo holds
-     * @return list of tiles that were successfully updated with goods
+     * @param goodsList list of goods to place
+     * @return list of tiles updated with new goods
      */
     public ArrayList<Tile> automaticGoodsPositioner(ArrayList<Goods> goodsList) {
         ArrayList<Coordinates> coordinates = new ArrayList<>(playerShip.getCargoHoldCoordinates());
@@ -367,6 +423,12 @@ public class Player implements PlayerInterface , Serializable {
     }
 
     //CREW METHODS
+    /**
+     * Removes crew members from the given cabin coordinates.
+     *
+     * @param coordinates list of cabin coordinates
+     * @return list of updated tiles, or null if any coordinate is invalid
+     */
     public ArrayList<Tile> removeCrew(ArrayList<Coordinates> coordinates) {
         for (Coordinates coord: coordinates) {
             if (!playerShip.getCabinsCoordinates().contains(coord)) {
@@ -387,6 +449,12 @@ public class Player implements PlayerInterface , Serializable {
         }
     }
 
+    /**
+     * Verifies if alien crew can be correctly placed in cabins and updates them.
+     *
+     * @param cabins list of cabin tiles with crew to set
+     * @return true if setup is valid and successful
+     */
     public boolean verifyAndSetupCrew(ArrayList<Tile>  cabins) {
         for (Tile cabin: cabins) {
             if (cabin.getCrewType().equals(CrewType.PURPLE) &&
@@ -402,6 +470,11 @@ public class Player implements PlayerInterface , Serializable {
         return true;
     }
 
+    /**
+     * Sets all cabin tiles to contain human crew.
+     *
+     * @return list of tiles that were updated
+     */
     public ArrayList<Tile> setAllCrewToHuman () {
         ArrayList<Coordinates> cabins = playerShip.getCabinsCoordinates();
         ArrayList<Tile> updatedTiles = new ArrayList<>();
@@ -413,6 +486,9 @@ public class Player implements PlayerInterface , Serializable {
         return updatedTiles;
     }
 
+    /**
+     * Removes all crew from the ship and resets crew counter to zero.
+     */
     public void setCrewToZero(){
         ArrayList<Coordinates> cabins = playerShip.getCabinsCoordinates();
         removeCrew(cabins);
@@ -423,24 +499,25 @@ public class Player implements PlayerInterface , Serializable {
         playerShip.setCrewNumberToZero();
     }
 
-    //IT ADDS CREDIT
+    /**
+     * sets the player's credit to the value of the parameter
+     * @param credit player's total credits
+     */
     public void gainCredit(int credit) {
         this.credit += credit;
     }
 
-    //THIS METHOD RECEIVES THE Coordinates OF THE SHIELD THAT WANTS TO BE ACTIVATED AND THE Coordinates OF THE BATTERY_COMPONENTS
-    //FROM WHICH IT'S GOING TO BE USED THE ONE BATTERY NECESSARY TO POWER THE SHIELD
-    public Coverage useShield(Coordinates shieldCoordinates, Coordinates batteryCoordinates) {
-        return playerShip.chooseShields(shieldCoordinates,batteryCoordinates);
-    }
-
-
-    //Disconnected flag methods
+    /**
+     * sets player's disconnected flag to true
+     */
     public void playerDisconnects() {
         this.isDisconnected = true;
         System.out.println("Player disconnected");
     }
 
+    /**
+     * sets player's disconnected flag to false
+     */
     public void playerReconnects() {
         this.isDisconnected = false;
     }
@@ -449,7 +526,6 @@ public class Player implements PlayerInterface , Serializable {
         return isDisconnected;
     }
 
-    //methods for testing
     public void setPlayerShip(ShipBoard shipBoard) {
         this.playerShip = shipBoard;
     }
@@ -458,6 +534,11 @@ public class Player implements PlayerInterface , Serializable {
         isDisconnected = disconnected;
     }
 
+    /**
+     * Serializes the player state into a single string line for saving.
+     *
+     * @return the serialized representation of the player
+     */
     public String toStringData() {
         StringBuilder sb = new StringBuilder();
         //First 5 word divided by " " space (attributes[0-4])
@@ -497,12 +578,19 @@ public class Player implements PlayerInterface , Serializable {
         return sb.toString();
     }
 
-    //No parameter builder for deserialization
+    /**
+     * No-argument constructor used for deserialization.
+     */
     public Player() {
         this.playerRanking = 0;
         this.playerPosition = 0;
     }
-
+    
+    /**
+     * Reconstructs a Player from a saved string of attributes.
+     *
+     * @param attributes array of player attributes from save file
+     */
     public void playerLoader(String[] attributes) {
         if (attributes.length < 10) {
             throw new IllegalArgumentException("Insufficient attributes: at least 10 are needed " + attributes.length);
@@ -530,8 +618,6 @@ public class Player implements PlayerInterface , Serializable {
         }
     }
 
-    //Needed for testing
-
     public void setCredit(int credit) {
         this.credit = credit;
     }
@@ -540,6 +626,9 @@ public class Player implements PlayerInterface , Serializable {
         this.drawnTile = drawnTile;
     }
 
+    /**
+     * @return true if the player is currently disconnected
+     */
     public boolean isDisconnected() {
         return isDisconnected;
     }
