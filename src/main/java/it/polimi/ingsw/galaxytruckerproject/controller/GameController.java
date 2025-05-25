@@ -455,7 +455,7 @@ public class GameController implements Observer, Serializable {
     public void notifyFlightBoardCards() {
         Map<Integer,ArrayList<Card>> flightBoardCards = new HashMap<>();
         for (int i = 1; i <= 3; i++) {
-            flightBoardCards.put(i,game.getInGameCards(i));
+            flightBoardCards.put(i,game.getANumberOfInGameCards(i));
         }
         for (VirtualView view: playersViewMap.values()) {
             try {

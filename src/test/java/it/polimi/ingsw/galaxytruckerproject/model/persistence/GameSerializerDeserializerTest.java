@@ -56,8 +56,8 @@ class GameSerializerDeserializerTest {
     @Test
     void card_test() {
         serializeGame();
-        ArrayList<Card> original = game.getInGameCards();
-        ArrayList<Card> copy= gameController.getGame().getInGameCards();
+        ArrayList<Card> original = game.getANumberOfInGameCards();
+        ArrayList<Card> copy= gameController.getGame().getANumberOfInGameCards();
 
         assertEquals(original.size(), copy.size());
 

@@ -585,7 +585,7 @@ public class Player implements PlayerInterface , Serializable {
         this.playerRanking = 0;
         this.playerPosition = 0;
     }
-    
+
     /**
      * Reconstructs a Player from a saved string of attributes.
      *

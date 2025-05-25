@@ -168,7 +168,7 @@ public class Game implements GameInterface{
     }
 
 
-    public ArrayList<Card> getInGameCards(int bunchNumber) {
+    public ArrayList<Card> getANumberOfInGameCards(int bunchNumber) {
         return switch (bunchNumber) {
             case 1 -> getInGameCards1();
             case 2 -> getInGameCards2();
@@ -410,7 +410,7 @@ public class Game implements GameInterface{
         this.turnedTiles = new TileFactory().mapFromIDs(keyMap);
     }
 
-    public ArrayList<Card> getInGameCards() {
+    public ArrayList<Card> getANumberOfInGameCards() {
         return inGameCards;
     }
 
