@@ -567,7 +567,7 @@ public class GUI extends Application implements DisplayableView {
 
             }
             case WAIT -> {
-                if(controller.getPreviousState()==ClientState.S_FINISHED) {
+                if(controller.getPhase()==GamePhases.CARDS) {
                     showDrawCard();
                 }
                 showWait();

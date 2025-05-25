@@ -43,7 +43,7 @@
 }
 
 .image-view{
-    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 20, 0.2, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.4, 0, 0);
 }
 
 .image-view:disabled{

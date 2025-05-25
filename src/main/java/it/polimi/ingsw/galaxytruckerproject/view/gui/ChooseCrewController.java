@@ -181,7 +181,6 @@ public class ChooseCrewController {
             index++;
         }
         refresh();
-        GUI.getController().setUpCabins();
         cabins=GUI.getController().getCabinsManager().getCabins();
         focus();
     }
@@ -236,7 +235,13 @@ public class ChooseCrewController {
                     brown.setDisable(false);
                 }
             }
-        }else return;
+        }else {
+            actionLabel.setVisible(false);
+            white.setVisible(false);
+            purple.setVisible(false);
+            brown.setVisible(false);
+            return;
+        }
         Tile tile=GUI.getController().getMe().getShipBoard().getTilesTable()[cabins.get(index).getX()][cabins.get(index).getY()].get();
         String imagePath = tile.getImagePath();
         InputStream imageStream = getClass().getResourceAsStream(imagePath);

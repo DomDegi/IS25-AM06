@@ -576,6 +576,7 @@ public class ClientController {
             if (!(me.getShipBoard().getCabinsCoordinates().isEmpty() || me.getShipBoard().getCabinsCoordinates().size() == 1)) {
                 newTiles = cabinsManager.manageCabins(type);
                 if (newTiles != null) {
+                    phase=GamePhases.CARDS;
                     setState(ClientState.WAIT);
                     try {
                         inManager = false;

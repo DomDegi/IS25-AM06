@@ -67,11 +67,11 @@ public class CabinsManager {
         }
         if(lightPlayer.getShipBoard().getTile(cabins.get(index)) != null && lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.NO){
             view.showGenericMessage(cabins.get(index).toString()+" - Only Human are allowed here");
-        }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.PURPLE){
+        }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)) != null &&lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.PURPLE){
             view.showGenericMessage(cabins.get(index).toString()+" - Human and Purple aliens are allowed here");
-        }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.BROWN){
+        }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)) != null &&lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.BROWN){
             view.showGenericMessage(cabins.get(index).toString()+" - Human and Brown aliens are allowed here");
-        }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.BOTH){
+        }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)) != null &&lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.BOTH){
             view.showGenericMessage(cabins.get(index).toString()+" - Everyone is allowed here");
         }
     }
@@ -79,11 +79,11 @@ public class CabinsManager {
     public AlienOptions crewType() {
         if(lightPlayer.getShipBoard().getTile(cabins.get(index)) != null && lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.NO){
             return AlienOptions.NO;
-        }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.PURPLE){
+        }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)) != null &&lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.PURPLE){
             return AlienOptions.PURPLE;
-        }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.BROWN){
+        }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)) != null &&lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.BROWN){
             return AlienOptions.BROWN;
-        }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.BOTH){
+        }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)) != null &&lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.BOTH){
             return AlienOptions.BOTH;
         }else
             return AlienOptions.NO;
