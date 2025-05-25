@@ -199,7 +199,7 @@ class PiratesTest {
     }
 
     @Test
-    void successfully_initialised_executed_los_but_player_is_disconnected(){
+    void successfully_initialised_executed_loss_but_player_is_disconnected(){
         SmallCannonShot first= new SmallCannonShot(Direction.SOUTH);
         SmallCannonShot second= new SmallCannonShot(Direction.SOUTH);
         LargeCannonShot third= new LargeCannonShot(Direction.SOUTH);
@@ -212,6 +212,47 @@ class PiratesTest {
         pirates = new Pirates(1,2,4,6, projectiles);
         game.setDrawnCard(pirates);
         game.getDrawnCard().initializeCard(game, viewMap);
+        ArrayList<Coordinates> coord = new ArrayList<>();
+        coord.add(new Coordinates(3,0));
+        game.getDrawnCard().cannonChoice("MimmoPericoloso", 2, coord);
+        game.getDrawnCard().choice("MimmoPericoloso", true);
+        System.out.println(player3.getShipBoard().toString());
+        assertEquals(6, player1.getCredit());
+        assertEquals(GameState.DRAW_CARD, game.getGameState());
+    }
+
+    @Test
+    void player_disconnects_after_he_won() {
+        game.setDrawnCard(pirates);
+        game.getDrawnCard().initializeCard(game, viewMap);
+        int player1_initialPosition = player1.getPlayerPosition();
+
+        game.getDrawnCard().cannonChoice("EnnioVolante", 0, new ArrayList<>());
+        ArrayList<Coordinates> coord = new ArrayList<>();
+        coord.add(new Coordinates(3,0));
+        game.getDrawnCard().cannonChoice("MimmoPericoloso", 1, coord);
+        player1.setDisconnected(true);
+        pirates.playerDisconnected("MimmoPericoloso");
+        assertEquals(player1_initialPosition, player1.getPlayerPosition());
+        assertEquals(GameState.DRAW_CARD, game.getGameState());
+    }
+
+    @Test
+    void player_disconnects_after_he_lost() {
+        SmallCannonShot first= new SmallCannonShot(Direction.SOUTH);
+        SmallCannonShot second= new SmallCannonShot(Direction.SOUTH);
+        LargeCannonShot third= new LargeCannonShot(Direction.SOUTH);
+        ArrayList<Projectile> projectiles = new ArrayList<>();
+        projectiles.add(first);
+        projectiles.add(second);
+        projectiles.add(third);
+        System.out.println(player3.getShipBoard().toString());
+        pirates = new Pirates(1,2,4,6, projectiles);
+        game.setDrawnCard(pirates);
+        game.getDrawnCard().initializeCard(game, viewMap);
+        game.getDrawnCard().cannonChoice(player3.getPlayerName(), 0, new ArrayList<>());
+        player3.setDisconnected(true);
+        pirates.playerDisconnected(player3.getPlayerName());
         ArrayList<Coordinates> coord = new ArrayList<>();
         coord.add(new Coordinates(3,0));
         game.getDrawnCard().cannonChoice("MimmoPericoloso", 2, coord);

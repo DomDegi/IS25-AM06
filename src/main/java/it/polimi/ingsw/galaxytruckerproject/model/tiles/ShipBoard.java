@@ -289,8 +289,9 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
         String yellow="/images/startingCabins/yellow_starting_cabin.png";
         String green="/images/startingCabins/green_starting_cabin.png";
         String red="/images/startingCabins/red_starting_cabin.png";
-        if(player.getPlayerColor()== PlayersColor.BLUE)
-            tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),blue, 0,0);
+        if(player.getPlayerColor()== PlayersColor.BLUE) {
+            tile = new StartingCabin(new Link(Connectors.UNIVERSAL), new Link(Connectors.UNIVERSAL), new Link(Connectors.UNIVERSAL), new Link(Connectors.UNIVERSAL), blue, 0, 0);
+        }
         else if(player.getPlayerColor()== PlayersColor.YELLOW)
             tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),yellow,0, 0);
         else if(player.getPlayerColor()== PlayersColor.GREEN)

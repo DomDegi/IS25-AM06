@@ -167,14 +167,29 @@ class MeteorSwarmTest {
     }
     @Test
     void testMeteorSwarm() {
-        int player1_initialBatteries = player1.getShipBoard().getNumBatteries();
         game.setDrawnCard(meteorSwarm);
         game.getDrawnCard().initializeCard(game, viewMap);
         assertEquals(meteorSwarm, game.getDrawnCard());
         meteorSwarm.setDiceRoll(2);
-        //assertEquals(player1_initialBatteries - 1, player1.getShipBoard().getNumBatteries());
         System.out.println(meteorSwarm.toString());
         meteorSwarm.setDiceRoll(2);
+        assertEquals(GameState.DRAW_CARD, game.getGameState());
+    }
+
+    @Test
+    void testMeteorSwarm_with_disconnected_player() {
+        game.setDrawnCard(meteorSwarm);
+        game.getDrawnCard().initializeCard(game, viewMap);
+        assertEquals(meteorSwarm, game.getDrawnCard());
+        meteorSwarm.setDiceRoll(7);
+        player1.setDisconnected(true);
+        player2.setDisconnected(true);
+        player3.setDisconnected(true);
+        meteorSwarm.playerDisconnected(player1.getPlayerName());
+        meteorSwarm.playerDisconnected(player2.getPlayerName());
+        meteorSwarm.playerDisconnected(player3.getPlayerName());
+        System.out.println(meteorSwarm.toString());
+        meteorSwarm.setDiceRoll(5);
         assertEquals(GameState.DRAW_CARD, game.getGameState());
     }
 }

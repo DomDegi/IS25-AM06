@@ -15,19 +15,46 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-
+/**
+ * Represents a Combat Zone card that introduces one or more competitive challenges
+ * among all players. The player with the weakest performance in each challenge
+ * receives a corresponding penalty.
+ */
 public class CombatZone extends Card {
-    private final LinkedHashMap<ChallengeType, Penalty> listOfChallenges ;
+    /** Ordered map of challenges to their associated penalties. */
+    private final LinkedHashMap<ChallengeType, Penalty> listOfChallenges;
+
+    /** Map that saves each player's performance value for the current challenge. */
     private final LinkedHashMap<Player, Float> savedValues;
+
+    /** Player identified as having the weakest performance in the current challenge. */
     private Player minPlayer = null;
+
+    /** Virtual view associated with the weakest player. */
     private VirtualView minPlayerView = null;
+
+    /** Index of the player currently being evaluated. */
     private int playerIndex = -1;
-    private Player currentPlayer =  null;
+
+    /** The player currently being evaluated. */
+    private Player currentPlayer = null;
+
+    /** Virtual view associated with the current player. */
     private VirtualView currentView = null;
+
+    /** The challenge currently being processed. */
     private ChallengeType currentChallenge = null;
+
+    /** The penalty associated with the current challenge. */
     private Penalty currentPenalty = null;
 
-
+    /**
+     * Creates a CombatZone card with an image.
+     *
+     * @param level the card's level
+     * @param listOfChallenges the list of challenges and their penalties
+     * @param filePath the image path for the card
+     */
     @JsonCreator
     public CombatZone(
             @JsonProperty("level") int level,
@@ -39,7 +66,12 @@ public class CombatZone extends Card {
         this.savedValues = new LinkedHashMap<>();
     }
 
-
+    /**
+     * Creates a CombatZone card without an image.
+     *
+     * @param level the card's level
+     * @param listOfChallenges the list of challenges and their penalties
+     */
     public CombatZone(
             @JsonProperty("level") int level,
             @JsonProperty("listOfChallenges") LinkedHashMap<ChallengeType, Penalty> listOfChallenges
@@ -48,14 +80,21 @@ public class CombatZone extends Card {
         this.listOfChallenges = listOfChallenges;
         this.savedValues = new LinkedHashMap<>();
     }
-
+    /**
+     * Initializes the card with the current game context and virtual views.
+     *
+     * @param game the game interface
+     * @param viewsMap the map of player names to their views
+     */
     @Override
     public void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap) {
         this.game = game;
         this.viewsMap = viewsMap;
         nextPlayer();
     }
-
+    /**
+     * Starts the evaluation of the next challenge, or ends the card event if no challenges remain.
+     */
     public void nextChallenge () {
         if (listOfChallenges.isEmpty()) {
             game.endCardEvent();
@@ -81,7 +120,10 @@ public class CombatZone extends Card {
         }
         findMinPlayer();
     }
-
+    /**
+     * Advances to the next player in the evaluation sequence.
+     * If all players have been evaluated, the weakest is identified.
+     */
     public void nextPlayer() {
         playerIndex++;
         if (playerIndex < game.getNumberOfPlayers()) {
@@ -92,12 +134,17 @@ public class CombatZone extends Card {
         }
         nextChallenge();
     }
-
+    /**
+     * Sets the current player and their view based on the current index.
+     */
     public void initializeCurrentPlayer() {
         this.currentPlayer = game.getListOfInFlightPlayers().get(playerIndex);
         this.currentView = viewsMap.get(currentPlayer.getPlayerName());
     }
-
+    /**
+     * Evaluates the cannon strength of the current player.
+     * If the player has no usable double cannon, uses single cannon plus bonuses.
+     */
     public void cannonStrengthCheck () {
         if (currentPlayer != null) {
             if (currentPlayer.IsDisconnected() || currentPlayer.getShipBoard().getDoubleCannon().isEmpty() || currentPlayer.getShipBoard().getNumBatteries() == 0) {
@@ -116,7 +163,10 @@ public class CombatZone extends Card {
             }
         }
     }
-
+    /**
+     * Evaluates the engine power of the current player.
+     * If the player has no usable double engine, uses single engines plus bonuses.
+     */
     public void enginePowerCheck () {
         if (currentPlayer != null) {
             if (currentPlayer.IsDisconnected() || currentPlayer.getShipBoard().getDoubleEngine().isEmpty() || currentPlayer.getShipBoard().getNumBatteries() == 0) {
@@ -135,14 +185,19 @@ public class CombatZone extends Card {
             }
         }
     }
-
+    /**
+     * Evaluates the number of crew members for each player.
+     */
     public void crewNumberCheck () {
         for (Player player: game.getListOfInFlightPlayers()) {
             notifyCrew(player.getPlayerName(),player.getTotalCrew());
             savedValues.put(player, (float) player.getTotalCrew());
         }
     }
-
+    /**
+     * Identifies the player with the lowest performance in the current challenge
+     * and applies the associated penalty.
+     */
     public void findMinPlayer() {
         if (savedValues.size() != game.getNumberOfPlayers()) {
             return;
@@ -162,7 +217,9 @@ public class CombatZone extends Card {
         //resetForNextPenalty();
     }
 
-
+    /**
+     * Resets the internal state to move on to the next challenge after the penalty is applied.
+     */
     public void resetForNextPenalty() {
         savedValues.clear();
         playerIndex = -1;
@@ -173,7 +230,13 @@ public class CombatZone extends Card {
         listOfChallenges.sequencedKeySet().removeFirst();
         nextPlayer();
     }
-
+    /**
+     * Handles the player's choice of double cannon and batteries for the cannon challenge.
+     *
+     * @param playerName the name of the player making the choice
+     * @param doubleCannonPower the chosen cannon power
+     * @param batteries the list of battery coordinates used
+     */
     public void cannonChoice (String playerName, float doubleCannonPower, ArrayList<Coordinates> batteries) {
         if (!playerName.equals(currentPlayer.getPlayerName())) {
             try {
@@ -201,7 +264,13 @@ public class CombatZone extends Card {
         }
         nextPlayer();
     }
-
+    /**
+     * Handles the player's choice of double engine and batteries for the engine challenge.
+     *
+     * @param playerName the name of the player making the choice
+     * @param numDoubleEngine the number of double engines chosen
+     * @param batteriesToUse the coordinates of batteries used
+     */
     @Override
     public void engineChoice(String playerName, int numDoubleEngine, ArrayList<Coordinates> batteriesToUse) {
         if (!playerName.equals(currentPlayer.getPlayerName())) {
@@ -230,7 +299,12 @@ public class CombatZone extends Card {
         }
         nextPlayer();
     }
-
+    /**
+     * Handles manual crew removal for the penalty phase.
+     *
+     * @param playerName the player removing crew
+     * @param crewToRemove the coordinates of crew to be removed
+     */
     @Override
     public void removeCrew(String playerName, ArrayList<Coordinates> crewToRemove) {
         Player player = game.identifyPlayerByName(playerName);
@@ -251,7 +325,12 @@ public class CombatZone extends Card {
             }catch(Exception ignored) {}
         }
     }
-
+    /**
+     * Handles manual goods removal for the penalty phase.
+     *
+     * @param playerName the player removing goods
+     * @param goodsToRemove the coordinates of goods to be removed
+     */
     @Override
     public void removeGoods(String playerName, ArrayList<Coordinates> goodsToRemove) {
         Player player = game.identifyPlayerByName(playerName);
@@ -272,7 +351,11 @@ public class CombatZone extends Card {
             resetForNextPenalty();
         }
     }
-
+    /**
+     * Handles dice roll during projectile-related penalties.
+     *
+     * @param playerName the player rolling the dice
+     */
     @Override
     public void rollTheDices(String playerName) {
         if (!playerName.equals(minPlayer.getPlayerName())) {
@@ -294,7 +377,12 @@ public class CombatZone extends Card {
             }
         }
     }
-
+    /**
+     * Handles player choice of ship branch to keep after tile destruction.
+     *
+     * @param playerName the player choosing the branch
+     * @param branchChoices the coordinates belonging to the chosen branch
+     */
     @Override
     public void branchChoice(String playerName, ArrayList<Coordinates> branchChoices) {
         Player player = game.identifyPlayerByName(playerName);
@@ -317,7 +405,12 @@ public class CombatZone extends Card {
             }
         }
     }
-
+    /**
+     * Handles use of batteries to block a projectile during a penalty.
+     *
+     * @param playerName the player using batteries
+     * @param batteries the coordinates of batteries to be used
+     */
     @Override
     public void useBatteries(String playerName, ArrayList<Coordinates> batteries) {
         Player player = game.identifyPlayerByName(playerName);
@@ -352,7 +445,11 @@ public class CombatZone extends Card {
             } catch(Exception ignored) {}
         }
     }
-
+    /**
+     * Returns a string representation of the CombatZone card.
+     *
+     * @return string describing the card and its challenges
+     */
     @Override
     public String toString() {
         StringBuilder string = new StringBuilder("Combat Zone: ");
@@ -367,7 +464,12 @@ public class CombatZone extends Card {
     public LinkedHashMap<ChallengeType, Penalty> getChallenges() {
         return listOfChallenges;
     }
-
+    /**
+     * Notifies all players of a player's evaluated cannon strength.
+     *
+     * @param playerName the evaluated player
+     * @param strength the cannon strength value
+     */
     public void notifyStrength(String playerName, float strength) {
         for (VirtualView view : viewsMap.values()) {
             try {
@@ -377,7 +479,12 @@ public class CombatZone extends Card {
             }
         }
     }
-
+    /**
+     * Notifies all players of a player's evaluated engine power.
+     *
+     * @param playerName the evaluated player
+     * @param strength the engine strength value
+     */
     public void notifyEngine(String playerName, float strength) {
         for (VirtualView view : viewsMap.values()) {
             try {
@@ -387,7 +494,12 @@ public class CombatZone extends Card {
             }
         }
     }
-
+    /**
+     * Notifies all players of a player's crew count.
+     *
+     * @param playerName the evaluated player
+     * @param crew the number of crew members
+     */
     public void notifyCrew(String playerName, int crew) {
         for (VirtualView view : viewsMap.values()) {
             try {
@@ -397,13 +509,21 @@ public class CombatZone extends Card {
             }
         }
     }
-
+    /**
+     * Returns the current list of challenges and penalties.
+     *
+     * @return the challenge-to-penalty mapping
+     */
     @Override
     public Penalty getPenalty() {
         ChallengeType key = listOfChallenges.sequencedKeySet().getFirst();
         return listOfChallenges.remove(key);
     }
-
+    /**
+     * Handles player disconnection during challenge or penalty processing.
+     *
+     * @param playerName the name of the disconnected player
+     */
     @Override
     public void playerDisconnected(String playerName) {
         if (minPlayer != null && minPlayer.getPlayerName().equals(playerName)) {

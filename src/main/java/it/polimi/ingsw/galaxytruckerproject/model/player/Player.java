@@ -291,6 +291,52 @@ public class Player implements PlayerInterface , Serializable {
         return true;
     }
 
+    /**
+     * Automatically positions the given list of goods into available CargoHold tiles.
+     * It attempts to fill all available CargoHolds by placing goods one at a time.
+     *
+     * @param goodsList the list of goods to be placed into the ship's cargo holds
+     * @return list of tiles that were successfully updated with goods
+     */
+    public ArrayList<Tile> automaticGoodsPositioner(ArrayList<Goods> goodsList) {
+        ArrayList<Coordinates> coordinates = new ArrayList<>(playerShip.getCargoHoldCoordinates());
+        ArrayList<Tile> updatedTiles = new ArrayList<>();
+
+        // Goods to be placed: avoid modifying original
+        ArrayList<Goods> remainingGoods = new ArrayList<>(goodsList);
+
+        for (Goods good : remainingGoods) {
+            boolean placed = false;
+
+            // Iterate over a copy so we can safely remove from coordinates
+            ArrayList<Coordinates> coordsCopy = new ArrayList<>(coordinates);
+
+            for (Coordinates coord : coordsCopy) {
+                Tile tile = playerShip.getTile(coord);
+                int result = tile.addGood(good);
+
+                if (result == 1) {
+                    // Successfully added
+                    if (!updatedTiles.contains(tile)) {
+                        updatedTiles.add(tile);
+                    }
+                    placed = true;
+                    break; // Next good
+                } else if (result == 0) {
+                    // Cargo hold full — remove from future consideration
+                    coordinates.remove(coord);
+                } else if (result == -1) {
+                    // Incompatible (e.g. red good in non-red hold), keep trying
+                    continue;
+                }
+            }
+
+            // If not placed, just skip it — it cannot be placed
+        }
+
+        return updatedTiles;
+    }
+
 
 
 

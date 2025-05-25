@@ -180,4 +180,27 @@ class OpenSpaceTest {
         assertFalse(player2.isLanded());
         assertEquals(player3_initial_pos + 1, player3.getPlayerPosition());
     }
+
+    @Test
+    void player_disconnects_during_his_turn () {
+        game.setDrawnCard(openSpace);
+        game.setDrawnCard(openSpace);
+        int player1_initial_pos = player1.getPlayerPosition();
+        int player2_initial_pos = player2.getPlayerPosition();
+        int player3_initial_pos = player3.getPlayerPosition();
+        game.getDrawnCard().initializeCard(game, viewMap);
+
+        ArrayList<Coordinates> batteries = new ArrayList<>();
+        batteries.add(new Coordinates(3,3));
+
+        game.getDrawnCard().engineChoice("MimmoPericoloso", 0, new ArrayList<>());
+        player2.setDisconnected(true);
+        openSpace.playerDisconnected("FedeGalattico");
+
+        assertEquals(player1_initial_pos + 1, player1.getPlayerPosition());
+        assertEquals(player2_initial_pos, player2.getPlayerPosition());
+        assertTrue(player2.isLanded());
+        assertEquals(player3_initial_pos + 1, player3.getPlayerPosition());
+        assertEquals(GameState.DRAW_CARD,game.getGameState());
+    }
 }

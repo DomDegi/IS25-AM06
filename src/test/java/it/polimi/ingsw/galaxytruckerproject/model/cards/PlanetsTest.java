@@ -249,4 +249,26 @@ class PlanetsTest {
         //game.getDrawnCard().planetChoice("pipo",0); //the planets are already over
         assertEquals(GameState.DRAW_CARD, game.getGameState());
     }
+
+    @Test
+    void player_disconnects_after_choosing_planet() {
+        successfully_initialize_card();
+        game.getDrawnCard().planetChoice("EnnioVolante",1);
+        CargoHold cargo1 = new CargoBlue(3, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
+        cargo1.setCoordinates(new Coordinates(1,3));
+        cargo1.addGood(new Goods(BLUE));
+        player3.setDisconnected(true);
+        planetsToLand.playerDisconnected(player3.getPlayerName());
+        assertEquals(3,player3.getShipBoard().getAllGoods().size());
+        game.getDrawnCard().planetChoice("MimmoPericoloso",3);
+        int player1_initialGoods = player1.getShipBoard().getAllGoods().size();
+        player1.printCurrentInfoCargoHolds();
+        player1.setDisconnected(true);
+        game.getDrawnCard().playerDisconnected(player1.getPlayerName());
+        player1.printCurrentInfoCargoHolds();
+        assertEquals(player1_initialGoods + 2,player1.getShipBoard().getAllGoods().size());
+        game.getDrawnCard().planetChoice("FedeGalattico",0);
+        game.getDrawnCard().planetChoice("pipo",0);
+        assertEquals(GameState.DRAW_CARD,game.getGameState());
+    }
 }

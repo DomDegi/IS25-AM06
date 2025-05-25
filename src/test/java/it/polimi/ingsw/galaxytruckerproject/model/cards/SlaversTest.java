@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
@@ -174,5 +175,43 @@ class SlaversTest {
         crewPenalty.add(new Coordinates(2,3));
         game.getDrawnCard().removeCrew("FedeGalattico",crewPenalty);
         assertEquals(0, player2.getTotalCrew());
+    }
+
+    @Test
+    void  player_disconnects_after_winning(){
+        game.setDrawnCard(slavers);
+        game.getDrawnCard().initializeCard(game, viewMap);
+        ArrayList<Coordinates> batteries =new ArrayList<>();
+        batteries.add(new Coordinates(3,0));
+        game.getDrawnCard().cannonChoice("EnnioVolante",0,new ArrayList<>());
+        game.getDrawnCard().cannonChoice("MimmoPericoloso",1,batteries);
+        player1.setDisconnected(true);
+        slavers.playerDisconnected(player1.getPlayerName());
+        assertEquals(0,player1.getCredit());
+        assertEquals(GameState.DRAW_CARD,game.getGameState());
+    }
+
+    @Test
+    void  player_disconnects_after_losing(){
+        game.setDrawnCard(slavers);
+        game.getDrawnCard().initializeCard(game, viewMap);
+
+        game.getDrawnCard().cannonChoice("EnnioVolante", 0,new ArrayList<>());
+        game.getDrawnCard().cannonChoice("MimmoPericoloso",0, new ArrayList<>());
+        game.getDrawnCard().cannonChoice("FedeGalattico",0,new ArrayList<>());
+        player2.setDisconnected(true);
+        slavers.playerDisconnected(player2.getPlayerName());
+        assertEquals(0, player2.getTotalCrew());
+    }
+
+    @Test
+    void  player_disconnects_after_opening(){
+        game.setDrawnCard(slavers);
+        game.getDrawnCard().initializeCard(game, viewMap);
+        game.getDrawnCard().cannonChoice("EnnioVolante", 0,new ArrayList<>());
+        game.getDrawnCard().cannonChoice("MimmoPericoloso",0, new ArrayList<>());
+        player2.setDisconnected(true);
+        slavers.playerDisconnected(player2.getPlayerName());
+        assertEquals(GameState.DRAW_CARD,game.getGameState());
     }
 }
