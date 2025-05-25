@@ -53,6 +53,7 @@ public class CheckShipController {
                 imageView.rotateProperty().setValue(tile.getRotation()*90);
                 imageView.setFitWidth(136);
                 imageView.setFitHeight(136);
+                imageView.setDisable(true);
                 tilesTable.add(imageView,tile.getCoordinates().getY(),tile.getCoordinates().getX());
             }
         }

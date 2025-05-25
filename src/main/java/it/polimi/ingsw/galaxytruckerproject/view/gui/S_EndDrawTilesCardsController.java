@@ -99,6 +99,9 @@ public class S_EndDrawTilesCardsController {
     public void initialize() {
         Polygon[] polygons = new Polygon[]{first,second,third,fourth};
         if(GUI.getController().getGameMode()==GameMode.LEVEL2){
+            hourglass1.setProgress(1-GUI.getPercentage1());
+            hourglass2.setProgress(1-GUI.getPercentage2());
+            hourglass3.setProgress(1-GUI.getPercentage3());
             polygons=new Polygon[]{first,second,third,fourth};
             trialFlight.setVisible(false);
             flightImage.setVisible(true);
@@ -151,6 +154,7 @@ public class S_EndDrawTilesCardsController {
                 imageView.rotateProperty().setValue(tile.getRotation()*90);
                 imageView.setFitWidth(80);
                 imageView.setFitHeight(80);
+                imageView.setDisable(true);
                 tilesTable.add(imageView,tile.getCoordinates().getY(),tile.getCoordinates().getX());
             }
         }
@@ -244,6 +248,8 @@ public class S_EndDrawTilesCardsController {
     }
 
     public void update(){
+        drawnTiles1.getChildren().clear();
+        drawnTiles2.getChildren().clear();
         int index=1;
         if(GUI.getController().getGameMode()== GameMode.LEVEL2){
             for(Polygon p:new Polygon[]{first,second,third,fourth}){
@@ -290,8 +296,6 @@ public class S_EndDrawTilesCardsController {
             deck1.setVisible(GUI.getController().getAvailableDeck().get(1));
             deck2.setVisible(GUI.getController().getAvailableDeck().get(2));
             deck3.setVisible(GUI.getController().getAvailableDeck().get(3));
-            drawnTiles1.getChildren().clear();
-            drawnTiles2.getChildren().clear();
         }
         index=0;
         for(Tile tile:GUI.getController().getTurnedTilesDisplayer()){
@@ -320,16 +324,21 @@ public class S_EndDrawTilesCardsController {
 
     @FXML
     public void goProgressBar(int index,int max,int turns){
-        double percentage= (double) index /max;
         if(turns==1){
+            GUI.setPercentage1((double) index /max);
             hourglass3.setProgress(1);
             hourglass2.setProgress(1);
-            hourglass1.setProgress(1-percentage);
+            hourglass1.setProgress(1-GUI.getPercentage1());
         }else if(turns==2){
+            GUI.setPercentage2((double) index /max);
             hourglass3.setProgress(1);
-            hourglass2.setProgress(1-percentage);
+            hourglass2.setProgress(1-GUI.getPercentage2());
+            hourglass1.setProgress(0);
         }else if(turns==3){
-            hourglass3.setProgress(1-percentage);
+            GUI.setPercentage3((double) index /max);
+            hourglass3.setProgress(1-GUI.getPercentage3());
+            hourglass2.setProgress(0);
+            hourglass1.setProgress(0);
         }
     }
 }

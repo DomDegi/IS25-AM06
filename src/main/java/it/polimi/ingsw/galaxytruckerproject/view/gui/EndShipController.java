@@ -63,6 +63,9 @@ public class EndShipController {
         Polygon[] polygons = new Polygon[]{first,second,third,fourth};
         int i=1;
         if(GUI.getController().getGameMode().equals(GameMode.LEVEL2)) {
+            hourglass1.setProgress(1-GUI.getPercentage1());
+            hourglass2.setProgress(1-GUI.getPercentage2());
+            hourglass3.setProgress(1-GUI.getPercentage3());
             trialFlight.setVisible(false);
             flightImage.setVisible(true);
             polygons=new Polygon[]{first,second,third,fourth};
@@ -132,16 +135,21 @@ public class EndShipController {
 
     @FXML
     public void goProgressBar(int index,int max,int turns){
-        double percentage= (double) index /max;
         if(turns==1){
+            GUI.setPercentage1((double) index /max);
             hourglass3.setProgress(1);
             hourglass2.setProgress(1);
-            hourglass1.setProgress(1-percentage);
+            hourglass1.setProgress(1-GUI.getPercentage1());
         }else if(turns==2){
+            GUI.setPercentage2((double) index /max);
             hourglass3.setProgress(1);
-            hourglass2.setProgress(1-percentage);
+            hourglass2.setProgress(1-GUI.getPercentage2());
+            hourglass1.setProgress(0);
         }else if(turns==3){
-            hourglass3.setProgress(1-percentage);
+            GUI.setPercentage3((double) index /max);
+            hourglass3.setProgress(1-GUI.getPercentage3());
+            hourglass2.setProgress(0);
+            hourglass1.setProgress(0);
         }
     }
 

@@ -109,6 +109,9 @@ public class DrawCardController {
     public Polygon pt17;
 
     @FXML
+    public ImageView card;
+
+    @FXML
     public ImageView deck;
 
     @FXML
@@ -180,6 +183,7 @@ public class DrawCardController {
                 imageView.rotateProperty().setValue(tile.getRotation()*90);
                 imageView.setFitWidth(80);
                 imageView.setFitHeight(80);
+                imageView.setDisable(true);
                 tilesTable.add(imageView,tile.getCoordinates().getY(),tile.getCoordinates().getX());
             }
         }
@@ -187,7 +191,20 @@ public class DrawCardController {
         if(GUI.getController().getState()== ClientState.WAIT){
             deck.setDisable(true);
         }
+        showCard();
+    }
 
+    public void showCard(){
+        if(!GUI.displayableCards().isEmpty())
+            card.setImage(loadImage(GUI.displayableCards().get(0).getFilePath()));
+    }
+
+    private Image loadImage(String path) {
+        InputStream stream = getClass().getResourceAsStream(path);
+        if (stream == null) {
+            return null;
+        }
+        return new Image(stream);
     }
 
     @FXML

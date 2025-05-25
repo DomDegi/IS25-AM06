@@ -16,6 +16,8 @@ import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -203,56 +205,69 @@ public class ChooseCrewController {
                 imageView.rotateProperty().setValue(tile.getRotation() * 90);
                 imageView.setFitWidth(80);
                 imageView.setFitHeight(80);
-                imageView.setOnMouseClicked(event -> {
-                    GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                    initialize();
-                });
+                imageView.setDisable(true);
                 tilesTable.add(imageView, tile.getCoordinates().getY(), tile.getCoordinates().getX());
             }
         }
     }
     public void focus(){
         refresh();
-        switch (GUI.getController().getCabinsManager().crewType()){
-            case NO -> {
-                white.setDisable(false);
-                purple.setDisable(true);
-                brown.setDisable(true);
-            }
-            case PURPLE ->{
-                white.setDisable(false);
-                purple.setDisable(false);
-                brown.setDisable(true);
-            }
-            case BROWN ->{
-                white.setDisable(false);
-                purple.setDisable(true);
-                brown.setDisable(false);
-            }
-            case BOTH -> {
-                white.setDisable(false);
-                purple.setDisable(false);
-                brown.setDisable(false);
-            }
-        }
         index=GUI.getController().getCabinsManager().getIndex();
-        Button button=new Button();
-        button.setPrefSize(80,80);
-        tilesTable.add(button,cabins.get(index).getY(),cabins.get(index).getX());
+        if(index<cabins.size()) {
+            switch (GUI.getController().getCabinsManager().crewType()) {
+                case NO -> {
+                    white.setDisable(false);
+                    purple.setDisable(true);
+                    brown.setDisable(true);
+                }
+                case PURPLE -> {
+                    white.setDisable(false);
+                    purple.setDisable(false);
+                    brown.setDisable(true);
+                }
+                case BROWN -> {
+                    white.setDisable(false);
+                    purple.setDisable(true);
+                    brown.setDisable(false);
+                }
+                case BOTH -> {
+                    white.setDisable(false);
+                    purple.setDisable(false);
+                    brown.setDisable(false);
+                }
+            }
+        }else return;
+        Tile tile=GUI.getController().getMe().getShipBoard().getTilesTable()[cabins.get(index).getX()][cabins.get(index).getY()].get();
+        String imagePath = tile.getImagePath();
+        InputStream imageStream = getClass().getResourceAsStream(imagePath);
+        if (imageStream == null) {
+            System.err.println("not found" + imagePath);
+        } else {
+            Image image = new Image(imageStream);
+            ImageView imageView = new ImageView(image);
+            imageView.rotateProperty().setValue(tile.getRotation() * 90);
+            imageView.setFitWidth(80);
+            imageView.setFitHeight(80);
+            imageView.setDisable(false);
+            tilesTable.add(imageView, tile.getCoordinates().getY(), tile.getCoordinates().getX());
+        }
     }
     @FXML
     public void human(){
         GUI.setCabin(CrewType.HUMAN);
-        focus();
+        if(index<cabins.size())
+            focus();
     }
     @FXML
     public void pAlien(){
         GUI.setCabin(CrewType.PURPLE);
-        focus();
+        if(index<cabins.size())
+            focus();
     }
     @FXML
     public void bAlien(){
         GUI.setCabin(CrewType.BROWN);
-        focus();
+        if(index<cabins.size())
+            focus();
     }
 }

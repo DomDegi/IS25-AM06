@@ -55,6 +55,9 @@ public class GUI extends Application implements DisplayableView {
     private static Button ship3;
     private int counter = 0;
     private Timer timer;
+    private static double percentage1=0;
+    private static double percentage2=0;
+    private static double percentage3=0;
 
     public static void startGui(ClientController controller) {
         GUI.controller =controller;
@@ -290,12 +293,10 @@ public class GUI extends Application implements DisplayableView {
                 circle.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
                 layout.setCenter(circle);
             }else{
-
-                    ProgressIndicator circle = new ProgressIndicator();
-                    circle.setPrefSize(20, 20);
-                    circle.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
-                    layout.setBottom(circle);
-
+                ProgressIndicator circle = new ProgressIndicator();
+                circle.setPrefSize(50, 50);
+                circle.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+                layout.setBottom(circle);
             }
         });
     }
@@ -566,7 +567,7 @@ public class GUI extends Application implements DisplayableView {
 
             }
             case WAIT -> {
-                if(controller.getPreviousState()==ClientState.S_FINISHED&&controller.getPhase()==GamePhases.CARDS) {
+                if(controller.getPreviousState()==ClientState.S_FINISHED) {
                     showDrawCard();
                 }
                 showWait();
@@ -621,16 +622,12 @@ public class GUI extends Application implements DisplayableView {
     @Override
     public void showCard(ArrayList<Card> cards) {
         Platform.runLater(() -> {
-            loader = new FXMLLoader(GUI.class.getResource("/gui/showCard.fxml"));
-            BorderPane newLayer;
-            try {
-                newLayer = loader.load();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            layout.setCenter(newLayer);
+            if (controller.isChecking()==null)
+                if(controller.getState()==ClientState.DRAW_CARD){
+                    DrawCardController cardController=loader.getController();
+                    cardController.showCard();
+                }
         });
-
     }
 
     @Override
@@ -671,10 +668,11 @@ public class GUI extends Application implements DisplayableView {
     @Override
     public void showAvailableDecks(){
         Platform.runLater(() -> {
-            if(controller.getState()==ClientState.S_END_DRAW_TILE_CARD){
-                S_EndDrawTilesCardsController sEndDrawTilesCardsController=loader.getController();
-                sEndDrawTilesCardsController.update();
-            }
+            if (controller.isChecking()==null)
+                if(controller.getState()==ClientState.S_END_DRAW_TILE_CARD){
+                    S_EndDrawTilesCardsController sEndDrawTilesCardsController=loader.getController();
+                    sEndDrawTilesCardsController.update();
+                }
         });
     }
 
@@ -796,14 +794,11 @@ public class GUI extends Application implements DisplayableView {
     @Override
     public void notifyDrawnCard(Card card) throws RemoteException {
         Platform.runLater(() -> {
-            loader = new FXMLLoader(GUI.class.getResource("/gui/showCard.fxml"));
-            BorderPane newLayer;
-            try {
-                newLayer = loader.load();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            layout.setCenter(newLayer);
+            if (controller.isChecking()==null)
+                if(controller.getState()==ClientState.DRAW_CARD){
+                    DrawCardController cardController=loader.getController();
+                    cardController.showCard();
+                }
         });
     }
 
@@ -932,6 +927,30 @@ public class GUI extends Application implements DisplayableView {
 
     public static GameMode getMode() {
         return mode;
+    }
+
+    public static double getPercentage1() {
+        return percentage1;
+    }
+
+    public static double getPercentage2() {
+        return percentage2;
+    }
+
+    public static double getPercentage3() {
+        return percentage3;
+    }
+
+    public static void setPercentage1(double percentage1) {
+        GUI.percentage1 = percentage1;
+    }
+
+    public static void setPercentage2(double percentage2) {
+        GUI.percentage2 = percentage2;
+    }
+
+    public static void setPercentage3(double percentage3) {
+        GUI.percentage3 = percentage3;
     }
 }
 

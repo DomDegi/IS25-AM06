@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -19,6 +21,8 @@ import javafx.scene.layout.TilePane;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Objects;
+
+import static javafx.scene.paint.Color.rgb;
 
 public class S_ManageDrawTileController {
 
@@ -96,6 +100,7 @@ public class S_ManageDrawTileController {
                 imageView.rotateProperty().setValue(tile.getRotation() * 90);
                 imageView.setFitWidth(80);
                 imageView.setFitHeight(80);
+                imageView.setDisable(true);
                 tilesTable.add(imageView, tile.getCoordinates().getY(), tile.getCoordinates().getX());
             }
         }

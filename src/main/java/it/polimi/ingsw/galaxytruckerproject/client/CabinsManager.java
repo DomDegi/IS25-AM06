@@ -21,7 +21,8 @@ public class CabinsManager {
     public CabinsManager(LightPlayer lightPlayer, DisplayableView view) {
         this.view = view;
         this.lightPlayer = lightPlayer;
-        this.cabins = lightPlayer.getShipBoard().getCabinsCoordinates();
+        this.cabins = new ArrayList<>(lightPlayer.getShipBoard().getCabinsCoordinates());
+        cabins.remove(new Coordinates(2,3));
         this.modifiedCabins = new ArrayList<>();
         this.index=0;
     }
@@ -61,9 +62,6 @@ public class CabinsManager {
     }
 
     public void setup() {
-        if(cabins.get(index).equals( new Coordinates(2, 3))) {
-            index++;
-        }
         if(index >= cabins.size()) {
             return;
         }

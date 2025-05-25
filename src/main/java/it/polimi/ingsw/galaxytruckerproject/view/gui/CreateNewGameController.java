@@ -27,6 +27,11 @@ public class CreateNewGameController {
     }
 
     @FXML
+    public void back(){
+        GUI.getController().setState(ClientState.LOBBY);
+    }
+
+    @FXML
     public void createNewGame() {
         try {
             int i= Integer.parseInt(playerNum.getText());
