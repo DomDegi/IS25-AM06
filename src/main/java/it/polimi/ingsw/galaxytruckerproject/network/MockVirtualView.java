@@ -135,10 +135,6 @@ public class MockVirtualView implements VirtualView {
         // Implement mock behavior or leave empty
     }
 
-    @Override
-    public void showGenericMessage(String genericMessage) throws RemoteException {
-
-    }
 
     @Override
     public void showErrorMessage(String errorMessage) {
