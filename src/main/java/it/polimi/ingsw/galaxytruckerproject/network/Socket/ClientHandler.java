@@ -16,47 +16,70 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+/**
+ * This class represents a handler for managing the communication with a connected client.
+ * It listens for messages from the client, processes them, and sends server messages back to the client.
+ */
 public class ClientHandler implements Runnable {
 
-
-    //socket of the client
+    /**
+     * Represents the socket connection to the client.
+     * This socket is used to send and receive data between the server and the client.
+     */
     private final Socket clientSocket;
 
-    //VirtualView (non se va messa proprio la virtualViewSocket nel caso)
+    /**
+     * The VirtualView associated with this handler.
+     * It is used to interact with the client and update the client on the game's state.
+     */
     private VirtualView virtualView;
 
-    //output stream to the client
+    /**
+     * The output stream to send data to the client.
+     * This stream allows serializing objects to be sent to the client.
+     */
     private ObjectOutputStream output;
 
-    //input stream from the client
+    /**
+     * The input stream to receive data from the client.
+     * This stream is used to read serialized objects sent by the client.
+     */
     private ObjectInputStream input;
 
-    //controller interface
+    /**
+     * The controller that manages the game logic and interacts with the server.
+     * This controller is used by the handler to execute game-related operations.
+     */
     private ControllerInterface controller;
 
-    //set to true only when run ends
+    /**
+     * A flag indicating whether the handler is ready to begin processing client messages.
+     * This flag is set to true once the socket connection and other initialization are complete.
+     */
     private boolean readyToGo = false;
 
-    //indicates if the ClientHandler is listening
+    /**
+     * A flag indicating whether the handler is actively listening for incoming messages from the client.
+     * This flag is set to false when the client disconnects or an error occurs.
+     */
     private volatile boolean listening = true;
 
-    //per quella che è la nostra logica di gioco non dovrebbe servire
-    private final Queue<ClientMessage> receivedMessages = new PriorityQueue<>(Comparator.comparingInt(ClientMessage::getIndex));
 
-
-    //Initializes a new handler using a specific socket (connected to the client)
+    /**
+     * Initializes a new ClientHandler with the given client socket.
+     *
+     * @param clientSocket The socket connected to the client.
+     */
     public ClientHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;
-        //Non mi è ancora tutto chiarissimo ma mettere la new input stream qui
-        //implicherebbe che in caso di problemi non riuscimo manco ad inizializzare
-        // il client handler. Ha più senso metterlo in RUN
-        /*try {
-            this.input = new ObjectInputStream(clientSocket.getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
     }
 
+
+    /**
+     * Starts the client handler by initializing the input and output streams and
+     * waiting for the VirtualView and Controller to be set before starting the
+     * listening thread.
+     */
     @Override
     public void run() {
         try {
@@ -80,6 +103,11 @@ public class ClientHandler implements Runnable {
         threadInListening.start();
     }
 
+    /**
+     * Sends a server message to the client.
+     *
+     * @param message The server message to send to the client.
+     */
     public synchronized void sendServerMessageToClient(ServerMessage message){
             try {
                 //output.reset();
@@ -89,34 +117,10 @@ public class ClientHandler implements Runnable {
             }
     };
 
-    /*public void listenForMessages() {
-        System.out.println("Listening for messages received by " + clientSocket.getInetAddress());
-        int expectedIndex = 0;
-        while(listening) {
-            ClientMessage message;
-            try {
-                message = (ClientMessage) input.readObject();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-                return;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            synchronized (this) {
-                //Il messaggio arriva troppo presto e quindi deve essere messo in coda
-                if ( message.getIndex() > expectedIndex) {
-                    receivedMessages.add(message);
-                }else if(message.getIndex() < expectedIndex){
-                    //wrong input
-                }
-            }
-
-
-
-        }
-
-    }*/
-
+    /**
+     * Listens for messages from the client and processes them.
+     * The method will continue running as long as the client is connected and listening is true.
+     */
     public void listenAndProcess(){
         System.out.println("Listening for messages from " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
 
@@ -143,47 +147,48 @@ public class ClientHandler implements Runnable {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public void setVirtualView(VirtualView view){
+    /**
+     * Sets the VirtualView associated with this ClientHandler.
+     *
+     * @param view The VirtualView to associate with this handler.
+     */
+    public void setVirtualView(VirtualView view) {
         this.virtualView = view;
     }
 
-    public VirtualView getVirtualView(){
+    /**
+     * Returns the VirtualView associated with this ClientHandler.
+     *
+     * @return The VirtualView associated with this handler.
+     */
+    public VirtualView getVirtualView() {
         return this.virtualView;
     }
 
-    public void setController(ControllerInterface controller){
+    /**
+     * Sets the controller associated with this ClientHandler.
+     *
+     * @param controller The controller to associate with this handler.
+     */
+    public void setController(ControllerInterface controller) {
         this.controller = controller;
     }
 
-    public ControllerInterface getController(){
+    /**
+     * Returns the controller associated with this ClientHandler.
+     *
+     * @return The controller associated with this handler.
+     */
+    public ControllerInterface getController() {
         return this.controller;
     }
 
-
+    /**
+     * Returns whether the handler is ready to process messages.
+     *
+     * @return True if the handler is ready to go, false otherwise.
+     */
     public boolean isReadyToGo() {
         return readyToGo;
     }
-
-
 }

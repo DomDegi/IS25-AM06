@@ -2,17 +2,20 @@ package it.polimi.ingsw.galaxytruckerproject.network;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.MultiGameController;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-
+/**
+ * The {@code Server} interface defines the methods required for server-side operations
+ * in a multiplayer game. It provides a method for handling the connection process
+ * between the server and the game controller, allowing the server to interact with the
+ * game logic and manage multiple games.
+ */
 public interface Server {
-    String SERVER_NAME = "GalaxyTruckerServer";
 
-    public static String SERVER_NAME(){
-        return "GalaxyTruckerServer";
-    }
-
+    /**
+     * Connects the server to the given {@link MultiGameController}, which manages multiple games
+     * on the server. This method is responsible for establishing the connection between
+     * the server and the game controller, allowing communication and management of games.
+     *
+     * @param multiGameController The controller that manages multiple games on the server.
+     */
+    void connect(MultiGameController multiGameController);
 }

@@ -46,14 +46,6 @@ public interface ViewInterface extends Remote, Serializable {
     void showJoinableGamesList(ArrayList<GameInfo> joinableGames) throws RemoteException;
 
     /**
-     * Displays a generic message from the server to the player.
-     *
-     * @param genericMessage the message to display to the player.
-     * @throws RemoteException if there is an issue with remote communication.
-     */
-    void showGenericMessage(String genericMessage) throws RemoteException;
-
-    /**
      * Displays an error message from the server to the player.
      *
      * @param errorMessage the error message to display.
