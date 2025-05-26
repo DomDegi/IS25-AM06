@@ -12,20 +12,65 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Objects;
 
-
+/**
+ * Class responsible for parsing the textual input received from the user and updating the state
+ * of the game based on the input. It handles various stages of the game, such as connection setup,
+ * login, game creation, player color selection, and other game-related actions.
+ * <p>
+ * This class processes user commands and translates them into actions for the {@link ClientController}.
+ * It also provides feedback to the user in case of invalid input.
+ * </p>
+ */
 public class TextualInputParser {
+    /**
+     * The client controller that manages the game state and handles communication with the server.
+     */
     private final ClientController clientController;
+
+    /**
+     * The view used to display messages and interact with the user.
+     * It provides methods for showing feedback to the user during game setup.
+     */
     private DisplayableView view;
+
+    /**
+     * The name of the game that is being created or joined.
+     * This is used when creating a new game or when joining an existing one.
+     */
     private String gameName;
+
+    /**
+     * The number of players participating in the game.
+     * This is set when creating a game or joining an existing game.
+     */
     private int numberOfPlayers;
+
+    /**
+     * The game mode selected for the game (e.g., trial mode or level 2 mode).
+     * This defines the rules and mechanics of the game session.
+     */
     private GameMode mode;
 
-
+    /**
+     * Constructs a new {@link TextualInputParser} with the specified {@link ClientController}.
+     *
+     * @param clientController the client controller to manage the game state
+     */
     public TextualInputParser(ClientController clientController) {
         this.clientController = clientController;
         view=this.clientController.getView();
     }
-
+    /**
+     * Parses the input string from the user, processes it based on the current game state,
+     * and updates the {@link ClientController} accordingly.
+     * <p>
+     * The method performs different actions depending on the game state and user input, such as
+     * connecting to the server, logging in, selecting colors, and performing game actions.
+     * </p>
+     *
+     * @param input the user input to process
+     * @return true if the input is valid and the game state is successfully updated, false otherwise
+     */
     public boolean input(String input) {
         input = input.toLowerCase();
         input = input.replaceAll("\\s+", " ");

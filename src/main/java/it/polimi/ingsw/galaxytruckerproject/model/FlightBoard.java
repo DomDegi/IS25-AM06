@@ -355,7 +355,7 @@ public class FlightBoard implements Serializable {
         players.sort(Comparator.comparingInt(Player::getPlayerRanking));
         podium.addAll(players);
         for (Player player: podium) {
-            if (!player.isLanded() && player.getPlayerRanking() == 0) {
+            if (!player.isLanded() && player.getPlayerRanking() != 0) {
                 inGamePlayers.add(player);
             }
         }

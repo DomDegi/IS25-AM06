@@ -13,13 +13,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Utility class responsible for deserializing the game update string sent by the server
  * and applying it to the {@link ClientController} to synchronize the client-side state.
  * <p>
- * This class is not instantiable and exposes a single static method.
+ * This class is not instantiable and exposes a single static method for deserialization.
+ * It handles parsing the game state string and updating the game components in the client.
+ * </p>
  */
 public class UpdateDeserializer {
 
@@ -27,14 +28,14 @@ public class UpdateDeserializer {
      * Parses the serialized game state string and updates the local {@link ClientController}
      * accordingly. This method:
      * <ul>
-     *   <li>Updates the hourglass turn counter</li>
-     *   <li>Restores the game mode and player count</li>
-     *   <li>Reconstructs the deck of cards and turned tiles</li>
-     *   <li>Loads each player's light model and ship board</li>
-     *   <li>Sorts and inserts players into the client-side flight board</li>
+     *   <li>Updates the hourglass turn counter.</li>
+     *   <li>Restores the game mode and player count.</li>
+     *   <li>Reconstructs the deck of cards and turned tiles.</li>
+     *   <li>Loads each player's light model and ship board.</li>
+     *   <li>Sorts and inserts players into the client-side flight board.</li>
      * </ul>
      *
-     * @param controller         the client controller to update
+     * @param controller         the client controller to update with the new game state
      * @param currentGameStatus  the serialized game state string received from the server
      * @throws RuntimeException if any parsing or I/O error occurs during deserialization
      */
@@ -72,13 +73,13 @@ public class UpdateDeserializer {
             String[] turnedTileLine = writer.readLine().split(" ");
             if (!turnedTileLine[0].isEmpty()) {
 
-            ArrayList<Integer> turnedTileIds = new ArrayList<>();
-            Map<Integer, Tile> turnedTiles;
-            for (String tileData : turnedTileLine) {
-                turnedTileIds.add(Integer.parseInt(tileData));
-            }
-            turnedTiles = new TileFactory().mapFromIDs(turnedTileIds);
-            controller.setTurnedTiles(turnedTiles);
+                ArrayList<Integer> turnedTileIds = new ArrayList<>();
+                Map<Integer, Tile> turnedTiles;
+                for (String tileData : turnedTileLine) {
+                    turnedTileIds.add(Integer.parseInt(tileData));
+                }
+                turnedTiles = new TileFactory().mapFromIDs(turnedTileIds);
+                controller.setTurnedTiles(turnedTiles);
             }
 
             String myName = controller.getName();
@@ -86,23 +87,23 @@ public class UpdateDeserializer {
 
             for (int i = 0; i < playerCount; i++) {
 
-                String[] playerData =  writer.readLine().split(" ");
-                String currentName =  playerData[0];
+                String[] playerData = writer.readLine().split(" ");
+                String currentName = playerData[0];
                 LightShipBoard lightShipBoard;
                 if (currentName.equals(myName)) {
                     lightShipBoard = new LightShipBoard(controller.getMe());
                     controller.getMe().loadFromData(playerData);
-                }
-                else {
+                } else {
                     LightPlayer newPlayer = new LightPlayer(playerData[0], PlayersColor.fromString(playerData[1]));
                     lightShipBoard = new LightShipBoard(newPlayer);
                     newPlayer.loadFromData(playerData);
                     otherPlayers.add(newPlayer);
                 }
-                // Data of all the tiles in shipboard including the booked tiles
+
+                // Data of all the tiles in the shipboard, including the booked tiles
                 ArrayList<Tile> ship = new ArrayList<>();
                 for (int j = 0; j < 37; j++) {
-                    String tileData =  writer.readLine();
+                    String tileData = writer.readLine();
                     Tile toSet;
                     if (!tileData.equals("NullTile")) {
                         toSet = TileFactory.load(tileData);

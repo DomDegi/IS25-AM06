@@ -10,16 +10,67 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+/**
+ * Class responsible for managing coordinate-based inputs from the player during various phases of the game.
+ * This includes handling actions such as selecting tiles to break, choosing batteries or crew members,
+ * and managing goods and other game-related objects. The class coordinates with the client controller
+ * to ensure that actions are properly communicated to the server.
+ * <p>
+ * The class also ensures that all necessary conditions are met before proceeding to the next phase of the game.
+ * </p>
+ */
 public class CoordInputManager {
+    /**
+     * The light ship board associated with the current player, used for accessing tiles, cargo, and other game elements.
+     */
     private final LightShipBoard lightShipBoard;
-    private final ClientController clientController;
-    private CoordReqType coordReqType;
-    private float fireStrength;
-    private int numEngine;
-    private final ArrayList<Coordinates> coordinates;
-    private int needed;
-    private boolean set=true;
 
+    /**
+     * The client controller that handles the game state and communicates with the server.
+     */
+    private final ClientController clientController;
+
+    /**
+     * The current coordinate request type, which defines what the player is being asked to do (e.g., choose a battery or break a tile).
+     */
+    private CoordReqType coordReqType;
+
+    /**
+     * The fire strength accumulated during the action of choosing double cannons.
+     * This is used to calculate the total firepower of the double cannon during the game.
+     */
+    private float fireStrength;
+
+    /**
+     * The number of double engines selected by the player during the game.
+     */
+    private int numEngine;
+
+    /**
+     * A list of coordinates selected by the player during the current action.
+     * These coordinates are used to identify specific tiles or items in the game (e.g., crew, goods, batteries).
+     */
+    private final ArrayList<Coordinates> coordinates;
+
+    /**
+     * The number of coordinates that need to be selected by the player for the current action.
+     * This value is dynamically updated depending on the type of action being performed (e.g., removing goods or selecting crew).
+     */
+    private int needed;
+
+    /**
+     * A boolean flag used to track whether the crew should be set to human during the trial mode phase.
+     * This is only relevant for certain actions where the crew configuration needs to be initialized.
+     */
+    private boolean set = true;
+
+
+    /**
+     * Constructs a new {@link CoordInputManager} for the given ship board and client controller.
+     *
+     * @param lightShipBoard the light ship board associated with the player
+     * @param clientController the client controller that manages the game state
+     */
     public CoordInputManager(LightShipBoard lightShipBoard, ClientController clientController) {
         this.lightShipBoard = lightShipBoard;
         this.clientController = clientController;
@@ -28,7 +79,11 @@ public class CoordInputManager {
         fireStrength = 0;
         numEngine = 0;
     }
-
+    /**
+     * Sets the current coordinate request type and adjusts the number of needed coordinates based on it.
+     *
+     * @param coordReqType the coordinate request type (e.g., choosing a battery, crew, or breaking tiles)
+     */
     public void setCoordReqType(CoordReqType coordReqType) {
         this.coordinates.clear();
         this.coordReqType = coordReqType;
@@ -58,7 +113,12 @@ public class CoordInputManager {
         }
     }
 
-    //needed serve per sapere quante coordinate servono (ad esempio per quando bisogna scegliere quali crewMate eliminare), se non è necessario un numero indicare -1
+    /**
+     * Checks if a coordinate is valid for the current action based on the coordinate request type.
+     *
+     * @param coordinate the coordinate to check
+     * @return true if the coordinate is valid for the current action, false otherwise
+     */
     public boolean checkCoord(Coordinates coordinate) {
         Tile tile = lightShipBoard.getTile(coordinate);
         if(tile == null) {
@@ -180,6 +240,11 @@ public class CoordInputManager {
         return true;
     }
 
+    /**
+     * Ends the checking phase and performs the necessary actions based on the selected coordinates.
+     *
+     * @return true if the checking phase is successfully ended, false otherwise
+     */
     public boolean endCheckingFase() {
         if (coordReqType == CoordReqType.CHOOSE_DOUBLE_CANNON && needed == 0) {
             clientController.setState(ClientState.WAIT);
@@ -240,6 +305,11 @@ public class CoordInputManager {
         return true;
     }
 
+    /**
+     * Gets the current coordinate request type.
+     *
+     * @return the current coordinate request type
+     */
     public CoordReqType getCoordReqType() {
         return coordReqType;
     }
