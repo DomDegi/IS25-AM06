@@ -15,6 +15,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.CrewType;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.view.gui.*;
 import javafx.application.Application;
@@ -24,6 +25,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -33,9 +35,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class GUI extends Application implements DisplayableView {
 
@@ -43,6 +43,9 @@ public class GUI extends Application implements DisplayableView {
     private static int numberOfPlayers;
     private static GameMode mode;
     private static String css;
+    private static String css2;
+    private static String css3;
+    private static String css4;
     private static Stage primaryStage;
     private static BorderPane layout;
     private static ClientController controller;
@@ -50,6 +53,11 @@ public class GUI extends Application implements DisplayableView {
     private static Button ship1;
     private static Button ship2;
     private static Button ship3;
+    private int counter = 0;
+    private Timer timer;
+    private static double percentage1=0;
+    private static double percentage2=0;
+    private static double percentage3=0;
 
     public static void startGui(ClientController controller) {
         GUI.controller =controller;
@@ -60,7 +68,9 @@ public class GUI extends Application implements DisplayableView {
     public void start(Stage primaryStage) throws IOException {
         GUI.primaryStage = primaryStage;
         GUI.primaryStage.setTitle("Galaxy Trucker");
-        css= Objects.requireNonNull(GUI.class.getResource("/gui/css/style.css")).toExternalForm();
+        css= Objects.requireNonNull(GUI.class.getResource("/gui/css/WelcomeStyle.css")).toExternalForm();
+        css2= Objects.requireNonNull(GUI.class.getResource("/gui/css/LobbyStyle.css")).toExternalForm();
+        css3= Objects.requireNonNull(GUI.class.getResource("/gui/css/ShipStyle.css")).toExternalForm();
         showMainView();
         showWelcome();
         GUI.primaryStage.setFullScreen(true);
@@ -85,16 +95,16 @@ public class GUI extends Application implements DisplayableView {
         controller.setState(ClientState.CHOOSE_CONNECTION_TYPE);
     }
 
-    public static void setConnection(String connectionTipe) {
+    public static void setConnection(String connectionTipe,String ip) {
         if (connectionTipe.equals("r")) {
             try {
-                controller.connectRMI("localhost", 1099);
+                controller.connectRMI(ip);
             } catch (NotBoundException | MalformedURLException | RemoteException e) {
                 throw new RuntimeException(e);
             }
         } else {
             try {
-                controller.connectSocket("localhost",12345);
+                controller.connectSocket(ip,12345);
             } catch (NotBoundException | IOException e) {
                 throw new RuntimeException(e);
             }
@@ -201,6 +211,10 @@ public class GUI extends Application implements DisplayableView {
          return  controller.getDisplayedCard();
     }
 
+    public static void setCabin(CrewType type){
+        controller.manageCabins(type);
+    }
+
 //showMethods---------------------------------------------------------------------------------------------------------------
     public static void clear(){
         showMessage("");
@@ -274,23 +288,15 @@ public class GUI extends Application implements DisplayableView {
     public static void showWait(){
         Platform.runLater(() -> {
             if(controller.getPhase()== GamePhases.LOGIN){
-                loader = new FXMLLoader(GUI.class.getResource("/gui/wait.fxml"));
-                BorderPane newLayer;
-                try {
-                    newLayer = loader.load();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                layout.setCenter(newLayer);
+                ProgressIndicator circle = new ProgressIndicator();
+                circle.setPrefSize(100, 100);
+                circle.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+                layout.setCenter(circle);
             }else{
-                loader = new FXMLLoader(GUI.class.getResource("/gui/wait2.fxml"));
-                BorderPane newLayer;
-                try {
-                    newLayer = loader.load();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                layout.setBottom(newLayer);
+                ProgressIndicator circle = new ProgressIndicator();
+                circle.setPrefSize(50, 50);
+                circle.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+                layout.setBottom(circle);
             }
         });
     }
@@ -375,7 +381,20 @@ public class GUI extends Application implements DisplayableView {
 
     private static void showCoordRequest() {
         Platform.runLater(() -> {
-            loader = new FXMLLoader(GUI.class.getResource("/gui/cordShipRequest.fxml"));
+            loader = new FXMLLoader(GUI.class.getResource("/gui/coordShipRequest.fxml"));
+            BorderPane newLayer;
+            try {
+                newLayer = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            layout.setCenter(newLayer);
+        });
+    }
+
+    private static void showChooseCrew() {
+        Platform.runLater(() -> {
+            loader = new FXMLLoader(GUI.class.getResource("/gui/chooseCrew.fxml"));
             BorderPane newLayer;
             try {
                 newLayer = loader.load();
@@ -387,24 +406,18 @@ public class GUI extends Application implements DisplayableView {
     }
     public static void showMessage(String message) {
         Platform.runLater(() -> {
-            loader = new FXMLLoader(GUI.class.getResource("/gui/message.fxml"));
-            AnchorPane newLayer;
-            try {
-                newLayer = loader.load();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
             Label stringLabel = new Label(message);
+            AnchorPane anchorPane = new AnchorPane();
+            stringLabel.setAlignment(Pos.CENTER);
+            stringLabel.setPrefHeight(50);
+            stringLabel.setStyle("fx-font-size: 16px;");
+            anchorPane.getChildren().add(stringLabel);
+            anchorPane.setPrefHeight(50);
+            anchorPane.setPrefWidth(300);
             AnchorPane.setBottomAnchor(stringLabel, 20.0);
             AnchorPane.setLeftAnchor(stringLabel, 0.0);
             AnchorPane.setRightAnchor(stringLabel, 0.0);
-            stringLabel.setAlignment(Pos.CENTER);
-            try {
-                newLayer.getChildren().add(1, stringLabel);
-            } catch (IndexOutOfBoundsException e) {
-                newLayer.getChildren().add(stringLabel);
-            }
-            layout.setBottom(newLayer);
+            layout.setBottom(anchorPane);
         });
     }
 
@@ -501,6 +514,7 @@ public class GUI extends Application implements DisplayableView {
         switch (newState){
             case CHOOSE_CONNECTION_TYPE ->{
                 showConnection();
+                layout.getStylesheets().add(css2);
             }
             case LOGIN ->{
                 showLogin();
@@ -519,8 +533,8 @@ public class GUI extends Application implements DisplayableView {
             }
             case S_END_DRAW_TILE_CARD ->{
                 showS_EndDrawTilesCards();
+                layout.getStylesheets().add(css3);
                 addCheckShip();
-
             }
             case S_MANAGE_DRAWN_TILE ->{
                 showS_ManageDrawTilesCards();
@@ -544,7 +558,7 @@ public class GUI extends Application implements DisplayableView {
 
             }
             case MANAGE_CABINS ->{
-
+                showChooseCrew();
             }
             case COORD_REQUEST -> {
                 showCoordRequest();
@@ -553,6 +567,9 @@ public class GUI extends Application implements DisplayableView {
 
             }
             case WAIT -> {
+                if(controller.getPhase()==GamePhases.CARDS) {
+                    showDrawCard();
+                }
                 showWait();
             }
         }
@@ -605,24 +622,24 @@ public class GUI extends Application implements DisplayableView {
     @Override
     public void showCard(ArrayList<Card> cards) {
         Platform.runLater(() -> {
-            loader = new FXMLLoader(GUI.class.getResource("/gui/showCard.fxml"));
-            BorderPane newLayer;
-            try {
-                newLayer = loader.load();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            layout.setCenter(newLayer);
+            if (controller.isChecking()==null)
+                if(controller.getState()==ClientState.DRAW_CARD){
+                    DrawCardController cardController=loader.getController();
+                    cardController.showCard();
+                }
         });
-
     }
 
     @Override
     public void printFlightboard(LightFlightboard lightFlightboard) {
         Platform.runLater(() -> {
-            if(controller.getState()==ClientState.S_FINISHED){
-                EndShipController endShipController=loader.getController();
+        if(controller.getState()==ClientState.S_FINISHED||(controller.getPreviousState()==ClientState.S_FINISHED&&controller.getState()==ClientState.WAIT)) {
+            EndShipController endShipController=loader.getController();
                 endShipController.update();
+            }
+        else if(controller.getState()==ClientState.S_END_DRAW_TILE_CARD) {
+            S_EndDrawTilesCardsController sceneController=loader.getController();
+                sceneController.update();
             }
         });
     }
@@ -651,10 +668,11 @@ public class GUI extends Application implements DisplayableView {
     @Override
     public void showAvailableDecks(){
         Platform.runLater(() -> {
-            if(controller.getState()==ClientState.S_END_DRAW_TILE_CARD){
-                S_EndDrawTilesCardsController sEndDrawTilesCardsController=loader.getController();
-                sEndDrawTilesCardsController.update();
-            }
+            if (controller.isChecking()==null)
+                if(controller.getState()==ClientState.S_END_DRAW_TILE_CARD){
+                    S_EndDrawTilesCardsController sEndDrawTilesCardsController=loader.getController();
+                    sEndDrawTilesCardsController.update();
+                }
         });
     }
 
@@ -776,14 +794,11 @@ public class GUI extends Application implements DisplayableView {
     @Override
     public void notifyDrawnCard(Card card) throws RemoteException {
         Platform.runLater(() -> {
-            loader = new FXMLLoader(GUI.class.getResource("/gui/showCard.fxml"));
-            BorderPane newLayer;
-            try {
-                newLayer = loader.load();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            layout.setCenter(newLayer);
+            if (controller.isChecking()==null)
+                if(controller.getState()==ClientState.DRAW_CARD){
+                    DrawCardController cardController=loader.getController();
+                    cardController.showCard();
+                }
         });
     }
 
@@ -804,12 +819,56 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void notifyTurnedHourglass(int i) throws RemoteException {
-
+        timer= new Timer();
+        counter=0;
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                counter++;
+                Platform.runLater(() -> {
+                    if(controller.isChecking()==null) {
+                        if (controller.getState() == ClientState.S_END_DRAW_TILE_CARD) {
+                            S_EndDrawTilesCardsController sceneController = loader.getController();
+                            if (sceneController != null) {
+                                sceneController.goProgressBar(counter, 100, controller.getHourglassTurns());
+                            }
+                        } else if(controller.getState()==ClientState.S_FINISHED||(controller.getPreviousState()==ClientState.S_FINISHED&&controller.getState()==ClientState.WAIT&&controller.isChecking()==null)) {
+                            EndShipController sceneController = loader.getController();
+                            if (sceneController != null) {
+                                sceneController.goProgressBar(counter, 100, controller.getHourglassTurns());
+                            }
+                        }
+                    }
+                });
+                if (counter == 100) {
+                    timer.cancel();
+                    timer.purge();
+                }
+            }
+        };
+        timer.scheduleAtFixedRate(task, 0, 1000);
     }
 
     @Override
     public void notifyEndOfTime() throws RemoteException {
-
+        counter=100;
+        Platform.runLater(() -> {
+            if(controller.isChecking()==null) {
+                if (controller.getState() == ClientState.S_END_DRAW_TILE_CARD) {
+                    S_EndDrawTilesCardsController sceneController = loader.getController();
+                    if (sceneController != null) {
+                        sceneController.goProgressBar(counter, 100, controller.getHourglassTurns());
+                    }
+                } else if(controller.getState()==ClientState.S_FINISHED||(controller.getPreviousState()==ClientState.S_FINISHED&&controller.getState()==ClientState.WAIT)) {
+                    EndShipController sceneController = loader.getController();
+                    if (sceneController != null) {
+                        sceneController.goProgressBar(counter, 100, controller.getHourglassTurns());
+                    }
+                }
+            }
+        });
+        timer.cancel();
+        timer.purge();
     }
 
     @Override
@@ -868,6 +927,30 @@ public class GUI extends Application implements DisplayableView {
 
     public static GameMode getMode() {
         return mode;
+    }
+
+    public static double getPercentage1() {
+        return percentage1;
+    }
+
+    public static double getPercentage2() {
+        return percentage2;
+    }
+
+    public static double getPercentage3() {
+        return percentage3;
+    }
+
+    public static void setPercentage1(double percentage1) {
+        GUI.percentage1 = percentage1;
+    }
+
+    public static void setPercentage2(double percentage2) {
+        GUI.percentage2 = percentage2;
+    }
+
+    public static void setPercentage3(double percentage3) {
+        GUI.percentage3 = percentage3;
     }
 }
 

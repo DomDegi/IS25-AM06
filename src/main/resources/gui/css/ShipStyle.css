@@ -1,0 +1,73 @@
+.root{
+    -fx-background-image: url("../../images/background2.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.label{
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+    -fx-font-family: "Franklin Gothic Heavy", monospace;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.2, 0, 0);
+}
+
+.button {
+    -fx-padding: 0px 0px 0px 0px;
+    -fx-background-color: transparent;
+    -fx-text-fill:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+    -fx-font-family: "Franklin Gothic Heavy", monospace;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-content-display: center;
+    -fx-font-size: 30px;
+    -fx-border-width: 5;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.2, 0, 0);
+    -fx-border-color:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+}
+
+.button:hover {
+    -fx-effect: dropshadow(gaussian, rgb(233, 157, 17), 30, 0.4, 0, 0);
+}
+
+.button:pressed {
+    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.1, 0, 0);
+    -fx-border-color:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+}
+
+.image-view{
+    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.4, 0, 0);
+}
+
+.image-view:disabled{
+    -fx-effect: dropshadow(gaussian, transparent, 0, 0, 0, 0);
+}
+
+.grid-pane{
+    -fx-background-color: transparent;
+    -fx-border-radius: 20px;
+    -fx-border-color: linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+}
+.progress-bar{
+    -fx-background-color: transparent;
+    -fx-border-radius: 20px;
+    -fx-border-color: linear-gradient(from 0% 0% to 0% 100%, rgb(255, 169, 19) 0%, #ffa913 100%);
+    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.4, 0, 0);
+}
+.progress-bar>.bar{
+    -fx-border-radius: 20px;
+    -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+}
+
+.progress-bar>.track {
+    -fx-background-color: transparent;
+}
+
+

@@ -239,4 +239,8 @@ public class CoordInputManager {
         fireStrength = 0;
         return true;
     }
+
+    public CoordReqType getCoordReqType() {
+        return coordReqType;
+    }
 }

@@ -3,6 +3,7 @@
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -11,21 +12,40 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Polygon?>
 
-<BorderPane onKeyPressed="#K" prefHeight="1030.0" prefWidth="1820.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.galaxytruckerproject.view.gui.S_EndDrawTilesCardsController">
+<BorderPane onKeyPressed="#K" stylesheets="@css/ShipStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.galaxytruckerproject.view.gui.S_EndDrawTilesCardsController">
    <center>
       <HBox alignment="CENTER" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <TilePane fx:id="drawnTiles1" alignment="CENTER_RIGHT" hgap="5.0" prefHeight="1028.0" prefWidth="700.0" vgap="5.0" />
-            <VBox alignment="CENTER" spacing="30.0">
+            <TilePane fx:id="drawnTiles1" alignment="CENTER_RIGHT" hgap="5.0" minWidth="590.0" prefColumns="7" prefTileHeight="80.0" prefTileWidth="80.0" vgap="5.0" />
+            <VBox alignment="CENTER" maxWidth="620.0" prefWidth="620.0" spacing="30.0">
                <children>
-                  <AnchorPane prefHeight="339.0" prefWidth="612.0">
+                  <StackPane>
                      <children>
-                        <Group layoutX="147.0" layoutY="44.0" AnchorPane.leftAnchor="147.0" AnchorPane.rightAnchor="139.0" AnchorPane.topAnchor="44.65649604797363">
+                         <Group fx:id="trialFlight">
                            <children>
-                              <ImageView fitHeight="223.0" fitWidth="326.0" layoutY="53.5" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="223.0" fitWidth="326.0" layoutX="5.0" layoutY="53.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/grafiche/grafiche/cardboard/cardboard-3.png" />
+                                 </image>
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
+                              </ImageView>
+                              <Button layoutX="5.0" layoutY="9.0" mnemonicParsing="false" onAction="#endShip" prefHeight="46.0" prefWidth="85.0" text="End" />
+                               <Polygon fx:id="fourthTrial" fill="DODGERBLUE" layoutX="99.0" layoutY="80.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="153.4" scaleX="0.3" scaleY="0.3" stroke="BLACK" strokeType="INSIDE" />
+                               <Polygon fx:id="thirdTrial" fill="DODGERBLUE" layoutX="129.0" layoutY="71.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="168.7" scaleX="0.3" scaleY="0.3" stroke="BLACK" strokeType="INSIDE" />
+                               <Polygon fx:id="secondTrial" fill="DODGERBLUE" layoutX="160.0" layoutY="68.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="180.0" scaleX="0.3" scaleY="0.3" stroke="BLACK" strokeType="INSIDE" />
+                               <Polygon fx:id="firstTrial" accessibleRole="TEXT" fill="DODGERBLUE" layoutX="221.0" layoutY="73.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-162.5" scaleX="0.3" scaleY="0.3" stroke="BLACK" strokeType="INSIDE" />
+                           </children>
+                        </Group>
+                        <Group fx:id="flightImage">
+                           <children>
+                              <ImageView fitHeight="223.0" fitWidth="326.0" layoutX="5.0" layoutY="53.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/grafiche/grafiche/cardboard/cardboard-5.png" />
                                  </image>
@@ -33,100 +53,86 @@
                                     <Rectangle2D />
                                  </viewport>
                               </ImageView>
-                              <Button fx:id="deck2" layoutX="127.0" layoutY="228.5" mnemonicParsing="false" onAction="#drawDeck2" prefHeight="98.0" prefWidth="36.0">
-                                 <graphic>
-                                    <ImageView fitHeight="87.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/grafiche/grafiche/cards/GT-cards_II_IT_0121.jpg" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                              <Button fx:id="deck1" layoutX="24.0" layoutY="202.0" mnemonicParsing="false" onAction="#drawDeck1" prefHeight="98.0" prefWidth="36.0" rotate="26.0">
-                                 <graphic>
-                                    <ImageView fitHeight="87.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/grafiche/grafiche/cards/GT-cards_II_IT_0121.jpg" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                              <Button fx:id="deck3" layoutX="230.0" layoutY="202.0" mnemonicParsing="false" onAction="#drawDeck3" prefHeight="98.0" prefWidth="36.0" rotate="-26.0">
-                                 <graphic>
-                                    <ImageView fitHeight="87.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/grafiche/grafiche/cards/GT-cards_II_IT_0121.jpg" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                              <Button layoutX="127.0" layoutY="-12.0" mnemonicParsing="false" prefHeight="98.0" prefWidth="36.0" rotate="90.0">
-                                 <graphic>
-                                    <ImageView fitHeight="87.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/grafiche/grafiche/cards/GT-cards_II_IT_0121.jpg" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                              <Button layoutX="265.0" layoutY="77.0" mnemonicParsing="false" onAction="#turnHourglass" text="Turn" />
-                              <Button layoutX="24.0" layoutY="78.0" mnemonicParsing="false" onAction="#endShip" text="End" />
+                              <ImageView fx:id="deck1" fitHeight="87.0" fitWidth="57.0" layoutX="37.0" layoutY="207.0" onMouseClicked="#drawDeck1" pickOnBounds="true" preserveRatio="true" rotate="26.0">
+                                 <image>
+                                    <Image url="@../images/grafiche/grafiche/cards/GT-cards_II_IT_0121.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Button layoutX="5.0" layoutY="9.0" mnemonicParsing="false" onAction="#endShip" prefHeight="46.0" prefWidth="85.0" text="End" />
+                              <ImageView fx:id="deck2" fitHeight="87.0" fitWidth="57.0" layoutX="140.0" layoutY="231.0" onMouseClicked="#drawDeck2" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/grafiche/grafiche/cards/GT-cards_II_IT_0121.jpg" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="deck3" fitHeight="87.0" fitWidth="57.0" layoutX="243.0" layoutY="206.0" onMouseClicked="#drawDeck3" pickOnBounds="true" preserveRatio="true" rotate="-26.0">
+                                 <image>
+                                    <Image url="@../images/grafiche/grafiche/cards/GT-cards_II_IT_0121.jpg" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="87.0" fitWidth="57.0" layoutX="140.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
+                                 <image>
+                                    <Image url="@../images/grafiche/grafiche/cards/GT-cards_II_IT_0121.jpg" />
+                                 </image>
+                              </ImageView>
+                              <ProgressBar fx:id="hourglass2" layoutX="253.0" layoutY="53.0" onMouseClicked="#turnHourglass" prefHeight="18.0" prefWidth="75.0" progress="0.0" rotate="-90.0" />
+                              <ProgressBar fx:id="hourglass1" layoutX="227.0" layoutY="40.0" onMouseClicked="#turnHourglass" prefHeight="18.0" prefWidth="75.0" progress="0.0" rotate="-90.0" />
+                              <ProgressBar fx:id="hourglass3" layoutX="274.0" layoutY="79.0" onMouseClicked="#turnHourglass" prefHeight="18.0" prefWidth="75.0" progress="0.0" rotate="-90.0" />
+                              <Polygon fx:id="fourth" fill="DODGERBLUE" layoutX="92.0" layoutY="86.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="153.4" scaleX="0.3" scaleY="0.3" stroke="BLACK" strokeType="INSIDE" />
+                              <Polygon fx:id="third" fill="DODGERBLUE" layoutX="115.0" layoutY="78.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="164.1" scaleX="0.3" scaleY="0.3" stroke="BLACK" strokeType="INSIDE" />
+                              <Polygon fx:id="second" fill="DODGERBLUE" layoutX="163.0" layoutY="70.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="180.0" scaleX="0.3" scaleY="0.3" stroke="BLACK" strokeType="INSIDE" />
+                              <Polygon fx:id="first" accessibleRole="TEXT" fill="DODGERBLUE" layoutX="236.0" layoutY="80.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-159.4" scaleX="0.3" scaleY="0.3" stroke="BLACK" strokeType="INSIDE" />
                            </children>
                         </Group>
                      </children>
-                  </AnchorPane>
-                  <Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#drawTile" prefHeight="75.0" prefWidth="75.0">
+                  </StackPane>
+                  <Button mnemonicParsing="false" onAction="#drawTile">
                      <graphic>
-                        <ImageView fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="75.0" fitWidth="75.0" onMouseClicked="#drawTile" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/grafiche/grafiche/tiles/GT-new_tiles_16_for%20web157.jpg" />
                            </image>
                         </ImageView>
                      </graphic>
                   </Button>
-                  <AnchorPane>
-                     <children>
-                        <AnchorPane prefHeight="443.0" prefWidth="323.0" AnchorPane.bottomAnchor="20.0">
-                           <children>
-                              <ImageView fitHeight="443.0" fitWidth="681.0" layoutX="260.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                                 <image>
-                                    <Image url="@../images/grafiche/grafiche/cardboard/cardboard-1b.jpg" />
-                                 </image>
-                              </ImageView>
-                              <GridPane fx:id="tilesTable" layoutX="76.0" layoutY="18.0" prefHeight="405.0" prefWidth="498.0" style="-fx-background-image:url('../images/grafiche/grafiche/cardboard/cardboard-1b.jpg');" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
-                                <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                              </GridPane>
-                              <GridPane fx:id="bookedTiles" layoutX="438.0" layoutY="14.0" prefHeight="80.0" prefWidth="160.0" AnchorPane.rightAnchor="14.0">
-                                <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="118.0" minWidth="10.0" prefWidth="83.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="80.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                              </GridPane>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </AnchorPane>
+                   <AnchorPane maxHeight="612.0">
+                       <children>
+                           <ImageView fx:id="shipImage" fitHeight="443.0" fitWidth="612.0" layoutX="5.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+                               <image>
+                                   <Image url="@../images/grafiche/grafiche/cardboard/cardboard-1b.jpg" />
+                               </image>
+                           </ImageView>
+                           <GridPane fx:id="tilesTable" alignment="CENTER" layoutX="26.0" layoutY="20.0" prefHeight="403.0" prefWidth="570.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="26.0" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="20.0">
+                               <columnConstraints>
+                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
+                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
+                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
+                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
+                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
+                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
+                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
+                               </columnConstraints>
+                               <rowConstraints>
+                                   <RowConstraints maxHeight="80.0" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                                   <RowConstraints maxHeight="80.0" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                                   <RowConstraints maxHeight="80.0" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                                   <RowConstraints maxHeight="80.0" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                                   <RowConstraints maxHeight="80.0" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                               </rowConstraints>
+                           </GridPane>
+                           <GridPane fx:id="bookedTiles" alignment="CENTER" prefHeight="80.0" prefWidth="160.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                               <columnConstraints>
+                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" />
+                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" />
+                               </columnConstraints>
+                               <rowConstraints>
+                                   <RowConstraints maxHeight="80.0" minHeight="80.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                               </rowConstraints>
+                           </GridPane>
+                       </children>
+                   </AnchorPane>
                </children>
             </VBox>
-            <TilePane fx:id="drawnTiles2" alignment="CENTER_LEFT" hgap="5.0" prefHeight="1028.0" prefWidth="700.0" vgap="5.0" />
+            <TilePane fx:id="drawnTiles2" alignment="CENTER_LEFT" hgap="5.0" minWidth="590.0" prefColumns="7" prefTileHeight="80.0" prefTileWidth="80.0" vgap="5.0" />
          </children>
       </HBox>
    </center>

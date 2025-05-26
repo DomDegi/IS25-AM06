@@ -970,12 +970,12 @@ public class GameController implements Observer, Serializable {
         hourglassTask = new TimerTask() {
             @Override
             public void run() {
-                hourglassON = false;
-                notifyEndOfTime();
-                if (hourglassTurns == 3) {
-                    updateEveryView(ClientState.S_FINISHED);
-                    checkIfAllPlayersReady();
-                }
+            hourglassON = false;
+            notifyEndOfTime();
+            if (hourglassTurns == 3) {
+                updateEveryView(ClientState.S_FINISHED);
+                checkIfAllPlayersReady();
+            }
             }
         };
         hourglassTimer.schedule(hourglassTask, 95000); //95 seconds

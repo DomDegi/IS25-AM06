@@ -21,7 +21,8 @@ public class CabinsManager {
     public CabinsManager(LightPlayer lightPlayer, DisplayableView view) {
         this.view = view;
         this.lightPlayer = lightPlayer;
-        this.cabins = lightPlayer.getShipBoard().getCabinsCoordinates();
+        this.cabins = new ArrayList<>(lightPlayer.getShipBoard().getCabinsCoordinates());
+        cabins.remove(new Coordinates(2,3));
         this.modifiedCabins = new ArrayList<>();
         this.index=0;
     }
@@ -61,20 +62,37 @@ public class CabinsManager {
     }
 
     public void setup() {
-        if(cabins.get(index).equals( new Coordinates(2, 3))) {
-            index++;
-        }
         if(index >= cabins.size()) {
             return;
         }
         if(lightPlayer.getShipBoard().getTile(cabins.get(index)) != null && lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.NO){
             view.showGenericMessage(cabins.get(index).toString()+" - Only Human are allowed here");
-        }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.PURPLE){
+        }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)) != null &&lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.PURPLE){
             view.showGenericMessage(cabins.get(index).toString()+" - Human and Purple aliens are allowed here");
-        }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.BROWN){
+        }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)) != null &&lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.BROWN){
             view.showGenericMessage(cabins.get(index).toString()+" - Human and Brown aliens are allowed here");
-        }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.BOTH){
+        }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)) != null &&lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.BOTH){
             view.showGenericMessage(cabins.get(index).toString()+" - Everyone is allowed here");
         }
+    }
+
+    public AlienOptions crewType() {
+        if(lightPlayer.getShipBoard().getTile(cabins.get(index)) != null && lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.NO){
+            return AlienOptions.NO;
+        }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)) != null &&lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.PURPLE){
+            return AlienOptions.PURPLE;
+        }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)) != null &&lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.BROWN){
+            return AlienOptions.BROWN;
+        }else if (lightPlayer.getShipBoard().getTile(cabins.get(index)) != null &&lightPlayer.getShipBoard().getTile(cabins.get(index)).getAlienability()==AlienOptions.BOTH){
+            return AlienOptions.BOTH;
+        }else
+            return AlienOptions.NO;
+    }
+    public ArrayList<Coordinates> getCabins() {
+        return cabins;
+    }
+
+    public int getIndex() {
+        return index;
     }
 }

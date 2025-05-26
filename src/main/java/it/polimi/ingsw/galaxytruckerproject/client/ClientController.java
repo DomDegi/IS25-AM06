@@ -37,6 +37,7 @@ public class ClientController {
     private GamePhases phase;
     private ArrayList<GameInfo> gameInfo;
     private String checking;
+    private boolean positioned;
 
     private GameMode gameMode;
     private DisplayableView view;
@@ -62,6 +63,7 @@ public class ClientController {
 
 
     public ClientController() {
+        positioned=false;
         this.checking= null;
         this.numPlayer = 0;
         this.gameInfo = new ArrayList<>();
@@ -238,7 +240,7 @@ public class ClientController {
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
-                indexDeckInHandOrPlanet = chose-1;
+                indexDeckInHandOrPlanet = chose;
                 displayedCard = this.deck.get(indexDeckInHandOrPlanet);
             } else {
                 view.wrongLocalInput();
@@ -415,14 +417,14 @@ public class ClientController {
     }
 
     public boolean positionOnFlightBoard(int chose) {
-        if(state!=ClientState.S_FINISHED){
+        if(state!=ClientState.S_FINISHED&&positioned){
             return false;
         }
         if (gameMode == GameMode.LEVEL2) {
             if (chose > 0 && chose <= numPlayer) {
                 me.getShipBoard().setGetStat();
-                setState(ClientState.WAIT);
                 try {
+                    positioned=true;
                     virtualController.notifySetPosition(chose);
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
@@ -577,6 +579,7 @@ public class ClientController {
             if (!(me.getShipBoard().getCabinsCoordinates().isEmpty() || me.getShipBoard().getCabinsCoordinates().size() == 1)) {
                 newTiles = cabinsManager.manageCabins(type);
                 if (newTiles != null) {
+                    phase=GamePhases.CARDS;
                     setState(ClientState.WAIT);
                     try {
                         inManager = false;
@@ -808,8 +811,6 @@ public class ClientController {
                 view.wrongLocalInput();
                 return false;
             }
-            hourglassTurns = 2;
-            setState(state);
             try {
                 virtualController.sendTurnHourGlass();
             } catch (RemoteException e) {
@@ -826,11 +827,6 @@ public class ClientController {
                 view.wrongLocalInput();
                 return false;
             }
-            if (hourglassTurns == 1)
-                hourglassTurns = 2;
-            else
-                hourglassTurns = 3;
-            setState(ClientState.S_FINISHED);
             try {
                 virtualController.sendTurnHourGlass();
             } catch (RemoteException e) {
@@ -1138,6 +1134,8 @@ public class ClientController {
         if(state!=ClientState.CHOOSE_CONNECTION_TYPE&&state!=ClientState.CHOOSE_IP_AND_PORT_SOCKET){
             return false;
         }
+        if(ip==null|| ip.equals(""))
+            ip="localhost";
         Socket server;
         try {
             server = new Socket(ip, port);
@@ -1245,21 +1243,46 @@ public class ClientController {
             if(i<=flightBoard.getInGamePlayers().size())
                 availablePosition.put(i,null);
         }
-        flightBoard.getInGamePlayers().forEach(p -> {
-            if(p.getPosition()==6&&p.getRank()!=0){
-                availablePosition.put(1,p.getPlayerColor());
-            }
-            if(p.getPosition()==3&&p.getRank()!=0){
-                availablePosition.put(2,p.getPlayerColor());
-            }
-            if(p.getPosition()==1&&p.getRank()!=0){
-                availablePosition.put(3,p.getPlayerColor());
-            }
-            if(p.getPosition()==0&&p.getRank()!=0){
-                availablePosition.put(4,p.getPlayerColor());
-            }
-        });
+        if(getGameMode()==GameMode.LEVEL2){
+            flightBoard.getInGamePlayers().forEach(p -> {
+                if (p.getPosition() == 6 && p.getRank() != 0) {
+                    availablePosition.put(1, p.getPlayerColor());
+                }
+                if (p.getPosition() == 3 && p.getRank() != 0) {
+                    availablePosition.put(2, p.getPlayerColor());
+                }
+                if (p.getPosition() == 1 && p.getRank() != 0) {
+                    availablePosition.put(3, p.getPlayerColor());
+                }
+                if (p.getPosition() == 0 && p.getRank() != 0) {
+                    availablePosition.put(4, p.getPlayerColor());
+                }
+            });
+        }else if(getGameMode()==GameMode.TRIAL){
+            flightBoard.getInGamePlayers().forEach(p -> {
+                if (p.getPosition() == 4 && p.getRank() != 0) {
+                    availablePosition.put(1, p.getPlayerColor());
+                }
+                if (p.getPosition() == 2 && p.getRank() != 0) {
+                    availablePosition.put(2, p.getPlayerColor());
+                }
+                if (p.getPosition() == 1 && p.getRank() != 0) {
+                    availablePosition.put(3, p.getPlayerColor());
+                }
+                if (p.getPosition() == 0 && p.getRank() != 0) {
+                    availablePosition.put(4, p.getPlayerColor());
+                }
+            });
+        }
         return availablePosition;
+    }
+
+    public boolean isPositioned() {
+        return positioned;
+    }
+
+    public CabinsManager getCabinsManager() {
+        return cabinsManager;
     }
 }
 

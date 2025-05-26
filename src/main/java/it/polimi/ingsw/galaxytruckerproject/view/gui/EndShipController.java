@@ -1,15 +1,50 @@
 package it.polimi.ingsw.galaxytruckerproject.view.gui;
 
+import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.LinearGradient;
 import javafx.scene.shape.Polygon;
 
+import static javafx.scene.paint.Color.rgb;
+
 public class EndShipController {
+
+    @FXML
+    public ProgressBar hourglass1;
+    @FXML
+    public ProgressBar hourglass2;
+    @FXML
+    public ProgressBar hourglass3;
+
+    @FXML
+    public Group flightImage;
+
+    @FXML
+    public Group trialFlight;
+
+    @FXML
+    public Polygon firstTrial;
+
+    @FXML
+    public Polygon secondTrial;
+
+    @FXML
+    public Polygon thirdTrial;
+
+    @FXML
+    public Polygon fourthTrial;
 
     @FXML
     public Polygon first;
@@ -25,20 +60,35 @@ public class EndShipController {
 
     @FXML
     public void initialize(){
+        Polygon[] polygons = new Polygon[]{first,second,third,fourth};
         int i=1;
-        for(Polygon p:new Polygon[]{first,second,third,fourth}){
-            p.opacityProperty().setValue(0);
-            if(i>GUI.getController().getFlightBoard().getInGamePlayers().size())
+        if(GUI.getController().getGameMode().equals(GameMode.LEVEL2)) {
+            hourglass1.setProgress(1-GUI.getPercentage1());
+            hourglass2.setProgress(1-GUI.getPercentage2());
+            hourglass3.setProgress(1-GUI.getPercentage3());
+            trialFlight.setVisible(false);
+            flightImage.setVisible(true);
+            polygons=new Polygon[]{first,second,third,fourth};
+        }else if(GUI.getController().getGameMode().equals(GameMode.TRIAL)){
+            trialFlight.setVisible(true);
+            flightImage.setVisible(false);
+            polygons=new Polygon[]{firstTrial,secondTrial,thirdTrial,fourthTrial};
+        }
+        for (Polygon p : polygons) {
+            if (i > GUI.getController().getFlightBoard().getInGamePlayers().size())
                 p.setVisible(false);
-            if(GUI.getController().getAvailablePosition().get(i)!=null) {
-                p.opacityProperty().setValue(100);
-                if(GUI.getController().getAvailablePosition().get(i)== PlayersColor.RED)
+            p.setStroke(rgb(255, 169, 19));
+            p.setFill(Color.TRANSPARENT);
+            p.setStrokeWidth(5);
+            p.setEffect(new DropShadow(BlurType.GAUSSIAN, rgb(255, 169, 19), 30, 0.4, 0, 0));
+            if (GUI.getController().getAvailablePosition().get(i) != null) {
+                if (GUI.getController().getAvailablePosition().get(i) == PlayersColor.RED)
                     p.setFill(Color.RED);
-                if(GUI.getController().getAvailablePosition().get(i)== PlayersColor.YELLOW)
+                if (GUI.getController().getAvailablePosition().get(i) == PlayersColor.YELLOW)
                     p.setFill(Color.YELLOW);
-                if(GUI.getController().getAvailablePosition().get(i)== PlayersColor.GREEN)
+                if (GUI.getController().getAvailablePosition().get(i) == PlayersColor.GREEN)
                     p.setFill(Color.GREEN);
-                if(GUI.getController().getAvailablePosition().get(i)== PlayersColor.BLUE)
+                if (GUI.getController().getAvailablePosition().get(i) == PlayersColor.BLUE)
                     p.setFill(Color.BLUE);
             }
             i++;
@@ -47,26 +97,60 @@ public class EndShipController {
 
     @FXML
     public void pos1(){
-        GUI.position(1);
-        update();
+        if(GUI.getController().getAvailablePosition().get(1)==null&&!GUI.getController().isPositioned()) {
+            GUI.position(1);
+            update();
+        }
     }
 
     @FXML
     public void pos2(){
-        GUI.position(2);
-        update();
+        if(GUI.getController().getAvailablePosition().get(2)==null&&!GUI.getController().isPositioned()) {
+            GUI.position(2);
+            update();
+        }
     }
 
     @FXML
     public void pos3(){
-        GUI.position(3);
-        update();
+        if(GUI.getController().getAvailablePosition().get(3)==null&&!GUI.getController().isPositioned()) {
+            GUI.position(3);
+            update();
+        }
     }
 
     @FXML
     public void pos4(){
-        GUI.position(4);
-        update();
+        if(GUI.getController().getAvailablePosition().get(4)==null&&!GUI.getController().isPositioned()) {
+            GUI.position(4);
+            update();
+        }
+
+    }
+
+    @FXML
+    public void turnHourglass(){
+        GUI.turnHourglass();
+    }
+
+    @FXML
+    public void goProgressBar(int index,int max,int turns){
+        if(turns==1){
+            GUI.setPercentage1((double) index /max);
+            hourglass3.setProgress(1);
+            hourglass2.setProgress(1);
+            hourglass1.setProgress(1-GUI.getPercentage1());
+        }else if(turns==2){
+            GUI.setPercentage2((double) index /max);
+            hourglass3.setProgress(1);
+            hourglass2.setProgress(1-GUI.getPercentage2());
+            hourglass1.setProgress(0);
+        }else if(turns==3){
+            GUI.setPercentage3((double) index /max);
+            hourglass3.setProgress(1-GUI.getPercentage3());
+            hourglass2.setProgress(0);
+            hourglass1.setProgress(0);
+        }
     }
 
     public void update(){

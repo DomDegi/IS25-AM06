@@ -1,10 +1,14 @@
 package it.polimi.ingsw.galaxytruckerproject.view.gui;
 
+import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -16,8 +20,14 @@ import javafx.scene.layout.TilePane;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Objects;
+
+import static javafx.scene.paint.Color.rgb;
 
 public class S_ManageDrawTileController {
+
+    @FXML
+    public ImageView shipImage;
 
     @FXML
     public Button drawnTile;
@@ -36,6 +46,12 @@ public class S_ManageDrawTileController {
 
     @FXML
     public void initialize() {
+        if(GUI.getController().getGameMode()== GameMode.LEVEL2){
+            shipImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/grafiche/cardboard/cardboard-1b.jpg"))));
+        } else if (GUI.getController().getGameMode()==GameMode.TRIAL) {
+            shipImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/grafiche/cardboard/cardboard-1.jpg"))));
+            bookedTiles.setVisible(false);
+        }
         String inHandImagePath = GUI.getController().getTileInHand().getImagePath();
         InputStream inHandImageStream = getClass().getResourceAsStream(inHandImagePath);
         if (inHandImageStream == null) {
@@ -50,101 +66,91 @@ public class S_ManageDrawTileController {
             drawnTile.setPadding(Insets.EMPTY);
             drawnTile.setGraphic(inHandImageView);
         }
+        tilesTable.getChildren().clear();
         ArrayList<Tile> tiles = new ArrayList<>();
         for (int i = 0; i <= 6; i++) {
             for (int j = 0; j <= 4; j++) {
-                if (GUI.getController().getMe().getShipBoard().getTilesTable()[j][i].isPresent() && GUI.getController().getMe().getShipBoard().getTilesTable()[j][i].get().fillable())
-                    tiles.add(GUI.getController().getMe().getShipBoard().getTilesTable()[j][i].get());
+                if((GUI.getController().getGameMode()==GameMode.LEVEL2&&!((j==0&&(i<=1||i==3||i>=5))||(j==1&&(i==0||i==6))||(j==4&&i==3)))||(GUI.getController().getGameMode()==GameMode.TRIAL&&!(i==0||i==6||((j==0&&(i!=3))||(j==1&&(i<2||i>4))||(j==4&&i==3))))) {
+                    Button button = new Button();
+                    button.setPrefHeight(80);
+                    button.setPrefWidth(80);
+                    int finalI = i;
+                    int finalJ = j;
+                    button.setOnAction(event -> {
+                        GUI.putTile(finalJ, finalI);
+                    });
+                    tilesTable.add(button, finalI, finalJ);
+                }
+            }
+        }
+        for (int i = 0; i <= 6; i++) {
+            for (int j = 0; j <= 4; j++) {
+                    if (GUI.getController().getMe().getShipBoard().getTilesTable()[j][i].isPresent() && GUI.getController().getMe().getShipBoard().getTilesTable()[j][i].get().fillable())
+                        tiles.add(GUI.getController().getMe().getShipBoard().getTilesTable()[j][i].get());
             }
         }
         for (Tile tile : tiles) {
-            Button imageButton = new Button();
             String imagePath = tile.getImagePath();
             InputStream imageStream = getClass().getResourceAsStream(imagePath);
             if (imageStream == null) {
                 System.err.println("not found" + imagePath);
-                imageButton.setText("MCS");
             } else {
                 Image image = new Image(imageStream);
                 ImageView imageView = new ImageView(image);
                 imageView.rotateProperty().setValue(tile.getRotation() * 90);
                 imageView.setFitWidth(80);
                 imageView.setFitHeight(80);
-                imageButton.setGraphic(imageView);
-                imageButton.setPrefWidth(80);
-                imageButton.setPrefHeight(80);
-                imageButton.setMaxWidth(80);
-                imageButton.setMaxHeight(80);
-                imageButton.setPadding(Insets.EMPTY);
-                tilesTable.add(imageButton, tile.getCoordinates().getY(), tile.getCoordinates().getX());
+                imageView.setDisable(true);
+                tilesTable.add(imageView, tile.getCoordinates().getY(), tile.getCoordinates().getX());
             }
         }
         int index = 0;
         for (Tile tile : GUI.getController().getTurnedTilesDisplayer()) {
-            Button imageButton = new Button();
             String imagePath = tile.getImagePath();
             InputStream imageStream = getClass().getResourceAsStream(imagePath);
             if (imageStream == null) {
                 System.err.println("not found" + imagePath);
-                imageButton.setText("MCS");
             } else {
                 Image image = new Image(imageStream);
                 ImageView imageView = new ImageView(image);
                 imageView.rotateProperty().setValue(tile.getRotation() * 90);
                 imageView.setFitWidth(80);
                 imageView.setFitHeight(80);
-                imageButton.setGraphic(imageView);
-                imageButton.setPrefWidth(80);
-                imageButton.setPrefHeight(80);
-                imageButton.setMaxWidth(80);
-                imageButton.setMaxHeight(80);
-                imageButton.setPadding(Insets.EMPTY);
-                imageButton.setOnAction(event -> {
+                imageView.setOnMouseClicked(event -> {
                     refuse();
                 });
                 if (index % 2 == 0) {
-                    drawnTiles1.getChildren().add(imageButton);
+                    drawnTiles1.getChildren().add(imageView);
                 } else {
-                    drawnTiles2.getChildren().add(imageButton);
+                    drawnTiles2.getChildren().add(imageView);
                 }
             }
             index++;
         }
 
         for (int i = 0; i < 2; i++) {
-            Button imageButton = new Button();
+            ImageView imageView= new ImageView();
             if (GUI.getController().getLightShipBoard().getBookedTiles().size() == i + 1) {
                 Tile tile = GUI.getController().getLightShipBoard().getBookedTiles().get(i);
                 String imagePath = tile.getImagePath();
                 InputStream imageStream = getClass().getResourceAsStream(imagePath);
                 if (imageStream == null) {
                     System.err.println("Impossibile trovare l'immagine: " + imagePath);
-                    imageButton.setText("Img non trovata");
                 } else {
                     Image image = new Image(imageStream);
-                    ImageView imageView = new ImageView(image);
+                    imageView = new ImageView(image);
                     imageView.rotateProperty().setValue(tile.getRotation() * 90);
                     imageView.setFitWidth(80);
                     imageView.setFitHeight(80);
-                    imageButton.setGraphic(imageView);
-                    imageButton.setPrefWidth(80);
-                    imageButton.setPrefHeight(80);
-                    imageButton.setMaxWidth(80);
-                    imageButton.setMaxHeight(80);
-                    imageButton.setPadding(Insets.EMPTY);
                 }
             } else {
-                imageButton.setBackground(new Background(new BackgroundFill(null, null, null)));
-                imageButton.setPrefWidth(80);
-                imageButton.setPrefHeight(80);
-                imageButton.setMaxWidth(80);
-                imageButton.setMaxHeight(80);
-                imageButton.setPadding(Insets.EMPTY);
-                imageButton.setOnAction(event -> {
+                imageView.setFitWidth(80);
+                imageView.setFitHeight(80);
+                imageView.setOnMouseClicked(event -> {
                     bookTile();
                 });
             }
-            bookedTiles.add(imageButton, i, 0);
+            bookedTiles.add(imageView, i, 0);
         }
     }
     @FXML
@@ -159,141 +165,6 @@ public class S_ManageDrawTileController {
     @FXML
     public void refuse() {
         GUI.refuseTile();
-    }
-
-    @FXML
-    public void putTile02() {
-        GUI.putTile(0, 2);
-    }
-
-    @FXML
-    public void putTile04() {
-        GUI.putTile(0, 4);
-    }
-
-    @FXML
-    public void putTile11() {
-        GUI.putTile(1, 1);
-    }
-
-    @FXML
-    public void putTile12() {
-        GUI.putTile(1, 2);
-    }
-
-    @FXML
-    public void putTile13() {
-        GUI.putTile(1, 3);
-    }
-
-    @FXML
-    public void putTile14() {
-        GUI.putTile(1, 4);
-    }
-
-    @FXML
-    public void putTile15() {
-        GUI.putTile(1, 5);
-    }
-
-    @FXML
-    public void putTile20() {
-        GUI.putTile(2, 0);
-    }
-
-    @FXML
-    public void putTile21() {
-        GUI.putTile(2, 1);
-    }
-
-    @FXML
-    public void putTile22() {
-        GUI.putTile(2, 2);
-    }
-
-    @FXML
-    public void putTile23() {
-        GUI.putTile(2, 3);
-    }
-
-    @FXML
-    public void putTile24() {
-        GUI.putTile(2, 4);
-    }
-
-    @FXML
-    public void putTile25() {
-        GUI.putTile(2, 5);
-    }
-
-    @FXML
-    public void putTile26() {
-        GUI.putTile(2, 6);
-    }
-
-    @FXML
-    public void putTile30() {
-        GUI.putTile(3, 0);
-    }
-
-    @FXML
-    public void putTile31() {
-        GUI.putTile(3, 1);
-    }
-
-    @FXML
-    public void putTile32() {
-        GUI.putTile(3, 2);
-    }
-
-    @FXML
-    public void putTile33() {
-        GUI.putTile(3, 3);
-    }
-
-    @FXML
-    public void putTile34() {
-        GUI.putTile(3, 4);
-    }
-
-    @FXML
-    public void putTile35() {
-        GUI.putTile(3, 5);
-    }
-
-    @FXML
-    public void putTile36() {
-        GUI.putTile(3, 6);
-    }
-
-    @FXML
-    public void putTile40() {
-        GUI.putTile(4, 0);
-    }
-
-    @FXML
-    public void putTile41() {
-        GUI.putTile(4, 1);
-    }
-
-    @FXML
-    public void putTile42() {
-        GUI.putTile(4, 2);
-    }
-
-    @FXML
-    public void putTile44() {
-        GUI.putTile(4, 4);
-    }
-
-    @FXML
-    public void putTile45() {
-        GUI.putTile(4, 5);
-    }
-
-    @FXML
-    public void putTile46() {
-        GUI.putTile(4, 6);
     }
 
     @FXML
@@ -320,28 +191,20 @@ public class S_ManageDrawTileController {
         drawnTiles2.getChildren().clear();
         int index = 0;
         for (Tile tile : GUI.getController().getTurnedTilesDisplayer()) {
-            Button imageButton = new Button();
             String imagePath = tile.getImagePath();
             InputStream imageStream = getClass().getResourceAsStream(imagePath);
             if (imageStream == null) {
                 System.err.println("not found" + imagePath);
-                imageButton.setText("MCS");
             } else {
                 Image image = new Image(imageStream);
                 ImageView imageView = new ImageView(image);
                 imageView.rotateProperty().setValue(tile.getRotation() * 90);
                 imageView.setFitWidth(80);
                 imageView.setFitHeight(80);
-                imageButton.setGraphic(imageView);
-                imageButton.setPrefWidth(80);
-                imageButton.setPrefHeight(80);
-                imageButton.setMaxWidth(80);
-                imageButton.setMaxHeight(80);
-                imageButton.setPadding(Insets.EMPTY);
                 if (index % 2 == 0) {
-                    drawnTiles1.getChildren().add(imageButton);
+                    drawnTiles1.getChildren().add(imageView);
                 } else {
-                    drawnTiles2.getChildren().add(imageButton);
+                    drawnTiles2.getChildren().add(imageView);
                 }
             }
             index++;

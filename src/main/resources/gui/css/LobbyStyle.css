@@ -1,0 +1,194 @@
+.root{
+    -fx-background-image: url("../../images/background2.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+.label{
+    -fx-font-size: 40px;
+    -fx-font-weight: bold;
+    -fx-text-fill:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+    -fx-font-family: "Franklin Gothic Heavy", monospace;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.2, 0, 0);
+}
+
+.button {
+    -fx-background-color: transparent;
+    -fx-text-fill:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+    -fx-font-family: "Franklin Gothic Heavy", monospace;
+    -fx-font-weight: bold;
+    -fx-font-size: 40px;
+    -fx-padding: 15px 30px;
+    -fx-border-width: 10;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.2, 0, 0);
+    -fx-border-insets: 2, 1, 2;
+    -fx-border-color:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+}
+
+.button:hover {
+    -fx-effect: dropshadow(gaussian, rgb(233, 157, 17), 30, 0.4, 0, 0);
+}
+
+.button:pressed {
+    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.1, 0, 0);
+    -fx-border-color:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+}
+
+.text-field{
+    -fx-prompt-text-fill: rgba(255, 233, 121, 0.85);
+    -fx-background-color: transparent;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-border-color:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-text-fill:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+    -fx-font-family: "Franklin Gothic Heavy", monospace;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.2, 0, 0);
+}
+
+.list-view{
+    -fx-background-color: transparent;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-border-color:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-text-fill:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+    -fx-font-family: "Franklin Gothic Heavy", monospace;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.2, 0, 0);
+
+}
+
+.list-cell{
+    -fx-background-color: transparent;
+    -fx-background-radius: 20;
+    -fx-border-color:transparent;
+    -fx-font-size: 25px;
+    -fx-text-fill:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+    -fx-font-family: "Franklin Gothic Heavy", monospace;
+    -fx-alignment: baseline-left;
+    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.2, 0, 0);
+    -fx-font-weight: bold;
+}
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected{
+    -fx-background-color: transparent;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-border-color:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+    -fx-font-size: 25px;
+    -fx-text-fill:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+    -fx-font-family: "Franklin Gothic Heavy", monospace;
+    -fx-alignment: baseline-left;
+    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.4, 0, 0);
+    -fx-font-weight: bold;
+}
+.list-cell:filled:hover{
+    -fx-background-color: transparent;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-border-color:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+    -fx-font-size: 25px;
+    -fx-text-fill:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+    -fx-font-family: "Franklin Gothic Heavy", monospace;
+    -fx-alignment: baseline-left;
+    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.4, 0, 0);
+    -fx-font-weight: bold;
+}
+.scroll-bar{
+    -fx-border-radius: 20;
+    -fx-background-color: transparent;
+    -fx-border-color:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.4, 0, 0);
+}
+.scroll-bar .increment-button .increment-arrow,.scroll-bar .decrement-button .decrement-arrow{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.scroll-bar .increment-button, .scroll-bar .decrement-button {
+    -fx-border-radius: 20;
+    -fx-text-fill: linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.4, 0, 0);
+}
+.scroll-bar .thumb{
+    -fx-border-radius: 20;
+    -fx-background-color: transparent;
+    -fx-border-color:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.4, 0, 0);
+}
+
+.choice-box{
+    -fx-background-color: transparent;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-border-color:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-text-fill:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+    -fx-font-family: "Franklin Gothic Heavy", monospace;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.2, 0, 0);
+}
+.choice-box .context-menu{
+    -fx-background-color: transparent;
+
+}
+.choice-box .menu-item{
+    -fx-background-color: transparent;
+}
+.choice-box .menu-item:hover,.choice-box .menu-item:focused{
+    -fx-background-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.2, 0, 0);
+}
+.choice-box .menu-item>.label{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.choice-box .label{
+    -fx-background-color: transparent;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-border-color:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-text-fill:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+    -fx-font-family: "Franklin Gothic Heavy", monospace;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.2, 0, 0);
+}
+.progress-indicator{
+    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.2, 0, 0);
+}
+
+.separator .line{
+    -fx-border-color:
+            linear-gradient(from 0% 0% to 0% 100%, rgb(233, 179, 17) 0%, #e9b311 100%);
+    -fx-effect: dropshadow(gaussian, rgb(255, 169, 19), 30, 0.2, 0, 0);
+}

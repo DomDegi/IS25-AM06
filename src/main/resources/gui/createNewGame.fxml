@@ -9,16 +9,16 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.galaxytruckerproject.view.gui.CreateNewGameController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/LobbyStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.galaxytruckerproject.view.gui.CreateNewGameController">
    <center>
       <VBox alignment="CENTER" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Enter GameName, numPlayer and GameMode" />
+            <Label prefHeight="17.0" prefWidth="638.0" text="Create a New Game" textAlignment="CENTER" />
             <HBox alignment="CENTER" spacing="10.0">
                <children>
                   <TextField fx:id="gameName" promptText="GameName" />
-                  <TextField fx:id="playerNum" prefHeight="25.0" prefWidth="77.0" promptText="numPlayer" />
-                  <ChoiceBox fx:id="gameMode">
+                  <TextField fx:id="playerNum" promptText="numPlayer" />
+                  <ChoiceBox fx:id="gameMode" prefHeight="25.0" prefWidth="350.0">
                      <cursor>
                         <Cursor fx:constant="DEFAULT" />
                      </cursor>
@@ -29,4 +29,7 @@
          </children>
       </VBox>
    </center>
+   <top>
+      <Button mnemonicParsing="false" onAction="#back" prefHeight="37.0" prefWidth="65.0" style="-fx-font-size: 16; -fx-border-width: 2; -fx-padding: 0;" text="Back" BorderPane.alignment="TOP_LEFT" />
+   </top>
 </BorderPane>

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.view.gui;
 
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
+import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import javafx.fxml.FXML;
@@ -12,9 +13,12 @@ import javafx.scene.layout.GridPane;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class CheckShipController {
 
+    @FXML
+    public ImageView shipImage;
     @FXML
     public GridPane tilesTable;
 
@@ -25,6 +29,12 @@ public class CheckShipController {
     }
 
     public void setPlayer(LightShipBoard shipBoard) {
+        if(GUI.getController().getGameMode()== GameMode.LEVEL2){
+            shipImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/grafiche/cardboard/cardboard-1b.jpg"))));
+        } else if (GUI.getController().getGameMode()==GameMode.TRIAL) {
+            shipImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/grafiche/cardboard/cardboard-1.jpg"))));
+        }
+        tilesTable.getChildren().clear();
         ArrayList<Tile> tiles=new ArrayList<>();
         for(int i=0;i<=6;i++){
             for(int j=0;j<=4;j++) {
@@ -33,25 +43,18 @@ public class CheckShipController {
             }
         }
         for(Tile tile:tiles){
-            javafx.scene.control.Button imageButton = new Button();
             String imagePath = tile.getImagePath();
             InputStream imageStream = getClass().getResourceAsStream(imagePath);
             if (imageStream == null) {
                 System.err.println("not found" + imagePath);
-                imageButton.setText("MCS");
             } else {
                 javafx.scene.image.Image image = new Image(imageStream);
                 ImageView imageView = new ImageView(image);
                 imageView.rotateProperty().setValue(tile.getRotation()*90);
                 imageView.setFitWidth(136);
                 imageView.setFitHeight(136);
-                imageButton.setGraphic(imageView);
-                imageButton.setPrefWidth(136);
-                imageButton.setPrefHeight(136);
-                imageButton.setMaxWidth(136);
-                imageButton.setMaxHeight(136);
-                imageButton.setPadding(Insets.EMPTY);
-                tilesTable.add(imageButton,tile.getCoordinates().getY(),tile.getCoordinates().getX());
+                imageView.setDisable(true);
+                tilesTable.add(imageView,tile.getCoordinates().getY(),tile.getCoordinates().getX());
             }
         }
     }
