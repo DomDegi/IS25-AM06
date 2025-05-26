@@ -16,8 +16,6 @@ import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -28,91 +26,19 @@ import java.util.Objects;
 
 import static javafx.scene.paint.Color.rgb;
 
+/**
+ * Controller for handling the crew selection phase in the Galaxy Trucker game's GUI.
+ * <p>
+ * This controller manages the display and interaction for choosing crew members (human, purple alien, or brown alien)
+ * to assign to the available cabins on the ship. The user can select different crew types depending on the available cabins.
+ * </p>
+ */
 public class ChooseCrewController {
+
     @FXML
-    public Polygon p0;
+    public Polygon p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23;
     @FXML
-    public Polygon p1;
-    @FXML
-    public Polygon p2;
-    @FXML
-    public Polygon p3;
-    @FXML
-    public Polygon p4;
-    @FXML
-    public Polygon p5;
-    @FXML
-    public Polygon p6;
-    @FXML
-    public Polygon p7;
-    @FXML
-    public Polygon p8;
-    @FXML
-    public Polygon p9;
-    @FXML
-    public Polygon p10;
-    @FXML
-    public Polygon p11;
-    @FXML
-    public Polygon p12;
-    @FXML
-    public Polygon p13;
-    @FXML
-    public Polygon p14;
-    @FXML
-    public Polygon p15;
-    @FXML
-    public Polygon p16;
-    @FXML
-    public Polygon p17;
-    @FXML
-    public Polygon p18;
-    @FXML
-    public Polygon p19;
-    @FXML
-    public Polygon p20;
-    @FXML
-    public Polygon p21;
-    @FXML
-    public Polygon p22;
-    @FXML
-    public Polygon p23;
-    @FXML
-    public Polygon pt0;
-    @FXML
-    public Polygon pt1;
-    @FXML
-    public Polygon pt2;
-    @FXML
-    public Polygon pt3;
-    @FXML
-    public Polygon pt4;
-    @FXML
-    public Polygon pt5;
-    @FXML
-    public Polygon pt6;
-    @FXML
-    public Polygon pt7;
-    @FXML
-    public Polygon pt8;
-    @FXML
-    public Polygon pt9;
-    @FXML
-    public Polygon pt10;
-    @FXML
-    public Polygon pt11;
-    @FXML
-    public Polygon pt12;
-    @FXML
-    public Polygon pt13;
-    @FXML
-    public Polygon pt14;
-    @FXML
-    public Polygon pt15;
-    @FXML
-    public Polygon pt16;
-    @FXML
-    public Polygon pt17;
+    public Polygon pt0, pt1, pt2, pt3, pt4, pt5, pt6, pt7, pt8, pt9, pt10, pt11, pt12, pt13, pt14, pt15, pt16, pt17;
 
     @FXML
     public Group flightImage;
@@ -140,13 +66,19 @@ public class ChooseCrewController {
 
     private ArrayList<Coordinates> cabins;
 
-    private int index=0;
+    private int index = 0;
 
+    /**
+     * Initializes the UI for the crew selection phase.
+     * This method sets up the flightboard, tiles, and ship image based on the game mode,
+     * and manages the crew selection buttons (human, purple, brown).
+     */
     @FXML
     public void initialize() {
         deck.setDisable(true);
         Polygon[] polygons = new Polygon[]{p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23};
         int max = 24;
+
         if (GUI.getController().getGameMode() == GameMode.LEVEL2) {
             polygons = new Polygon[]{p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23};
             trialFlight.setVisible(false);
@@ -160,6 +92,7 @@ public class ChooseCrewController {
             trialFlight.setVisible(true);
             shipImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/grafiche/cardboard/cardboard-1.jpg"))));
         }
+
         int index = 0;
         for (Polygon p : polygons) {
             p.setStroke(rgb(255, 169, 19));
@@ -168,23 +101,25 @@ public class ChooseCrewController {
             p.setEffect(new DropShadow(BlurType.GAUSSIAN, rgb(255, 169, 19), 30, 0.4, 0, 0));
             for (LightPlayer player : GUI.getController().getFlightBoard().getInGamePlayers()) {
                 if (index * (((int) player.getPosition() / max) + 1) == player.getPosition()) {
-                    if (player.getPlayerColor().equals(PlayersColor.RED))
-                        p.setFill(Color.RED);
-                    if (player.getPlayerColor().equals(PlayersColor.YELLOW))
-                        p.setFill(Color.YELLOW);
-                    if (player.getPlayerColor().equals(PlayersColor.GREEN))
-                        p.setFill(Color.GREEN);
-                    if (player.getPlayerColor().equals(PlayersColor.BLUE))
-                        p.setFill(Color.BLUE);
+                    if (player.getPlayerColor().equals(PlayersColor.RED)) p.setFill(Color.RED);
+                    if (player.getPlayerColor().equals(PlayersColor.YELLOW)) p.setFill(Color.YELLOW);
+                    if (player.getPlayerColor().equals(PlayersColor.GREEN)) p.setFill(Color.GREEN);
+                    if (player.getPlayerColor().equals(PlayersColor.BLUE)) p.setFill(Color.BLUE);
                 }
             }
             index++;
         }
+
         refresh();
-        cabins=GUI.getController().getCabinsManager().getCabins();
+        cabins = GUI.getController().getCabinsManager().getCabins();
         focus();
     }
-    private void refresh(){
+
+    /**
+     * Refreshes the tiles table to display the current tiles.
+     * This method also handles the tiles based on the available cabins and sets up the focus for crew selection.
+     */
+    private void refresh() {
         tilesTable.getChildren().clear();
         ArrayList<Tile> tiles = new ArrayList<>();
         for (int i = 0; i <= 6; i++) {
@@ -209,10 +144,14 @@ public class ChooseCrewController {
             }
         }
     }
-    public void focus(){
+
+    /**
+     * Focuses on the current cabin and updates the available crew buttons based on the current crew type.
+     */
+    public void focus() {
         refresh();
-        index=GUI.getController().getCabinsManager().getIndex();
-        if(index<cabins.size()) {
+        index = GUI.getController().getCabinsManager().getIndex();
+        if (index < cabins.size()) {
             switch (GUI.getController().getCabinsManager().crewType()) {
                 case NO -> {
                     white.setDisable(false);
@@ -235,14 +174,15 @@ public class ChooseCrewController {
                     brown.setDisable(false);
                 }
             }
-        }else {
+        } else {
             actionLabel.setVisible(false);
             white.setVisible(false);
             purple.setVisible(false);
             brown.setVisible(false);
             return;
         }
-        Tile tile=GUI.getController().getMe().getShipBoard().getTilesTable()[cabins.get(index).getX()][cabins.get(index).getY()].get();
+
+        Tile tile = GUI.getController().getMe().getShipBoard().getTilesTable()[cabins.get(index).getX()][cabins.get(index).getY()].get();
         String imagePath = tile.getImagePath();
         InputStream imageStream = getClass().getResourceAsStream(imagePath);
         if (imageStream == null) {
@@ -257,22 +197,34 @@ public class ChooseCrewController {
             tilesTable.add(imageView, tile.getCoordinates().getY(), tile.getCoordinates().getX());
         }
     }
+
+    /**
+     * Assigns a human crew member to the selected cabin.
+     */
     @FXML
-    public void human(){
+    public void human() {
         GUI.setCabin(CrewType.HUMAN);
-        if(index<cabins.size())
+        if (index < cabins.size())
             focus();
     }
+
+    /**
+     * Assigns a purple alien crew member to the selected cabin.
+     */
     @FXML
-    public void pAlien(){
+    public void pAlien() {
         GUI.setCabin(CrewType.PURPLE);
-        if(index<cabins.size())
+        if (index < cabins.size())
             focus();
     }
+
+    /**
+     * Assigns a brown alien crew member to the selected cabin.
+     */
     @FXML
-    public void bAlien(){
+    public void bAlien() {
         GUI.setCabin(CrewType.BROWN);
-        if(index<cabins.size())
+        if (index < cabins.size())
             focus();
     }
 }

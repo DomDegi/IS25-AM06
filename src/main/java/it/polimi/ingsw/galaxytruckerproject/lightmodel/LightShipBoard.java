@@ -1021,5 +1021,5 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
             }
         }
     }
-    
+
 }
