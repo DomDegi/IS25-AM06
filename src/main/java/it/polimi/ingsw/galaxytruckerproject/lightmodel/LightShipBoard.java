@@ -12,34 +12,128 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * This class represents the light version of the shipboard in the game.
+ * It simplifies the shipboard data, allowing easier communication between client and server.
+ * The `LightShipBoard` class includes methods for initializing the ship, positioning tiles, managing cargo,
+ * and tracking crew, shields, and other game-related elements.
+ * <p>
+ * It is used in conjunction with the `ShipBoard` class to manage the game state on the client side.
+ * </p>
+ */
 public class LightShipBoard implements ShipBoardInterface , Remote {
 
-    //Variable that saves the reference to the ShipBoard present in the model along with all the game logic
+    /**
+     * Reference to the full `ShipBoard` instance that holds all game logic.
+     */
     private ShipBoard shipBoard;
 
-    protected final LightPlayer player; //protected because it need to be called in StartingCabin (Tiles)
+    /**
+     * The player associated with this shipboard.
+     */
+    protected final LightPlayer player;
+
+    /**
+     * 2D array representing the ship's tiles, where each tile can be empty or filled with a `Tile` object.
+     */
     private Optional<Tile>[][] tilesTable;
+
+    /**
+     * Represents the penalty score associated with this shipboard.
+     */
     private int penalty;
+
+    /**
+     * List of tiles that are booked but not yet placed on the shipboard.
+     */
     private ArrayList<Tile> bookedTiles;
+
+    /**
+     * The number of exposed connectors on the ship.
+     */
     private int numExposedConnectors;
+
+    /**
+     * The number of batteries present on the ship.
+     */
     private int numBatteries;
+
+    /**
+     * Power of the single cannon installed on the ship.
+     */
     private float singleCannonPower;
+
+    /**
+     * List of coordinates where the double cannons are located.
+     */
     private ArrayList<Coordinates> DoubleCannon;
+
+    /**
+     * Coordinates of the cargo hold tiles on the shipboard.
+     */
     private ArrayList<Coordinates> cargoHoldCoordinates;
 
+    /**
+     * The number of single-engine components installed on the ship.
+     */
     private int numSingleEngine;
+
+    /**
+     * List of coordinates where the double engines are located.
+     */
     private ArrayList<Coordinates> DoubleEngine;
+
+    /**
+     * List of shields installed on the ship.
+     */
     private ArrayList<Coverage> shields;
+
+    /**
+     * Coordinates of the battery tiles.
+     */
     private ArrayList<Coordinates> batteryCoordinates;
+
+    /**
+     * Coordinates of the crew cabins on the shipboard.
+     */
     private ArrayList<Coordinates> crewCoordinates;
 
+    /**
+     * The number of brown aliens on the ship.
+     */
     private int numBrownAliens;
-    private int numPurpleAliens;
-    private int numHumanCrew;
-    private int credit;
-    private boolean first=true;
-    private boolean completed=false;
 
+    /**
+     * The number of purple aliens on the ship.
+     */
+    private int numPurpleAliens;
+
+    /**
+     * The number of human crew members on the ship.
+     */
+    private int numHumanCrew;
+
+    /**
+     * The total credit score of the player.
+     */
+    private int credit;
+
+    /**
+     * Flag to indicate if this is the first time the shipboard is being initialized.
+     */
+    private boolean first = true;
+
+    /**
+     * Flag to indicate if the shipboard has been completed.
+     */
+    private boolean completed = false;
+
+    /**
+     * Constructor that creates a light version of the shipboard from a full `ShipBoard`.
+     * Initializes the player's shipboard and copies relevant data from the full version.
+     *
+     * @param shipBoard the full `ShipBoard` instance to extract data from
+     */
     public LightShipBoard(ShipBoard shipBoard) {
         this.shipBoard = shipBoard;
         this.bookedTiles = new ArrayList<>();
@@ -50,6 +144,12 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         convertToLightShipBoard(shipBoard);
     }
 
+    /**
+     * Constructor for creating an empty shipboard for a player.
+     * Initializes all properties of the shipboard to default values.
+     *
+     * @param player the `LightPlayer` to associate with this shipboard
+     */
     public LightShipBoard(LightPlayer player) {
         this.player = player;
         this.player.setPlayerShip(this);
@@ -71,8 +171,9 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         this.credit = 0;
     }
 
-    //the Client will intialize which level he wants to play. Then he's going to comunicate it to ShipBoard in the
-    //Server, which is also going to call the same method
+    /**
+     * Initializes the shipboard for the "Test Flight" mode by setting up tiles and cabins.
+     */
     public void initializeTestFlight() {
         this.tilesTable = new Optional[5][7];
         // Inizializza le caselle riempibili a null
@@ -113,6 +214,10 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
 
         this.tilesTable = tilesTable;
     }
+
+    /**
+     * Initializes the shipboard for the "Level 2" mode by setting up tiles and cabins.
+     */
     public void initializeLevel2() {
         this.tilesTable = new Optional[5][7];
         //Set empty the normal Tile
@@ -149,60 +254,118 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         positionTile(Optional.of(tile), new Coordinates(2, 3));
     }
 
+    /**
+     * Retrieves the player associated with this shipboard.
+     *
+     * @return the player associated with this shipboard
+     */
     public LightPlayer getPlayer() {
         return player;
     }
 
+    /**
+     * Adds power to the ship's cannon.
+     *
+     * @param num the amount of power to add
+     */
     public void addBreakSingleCannonPower(float num) {
         this.singleCannonPower += num;
     }
 
+    /**
+     * Adjusts the number of single-engine components on the ship.
+     *
+     * @param ab indicates whether to increase or decrease the number of single-engine components
+     */
     public void addBreakSingleEngine(boolean ab) {
         if (ab) numSingleEngine++;
         else numSingleEngine--;
     }
-
+    /**
+     * Adjusts the number of double-engine components on the ship.
+     *
+     * @param ab indicates whether to increase or decrease the number of double-engine components
+     * @param coordinates the coordinates of the double-engine tile
+     */
     public void addBreakDoubleEngine(boolean ab, Coordinates coordinates) {
         if (ab) {
             DoubleEngine.add(coordinates);
         } else DoubleEngine.remove(coordinates);
     }
-
+    /**
+     * Adjusts the number of brown aliens on the ship.
+     *
+     * @param ab indicates whether to increase or decrease the number of brown aliens
+     */
     public void addBreakDoubleCannon(boolean ab, Coordinates coordinates) {
         if (ab) {
             DoubleCannon.add(coordinates);
         } else DoubleCannon.remove(coordinates);
     }
-
+    /**
+     * Adjusts the number of purple aliens on the ship.
+     *
+     * @param ab indicates whether to increase or decrease the number of purple aliens
+     */
     public void addBreakBrownAliens(boolean ab) {
         if (ab) numBrownAliens++;
         else numBrownAliens--;
     }
 
+    /**
+     * Adjusts the number of purple aliens on the ship.
+     *
+     * @param ab indicates whether to increase or decrease the number of purple aliens
+     */
     public void addBreakPurpleAliens(boolean ab) {
         if (ab) numPurpleAliens++;
         else numPurpleAliens--;
     }
-
+    /**
+     * Adjusts the number of human crew members on the ship.
+     *
+     * @param num the number of human crew members to add or remove
+     */
     public void addBreakHumanCrew(int num) {
         numHumanCrew += num;
         //Decide which crew to eliminate
     }
-
+    /**
+     * Adjusts the number of batteries on the ship.
+     *
+     * @param num the number of batteries to add or remove
+     */
     public void addBreakBatteries(int num) {
         numBatteries += num;
         //if (num<0) -> Decide which Battery to use
     }
-
+    /**
+     * Adds a penalty to the shipboard's penalty score.
+     */
     public void addPenalty() {
         penalty++;
     }
+
+    /**
+     * Retrieves the tile at the specified coordinates.
+     *
+     * @param coordinates the coordinates of the tile to retrieve
+     * @return the `Tile` at the given coordinates, or `null` if no tile is present
+     */
     public Tile getTile(Coordinates coordinates){
         if(tilesTable[coordinates.getX()][coordinates.getY()].isPresent())
             return tilesTable[coordinates.getX()][coordinates.getY()].get();
         else
             return null;
     }
+
+    /**
+     * Retrieves the tile at the specified coordinates.
+     *
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @return the `Tile` at the given coordinates, or `null` if no tile is present
+     */
     public Tile getTile(int x, int y){
         if(tilesTable[x][y].isPresent())
             return tilesTable[x][y].get();
@@ -210,6 +373,13 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
             return null;
     }
 
+    /**
+     * Positions a tile at the specified coordinates on the shipboard.
+     *
+     * @param tile the tile to position
+     * @param coordinates the coordinates where the tile should be positioned
+     * @return `true` if the tile was successfully positioned, `false` otherwise
+     */
     public boolean positionTile(Optional<Tile> tile, Coordinates coordinates) {
         if (tile.isPresent() && tilesTable[coordinates.getX()][coordinates.getY()].isEmpty()) {
             if (first){
@@ -229,7 +399,13 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         return false;
     }
 
-
+    /**
+     * Positions a tile at the specified coordinates without checking adjacency.
+     *
+     * @param tile the tile to position
+     * @param coordinates the coordinates where the tile should be positioned
+     * @return `true` if the tile was successfully positioned, `false` otherwise
+     */
     public boolean positionTileWithoutAdjacencyCheck(Optional<Tile> tile, Coordinates coordinates) {
         if (tile.isPresent() && tilesTable[coordinates.getX()][coordinates.getY()].isEmpty()) {
             tilesTable[coordinates.getX()][coordinates.getY()] = tile;
@@ -240,39 +416,65 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         }
         return false;
     }
-
+    /**
+     * Positions a null object at those coordinates
+     *
+     * @param tile null
+     * @param coordinates the coordinates of the tile to remove
+     */
     public void positionNullTile(Optional<Tile> tile, Coordinates coordinates) {
         if (tilesTable[coordinates.getX()][coordinates.getY()].isEmpty() && tile.isEmpty()) {
             tilesTable[coordinates.getX()][coordinates.getY()] = Optional.empty();
         }
     }
 
-
+    /**
+     * Retrieves the list of cargo hold coordinates.
+     *
+     * @return the list of cargo hold coordinates
+     */
     public void setCargoHoldCoordinates(ArrayList<Coordinates> cargoHoldCoordinates) {
         this.cargoHoldCoordinates = cargoHoldCoordinates;
     }
 
+    /**
+     * Retrieves the list of shields installed on the ship.
+     *
+     * @return the list of shields
+     */
     public ArrayList<Coverage> getCoverageShields(){
         return shields;
     }
-    //New ChooseCrew METHOD
+
+    /**
+     * Removes the crew member at the given coordinates on the shipboard.
+     *
+     * @param coordinates the coordinates of the tile from which the crew is removed
+     * @return true if the crew was successfully removed, false otherwise
+     */
     public boolean chooseCrewToRemove(Coordinates coordinates) {
         return tilesTable[coordinates.getX()][coordinates.getY()].get().removeCrew();
     }
 
-    //BATTERY METHODS
+    /**
+     * Consumes a battery from the specified coordinates on the shipboard.
+     *
+     * @param coordinates the coordinates of the tile where the battery is consumed
+     * @return true if the battery was successfully consumed
+     */
     public boolean chooseBatteryUse(Coordinates coordinates){
         tilesTable[coordinates.getX()][coordinates.getY()].get().consumeBattery();
         return true;
     }
 
-    //forse non serve il batteryCoordinates perché tanto se non è una batteryTile stampo il fatto che non lo è
 
-
-
-    //SHIELD METHODS
-    //This method takes as input the coordinates of the Shield to be used and the coordinates of the BatteryComponents
-    // from which it wants to consume the battery to activate the Shield.
+    /**
+     * Activates a shield by consuming a battery located at the given coordinates.
+     *
+     * @param shieldCoordinates the coordinates of the shield tile
+     * @param batteryCoordinates the coordinates of the battery to use for activating the shield
+     * @return the coverage area of the shield
+     */
     public Coverage chooseShields(Coordinates shieldCoordinates, Coordinates batteryCoordinates){
         if(!(tilesTable[shieldCoordinates.getX()][shieldCoordinates.getY()].get().getCoveredArea() == Coverage.NONE)){
             chooseBatteryUse(batteryCoordinates);
@@ -283,9 +485,13 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         return tilesTable[shieldCoordinates.getX()][shieldCoordinates.getY()].get().getCoveredArea();
     }
 
-    //GOODS METHODS
-
-    //Returns true if the adding of the Good is successfully, false otherwise ()
+    /**
+     * Adds a good to the cargo hold at the specified coordinates, if the tile is a valid cargo holder.
+     *
+     * @param goods the goods to be added
+     * @param coordinates the coordinates of the cargo hold where the goods are placed
+     * @return 0 if the goods were successfully added, -1 if the tile is not a valid cargo holder
+     */
     public int gainGoods(Goods goods, Coordinates coordinates) {
         if(cargoHoldCoordinates.contains(coordinates)){
             if(tilesTable[coordinates.getX()][coordinates.getY()].get().addGood(goods)==1)
@@ -303,8 +509,12 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         return 1;
     }
 
-    //IT RETURNS THE COORDINATES OF EVERY CARGO_HOLD THAT CONTAINS A TYPE OF GOOD (RED, YELLOW, GREEN, BLU). IF
-    //A CARGO_HOLD CONTAINS MORE THAN ONE GOOD WITH THE SAME COLOR IS GOING TO BE ADD TWICE.
+    /**
+     * Returns the coordinates of all cargo hold tiles that contain a specific type of good.
+     *
+     * @param good the good type to search for (red, yellow, green, or blue)
+     * @return a list of coordinates where the cargo hold contains the specified good
+     */
     public ArrayList<Coordinates> cargoHoldContainsGood(Goods good){
         ArrayList<Coordinates> cargoHoldContainsGood = new ArrayList<>();
         for(Coordinates coordinates : cargoHoldCoordinates){
@@ -317,82 +527,40 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         return cargoHoldContainsGood;
     }
 
-    public void chooseCargoStockToEmpty(Coordinates coordinates){
-
-        Goods colorGoodToCheck = new Goods(GoodsColor.RED);
-        switch(colorGoodToCheck.getColor()){
-            case RED:
-                if(!cargoHoldContainsGood(colorGoodToCheck).isEmpty()){
-                    if(cargoHoldContainsGood(colorGoodToCheck).contains(coordinates)){
-                        tilesTable[coordinates.getX()][coordinates.getY()].get().removeGood(colorGoodToCheck);
-                    }
-                    else {
-                        System.out.println("YOU HAVE TO REMOVE A RED GOOD");
-                        chooseCargoStockToEmpty(coordinates); //THE METHOD GETS INVOKED UNTIL THE COORDINATES CONTAINS
-                        //A RED GOOD (MIMMO)
-                    }
-                    break;
-                }
-                colorGoodToCheck = new Goods(GoodsColor.YELLOW);
-
-            case YELLOW:
-                if(!cargoHoldContainsGood(colorGoodToCheck).isEmpty()){
-                    if(cargoHoldContainsGood(colorGoodToCheck).contains(coordinates)){
-                        tilesTable[coordinates.getX()][coordinates.getY()].get().removeGood(colorGoodToCheck);
-                    }
-                    else {
-                        System.out.println("YOU HAVE TO REMOVE A YELLOW GOOD");
-                        chooseCargoStockToEmpty(coordinates);//THE METHOD GETS INVOKED UNTIL THE COORDINATES CONTAINS
-                        //A YELLOW GOOD
-                    }
-                    break;
-                }
-                colorGoodToCheck = new Goods(GoodsColor.GREEN);
-
-            case GREEN:
-                if(!cargoHoldContainsGood(colorGoodToCheck).isEmpty()){
-                    if(cargoHoldContainsGood(colorGoodToCheck).contains(coordinates)){
-                        tilesTable[coordinates.getX()][coordinates.getY()].get().removeGood(colorGoodToCheck);
-                    }
-                    else{
-                        System.out.println("YOU HAVE TO REMOVE A GREEN GOOD");
-                        chooseCargoStockToEmpty(coordinates);//THE METHOD GETS INVOKED UNTIL THE COORDINATES CONTAINS
-                        //A GREEN GOOD
-                    }
-                    break;
-                }
-            case BLUE:
-                if(!cargoHoldContainsGood(colorGoodToCheck).isEmpty()){
-                    if(cargoHoldContainsGood(colorGoodToCheck).contains(coordinates)){
-                        tilesTable[coordinates.getX()][coordinates.getY()].get().removeGood(colorGoodToCheck);
-                    }
-                    else{
-                        System.out.println("YOU HAVE TO REMOVE A BLUE GOOD");
-                        chooseCargoStockToEmpty(coordinates);//THE METHOD GETS INVOKED UNTIL THE COORDINATES CONTAINS
-                        //A BLUE GOOD
-                    }
-                    break;
-                }
-                //THE CASE OF CHECKING IF THERE IS ANY GOOD, CAN BE DONE BY CALLING THIS METHOD BY ADDING A DEFAULT CASE,
-                // BUT I DON'T THINK IT MAKE SENSE SINCE THIS METHOD NEED TO RECEIVE A COORDINATES.
-                //THE CHECK IS GOING TO BE DONE BY THE GAME (WHERE IT GETS CHECKED IF THE NUMBER OF GOODS THAT NEED TO BE
-                //REMOVED ARE EQUAL TO THE ONE THE PLAYER HAS. IN THAT CASE THEY ARE JUST GOING TO DELETE ALL THE GOODS.
-        }
-
-    }
-
+    /**
+     * Removes a specific good from the given coordinates in the cargo hold.
+     *
+     * @param good the good to remove
+     * @param coordinates the coordinates of the cargo hold where the good should be removed
+     */
     public void removeGood(Goods good, Coordinates coordinates){
         tilesTable[coordinates.getX()][coordinates.getY()].get().removeGood(good);
     }
 
+    /**
+     * Returns the total number of crew members on the ship (human and aliens).
+     *
+     * @return the total number of crew members
+     */
     public int getNumTotalCrew(){
         return this.numHumanCrew+this.numBrownAliens+this.numPurpleAliens;
     }
 
+    /**
+     * Returns the number of batteries available on the ship.
+     *
+     * @return the number of batteries
+     */
     public int getNumBatteries(){
         return numBatteries;
     }
 
+    /**
+     * Adds a tile to the booked tiles list if there's space (maximum of 2 booked tiles).
+     *
+     * @param tile the tile to be added to the booked list
+     * @return true if the tile was added, false if the maximum limit of booked tiles is reached
+     */
     public boolean addBookedTile(Tile tile) {
         if (bookedTiles.size() == 2) {
             return false;
@@ -400,11 +568,20 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         bookedTiles.add(tile);
         return true;
     }
-
+    /**
+     * Returns the list of booked tiles.
+     *
+     * @return the list of booked tiles
+     */
     public ArrayList<Tile> getBookedTiles() {
         return bookedTiles;
     }
-
+    /**
+     * Removes a tile from the booked tiles list.
+     *
+     * @param num the index of the tile to remove
+     * @return the removed tile if successful, null if the index is invalid
+     */
     public Tile removeBookedTile(int num) {
         if (num > 1 || num < 0) {
             System.out.println("the tile do not exist");
@@ -416,25 +593,11 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
     }
 
 
-    /*
-    public void swapGoods(Coordinates coordinatesFrom,Coordinates coordinatesTo, Goods goodToSwap ){
-        //Check if the coordinates are of a CargoHolder
-        if(cargoHoldCoordinates.contains(coordinatesFrom) && cargoHoldCoordinates.contains(coordinatesTo)){
-            if(cargoHoldCoordinates.contains(goodToSwap)){
-               if(gainGoods(goodToSwap, coordinatesTo))
-                    removeGood(goodToSwap, coordinatesFrom);
-            }
-            else{
-                System.out.println("This Good is not present in the CargoHold you selected");
-            }
-            tilesTable[coordinatesFrom.getX()][coordinatesFrom.getY()].get().getCargo().contains(goodToSwap);
-        }
-        else{
-            System.out.println("ONE OR BOTH THE TWO TILES ARE NOT A CARGOHOLDER");
-        }
-    }
-    */
-
+    /**
+     * Converts the goods in the cargo hold to credits. Each type of good has a different credit value.
+     *
+     * @return the total credit value of the goods in the cargo hold
+     */
     public int convertGoodsToCredit(){
         int credit = 0;
         Goods good = new Goods(GoodsColor.RED);
@@ -448,7 +611,11 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         return credit;
     }
 
-    //if these methods finds no goods in cargo holds, returns false
+    /**
+     * Checks whether the cargo hold is empty (i.e., no goods are present in any cargo hold).
+     *
+     * @return true if all cargo holds are empty, false if any cargo hold contains goods
+     */
     public boolean isCargoEmpty() {
         for (Coordinates coordinates : cargoHoldCoordinates) {
             if (!tilesTable[coordinates.getX()][coordinates.getY()].get().getCargo().isEmpty())
@@ -459,7 +626,11 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
 
 
 
-    //give back all the player Goods
+    /**
+     * Returns all goods currently stored in the cargo hold.
+     *
+     * @return a list of all goods in the cargo hold
+     */
     public ArrayList<Goods> getAllGoods(){
         ArrayList<Goods> goods = new ArrayList<>();
         int i;
@@ -482,6 +653,14 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         }
         return goods;
     }
+
+
+    /**
+     * Returns the goods stored in a specific cargo hold at the given coordinates.
+     *
+     * @param coordinatesToFind the coordinates of the cargo hold to search
+     * @return a list of goods stored at the specified coordinates
+     */
     public ArrayList<Goods> getSingleCargoGoods(Coordinates coordinatesToFind){
         ArrayList<Goods> goods = new ArrayList<>();
         for(Coordinates coordinates :cargoHoldContainsGood(new Goods(GoodsColor.RED))) {
@@ -506,16 +685,32 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         }
         return goods;
     }
+
+    /**
+     * Adds a battery to the cargo hold at the specified coordinates.
+     *
+     * @param coordinates the coordinates where the battery should be added
+     */
     public void addBattery(Coordinates coordinates){
         getTile(coordinates).addBattery();
     }
 
+    /**
+     * Removes crew members from the specified coordinates in the case of an epidemic.
+     *
+     * @param coordinatesEpidemic the list of coordinates where the crew should be removed
+     */
     public void removeCrew(ArrayList<Coordinates> coordinatesEpidemic){
         for (Coordinates coordinates : coordinatesEpidemic) {
             getTile(coordinates).removeCrew();
         }
     }
 
+    /**
+     * Destroys the tiles at the specified coordinates.
+     *
+     * @param coordinatesDestroyed the list of coordinates to destroy
+     */
     public void destroy(ArrayList<Coordinates> coordinatesDestroyed){
         for (Coordinates coordinates : coordinatesDestroyed) {
             if(getTile(coordinates)!=null) {
@@ -525,6 +720,11 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         }
     }
 
+    /**
+     * Returns a string representation of the shipboard, including the tiles and current credits.
+     *
+     * @return the string representation of the shipboard
+     */
     public String toString(){
         StringBuilder s = new StringBuilder("Shipboard: ");
         for (int i = 0; i < 5; i++) {
@@ -539,10 +739,21 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         s.append("\ncredit:"+credit + "\n");
         return s.toString();
     }
+
+    /**
+     * Checks whether early landing is possible based on the number of human crew members on the ship.
+     *
+     * @return true if early landing is possible (i.e., no human crew left), false otherwise
+     */
     public boolean checkEarlyLanding() {
         return numHumanCrew == 0;
     }
 
+    /**
+     * Sets the ship to a new configuration by removing tiles that are not part of the given set.
+     *
+     * @param set the set of coordinates representing the new configuration of the ship
+     */
     public void SetNewShip(Set<Coordinates> set) {
         Coordinates c = new Coordinates(0, 0);
         for (int i = 0; i < 5; i++) {
@@ -558,12 +769,15 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         }
     }
 
-    //RETURN THE SET OF TILES LINKED WITH THE STARTING ONE
-    //i assume that the correctness of the links has already been verified
-    //in the case of construction errors this method will be played for each error
 
 
-
+    /**
+     * Simulates an epidemic affecting the crew members aboard the ship. The epidemic spreads based on adjacency
+     * between crew cabins that are connected by non-smooth links (e.g., walls).
+     * If two crew cabins are adjacent without a smooth connection, the crew in the second cabin is infected.
+     *
+     * @return a list of the modified tiles (i.e., the infected crew cabins) after the epidemic spreads
+     */
     public ArrayList<Tile> epidemic(){
         HashSet<Coordinates> InfectedCabin = new HashSet<>();
         for(Coordinates coordinates : crewCoordinates){
@@ -588,23 +802,47 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         return modifiedCabin;
     }
 
-
+    /**
+     * Retrieves the list of coordinates where batteries are located on the ship.
+     *
+     * @return a list of coordinates where batteries are placed
+     */
     public ArrayList<Coordinates> getBatteryCoordinates() {
         return batteryCoordinates;
     }
 
+    /**
+     * Retrieves the list of coordinates where the cargo hold tiles are located on the ship.
+     *
+     * @return a list of coordinates where cargo hold tiles are positioned
+     */
     public ArrayList<Coordinates> getCargoHoldCoordinates() {
         return cargoHoldCoordinates;
     }
-
+    /**
+     * Retrieves the list of coordinates where the crew cabins are located on the ship.
+     *
+     * @return a list of coordinates where crew cabins are placed
+     */
     public ArrayList<Coordinates> getCabinsCoordinates() {
         return crewCoordinates;
     }
-
+    /**
+     * Retrieves the current ship's tiles table, representing the grid of tiles on the ship.
+     *
+     * @return a 2D array of optional tiles, where each entry represents a tile on the ship's grid
+     */
     public Optional<Tile>[][] getTilesTable() {
         return tilesTable;
     }
 
+    /**
+     * Checks if the ship's tiles are connected properly by verifying the links between them.
+     *
+     * @param start the starting coordinates of the check
+     * @param set the set of coordinates to track during the connectivity check
+     * @return the set of connected coordinates
+     */
     public Set<Coordinates> connectedSet(Coordinates start, Set<Coordinates> set) {
         int x = start.getX();
         int y = start.getY();
@@ -628,6 +866,11 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         return set;
     }
 
+    /**
+     * Verifies that the shipboard is correctly constructed, ensuring all tiles are connected.
+     *
+     * @return true if the ship is correctly constructed, false otherwise
+     */
     public boolean verifyCorrectness() {
         Set<Coordinates> set = new HashSet<Coordinates>();
         set=this.connectedSet( new Coordinates(2,3), set);
@@ -649,6 +892,11 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         return true;
     }
 
+    /**
+     * Resets the ship's status and updates the status of each tile on the ship.
+     * This method is responsible for ensuring that the ship's statistics are reset before updating the status of each tile.
+     * It checks every tile on the ship's grid, and if the tile is fillable, it updates the tile's status.
+     */
     public void setGetStat(){
         resetStat();
         for (int i = 0; i < 5; i++)
@@ -661,6 +909,9 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         System.out.println("sono nel client" + numHumanCrew);
     }
 
+    /**
+     * Resets the statistics of the ship, clearing all values related to tiles, crew, and components.
+     */
     public void resetStat() {
         numBatteries=0;
         singleCannonPower=0;
@@ -673,6 +924,11 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         crewCoordinates = new ArrayList<>();
     }
 
+    /**
+     * Updates the status of each cabin on the ship.
+     * This method specifically updates the status of the crew cabins.
+     * It iterates through all the cabin coordinates and updates the status of the tiles at those positions.
+     */
     public void setCabinStat(){
         for(Coordinates coordinates: getCabinsCoordinates())
         {
@@ -680,6 +936,13 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         }
     }
 
+    /**
+     * Converts a ShipBoard object into a LightShipBoard object.
+     * This method initializes the tiles table of the LightShipBoard based on the provided ShipBoard,
+     * and sets the shipboard reference for each tile in the tiles table.
+     *
+     * @param shipBoard the ShipBoard object to convert into a LightShipBoard
+     */
     public  void convertToLightShipBoard(ShipBoard shipBoard) {
         this.tilesTable =  shipBoard.getTilesTable();
         for (int i = 0; i < 5; i++) {
@@ -690,14 +953,33 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         }
     }
 
+    /**
+     * Sets the completion status of the ship's construction.
+     * This method marks the ship as completed based on the provided argument.
+     *
+     * @param completed the completion status to set
+     */
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
 
+    /**
+     * Sets the penalty for the shipboard based on the given value.
+     * This method updates the penalty count for the ship.
+     *
+     * @param penalty the penalty value to set
+     */
     public void setPenalty(int penalty) {
         this.penalty = penalty;
     }
 
+    /**
+     * Loads the tiles into the ship's grid from the provided list of tiles.
+     * This method ensures the tiles are correctly placed on the ship, checking that the number of tiles is valid,
+     * and handling the deserialization of the ship's state.
+     *
+     * @param tiles the list of tiles to load into the ship
+     */
     public void loadFromTiles(ArrayList<Tile> tiles) {
         if (tiles.size() < 37) {
             System.out.println("Error deserializing ship");
@@ -727,6 +1009,10 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         this.verifyCorrectness();
     }
 
+    /**
+     * Initializes the ship's tile grid with empty tiles.
+     * This method prepares the tiles table for use by setting all entries in the grid to empty optionals.
+     */
     public void simpleInitialize() {
         this.tilesTable = new Optional[5][7];
         for (int i = 0; i < tilesTable.length; i++) {
@@ -735,75 +1021,5 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
             }
         }
     }
-
-    /*
-    public void setTilesTable(Coordinates coordinates) {
-        tilesTable = shipBoard.getTilesTable();
-    }
-
-    public void setNumSingleEngine() {
-        this.numSingleEngine = shipBoard.getNumSingleEngine();
-
-    public void setDoubleEngine() {
-        this.DoubleEngine = shipBoard.getDoubleEngine();
-    }
-
-    public void setNumBrownAliens() {
-        this.numBrownAliens = shipBoard.getNumBrownAliens();
-    }
-
-    public void setNumPurpleAliens() {
-        this.numPurpleAliens = shipBoard.getNumPurpleAliens();
-    }
-
-    public void setNumHumanCrew() {
-        this.numHumanCrew = shipBoard.getNumHumanCrew();
-    }
-
-    public void setNumBattery() {
-        this.numBatteries = shipBoard.getNumBatteries();
-    }
-
-    public void setSingleCannonPower() {
-        this.singleCannonPower = shipBoard.getSingleCannonPower();
-    }
-
-    public void setDoubleCannon() {
-        this.DoubleCannon = shipBoard.getDoubleCannon();
-    }
-
-    public void setNumExposedConnectors(){
-        this.numExposedConnectors = shipBoard.getNumExposedConnectors();
-    }
-
-    public void setShields() {
-        this.shields = shipBoard.getCoverageShields();
-    }
-
-    public void setBatteryCoordinates() {
-        this.batteryCoordinates = shipBoard.getBatteryCoordinates();
-    }
-
-    public void setCrewCoordinates() {
-        this.crewCoordinates = shipBoard.getCabinsCoordinates();
-    }
-
-    public void setCargoHoldCoordinates() {
-        this.cargoHoldCoordinates = shipBoard.getCargoHoldCoordinates();
-    }
-
-    public void setBookedTiles() {
-        this.bookedTiles = shipBoard.getBookedTiles();
-    }
-    */
-
-
-
-
-
-
-
-
-
-
+    
 }
