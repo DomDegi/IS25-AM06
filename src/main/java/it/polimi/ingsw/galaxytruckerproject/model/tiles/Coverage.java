@@ -1,8 +1,41 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
+/**
+ * Enum representing the coverage direction of a shield on a tile.
+ * It defines which corners of the tile are protected by a shield.
+ */
 public enum Coverage {
-    NORTH_EAST, SOUTH_EAST, SOUTH_WEST, NORTH_WEST, NONE;
 
+    /**
+     * Shield covers the north-east corner.
+     */
+    NORTH_EAST,
+
+    /**
+     * Shield covers the south-east corner.
+     */
+    SOUTH_EAST,
+
+    /**
+     * Shield covers the south-west corner.
+     */
+    SOUTH_WEST,
+
+    /**
+     * Shield covers the north-west corner.
+     */
+    NORTH_WEST,
+
+    /**
+     * Tile is not covered by any shield.
+     */
+    NONE;
+
+    /**
+     * Returns the full string representation of the coverage.
+     *
+     * @return the string name of the coverage (e.g., "NORTH_EAST")
+     */
     @Override
     public String toString() {
         return switch (this) {
@@ -14,6 +47,11 @@ public enum Coverage {
         };
     }
 
+    /**
+     * Returns a compact string representation for serialization.
+     *
+     * @return the short code of the coverage (e.g., "NE", "SW", "N")
+     */
     public String toStringData() {
         return switch (this) {
             case NORTH_EAST -> "NE";
@@ -24,6 +62,13 @@ public enum Coverage {
         };
     }
 
+    /**
+     * Parses a compact string representation and returns the corresponding Coverage enum.
+     *
+     * @param value the compact string value (e.g., "NE", "SE", "N")
+     * @return the corresponding {@code Coverage} enum value
+     * @throws IllegalArgumentException if the value is not recognized
+     */
     public static Coverage fromStringData(String value) {
         return switch (value.toUpperCase()) {
             case "NE" -> NORTH_EAST;
@@ -35,4 +80,3 @@ public enum Coverage {
         };
     }
 }
-

@@ -8,8 +8,19 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
+
+/**
+ * A factory class for creating and managing {@link Tile} objects from JSON resources or string data.
+ * Provides methods for loading, deserializing, and organizing tile instances used in the game.
+ */
 public class TileFactory {
 
+    /**
+     * Loads a list of tiles from a JSON file located in the resources.
+     *
+     * @param fileName the name of the JSON file.
+     * @return a list of deserialized {@link Tile} objects.
+     */
     public static ArrayList<Tile> loadTilesFromJson(String fileName) {
         ObjectMapper objectMapper = new ObjectMapper();
         ArrayList<Tile> tiles = new ArrayList<>();
@@ -40,7 +51,13 @@ public class TileFactory {
 
         return tiles;
     }
-
+    /**
+     * Creates a specific {@link Tile} instance based on the provided {@link JsonTile} and assigns a unique key.
+     *
+     * @param jsonTile the data structure representing a tile in JSON format.
+     * @param key the unique key to assign to the tile.
+     * @return the created {@link Tile}, or null if the type is unknown.
+     */
     private static Tile createTileFromJson(JsonTile jsonTile, int key) {
         return switch (jsonTile.getType()) {
             case "DoubleCannon" ->
@@ -72,11 +89,23 @@ public class TileFactory {
         };
     }
 
+    /**
+     * Shuffles the given list of tiles and returns them as a thread-safe stack.
+     *
+     * @param tiles the list of tiles to shuffle.
+     * @return a {@link ConcurrentLinkedDeque} representing the stack of tiles.
+     */
     public ConcurrentLinkedDeque<Tile> getStack(ArrayList<Tile> tiles) {
         Collections.shuffle(tiles);
         return new ConcurrentLinkedDeque<>(tiles);
     }
 
+    /**
+     * Reconstructs a stack of tiles based on a list of tile IDs.
+     *
+     * @param ids the list of tile IDs.
+     * @return a stack ({@link ConcurrentLinkedDeque}) containing the corresponding tiles.
+     */
     public ConcurrentLinkedDeque<Tile> stackFromIDs(ArrayList<Integer> ids) {
         Map<Integer,Tile> tileMap = this.tileMap();
         ConcurrentLinkedDeque<Tile> stack = new ConcurrentLinkedDeque<>();
@@ -86,6 +115,12 @@ public class TileFactory {
         return stack;
     }
 
+    /**
+     * Creates a concurrent map of tile IDs to tile instances from a given list of IDs.
+     *
+     * @param ids the list of tile IDs.
+     * @return a {@link ConcurrentHashMap} mapping IDs to {@link Tile} objects.
+     */
     public ConcurrentHashMap<Integer, Tile> mapFromIDs(ArrayList<Integer> ids) {
         Map<Integer,Tile> tileMap = this.tileMap();
         ConcurrentHashMap<Integer,Tile> newMap = new ConcurrentHashMap<>(ids.size());
@@ -95,7 +130,11 @@ public class TileFactory {
         return newMap;
     }
 
-
+    /**
+     * Loads all tiles from the default JSON file and creates a map from tile key to tile instance.
+     *
+     * @return a {@link Map} mapping tile keys to {@link Tile} instances.
+     */
     public Map<Integer,Tile> tileMap() {
         ArrayList<Tile> tileArray = loadTilesFromJson("Tiles.json");
 
@@ -105,7 +144,13 @@ public class TileFactory {
         }
         return tileMap;
     }
-
+    /**
+     * Loads a tile object from a single-line string representation.
+     * The first token in the line determines the type of tile.
+     *
+     * @param line the string representing a tile.
+     * @return the corresponding {@link Tile} instance.
+     */
     public static Tile load(String line) {
         String[] lineSplit = line.split(" ");
         switch(lineSplit[0]) {
@@ -176,7 +221,10 @@ public class TileFactory {
         return null;
     }
 
-    // Classe JSON per il mapping dei dati
+    /**
+     * Inner static class used for JSON deserialization of tiles.
+     * Contains fields that match the structure of tile entries in the JSON file.
+     */
     public static class JsonTile {
         private String type;
         private Link north;

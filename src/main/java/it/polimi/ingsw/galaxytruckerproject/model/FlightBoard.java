@@ -362,11 +362,6 @@ public class FlightBoard implements Serializable {
         freePodiumPosition = inGamePlayers.size();
     }
 
-    /**
-     * Automatically places a player in the next available position on the in-flight board.
-     * @param player the player to place
-     * @param playerCount total number of players in the game
-     */
     public void autoSetInFreeLastPosition(Player player, int playerCount) {
         if (gameMode == GameMode.LEVEL2) {
             for (int i = playerCount - 1; i >= 0; i--) {

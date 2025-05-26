@@ -214,7 +214,7 @@ public class CombatZone extends Card {
         minPlayerView = viewsMap.get(minPlayer.getPlayerName());
         notifyVictim(minPlayer.getPlayerName());
         currentPenalty.initializePenalty(game,minPlayerView, minPlayer);
-        //resetForNextPenalty();
+        resetForNextPenalty();
     }
 
     /**
