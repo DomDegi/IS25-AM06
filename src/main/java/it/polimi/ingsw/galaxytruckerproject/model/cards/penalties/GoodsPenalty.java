@@ -15,20 +15,42 @@ import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.util.ArrayList;
 
+/**
+ * Represents a penalty where the player must discard a number of goods, potentially replacing
+ * some of them with batteries if not enough goods are available.
+ */
 public class GoodsPenalty extends Penalty {
     private final int numberOfLostGoods;
     private int numberOfGoods = 0;
     private int numberOfBatteries = 0;
 
+    /**
+     * Constructs a GoodsPenalty with the specified number of goods to be lost.
+     *
+     * @param numberOfLostGoods the total number of goods to be removed
+     */
     @JsonCreator
     public GoodsPenalty(@JsonProperty("numberOfLostGoods") int numberOfLostGoods) {
         this.numberOfLostGoods = numberOfLostGoods;
     }
 
+    /**
+     * Returns the number of goods the player is required to lose.
+     *
+     * @return number of lost goods
+     */
     public int getNumberOfLostGoods() {
         return numberOfLostGoods;
     }
 
+    /**
+     * Removes the specified goods and optionally batteries from the player's ship.
+     *
+     * @param player     the affected player
+     * @param playersView the view to notify
+     * @param toRemove   list of coordinates to remove
+     * @return list of updated tiles after removal
+     */
     @Override
     public ArrayList<Tile> removeGoods(Player player, VirtualView playersView, ArrayList<Coordinates> toRemove){
         ArrayList<Tile> updatedTiles;
@@ -42,7 +64,7 @@ public class GoodsPenalty extends Penalty {
             updatedTiles = player.removeGoods(toRemove);
         }
         else {
-            ArrayList<Coordinates> goodsToRemove = new ArrayList<>(toRemove.subList(0, Math.min( numberOfLostGoods, numberOfGoods )));
+            ArrayList<Coordinates> goodsToRemove = new ArrayList<>(toRemove.subList(0, Math.min(numberOfLostGoods, numberOfGoods)));
             ArrayList<Coordinates> batteriesToRemove = new ArrayList<>(toRemove.subList(numberOfGoods, toRemove.size()));
             updatedTiles = player.removeGoods(goodsToRemove);
             updatedTiles.addAll(player.chooseBatteriesUse(batteriesToRemove));
@@ -50,6 +72,13 @@ public class GoodsPenalty extends Penalty {
         return updatedTiles;
     }
 
+    /**
+     * Automatically removes goods and/or batteries for disconnected players.
+     *
+     * @param disconnectedPlayer the disconnected player
+     * @param view               the interface to notify
+     * @return list of updated tiles
+     */
     @Override
     public ArrayList<Tile> automaticGoodsPenalty(Player disconnectedPlayer, ViewInterface view) {
         if (numberOfGoods == numberOfLostGoods) {
@@ -63,6 +92,13 @@ public class GoodsPenalty extends Penalty {
         }
     }
 
+    /**
+     * Automatically removes goods from the ship of a disconnected player.
+     *
+     * @param disconnectedPlayer the player whose goods to remove
+     * @param number             number of goods to remove
+     * @return list of updated tiles after removal
+     */
     public ArrayList<Tile> automaticRemoveGoods (Player disconnectedPlayer, int number) {
         int counter = number;
         ShipBoard playerShip = disconnectedPlayer.getShipBoard();
@@ -99,6 +135,13 @@ public class GoodsPenalty extends Penalty {
         return updatedTiles;
     }
 
+    /**
+     * Automatically removes batteries from the ship of a disconnected player.
+     *
+     * @param disconnectedPlayer the player whose batteries to remove
+     * @param number             number of batteries to remove
+     * @return list of updated tiles after removal
+     */
     public ArrayList<Tile> automaticRemoveBatteries (Player disconnectedPlayer, int number) {
         ArrayList<Tile> updatedTiles = new ArrayList<>();
         Coordinates currentTile;
@@ -113,17 +156,34 @@ public class GoodsPenalty extends Penalty {
         return updatedTiles;
     }
 
-
-
+    /**
+     * Returns a string representation of this penalty.
+     *
+     * @return the description string
+     */
     @Override
     public String toString() {
         return "GoodsPenalty " +  numberOfLostGoods;
     }
 
+    /**
+     * Returns the number of goods to remove.
+     *
+     * @return the number of goods
+     */
     public int getNumber(){
         return numberOfLostGoods;
     }
 
+    /**
+     * Initializes the penalty, determining how many goods and/or batteries will be removed,
+     * and prompts the player to select them if connected.
+     *
+     * @param game   the game interface
+     * @param view   the view interface
+     * @param player the player subject to the penalty
+     * @return true if player input is expected, false otherwise
+     */
     @Override
     public boolean initializePenalty(GameInterface game,VirtualView view, Player player) {
         if (player.getShipBoard().isCargoEmpty()) {

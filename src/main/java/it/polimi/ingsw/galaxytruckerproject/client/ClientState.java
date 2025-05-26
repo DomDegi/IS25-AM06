@@ -25,18 +25,19 @@ public enum ClientState implements Serializable {
     START_SHIP_CREATION,
     DRAW_CARD,
     MANAGE_CABINS,
-    ROLL_DICE;
+    ROLL_DICE,
+    RECONNECTING;
 
     @Override
     public String toString() {
         switch(this) {
             case CHOOSE_UI -> {return "You want to use TUI or GUI? [tui] [gui]";}
-            case CHOOSE_CONNECTION_TYPE -> {return "You want to use RMI connection or Socket connection? [rmi] [socket] (choice not implemented)";}
-            case CHOOSE_IP_AND_PORT_RMI -> {return "You chose RMI: type the server information's [ip] [port]";}
+            case CHOOSE_CONNECTION_TYPE -> {return "You want to use RMI connection or Socket connection? [rmi] [socket]";}
+            case CHOOSE_IP_AND_PORT_RMI -> {return "You chose RMI: type the server information's [ip] [port] (type d to default to localhost)";}
             case CHOOSE_IP_AND_PORT_SOCKET -> {return "You chose SOCKET: type the server information's [ip] [port] (type d to default to localhost)";}
             case LOGIN -> {return "Choose your nickname [name] [done] [reset]";}
             case LOBBY -> {return"You're in the lobby [createGame] [joinGame]";}
-            case LOBBY0 ->{return"Enter gameName, player number, gameMode and color [gameName numPlayer gameMode color]";}
+            case LOBBY0 ->{return"Enter gameName, player number, gameMode [gameName numPlayer gameMode]";}
             case LOBBY1 -> {return "Enter gameName [gameName]";}
             case COLOR_CHOICE,COLOR_CHOICE0 -> {return "Choose your color [red] [yellow] [green] [blue]";}
             case ACTION -> {return "You can accept or deny [yes] [no]";}
@@ -48,10 +49,11 @@ public enum ClientState implements Serializable {
             case S_MANAGE_DRAWN_TILE -> {return "You can rotate, position, book or refuse this tile [rotate] [put] [book] [refuse] [check playerNum] [turn]";}
             case S_FINISHED -> {return "You've finished the ship creation, wait to know if your ship is correct [flightBoardPosition] [check playerNum] [turn]";}
             case WAIT -> {return "Waiting for server";}
-            case START_SHIP_CREATION -> {return "Turn the hourglass to start the ship creation [start|turn]";}
+            case START_SHIP_CREATION -> {return "TrialFlight: Start the ship creation [start] Level2Flight: Start the ship creation by turning the hourglass [Turn|Start]";}
             case DRAW_CARD -> {return "Draw a card [draw]";}
             case MANAGE_CABINS -> {return "Select the crew type in yours equip cabins [humans] [purpleAlien] [brownAlien]";}
             case ROLL_DICE -> {return"Roll the dice [roll]";}
+            case RECONNECTING ->  {return "Server disconnected: repeat the login or close the game? [login] [close]";}
         }
         return "Error in client state to string";
     }

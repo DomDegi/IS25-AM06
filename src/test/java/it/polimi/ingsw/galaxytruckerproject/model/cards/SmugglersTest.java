@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards;
 import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
@@ -209,29 +210,29 @@ class SmugglersTest {
     }
 
     @Test
-    void successfully_initialize_player2_won_refused(){
+    void successfully_initialize_player3_won_refused(){
         successfully_initialize_card();
-        game.getDrawnCard().cannonChoice("EnnioVolante", 0, new ArrayList<>());
-        assertEquals(0,player2.getShipBoard().getAllGoods().size());
+        game.getDrawnCard().cannonChoice(player3.getPlayerName(), 0, new ArrayList<>());
+        assertEquals(0,player3.getShipBoard().getAllGoods().size());
     }
 
     @Test
-    void successfully_initialize_player2_won_accepted(){
+    void successfully_initialize_player3_won_accepted(){
         successfully_initialize_card();
         game.getDrawnCard().cannonChoice("EnnioVolante",0,new ArrayList<>());
         game.getDrawnCard().choice("EnnioVolante",true);
-        assertEquals(0,player2.getShipBoard().getAllGoods().size());
+        assertEquals(0,player3.getShipBoard().getAllGoods().size());
     }
 
     @Test
-    void successfully_initialize_player2_won_accepted_managed(){
-        successfully_initialize_player2_won_accepted();
+    void successfully_initialize_player3_won_accepted_managed(){
+        successfully_initialize_player3_won_accepted();
         CargoHold cargo1 = new CargoRed(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE));
         cargo1.setCoordinates(new Coordinates(3,3));
         cargo1.addGood(new Goods(RED));
         ArrayList<CargoHold> cargoHolds=new ArrayList<>(); cargoHolds.add(cargo1);
         game.getDrawnCard().manageGoods("EnnioVolante", 4, cargoHolds);
-        assertEquals(0,player2.getShipBoard().getAllGoods().size());
+        assertEquals(0,player3.getShipBoard().getAllGoods().size());
     }
 
     @Test
@@ -393,4 +394,71 @@ class SmugglersTest {
         assertEquals(goods - 2,player1.getShipBoard().getAllGoods().size());
         assertEquals(1,player1.getShipBoard().convertGoodsToCredit());
     }
+
+    @Test
+    void player_disconnects_after_choosing_to_get_reward() {
+        flightBoard.moveBackward(player3,10);
+        successfully_initialize_card();
+        int batteries=player1.getShipBoard().getNumBatteries();
+        ArrayList<Coordinates> toUse = new ArrayList<>();
+        toUse.add(new Coordinates(3,0)); toUse.add(new Coordinates(3,0));
+        game.getDrawnCard().cannonChoice("MimmoPericoloso",4,toUse);
+        game.getDrawnCard().choice("MimmoPericoloso",true);
+        assertEquals(batteries-2,player1.getShipBoard().getNumBatteries());
+        int player1_initialcargo = player1.getShipBoard().getAllGoods().size();
+        player1.setDisconnected(true);
+        game.getDrawnCard().playerDisconnected(player1.getPlayerName());
+        assertEquals(player1_initialcargo + smugglers.getGoodsList(player1.getPlayerName()).size(),player1.getShipBoard().getAllGoods().size());
+        assertEquals(GameState.DRAW_CARD,game.getGameState());
+    }
+
+    @Test
+    void player_disconnects_before_choosing_to_get_reward() {
+        flightBoard.moveBackward(player3,10);
+        successfully_initialize_card();
+        int batteries=player1.getShipBoard().getNumBatteries();
+        ArrayList<Coordinates> toUse = new ArrayList<>();
+        toUse.add(new Coordinates(3,0)); toUse.add(new Coordinates(3,0));
+        game.getDrawnCard().cannonChoice("MimmoPericoloso",4,toUse);
+        assertEquals(batteries-2,player1.getShipBoard().getNumBatteries());
+        int player1_initialcargo = player1.getShipBoard().getAllGoods().size();
+        player1.setDisconnected(true);
+        game.getDrawnCard().playerDisconnected(player1.getPlayerName());
+        assertEquals(player1_initialcargo,player1.getShipBoard().getAllGoods().size());
+        assertEquals(GameState.DRAW_CARD,game.getGameState());
+    }
+
+    @Test
+    void player_disconnects_after_losing() {
+        Goods good1=new Goods(BLUE);
+        Goods good2=new Goods(RED);
+        Goods good3=new Goods(GREEN);
+        Goods good4=new Goods(YELLOW);
+        ArrayList<Goods> rewardGoods =new ArrayList<>();
+        int batteries=player1.getShipBoard().getNumBatteries();
+        rewardGoods.add(good2);
+        rewardGoods.add(good3);
+        rewardGoods.add(good4);
+        rewardGoods.add(good1);
+        rewardGoods.add(good1);
+        player1.getShipBoard().gainGoods(good2,new Coordinates(1,3));
+        player1.getShipBoard().gainGoods(good4,new Coordinates(1,3));
+        player1.getShipBoard().gainGoods(good1,new Coordinates(1,4));
+        int player1_initialcargo = player1.getShipBoard().getAllGoods().size();
+        smugglers = new Smugglers(1, 2, 7,2,rewardGoods);
+        flightBoard.moveBackward(player3,10);
+
+        game.setDrawnCard(smugglers);
+        game.getDrawnCard().initializeCard(game, viewMap);
+
+        ArrayList<Coordinates> toUse = new ArrayList<>();
+        toUse.add(new Coordinates(3,0));
+        game.getDrawnCard().cannonChoice("MimmoPericoloso",2,toUse);
+        assertEquals(0,player2.getShipBoard().getAllGoods().size());
+        assertEquals(batteries-1,player1.getShipBoard().getNumBatteries());
+        player1.setDisconnected(true);
+        game.getDrawnCard().playerDisconnected(player1.getPlayerName());
+        assertEquals(player1_initialcargo - smugglers.getGoodsPenalty(),player1.getShipBoard().getAllGoods().size());
+    }
+
 }

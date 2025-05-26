@@ -6,12 +6,43 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+/**
+ * The FlightBoard class manages the positions and rankings of players during the flight phase of the game.
+ * It tracks which players are still in flight, which have landed, and provides movement and ranking logic.
+ */
 public class FlightBoard implements Serializable {
+
+    /**
+     * List of all players that have participated in the game.
+     * Players that landed are ordered by landing position.
+     */
     private final ArrayList<Player> inGamePlayers;
+
+    /**
+     * Final list of players ordered by final position.
+     * Players that land early are inserted here according to landing order.
+     */
     private final ArrayList<Player> podium;
+
+    /**
+     * Counter for next free position in the podium list.
+     */
     private int freePodiumPosition;
-    private final GameMode gameMode;    //needed to check if pos in inGamePlayers is free or not
+
+    /**
+     * The game mode, needed to determine movement thresholds for forced landings.
+     */
+    private final GameMode gameMode;
+
+    /**
+     * List used to track occupied positions in flight based on ranking.
+     */
     private final ArrayList<Integer> occupiedPos = new ArrayList<>();
+
+    /**
+     * Constructs a FlightBoard with the specified game mode.
+     * @param gameMode the mode of the game (e.g., TRIAL or LEVEL2)
+     */
     public FlightBoard(GameMode gameMode) {
         for (int i=0;i<4;i++){
             occupiedPos.add(-1);
@@ -21,20 +52,43 @@ public class FlightBoard implements Serializable {
         this.podium = new ArrayList<>();
         this.freePodiumPosition=0;
     }
-    //getter
+
+    // ====================== GETTER METHODS ======================
+
+    /**
+     * Gets the full list of players ordered by final ranking.
+     * @return list of all players on the podium
+     */
     public ArrayList<Player> getAllPlayers() {
         return podium;
     }
+
+    /**
+     * Gets the list of players still in flight (not landed yet).
+     * @return list of players in flight
+     */
     public ArrayList<Player> getInGamePlayers() {
         if(inGamePlayers.size()>1)
             rearrange();
         return inGamePlayers;
     }
-    //FlightBoard management
+
+    // ====================== FLIGHTBOARD MANAGEMENT ======================
+
+    /**
+     * Adds a player to the game and increments the available podium position.
+     * @param player the player to add
+     */
     public void addPlayerToGame(Player player) {
         podium.add(player);
         freePodiumPosition++;
     }
+
+    /**
+     * Adds a player to the in-flight board for TRIAL mode.
+     * Sets their starting position based on their order.
+     * @param newPlayer the player to add
+     */
     public void addToTrialFlightBoard(Player newPlayer) {
         if(!podium.contains(newPlayer)){
             System.out.println("Player not found");
@@ -69,6 +123,12 @@ public class FlightBoard implements Serializable {
         occupiedPos.set(0,occupiedPos.getFirst()+1);
     }
 
+    /**
+     * Adds a player to the in-flight board for LEVEL2 mode at a specified position.
+     * @param newPlayer the player to add
+     * @param pos the desired ranking position (1-based)
+     * @return true if the addition was successful, false otherwise
+     */
     public boolean addToFlightBoard(Player newPlayer, int pos) {
         pos = pos - 1; // offsets to match position to arraylist indexes
         if (!podium.contains(newPlayer)) {
@@ -112,6 +172,10 @@ public class FlightBoard implements Serializable {
         return true;
     }
 
+    /**
+     * Removes a player from the game entirely (from both lists).
+     * @param player the player to remove
+     */
     public void removePlayer(Player player) {
         if (!podium.contains(player)) {
             throw new IllegalArgumentException("Invalid Player:" + player);
@@ -122,6 +186,11 @@ public class FlightBoard implements Serializable {
         podium.remove(player);
         freePodiumPosition--;
     }
+
+    /**
+     * Sends the player to the last position in the in-flight list.
+     * @param player the player to demote
+     */
     public void setPlayerToLast(Player player) {
         int playerRank = player.getPlayerRanking() - 1;
         if (playerRank < 0 || playerRank >= inGamePlayers.size()) {
@@ -133,6 +202,12 @@ public class FlightBoard implements Serializable {
         player.setPlayerPosition(0);
         rearrange();
     }
+
+    /**
+     * Handles a player's early landing.
+     * Updates ranking and reorders the podium accordingly.
+     * @param player the player that lands early
+     */
     public void earlyLanding(Player player) {
         if (player.isLanded()) {
             return;
@@ -152,7 +227,15 @@ public class FlightBoard implements Serializable {
         freePodiumPosition--;
         rearrange();
     }
-    //moving methods
+
+    // ====================== MOVEMENT METHODS ======================
+
+    /**
+     * Moves a player forward by the specified amount.
+     * Updates rankings accordingly if the player overtakes others.
+     * @param player the player to move
+     * @param movement the number of positions to move
+     */
     public void moveForward(Player player, int movement) {
         if (player.isLanded()) {
             System.out.println("Player already landed: " + player);
@@ -172,6 +255,12 @@ public class FlightBoard implements Serializable {
         }
     }
 
+    /**
+     * Moves a player backward by the specified amount.
+     * Updates rankings accordingly if the player is overtaken by others.
+     * @param player the player to move
+     * @param movement the number of positions to move
+     */
     public void moveBackward(Player player, int movement) {
         if (player.isLanded()) {
             System.out.println("Player already landed: " + player);
@@ -190,7 +279,11 @@ public class FlightBoard implements Serializable {
             }
         }
     }
-    //Array-structure changing method
+
+    /**
+     * Reorders the in-flight player list based on positions and landing status.
+     * Updates each player's ranking accordingly.
+     */
     public void rearrange() {
         if(inGamePlayers.size()>1) {
             inGamePlayers.sort((player1, player2) -> {
@@ -208,6 +301,10 @@ public class FlightBoard implements Serializable {
         }
     }
 
+    /**
+     * Checks if the movement phase should end and forces landing for players far behind.
+     * @return true if the phase continues, false if game should proceed to next phase
+     */
     public boolean concludeMovement() {
         ArrayList<Player> landed=new ArrayList<>();
         Player firstPlayer;
@@ -250,6 +347,10 @@ public class FlightBoard implements Serializable {
         return true;
     }
 
+    /**
+     * Loads a previously saved flight board from player data.
+     * @param players list of players to be restored
+     */
     public void loadFlightBoard(ArrayList<Player> players) {
         players.sort(Comparator.comparingInt(Player::getPlayerRanking));
         podium.addAll(players);

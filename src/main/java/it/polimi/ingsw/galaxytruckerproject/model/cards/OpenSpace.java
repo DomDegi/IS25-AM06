@@ -14,26 +14,47 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Represents the "Open Space" card event where players use engines to advance.
+ * If a player has no available engines or batteries to use DoubleEngines, they are forced to land early.
+ */
 public class OpenSpace extends Card {
-    private Player currentPlayer = null;
-    private ViewInterface currentPlayerView = null;
-    private int playerIndex = -1;
-    ArrayList<Player> playersToEarlyLand = new ArrayList<>();
-    
 
-    //the subclass OpenSpace needs the same parameters as the superclass
+    /** The player currently resolving the card */
+    private Player currentPlayer = null;
+
+    /** The virtual view associated with the current player */
+    private ViewInterface currentPlayerView = null;
+
+    /** Index to track which player's turn it is */
+    private int playerIndex = -1;
+
+    /** List of players who have to land early due to no engine action */
+    ArrayList<Player> playersToEarlyLand = new ArrayList<>();
+
+    /**
+     * Constructor with level and file path.
+     * @param level the level of the card
+     * @param filePath path to image or data file
+     */
     @JsonCreator
-    public OpenSpace(@JsonProperty("level") int level,  @JsonProperty("imagePath") String filePath) {
-        super(level, 0,filePath);
+    public OpenSpace(@JsonProperty("level") int level, @JsonProperty("imagePath") String filePath) {
+        super(level, 0, filePath);
     }
 
-
+    /**
+     * Constructor with only level.
+     * @param level the level of the card
+     */
     public OpenSpace(@JsonProperty("level") int level) {
         super(level, 0);
     }
 
-
-    //Initialize card for the player at the index playerIndex of the flightBoard ranking
+    /**
+     * Initializes the card for gameplay and begins player turn processing.
+     * @param game the game interface
+     * @param viewsMap map of player names to their virtual views
+     */
     @Override
     public void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap) {
         this.game = game;
@@ -41,20 +62,27 @@ public class OpenSpace extends Card {
         this.nextPlayer();
     }
 
+    /**
+     * Handles the choice of engine usage for the current player.
+     * If valid, moves the player forward or marks them for early landing.
+     * @param playerName the name of the player
+     * @param numDoubleEngines number of double engines to use
+     * @param batteriesToUse battery coordinates used to power engines
+     */
     @Override
     public void engineChoice(String playerName, int numDoubleEngines, ArrayList<Coordinates> batteriesToUse) {
         if (!playerName.equals(currentPlayer.getPlayerName())) {
             engineChoice(currentPlayer.getPlayerName(), 0, new ArrayList<>());
             return;
         }
-        Map<Integer,ArrayList<Tile>> returned = currentPlayer.useEngines(numDoubleEngines, batteriesToUse);
+        Map<Integer, ArrayList<Tile>> returned = currentPlayer.useEngines(numDoubleEngines, batteriesToUse);
         if (returned == null) {
             try {
                 currentPlayerView.showWrongInputMessage();
             } catch(Exception ignored) {}
             return;
         }
-        int engineStrength =  returned.keySet().iterator().next();
+        int engineStrength = returned.keySet().iterator().next();
         ArrayList<Tile> tiles = returned.get(engineStrength);
         if (!tiles.isEmpty()) {
             notifyModifiedTiles(playerName, tiles);
@@ -62,7 +90,10 @@ public class OpenSpace extends Card {
         this.moveOrEarlyLand(engineStrength);
     }
 
-    //moves player forward; early lands if engineStrength == 0
+    /**
+     * Moves the player forward if they have engine strength, or initiates early landing otherwise.
+     * @param engineStrength the engine power value from the player's ship
+     */
     private void moveOrEarlyLand(int engineStrength) {
         if (engineStrength == 0) {
             playersToEarlyLand.add(currentPlayer);
@@ -71,18 +102,20 @@ public class OpenSpace extends Card {
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
-        }
-        else {
+        } else {
             game.getFlightBoard().moveForward(currentPlayer, engineStrength);
             notifyMovement(currentPlayer);
         }
         nextPlayer();
     }
 
+    /**
+     * Processes the turn for the next player. If all players are done, ends the card event.
+     */
     public void nextPlayer() {
         playerIndex++;
         if (playerIndex > game.getNumberOfPlayers() - 1) {
-            for (Player player: playersToEarlyLand) {
+            for (Player player : playersToEarlyLand) {
                 game.getFlightBoard().earlyLanding(player);
             }
             game.endCardEvent();
@@ -90,18 +123,35 @@ public class OpenSpace extends Card {
         }
         this.currentPlayer = game.getListOfInFlightPlayers().get(playerIndex);
         this.currentPlayerView = viewsMap.get(currentPlayer.getPlayerName());
-        if (currentPlayer.IsDisconnected() || currentPlayer.getShipBoard().getDoubleEngine().isEmpty() || currentPlayer.getShipBoard().getNumBatteries() == 0) {
+        if (currentPlayer.IsDisconnected()
+                || currentPlayer.getShipBoard().getDoubleEngine().isEmpty()
+                || currentPlayer.getShipBoard().getNumBatteries() == 0) {
             engineChoice(currentPlayer.getPlayerName(), 0, new ArrayList<>());
-        }
-        else {
+        } else {
             try {
                 currentPlayerView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_ENGINE);
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
         }
     }
 
+    /**
+     * String representation of the card for debugging or display.
+     * @return a simple string with type and ID
+     */
+    @Override
     public String toString() {
         return "OpenSpace" + " id: " + id;
+    }
+
+    /**
+     * Handles the case where a player disconnects during their turn.
+     * @param playerName the name of the player that disconnected
+     */
+    @Override
+    public void playerDisconnected(String playerName) {
+        if (currentPlayer != null && playerName.equals(currentPlayer.getPlayerName())) {
+            playerIndex--;
+            nextPlayer();
+        }
     }
 }

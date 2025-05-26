@@ -8,18 +8,36 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
-
+ /**
+  * Utility class responsible for saving the current game state to disk.
+  * It serializes the game controller, game data, and all players into a timestamped file.
+  * <p>
+  * Ensures that only one save file per game name exists at a time by deleting previous saves.
+  */
 public class GameSaver {
 
 
-    private static final String userHome =  System.getProperty("user.home");
+     /** The user's home directory, used as base for save path. */
+     private static final String userHome = System.getProperty("user.home");
 
-    private static final String BASE_SAVE_PATH = userHome + "/GalaxyTrucker/savedGames";
+     /** Base directory for storing saved game files. */
+     private static final String BASE_SAVE_PATH = userHome + "/GalaxyTrucker/savedGames";
 
 
-    private GameSaver() {}
-
-    private static String dateGame(String gameName) {
+     /**
+      * Utility class responsible for saving the current game state to disk.
+      * It serializes the game controller, game data, and all players into a timestamped file.
+      * <p>
+      * Ensures that only one save file per game name exists at a time by deleting previous saves.
+      */
+     private GameSaver() {}
+     /**
+      * Generates a timestamped file name for the game save based on the current time.
+      *
+      * @param gameName the name of the game to be saved
+      * @return a string representing the save file name, including date and time
+      */
+     private static String dateGame(String gameName) {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter dtf  = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
         String timeStamp = now.format(dtf);
@@ -27,7 +45,14 @@ public class GameSaver {
         return gameName + "_" + timeStamp + ".txt";
     }
 
-    public static void save(GameController gameController) {
+     /**
+      * Saves the current game state to a file.
+      * This includes the controller state, game data, and all player states.
+      * If a previous save exists for the same game name, it will be deleted and replaced.
+      *
+      * @param gameController the controller managing the current game state
+      */
+     public static void save(GameController gameController) {
 
         File fDirectory = new File(BASE_SAVE_PATH);
 
@@ -45,11 +70,18 @@ public class GameSaver {
         GameInterface game = gameController.getGame();
         GameSerializerDeserializer.save(game,file);
         for (Player player: game.getListOfAllPlayer()) {
-            PlayerSerializerDeserializer.save(player,file);
+            PlayerSerializerDeserializer.saveToFile(player,file);
         }
     }
-
-    private static void deleteExistingSaveAndCreateNewFile(File fDirectory, File newSave) {
+     /**
+      * Deletes any existing save file that matches the new save's base name (i.e., game name),
+      * and attempts to create the new save file.
+      *
+      * @param fDirectory the directory containing all save files
+      * @param newSave    the new file to create (after deleting old one if exists)
+      * @throws RuntimeException if the new file cannot be created
+      */
+     private static void deleteExistingSaveAndCreateNewFile(File fDirectory, File newSave) {
         String[] newFileName = newSave.getName().split("_");
         for (File currentFile : Objects.requireNonNull(fDirectory.listFiles())) {
             String[] currentFileName = currentFile.getName().split("_");

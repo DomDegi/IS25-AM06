@@ -8,14 +8,33 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Optional;
-
+/**
+ * Utility class responsible for loading saved game files from disk.
+ * It can deserialize a full {@link GameController} object from a file and also
+ * clean up outdated save files.
+ *
+ * The class cannot be instantiated.
+ */
 public class GameLoader {
 
-    private static final String userHome =  System.getProperty("user.home");
+    /** The user's home directory path, used as the base for saving/loading. */
+    private static final String userHome = System.getProperty("user.home");
+
+    /** Base directory for saved game files. */
     private static final String BASE_SAVE_PATH = userHome + "/GalaxyTrucker/savedGames";
 
+    /**
+     * Private constructor to prevent instantiation of this utility class.
+     */
     private GameLoader() {}
-
+    /**
+     * Loads a complete game from the given file and reconstructs the {@link GameController} object.
+     * It also re-initializes the flight board and associated player data.
+     *
+     * @param file the file containing the saved game data
+     * @return a reconstructed GameController instance
+     * @throws RuntimeException if an I/O error occurs during loading
+     */
     public static GameController loadGame(File file) {
 
         int currentLine =  0;
@@ -48,7 +67,13 @@ public class GameLoader {
             throw new RuntimeException(e);
         }
     }
-
+    /**
+     * Searches for a saved game file in the default save directory that matches the provided game name.
+     * Also checks and deletes outdated files during the search.
+     *
+     * @param gameName the name of the game to load
+     * @return an Optional containing the loaded GameController if found, otherwise empty
+     */
     public static Optional<GameController> findSavedGame(String gameName) {
         File fileDir =  new File(BASE_SAVE_PATH);
         if (!fileDir.exists() || fileDir.listFiles() == null) {

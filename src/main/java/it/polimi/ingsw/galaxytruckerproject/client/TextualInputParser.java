@@ -54,11 +54,13 @@ public class TextualInputParser {
 
             case CHOOSE_IP_AND_PORT_RMI -> {
                 try {
-                    if (Objects.equals(words[0], "d")) {
-                        clientController.connectRMI("localhost");
-                    } else {
-                        if (words.length == 2)
-                            clientController.connectRMI(words[0]);
+                    if (Objects.equals(words[0],"d")) {
+                        clientController.connectRMI("localhost",1099);
+                    }
+                    else {
+                        if (words.length==2) {
+                            clientController.connectRMI(words[0], Integer.parseInt(words[1]));
+                        }
                         else {
                             view.wrongLocalInput();
                             return false;
@@ -189,7 +191,10 @@ public class TextualInputParser {
             }
 
             case START_SHIP_CREATION -> {
-                if (((clientController.getGameMode() == GameMode.LEVEL2 && words[0].equals("turn")) || words[0].equals("start")) && clientController.firstHourglassTurn()) {
+                if (((clientController.getGameMode() == GameMode.TRIAL && words[0].equals("start"))) && clientController.firstHourglassTurn()) {
+                    return true;
+                }
+                else if (((clientController.getGameMode() == GameMode.LEVEL2 && words[0].equals("turn")) || words[0].equals("start")) && clientController.firstHourglassTurn()) {
                     return true;
                 }else {
                     view.wrongLocalInput();
@@ -406,6 +411,13 @@ public class TextualInputParser {
                     }
                 }
                 return false;
+            }
+            case RECONNECTING -> {
+                switch(words[0]) {
+                    case "login","l" -> clientController.setState(ClientState.CHOOSE_CONNECTION_TYPE);
+                    case "close","c" -> System.exit(0);
+                    default -> view.wrongLocalInput();
+                }
             }
         }
         return true;

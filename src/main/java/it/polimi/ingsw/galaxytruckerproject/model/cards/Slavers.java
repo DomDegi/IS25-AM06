@@ -14,15 +14,44 @@ import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Slavers extends Enemies{
+/**
+ * Represents the "Slavers" enemy card in the game.
+ * This card challenges players with combat and imposes penalties
+ * or rewards depending on the outcome.
+ */
+public class Slavers extends Enemies {
+
+    /** Credits rewarded to the player upon winning the encounter. */
     private final int rewardCredits;
+
+    /** Number of crew members lost if the player fails. */
     private final int lostCrew;
+
+    /** Index of the current player being processed. */
     private int playerIndex;
+
+    /** Current player facing the Slavers. */
     private Player currentPlayer = null;
+
+    /** View of the current player. */
     private VirtualView playersView = null;
+
+    /** Penalty applied when the player loses the encounter. */
     private final CrewPenalty penaltyIfLose;
+
+    /** Status of the battle: 0 = undecided, 1 = won, -1 = lost. */
     private int won = 0;
 
+    /**
+     * JSON constructor for deserialization.
+     *
+     * @param level          the threat level of the enemy
+     * @param requiredDays   days lost if defeated
+     * @param cannonStrength the enemy's cannon strength
+     * @param rewardCredits  credits rewarded if defeated
+     * @param lostCrew       crew members lost if defeated
+     * @param filePath       path to the enemy image
+     */
     @JsonCreator
     public Slavers(
             @JsonProperty("level") int level,
@@ -39,13 +68,15 @@ public class Slavers extends Enemies{
         this.penaltyIfLose = new CrewPenalty(lostCrew);
     }
 
-
+    /**
+     * Alternative constructor without image path.
+     */
     public Slavers(
-            @JsonProperty("level") int level,
-            @JsonProperty("requiredDays") int requiredDays,
-            @JsonProperty("cannonStrength") int cannonStrength,
-            @JsonProperty("rewardCredits") int rewardCredits,
-            @JsonProperty("lostCrew") int lostCrew
+            int level,
+            int requiredDays,
+            int cannonStrength,
+            int rewardCredits,
+            int lostCrew
     ) {
         super(level, requiredDays, cannonStrength, null);
         this.rewardCredits = rewardCredits;
@@ -54,11 +85,21 @@ public class Slavers extends Enemies{
         this.penaltyIfLose = new CrewPenalty(lostCrew);
     }
 
-
+    /**
+     * Returns a string representation of the Slavers card.
+     *
+     * @return a string with relevant card info
+     */
     public String toString() {
         return "Slavers " + super.toString() + " rewardCredits: " + rewardCredits + "  lostCrew: " + lostCrew;
     }
 
+    /**
+     * Initializes the card and starts the player encounter sequence.
+     *
+     * @param game     reference to the game state
+     * @param viewsMap map of player names to their views
+     */
     @Override
     public void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap) {
         this.game = game;
@@ -66,7 +107,9 @@ public class Slavers extends Enemies{
         nextPlayer();
     }
 
-
+    /**
+     * Proceeds to the next player in the encounter sequence.
+     */
     public void nextPlayer() {
         if (currentPlayer != null){
             playerIndex++;
@@ -81,7 +124,7 @@ public class Slavers extends Enemies{
         this.playersView = viewsMap.get(playerName);
         float singleCannonPower = currentPlayer.getShipBoard().getSingleCannonPower();
         if (singleCannonPower > 0) {
-            singleCannonPower = singleCannonPower + 2*currentPlayer.getShipBoard().getNumPurpleAliens();
+            singleCannonPower += 2 * currentPlayer.getShipBoard().getNumPurpleAliens();
         }
 
         won = 0;
@@ -89,104 +132,108 @@ public class Slavers extends Enemies{
             if (singleCannonPower > cannonStrength) {
                 won = 1;
                 cannonChoice(playerName, 0, new ArrayList<>());
-            }
-            else if (singleCannonPower == cannonStrength) {
+            } else if (singleCannonPower == cannonStrength) {
                 nextPlayer();
-            }
-            else {
+            } else {
                 won = -1;
-                penaltyIfLose.initializePenalty(game,playersView, currentPlayer);
+                penaltyIfLose.initializePenalty(game, playersView, currentPlayer);
                 nextPlayer();
             }
-        }
-        else {
+        } else {
             if (singleCannonPower > cannonStrength) {
                 won = 1;
                 try {
                     playersView.setClientState(ClientState.ACTION);
-                }catch(Exception ignored) {}
-            }
-            else if (currentPlayer.getShipBoard().getDoubleCannon().isEmpty() ||
+                } catch(Exception ignored) {}
+            } else if (currentPlayer.getShipBoard().getDoubleCannon().isEmpty() ||
                     currentPlayer.getShipBoard().getBatteryCoordinates().isEmpty()) {
                 if (singleCannonPower == cannonStrength) {
                     nextPlayer();
-                }
-                else {
+                } else {
                     won = -1;
-                    if(!penaltyIfLose.initializePenalty(game,playersView, currentPlayer)) {
+                    if (!penaltyIfLose.initializePenalty(game, playersView, currentPlayer)) {
                         nextPlayer();
                     }
                     try {
                         playersView.asksToInputCoordinates(CoordReqType.CHOOSE_CREW);
-                    }catch(Exception ignored) {}
+                    } catch(Exception ignored) {}
                 }
-            }
-            else {
+            } else {
                 try {
                     playersView.asksToInputCoordinates(CoordReqType.CHOOSE_DOUBLE_CANNON);
-                }catch(Exception ignored) {}
+                } catch(Exception ignored) {}
             }
         }
     }
 
+    /**
+     * Handles the cannon usage choice by the player.
+     *
+     * @param playerName       the name of the player making the choice
+     * @param doubleCannonPower power from double cannons
+     * @param batteriesToUse   list of batteries used
+     */
     @Override
     public void cannonChoice(String playerName, float doubleCannonPower, ArrayList<Coordinates> batteriesToUse) {
         Player player = game.identifyPlayerByName(playerName);
         if (!player.getPlayerName().equals(currentPlayer.getPlayerName())) {
             try {
                 viewsMap.get(playerName).showWrongInputMessage();
-            }catch(Exception ignored) {}
+            } catch(Exception ignored) {}
             return;
         }
-        Map<Float,ArrayList<Tile>> returned = player.useCannons(doubleCannonPower, batteriesToUse);
+        Map<Float, ArrayList<Tile>> returned = player.useCannons(doubleCannonPower, batteriesToUse);
         if (returned == null) {
-            if (player.getPlayerShip().getSingleCannonPower() > cannonStrength) {
+            float power = player.getPlayerShip().getSingleCannonPower();
+            if (power > cannonStrength) {
                 won = 1;
                 cannonChoice(playerName, 0, new ArrayList<>());
-            }
-            else if (player.getPlayerShip().getSingleCannonPower()  == cannonStrength) {
+            } else if (power == cannonStrength) {
                 nextPlayer();
-            }
-            else {
+            } else {
                 won = -1;
-                penaltyIfLose.initializePenalty(game,playersView, currentPlayer);
+                penaltyIfLose.initializePenalty(game, playersView, currentPlayer);
                 nextPlayer();
             }
             return;
         }
+
         notifyModifiedTiles(playerName, returned.values().iterator().next());
         float cannonPower = returned.keySet().iterator().next();
         if (cannonPower > cannonStrength) {
             won = 1;
             if (currentPlayer.IsDisconnected()) {
                 choice(playerName, false);
-            }
-            else{
+            } else {
                 try {
                     playersView.setClientState(ClientState.ACTION);
-                }catch(Exception ignored) {}
+                } catch(Exception ignored) {}
             }
-        }
-        else if (cannonPower == cannonStrength) {
+        } else if (cannonPower == cannonStrength) {
             nextPlayer();
-        }
-        else {
+        } else {
             won = -1;
-            if(!penaltyIfLose.initializePenalty(game,playersView, currentPlayer)) {
+            if (!penaltyIfLose.initializePenalty(game, playersView, currentPlayer)) {
                 nextPlayer();
             }
             try {
                 playersView.asksToInputCoordinates(CoordReqType.CHOOSE_CREW);
-            }catch(Exception ignored) {}
+            } catch(Exception ignored) {}
         }
     }
 
+    /**
+     * Handles the final decision of the player after winning the encounter.
+     *
+     * @param playerName name of the player
+     * @param decision   true to accept reward, false to skip
+     */
     @Override
     public void choice(String playerName, boolean decision) {
         if (!playerName.equals(currentPlayer.getPlayerName()) || won != 1) {
             try {
                 viewsMap.get(playerName).showWrongInputMessage();
-            }catch(Exception ignored) {}
+            } catch(Exception ignored) {}
             return;
         }
         if (decision) {
@@ -194,41 +241,77 @@ public class Slavers extends Enemies{
             notifyGainedCredits(currentPlayer.getPlayerName(), currentPlayer.getCredit());
             game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
             notifyMovement(currentPlayer);
-            game.endCardEvent();
         }
-        else {
-            game.endCardEvent();
-        }
+        game.endCardEvent();
     }
 
+    /**
+     * Removes the specified crew members from the player's ship.
+     *
+     * @param playerName   name of the player
+     * @param crewToRemove coordinates of crew members to remove
+     */
     @Override
     public void removeCrew(String playerName, ArrayList<Coordinates> crewToRemove) {
         Player player = game.identifyPlayerByName(playerName);
         if (!player.getPlayerName().equals(currentPlayer.getPlayerName()) || won != -1) {
             try {
                 viewsMap.get(playerName).showWrongInputMessage();
-            }catch(Exception ignored) {}
+            } catch(Exception ignored) {}
             return;
         }
         ArrayList<Tile> updated = penaltyIfLose.removeCrew(player, playersView, crewToRemove);
         if (updated != null) {
             notifyModifiedTiles(playerName, updated);
             nextPlayer();
-        }
-        else {
+        } else {
             try {
                 playersView.showWrongInputMessage();
-            }catch(Exception ignored) {}
+            } catch(Exception ignored) {}
         }
     }
 
+    /**
+     * Returns the number of crew members lost if the player loses.
+     *
+     * @return number of lost crew members
+     */
     @Override
     public int getCrewNumber() {
         return lostCrew;
     }
 
+    /**
+     * Returns the number of credits gained if the player wins.
+     *
+     * @return number of credits gained
+     */
     @Override
     public int getGainedCredits() {
         return rewardCredits;
+    }
+
+    /**
+     * Handles a disconnection event from a player.
+     *
+     * @param playerName name of the disconnected player
+     */
+    @Override
+    public void playerDisconnected(String playerName) {
+        if (currentPlayer != null && currentPlayer.getPlayerName().equals(playerName)) {
+            if (won == 1) {
+                choice(playerName,false);
+            }
+            else if (won == -1) {
+                if (penaltyIfLose.initializePenalty(game, playersView, currentPlayer)) {
+                    System.out.println("Error applying automatic penalty");
+                }
+                nextPlayer();
+            }
+            else{
+                playerIndex--;
+                nextPlayer();
+            }
+        }
     }
 }

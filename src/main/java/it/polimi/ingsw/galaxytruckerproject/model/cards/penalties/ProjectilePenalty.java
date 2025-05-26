@@ -18,6 +18,11 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
 
+/**
+ * Represents a penalty involving one or more projectile impacts on a player's ship.
+ * This class handles the logic for determining whether a projectile hits or is defended
+ * against, updates the ship state accordingly, and notifies the player.
+ */
 public class ProjectilePenalty extends Penalty {
     private final ArrayList<Projectile> listOfProjectiles;
     private int diceRoll = -1;
@@ -25,11 +30,21 @@ public class ProjectilePenalty extends Penalty {
     private ArrayList<Set<Coordinates>> branch;
     private Coordinates destroyedTile = null;
 
+    /**
+     * Constructs a ProjectilePenalty with the given list of projectiles.
+     *
+     * @param listOfShots the list of projectiles to be processed
+     */
     @JsonCreator
     public ProjectilePenalty(@JsonProperty("listOfShots") ArrayList<Projectile> listOfShots) {
         this.listOfProjectiles = listOfShots;
     }
 
+    /**
+     * Returns the list of projectiles in this penalty.
+     *
+     * @return the list of projectiles
+     */
     public ArrayList<Projectile> getListOfProjectiles() {
         return listOfProjectiles;
     }
@@ -42,6 +57,14 @@ public class ProjectilePenalty extends Penalty {
         }
         return string.toString();
     }
+
+    /**
+     * Applies a projectile impact to the given player and returns the destroyed tile if any.
+     *
+     * @param view   the virtual view used for notifications
+     * @param player the player being targeted
+     * @return the coordinates of the destroyed tile or null if no damage
+     */
     @Override
     public Coordinates hitOrMiss(VirtualView view, Player player) {
         if (defenseStatus == null) {
@@ -80,11 +103,21 @@ public class ProjectilePenalty extends Penalty {
                 }
             }
         }
+        else if (defenseStatus == Defense.HIT || defenseStatus == Defense.CHOOSETOUSEBATTERY) {
+            destroyedTile = playerGetsHit(player, view);
+            return destroyedTile;
+        }
         return null;
     }
 
-
-    //asks the player to roll the dices
+    /**
+     * Initializes the penalty and requests dice input from the player, if necessary.
+     *
+     * @param game   the game context
+     * @param view   the virtual view used for communication
+     * @param player the player subject to the penalty
+     * @return true if further interaction is needed, false otherwise
+     */
     @Override
     public boolean initializePenalty(GameInterface game, VirtualView view, Player player) {
         this.defenseStatus = null;
@@ -115,13 +148,22 @@ public class ProjectilePenalty extends Penalty {
         return true;
     }
 
-
+    /**
+     * Prints detailed information about all projectiles in the penalty.
+     */
     public void printInfoOnAllProjectiles() {
         for (Projectile projectile : listOfProjectiles) {
             System.out.println(projectile.toString() + "\n");
         }
     }
 
+    /**
+     * Destroys the specified tile on the player's ship and handles early landing if needed.
+     *
+     * @param player the player affected
+     * @param view   the interface to notify about early landing
+     * @return the coordinates of the destroyed tile
+     */
     public Coordinates playerGetsHit (Player player, ViewInterface view) {
         Coordinates toDestroy = this.getBrokenTile();
         ArrayList<Set<Coordinates>> returned = player.getShipBoard().destroyTile(toDestroy);
@@ -139,28 +181,46 @@ public class ProjectilePenalty extends Penalty {
         return toDestroy;
     }
 
+    /**
+     * Prepares the penalty object for processing the next projectile.
+     */
     public void resetForNextProjectile () {
         this.listOfProjectiles.removeFirst();
         diceRoll = -1;
-        //defenseStatus = null;
         branch = null;
         destroyedTile = null;
     }
 
+    /**
+     * Returns the coordinates of the tile targeted by the next projectile.
+     *
+     * @return the coordinates of the tile
+     */
     public Coordinates getBrokenTile () {
         return listOfProjectiles.getFirst().getCoordinatesToDestroy();
     }
 
+    /**
+     * Performs a random dice roll and applies the projectile impact.
+     *
+     * @param view   the virtual view
+     * @param player the player being attacked
+     * @return the destroyed tile coordinates or null
+     */
     @Override
     public Coordinates randomRollForOne (VirtualView view, Player player) {
         Random rand = new Random();
         this.diceRoll = 2 + rand.nextInt(11);
-
         return hitOrMiss(view, player);
     }
 
-
-
+    /**
+     * Allows the player to choose which disconnected branch of the ship to maintain.
+     *
+     * @param player   the player affected
+     * @param received the coordinates indicating the branch to keep
+     * @return the list of coordinates to remove
+     */
     @Override
     public ArrayList<Coordinates> chooseToMaintain(Player player, ArrayList<Coordinates> received) {
         int i = 0;
@@ -193,10 +253,16 @@ public class ProjectilePenalty extends Penalty {
         }
     }
 
+    /**
+     * Allows the player to use a battery to defend against a projectile.
+     *
+     * @param player    the player defending
+     * @param batteries the list of battery coordinates
+     * @return the tile used to defend, or null if defense failed
+     */
     @Override
     public Tile playerUsesBatteryToDefend(Player player, ArrayList<Coordinates> batteries) {
         if (player.getShipBoard().getNumBatteries() < 1) {
-            //shouldn't happen
             return null;
         }
         if (batteries.isEmpty()) {
@@ -210,68 +276,113 @@ public class ProjectilePenalty extends Penalty {
         else
             return null;
     }
-        
-    //these methods are needed for meteor swarm
+
+    /**
+     * Sets the dice roll result manually.
+     *
+     * @param diceRoll the dice roll result to set
+     */
     public void setDiceRoll ( int diceRoll){
         this.diceRoll = diceRoll;
     }
 
+    /**
+     * Returns the dice roll result.
+     *
+     * @return the dice roll value
+     */
     @Override
     public int getDiceRoll(){
         return diceRoll;
     }
 
+    /**
+     * Adds a new projectile to the penalty queue.
+     *
+     * @param projectile the projectile to add
+     */
     public void addProjectile (Projectile projectile) {
         this.listOfProjectiles.add(projectile);
     }
 
+    /**
+     * Applies the entire penalty automatically, used in cases like disconnected players.
+     *
+     * @param player the player affected
+     * @param view   the virtual view
+     * @return list of coordinates of all destroyed tiles
+     */
     public ArrayList<Coordinates> automaticProjectilePenalty(Player player, VirtualView view) {
-        ArrayList<Coordinates> startingCabinBranch = new ArrayList<>();
-        startingCabinBranch.add(new Coordinates(2, 3));
         ArrayList<Coordinates> firstBranchCoordinates = new ArrayList<>();
         ArrayList<Coordinates> totalRemovedTiles = new ArrayList<>();
-        ArrayList<Coordinates> removedTiles;
+        ArrayList<Coordinates> removedTiles = new ArrayList<>();
 
         while (!listOfProjectiles.isEmpty()) {
-            if (this.diceRoll == 0) {
+            if (this.diceRoll == -1) {
                 randomRollForOne(view, player);
             }
             if (defenseStatus == Defense.HIT || defenseStatus == Defense.CHOOSETOUSEBATTERY) {
-                // if true: kept the branch with the starting cabin, else kept the first branch
-                if (branch != null){
-                    removedTiles = chooseToMaintain(player, startingCabinBranch);
-                    if (removedTiles != null) {
-                        totalRemovedTiles.addAll(removedTiles);
+                if (branch.size() > 1){
+                    firstBranchCoordinates.clear();
+                    boolean foundCabin = false;
+
+                    for (Set<Coordinates> set : branch) {
+                        if (set.contains(new Coordinates(2, 3))) {
+                            firstBranchCoordinates.addAll(set);
+                            foundCabin = true;
+                            break;
+                        }
                     }
-                    else {
-                        firstBranchCoordinates.clear();
-                        firstBranchCoordinates.add(branch.getFirst().iterator().next());
-                        removedTiles = chooseToMaintain(player, firstBranchCoordinates);
-                        totalRemovedTiles.addAll(removedTiles);
+                    if (!foundCabin && !branch.isEmpty()) {
+                        firstBranchCoordinates.addAll(branch.getFirst());
                     }
+
+                    removedTiles = chooseToMaintain(player, firstBranchCoordinates);
+                    totalRemovedTiles.addAll(removedTiles);
+                    resetForNextProjectile();
                 }
                 else {
                     totalRemovedTiles.add(destroyedTile);
                     resetForNextProjectile();
                 }
+                defenseStatus = null;
             }
             else {
+                defenseStatus = null;
                 resetForNextProjectile();
             }
         }
+
         return totalRemovedTiles;
     }
+
+    /**
+     * Returns the current defense status.
+     *
+     * @return the defense result
+     */
     @Override
     public Defense getDefenseStatus() {
         return defenseStatus;
     }
+
+    /**
+     * Returns the current branches resulting from tile destruction.
+     *
+     * @return the list of disconnected ship branches
+     */
     @Override
     public ArrayList<Set<Coordinates>>  getBranch() {
         return branch;
     }
+
+    /**
+     * Returns the coordinates of the most recently destroyed tile.
+     *
+     * @return the coordinates of the destroyed tile
+     */
     @Override
     public Coordinates getDestroyedTile() {
         return destroyedTile;
     }
 }
-

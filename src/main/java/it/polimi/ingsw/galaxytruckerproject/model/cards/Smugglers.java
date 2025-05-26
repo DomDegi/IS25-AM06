@@ -17,15 +17,38 @@ import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import java.util.ArrayList;
 import java.util.Map;
 
+
+/**
+ * Represents the "Smugglers" enemy card.
+ * If a player defeats the smugglers, they receive a set of goods as a reward.
+ * If they fail, they must lose a certain number of goods.
+ */
 public class Smugglers extends Enemies{
+    /** Penalty applied when the player loses: number of goods to discard. */
     private final GoodsPenalty lostGoods;
+    /** List of goods awarded if the player defeats the smugglers. */
     private final ArrayList<Goods> rewardGoods;
+    /** The current player taking their turn against the smugglers. */
     private Player currentPlayer;
+    /** View associated with the current player. */
     private VirtualView playersView;
+    /** Index of the current player in the in-flight players list. */
     private int playerIndex = -1;
+    /** Outcome of the encounter: 1 = win, -1 = loss, 0 = undecided. */
     private int won;
+    /** Utility to check the validity of goods configuration after reward assignment. */
     private GoodsChecker goodsChecker;
 
+    /**
+     * Creates a new Smugglers card using JSON properties.
+     *
+     * @param level threat level
+     * @param requiredDays number of days lost when taking the reward
+     * @param cannonStrength the strength to beat in cannon power
+     * @param lostGoods number of goods to lose if failed
+     * @param rewardGoods goods to gain if succeeded
+     * @param filePath path to the image of the card
+     */
     @JsonCreator
     public Smugglers(@JsonProperty("level") int level, @JsonProperty("requiredDays") int requiredDays, @JsonProperty("cannonStrength") int cannonStrength, @JsonProperty("lostGoods") int lostGoods, @JsonProperty("rewardGoods") ArrayList<Goods> rewardGoods,  @JsonProperty("imagePath") String filePath) {
         super(level, requiredDays, cannonStrength, filePath);
@@ -35,6 +58,15 @@ public class Smugglers extends Enemies{
         this.won = 0;
     }
 
+    /**
+     * Alternative constructor without an image path.
+     *
+     * @param level threat level
+     * @param requiredDays number of days lost when taking the reward
+     * @param cannonStrength the strength to beat in cannon power
+     * @param lostGoods number of goods to lose if failed
+     * @param rewardGoods goods to gain if succeeded
+     */
     public Smugglers(@JsonProperty("level") int level, @JsonProperty("requiredDays") int requiredDays, @JsonProperty("cannonStrength") int cannonStrength, @JsonProperty("lostGoods") int lostGoods, @JsonProperty("rewardGoods") ArrayList<Goods> rewardGoods) {
         super(level, requiredDays, cannonStrength, null);
         this.lostGoods =new GoodsPenalty(lostGoods);
@@ -43,6 +75,13 @@ public class Smugglers extends Enemies{
         this.won = 0;
     }
 
+
+    /**
+     * Initializes the card with game and player views.
+     *
+     * @param game the game interface
+     * @param viewsMap a map of player names to their views
+     */
     @Override
     public void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap) {
         this.game = game;
@@ -50,6 +89,9 @@ public class Smugglers extends Enemies{
         nextPlayer();
     }
 
+    /**
+     * Moves to the next player in the in-flight list to resolve the encounter.
+     */
     public void nextPlayer() {
         playerIndex++;
         if (playerIndex > game.getNumberOfPlayers() - 1) {
@@ -111,6 +153,13 @@ public class Smugglers extends Enemies{
         }
     }
 
+    /**
+     * Processes the player's cannon attack.
+     *
+     * @param playerName the name of the player
+     * @param doubleCannonPower additional cannon power used
+     * @param batteriesToUse batteries activated for the attack
+     */
     @Override
     public void cannonChoice(String playerName, float doubleCannonPower, ArrayList<Coordinates> batteriesToUse) {
         Player player = game.identifyPlayerByName(playerName);
@@ -163,6 +212,12 @@ public class Smugglers extends Enemies{
         }
     }
 
+    /**
+     * Handles the player's final decision after winning the encounter.
+     *
+     * @param playerName name of the player
+     * @param decision true to accept the reward, false to skip
+     */
     @Override
     public void choice(String playerName, boolean decision) {
         if (!playerName.equals(currentPlayer.getPlayerName()) || won != 1) {
@@ -182,6 +237,13 @@ public class Smugglers extends Enemies{
         }
     }
 
+    /**
+     * Validates and applies the chosen cargo configuration after taking the reward.
+     *
+     * @param playerName the name of the player
+     * @param clientCredits the number of credits after taking the reward
+     * @param updatedCargos updated cargo tiles
+     */
     @Override
     public void manageGoods(String playerName, int clientCredits, ArrayList<CargoHold> updatedCargos) {
         if (!playerName.equals(currentPlayer.getPlayerName())) {
@@ -204,6 +266,12 @@ public class Smugglers extends Enemies{
         }
     }
 
+    /**
+     * Removes the selected goods from the ship after a failed encounter.
+     *
+     * @param playerName the name of the player
+     * @param goodsToRemove coordinates of goods to remove
+     */
     @Override
     public void removeGoods(String playerName, ArrayList<Coordinates> goodsToRemove) {
         Player player = game.identifyPlayerByName(playerName);
@@ -226,19 +294,37 @@ public class Smugglers extends Enemies{
         }
     }
 
+    /**
+     * Returns the list of goods rewarded to the player.
+     *
+     * @param c an unused parameter
+     * @return the reward goods
+     */
     @Override
-
     public ArrayList<Goods> getChosenPlanets(int c) {
         return rewardGoods;
-
     }
 
-
+    /**
+     * Returns the number of goods lost in the penalty.
+     *
+     * @return number of goods to be removed
+     */
     @Override
     public int getGoodsPenalty() {
         return lostGoods.getNumberOfLostGoods();
     }
 
+    @Override
+    public ArrayList<Goods> getGoodsList(String playerName) {
+        return rewardGoods;
+    }
+
+    /**
+     * Provides a string representation of the card.
+     *
+     * @return string with level, lost goods, and reward goods
+     */
     @Override
     public String toString() {
         StringBuilder string = new StringBuilder();
@@ -248,5 +334,36 @@ public class Smugglers extends Enemies{
             string.append(goods.toString()).append(" ");
         }
         return string.toString();
+    }
+
+    /**
+     * Handles player disconnection and resumes the sequence.
+     *
+     * @param playerName the name of the disconnected player
+     */
+    @Override
+    public void playerDisconnected(String playerName) {
+        if (currentPlayer != null && currentPlayer.getPlayerName().equals(playerName)) {
+            if (won == 1 && goodsChecker != null) {
+                ArrayList<Tile> updatedTiles = currentPlayer.automaticGoodsPositioner(rewardGoods);
+                notifyModifiedTiles(playerName,updatedTiles);
+                game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
+                notifyMovement(currentPlayer);
+                game.endCardEvent();
+            }
+            else if (won == 1) {
+                choice(playerName, false);
+            }
+            else if (won == -1) {
+                if (lostGoods.initializePenalty(game,playersView,currentPlayer)){
+                    System.out.println("Automatic goods penalty didn't work");
+                }
+                nextPlayer();
+            }
+            else {
+                playerIndex--;
+                nextPlayer();
+            }
+        }
     }
 }

@@ -8,12 +8,29 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Utility class responsible for validating and applying updates to the cargo hold of a {@link Player}'s {@link ShipBoard}.
+ * It checks for consistency between the client-provided cargo update and the server-side shipboard.
+ */
 public class GoodsChecker {
+    /** The list of goods that can potentially be gained during the current event. */
     private final ArrayList<Goods> possibleGoodsGain;
+
+    /** The player whose cargo is being checked. */
     private final Player currentPlayer;
+
+    /** The coordinates of all cargo hold tiles in the player's shipboard. */
     private final ArrayList<Coordinates> playersCargo;
+
+    /** The maximum credit value the player could theoretically reach with current + new goods. */
     private int maximumPossibleValue;
 
+    /**
+     * Constructs a new {@code GoodsChecker} instance for a given player and list of goods potentially obtained.
+     *
+     * @param currentPlayer the player whose cargo will be validated
+     * @param possibleGoodsGain the list of goods that could be added to the player's cargo
+     */
     public GoodsChecker(Player currentPlayer, ArrayList<Goods> possibleGoodsGain) {
         this.currentPlayer=currentPlayer;
         this.possibleGoodsGain=possibleGoodsGain;
@@ -22,17 +39,21 @@ public class GoodsChecker {
     }
 
     /**
-     * checks if the cargoHolds that have been updated in the client are coherent with the ones in the server:
-     * - the total value of goods in the client shipboard has to be less of the hypothetical max value obtainable gaining
-     *      all the goods in the current event and having space for all of them + the already possessed goods value
-     * - same type of cargo
-     * - same number of spaces
-     * - don't contain hazardous goods (RED) if they don't have the hazard flag
-     * @param clientValue credit value of the goods owned by the client's shipboard
-     * @param updatedCargo the cargoHolds to swap with the ones on the server to update the server shipboard
-     * @return true if the check didn't find anything wrong
-     * At the end calls for swap goods to substitute the tile at those coordinates with the new Cargo
+     * Verifies that the client's updated cargo state is valid and consistent with the server's current cargo state.
+     * The check includes:
+     * <ul>
+     *   <li>The total value must not exceed the theoretical maximum</li>
+     *   <li>The coordinates must match known cargo hold positions</li>
+     *   <li>Each cargo hold must match in size and hazard status</li>
+     *   <li>Non-hazardous cargo must not contain hazardous (RED) goods</li>
+     * </ul>
+     * If all checks pass, the updated cargo is applied to the server-side shipboard.
+     *
+     * @param clientValue the total value of goods as calculated on the client
+     * @param updatedCargo the cargo holds provided by the client for update
+     * @return {@code true} if the update is valid and applied; {@code false} otherwise
      */
+
     public boolean check(int clientValue, ArrayList<CargoHold> updatedCargo) {
         if (clientValue > maximumPossibleValue) {
             return false;
@@ -61,6 +82,11 @@ public class GoodsChecker {
         return true;
     }
 
+    /**
+     * Replaces the cargo holds on the server-side shipboard with those provided from the client.
+     *
+     * @param updatedCargo the list of updated cargo hold tiles to apply to the shipboard
+     */
     public void swapGoods(ArrayList<CargoHold> updatedCargo) {
         ShipBoard playerShip = currentPlayer.getShipBoard();
         for (CargoHold newCargo : updatedCargo) {
@@ -71,7 +97,8 @@ public class GoodsChecker {
 
 
     /**
-     * this method finds out what is the hypothetical max obtainable value by the server shipboard
+     * Computes the maximum possible cargo value the player could legally hold,
+     * based on their current cargo plus the list of newly available goods.
      */
     private void setMaximumValue() {
         int value= currentPlayer.getShipBoard().convertGoodsToCredit();
@@ -81,7 +108,13 @@ public class GoodsChecker {
         this.maximumPossibleValue=value;
     }
 
-
+    /**
+     * Builds a color-coded, numbered string representation of a list of goods,
+     * showing their color and value in cosmic credits.
+     *
+     * @param goodsArray the list of goods to display
+     * @return a formatted string representing the goods and their values
+     */
     public String goodsPrinter(ArrayList<Goods> goodsArray) {
         String ANSI_RESET = "\u001B[0m";
         String ANSI_BLUE = "\u001B[34m";

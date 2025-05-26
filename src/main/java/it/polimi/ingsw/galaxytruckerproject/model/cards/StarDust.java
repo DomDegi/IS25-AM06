@@ -9,47 +9,82 @@ import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Represents the "StarDust" encounter card.
+ * <p>
+ * When executed, each in‐flight player’s ship is delayed by a number of days
+ * equal to the count of their ship’s exposed connectors. Players are processed
+ * in reverse turn order so that the last player is delayed first.
+ * </p>
+ */
 public class StarDust extends Card {
 
+    /**
+     * Constructs a StarDust card with an image.
+     *
+     * @param level     the difficulty level of the card
+     * @param filePath  path to the card’s image resource
+     */
     @JsonCreator
-    public StarDust(@JsonProperty("level") int level, @JsonProperty("imagePath") String filePath) {
-        super(level, 0,filePath);
+    public StarDust(@JsonProperty("level") int level,
+                    @JsonProperty("imagePath") String filePath) {
+        super(level, 0, filePath);
     }
 
+    /**
+     * Constructs a StarDust card without specifying an image.
+     *
+     * @param level  the difficulty level of the card
+     */
     public StarDust(@JsonProperty("level") int level) {
         super(level, 0, null);
     }
 
-
-    //This cards doesn't need any input, so it gets instantly executed when initialized
+    /**
+     * Initializes the card event by storing references to the game and views,
+     * then immediately executes the Stardust effect.
+     *
+     * @param game      the game engine interface
+     * @param viewsMap  mapping from player names to their virtual views
+     */
+    @Override
     public void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap) {
         this.game = game;
         this.viewsMap = viewsMap;
         executeCard();
     }
 
-    //makes so that the player loses as many days as their exposedConnectors
+    /**
+     * Executes the Stardust effect on all in-flight players:
+     * <ul>
+     *   <li>Iterates through the list of players in reverse order.</li>
+     *   <li>For each player, counts the number of exposed connectors on their ship.</li>
+     *   <li>Moves their flight board backward by that count of days.</li>
+     *   <li>Notifies the view of movement if any delay occurred.</li>
+     * </ul>
+     * After processing all players, ends the card event.
+     */
     public void executeCard() {
         ArrayList<Player> players = game.getListOfInFlightPlayers();
-        Player currentPlayer;
-
-        //when moving backward starts from the last
         for (int i = players.size() - 1; i >= 0; i--) {
-            currentPlayer = players.get(i);
-            int playerExposedConnectors = players.get(i).getShipBoard().countExposedConnectors();
-            System.out.println("Exposed connectors: " + playerExposedConnectors);
-            game.getFlightBoard().moveBackward(currentPlayer, playerExposedConnectors);
-
-            if (playerExposedConnectors > 0) {
+            Player currentPlayer = players.get(i);
+            int exposedCount = currentPlayer.getShipBoard().countExposedConnectors();
+            // Delay the player's flight by the number of exposed connectors
+            game.getFlightBoard().moveBackward(currentPlayer, exposedCount);
+            if (exposedCount > 0) {
                 notifyMovement(currentPlayer);
             }
         }
         game.endCardEvent();
     }
 
+    /**
+     * Returns a string representation including the card type and its ID.
+     *
+     * @return a descriptive string of this card
+     */
     @Override
-    public String toString(){
-        return "StarDust" + " id " + id;
+    public String toString() {
+        return "StarDust id " + id;
     }
 }
-

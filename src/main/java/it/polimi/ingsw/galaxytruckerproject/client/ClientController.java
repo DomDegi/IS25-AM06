@@ -59,6 +59,8 @@ public class ClientController {
     private int indexDeckInHandOrPlanet;
     private int hourglassTurns;
 
+    private Thread serverWatchdogThread;
+
     public ClientController() {
         positioned=false;
         this.checking= null;
@@ -786,6 +788,9 @@ public class ClientController {
 
     public boolean firstHourglassTurn() {
         if(hourglassTurns == 0) {
+            if (gameMode == GameMode.LEVEL2) {
+                hourglassTurns = 1;
+            }
             setState(ClientState.WAIT);
             try {
                 virtualController.sendTurnHourGlass();
@@ -1111,15 +1116,14 @@ public class ClientController {
         this.connected = connected;
     }
 
-    public boolean connectRMI(String ip,int port) throws MalformedURLException, NotBoundException, RemoteException {
-        String connection;
+    public boolean connectRMI(String ip, int port) throws MalformedURLException, NotBoundException, RemoteException {
         if(state!=ClientState.CHOOSE_CONNECTION_TYPE&&state!=ClientState.CHOOSE_IP_AND_PORT_RMI){
             return false;
         }
         VirtualViewRMI viewRMI = new VirtualViewRMI(this, view);
         if(ip!=null&& !ip.equals(""))
             ip="localhost";
-        String url= String.format("rmi://%s:%d/VirtualViewRMI",ip,port);
+        String url = String.format("rmi://%s:%d/ControllerFactory", ip, port);
         ControllerFactory controllerFactory = (ControllerFactory) Naming.lookup(url);
         this.virtualController = controllerFactory.createController();
         virtualController.setView(viewRMI);
@@ -1160,10 +1164,31 @@ public class ClientController {
 
     public void ping() {
         try {
-            virtualController.ping();
+            virtualController.ping();  // pings server
+            restartServerWatchdog();  // restarts watchdog timer
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            this.setState(ClientState.RECONNECTING);
         }
+    }
+
+    private void restartServerWatchdog() {
+        // interrupts existing thread if it exists
+        if (serverWatchdogThread != null && serverWatchdogThread.isAlive()) {
+            serverWatchdogThread.interrupt();
+        }
+
+        // Creates new thread that awaits timeout
+        serverWatchdogThread = new Thread(() -> {
+            try {
+                Thread.sleep(30000);
+                // Se il thread non è stato interrotto in tempo, il server è considerato down
+                this.setState(ClientState.RECONNECTING);
+            } catch (InterruptedException ignored) {
+                // thread was interrupted from a new server ping: is all good
+            }
+        });
+
+        serverWatchdogThread.start();
     }
 
     public void turnHourglass(int i) {

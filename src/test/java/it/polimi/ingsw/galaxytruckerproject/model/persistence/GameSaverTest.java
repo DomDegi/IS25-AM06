@@ -169,7 +169,7 @@ class GameSaverTest {
         game.drawCard();
         game.drawCard();
     }
-
+    // For this test to save correctly autosave has to be turned off
     @Test
     public void save_test(){
         GameSaver.save(gameController);

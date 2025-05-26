@@ -7,13 +7,29 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 
 import java.io.*;
 
+/**
+ * Utility class for serializing and deserializing the {@link Game} object and related game state data.
+ * Provides methods for saving to and loading from files or writers, supporting both full and lightweight (update) saves.
+ *
+ * <p>This class is not instantiable.</p>
+ */
+
 public class GameSerializerDeserializer {
 
-
+    /**
+     * Private constructor to prevent instantiation of this utility class.
+     */
     private GameSerializerDeserializer() {
     }
 
-
+    /**
+     * Serializes the full game state to the given writer.
+     * Includes game mode, player count, game state, card IDs, tile stack, and turned tile map.
+     *
+     * @param game the game instance to serialize
+     * @param writer the destination writer
+     * @throws RuntimeException if an I/O error occurs
+     */
     public static void save(GameInterface game, Writer writer) {
         try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
             String gameData = game.toStringGameData(); //Saves gameMode playerCount gameState
@@ -35,6 +51,14 @@ public class GameSerializerDeserializer {
         }
     }
 
+    /**
+     * Serializes a lightweight version of the game state for update purposes.
+     * Excludes tile stack data to reduce size.
+     *
+     * @param game the game instance to serialize
+     * @param writer the destination writer
+     * @throws RuntimeException if an I/O error occurs
+     */
     public static void saveForUpdates(GameInterface game, Writer writer) {
         try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
             String gameData = game.toStringGameData(); //Saves gameMode playerCount gameSate
@@ -53,6 +77,13 @@ public class GameSerializerDeserializer {
         }
     }
 
+    /**
+     * Appends the serialized full game state to the given file.
+     *
+     * @param game the game instance to serialize
+     * @param file the file where the game data will be saved
+     * @throws RuntimeException if an I/O error occurs
+     */
     public static void save(GameInterface game, File file) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
             save(game, writer);
@@ -62,6 +93,18 @@ public class GameSerializerDeserializer {
         }
     }
 
+    /**
+     * Loads and reconstructs the game state from the given reader and sets it on the provided {@link GameController}.
+     * Reads four lines representing:
+     *  - game metadata (mode, player count, state),
+     *  - in-game cards,
+     *  - tile stack keys,
+     *  - turned tile keys.
+     *
+     * @param gameController the controller to assign the reconstructed game to
+     * @param reader the source reader containing serialized game data
+     * @throws RuntimeException if an I/O error occurs
+     */
     public static void load(GameController gameController, BufferedReader reader) {
         try {
 

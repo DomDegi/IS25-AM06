@@ -6,6 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.controller.MultiGameController;
 import it.polimi.ingsw.galaxytruckerproject.network.Server;
 
 import java.io.ObjectInputFilter;
+import java.net.InetAddress;
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 
@@ -22,15 +23,16 @@ public class RMIServer implements Server {
         try {
             ControllerFactory controllerFactory = new ControllerFactoryImpl(multiGameController);
             // Avvio il registry (opzionale se già avviato esternamente)
-            LocateRegistry.createRegistry(1099); // porta standard RMI
+            int port = 1099;
+            String ip = InetAddress.getLocalHost().getHostAddress();
+            LocateRegistry.createRegistry(port); // porta standard RMI
             // Registro l'oggetto con un nome
-            Naming.rebind("rmi://localhost/ControllerFactory", controllerFactory);
-            System.out.println("RMIServer pronto!");
+            String url = String.format("rmi://%s:%d/ControllerFactory", ip, port);
+            Naming.rebind(url, controllerFactory);
+            System.out.println("RMIserver is on at " + ip + ":" + port);
             multiGameController.playPingPong();
         } catch (Exception e) {
-            e.printStackTrace();
         }
-
     }
 }
 
