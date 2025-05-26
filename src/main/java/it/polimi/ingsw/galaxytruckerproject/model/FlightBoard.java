@@ -180,8 +180,10 @@ public class FlightBoard implements Serializable {
         if (!podium.contains(player)) {
             throw new IllegalArgumentException("Invalid Player:" + player);
         }
-        int playerRank = player.getPlayerRanking() - 1;
-        occupiedPos.remove(playerRank);
+        int playerRank = player.getPlayerRanking()-1;
+        if(playerRank>=0){
+            occupiedPos.remove(playerRank);
+        }
         inGamePlayers.remove(player);
         podium.remove(player);
         freePodiumPosition--;

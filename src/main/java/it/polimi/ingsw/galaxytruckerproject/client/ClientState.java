@@ -22,6 +22,7 @@ public enum ClientState implements Serializable {
     S_MANAGE_DRAWN_TILE,//ruota, posiziona o scarta
     S_FINISHED,//costruzione della shipboard finita, attesa della verifica correttezza
     WAIT,
+    WAIT_TO_DRAW,
     START_SHIP_CREATION,
     DRAW_CARD,
     MANAGE_CABINS,
@@ -51,6 +52,7 @@ public enum ClientState implements Serializable {
             case WAIT -> {return "Waiting for server";}
             case START_SHIP_CREATION -> {return "TrialFlight: Start the ship creation [start] Level2Flight: Start the ship creation by turning the hourglass [Turn|Start]";}
             case DRAW_CARD -> {return "Draw a card [draw]";}
+            case WAIT_TO_DRAW -> {return "Waiting other players";}
             case MANAGE_CABINS -> {return "Select the crew type in yours equip cabins [humans] [purpleAlien] [brownAlien]";}
             case ROLL_DICE -> {return"Roll the dice [roll]";}
             case RECONNECTING ->  {return "Server disconnected: repeat the login or close the game? [login] [close]";}

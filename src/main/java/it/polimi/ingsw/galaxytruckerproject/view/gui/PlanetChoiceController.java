@@ -3,17 +3,20 @@ package it.polimi.ingsw.galaxytruckerproject.view.gui;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.Planet;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -22,9 +25,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static javafx.scene.paint.Color.BURLYWOOD;
 import static javafx.scene.paint.Color.rgb;
 
-public class RollDiceController {
+public class PlanetChoiceController {
     @FXML
     public Polygon p0;
     @FXML
@@ -120,12 +124,6 @@ public class RollDiceController {
     public Group flightImage;
 
     @FXML
-    public VBox box;
-
-    @FXML
-    public Label text;
-
-    @FXML
     public ImageView shipImage;
 
     @FXML
@@ -135,9 +133,15 @@ public class RollDiceController {
     public GridPane tilesTable;
 
     @FXML
+    public VBox box;
+
+    @FXML
+    public Label text;
+
+    @FXML
     public void initialize() {
+        text.setText("Choose a Planet");
         deck.setDisable(true);
-        text.setText("Roll the Dice");
         Polygon[] polygons = new Polygon[]{p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23};
         int max = 24;
         if (GUI.getController().getGameMode() == GameMode.LEVEL2) {
@@ -198,6 +202,20 @@ public class RollDiceController {
             }
         }
         showCard();
+        index=0;
+        box.getChildren().clear();
+        for(Planet planet:GUI.displayableCards().getFirst().getListOfPlanets()){
+            Button button= new Button();
+            button.setPrefSize(75,75);
+            button.setText((index+1)+"° Planet ");
+            int finalIndex = index;
+            button.setOnAction(_ -> {
+                choosePlanet(finalIndex);
+            });
+            button.setDisable(planet.getOccupationStatus());
+            box.getChildren().add(button);
+            index++;
+        }
     }
 
     public void showCard() {
@@ -213,10 +231,26 @@ public class RollDiceController {
         return new Image(stream);
     }
 
-    @FXML
-    public void roll() {
+    public void update(){
+        box.getChildren().clear();
+        int index=0;
+        for(Planet planet:GUI.getController().getDisplayedCard().getFirst().getListOfPlanets()){
+            Button button= new Button();
+            button.setPrefSize(75,75);
+            button.setText((index+1)+"° Planet ");
+            int finalIndex = index;
+            button.setOnAction(event -> {
+                choosePlanet(finalIndex);
+            });
+            button.setDisable(planet.getOccupationStatus());
+            box.getChildren().add(button);
+            index++;
+        }
+    }
+
+    public void choosePlanet(int index){
         waitOthers();
-        GUI.roll();
+        GUI.choosePlanet(index);
     }
 
     private void waitOthers(){
@@ -224,3 +258,4 @@ public class RollDiceController {
         text.setText("Waiting for other players...");
     }
 }
+

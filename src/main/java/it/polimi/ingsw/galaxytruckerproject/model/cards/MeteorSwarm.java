@@ -81,7 +81,7 @@ public class MeteorSwarm extends Card {
     public void initializeCard(GameInterface game, Map<String, VirtualView> viewsMap) {
         this.game = game;
         this.viewsMap = viewsMap;
-        this.inFlightPlayers = game.getListOfInFlightPlayers();
+        this.inFlightPlayers = new ArrayList<>(game.getListOfInFlightPlayers());
         this.currentMeteorIndex = 0;
         startMeteorPhase();
     }

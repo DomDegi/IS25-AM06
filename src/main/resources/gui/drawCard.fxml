@@ -112,7 +112,7 @@
                         </Group>
                      </children>
                   </StackPane>
-                  <Label />
+                  <Label fx:id="text" />
                   <AnchorPane prefHeight="442.0" prefWidth="652.0">
                      <children>
                         <ImageView fx:id="shipImage" fitHeight="442.0" fitWidth="611.0" layoutX="30.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.05303955078125" AnchorPane.topAnchor="0.0">

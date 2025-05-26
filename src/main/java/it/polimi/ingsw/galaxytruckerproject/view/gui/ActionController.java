@@ -14,6 +14,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
@@ -122,6 +123,9 @@ public class ActionController {
     public ImageView shipImage;
 
     @FXML
+    public VBox box;
+
+    @FXML
     public Label text;
 
     @FXML
@@ -132,6 +136,7 @@ public class ActionController {
 
     @FXML
     public void initialize() {
+        deck.setDisable(true);
         text.setText("You can accept or deny [yes] [no]");
         Polygon[] polygons = new Polygon[]{p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23};
         int max = 24;
@@ -192,10 +197,6 @@ public class ActionController {
                 tilesTable.add(imageView, tile.getCoordinates().getY(), tile.getCoordinates().getX());
             }
         }
-
-        if (GUI.getController().getState() == ClientState.WAIT) {
-            deck.setDisable(true);
-        }
         showCard();
     }
 
@@ -214,13 +215,18 @@ public class ActionController {
 
     @FXML
     public void yes() {
-        GUI.showDrawCard();
+        waitOthers();
         GUI.yes();
     }
 
     @FXML
     public void no() {
-        GUI.showDrawCard();
+        waitOthers();
         GUI.no();
+    }
+
+    private void waitOthers(){
+        box.getChildren().clear();
+        text.setText("Waiting for other players...");
     }
 }

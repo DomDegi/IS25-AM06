@@ -193,6 +193,8 @@ public class ClientController {
     }
 
     public boolean leaveGame() {
+        decksNotAvailable(new ArrayList<>());
+        colorsNotAvailable(new ArrayList<>());
         if (gameMode != null) {
             try {
                 virtualController.leaveGame();
@@ -642,13 +644,8 @@ public class ClientController {
                 }
                 if (gameMode == GameMode.LEVEL2) {
                     if (me.getShipBoard().getCabinsCoordinates() == null || me.getShipBoard().getCabinsCoordinates().isEmpty() || me.getShipBoard().getCabinsCoordinates().size() == 1) {
-                        if(me.getShipBoard().getCabinsCoordinates() == null)
-                            System.out.println("null");
-                        if(me.getShipBoard().getCabinsCoordinates().isEmpty())
-                            System.out.println("empty");
-                        if(me.getShipBoard().getCabinsCoordinates().size() == 1)
-                            System.out.println("1");
                         setState(ClientState.WAIT);
+                        setState(ClientState.WAIT_TO_DRAW);
                         try {
                             virtualController.notifyNewCrewArrangement(new ArrayList<>());
                         } catch (RemoteException e) {
@@ -691,6 +688,8 @@ public class ClientController {
                 view.printProjectile(displayedCard.getFirst().getListOfProjectiles().getFirst());
                 displayedCard.getFirst().getListOfProjectiles().removeFirst();
             }
+            case WAIT_TO_DRAW ->
+                    phase = GamePhases.CARDS;
             case DRAW_CARD -> {
                 phase = GamePhases.CARDS;
 

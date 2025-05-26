@@ -18,6 +18,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
@@ -118,6 +119,12 @@ public class CoordRequestController {
     public ImageView deck;
 
     @FXML
+    public VBox box;
+
+    @FXML
+    public Label text;
+
+    @FXML
     public Group flightImage;
 
     @FXML
@@ -129,15 +136,12 @@ public class CoordRequestController {
     public GridPane tilesTable;
 
     @FXML
-    public Label actionLabel;
-
-    @FXML
     public Button doneButton;
 
     @FXML
     public void initialize() {
         doneButton.setVisible(true);
-        actionLabel.setVisible(true);
+        text.setVisible(true);
         deck.setDisable(true);
         Polygon[] polygons = new Polygon[]{p0,p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23};
         int max=24;
@@ -205,40 +209,43 @@ public class CoordRequestController {
         switch (type) {
             case CHOOSE_TO_BREAK -> {
                 doneButton.setVisible(true);
-                actionLabel.setText("Choose Tiles to Break");
+                text.setText("Choose Tiles to Break");
             }
             case CHOOSE_TO_MAINTAIN -> {
                 doneButton.setVisible(false);
-                actionLabel.setText("Choose branch to Maintain");
+                text.setText("Choose branch to Maintain");
             }
             case CHOOSE_BATTERY -> {
                 doneButton.setVisible(true);
-                actionLabel.setText("Choose Battery to Use");
+                text.setText("Choose Battery to Use");
             }
             case CHOOSE_DOUBLE_CANNON ->{
                 doneButton.setVisible(true);
-                actionLabel.setText("Choose Double Cannons to Use and than Batteries to Activate them");
+                text.setText("Choose Double Cannons to Use and than Batteries to Activate them");
             }
             case CHOOSE_DOUBLE_ENGINE -> {
                 doneButton.setVisible(true);
-                actionLabel.setText("Choose Double Engines to Use and than Batteries to Activate them");
+                text.setText("Choose Double Engines to Use and than Batteries to Activate them");
             }
             case CHOOSE_CREW -> {
                 doneButton.setVisible(false);
-                actionLabel.setText("Choose Crewmates");
+                text.setText("Choose Crewmates");
             }
             case REMOVE_GOODS -> {
                 doneButton.setVisible(false);
-                actionLabel.setText("Choose Goods to Remove");
+                text.setText("Choose Goods to Remove");
             }
         }
     }
 
     @FXML
     public void doneCoord(){
-        doneButton.setVisible(false);
-        actionLabel.setVisible(false);
-        GUI.showDrawCard();
+        waitOthers();
         GUI.doneCoord();
+    }
+
+    private void waitOthers(){
+        box.getChildren().clear();
+        text.setText("Waiting for other players...");
     }
 }

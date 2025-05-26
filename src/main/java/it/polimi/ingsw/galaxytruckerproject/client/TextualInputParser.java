@@ -389,7 +389,7 @@ public class TextualInputParser {
                     }
                 }
             }
-            case WAIT ->{
+            case WAIT,WAIT_TO_DRAW ->{
                 switch(clientController.getPhase()){
                     case LOGIN -> {
                         view.showGenericMessage("Wrong input in wait");

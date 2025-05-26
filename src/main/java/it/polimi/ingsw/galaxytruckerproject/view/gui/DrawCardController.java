@@ -8,6 +8,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -127,6 +128,9 @@ public class DrawCardController {
     public GridPane tilesTable;
 
     @FXML
+    public Label text;
+
+    @FXML
     public void initialize() {
         Polygon[] polygons = new Polygon[]{p0,p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23};
         int max=24;
@@ -164,6 +168,18 @@ public class DrawCardController {
             index++;
         }
 
+        refresh();
+
+        if(GUI.getController().getState()== ClientState.WAIT||GUI.getController().getState()== ClientState.WAIT_TO_DRAW){
+            deck.setDisable(true);
+            text.setText("Waiting for other players...");
+        }else{
+            text.setText("Draw a Card");
+        }
+        showCard();
+    }
+
+    public void refresh(){
         tilesTable.getChildren().clear();
         ArrayList<Tile> tiles=new ArrayList<>();
         for(int i=0;i<=6;i++){
@@ -187,11 +203,6 @@ public class DrawCardController {
                 tilesTable.add(imageView,tile.getCoordinates().getY(),tile.getCoordinates().getX());
             }
         }
-
-        if(GUI.getController().getState()== ClientState.WAIT){
-            deck.setDisable(true);
-        }
-        showCard();
     }
 
     public void showCard(){

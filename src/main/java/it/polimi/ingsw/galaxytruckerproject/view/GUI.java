@@ -26,9 +26,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -36,16 +35,16 @@ import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.*;
+import java.util.Timer;
 
 public class GUI extends Application implements DisplayableView {
 
     private static String gameName;
     private static int numberOfPlayers;
     private static GameMode mode;
-    private static String css;
+    private static String css1;
     private static String css2;
     private static String css3;
-    private static String css4;
     private static Stage primaryStage;
     private static BorderPane layout;
     private static ClientController controller;
@@ -58,6 +57,8 @@ public class GUI extends Application implements DisplayableView {
     private static double percentage1=0;
     private static double percentage2=0;
     private static double percentage3=0;
+    private static Button quit;
+    private static Button fullScreen;
 
     public static void startGui(ClientController controller) {
         GUI.controller =controller;
@@ -68,7 +69,7 @@ public class GUI extends Application implements DisplayableView {
     public void start(Stage primaryStage) throws IOException {
         GUI.primaryStage = primaryStage;
         GUI.primaryStage.setTitle("Galaxy Trucker");
-        css= Objects.requireNonNull(GUI.class.getResource("/gui/css/WelcomeStyle.css")).toExternalForm();
+        css1= Objects.requireNonNull(GUI.class.getResource("/gui/css/WelcomeStyle.css")).toExternalForm();
         css2= Objects.requireNonNull(GUI.class.getResource("/gui/css/LobbyStyle.css")).toExternalForm();
         css3= Objects.requireNonNull(GUI.class.getResource("/gui/css/ShipStyle.css")).toExternalForm();
         showMainView();
@@ -79,7 +80,7 @@ public class GUI extends Application implements DisplayableView {
     private void showMainView() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/mainView.fxml"));
         layout = loader.load();
-        layout.getStylesheets().add(css);
+        layout.getStylesheets().add(css1);
         primaryStage.setScene(new Scene(layout));
         primaryStage.show();
     }
@@ -95,16 +96,20 @@ public class GUI extends Application implements DisplayableView {
         controller.setState(ClientState.CHOOSE_CONNECTION_TYPE);
     }
 
-    public static void setConnection(String connectionTipe,String ip) {
+    public static void setConnection(String connectionTipe,String ip, int port) {
         if (connectionTipe.equals("r")) {
             try {
-                controller.connectRMI(ip,1099);
+                if(port==0)
+                    port=1099;
+                controller.connectRMI(ip,port);
             } catch (NotBoundException | MalformedURLException | RemoteException e) {
                 throw new RuntimeException(e);
             }
         } else {
             try {
-                controller.connectSocket(ip,12345);
+                if(port==0)
+                    port=12345;
+                controller.connectSocket(ip,port);
             } catch (NotBoundException | IOException e) {
                 throw new RuntimeException(e);
             }
@@ -174,12 +179,8 @@ public class GUI extends Application implements DisplayableView {
 
     public static void turnHourglass(){
         switch (controller.getState()){
-            case S_END_DRAW_TILE_CARD,S_MANAGE_DRAWN_TILE ->{
-                controller.secondHourglassTurn();
-            }
-            case S_FINISHED -> {
-                controller.thirdHourglassTurn();
-            }
+            case S_END_DRAW_TILE_CARD,S_MANAGE_DRAWN_TILE -> controller.secondHourglassTurn();
+            case S_FINISHED -> controller.thirdHourglassTurn();
             case WAIT -> {
                 if(controller.getPreviousState()==ClientState.S_FINISHED)
                     controller.thirdHourglassTurn();
@@ -227,6 +228,10 @@ public class GUI extends Application implements DisplayableView {
         controller.rollDice();
     }
 
+    public static void choosePlanet(int index){
+        controller.choosePlanet(index);
+    }
+
 //showMethods---------------------------------------------------------------------------------------------------------------
     public static void clear(){
         showMessage("");
@@ -245,7 +250,7 @@ public class GUI extends Application implements DisplayableView {
         });
     }
 
-    public static void showLogin() {
+    private static void showLogin() {
         Platform.runLater(() -> {
             loader = new FXMLLoader(GUI.class.getResource("/gui/login.fxml"));
             BorderPane newLayer;
@@ -258,7 +263,7 @@ public class GUI extends Application implements DisplayableView {
         });
     }
 
-    public static void showLobby() {
+    private static void showLobby() {
         Platform.runLater(() -> {
             loader = new FXMLLoader(GUI.class.getResource("/gui/lobby.fxml"));
             BorderPane newLayer;
@@ -271,7 +276,7 @@ public class GUI extends Application implements DisplayableView {
         });
     }
 
-    public static void showCreateNewGame(){
+    private static void showCreateNewGame(){
         Platform.runLater(() -> {
             loader = new FXMLLoader(GUI.class.getResource("/gui/createNewGame.fxml"));
             BorderPane newLayer;
@@ -284,7 +289,7 @@ public class GUI extends Application implements DisplayableView {
         });
     }
 
-    public static void showChooseColor(){
+    private static void showChooseColor(){
         Platform.runLater(() -> {
             loader = new FXMLLoader(GUI.class.getResource("/gui/chooseColor.fxml"));
             BorderPane newLayer;
@@ -297,15 +302,14 @@ public class GUI extends Application implements DisplayableView {
         });
     }
 
-    public static void showWait(){
+    private static void showWait(){
         Platform.runLater(() -> {
+            ProgressIndicator circle = new ProgressIndicator();
             if(controller.getPhase()== GamePhases.LOGIN){
-                ProgressIndicator circle = new ProgressIndicator();
                 circle.setPrefSize(100, 100);
                 circle.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
                 layout.setCenter(circle);
             }else{
-                ProgressIndicator circle = new ProgressIndicator();
                 circle.setPrefSize(50, 50);
                 circle.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
                 layout.setBottom(circle);
@@ -326,7 +330,7 @@ public class GUI extends Application implements DisplayableView {
         });
     }
 
-    public static void showS_EndDrawTilesCards() {
+    private static void showS_EndDrawTilesCards() {
         Platform.runLater(() -> {
             loader = new FXMLLoader(GUI.class.getResource("/gui/s_EndDrawTilesCards.fxml"));
             BorderPane newLayer;
@@ -339,7 +343,7 @@ public class GUI extends Application implements DisplayableView {
         });
     }
 
-    public static void showS_ManageDrawTilesCards() {
+    private static void showS_ManageDrawTilesCards() {
         Platform.runLater(() -> {
             loader = new FXMLLoader(GUI.class.getResource("/gui/s_ManageDrawnTile.fxml"));
             BorderPane newLayer;
@@ -352,7 +356,7 @@ public class GUI extends Application implements DisplayableView {
         });
     }
 
-    public static void showDeckCheck() {
+    private static void showDeckCheck() {
         Platform.runLater(() -> {
             loader = new FXMLLoader(GUI.class.getResource("/gui/deckCheck.fxml"));
             BorderPane newLayer;
@@ -365,7 +369,7 @@ public class GUI extends Application implements DisplayableView {
         });
     }
 
-    public static void showEndShip() {
+    private static void showEndShip() {
         Platform.runLater(() -> {
             loader = new FXMLLoader(GUI.class.getResource("/gui/endShipBoard.fxml"));
             BorderPane newLayer;
@@ -378,7 +382,7 @@ public class GUI extends Application implements DisplayableView {
         });
     }
 
-    public static void showDrawCard() {
+    private static void showDrawCard() {
         Platform.runLater(() -> {
             loader = new FXMLLoader(GUI.class.getResource("/gui/drawCard.fxml"));
             BorderPane newLayer;
@@ -442,6 +446,45 @@ public class GUI extends Application implements DisplayableView {
             layout.setCenter(newLayer);
         });
     }
+
+    private static void showPlanetChoice(){
+        Platform.runLater(() -> {
+            loader = new FXMLLoader(GUI.class.getResource("/gui/planetChoice.fxml"));
+            BorderPane newLayer;
+            try {
+                newLayer = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            layout.setCenter(newLayer);
+        });
+    }
+
+    private static void showManageGoods(){
+        Platform.runLater(() -> {
+            loader = new FXMLLoader(GUI.class.getResource("/gui/manageGoods.fxml"));
+            BorderPane newLayer;
+            try {
+                newLayer = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            layout.setCenter(newLayer);
+        });
+    }
+
+    private static void showEnd(){
+        Platform.runLater(() -> {
+            loader = new FXMLLoader(GUI.class.getResource("/gui/end.fxml"));
+            BorderPane newLayer;
+            try {
+                newLayer = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            layout.setCenter(newLayer);
+        });
+    }
     public static void showMessage(String message) {
         Platform.runLater(() -> {
             Label stringLabel = new Label(message);
@@ -459,7 +502,7 @@ public class GUI extends Application implements DisplayableView {
         });
     }
 
-    public static void addJoinableGame(ArrayList<GameInfo> joinableGames) {
+    private static void addJoinableGame(ArrayList<GameInfo> joinableGames) {
         if (joinableGames == null) {
             return;
         }
@@ -478,38 +521,79 @@ public class GUI extends Application implements DisplayableView {
 
     public static void addCheckShip(){
         Platform.runLater(() -> {
-            VBox top=new VBox();
+            HBox top=new HBox();
             VBox right=new VBox();
             VBox left=new VBox();
+            top.setSpacing(500);
+            quit=new Button("QUIT");
+            fullScreen=new Button("⛶");
+            quit.setOnAction(_ -> {
+                top.getChildren().clear();
+                left.getChildren().clear();
+                right.getChildren().clear();
+                layout.setTop(null);
+                layout.setCenter(null);
+                layout.setLeft(null);
+                layout.setRight(null);
+                ship1 = new Button();
+                ship2 = new Button();
+                ship3 = new Button();
+                ship1.setPrefWidth(52);
+                ship1.setPrefHeight(614);
+                ship2.setPrefHeight(52);
+                ship2.setPrefWidth(614);
+                ship3.setPrefWidth(52);
+                ship3.setPrefHeight(614);
+                ship1.setAlignment(Pos.CENTER);
+                ship2.setAlignment(Pos.CENTER);
+                ship3.setAlignment(Pos.CENTER);
+                ship1.setVisible(false);
+                ship2.setVisible(false);
+                ship3.setVisible(false);
+                top.getChildren().add(ship2);
+                left.getChildren().add(ship1);
+                right.getChildren().add(ship3);
+                layout.setTop(top);
+                layout.setLeft(left);
+                layout.setRight(right);
+                layout.getStylesheets().set(0,css2);
+                controller.leaveGame();
+            });
+            quit.setPrefWidth(100);
+            quit.setBorder(new Border((BorderStroke) null));
+            quit.setFont(new Font("Franklin Gothic Heavy", 10));
+            fullScreen.setOnAction(_ -> primaryStage.setFullScreen(!primaryStage.isFullScreen()));
+            fullScreen.setPrefWidth(100);
+            fullScreen.setBorder(new Border((BorderStroke) null));
+            fullScreen.setFont(new Font("Franklin Gothic Heavy", 10));
+            top.getChildren().add(fullScreen);
             top.setAlignment(Pos.CENTER);
             right.setAlignment(Pos.CENTER);
             left.setAlignment(Pos.CENTER);
             if (controller.getFlightBoard().getInGamePlayers().size() == 2) {
                 ship1 = new Button();
-                ship1.setOnAction(event -> {
-                    checkShip(1);
-                });
+                ship1.setOnAction(_ -> checkShip(1));
                 ship1.setPrefHeight(52);
                 ship1.setPrefWidth(614);
                 ship1.setAlignment(Pos.CENTER);
                 top.getChildren().add(ship1);
-                layout.setTop(top);
             }
             if (controller.getFlightBoard().getInGamePlayers().size() == 3) {
                 ship1 = new Button();
                 ship2 = new Button();
-                ship1.setOnAction(event -> {
-                    checkShip(1);
-                });
-                ship2.setOnAction(event -> {
-                    checkShip(2);
-                });
+                ship1.setOnAction(_ -> checkShip(1));
+                ship2.setOnAction(_ -> checkShip(2));
                 ship1.setPrefWidth(52);
                 ship1.setPrefHeight(614);
                 ship2.setPrefWidth(52);
                 ship2.setPrefHeight(614);
                 ship1.setAlignment(Pos.CENTER);
                 ship2.setAlignment(Pos.CENTER);
+                ship3=new Button();
+                ship3.setPrefHeight(52);
+                ship3.setPrefWidth(614);
+                ship3.setVisible(false);
+                top.getChildren().add(ship3);
                 left.getChildren().add(ship1);
                 right.getChildren().add(ship2);
                 layout.setLeft(left);
@@ -519,15 +603,9 @@ public class GUI extends Application implements DisplayableView {
                 ship1 = new Button();
                 ship2 = new Button();
                 ship3 = new Button();
-                ship1.setOnAction(event -> {
-                    checkShip(1);
-                });
-                ship2.setOnAction(event -> {
-                    checkShip(2);
-                });
-                ship3.setOnAction(event -> {
-                    checkShip(3);
-                });
+                ship1.setOnAction(_ -> checkShip(1));
+                ship2.setOnAction(_ -> checkShip(2));
+                ship3.setOnAction(_ -> checkShip(3));
                 ship1.setPrefWidth(52);
                 ship1.setPrefHeight(614);
                 ship2.setPrefHeight(52);
@@ -541,9 +619,10 @@ public class GUI extends Application implements DisplayableView {
                 left.getChildren().add(ship1);
                 right.getChildren().add(ship3);
                 layout.setLeft(left);
-                layout.setTop(top);
                 layout.setRight(right);
             }
+            top.getChildren().add(quit);
+            layout.setTop(top);
         });
     }
 //Overrides--------------------------------------------------------------------------------------------------------------
@@ -552,63 +631,33 @@ public class GUI extends Application implements DisplayableView {
         switch (newState){
             case CHOOSE_CONNECTION_TYPE ->{
                 showConnection();
-                layout.getStylesheets().add(css2);
+                layout.getStylesheets().set(0,css2);
             }
-            case LOGIN ->{
-                showLogin();
-            }
-            case LOBBY ->{
-                showLobby();
-            }
-            case LOBBY0 -> {
-                showCreateNewGame();
-            }
-            case COLOR_CHOICE,COLOR_CHOICE0 ->{
-                showChooseColor();
-            }
-            case START_SHIP_CREATION -> {
-                showStart();
-            }
+            case LOGIN -> showLogin();
+            case LOBBY -> showLobby();
+            case LOBBY0 -> showCreateNewGame();
+            case COLOR_CHOICE,COLOR_CHOICE0 -> showChooseColor();
+            case START_SHIP_CREATION -> showStart();
             case S_END_DRAW_TILE_CARD ->{
                 showS_EndDrawTilesCards();
-                layout.getStylesheets().add(css3);
+                layout.getStylesheets().set(0,css3);
                 addCheckShip();
             }
-            case S_MANAGE_DRAWN_TILE ->{
-                showS_ManageDrawTilesCards();
-            }
-            case S_MANAGE_CARDS -> {
-                showDeckCheck();
-            }
-            case S_FINISHED -> {
-                showEndShip();
-            }
-            case DRAW_CARD -> {
-                showDrawCard();
-            }
-            case ACTION -> {
-
-            }
-            case PLANET_CHOICE -> {
-
-            }
-            case MANAGE_GOODS -> {
-
-            }
-            case MANAGE_CABINS ->{
-                showChooseCrew();
-            }
-            case COORD_REQUEST -> {
-                showCoordRequest();
-            }
-            case ROLL_DICE -> {
-
-            }
+            case S_MANAGE_DRAWN_TILE -> showS_ManageDrawTilesCards();
+            case S_MANAGE_CARDS -> showDeckCheck();
+            case S_FINISHED -> showEndShip();
+            case DRAW_CARD,WAIT_TO_DRAW -> showDrawCard();
+            case ACTION -> showAction();
+            case PLANET_CHOICE -> showPlanetChoice();
+            case MANAGE_GOODS -> showManageGoods();
+            case MANAGE_CABINS -> showChooseCrew();
+            case COORD_REQUEST -> showCoordRequest();
+            case ROLL_DICE -> showRollDice();
             case WAIT -> {
-                if(controller.getPhase()==GamePhases.CARDS) {
-                    showDrawCard();
-                }
                 showWait();
+            }
+            case RECONNECTING -> {
+
             }
         }
     }
@@ -636,8 +685,7 @@ public class GUI extends Application implements DisplayableView {
                     if (sceneController != null)
                         sceneController.update();
                 }
-            } catch (Exception e) {
-                return;
+            } catch (Exception _) {
             }
         });
     }
@@ -659,26 +707,19 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void showCard(ArrayList<Card> cards) {
-        Platform.runLater(() -> {
-            if (controller.isChecking()==null)
-                if(controller.getState()==ClientState.DRAW_CARD){
-                    DrawCardController cardController=loader.getController();
-                    cardController.showCard();
-                }
-        });
     }
 
     @Override
     public void printFlightboard(LightFlightboard lightFlightboard) {
         Platform.runLater(() -> {
-        if(controller.getState()==ClientState.S_FINISHED||(controller.getPreviousState()==ClientState.S_FINISHED&&controller.getState()==ClientState.WAIT)) {
-            EndShipController endShipController=loader.getController();
-                endShipController.update();
-            }
-        else if(controller.getState()==ClientState.S_END_DRAW_TILE_CARD) {
-            S_EndDrawTilesCardsController sceneController=loader.getController();
-                sceneController.update();
-            }
+            if (controller.isChecking() == null)
+                if (controller.getState() == ClientState.S_FINISHED || (controller.getPreviousState() == ClientState.S_FINISHED && controller.getState() == ClientState.WAIT)) {
+                    EndShipController endShipController = loader.getController();
+                    endShipController.update();
+                } else if (controller.getState() == ClientState.S_END_DRAW_TILE_CARD) {
+                    S_EndDrawTilesCardsController sceneController = loader.getController();
+                    sceneController.update();
+                }
         });
     }
 
@@ -826,23 +867,24 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void showScores(Map<String, Integer> scores) throws RemoteException {
-
+        showEnd();
     }
 
     @Override
     public void notifyDrawnCard(Card card) throws RemoteException {
-        Platform.runLater(() -> {
-            if (controller.isChecking()==null)
-                if(controller.getState()==ClientState.DRAW_CARD){
-                    DrawCardController cardController=loader.getController();
-                    cardController.showCard();
-                }
-        });
+        if(controller.getState()!=ClientState.DRAW_CARD)
+            controller.setState(ClientState.WAIT_TO_DRAW);
     }
 
     @Override
     public void notifyPlayerLandedOnPlanet(String playerName, int planet) throws RemoteException {
-
+        Platform.runLater(() -> {
+            if (controller.isChecking()==null)
+                if(controller.getState()==ClientState.PLANET_CHOICE){
+                    PlanetChoiceController cardController=loader.getController();
+                    cardController.update();
+                }
+        });
     }
 
     @Override
@@ -911,7 +953,7 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void notifyEarlyLanding() throws RemoteException {
-
+        showEnd();
     }
 
     @Override

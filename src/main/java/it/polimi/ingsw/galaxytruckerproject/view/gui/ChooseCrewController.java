@@ -19,6 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
@@ -126,7 +127,10 @@ public class ChooseCrewController {
     public GridPane tilesTable;
 
     @FXML
-    public Label actionLabel;
+    public VBox box;
+
+    @FXML
+    public Label text;
 
     @FXML
     public Button white;
@@ -236,11 +240,7 @@ public class ChooseCrewController {
                 }
             }
         }else {
-            actionLabel.setVisible(false);
-            white.setVisible(false);
-            purple.setVisible(false);
-            brown.setVisible(false);
-            GUI.showDrawCard();
+            waitOthers();
             return;
         }
         Tile tile=GUI.getController().getMe().getShipBoard().getTilesTable()[cabins.get(index).getX()][cabins.get(index).getY()].get();
@@ -275,5 +275,9 @@ public class ChooseCrewController {
         GUI.setCabin(CrewType.BROWN);
         if(index<cabins.size())
             focus();
+    }
+    private void waitOthers(){
+        box.getChildren().clear();
+        text.setText("Waiting for other players...");
     }
 }

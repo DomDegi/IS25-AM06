@@ -10,13 +10,35 @@ public class ConnectionController{
 
     @FXML
     public TextField ip;
+
+    @FXML
+    public TextField port;
+
     @FXML
     public void setRMI(){
-        GUI.setConnection("r",ip.getText());
+        int portInt;
+        try {
+            if(port.getText().equals(""))
+                portInt=0;
+            else
+                portInt=Integer.getInteger(port.getText());
+            GUI.setConnection("r",ip.getText(),portInt);
+        }catch (NumberFormatException _){
+            GUI.showMessage("Invalid Port");
+        }
     }
 
     @FXML
     public void setSocket(){
-        GUI.setConnection("s",ip.getText());
+        int portInt;
+        try {
+            if(port.getText().equals(""))
+                portInt=0;
+            else
+                portInt=Integer.getInteger(port.getText());
+            GUI.setConnection("s",ip.getText(),portInt);
+        }catch (NumberFormatException _){
+            GUI.showMessage("Invalid Port");
+        }
     }
 }

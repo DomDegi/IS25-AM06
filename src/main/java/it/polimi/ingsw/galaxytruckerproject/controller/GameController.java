@@ -564,7 +564,7 @@ public class GameController implements Observer, Serializable {
                 }
             } else {
                 try{
-                playersView.asksToInputCoordinates(CoordReqType.CHOOSE_TO_BREAK);
+                    playersView.asksToInputCoordinates(CoordReqType.CHOOSE_TO_BREAK);
                 } catch(Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -1040,6 +1040,11 @@ public class GameController implements Observer, Serializable {
                 }
                 currentPlayer = game.getListOfInFlightPlayers().get(i);
             }
+            for(Player player : game.getListOfInFlightPlayers()){
+                if(player!=currentPlayer) {
+                   updatePlayerView(WAIT_TO_DRAW,player.getPlayerName());
+                }
+            }
             updatePlayerView(DRAW_CARD, currentPlayer.getPlayerName());
         }
         else{
@@ -1429,7 +1434,7 @@ public class GameController implements Observer, Serializable {
             case SHIPS_CREATION -> checkIfAllPlayersReady();
             case VERIFY_SHIP_CORRECTNESS -> verifyShipCorrectness();
             case DRAW_CARD -> {
-                if (playerName.equals(game.getListOfInFlightPlayers().getFirst().getPlayerName())) {
+                if (!game.getListOfInFlightPlayers().isEmpty()&&playerName.equals(game.getListOfInFlightPlayers().getFirst().getPlayerName())) {
                     this.askFirstPlayerToDraw();
                 }
             }
