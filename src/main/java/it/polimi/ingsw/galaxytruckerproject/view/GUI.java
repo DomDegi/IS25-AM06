@@ -220,7 +220,7 @@ public class GUI extends Application implements DisplayableView {
     public static void setConnection(String connectionType, String ip) {
         if (connectionType.equals("r")) {
             try {
-                controller.connectRMI(ip, 1099);
+                controller.connectRMI(ip,1099);
             } catch (NotBoundException | MalformedURLException | RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -441,6 +441,18 @@ public class GUI extends Application implements DisplayableView {
         controller.manageCabins(type);
     }
 
+    public static void yes(){
+        controller.sayYes();
+    }
+
+    public static void no(){
+        controller.sayNo();
+    }
+
+    public static void roll(){
+        controller.rollDice();
+    }
+
 //showMethods---------------------------------------------------------------------------------------------------------------
 
     /**
@@ -646,7 +658,7 @@ public class GUI extends Application implements DisplayableView {
      * Displays the "Draw Card" screen by loading the corresponding FXML file and setting it as the center content.
      * This screen is shown when the player needs to draw a card.
      */
-    private static void showDrawCard() {
+    public static void showDrawCard() {
         Platform.runLater(() -> {
             loader = new FXMLLoader(GUI.class.getResource("/gui/drawCard.fxml"));
             BorderPane newLayer;
@@ -684,6 +696,32 @@ public class GUI extends Application implements DisplayableView {
     private static void showChooseCrew() {
         Platform.runLater(() -> {
             loader = new FXMLLoader(GUI.class.getResource("/gui/chooseCrew.fxml"));
+            BorderPane newLayer;
+            try {
+                newLayer = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            layout.setCenter(newLayer);
+        });
+    }
+
+    private static void showAction() {
+        Platform.runLater(() -> {
+            loader = new FXMLLoader(GUI.class.getResource("/gui/action.fxml"));
+            BorderPane newLayer;
+            try {
+                newLayer = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            layout.setCenter(newLayer);
+        });
+    }
+
+    private static void showRollDice(){
+        Platform.runLater(() -> {
+            loader = new FXMLLoader(GUI.class.getResource("/gui/rollDice.fxml"));
             BorderPane newLayer;
             try {
                 newLayer = loader.load();

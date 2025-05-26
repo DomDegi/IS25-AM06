@@ -179,6 +179,7 @@ public class ChooseCrewController {
             white.setVisible(false);
             purple.setVisible(false);
             brown.setVisible(false);
+            GUI.showDrawCard();
             return;
         }
 

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Polygon?>
+
+<BorderPane stylesheets="@css/ShipStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.galaxytruckerproject.view.gui.ActionController">
+    <center>
+        <HBox alignment="CENTER" spacing="100.0" BorderPane.alignment="CENTER">
+            <children>
+                <VBox alignment="CENTER" prefWidth="195.0" spacing="40.0">
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin>
+                    <children>
+                        <ImageView fx:id="deck" fitHeight="300.0" fitWidth="195.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/grafiche/grafiche/cards/GT-cards_II_IT_0121.jpg" />
+                            </image>
+                            <VBox.margin>
+                                <Insets />
+                            </VBox.margin>
+                        </ImageView>
+                        <ImageView fx:id="card" fitHeight="300.0" fitWidth="195.0" pickOnBounds="true" preserveRatio="true">
+                            <VBox.margin>
+                                <Insets />
+                            </VBox.margin>
+                        </ImageView>
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" spacing="30.0">
+                    <children>
+                        <StackPane>
+                            <children>
+                                <Group fx:id="flightImage">
+                                    <children>
+                                        <ImageView fitHeight="396.0" fitWidth="610.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../images/grafiche/grafiche/cardboard/cardboard-5.png" />
+                                            </image>
+                                            <viewport>
+                                                <Rectangle2D />
+                                            </viewport>
+                                        </ImageView>
+                                        <Polygon fx:id="p15" fill="DODGERBLUE" layoutX="323.0" layoutY="300.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="p16" fill="DODGERBLUE" layoutX="276.0" layoutY="299.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="5.4" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="p17" fill="DODGERBLUE" layoutX="231.0" layoutY="293.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="13.1" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="p18" fill="DODGERBLUE" layoutX="186.0" layoutY="281.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="20.0" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="p19" fill="DODGERBLUE" layoutX="143.0" layoutY="262.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="31.0" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="p20" fill="DODGERBLUE" layoutX="104.0" layoutY="234.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="45.0" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="p21" fill="DODGERBLUE" layoutX="78.0" layoutY="188.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="80.0" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="p22" fill="DODGERBLUE" layoutX="85.0" layoutY="136.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="120.0" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="p23" fill="DODGERBLUE" layoutX="117.0" layoutY="98.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="140.7" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="p0" fill="DODGERBLUE" layoutX="158.0" layoutY="73.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="156.8" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="p1" fill="DODGERBLUE" layoutX="201.0" layoutY="57.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="164.6" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="p2" fill="DODGERBLUE" layoutX="247.0" layoutY="47.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="172.9" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="p3" fill="DODGERBLUE" layoutX="291.0" layoutY="43.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="177.7" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="p4" fill="DODGERBLUE" layoutX="337.0" layoutY="44.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-176.3" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="p5" fill="DODGERBLUE" layoutX="383.0" layoutY="50.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-168.7" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="p6" fill="DODGERBLUE" layoutX="428.0" layoutY="61.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-162.4" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="p7" fill="DODGERBLUE" layoutX="471.0" layoutY="80.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-150.3" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="p8" fill="DODGERBLUE" layoutX="509.0" layoutY="108.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-132.8" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="p9" fill="DODGERBLUE" layoutX="536.0" layoutY="154.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-101.3" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="p10" fill="DODGERBLUE" layoutX="529.0" layoutY="206.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-63.4" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="p11" fill="DODGERBLUE" layoutX="497.0" layoutY="245.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-36.3" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="p12" fill="DODGERBLUE" layoutX="458.0" layoutY="269.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-23.2" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="p13" fill="DODGERBLUE" layoutX="414.0" layoutY="286.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-15.3" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="p14" fill="DODGERBLUE" layoutX="369.0" layoutY="296.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-7.1" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                    </children>
+                                </Group>
+                                <Group fx:id="trialFlight">
+                                    <children>
+                                        <ImageView fitHeight="396.0" fitWidth="610.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../images/grafiche/grafiche/cardboard/cardboard-3.png" />
+                                            </image>
+                                            <viewport>
+                                                <Rectangle2D />
+                                            </viewport>
+                                        </ImageView>
+                                        <Polygon fx:id="pt11" fill="DODGERBLUE" layoutX="330.0" layoutY="276.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="pt12" fill="DODGERBLUE" layoutX="273.0" layoutY="275.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="5.4" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="pt13" fill="DODGERBLUE" layoutX="216.0" layoutY="267.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="14.0" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="pt14" fill="DODGERBLUE" layoutX="160.0" layoutY="247.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="31.0" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="pt15" fill="DODGERBLUE" layoutX="110.0" layoutY="212.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="54.5" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="pt16" fill="DODGERBLUE" layoutX="87.0" layoutY="148.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="105.3" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="pt17" fill="DODGERBLUE" layoutX="120.0" layoutY="93.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="144.5" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="pt0" fill="DODGERBLUE" layoutX="171.0" layoutY="62.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="156.8" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="pt1" fill="DODGERBLUE" layoutX="227.0" layoutY="45.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="168.7" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="pt2" fill="DODGERBLUE" layoutX="285.0" layoutY="38.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="177.9" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="pt3" fill="DODGERBLUE" layoutX="343.0" layoutY="38.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-176.3" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="pt4" fill="DODGERBLUE" layoutX="400.0" layoutY="47.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-166.0" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="pt5" fill="DODGERBLUE" layoutX="456.0" layoutY="67.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-150.3" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="pt6" fill="DODGERBLUE" layoutX="506.0" layoutY="103.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-127.9" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="pt7" fill="DODGERBLUE" layoutX="529.0" layoutY="166.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-77.5" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="pt8" fill="DODGERBLUE" layoutX="495.0" layoutY="222.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-36.3" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="pt9" fill="DODGERBLUE" layoutX="444.0" layoutY="253.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-23.2" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                        <Polygon fx:id="pt10" fill="DODGERBLUE" layoutX="389.0" layoutY="269.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-7.1" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
+                                    </children>
+                                </Group>
+                            </children>
+                        </StackPane>
+                        <Label fx:id="text" />
+                        <AnchorPane prefHeight="442.0" prefWidth="652.0">
+                            <children>
+                                <ImageView fx:id="shipImage" fitHeight="442.0" fitWidth="611.0" layoutX="30.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.05303955078125" AnchorPane.topAnchor="0.0">
+                                    <image>
+                                        <Image url="@../images/grafiche/grafiche/cardboard/cardboard-1b.jpg" />
+                                    </image>
+                                </ImageView>
+                                <GridPane fx:id="tilesTable" alignment="CENTER" layoutX="52.0" layoutY="20.0" prefHeight="402.0" prefWidth="567.0" style="-fx-background-image:url('../images/grafiche/grafiche/cardboard/cardboard-1b.jpg');" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="52.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="20.0">
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints maxHeight="80.0" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="80.0" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="80.0" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="80.0" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="80.0" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                </GridPane>
+                            </children>
+                        </AnchorPane>
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" prefWidth="195.0" spacing="40.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#yes" prefWidth="75.0" text="Yes" />
+                  <Button mnemonicParsing="false" onAction="#no" prefWidth="75.0" text="No" />
+               </children></VBox>
+            </children>
+        </HBox>
+    </center>
+</BorderPane>
