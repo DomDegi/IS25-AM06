@@ -1121,6 +1121,9 @@ public class ClientController {
         if(state!=ClientState.CHOOSE_CONNECTION_TYPE&&state!=ClientState.CHOOSE_IP_AND_PORT_RMI){
             return false;
         }
+        if (ip == null || ip.equals("")) {
+            ip = "localhost";
+        }
         VirtualViewRMI viewRMI = new VirtualViewRMI(this, view);
         String url = String.format("rmi://%s:%d/ControllerFactory", ip, port);
         ControllerFactory controllerFactory = (ControllerFactory) Naming.lookup(url);
@@ -1279,6 +1282,10 @@ public class ClientController {
 
     public boolean isPositioned() {
         return positioned;
+    }
+
+    public void setPositioned(boolean positioned) {
+        this.positioned = positioned;
     }
 
     public CabinsManager getCabinsManager() {

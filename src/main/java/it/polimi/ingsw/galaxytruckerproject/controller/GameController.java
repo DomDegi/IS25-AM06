@@ -29,42 +29,113 @@ import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.LEVEL2;
 import static it.polimi.ingsw.galaxytruckerproject.model.GameMode.TRIAL;
 import static it.polimi.ingsw.galaxytruckerproject.model.GameState.CARD_EVENT;
 
-
+/**
+ * The GameController class manages all aspects of a single game session,
+ * including player management, game phases, tile and card handling, disconnections,
+ * state transitions, and synchronization with client views.
+ * Implements the Observer interface to react to state changes in the Game model.
+ */
 public class GameController implements Observer, Serializable {
+    /** The game name identifier. */
     private final String gameName;
+
+    /** The game logic interface. */
     private GameInterface game;
+
+    /** List of players who need to correct their ships. */
     private final ArrayList<String> playersWithErrors;
+
+    /** Map storing each player's current client state. */
     private final Map<String, ClientState> clientsStatesMap = new HashMap<>();
+
+    /** Map linking player nicknames to their virtual view. */
     private final Map<String, VirtualView> playersViewMap;
+
+    /** Map of active players currently in the game. */
     private final Map<String, Player> activePlayers;
+
+    /** Map of players who disconnected from the game. */
     private final Map<String, Player> disconnectedPlayers;
+
+    /** Map used for ping-pong connectivity checks. */
     private final Map<String, CompletableFuture<Void>> pendingPongs = new ConcurrentHashMap<>();
+
+    /** List of players who should land early due to no crew. */
     private final ArrayList<Player> playersToEarlyLand = new ArrayList<>();
+
+    /** Tracks which small decks are locked by which players. */
     private final ConcurrentHashMap<String, Integer> lockedSmallDecks = new ConcurrentHashMap<>();
+
+    /** The number of times the hourglass has been turned. */
     private int hourglassTurns = 0;
+
+    /** Task to manage hourglass countdown. */
     private TimerTask hourglassTask;
+
+    /** Timer for the hourglass logic. */
     private Timer hourglassTimer;
+
+    /** Whether the hourglass is currently active. */
     private boolean hourglassON = false;
 
-    //This attribute indicates that a game was loaded from disk
+    /** Indicates whether the game has been loaded from a saved state. */
     private boolean restarted;
 
-    //This attributes contains the string generated when game gets restarted or a player reconnects
-    //It gets set to null as soon as every player that had to use it is done getting the currentGameStatus
+    /** Cached string of the current game status sent on reconnections. */
     private String currentGameStatus;
 
-    /**
-     * Autosave attributes. Only on when not in card phase
-     */
+    /** Executor that periodically autosaves the game. */
     private ScheduledExecutorService autoSaveExecutor;
 
-    //need to be true for the project showing
+    /** Flag to enable or disable autosaving. */
     private volatile boolean autoSaveEnabled = true;
+
 
     public String toString(){
         return gameName+"\ngame state:"+game.getGameState().toString()+"\nplayer needed: "+game.getPlayerCount()+"\nplatyer in game: "+game.getNumberOfPlayers();
     }
 
+    /**
+     * Constructs a GameController linked to a new game instance.
+     * @param game the GameInterface instance
+     * @param gameName the name of the game session
+     */
+    public GameController(GameInterface game, String gameName) {
+        this.gameName = gameName;
+        this.game = game;
+        game.addObserver(this);
+        this.playersWithErrors = new ArrayList<>();
+        this.playersViewMap = new HashMap<>();
+        this.activePlayers = new HashMap<>();
+        this.disconnectedPlayers = new HashMap<>();
+        this.restarted = false;
+    }
+    /**
+     * Constructs a GameController for a reloaded (persisted) game.
+     * @param gameName name of the game
+     */
+    public GameController(String gameName) {
+        this.gameName = gameName;
+        this.playersWithErrors = new ArrayList<>();
+        this.playersViewMap = new HashMap<>();
+        this.activePlayers = new HashMap<>();
+        this.disconnectedPlayers = new HashMap<>();
+        this.restarted = true;
+    }
+
+    /**
+     * Sets the GameInterface for this controller (used during loading).
+     * @param game the game instance to link
+     */
+    public void setGameInterface(GameInterface game) {
+        this.game = game;
+        game.addObserver(this);
+    }
+
+    /**
+     * Handles state transitions based on GameState changes.
+     * @param newState the new state of the game
+     */
     @Override
     public void update(GameState newState) {
         switch (newState) {
@@ -76,40 +147,12 @@ public class GameController implements Observer, Serializable {
         }
     }
 
-    public GameController(GameInterface game, String gameName) {
-        this.gameName = gameName;
-        this.game = game;
-        game.addObserver(this);
-        this.playersWithErrors = new ArrayList<>();
-        this.playersViewMap = new HashMap<>();
-        this.activePlayers = new HashMap<>();
-        this.disconnectedPlayers = new HashMap<>();
-        this.restarted = false;
-    }
-
-    public GameController(String gameName) {
-        this.gameName = gameName;
-        this.playersWithErrors = new ArrayList<>();
-        this.playersViewMap = new HashMap<>();
-        this.activePlayers = new HashMap<>();
-        this.disconnectedPlayers = new HashMap<>();
-        this.restarted = true;
-    }
-
-    public void setGameInterface(GameInterface game) {
-        this.game = game;
-        game.addObserver(this);
-    }
-
     /**
-     * Adds player to a game that's still in lobby phase or if player is reconnecting
-     * it calls for reconnectPlayer method
-     * @param playerName player that just joined the game but still isn't istanced
-     * @param view player's view
-     * @param reconnecting true if player used to be in the lobby
+     * Adds a player view to the session or handles reconnection.
+     * @param playerName name of the player
+     * @param view the VirtualView associated to the player
+     * @param reconnecting true if player is reconnecting
      */
-
-    //ASSOCIA IL PLAYER ALLA VIEW
     public void addToPlayersViewMap(String playerName, VirtualView view, boolean reconnecting) {
         if (restarted) {
             if (activePlayers.containsKey(playerName)) {
@@ -175,7 +218,11 @@ public class GameController implements Observer, Serializable {
         }
 
     }
-
+    /**
+     * Checks if all previously disconnected players have rejoined.
+     * If all players are present, resumes the game from the appropriate state,
+     * restarting timers and autosave if needed.
+     */
     public void checkIfAllJoinedAgain() {
         if (playersViewMap.size() == activePlayers.size()) {
             currentGameStatus = null;
@@ -223,7 +270,11 @@ public class GameController implements Observer, Serializable {
             }
         }
     }
-
+    /**
+     * Notifies all connected clients that a new player has joined or rejoined the game.
+     *
+     * @param reconnected true if the player is reconnecting, false if joining for the first time
+     */
     public void notifyPlayerJoined(boolean reconnected) {
         for (VirtualView view : playersViewMap.values()) {
             try{
@@ -233,7 +284,10 @@ public class GameController implements Observer, Serializable {
             }
         }
     }
-
+    /**
+     * Repositions players on the flight board based on their saved position and ranking.
+     * Handles repositioning differently based on the game mode (TRIAL or LEVEL2).
+     */
     public void flightBoardReposition() {
         ArrayList<Player> players = this.getAllPlayers();
         if (game.getMode().equals(GameMode.LEVEL2)) {
@@ -296,7 +350,13 @@ public class GameController implements Observer, Serializable {
         }
         return false;
     }
-
+    /**
+     * Prepares a player who has reconnected by restoring their state
+     * and sending the appropriate client state depending on the current game phase.
+     *
+     * @param playerName the name of the reconnecting player
+     * @param view the VirtualView associated with the reconnecting player
+     */
     public void prepareForReconnection (String playerName,  VirtualView view)  {
         updateReconnectedPlayer(view);
         switch(this.getGameState()) {
@@ -333,7 +393,12 @@ public class GameController implements Observer, Serializable {
             }
         }
     }
-
+    /**
+     * Sends a summary of game events that occurred during the player's disconnection.
+     * This helps synchronize the client state with the current server state.
+     *
+     * @param view the VirtualView of the reconnected player
+     */
     public void updateReconnectedPlayer(VirtualView view) {
         if (currentGameStatus == null) {
             currentGameStatus = ClientUpdater.currentGameStatus(this);
@@ -378,7 +443,14 @@ public class GameController implements Observer, Serializable {
             }
         } // if the count has been reached starts the game
     }
-
+    /**
+     * Handles the disconnection of a player by removing them from the active players list,
+     * saving their state as disconnected, and cleaning up their view and state tracking.
+     * Also removes the player from the FlightBoard if present.
+     *
+     * @param playerName the name of the player to remove
+     * @return the VirtualView associated with the removed player, or null if none
+     */
     public VirtualView removePlayer (String playerName) {
         if (activePlayers.containsKey(playerName)) {
             Player removedPlayer = activePlayers.get(playerName);
@@ -427,6 +499,12 @@ public class GameController implements Observer, Serializable {
         }
         return true;
     }
+    /**
+     * Checks if a given player color is available (i.e., not already taken by another active player).
+     *
+     * @param playersColor the color to check for availability
+     * @return true if the color is available, false if already taken
+     */
     public boolean checkColorAvailable (PlayersColor playersColor)  {
         for (Player player : activePlayers.values()) {
             if (player.getPlayerColor().equals(playersColor)) {
@@ -437,8 +515,7 @@ public class GameController implements Observer, Serializable {
     }
 
     /**
-     * Starts the game as soon as one of the players turns the hourglass if LEVEL2 game,
-     * if TRIAL starts the game without hourglass
+     * Starts the game and notifies clients.
      */
     public void startGame () {
         startAutoSave();
@@ -451,7 +528,10 @@ public class GameController implements Observer, Serializable {
             notifyFlightBoardCards();
         }
     }
-
+    /**
+     * Sends the current state of the flight board's cards to all connected clients.
+     * Typically used at the start of the ship creation phase in LEVEL2 mode.
+     */
     public void notifyFlightBoardCards() {
         Map<Integer,ArrayList<Card>> flightBoardCards = new HashMap<>();
         for (int i = 1; i <= 3; i++) {
@@ -465,7 +545,13 @@ public class GameController implements Observer, Serializable {
             }
         }
     }
-
+    /**
+     * Draws a tile for the player from stack or turned tiles.
+     * @param playersView the view of the player
+     * @param playerName the player's name
+     * @param index index of the turned tile (0 for stack)
+     * @param turned true if drawing from turned pile
+     */
     public  void drawTile(VirtualView playersView, String playerName, int index, boolean turned) {
 
         // Can't draw if the shipboard is completed or there is already a tile to place/book/refuse
@@ -511,7 +597,11 @@ public class GameController implements Observer, Serializable {
         }
         updatePlayerView(ClientState.S_MANAGE_DRAWN_TILE, playerName);
     }
-
+    /**
+     * Notifies all connected views that a turned tile has been removed from the common pool.
+     *
+     * @param tile the turned tile that has been removed
+     */
     public void notifyRemoveTurnedTile(Tile tile) {
         playersViewMap.values().forEach(virtualView -> {
             try {
@@ -520,7 +610,12 @@ public class GameController implements Observer, Serializable {
             }
         });
     }
-
+    /**
+     * Notifies all players that a booked tile was removed from a specific player's inventory.
+     *
+     * @param playerName the player who removed the booked tile
+     * @param tile the tile that was removed
+     */
     public void notifyBookedTile (String playerName, Tile tile) {
         playersViewMap.values().forEach(virtualView -> {
             if(virtualView!=playersViewMap.get(playerName))
@@ -530,7 +625,11 @@ public class GameController implements Observer, Serializable {
                 }
         });
     }
-
+    /**
+     * Notifies all connected views that a new turned tile has been added to the common pool.
+     *
+     * @param tile the newly turned tile to be broadcasted to all clients
+     */
     public void notifyNewTurnedTile(Tile tile) {
         playersViewMap.values().forEach(virtualView -> {
             try {
@@ -540,7 +639,9 @@ public class GameController implements Observer, Serializable {
         });
     }
 
-    //errors check and management
+    /**
+     * Verifies all ships for correctness after construction.
+     */
     public void verifyShipCorrectness() {
         for (Player player :new ArrayList<>(game.getListOfInFlightPlayers()) ) {
             boolean correctness = player.getShipBoard().verifyCorrectness();
@@ -573,7 +674,12 @@ public class GameController implements Observer, Serializable {
 
         }
     }
-
+    /**
+     * Handles correction of invalid tiles.
+     * @param playerName the player name
+     * @param playersView the view of the player
+     * @param toRemove the list of coordinates to remove
+     */
     public void shipErrorManagement(String playerName, VirtualView playersView, ArrayList<Coordinates> toRemove) {
         Player player = game.identifyPlayerByName(playerName);
         if (player == null)
@@ -611,7 +717,12 @@ public class GameController implements Observer, Serializable {
             }
         }
     }
-
+    /**
+     * Notifies all connected views that a player has removed invalid tiles during ship correction.
+     *
+     * @param playerName the name of the player who removed the tiles
+     * @param removed a list of coordinates representing the removed tiles
+     */
     public void notifyBrokenTile(String playerName, ArrayList<Coordinates> removed) {
         for (VirtualView view: playersViewMap.values()){
             try {
@@ -621,12 +732,24 @@ public class GameController implements Observer, Serializable {
             }
         }
     }
-
+    /**
+     * Automatically sets human crew members on all cabins for a disconnected player.
+     * Notifies views of tile changes and updates the player's client state to WAIT.
+     *
+     * @param player the disconnected player
+     */
     public void setCrewForDisconnectedPlayer(Player player) {
         notifyModifiedTiles(player.getPlayerName(), player.setAllCrewToHuman());
         updatePlayerView(ClientState.WAIT, player.getPlayerName());
     }
-
+    /**
+     * Allows a player to assign crew members to their cabins.
+     * If successful, marks the ship as completed, updates views, and proceeds to crew check.
+     *
+     * @param playerName the name of the player assigning crew
+     * @param playersView the view associated with the player
+     * @param cabins a list of tiles representing cabin modules
+     */
     public void playerPicksCrewMembers(String playerName, VirtualView playersView ,ArrayList<Tile> cabins) {
         Player player = game.identifyPlayerByName(playerName);
         if (player == null) {
@@ -644,7 +767,10 @@ public class GameController implements Observer, Serializable {
         }
         checkIfPlayersPickedCrew();
     }
-
+    /**
+     * Checks if all players (including reconnected ones) have completed crew assignment.
+     * If all players are ready and no errors remain, proceeds to end ship verification.
+     */
     public void checkIfPlayersPickedCrew() {
         ShipBoard shipBoard;
         ArrayList<Coordinates> cabinsToCheck;
@@ -676,12 +802,19 @@ public class GameController implements Observer, Serializable {
             this.endShipVerification();
         }
     }
-
+    /**
+     * Ends the ship verification phase and transitions to the next game phase.
+     */
     public void endShipVerification() {
         game.endShipVerification();
     }
 
-
+    /**
+     * Handles the refusal of a drawn tile by a player during ship construction.
+     * Moves the tile to the turned pile and updates the player view accordingly.
+     *
+     * @param playerName the player refusing the tile
+     */
     public void refuseTile(String playerName) {
         if (!game.getGameState().equals(GameState.SHIPS_CREATION)) {
             return;
@@ -696,7 +829,12 @@ public class GameController implements Observer, Serializable {
         notifyNewTurnedTile(refused);
         updatePlayerView(S_END_DRAW_TILE_CARD, playerName);
     }
-
+    /**
+     * Handles a player looking at a card deck.
+     * @param playerName player's name
+     * @param playersView view of the player
+     * @param cardsToLookAt index of deck
+     */
     public synchronized void lookGameCards(String playerName, ViewInterface playersView, int cardsToLookAt)  {
         if (playerStateIs(playerName, S_END_DRAW_TILE_CARD)) {
             for (Integer integer: lockedSmallDecks.values()) {
@@ -725,7 +863,9 @@ public class GameController implements Observer, Serializable {
             }
         }
     }
-
+    /**
+     * Notifies all players about which card decks are not available.
+     */
     private void notifyNotAvailableCardDeck() {
         for (VirtualView view: playersViewMap.values()) {
             try {
@@ -735,11 +875,18 @@ public class GameController implements Observer, Serializable {
             }
         }
     }
-
+    /**
+     * Gets the list of indexes of unavailable small decks.
+     * @return list of locked deck indexes
+     */
     private ArrayList<Integer> notAvailableCardDecks() {
         return new ArrayList<>(lockedSmallDecks.values());
     }
-
+    /**
+     * Handles cancellation of card inspection.
+     * @param playersView view of the player
+     * @param playerName player's name
+     */
     public void stopLookingAtCards(ViewInterface playersView, String playerName) {
         if (clientsStatesMap.get(playerName) != ClientState.S_MANAGE_CARDS) {
             try{
@@ -752,7 +899,12 @@ public class GameController implements Observer, Serializable {
         notifyNotAvailableCardDeck();
     }
 
-    //set drawn tile on the player's shipboard
+    /**
+     * Sets the tile on the player's ship board.
+     * @param playersView the player view
+     * @param playerName the player's name
+     * @param tile the tile to set
+     */
     public void setTile (ViewInterface playersView, String playerName, Tile tile) {
         Tile settedTile;
         if (!tile.isBooked()) {
@@ -793,7 +945,12 @@ public class GameController implements Observer, Serializable {
             }
         }
     }
-
+    /**
+     * Notifies all players that a tile has been positioned by a player on their shipboard.
+     *
+     * @param playerName the player who placed the tile
+     * @param tile the tile that was positioned
+     */
     private void notifyPositionedTile(String playerName, Tile tile) {
         for (VirtualView view: playersViewMap.values()) {
             try {
@@ -802,7 +959,11 @@ public class GameController implements Observer, Serializable {
             } catch (Exception ignored) {}
         }
     }
-
+    /**
+     * Notifies players that a booked tile has been removed from a player.
+     * @param playerName the player who lost the tile
+     * @param tile the tile that was removed
+     */
     private void notifyRemovedBookedTile (String playerName, Tile tile) {
         for (VirtualView view: playersViewMap.values()) {
             try {
@@ -811,7 +972,11 @@ public class GameController implements Observer, Serializable {
         }
     }
 
-    //set currently drawn tile as booked for the player
+    /**
+     * Books the currently drawn tile for the player.
+     * @param playersView the player view
+     * @param playerName name of the player
+     */
     public void bookTile(ViewInterface playersView, String playerName) {
         if (playerStateIs(playerName,  ClientState.S_MANAGE_DRAWN_TILE)) {
             Tile toBook = game.playerBookTile(playerName);
@@ -832,7 +997,11 @@ public class GameController implements Observer, Serializable {
         }
     }
 
-    //now no input except hourglass and checkShipboard work and checks if the other player have completed
+    /**
+     * Handles player completion of their ship.
+     * @param playerName name of the player
+     * @param playersView player's view
+     */
     public void completed (String playerName, ViewInterface playersView)  {
         if (!playerStateIs(playerName, S_END_DRAW_TILE_CARD)) {
             try{
@@ -853,7 +1022,12 @@ public class GameController implements Observer, Serializable {
         }
         checkIfAllPlayersReady();
     }
-
+    /**
+     * Assigns the player to a position on the FlightBoard.
+     * @param playerName player's name
+     * @param playersView view of the player
+     * @param position the selected position
+     */
     public void setPosition (String playerName, VirtualView playersView, int position) {
         if (!playerStateIs(playerName, ClientState.S_FINISHED)) {
             return;
@@ -871,7 +1045,14 @@ public class GameController implements Observer, Serializable {
         }
         checkIfAllPlayersReady();
     }
-
+    /**
+     * Notifies all players of the updated flight board position and ranking of a player.
+     *
+     * @param playerName the name of the player whose position was updated
+     * @param playersColor the color of the player
+     * @param position the new position of the player
+     * @param ranking the new ranking of the player
+     */
     private void notifyPlayerMovement(String playerName,PlayersColor playersColor, int position, int ranking) {
         for (VirtualView view: playersViewMap.values()) {
             try {
@@ -879,7 +1060,13 @@ public class GameController implements Observer, Serializable {
             } catch (Exception ignored) {}
         }
     }
-
+    /**
+     * Sends the initial position and setup information for a player to all connected views.
+     * Also initializes ship boards on the client side.
+     *
+     * @param playerName the name of the player to initialize
+     * @param playersColor the color of the player
+     */
     private void notifyStartPosition(String playerName,PlayersColor playersColor) {
         for (VirtualView view: playersViewMap.values()) {
             try {
@@ -888,7 +1075,12 @@ public class GameController implements Observer, Serializable {
             } catch (Exception ignored) {}
         }
     }
-
+    /**
+     * Notifies all connected views about tiles that were modified on a player's shipboard.
+     *
+     * @param playerName the name of the player whose tiles were modified
+     * @param modifiedTiles the list of modified tiles
+     */
     private void notifyModifiedTiles(String playerName, ArrayList<Tile> modifiedTiles) {
         ArrayList<Tile> sendableTiles = new ArrayList<>();
         for(Tile tile: modifiedTiles) {
@@ -900,7 +1092,9 @@ public class GameController implements Observer, Serializable {
             } catch (Exception ignored) {}
         }
     }
-
+    /**
+     * Checks if all players have completed their ship and are ready to continue.
+     */
     private void checkIfAllPlayersReady() {
         if (game.getListOfAllPlayer().size() == game.getListOfInFlightPlayers().size()) {
             cancelTimer();
@@ -915,14 +1109,25 @@ public class GameController implements Observer, Serializable {
             }
         }
     }
-
+    /**
+     * Ends the ship creation phase and transitions to the next phase.
+     */
     private void endShipCreation () {
         game.endShipCreation();
     }
 
 
-    //Turns hourglass isn't on and adds 1 to the turn count,
-    // if it's already been turned twice, player that turns it needs to have completed his ship
+    /**
+     * Handles the player's action of turning the hourglass during the ship construction phase.
+     * <p>
+     * - If in TRIAL mode, the hourglass doesn't actually get turned, the game just begins.<br>
+     * - In LEVEL2 mode, allows up to 3 hourglass turns.<br>
+     * - The first two turns can be done freely.<br>
+     * - The third turn can only be initiated by a player who has completed their ship.<br>
+     * - Starts a countdown timer upon valid hourglass turn.
+     *
+     * @param playerName the name of the player turning the hourglass
+     */
     public synchronized void turnHourglass(String playerName)  {
         ViewInterface playersView = this.getViewFromNickname(playerName);
         if (game.getMode() == TRIAL) {
@@ -960,7 +1165,13 @@ public class GameController implements Observer, Serializable {
                 throw new IllegalStateException("Unexpected value: " + hourglassTurns + "\n");
         }
     }
-
+    /**
+     * Starts a 95-second countdown timer triggered by the hourglass.
+     * <p>
+     * - Increments the hourglass turn counter.<br>
+     * - When the timer ends, notifies all players and, if it's the third turn,
+     *   forces all remaining players to end ship construction.
+     */
     public void startTimer() {
         hourglassTimer = new Timer();
         this.hourglassTurns++;
@@ -980,7 +1191,9 @@ public class GameController implements Observer, Serializable {
         };
         hourglassTimer.schedule(hourglassTask, 95000); //95 seconds
     }
-
+    /**
+     * Cancels the hourglass timer and task.
+     */
     public void cancelTimer() {
         if (hourglassTask != null) {
             hourglassTask.cancel();
@@ -992,7 +1205,9 @@ public class GameController implements Observer, Serializable {
         }
         hourglassON = false;
     }
-
+    /**
+     * Notifies all players that the hourglass has been turned.
+     */
     public void notifyTurnedHourglass() {
         for (VirtualView view: playersViewMap.values()) {
             try {
@@ -1002,7 +1217,9 @@ public class GameController implements Observer, Serializable {
             }
         }
     }
-
+    /**
+     * Notifies all players that the hourglass timer has expired.
+     */
     public void notifyEndOfTime() {
         for (VirtualView view: playersViewMap.values()) {
             try {
@@ -1012,7 +1229,14 @@ public class GameController implements Observer, Serializable {
             }
         }
     }
-
+    /**
+     * Determines the next player eligible to draw a card in the flight phase.
+     * <p>
+     * - Stops the autosave mechanism.<br>
+     * - Automatically forces early landing for players with no human crew.<br>
+     * - If all players have landed or none are left in flight, the game is concluded.<br>
+     * - Otherwise, sets the next available (connected) player to DRAW_CARD state.
+     */
     public void askFirstPlayerToDraw() {
         stopAutoSave();
         //updatePlayerView(DRAW_CARD,game.getListOfInFlightPlayers().getFirst().getPlayerName())
@@ -1046,15 +1270,23 @@ public class GameController implements Observer, Serializable {
             concludeGame();
         }
     }
-
+    /**
+     * Initializes the currently drawn card by applying its effects.
+     * This method delegates the initialization logic to the drawn card,
+     * which will perform any setup needed for the card event.
+     */
     public void initializeDrawnCard () {
         game.getDrawnCard().initializeCard(game, playersViewMap);
     }
 
-    //Number 1 player can draw
-    //Every player can check others shipboard
-    //Every player can do an early landing
-    //When cards are over go to CONCLUDE_GAME state
+    /**
+     * Draws the next card in the event deck if the player is the first in flight order.
+     * If no cards are left or all players have landed, the game is concluded.
+     * Otherwise, the drawn card is saved, announced, and the game state advances to CARD_EVENT.
+     *
+     * @param playerName the name of the player attempting to draw the card
+     * @param playersView the view of the player drawing the card
+     */
     public void drawCard (String playerName, VirtualView playersView) {
         if (game.getCardsLeft() == 0) {
             game.endCardPhase();
@@ -1072,18 +1304,6 @@ public class GameController implements Observer, Serializable {
             } catch(Exception ignored) {}
         }
         else {
-           /* for(String st: clientsStatesMap.keySet()) {
-                if(clientsStatesMap.get(st).equals(ClientState.S_FINISHED)) {}
-                    try{
-                        playersView.showWrongInputMessage();
-                        //Show wrong input causa il rollBack dello state quindi devo rimettere il bro che pesca
-                        //la carta nello stato di wait
-                        clientsStatesMap.put(playerName, ClientState.DRAW_CARD);
-                        return;
-                    } catch(Exception ignored) {}
-
-            }*/
-
             GameSaver.save(this);
             game.drawCard();
             notifyDrawnCard(game.getDrawnCard());
@@ -1091,6 +1311,10 @@ public class GameController implements Observer, Serializable {
         }
     }
 
+    /**
+     * Notifies all players about a drawn card.
+     * @param card the drawn card
+     */
     public void notifyDrawnCard (Card card) {
         for (VirtualView view: playersViewMap.values()) {
             try {
@@ -1100,7 +1324,14 @@ public class GameController implements Observer, Serializable {
 
     }
 
-
+    /**
+     * Handles a player's decision to perform an early landing.
+     * If the current state is DRAW_CARD, the player is immediately removed from the flight.
+     * If the state is CARD_EVENT, the early landing is deferred until the event is resolved.
+     *
+     * @param playerName the name of the player requesting early landing
+     * @param playersView the player's associated view
+     */
     public void earlyLanding (String playerName, VirtualView playersView) {
         Player player = game.identifyPlayerByName(playerName);
         if (game.getGameState() == GameState.DRAW_CARD) {
@@ -1112,52 +1343,104 @@ public class GameController implements Observer, Serializable {
         updatePlayerView(ClientState.WAIT, playerName);
     }
 
-    /**
-     * Card specific methods for player's choices
-     */
 
+    /**
+     * Called when a player chooses to activate engines.
+     *
+     * @param playerName the player activating engines
+     * @param numDoubleEngines the number of double engines used
+     * @param coordinates the coordinates of engines used
+     */
     public void playerUsesEngines (String playerName, int numDoubleEngines, ArrayList<Coordinates>  coordinates) {
         game.getDrawnCard().engineChoice(playerName, numDoubleEngines, coordinates);
     }
-
+    /**
+     * Called when a player uses cannons during a card event.
+     *
+     * @param playerName the player using cannons
+     * @param doubleCannonPower the power of the double cannons used
+     * @param coordinates coordinates of the cannons used
+     */
     public void playerUsesCannons (String playerName, float doubleCannonPower, ArrayList<Coordinates>  coordinates) {
         game.getDrawnCard().cannonChoice(playerName, doubleCannonPower, coordinates);
     }
-
+    /**
+     * Called when a player manages goods in cargo holds.
+     *
+     * @param playerName the player managing goods
+     * @param clientCredits number of credits held by the client
+     * @param updatedCargos updated list of cargo hold tiles
+     */
     public void playerManagesGoods (String playerName, int clientCredits, ArrayList<CargoHold> updatedCargos) {
         game.getDrawnCard().manageGoods(playerName, clientCredits, updatedCargos);
     }
-
+    /**
+     * Called when a player is required to make a binary choice (yes/no).
+     *
+     * @param playerName the player making the choice
+     * @param choice the boolean value representing the player's decision
+     */
     public void playerMakesAChoice (String playerName, boolean choice) {
         game.getDrawnCard().choice(playerName, choice);
     }
-
+    /**
+     * Called when a player selects a planet.
+     *
+     * @param playerName the name of the player
+     * @param planet the index of the selected planet
+     */
     public void playerChoosesPlanet (String playerName, int planet) {
         game.getDrawnCard().planetChoice(playerName, planet);
     }
-
+    /**
+     * Called when a player chooses to remove crew members from specific tiles.
+     *
+     * @param playerName the player making the choice
+     * @param toRemoveFrom list of coordinates from which to remove crew
+     */
     public void playerRemovesCrew (String playerName, ArrayList<Coordinates> toRemoveFrom) {
         game.getDrawnCard().removeCrew(playerName, toRemoveFrom);
     }
-
+    /**
+     * Called when a player removes goods from cargo tiles.
+     *
+     * @param playerName the player performing the action
+     * @param toRemoveFrom list of coordinates from which goods are removed
+     */
     public void playerRemovesGoods(String playerName, ArrayList<Coordinates> toRemoveFrom) {
         game.getDrawnCard().removeGoods(playerName, toRemoveFrom);
     }
-
+    /**
+     * Called when a player uses batteries located on the ship.
+     *
+     * @param playerName the name of the player
+     * @param batteries list of battery tile coordinates to use
+     */
     public void playerUsesBatteries(String playerName, ArrayList<Coordinates> batteries) {
         game.getDrawnCard().useBatteries(playerName, batteries);
     }
-
+    /**
+     * Called when a player rolls dice during an event.
+     *
+     * @param playerName the player rolling the dice
+     */
     public void playerRollsTheDices(String playerName) {
         game.getDrawnCard().rollTheDices(playerName);
     }
-
+    /**
+     * Called when a player selects a path or branch in an event.
+     *
+     * @param playerName the name of the player
+     * @param branch the chosen branch coordinates
+     */
     public void playerChoosesBranch(String playerName, ArrayList<Coordinates> branch) {
         game.getDrawnCard().branchChoice(playerName, branch);
     }
 
 
-    //PlayerPoint calculation
+    /**
+     * Triggers the end-game logic, scoring and podium.
+     */
     public synchronized void concludeGame() {
         for (Player player : game.getFlightBoard().getAllPlayers()) {
             if (player != null) {
@@ -1238,7 +1521,9 @@ public class GameController implements Observer, Serializable {
         game.setPodium();
         showScores();
     }
-
+    /**
+     * Displays the final scores to all players.
+     */
     public void showScores() {
         Map<String,Integer> scores = new HashMap<>();
         for (Player player: game.getListOfAllPlayer())
@@ -1252,6 +1537,11 @@ public class GameController implements Observer, Serializable {
         }
     }
 
+    /**
+     * Notifies all players about a change in a player's credit attribute
+     * @param playerName player's name
+     * @param credits new credits value
+     */
     public void notifyPlayerCredits (String playerName, int credits) {
         for (VirtualView view: playersViewMap.values()) {
             try {
@@ -1259,34 +1549,54 @@ public class GameController implements Observer, Serializable {
             } catch (Exception ignored) {}
         }
     }
-
+    /**
+     * Returns the current game mode and model.
+     * @return the GameInterface instance
+     */
     public GameInterface getGame() {
         return game;
     }
-
+    /**
+     * Returns the current game state.
+     * @return the current GameState
+     */
     public GameState getGameState() {
         return game.getGameState();
     }
-
+    /**
+     * Returns a map of player names to their views.
+     * @return map of player views
+     */
     public Map<String, VirtualView> getPlayersViewMap() {
         return playersViewMap;
     }
-
+    /**
+     * Returns a map of active players.
+     * @return map of players
+     */
     public Map<String, Player> getActivePlayers() {
         return activePlayers;
     }
-
+    /**
+     * Returns the name of this game session.
+     * @return the game name
+     */
     public String getGameName() {
         return gameName;
     }
 
     /**
-     * @return true if there are no more active players
+     * Returns true if there are no more players in the game.
+     * @return true if empty
      */
     public boolean isGameEmpty() {
         return (activePlayers.isEmpty());
     }
 
+    /**
+     * Updates every connected player's view with a new client state.
+     * @param newState the new client state
+     */
     public void updateEveryView(ClientState newState) {
         for (String playerName:  playersViewMap.keySet()) {
             try{
@@ -1295,7 +1605,11 @@ public class GameController implements Observer, Serializable {
             clientsStatesMap.put(playerName, newState);
         }
     }
-
+    /**
+     * Updates a single player's view with a new state.
+     * @param newState the new client state
+     * @param playerName player to update
+     */
     public void updatePlayerView (ClientState newState, String playerName) {
         try {
             playersViewMap.get(playerName).setClientState(newState);
@@ -1304,16 +1618,20 @@ public class GameController implements Observer, Serializable {
         }
         clientsStatesMap.put(playerName, newState);
     }
-
+    /**
+     * Verifies the current state of the player.
+     * @param playerName player's name
+     * @param stateToVerify expected state
+     * @return true if matches, false otherwise
+     */
     public boolean playerStateIs(String playerName,ClientState stateToVerify) {
         return clientsStatesMap.get(playerName) == stateToVerify;
     }
 
     /**
-     * returns playersView from playerName
-     *
-     * @param playerName player to get view for
-     * @return player's viewInterface
+     * Returns the view associated with a player name.
+     * @param playerName player identifier
+     * @return VirtualView of the player
      */
     public VirtualView getViewFromNickname(String playerName) {
         return playersViewMap.get(playerName);
@@ -1352,7 +1670,10 @@ public class GameController implements Observer, Serializable {
         return disconnectedPlayers;
     }
 
-
+    /**
+     * Converts the internal state of the controller to a string (for save purposes).
+     * @return a serialized state string
+     */
     public String toStringData() {
         //First gameName and hourglassTurns, second clientStates, third playersWithErrors
         StringBuilder sb = new  StringBuilder();
@@ -1360,12 +1681,18 @@ public class GameController implements Observer, Serializable {
 
         return sb.toString();
     }
-
+    /**
+     * Loads specific data (like hourglass state) from a saved state.
+     * @param attributes string array representing saved state
+     */
     public void dataLoader(String[] attributes) {
         // GameName should be taken from game file name or should be used to create the gameController
         this.hourglassTurns = Integer.parseInt(attributes[1]);
     }
-
+    /**
+     * Retrieves the full list of active + disconnected players.
+     * @return a list of all players in the session
+     */
     public ArrayList<Player> getAllPlayers() {
         ArrayList<Player> players = new ArrayList<>();
         if (!activePlayers.isEmpty()) {
@@ -1376,12 +1703,17 @@ public class GameController implements Observer, Serializable {
         }
         return players;
     }
-
+    /**
+     * Returns whether this game was restored from disk.
+     * @return true if it was restarted
+     */
     public boolean isRestarted() {
         return restarted;
     }
 
-
+    /**
+     * Starts periodic autosave task.
+     */
     public void startAutoSave() {
         autoSaveExecutor = Executors.newSingleThreadScheduledExecutor();
         autoSaveExecutor.scheduleAtFixedRate(() -> {
@@ -1391,21 +1723,26 @@ public class GameController implements Observer, Serializable {
             }
         }, 0, 2, TimeUnit.MINUTES);
     }
-
+    /**
+     * Stops the autosave thread.
+     */
     public void stopAutoSave() {
         autoSaveEnabled = false;
         if (autoSaveExecutor != null && !autoSaveExecutor.isShutdown()) {
             autoSaveExecutor.shutdown();
         }
     }
-
+    /**
+     * Gets the current number of hourglass turns.
+     * @return number of turns
+     */
     public int getHourglassTurns() {
         return hourglassTurns;
     }
 
     /**
-     * when this method is called, the player is completely erased, so they won't be able to reconnect
-     * @param playerName player that wants to leave
+     * Removes a player from the game entirely (disconnect and forget).
+     * @param playerName player name
      */
     public void playerLeaves(String playerName) {
         if (activePlayers.containsKey(playerName)) {
@@ -1423,7 +1760,10 @@ public class GameController implements Observer, Serializable {
         }
         playersViewMap.remove(playerName);
     }
-
+    /**
+     * Prepares the controller and game model for a player disconnection.
+     * @param playerName the player who disconnected
+     */
     public void prepareForDisconnection(String playerName) {
         switch(this.getGameState()) {
             case SHIPS_CREATION -> checkIfAllPlayersReady();
@@ -1436,7 +1776,10 @@ public class GameController implements Observer, Serializable {
             case CARD_EVENT -> skipPlayersTurn(playerName);
         }
     }
-
+    /**
+     * Skips the disconnected player's turn during a card event.
+     * @param playerName name of the player to skip
+     */
     public void  skipPlayersTurn(String playerName) {
         game.getDrawnCard().playerDisconnected(playerName);
     }

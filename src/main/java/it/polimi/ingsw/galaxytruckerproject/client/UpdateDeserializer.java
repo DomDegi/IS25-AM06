@@ -120,6 +120,10 @@ public class UpdateDeserializer {
                 controller.getFlightBoard().addInGamePlayer(lightPlayer);
             });
 
+            if (controller.getMe().getPosition() != 0 && controller.getMe().getRank() != 0) {
+                controller.setPositioned(true);
+            }
+
         } catch (IOException e) {
             System.out.println("Error in unpacking currentGameStatus");
             throw new RuntimeException(e);

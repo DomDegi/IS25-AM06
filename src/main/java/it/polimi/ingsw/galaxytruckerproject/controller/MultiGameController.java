@@ -19,22 +19,37 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Manages multiple simultaneous game sessions in Galaxy Trucker.
+ * Handles player login, game creation and joining, and routes views and controllers to the appropriate game instance.
+ * It's also responsible for maintaining the state of all lobbies and notifying clients of new games.
+ */
 public class MultiGameController implements Serializable {
 
+    /**
+     * Map of active games, identified by their unique name.
+     */
     private final ConcurrentHashMap<String, GameController> gamesMap = new ConcurrentHashMap<>();
 
+    /**
+     * Map of players currently in the lobby phase, awaiting to join or create a game.
+     */
     private final Map<String, VirtualView> viewsMap = new HashMap<>();
 
+    /**
+     * Constructs a new MultiGameController with empty game and view maps.
+     */
     public MultiGameController() {}
 
     /**
-     * checks if the nickname is taken already from the active players, if not checks if there
-     * used to be a player connected to a started game that disconnected,
-     * if none of the above puts player in the viewsMap and shows them all the joinable games
-     * @param nickname player's chosen nickname
-     * @param view player's view
-     * @param controller player's personal controller to interact with the model
-     * @return boolean value to tell if the login was successful
+     * Attempts to log a player into the system.
+     * Checks if the nickname is already taken or if the player should reconnect to an existing game.
+     * Otherwise, adds the player to the view map and displays the list of joinable games.
+     *
+     * @param nickname the chosen nickname of the player
+     * @param view the remote view of the player
+     * @param controller the personal controller associated with the player
+     * @return true if login was successful; false otherwise
      */
     public boolean login(String nickname, VirtualView view, Controller controller){
         boolean wasSuccessful;
@@ -76,6 +91,16 @@ public class MultiGameController implements Serializable {
         return wasSuccessful;
     }
 
+    /**
+     * Creates a new game or resumes a previously saved one, if available.
+     * Handles player limit, name uniqueness, and adds the creator to the game.
+     *
+     * @param creator the nickname of the player creating the game
+     * @param gameName the name of the new or saved game
+     * @param playerCount the number of players required to start the game
+     * @param controller the player's controller
+     * @param chosenMode the selected {@link GameMode}
+     */
     public void createGame (String creator, String gameName, int playerCount, Controller controller, GameMode chosenMode) {
         VirtualView creatorView = viewsMap.get(creator);
 
@@ -116,6 +141,13 @@ public class MultiGameController implements Serializable {
         }
     }
 
+    /**
+     * Allows a player to join an existing game by name.
+     *
+     * @param joiner the nickname of the player joining
+     * @param gameName the name of the game to join
+     * @param controller the player's controller
+     */
     public void joinGame (String joiner, String gameName, Controller controller) {
         GameController gameToJoin = gamesMap.get(gameName);
         VirtualView joinerView = viewsMap.get(joiner);
@@ -137,9 +169,11 @@ public class MultiGameController implements Serializable {
     }
 
     /**
-     * removes player from game and if game is empty removes game from gamesMap
-     * returns leaver to joinableGamesList so that their view visualizes all the open lobbies
-     * @param leaver player to leave
+     * Removes the player from their current game.
+     * If the game becomes empty, it is removed.
+     * The player is then shown the lobby and the list of joinable games.
+     *
+     * @param leaver the nickname of the player who is leaving the game
      */
     public void leaveGame (String leaver) {
         GameController gameToLeave = this.gameFromNickname(leaver);
@@ -161,9 +195,9 @@ public class MultiGameController implements Serializable {
     }
 
     /**
-     * returns a map with every player nickname associated with their ViewInterface
-     * of the players that are inside a game.
-     * @return a map that associates every playerName with their interface
+     * Returns a map of all players currently inside a game, mapped to their views.
+     *
+     * @return a map from nickname to {@link ViewInterface} for all connected players
      */
     public Map<String, ViewInterface> allConnectedPlayers() {
         Map<String, ViewInterface> allConnectedPlayers = new HashMap<>();
@@ -172,24 +206,30 @@ public class MultiGameController implements Serializable {
     }
 
     /**
-     * returns true if the player's nickname was present in a game
-     * that reached after start_game phase
-     * @param nickname playersName as a string
-     * @return true if player was already connected to an ongoing game
+     * Checks whether the player is already inside an ongoing or saved game.
+     *
+     * @param nickname the nickname of the player
+     * @return true if the player is in a game; false otherwise
      */
     public boolean isAlreadyInAGame(String nickname) {
         return (gameFromNickname(nickname) != null);
     }
 
+    /**
+     * Checks whether a player is currently browsing the game lobby.
+     *
+     * @param nickname the nickname of the player
+     * @return true if the player is in the lobby view; false otherwise
+     */
     public boolean isLookingToJoinAGame (String nickname) {
         return (viewsMap.containsKey(nickname));
     }
 
     /**
-     * returns the gameController of the game that contains the player with
-     * the nickname passed as parameter
-     * @param nickname player whose game we are looking for
-     * @return GameController object the player is a part of
+     * Finds and returns the game that the given player is part of.
+     *
+     * @param nickname the nickname of the player
+     * @return the {@link GameController} containing the player, or null if not found
      */
     public GameController gameFromNickname(String nickname) {
         return gamesMap.values().stream()
@@ -200,10 +240,11 @@ public class MultiGameController implements Serializable {
     }
 
     /**
-     * shows the player the games still in lobby phase and adds player to the viewsMap
-     * in the multiGameController.
-     * @param nickname nickname of the player to add the viewsMap
-     * @param view view of the player to call the method that shows the joinable games on
+     * Shows the player a list of games still in the lobby phase.
+     * Adds the player to the views map if not already in a game.
+     *
+     * @param nickname the player's nickname
+     * @param view the player's view to send the list to
      */
     public void joinableGamesList(String nickname, VirtualView view) {
         ArrayList<GameInfo> joinableGames = new ArrayList<>();
@@ -226,9 +267,11 @@ public class MultiGameController implements Serializable {
     }
 
     /**
-     * notifies every player still in game selection that a new game was created
-     * @param gameCreator game creator
-     * @param creatorView view of the game creator
+     * Notifies all players still in the game selection phase that a new game has been created.
+     * Updates their view with the refreshed list of joinable games.
+     *
+     * @param gameCreator the player who created the game
+     * @param creatorView the creator's view
      */
     public void notifyNewGame (String gameCreator, ViewInterface creatorView)  {
         for (Map.Entry<String, VirtualView> entry : viewsMap.entrySet()) {
@@ -238,6 +281,10 @@ public class MultiGameController implements Serializable {
         }
     }
 
+    /**
+     * Starts the PingPong connection check service for all active games.
+     * Used to detect and manage dropped client connections.
+     */
     public void playPingPong(){
        PingPong pingPong = new PingPong(this.gamesMap);
        pingPong.run();

@@ -98,7 +98,7 @@ public class GUI extends Application implements DisplayableView {
     public static void setConnection(String connectionTipe,String ip) {
         if (connectionTipe.equals("r")) {
             try {
-                controller.connectRMI(ip);
+                controller.connectRMI(ip, 1099);
             } catch (NotBoundException | MalformedURLException | RemoteException e) {
                 throw new RuntimeException(e);
             }
