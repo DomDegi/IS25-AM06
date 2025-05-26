@@ -1111,17 +1111,16 @@ public class ClientController {
         this.connected = connected;
     }
 
-    public boolean connectRMI(String ip) throws MalformedURLException, NotBoundException, RemoteException {
+    public boolean connectRMI(String ip,int port) throws MalformedURLException, NotBoundException, RemoteException {
         String connection;
         if(state!=ClientState.CHOOSE_CONNECTION_TYPE&&state!=ClientState.CHOOSE_IP_AND_PORT_RMI){
             return false;
         }
         VirtualViewRMI viewRMI = new VirtualViewRMI(this, view);
         if(ip!=null&& !ip.equals(""))
-            connection="rmi://"+ip+"/ControllerFactory";
-        else
-            connection="rmi://localhost/ControllerFactory";
-        ControllerFactory controllerFactory = (ControllerFactory) Naming.lookup("rmi://localhost/ControllerFactory");
+            ip="localhost";
+        String url= String.format("rmi://%s:%d/VirtualViewRMI",ip,port);
+        ControllerFactory controllerFactory = (ControllerFactory) Naming.lookup(url);
         this.virtualController = controllerFactory.createController();
         virtualController.setView(viewRMI);
         setState(ClientState.LOGIN);

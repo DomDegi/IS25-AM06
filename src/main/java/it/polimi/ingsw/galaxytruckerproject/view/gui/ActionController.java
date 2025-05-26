@@ -1,23 +1,18 @@
 package it.polimi.ingsw.galaxytruckerproject.view.gui;
 
-import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
+import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.CrewType;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -28,7 +23,7 @@ import java.util.Objects;
 
 import static javafx.scene.paint.Color.rgb;
 
-public class ChooseCrewController {
+public class ActionController {
     @FXML
     public Polygon p0;
     @FXML
@@ -115,36 +110,29 @@ public class ChooseCrewController {
     public Polygon pt17;
 
     @FXML
+    public ImageView card;
+
+    @FXML
+    public ImageView deck;
+
+    @FXML
     public Group flightImage;
 
     @FXML
     public ImageView shipImage;
 
     @FXML
+    public Label text;
+
+    @FXML
     public Group trialFlight;
+
     @FXML
     public GridPane tilesTable;
 
     @FXML
-    public Label actionLabel;
-
-    @FXML
-    public Button white;
-    @FXML
-    public Button purple;
-    @FXML
-    public Button brown;
-
-    @FXML
-    public ImageView deck;
-
-    private ArrayList<Coordinates> cabins;
-
-    private int index=0;
-
-    @FXML
     public void initialize() {
-        deck.setDisable(true);
+        text.setText("You can accept or deny [yes] [no]");
         Polygon[] polygons = new Polygon[]{p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23};
         int max = 24;
         if (GUI.getController().getGameMode() == GameMode.LEVEL2) {
@@ -180,11 +168,7 @@ public class ChooseCrewController {
             }
             index++;
         }
-        refresh();
-        cabins=GUI.getController().getCabinsManager().getCabins();
-        focus();
-    }
-    private void refresh(){
+
         tilesTable.getChildren().clear();
         ArrayList<Tile> tiles = new ArrayList<>();
         for (int i = 0; i <= 6; i++) {
@@ -208,72 +192,35 @@ public class ChooseCrewController {
                 tilesTable.add(imageView, tile.getCoordinates().getY(), tile.getCoordinates().getX());
             }
         }
-    }
-    public void focus(){
-        refresh();
-        index=GUI.getController().getCabinsManager().getIndex();
-        if(index<cabins.size()) {
-            switch (GUI.getController().getCabinsManager().crewType()) {
-                case NO -> {
-                    white.setDisable(false);
-                    purple.setDisable(true);
-                    brown.setDisable(true);
-                }
-                case PURPLE -> {
-                    white.setDisable(false);
-                    purple.setDisable(false);
-                    brown.setDisable(true);
-                }
-                case BROWN -> {
-                    white.setDisable(false);
-                    purple.setDisable(true);
-                    brown.setDisable(false);
-                }
-                case BOTH -> {
-                    white.setDisable(false);
-                    purple.setDisable(false);
-                    brown.setDisable(false);
-                }
-            }
-        }else {
-            actionLabel.setVisible(false);
-            white.setVisible(false);
-            purple.setVisible(false);
-            brown.setVisible(false);
-            GUI.showDrawCard();
-            return;
+
+        if (GUI.getController().getState() == ClientState.WAIT) {
+            deck.setDisable(true);
         }
-        Tile tile=GUI.getController().getMe().getShipBoard().getTilesTable()[cabins.get(index).getX()][cabins.get(index).getY()].get();
-        String imagePath = tile.getImagePath();
-        InputStream imageStream = getClass().getResourceAsStream(imagePath);
-        if (imageStream == null) {
-            System.err.println("not found" + imagePath);
-        } else {
-            Image image = new Image(imageStream);
-            ImageView imageView = new ImageView(image);
-            imageView.rotateProperty().setValue(tile.getRotation() * 90);
-            imageView.setFitWidth(80);
-            imageView.setFitHeight(80);
-            imageView.setDisable(false);
-            tilesTable.add(imageView, tile.getCoordinates().getY(), tile.getCoordinates().getX());
+        showCard();
+    }
+
+    public void showCard() {
+        if (!GUI.displayableCards().isEmpty())
+            card.setImage(loadImage(GUI.displayableCards().get(0).getFilePath()));
+    }
+
+    private Image loadImage(String path) {
+        InputStream stream = getClass().getResourceAsStream(path);
+        if (stream == null) {
+            return null;
         }
+        return new Image(stream);
     }
+
     @FXML
-    public void human(){
-        GUI.setCabin(CrewType.HUMAN);
-        if(index<cabins.size())
-            focus();
+    public void yes() {
+        GUI.showDrawCard();
+        GUI.yes();
     }
+
     @FXML
-    public void pAlien(){
-        GUI.setCabin(CrewType.PURPLE);
-        if(index<cabins.size())
-            focus();
-    }
-    @FXML
-    public void bAlien(){
-        GUI.setCabin(CrewType.BROWN);
-        if(index<cabins.size())
-            focus();
+    public void no() {
+        GUI.showDrawCard();
+        GUI.no();
     }
 }

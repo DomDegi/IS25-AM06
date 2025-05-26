@@ -238,6 +238,7 @@ public class CoordRequestController {
     public void doneCoord(){
         doneButton.setVisible(false);
         actionLabel.setVisible(false);
+        GUI.showDrawCard();
         GUI.doneCoord();
     }
 }
