@@ -5,7 +5,6 @@ import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.client.GamePhases;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
-import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
@@ -880,22 +879,54 @@ public class GUI extends Application implements DisplayableView {
                     showConnection();
                     layout.getStylesheets().set(0, css2);
                 }
-                case LOGIN -> showLogin();
-                case LOBBY -> showLobby();
-                case LOBBY0 -> showCreateNewGame();
-                case COLOR_CHOICE, COLOR_CHOICE0 -> showChooseColor();
-                case START_SHIP_CREATION -> showStart();
+                case LOGIN -> {
+                    showLogin();
+                    layout.getStylesheets().set(0, css2);
+                }
+                case LOBBY -> {
+                    showLobby();
+                    layout.getStylesheets().set(0, css2);
+                }
+                case LOBBY0 -> {
+                    showCreateNewGame();
+                    layout.getStylesheets().set(0, css2);
+                }
+                case COLOR_CHOICE, COLOR_CHOICE0 -> {
+                    showChooseColor();
+                    layout.getStylesheets().set(0, css2);
+                }
+                case START_SHIP_CREATION -> {
+                    showStart();
+                    layout.getStylesheets().set(0, css2);
+                }
                 case S_END_DRAW_TILE_CARD -> {
                     showS_EndDrawTilesCards();
                     layout.getStylesheets().set(0, css3);
                     addCheckShip();
                 }
-                case S_MANAGE_DRAWN_TILE -> showS_ManageDrawTilesCards();
-                case S_MANAGE_CARDS -> showDeckCheck();
-                case S_FINISHED -> showEndShip();
-                case MANAGE_CABINS-> showChooseCrew();
-                case COORD_REQUEST -> showCard();
-                case WAIT -> showWait();
+                case S_MANAGE_DRAWN_TILE -> {
+                    showS_ManageDrawTilesCards();
+                    layout.getStylesheets().set(0, css3);
+                }
+                case S_MANAGE_CARDS -> {
+                    showDeckCheck();
+                    layout.getStylesheets().set(0, css3);
+                }
+                case S_FINISHED -> {
+                    showEndShip();
+                    layout.getStylesheets().set(0, css3);
+                }
+                case MANAGE_CABINS-> {
+                    showChooseCrew();
+                    layout.getStylesheets().set(0, css3);
+                }
+                case COORD_REQUEST -> {
+                    showCard();
+                    layout.getStylesheets().set(0, css3);
+                }
+                case WAIT -> {
+                    showWait();
+                }
                 case RECONNECTING -> {
                 }
             }
