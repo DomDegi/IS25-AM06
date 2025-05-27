@@ -460,6 +460,10 @@ public class GUI extends Application implements DisplayableView {
     public static void doneGoods(){
         controller.doneGoods();
     }
+
+    public static void land(){
+        controller.land();
+    }
 //showMethods---------------------------------------------------------------------------------------------------------------
 
     /**
@@ -873,6 +877,7 @@ public class GUI extends Application implements DisplayableView {
         clear();
         if(GUI.getController().getPhase()==GamePhases.CARDS){
             showCard();
+            layout.getStylesheets().set(0, css3);
         }else {
             switch (newState) {
                 case CHOOSE_CONNECTION_TYPE -> {
@@ -1355,11 +1360,10 @@ public class GUI extends Application implements DisplayableView {
     @Override
     public void notifyPlayerLandedOnPlanet(String playerName, int planet) throws RemoteException {
         Platform.runLater(() -> {
-            if (controller.isChecking()==null)
-                if(controller.getState()==ClientState.PLANET_CHOICE){
-                    CardsController cardController=loader.getController();
-                    cardController.initialize();
-                }
+            if (controller.isChecking()==null) {
+                CardsController cardController = loader.getController();
+                cardController.initialize();
+            }
         });
     }
 

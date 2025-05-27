@@ -145,6 +145,9 @@ public class CardsController {
     public GridPane tilesTable;
 
     @FXML
+    public Button landButton=new Button("Land");
+
+    @FXML
     public VBox mainBox=new VBox();
 
     @FXML
@@ -160,6 +163,8 @@ public class CardsController {
         shipBoard(state);
         showCard();
         deck.setDisable(GUI.getController().getState()!=ClientState.DRAW_CARD);
+        landButton.setVisible(true);
+        landButton.setDisable(GUI.getController().getState()==ClientState.DRAW_CARD||GUI.getController().getState()==ClientState.WAIT||GUI.getController().getState()==ClientState.WAIT_TO_DRAW);
         switch (state){
             case DRAW_CARD-> showDrawCard();
             case ACTION -> showAction();
@@ -207,6 +212,11 @@ public class CardsController {
         GUI.choosePlanet(index);
     }
 
+    @FXML
+    public void land(){
+        GUI.land();
+    }
+
     private void waitOthers(){
         mainBox.getChildren().clear();
         text.setText("Waiting for other players...");
@@ -252,7 +262,10 @@ public class CardsController {
             p.setStrokeWidth(5);
             p.setEffect(new DropShadow(BlurType.GAUSSIAN,rgb(255, 169, 19), 30, 0.4, 0, 0));
             for (LightPlayer player : GUI.getController().getFlightBoard().getInGamePlayers()) {
-                if (index*((player.getPosition() /max)+1)==player.getPosition()) {
+                int position=player.getPosition();
+                while (position>max)
+                    position-=max;
+                if (index==player.getPosition()) {
                     if (player.getPlayerColor().equals(PlayersColor.RED))
                         p.setFill(Color.RED);
                     if (player.getPlayerColor().equals(PlayersColor.YELLOW))
@@ -382,6 +395,8 @@ public class CardsController {
                     doneButton.setOnAction(_ -> doneCoord());
                     mainBox.getChildren().add(doneButton);
                 }
+                if(type==CHOOSE_TO_BREAK)
+                    landButton.setVisible(false);
                 text.setText(type.toString());
             }
         });

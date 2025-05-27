@@ -50,7 +50,7 @@ public class ClientController {
     /**
      * The player associated with this client.
      */
-    private final LightPlayer me;
+    private LightPlayer me;
 
     /**
      * The flight board displaying the positions of all players in the game.
@@ -125,7 +125,7 @@ public class ClientController {
     /**
      * A list of turned tiles for display purposes.
      */
-    private final ArrayList<Tile> turnedTilesDisplayer;
+    private ArrayList<Tile> turnedTilesDisplayer;
 
     /**
      * A map representing the card deck, categorized by deck type.
@@ -135,12 +135,12 @@ public class ClientController {
     /**
      * A map indicating the availability of each deck category (1, 2, 3).
      */
-    private final Map<Integer, Boolean> availableDeck;
+    private Map<Integer, Boolean> availableDeck;
 
     /**
      * A map tracking the availability of player colors for the game.
      */
-    private final Map<PlayersColor, Boolean> availableColors;
+    private Map<PlayersColor, Boolean> availableColors;
 
     /**
      * A list of goods available for the player to manage.
@@ -344,12 +344,37 @@ public class ClientController {
      * @return true if the leave operation is successful, false otherwise
      */
     public boolean leaveGame() {
-        phase=GamePhases.LOGIN;
-        decksNotAvailable(new ArrayList<>());
-        colorsNotAvailable(new ArrayList<>());
         if (gameMode != null) {
             try {
                 virtualController.leaveGame();
+                positioned=false;
+                this.checking= null;
+                this.numPlayer = 0;
+                this.gameInfo = new ArrayList<>();
+                this.view = new TUI();
+                this.deck = new HashMap<>();
+                this.me = new LightPlayer("", null);
+                this.goodsList = new ArrayList<>();
+                this.flightBoard = new LightFlightboard(new FlightBoard(null));
+                this.inManager = false;
+                this.connected = false;
+                this.turnedTiles = new HashMap<>();
+                this.turnedTilesDisplayer=new ArrayList<>();
+                this.previousState = ClientState.CHOOSE_UI;
+                this.state = ClientState.LOGIN;
+                this.phase = GamePhases.LOGIN;
+                this.availableDeck = new HashMap<>(3);
+                availableDeck.put(1, Boolean.TRUE);
+                availableDeck.put(2, Boolean.TRUE);
+                availableDeck.put(3, Boolean.TRUE);
+                this.availableColors = new HashMap<>(4);
+                availableColors.put(PlayersColor.RED, Boolean.TRUE);
+                availableColors.put(PlayersColor.YELLOW, Boolean.TRUE);
+                availableColors.put(PlayersColor.GREEN, Boolean.TRUE);
+                availableColors.put(PlayersColor.BLUE, Boolean.TRUE);
+                this.indexDeckInHandOrPlanet = 0;
+                this.hourglassTurns = 0;
+                displayedCard = new ArrayList<>();
                 return true;
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
@@ -1184,8 +1209,8 @@ public class ClientController {
      * @param input the player's input, which must contain the early landing command
      * @return true if the early landing is successful, false otherwise
      */
-    public boolean land(String[] input) {
-        if (input[0].equals("earlyland") && !me.isLanded()) {
+    public boolean land() {
+        if (!me.isLanded()) {
             try {
                 virtualController.notifyEarlyLanding();
             } catch (RemoteException e) {

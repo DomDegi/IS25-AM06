@@ -152,26 +152,39 @@ public class ChooseCrewController {
         Polygon[] polygons = new Polygon[]{p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23};
         int max = 24;
         if (GUI.getController().getGameMode() == GameMode.LEVEL2) {
-            polygons = new Polygon[]{p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23};
             trialFlight.setVisible(false);
             flightImage.setVisible(true);
             shipImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/grafiche/cardboard/cardboard-1b.jpg"))));
         } else if (GUI.getController().getGameMode() == GameMode.TRIAL) {
             deck.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/grafiche/cards/GT-cards_I_IT_0121.jpg"))));
-            polygons = new Polygon[]{pt0, pt1, pt2, pt3, pt4, pt5, pt6, pt7, pt8, pt9, pt10, pt11, pt12, pt13, pt14, pt15, pt16, pt17};
-            max = 18;
             flightImage.setVisible(false);
             trialFlight.setVisible(true);
             shipImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/grafiche/cardboard/cardboard-1.jpg"))));
         }
-        int index = 0;
-        for (Polygon p : polygons) {
+        flightBoard();
+        shipBoard();
+        cabins=GUI.getController().getCabinsManager().getCabins();
+        focus();
+    }
+
+    private void flightBoard(){
+        int max=24;
+        Polygon[] polygons = new Polygon[]{p0,p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23};
+        if (GUI.getController().getGameMode()==GameMode.TRIAL) {
+            polygons=new Polygon[]{pt0,pt1,pt2,pt3,pt4,pt5,pt6,pt7,pt8,pt9,pt10,pt11,pt12,pt13,pt14,pt15,pt16,pt17};
+            max=18;
+        }
+        int index=0;
+        for(Polygon p:polygons){
             p.setStroke(rgb(255, 169, 19));
             p.setFill(Color.TRANSPARENT);
             p.setStrokeWidth(5);
-            p.setEffect(new DropShadow(BlurType.GAUSSIAN, rgb(255, 169, 19), 30, 0.4, 0, 0));
+            p.setEffect(new DropShadow(BlurType.GAUSSIAN,rgb(255, 169, 19), 30, 0.4, 0, 0));
             for (LightPlayer player : GUI.getController().getFlightBoard().getInGamePlayers()) {
-                if (index * (((int) player.getPosition() / max) + 1) == player.getPosition()) {
+                int position=player.getPosition();
+                while (position>max)
+                    position-=max;
+                if (index==player.getPosition()) {
                     if (player.getPlayerColor().equals(PlayersColor.RED))
                         p.setFill(Color.RED);
                     if (player.getPlayerColor().equals(PlayersColor.YELLOW))
@@ -184,11 +197,9 @@ public class ChooseCrewController {
             }
             index++;
         }
-        refresh();
-        cabins=GUI.getController().getCabinsManager().getCabins();
-        focus();
     }
-    private void refresh(){
+
+    private void shipBoard(){
         tilesTable.getChildren().clear();
         ArrayList<Tile> tiles = new ArrayList<>();
         for (int i = 0; i <= 6; i++) {
@@ -214,7 +225,7 @@ public class ChooseCrewController {
         }
     }
     public void focus(){
-        refresh();
+        shipBoard();
         index=GUI.getController().getCabinsManager().getIndex();
         if(index<cabins.size()) {
             switch (GUI.getController().getCabinsManager().crewType()) {
