@@ -113,7 +113,7 @@
                                 </Group>
                             </children>
                         </StackPane>
-                        <Label fx:id="actionLabel" text="Choose Crew" />
+                        <Label fx:id="text" text="Choose Crew" />
                         <AnchorPane>
                             <children>
                                 <ImageView fx:id="shipImage" fitHeight="442.0" fitWidth="611.0" layoutX="30.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.05303955078125" AnchorPane.topAnchor="0.0">
@@ -143,7 +143,7 @@
                         </AnchorPane>
                     </children>
                 </VBox>
-                <VBox alignment="CENTER" prefWidth="195.0" spacing="40.0">
+                <VBox fx:id="box" alignment="CENTER" prefWidth="195.0" spacing="40.0">
                <children>
                   <Button fx:id="white" mnemonicParsing="false" onAction="#human" prefHeight="75.0" prefWidth="75.0" style="-fx-background-color: white;" />
                   <Button fx:id="purple" mnemonicParsing="false" onAction="#pAlien" prefHeight="75.0" prefWidth="75.0" style="-fx-background-color: purple;" />

@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Polygon?>
 
-<BorderPane stylesheets="@css/ShipStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.galaxytruckerproject.view.gui.DrawCardController">
+<BorderPane stylesheets="@css/ShipStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.galaxytruckerproject.view.gui.CardsController">
    <center>
       <HBox alignment="CENTER" spacing="100.0" BorderPane.alignment="CENTER">
          <children>
@@ -112,7 +112,7 @@
                         </Group>
                      </children>
                   </StackPane>
-                  <Label />
+                  <Label fx:id="text" />
                   <AnchorPane prefHeight="442.0" prefWidth="652.0">
                      <children>
                         <ImageView fx:id="shipImage" fitHeight="442.0" fitWidth="611.0" layoutX="30.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.05303955078125" AnchorPane.topAnchor="0.0">
@@ -142,7 +142,7 @@
                   </AnchorPane>
                </children>
             </VBox>
-            <VBox prefWidth="195.0" spacing="40.0" />
+            <VBox fx:id="mainBox" alignment="CENTER" prefWidth="195.0" spacing="30.0" />
          </children>
       </HBox>
    </center>

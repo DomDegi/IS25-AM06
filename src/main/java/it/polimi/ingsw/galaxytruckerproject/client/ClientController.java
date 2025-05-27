@@ -125,7 +125,7 @@ public class ClientController {
     /**
      * A list of turned tiles for display purposes.
      */
-    private ArrayList<Tile> turnedTilesDisplayer;
+    private final ArrayList<Tile> turnedTilesDisplayer;
 
     /**
      * A map representing the card deck, categorized by deck type.
@@ -238,15 +238,9 @@ public class ClientController {
             return;
         }
         switch (words[0]) {
-            case "gui", "g" -> {
-                setGUI(new GUI());
-            }
-            case "tui", "t" -> {
-                setTUI(new TUI());
-            }
-            default -> {
-                view.wrongLocalInput();
-            }
+            case "gui", "g" -> setGUI(new GUI());
+            case "tui", "t" -> setTUI(new TUI());
+            default -> view.wrongLocalInput();
         }
     }
     /**
@@ -350,6 +344,9 @@ public class ClientController {
      * @return true if the leave operation is successful, false otherwise
      */
     public boolean leaveGame() {
+        phase=GamePhases.LOGIN;
+        decksNotAvailable(new ArrayList<>());
+        colorsNotAvailable(new ArrayList<>());
         if (gameMode != null) {
             try {
                 virtualController.leaveGame();
@@ -886,9 +883,7 @@ public class ClientController {
         previousState = state;
         state = newState;
         switch (newState) {
-            case START_SHIP_CREATION -> {
-                phase = GamePhases.SHIPBOARD;
-            }
+            case START_SHIP_CREATION -> phase = GamePhases.SHIPBOARD;
 
             case S_END_DRAW_TILE_CARD -> {
                 phase = GamePhases.SHIPBOARD;
@@ -914,13 +909,8 @@ public class ClientController {
                 }
                 if (gameMode == GameMode.LEVEL2) {
                     if (me.getShipBoard().getCabinsCoordinates() == null || me.getShipBoard().getCabinsCoordinates().isEmpty() || me.getShipBoard().getCabinsCoordinates().size() == 1) {
-                        if(me.getShipBoard().getCabinsCoordinates() == null)
-                            System.out.println("null");
-                        if(me.getShipBoard().getCabinsCoordinates().isEmpty())
-                            System.out.println("empty");
-                        if(me.getShipBoard().getCabinsCoordinates().size() == 1)
-                            System.out.println("1");
                         setState(ClientState.WAIT);
+                        setState(ClientState.WAIT_TO_DRAW);
                         try {
                             virtualController.notifyNewCrewArrangement(new ArrayList<>());
                         } catch (RemoteException e) {
@@ -949,6 +939,8 @@ public class ClientController {
                 }
             }
             case S_FINISHED -> {
+                if(displayedCard!=null)
+                    displayedCard.clear();
                 if (gameMode == GameMode.TRIAL) {
                     try {
                         me.getShipBoard().setGetStat();
@@ -963,13 +955,11 @@ public class ClientController {
                 view.printProjectile(displayedCard.getFirst().getListOfProjectiles().getFirst());
                 displayedCard.getFirst().getListOfProjectiles().removeFirst();
             }
-            case DRAW_CARD -> {
-                phase = GamePhases.CARDS;
-
-                /*if(me.getRank()!=1){
+            case WAIT_TO_DRAW ->
+                    phase = GamePhases.CARDS;
+            case DRAW_CARD -> phase = GamePhases.CARDS; /*if(me.getRank()!=1){
                     setState( ClientState.WAIT);
                 } //MI FIDO DI QUELLO CHE MI DICE IL SERVER(prova)*/
-            }
             case MANAGE_GOODS -> {
                 if (!inManager) {
                     me.getShipBoard().setGetStat();
@@ -1635,10 +1625,9 @@ public class ClientController {
         if(state != ClientState.CHOOSE_CONNECTION_TYPE && state != ClientState.CHOOSE_IP_AND_PORT_RMI){
             return false;
         }
-        if (ip == null || ip.equals("")) {
-            ip = "localhost";
-        }
         VirtualViewRMI viewRMI = new VirtualViewRMI(this, view);
+        if(ip!=null&& !ip.isEmpty())
+            ip="localhost";
         String url = String.format("rmi://%s:%d/ControllerFactory", ip, port);
         ControllerFactory controllerFactory = (ControllerFactory) Naming.lookup(url);
         this.virtualController = controllerFactory.createController();
@@ -1660,9 +1649,8 @@ public class ClientController {
         if(state != ClientState.CHOOSE_CONNECTION_TYPE && state != ClientState.CHOOSE_IP_AND_PORT_SOCKET){
             return false;
         }
-        if(ip == null || ip.equals("")) {
-            ip = "localhost";
-        }
+        if(ip==null|| ip.isEmpty())
+            ip="localhost";
         Socket server;
         try {
             server = new Socket(ip, port);
@@ -1889,6 +1877,10 @@ public class ClientController {
      */
     public CabinsManager getCabinsManager() {
         return cabinsManager;
+    }
+
+    public GoodsManager getGoodsManager() {
+        return goodsManager;
     }
 }
 

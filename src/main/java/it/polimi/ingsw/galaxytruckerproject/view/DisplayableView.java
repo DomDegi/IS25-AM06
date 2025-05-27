@@ -10,7 +10,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -55,7 +54,7 @@ public interface DisplayableView extends ViewInterface {
      * Displays the list of cards that are available for the player.
      * @param cards the list of cards to be shown
      */
-    void showCard(ArrayList<Card> cards);
+    void showDeck(ArrayList<Card> cards);
 
     /**
      * Displays the player's flightboard.

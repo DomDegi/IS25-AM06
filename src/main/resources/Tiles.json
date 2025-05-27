@@ -1127,7 +1127,7 @@
     "east": {"connectorsType": "UNIVERSAL" },
     "south": {"connectorsType": "SMOOTH"},
     "west": {"connectorsType": "SINGLE"},
-    "imagePath": "images/grafiche/grafiche/tiles/GT-new_tiles_16_for web20.jpg"
+    "imagePath": "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web20.jpg"
   },
   {
     "type": "CargoBlue",
