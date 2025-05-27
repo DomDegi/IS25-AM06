@@ -231,6 +231,18 @@ public class GUI extends Application implements DisplayableView {
         controller.choosePlanet(index);
     }
 
+    public static void chooseCargo(int x, int y){
+        Coordinates coordinates = new Coordinates(x,y);
+        controller.chooseCargo(coordinates);
+    }
+
+    public static void chooseGood(int index){
+        controller.chooseGoods(index);
+    }
+
+    public static void doneGoods(){
+        controller.doneGoods();
+    }
 //showMethods---------------------------------------------------------------------------------------------------------------
     public static void clear(){
         showMessage("");

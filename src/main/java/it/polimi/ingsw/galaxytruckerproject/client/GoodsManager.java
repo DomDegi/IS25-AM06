@@ -20,6 +20,7 @@ public class GoodsManager {
     private int goodsToGet;
     private final HashSet<CargoHold> changes;
     private final DisplayableView view;
+    private ArrayList<Goods> cargo;
 
     public GoodsManager(LightPlayer currentPlayer, ArrayList<Goods> possibleGoodsGain, DisplayableView view) {
         this.view=view;
@@ -63,7 +64,7 @@ public class GoodsManager {
         }
         view.cargoSelected(coordinates);
         coordinatesToPut=coordinates;
-        if(goodsToGet==0)
+        if(goodsToGet==0&&currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut)!=null&&!currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut).isEmpty())
             pickGoods();
         else
             getReward();
@@ -133,7 +134,7 @@ public class GoodsManager {
     }
 
     public void swapGoods(int chose) {
-        ArrayList<Goods> cargo = currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut);
+        cargo =new ArrayList<>(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
         if(cargo.isEmpty())
         {
             state =0;
@@ -192,7 +193,12 @@ public class GoodsManager {
         view.goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
         view.showGenericMessage("Planet:\n");
         view.goodsPrinter(possibleGoodsGain);
+        cargo=null;
         view.showGenericMessage("Chose for each good where to put it[first the good, then x y], input 'done' to stop,'x y' to pick one good from your cargo:\n\n");
         state =0;
+    }
+
+    public ArrayList<Goods> getCargo() {
+        return cargo;
     }
 }

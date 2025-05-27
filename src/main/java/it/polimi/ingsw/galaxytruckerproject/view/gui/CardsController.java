@@ -5,12 +5,15 @@ import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Planet;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,10 +21,9 @@ import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Polygon;
 
 import java.io.IOException;
@@ -30,10 +32,11 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import static it.polimi.ingsw.galaxytruckerproject.client.CoordReqType.*;
-import static javafx.scene.paint.Color.MAGENTA;
-import static javafx.scene.paint.Color.rgb;
+import static javafx.scene.paint.Color.*;
 
 public class CardsController {
+
+    public boolean visible= true;
 
     @FXML
     public Label rolled=new Label("");
@@ -287,13 +290,73 @@ public class CardsController {
                 imageView.setDisable(true);
                 switch (state){
                     case COORD_REQUEST-> {
-                        imageView.setDisable(false);
-                        imageView.setOnMouseClicked(event -> {
-                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                            initialize();
-                        });
-                    }
+                        CoordReqType type=GUI.getController().getCoordInputManager().getCoordReqType();
+                        if(type!=null)
+                            switch (type){
+                                case CHOOSE_TO_BREAK,CHOOSE_TO_MAINTAIN -> {
+                                    imageView.setDisable(false);
+                                    imageView.setOnMouseClicked(event -> {
+                                        GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                        initialize();
+                                    });
+                                }
+                                case CHOOSE_BATTERY -> {
+                                    if(tile instanceof BatteryComponents) {
+                                        imageView.setDisable(false);
+                                        imageView.setOnMouseClicked(event -> {
+                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                            initialize();
+                                        });
+                                    }
+                                }
+                                case CHOOSE_DOUBLE_CANNON ->{
+                                    if(tile instanceof BatteryComponents||tile instanceof DoubleCannon) {
+                                        imageView.setDisable(false);
+                                        imageView.setOnMouseClicked(event -> {
+                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                            initialize();
+                                        });
+                                    }
+                                }
+                                case CHOOSE_DOUBLE_ENGINE -> {
+                                    if (tile instanceof BatteryComponents || tile instanceof DoubleEngine) {
+                                        imageView.setDisable(false);
+                                        imageView.setOnMouseClicked(event -> {
+                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                            initialize();
+                                        });
+                                    }
+                                }
+                                case CHOOSE_CREW -> {
+                                   if(tile instanceof Cabin){
+                                       imageView.setDisable(false);
+                                       imageView.setOnMouseClicked(event -> {
+                                           GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                           initialize();
+                                       });
+                                   }
+                                }
+                                case REMOVE_GOODS -> {
+                                   if(tile instanceof CargoHold||tile instanceof BatteryComponents){
+                                       imageView.setDisable(false);
+                                       imageView.setOnMouseClicked(event -> {
+                                           GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                           initialize();
+                                       });
+                                   }
+                                }
+                            }
+
+                        }
                     case MANAGE_GOODS -> {
+                        if(tile instanceof CargoHold) {
+                            imageView.setDisable(false);
+                            imageView.setOnMouseClicked(event -> {
+                                GUI.chooseCargo(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                visible=true;
+                                initialize();
+                            });
+                        }
                     }
                 }
                 tilesTable.add(imageView,tile.getCoordinates().getY(),tile.getCoordinates().getX());
@@ -312,13 +375,15 @@ public class CardsController {
     private void showCoordRequest() {
         Platform.runLater(() -> {
             CoordReqType type = GUI.getController().getCoordInputManager().getCoordReqType();
-            if(type==CHOOSE_TO_BREAK||type==CHOOSE_BATTERY||type==CHOOSE_DOUBLE_CANNON||type==CHOOSE_DOUBLE_ENGINE){
-                Button doneButton=new Button("Done");
-                doneButton.setPrefSize(100,75);
-                doneButton.setOnAction(_->doneCoord());
-                mainBox.getChildren().add(doneButton);
+            if(GUI.getController().getCoordInputManager().getCoordReqType()!=null) {
+                if (type == CHOOSE_TO_BREAK || type == CHOOSE_BATTERY || type == CHOOSE_DOUBLE_CANNON || type == CHOOSE_DOUBLE_ENGINE) {
+                    Button doneButton = new Button("Done");
+                    doneButton.setPrefSize(100, 75);
+                    doneButton.setOnAction(_ -> doneCoord());
+                    mainBox.getChildren().add(doneButton);
+                }
+                text.setText(type.toString());
             }
-            text.setText(type.toString());
         });
     }
 
@@ -341,8 +406,6 @@ public class CardsController {
             rollButton.setPrefSize(100,75);
             rollButton.setOnAction(_->roll());
             mainBox.getChildren().add(rollButton);
-            rolled.setPrefSize(100,50);
-            mainBox.getChildren().add(rolled);
             text.setText("Roll the Dices");
         });
     }
@@ -354,6 +417,7 @@ public class CardsController {
         }
         rolled.setPrefSize(100,50);
         rolled.setText(index+"");
+        mainBox.getChildren().add(rolled);
     }
 
     private void showPlanetChoice(){
@@ -362,8 +426,8 @@ public class CardsController {
             mainBox.getChildren().clear();
             for(Planet planet:GUI.displayableCards().getFirst().getListOfPlanets()){
                 Button button= new Button();
-                button.setPrefSize(75,75);
-                button.setText((index+1)+"° Planet ");
+                button.setPrefSize(200,75);
+                button.setText((index+1)+"° Planet");
                 int finalIndex = index;
                 button.setOnAction(_ -> choosePlanet(finalIndex));
                 button.setDisable(planet.getOccupationStatus());
@@ -376,15 +440,69 @@ public class CardsController {
 
     private void showManageGoods(){
         Platform.runLater(() -> {
-            FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/gui/manageGoods.fxml"));
-            VBox box;
-            try {
-                box = loader.load();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            Button doneButton=new Button("Done");
+            doneButton.setPrefSize(100,75);
+            doneButton.setOnAction(_->GUI.doneGoods());
+            HBox box=new HBox();
+            box.setAlignment(Pos.CENTER);
+            box.setSpacing(30);
+            VBox goodsBox=new VBox();
+            goodsBox.setSpacing(30);
+            int index=1;
+            if(GUI.getController().getGoodsManager().getCargo()!=null&&!GUI.getController().getGoodsManager().getCargo().isEmpty()) {
+                doneButton.setVisible(false);
+                goodsBox.getChildren().add(new Label("Yours Goods:"));
+                for (Goods goods : GUI.getController().getGoodsManager().getCargo()) {
+                    Button button = new Button();
+                    button.setPrefSize(200, 75);
+                    if (goods.getColor() == GoodsColor.BLUE)
+                        button.setText("BLUE");
+                    else if (goods.getColor() == GoodsColor.GREEN)
+                        button.setText("GREEN");
+                    else if (goods.getColor() == GoodsColor.RED)
+                        button.setText("RED");
+                    else if (goods.getColor() == GoodsColor.YELLOW)
+                        button.setText("YELLOW");
+                    int finalIndex1 = index;
+                    button.setOnAction(_ -> {
+                        chooseGood(finalIndex1);
+                        initialize();
+                    });
+                    goodsBox.getChildren().add(button);
+                    index++;
+                }
+            }else{
+                doneButton.setVisible(true);
+                goodsBox.getChildren().add(new Label("Planet's Goods:"));
+                for(Goods goods:GUI.getController().getGoodsList()){
+                    Button button= new Button();
+                    button.setPrefSize(200,75);
+                    if(goods.getColor()== GoodsColor.BLUE)
+                        button.setText("BLUE");
+                    else if(goods.getColor()== GoodsColor.GREEN)
+                        button.setText("GREEN");
+                    else if(goods.getColor()== GoodsColor.RED)
+                        button.setText("RED");
+                    else if(goods.getColor()== GoodsColor.YELLOW)
+                        button.setText("YELLOW");
+                    int finalIndex = index;
+                    button.setOnAction(_ -> {
+                        chooseGood(finalIndex);
+                        visible = false;
+                        initialize();
+                    });
+                    goodsBox.getChildren().add(button);
+                    index++;
+                }
             }
-            mainBox= box;
+            box.getChildren().addAll(goodsBox,doneButton);
+            mainBox.getChildren().add(box);
+            mainBox.setVisible(visible);
             text.setText("Manage your Goods");
         });
+    }
+
+    public void chooseGood(int index){
+        GUI.chooseGood(index);
     }
 }

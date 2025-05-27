@@ -187,6 +187,7 @@ public class ClientController {
     }
 
     public boolean leaveGame() {
+        phase=GamePhases.LOGIN;
         decksNotAvailable(new ArrayList<>());
         colorsNotAvailable(new ArrayList<>());
         if (gameMode != null) {
@@ -1273,6 +1274,10 @@ public class ClientController {
 
     public CabinsManager getCabinsManager() {
         return cabinsManager;
+    }
+
+    public GoodsManager getGoodsManager() {
+        return goodsManager;
     }
 }
 
