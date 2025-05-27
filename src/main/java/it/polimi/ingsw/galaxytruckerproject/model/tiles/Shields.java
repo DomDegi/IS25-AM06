@@ -82,7 +82,9 @@ public class Shields extends Tile {
      */
     @Override
     public String toStringData() {
-        return "SH " + key + " " + north.toString() + " " + east.toString() + " "
+        String image;
+        image = Objects.requireNonNullElse(imagePath, "N");
+        return "SH " + key + " " + image + " " + north.toString() + " " + east.toString() + " "
                 + south.toString() + " " + west.toString() + " " + coveredArea.toStringData();
     }
 

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
+import java.util.Objects;
+
 /**
  * Represents a double cannon tile in the spaceship.
  * Double cannons provide more firepower than single ones but only when facing forward (NORTH).
@@ -87,7 +89,9 @@ public class DoubleCannon extends Cannon {
      */
     @Override
     public String toStringData() {
-        return "DC " + key + " " + north.toString() + " " + east.toString() + " " +
+        String image;
+        image = Objects.requireNonNullElse(imagePath, "N");
+        return "DC " + key + " " + image + " " + north.toString() + " " + east.toString() + " " +
                 south.toString() + " " + west.toString() + " " + direction.toString();
     }
 

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
+import java.util.Objects;
+
 /**
  * Represents a double engine tile on the ship board.
  * A double engine provides double movement strength (2 units),
@@ -52,7 +54,9 @@ public class DoubleEngine extends Engine {
      */
     @Override
     public String toStringData() {
-        return "DE " + key + " " + north.toString() + " " + east.toString() + " "
+        String image;
+        image = Objects.requireNonNullElse(imagePath, "N");
+        return "DE " + key + " " + image + " " + north.toString() + " " + east.toString() + " "
                 + south.toString() + " " + west.toString() + " " + direction.toString();
     }
 

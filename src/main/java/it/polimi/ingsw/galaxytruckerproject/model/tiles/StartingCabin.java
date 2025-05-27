@@ -2,6 +2,8 @@ package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 
+import java.util.Objects;
+
 /**
  * Represents the Starting Cabin of a player's ship.
  * Each starting cabin begins with 2 human crew members and is associated with a player color.
@@ -122,7 +124,9 @@ public class StartingCabin extends Cabin {
      */
     @Override
     public String toStringData() {
-        return "ST " + playerColor.toString() + " " + crew;
+        String image;
+        image = Objects.requireNonNullElse(imagePath, "N");
+        return "ST " + image + " " + playerColor.toString() + " " + crew;
     }
 
     /**
@@ -141,8 +145,14 @@ public class StartingCabin extends Cabin {
         this.east = new Link(Connectors.UNIVERSAL);
         this.south = new Link(Connectors.UNIVERSAL);
         this.west = new Link(Connectors.UNIVERSAL);
-        this.playerColor = PlayersColor.fromString(attributes[1]);
-        this.crew = Integer.parseInt(attributes[2]);
+        if (!attributes[1].equals("N")) {
+            this.imagePath = attributes[1];
+        }
+        else {
+            this.imagePath = null;
+        }
+        this.playerColor = PlayersColor.fromString(attributes[2]);
+        this.crew = Integer.parseInt(attributes[3]);
         this.key = 0;
     }
 }

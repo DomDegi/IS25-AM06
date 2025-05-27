@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.tiles.CrewType.HUMAN;
 
@@ -243,16 +244,18 @@ public class EquipCabin extends Cabin {
 
     @Override
     public String toStringData() {
-        return "EC " + key + " " + north + " " + east + " " + south + " " + west + " " + crew + " " +
+        String image;
+        image = Objects.requireNonNullElse(imagePath, "N");
+        return "EC " + key + " "+ image + " " + north + " " + east + " " + south + " " + west + " " + crew + " " +
                 (crewType != null ? crewType : "N");
     }
 
     @Override
     public void tileLoader(String[] attributes) {
         super.tileLoader(attributes);
-        this.crewToLoad = Integer.parseInt(attributes[6]);
-        if (!attributes[7].equals("N")) {
-            this.crewType = CrewType.fromString(attributes[7]);
+        this.crewToLoad = Integer.parseInt(attributes[7]);
+        if (!attributes[8].equals("N")) {
+            this.crewType = CrewType.fromString(attributes[8]);
         }
         if (crewType != CrewType.HUMAN && crewToLoad > 1) {
             System.out.println("This equip cabin has something wrong going on");

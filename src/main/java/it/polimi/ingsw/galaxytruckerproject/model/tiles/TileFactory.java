@@ -255,6 +255,7 @@ public class TileFactory {
         public int getTotSpaces() { return totSpaces; }
         public void setTotSpaces(int totSpaces) { this.totSpaces = totSpaces; }
         public String getImagePath() { return imagePath; }
+        public void setImagePath() { this.imagePath = imagePath; }
         public int getKey() {return key;}
         public void setKey(int key) {this.key = key;}
 

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
+import java.util.Objects;
+
 /**
  * Represents a blue cargo hold tile that can store non-hazardous goods.
  * This cargo hold cannot contain hazardous (red) goods.
@@ -116,7 +118,9 @@ public class CargoBlue extends CargoHold {
     @Override
     public String toStringData() {
         StringBuilder sb = new StringBuilder();
-        sb.append("CB ").append(key).append(" ").append(north.toString())
+        String image;
+        image = Objects.requireNonNullElse(imagePath, "N");
+        sb.append("CB ").append(key).append(" ").append(image).append(" ").append(north.toString())
                 .append(" ").append(east.toString()).append(" ").append(south.toString())
                 .append(" ").append(west.toString()).append(" ").append(totSpaces).append(" ");
         for (int i = 0; i < totSpaces; i++) {

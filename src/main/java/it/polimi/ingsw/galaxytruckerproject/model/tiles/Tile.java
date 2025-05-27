@@ -253,10 +253,16 @@ public abstract class Tile implements Serializable, Cloneable {
      */
     public void tileLoader(String[] attributes) {
         key = Integer.parseInt(attributes[1]);
-        north = new Link(Connectors.fromValue(Integer.parseInt(attributes[2])));
-        east = new Link(Connectors.fromValue(Integer.parseInt(attributes[3])));
-        south = new Link(Connectors.fromValue(Integer.parseInt(attributes[4])));
-        west = new Link(Connectors.fromValue(Integer.parseInt(attributes[5])));
+        if (attributes[2].equals("N")) {
+            this.imagePath = null;
+        }
+        else {
+            this.imagePath = attributes[2];
+        }
+        north = new Link(Connectors.fromValue(Integer.parseInt(attributes[3])));
+        east = new Link(Connectors.fromValue(Integer.parseInt(attributes[4])));
+        south = new Link(Connectors.fromValue(Integer.parseInt(attributes[5])));
+        west = new Link(Connectors.fromValue(Integer.parseInt(attributes[6])));
     }
 }
 

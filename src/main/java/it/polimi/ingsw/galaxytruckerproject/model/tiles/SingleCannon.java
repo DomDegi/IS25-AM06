@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
+import java.util.Objects;
+
 /**
  * Represents a single cannon tile in the game.
  * The fire strength of this cannon depends on its orientation:
@@ -98,7 +100,9 @@ public class SingleCannon extends Cannon {
      */
     @Override
     public String toStringData() {
-        return "SC " + key + " " + north.toString() + " " + east.toString() + " "
+        String image;
+        image = Objects.requireNonNullElse(imagePath, "N");
+        return "SC " + key + " " + image + " " + north.toString() + " " + east.toString() + " "
                 + south.toString() + " " + west.toString() + " " + direction.toString();
     }
 
