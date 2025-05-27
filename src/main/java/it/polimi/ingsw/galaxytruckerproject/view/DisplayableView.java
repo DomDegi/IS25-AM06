@@ -10,7 +10,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -29,7 +28,7 @@ public interface DisplayableView extends ViewInterface{
 
     void coordinateSelected();
 
-    void showCard(ArrayList<Card> cards);
+    void showDeck(ArrayList<Card> cards);
 
     void printFlightboard(LightFlightboard lightFlightboard);
 

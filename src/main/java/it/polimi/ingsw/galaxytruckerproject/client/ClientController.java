@@ -46,7 +46,7 @@ public class ClientController {
     private GoodsManager goodsManager;
     private CabinsManager cabinsManager;
     private Map<Integer, Tile> turnedTiles;
-    private ArrayList<Tile> turnedTilesDisplayer;
+    private final ArrayList<Tile> turnedTilesDisplayer;
     private Map<Integer, ArrayList<Card>> deck;
     private final Map<Integer, Boolean> availableDeck;
     private final Map<PlayersColor, Boolean> availableColors;
@@ -106,15 +106,9 @@ public class ClientController {
             return;
         }
         switch (words[0]) {
-            case "gui", "g" -> {
-                setGUI(new GUI());
-            }
-            case "tui", "t" -> {
-                setTUI(new TUI());
-            }
-            default -> {
-                view.wrongLocalInput();
-            }
+            case "gui", "g" -> setGUI(new GUI());
+            case "tui", "t" -> setTUI(new TUI());
+            default -> view.wrongLocalInput();
         }
     }
 
@@ -616,9 +610,7 @@ public class ClientController {
         previousState = state;
         state = newState;
         switch (newState) {
-            case START_SHIP_CREATION -> {
-                phase = GamePhases.SHIPBOARD;
-            }
+            case START_SHIP_CREATION -> phase = GamePhases.SHIPBOARD;
 
             case S_END_DRAW_TILE_CARD -> {
                 phase = GamePhases.SHIPBOARD;
@@ -674,6 +666,8 @@ public class ClientController {
                 }
             }
             case S_FINISHED -> {
+                if(displayedCard!=null)
+                    displayedCard.clear();
                 if (gameMode == GameMode.TRIAL) {
                     try {
                         me.getShipBoard().setGetStat();
@@ -690,13 +684,9 @@ public class ClientController {
             }
             case WAIT_TO_DRAW ->
                     phase = GamePhases.CARDS;
-            case DRAW_CARD -> {
-                phase = GamePhases.CARDS;
-
-                /*if(me.getRank()!=1){
+            case DRAW_CARD -> phase = GamePhases.CARDS; /*if(me.getRank()!=1){
                     setState( ClientState.WAIT);
                 } //MI FIDO DI QUELLO CHE MI DICE IL SERVER(prova)*/
-            }
             case MANAGE_GOODS -> {
                 if (!inManager) {
                     me.getShipBoard().setGetStat();
@@ -1120,7 +1110,7 @@ public class ClientController {
             return false;
         }
         VirtualViewRMI viewRMI = new VirtualViewRMI(this, view);
-        if(ip!=null&& !ip.equals(""))
+        if(ip!=null&& !ip.isEmpty())
             ip="localhost";
         String url = String.format("rmi://%s:%d/ControllerFactory", ip, port);
         ControllerFactory controllerFactory = (ControllerFactory) Naming.lookup(url);
@@ -1134,7 +1124,7 @@ public class ClientController {
         if(state!=ClientState.CHOOSE_CONNECTION_TYPE&&state!=ClientState.CHOOSE_IP_AND_PORT_SOCKET){
             return false;
         }
-        if(ip==null|| ip.equals(""))
+        if(ip==null|| ip.isEmpty())
             ip="localhost";
         Socket server;
         try {

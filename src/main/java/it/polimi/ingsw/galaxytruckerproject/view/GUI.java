@@ -5,6 +5,7 @@ import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.client.GamePhases;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
+import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
@@ -216,14 +217,12 @@ public class GUI extends Application implements DisplayableView {
         controller.manageCabins(type);
     }
 
-    public static void yes(){
-        controller.sayYes();
+    public static void action(boolean action){
+        if(action)
+            controller.sayYes();
+        else
+            controller.sayNo();
     }
-
-    public static void no(){
-        controller.sayNo();
-    }
-
     public static void roll(){
         controller.rollDice();
     }
@@ -382,22 +381,9 @@ public class GUI extends Application implements DisplayableView {
         });
     }
 
-    private static void showDrawCard() {
+    private static void showCard() {
         Platform.runLater(() -> {
-            loader = new FXMLLoader(GUI.class.getResource("/gui/drawCard.fxml"));
-            BorderPane newLayer;
-            try {
-                newLayer = loader.load();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            layout.setCenter(newLayer);
-        });
-    }
-
-    private static void showCoordRequest() {
-        Platform.runLater(() -> {
-            loader = new FXMLLoader(GUI.class.getResource("/gui/coordShipRequest.fxml"));
+            loader = new FXMLLoader(GUI.class.getResource("/gui/card.fxml"));
             BorderPane newLayer;
             try {
                 newLayer = loader.load();
@@ -411,58 +397,6 @@ public class GUI extends Application implements DisplayableView {
     private static void showChooseCrew() {
         Platform.runLater(() -> {
             loader = new FXMLLoader(GUI.class.getResource("/gui/chooseCrew.fxml"));
-            BorderPane newLayer;
-            try {
-                newLayer = loader.load();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            layout.setCenter(newLayer);
-        });
-    }
-
-    private static void showAction() {
-        Platform.runLater(() -> {
-            loader = new FXMLLoader(GUI.class.getResource("/gui/action.fxml"));
-            BorderPane newLayer;
-            try {
-                newLayer = loader.load();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            layout.setCenter(newLayer);
-        });
-    }
-
-    private static void showRollDice(){
-        Platform.runLater(() -> {
-            loader = new FXMLLoader(GUI.class.getResource("/gui/rollDice.fxml"));
-            BorderPane newLayer;
-            try {
-                newLayer = loader.load();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            layout.setCenter(newLayer);
-        });
-    }
-
-    private static void showPlanetChoice(){
-        Platform.runLater(() -> {
-            loader = new FXMLLoader(GUI.class.getResource("/gui/planetChoice.fxml"));
-            BorderPane newLayer;
-            try {
-                newLayer = loader.load();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            layout.setCenter(newLayer);
-        });
-    }
-
-    private static void showManageGoods(){
-        Platform.runLater(() -> {
-            loader = new FXMLLoader(GUI.class.getResource("/gui/manageGoods.fxml"));
             BorderPane newLayer;
             try {
                 newLayer = loader.load();
@@ -628,36 +562,32 @@ public class GUI extends Application implements DisplayableView {
 //Overrides--------------------------------------------------------------------------------------------------------------
     public static void displayClientState(ClientState newState) {
         clear();
-        switch (newState){
-            case CHOOSE_CONNECTION_TYPE ->{
-                showConnection();
-                layout.getStylesheets().set(0,css2);
-            }
-            case LOGIN -> showLogin();
-            case LOBBY -> showLobby();
-            case LOBBY0 -> showCreateNewGame();
-            case COLOR_CHOICE,COLOR_CHOICE0 -> showChooseColor();
-            case START_SHIP_CREATION -> showStart();
-            case S_END_DRAW_TILE_CARD ->{
-                showS_EndDrawTilesCards();
-                layout.getStylesheets().set(0,css3);
-                addCheckShip();
-            }
-            case S_MANAGE_DRAWN_TILE -> showS_ManageDrawTilesCards();
-            case S_MANAGE_CARDS -> showDeckCheck();
-            case S_FINISHED -> showEndShip();
-            case DRAW_CARD,WAIT_TO_DRAW -> showDrawCard();
-            case ACTION -> showAction();
-            case PLANET_CHOICE -> showPlanetChoice();
-            case MANAGE_GOODS -> showManageGoods();
-            case MANAGE_CABINS -> showChooseCrew();
-            case COORD_REQUEST -> showCoordRequest();
-            case ROLL_DICE -> showRollDice();
-            case WAIT -> {
-                showWait();
-            }
-            case RECONNECTING -> {
-
+        if(GUI.getController().getPhase()==GamePhases.CARDS){
+            showCard();
+        }else {
+            switch (newState) {
+                case CHOOSE_CONNECTION_TYPE -> {
+                    showConnection();
+                    layout.getStylesheets().set(0, css2);
+                }
+                case LOGIN -> showLogin();
+                case LOBBY -> showLobby();
+                case LOBBY0 -> showCreateNewGame();
+                case COLOR_CHOICE, COLOR_CHOICE0 -> showChooseColor();
+                case START_SHIP_CREATION -> showStart();
+                case S_END_DRAW_TILE_CARD -> {
+                    showS_EndDrawTilesCards();
+                    layout.getStylesheets().set(0, css3);
+                    addCheckShip();
+                }
+                case S_MANAGE_DRAWN_TILE -> showS_ManageDrawTilesCards();
+                case S_MANAGE_CARDS -> showDeckCheck();
+                case S_FINISHED -> showEndShip();
+                case MANAGE_CABINS-> showChooseCrew();
+                case COORD_REQUEST -> showCard();
+                case WAIT -> showWait();
+                case RECONNECTING -> {
+                }
             }
         }
     }
@@ -706,7 +636,7 @@ public class GUI extends Application implements DisplayableView {
     }
 
     @Override
-    public void showCard(ArrayList<Card> cards) {
+    public void showDeck(ArrayList<Card> cards) {
     }
 
     @Override
@@ -797,7 +727,10 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void victimOfThePenalty(String playerName, Penalty penalty) {
-
+        if(controller.isChecking()!=null&& Objects.equals(controller.isChecking(), playerName)){
+            LightShipBoard lightShipBoard = controller.getFlightBoard().getInGamePlayer(playerName).getShipBoard();
+            checkShipboard(lightShipBoard);
+        }
     }
 
     @Override
@@ -837,7 +770,12 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void showDiceRoll(int diceRoll) throws RemoteException {
-
+        if(controller.isChecking()==null){
+            if(controller.getPhase()==GamePhases.CARDS){
+                CardsController cardsController = loader.getController();
+                cardsController.showRoll(diceRoll);
+            }
+        }
     }
 
     @Override
@@ -881,8 +819,8 @@ public class GUI extends Application implements DisplayableView {
         Platform.runLater(() -> {
             if (controller.isChecking()==null)
                 if(controller.getState()==ClientState.PLANET_CHOICE){
-                    PlanetChoiceController cardController=loader.getController();
-                    cardController.update();
+                    CardsController cardController=loader.getController();
+                    cardController.initialize();
                 }
         });
     }

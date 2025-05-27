@@ -3,8 +3,6 @@ package it.polimi.ingsw.galaxytruckerproject.network.RMI.Client;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientController;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
-import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
-import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
@@ -253,7 +251,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
 
     @Override
     public void notifyYouCanDrawThisCardDeck() throws RemoteException {
-        view.showCard(clientController.getDisplayedCard());
+        view.showDeck(clientController.getDisplayedCard());
     }
 
     @Override

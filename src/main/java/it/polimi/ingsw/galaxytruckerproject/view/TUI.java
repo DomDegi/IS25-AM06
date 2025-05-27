@@ -350,7 +350,7 @@ public class TUI implements DisplayableView {
     }
 
     @Override
-    public void showCard(ArrayList<Card> cards) {
+    public void showDeck(ArrayList<Card> cards) {
 
         if(cards!=null)
         for(Card card : cards) {

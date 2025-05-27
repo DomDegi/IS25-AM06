@@ -10,7 +10,7 @@ public class FlightboardCardsResponse extends ServerMessage {
     @Override
     public void processMessage(ServerHandler serverHandler) {
         try {
-            serverHandler.getView().showCard(serverHandler.getClientController().getDisplayedCard());
+            serverHandler.getView().showDeck(serverHandler.getClientController().getDisplayedCard());
         } catch (Exception e) {
             e.printStackTrace();
         }
