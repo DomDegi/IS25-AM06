@@ -1726,7 +1726,7 @@ public class GameController implements Observer, Serializable {
                 System.out.println("Auto-saving game...");
                 GameSaver.save(this);  // Saves game state
             }
-        }, 0, 2, TimeUnit.MINUTES);
+        }, 0, 5, TimeUnit.SECONDS);
     }
     /**
      * Stops the autosave thread.
