@@ -1203,11 +1203,12 @@ public class ClientController {
     public void setGameModeWithoutInitializing(GameMode gameMode) {
         this.gameMode = gameMode;
     }
+
     /**
-     * Handles early landing for the player, notifying the server.
+     * Attempts to land the current instance if it is not already landed.
+     * If the instance is not landed, it triggers a notification for early landing.
      *
-     * @param input the player's input, which must contain the early landing command
-     * @return true if the early landing is successful, false otherwise
+     * @return true if the landing process was successfully initiated; false if already landed
      */
     public boolean land() {
         if (!me.isLanded()) {
@@ -1904,6 +1905,11 @@ public class ClientController {
         return cabinsManager;
     }
 
+    /**
+     * Retrieves the instance of {@code GoodsManager}.
+     *
+     * @return the {@code GoodsManager} object associated with this class
+     */
     public GoodsManager getGoodsManager() {
         return goodsManager;
     }

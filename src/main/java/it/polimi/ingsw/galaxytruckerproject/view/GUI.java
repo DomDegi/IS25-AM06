@@ -38,13 +38,31 @@ import java.util.*;
 import java.util.Timer;
 
 /**
- * Main class for the GUI of the Galaxy Trucker game.
- * <p>
- * This class initializes and manages the game's graphical user interface (GUI), providing the main entry point
- * for launching the game. It handles scene transitions, client-server communication, and user interaction for
- * different game phases. The GUI class is responsible for showing various game states, such as the lobby, login,
- * game board, and others.
- * </p>
+ * The GUI class represents the graphical user interface (GUI) for the game.
+ * It includes methods to handle the game's visual components, screens, and interactions.
+ * This class is responsible for rendering different game phases, managing user input,
+ * and displaying feedback to the player. It interacts with the client controller to
+ * process and reflect updates related to gameplay.
+ *
+ * Fields:
+ * - gameName: The name of the game being created or joined.
+ * - numberOfPlayers: The number of players in the current game lobby.
+ * - mode: The game mode selected by the user.
+ * - css1, css2, css3: CSS stylesheets used to style different scenes in the GUI.
+ * - primaryStage: The primary window for the JavaFX application.
+ * - layout: The layout container used to organize GUI components.
+ * - controller: The client controller managing the interaction between GUI and game logic.
+ * - loader: The FXMLLoader object for loading FXML files.
+ * - ship1, ship2, ship3: Variables referencing the ships in the game.
+ * - counter: A counter variable for tracking certain events.
+ * - timer: A timer variable for game timing functionalities.
+ * - quit: A flag to denote the quit state of the game.
+ * - fullScreen: A flag indicating whether the application is in full-screen mode.
+ * - percentage1, percentage2, percentage3: Variables tracking specific percentage values for the game.
+ *
+ * This class contains methods for launching the GUI, managing different game screens,
+ * performing game actions (e.g., drawing tiles, placing tiles, setting player details),
+ * and providing feedback to the user.
  */
 public class GUI extends Application implements DisplayableView {
 
@@ -756,7 +774,7 @@ public class GUI extends Application implements DisplayableView {
     }
 
     /**
-     * Adds ship buttons to the screen for players to check their ships.
+     * Adds ship, quit and fullscreen buttons to the screen for players to check their ships.
      * The number of ship buttons depends on the number of players in the game.
      */
     public static void addCheckShip() {
