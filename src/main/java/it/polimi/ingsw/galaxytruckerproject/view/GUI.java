@@ -5,7 +5,6 @@ import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.client.GamePhases;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightFlightboard;
-import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
@@ -39,13 +38,31 @@ import java.util.*;
 import java.util.Timer;
 
 /**
- * Main class for the GUI of the Galaxy Trucker game.
- * <p>
- * This class initializes and manages the game's graphical user interface (GUI), providing the main entry point
- * for launching the game. It handles scene transitions, client-server communication, and user interaction for
- * different game phases. The GUI class is responsible for showing various game states, such as the lobby, login,
- * game board, and others.
- * </p>
+ * The GUI class represents the graphical user interface (GUI) for the game.
+ * It includes methods to handle the game's visual components, screens, and interactions.
+ * This class is responsible for rendering different game phases, managing user input,
+ * and displaying feedback to the player. It interacts with the client controller to
+ * process and reflect updates related to gameplay.
+ *
+ * Fields:
+ * - gameName: The name of the game being created or joined.
+ * - numberOfPlayers: The number of players in the current game lobby.
+ * - mode: The game mode selected by the user.
+ * - css1, css2, css3: CSS stylesheets used to style different scenes in the GUI.
+ * - primaryStage: The primary window for the JavaFX application.
+ * - layout: The layout container used to organize GUI components.
+ * - controller: The client controller managing the interaction between GUI and game logic.
+ * - loader: The FXMLLoader object for loading FXML files.
+ * - ship1, ship2, ship3: Variables referencing the ships in the game.
+ * - counter: A counter variable for tracking certain events.
+ * - timer: A timer variable for game timing functionalities.
+ * - quit: A flag to denote the quit state of the game.
+ * - fullScreen: A flag indicating whether the application is in full-screen mode.
+ * - percentage1, percentage2, percentage3: Variables tracking specific percentage values for the game.
+ *
+ * This class contains methods for launching the GUI, managing different game screens,
+ * performing game actions (e.g., drawing tiles, placing tiles, setting player details),
+ * and providing feedback to the user.
  */
 public class GUI extends Application implements DisplayableView {
 
@@ -461,6 +478,10 @@ public class GUI extends Application implements DisplayableView {
     public static void doneGoods(){
         controller.doneGoods();
     }
+
+    public static void land(){
+        controller.land();
+    }
 //showMethods---------------------------------------------------------------------------------------------------------------
 
     /**
@@ -753,7 +774,7 @@ public class GUI extends Application implements DisplayableView {
     }
 
     /**
-     * Adds ship buttons to the screen for players to check their ships.
+     * Adds ship, quit and fullscreen buttons to the screen for players to check their ships.
      * The number of ship buttons depends on the number of players in the game.
      */
     public static void addCheckShip() {
@@ -874,28 +895,61 @@ public class GUI extends Application implements DisplayableView {
         clear();
         if(GUI.getController().getPhase()==GamePhases.CARDS){
             showCard();
+            layout.getStylesheets().set(0, css3);
         }else {
             switch (newState) {
                 case CHOOSE_CONNECTION_TYPE -> {
                     showConnection();
                     layout.getStylesheets().set(0, css2);
                 }
-                case LOGIN -> showLogin();
-                case LOBBY -> showLobby();
-                case LOBBY0 -> showCreateNewGame();
-                case COLOR_CHOICE, COLOR_CHOICE0 -> showChooseColor();
-                case START_SHIP_CREATION -> showStart();
+                case LOGIN -> {
+                    showLogin();
+                    layout.getStylesheets().set(0, css2);
+                }
+                case LOBBY -> {
+                    showLobby();
+                    layout.getStylesheets().set(0, css2);
+                }
+                case LOBBY0 -> {
+                    showCreateNewGame();
+                    layout.getStylesheets().set(0, css2);
+                }
+                case COLOR_CHOICE, COLOR_CHOICE0 -> {
+                    showChooseColor();
+                    layout.getStylesheets().set(0, css2);
+                }
+                case START_SHIP_CREATION -> {
+                    showStart();
+                    layout.getStylesheets().set(0, css2);
+                }
                 case S_END_DRAW_TILE_CARD -> {
                     showS_EndDrawTilesCards();
                     layout.getStylesheets().set(0, css3);
                     addCheckShip();
                 }
-                case S_MANAGE_DRAWN_TILE -> showS_ManageDrawTilesCards();
-                case S_MANAGE_CARDS -> showDeckCheck();
-                case S_FINISHED -> showEndShip();
-                case MANAGE_CABINS-> showChooseCrew();
-                case COORD_REQUEST -> showCard();
-                case WAIT -> showWait();
+                case S_MANAGE_DRAWN_TILE -> {
+                    showS_ManageDrawTilesCards();
+                    layout.getStylesheets().set(0, css3);
+                }
+                case S_MANAGE_CARDS -> {
+                    showDeckCheck();
+                    layout.getStylesheets().set(0, css3);
+                }
+                case S_FINISHED -> {
+                    showEndShip();
+                    layout.getStylesheets().set(0, css3);
+                }
+                case MANAGE_CABINS-> {
+                    showChooseCrew();
+                    layout.getStylesheets().set(0, css3);
+                }
+                case COORD_REQUEST -> {
+                    showCard();
+                    layout.getStylesheets().set(0, css3);
+                }
+                case WAIT -> {
+                    showWait();
+                }
                 case RECONNECTING -> {
                 }
             }
@@ -1324,11 +1378,10 @@ public class GUI extends Application implements DisplayableView {
     @Override
     public void notifyPlayerLandedOnPlanet(String playerName, int planet) throws RemoteException {
         Platform.runLater(() -> {
-            if (controller.isChecking()==null)
-                if(controller.getState()==ClientState.PLANET_CHOICE){
-                    CardsController cardController=loader.getController();
-                    cardController.initialize();
-                }
+            if (controller.isChecking()==null) {
+                CardsController cardController = loader.getController();
+                cardController.initialize();
+            }
         });
     }
 

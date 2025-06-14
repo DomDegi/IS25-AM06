@@ -349,8 +349,8 @@ public class TextualInputParser {
             case ACTION-> {
                 if (clientController.checkShipBoards(words))
                     return true;
-                if (clientController.land(words))
-                    return true;
+                if (words[0].equals("earlyland"))
+                    return clientController.land();
                 switch (words[0]){
                     case "yes" -> clientController.sayYes();
                     case "no" -> clientController.sayNo();
@@ -364,8 +364,8 @@ public class TextualInputParser {
             case PLANET_CHOICE-> {
                 if (clientController.checkShipBoards(words))
                     return true;
-                if (clientController.land(words))
-                    return true;
+                if (words[0].equals("earlyland"))
+                    return clientController.land();
                 if (words[0].equals("no"))
                     words[0]="0";
                 int chose;
@@ -377,8 +377,8 @@ public class TextualInputParser {
             case MANAGE_GOODS-> {
                 if (clientController.checkShipBoards(words))
                     return true;
-                if (clientController.land(words))
-                    return true;
+                if (words[0].equals("earlyland"))
+                    return clientController.land();
                 if(words[0].equals("done")) {
                     clientController.doneGoods();
                 }
@@ -418,8 +418,8 @@ public class TextualInputParser {
                 if (clientController.checkShipBoards(words))
                     return true;
                 if (clientController.getPhase() == GamePhases.CARDS) {
-                    if (clientController.land(words))
-                        return true;
+                    if (words[0].equals("earlyland"))
+                        return clientController.land();
                 }
                 if (words[0].equals("done")) {
                     return clientController.doneCoord();
@@ -450,8 +450,8 @@ public class TextualInputParser {
                     case CARDS -> {
                         if (clientController.checkShipBoards(words))
                             return true;
-                        if(clientController.land(words))
-                            return true;
+                        if (words[0].equals("earlyland"))
+                            return clientController.land();
                         view.showGenericMessage("Wrong input in wait");
                     }
                 }
