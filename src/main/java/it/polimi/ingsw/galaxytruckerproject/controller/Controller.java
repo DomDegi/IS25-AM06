@@ -122,6 +122,9 @@ public class Controller implements ControllerInterface, Serializable {
      */
     @Override
     public void chooseColor(PlayersColor color) {
+        if (gameController.isRestarted()) {
+            return;
+        }
         if (gameController.checkColorAvailable(nickname, view, color)) {
             gameController.playerAddition(nickname, color);
         }

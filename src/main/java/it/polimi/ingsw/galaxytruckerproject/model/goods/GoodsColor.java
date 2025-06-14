@@ -85,7 +85,7 @@ public enum GoodsColor implements Serializable {
      * @throws IllegalArgumentException if the value is invalid
      */
     @JsonCreator
-    public static GoodsColor forValue(String value) {
+    public static GoodsColor fromValue(String value) {
         return GoodsColor.valueOf(value.toUpperCase());
     }
 

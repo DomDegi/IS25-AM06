@@ -88,7 +88,7 @@ public class GameController implements Observer, Serializable {
     private ScheduledExecutorService autoSaveExecutor;
 
     /** Flag to enable or disable autosaving. */
-    private volatile boolean autoSaveEnabled = true;
+    private volatile boolean autoSaveEnabled = false;
 
 
     public String toString(){

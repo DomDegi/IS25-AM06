@@ -101,8 +101,8 @@ public class Shields extends Tile {
     @Override
     public void tileLoader(String[] attributes) {
         super.tileLoader(attributes);
-        this.coveredArea = Coverage.fromStringData(attributes[6]);
-        if (Objects.equals(attributes[6], "NONE")) {
+        this.coveredArea = Coverage.fromStringData(attributes[7]);
+        if (Objects.equals(attributes[7], "NONE")) {
             System.out.println("Why this shield has no coverage?");
             throw new IllegalArgumentException();
         }

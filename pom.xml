@@ -113,7 +113,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>it.polimi.ingsw.galaxytruckerproject.ServerMain</mainClass>
+                            <mainClass>it.polimi.ingsw.galaxytruckerproject.ClientMain</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

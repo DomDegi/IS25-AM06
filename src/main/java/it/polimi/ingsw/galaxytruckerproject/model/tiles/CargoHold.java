@@ -160,12 +160,12 @@ public abstract class CargoHold extends Tile {
     @Override
     public void tileLoader(String[] attributes) {
         super.tileLoader(attributes);
-        this.totSpaces = Integer.parseInt(attributes[6]);
-        if (attributes.length < 7 + totSpaces) {
+        this.totSpaces = Integer.parseInt(attributes[7]);
+        if (attributes.length < 8 + totSpaces) {
             throw new IllegalArgumentException("Malformed data: not enough attributes.");
         }
         for (int i = 0; i < totSpaces; i++) {
-            int goodsAttribute = 7 + i;
+            int goodsAttribute = 8 + i;
             if (!attributes[goodsAttribute].equals("N")) {
                 cargo.add(new Goods(GoodsColor.fromString(attributes[goodsAttribute])));
             }

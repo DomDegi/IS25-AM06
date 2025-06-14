@@ -39,6 +39,22 @@ public class GameInfo implements Serializable {
     }
 
     /**
+     * Constructs a {@link GameInfo} object with the specified game name, mode,
+     * maximum number of players, and current number of players.
+     *
+     * @param gameName the name of the game
+     * @param gameMode the mode in which the game is played (e.g., TRIAL, LEVEL2)
+     * @param maxPlayerCount the maximum number of players allowed in the game
+     * @param currentPlayerCount the number of players currently in the game
+     */
+    public GameInfo(String gameName, GameMode gameMode, int maxPlayerCount, int currentPlayerCount) {
+        this.gameName = gameName;
+        this.gameMode = gameMode;
+        this.maxPlayerCount = maxPlayerCount;
+        this.currentPlayerCount = currentPlayerCount;
+    }
+
+    /**
      * Returns the name of the game.
      *
      * @return the game's name
