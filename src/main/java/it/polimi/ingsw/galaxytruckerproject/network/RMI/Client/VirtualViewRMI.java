@@ -557,4 +557,26 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
     public void notifyPlayerJoined(int expected, int current, boolean reconnected) throws RemoteException {
         view.notifyPlayerJoined(expected, current, reconnected);
     }
+
+    /**
+     * Notifies the clients when a player leaves the game.
+     *
+     * @param playerName The name of the player.
+     * @throws RemoteException If a remote exception occurs.
+     */
+    @Override
+    public void notifyPlayerLeft(String playerName) throws RemoteException {
+        view.notifyPlayerLeftTheGame(playerName);
+    }
+
+    /**
+     * Notifies the clients when a player disconnects sending.
+     *
+     * @param playerName The name of the player
+     * @throws RemoteException If a remote exception occurs.
+     */
+    @Override
+    public void notifyPlayerDisconnected(String playerName) throws RemoteException {
+        view.notifyPlayerDisconnected(playerName);
+    }
 }

@@ -311,7 +311,7 @@ public class FlightBoard implements Serializable {
         ArrayList<Player> landed=new ArrayList<>();
         Player firstPlayer;
         if (inGamePlayers.size() <= 1) {
-            System.err.println("Error: inGamePlayers is either null or does not have enough players");
+            System.out.println("All the players have landed: ending the game");
             return true;
         }
         for (Player player:  inGamePlayers) {

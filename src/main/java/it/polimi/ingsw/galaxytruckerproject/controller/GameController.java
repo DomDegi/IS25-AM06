@@ -1656,6 +1656,7 @@ public class GameController implements Observer, Serializable {
             playersViewMap.remove(playerName);
             disconnectedPlayers.put(playerName,player);
             System.out.println(playerName+" disconnected");
+            notifyPlayerDisconnected(playerName);
         } finally {
             pendingPongs.remove(playerName);
         }
@@ -1747,6 +1748,7 @@ public class GameController implements Observer, Serializable {
 
     /**
      * Removes a player from the game entirely (disconnect and forget).
+     * This happens only by player's choice.
      * @param playerName player name
      */
     public void playerLeaves(String playerName) {
@@ -1764,6 +1766,7 @@ public class GameController implements Observer, Serializable {
             }
         }
         playersViewMap.remove(playerName);
+        notifyPlayerLeftTheGame(playerName);
     }
     /**
      * Prepares the controller and game model for a player disconnection.
@@ -1789,4 +1792,25 @@ public class GameController implements Observer, Serializable {
         game.getDrawnCard().playerDisconnected(playerName);
     }
 
+
+    public void notifyPlayerDisconnected(String playerName) {
+        for (VirtualView view: playersViewMap.values()) {
+            try{
+                view.notifyPlayerDisconnected(playerName);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void notifyPlayerLeftTheGame(String playerName) {
+        for (VirtualView view: playersViewMap.values()) {
+            try{
+                view.notifyPlayerLeft(playerName);
+            }
+            catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 }
