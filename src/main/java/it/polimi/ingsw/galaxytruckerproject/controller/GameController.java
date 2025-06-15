@@ -88,7 +88,7 @@ public class GameController implements Observer, Serializable {
     private ScheduledExecutorService autoSaveExecutor;
 
     /** Flag to enable or disable autosaving. */
-    private volatile boolean autoSaveEnabled = false;
+    private volatile boolean autoSaveEnabled = true;
 
 
     public String toString(){
@@ -227,6 +227,11 @@ public class GameController implements Observer, Serializable {
         if (playersViewMap.size() == activePlayers.size()) {
             currentGameStatus = null;
             restarted = false;
+            if (game.getGameState() == GameState.SHIPS_CREATION || game.getGameState() == GameState.VERIFY_SHIP_CORRECTNESS) {
+                if (autoSaveEnabled) {
+                    startAutoSave();
+                }
+            }
             switch (game.getGameState()) {
                 case START_GAME -> {
                     for (VirtualView view : playersViewMap.values()) {
@@ -250,17 +255,9 @@ public class GameController implements Observer, Serializable {
                         hourglassTurns--;
                         startTimer();
                     }
-                    if (autoSaveEnabled) {
-                        stopAutoSave();
-                    }
-                    startAutoSave();
                 }
                 case VERIFY_SHIP_CORRECTNESS -> {
                     verifyShipCorrectness();
-                    if (autoSaveEnabled) {
-                        stopAutoSave();
-                    }
-                    startAutoSave();
                 }
                 case DRAW_CARD -> askFirstPlayerToDraw();
                 case CARD_EVENT,CONCLUDE_GAME -> {
@@ -1721,6 +1718,9 @@ public class GameController implements Observer, Serializable {
      * Starts periodic autosave task.
      */
     public void startAutoSave() {
+        if (autoSaveExecutor != null && !autoSaveExecutor.isShutdown()) {
+            autoSaveExecutor.shutdown();
+        }
         autoSaveExecutor = Executors.newSingleThreadScheduledExecutor();
         autoSaveExecutor.scheduleAtFixedRate(() -> {
             if (autoSaveEnabled) {
