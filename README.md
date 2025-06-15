@@ -16,7 +16,7 @@
 <a href="https://github.com/EnnioCristianelli" target="_blank" style="color: #24bb4c">Ennio Cristianelli</a> <br><br>
 <a href="https://github.com/DomDegi" target="_blank" style="color: #2593d5	">Domenico De Giorgio</a> <br><br>
 
-# <img src="https://whatsericplaying.com/wp-content/uploads/2022/07/gameplay-2-2.jpg" align="right" alt="Start Card render" width="200" style = "border-radius: 20px; float:right; padding: 5px"> <center>Our features</center>
+# <img src="https://unfilteredgamer.com/wp-content/uploads/2022/02/galaxy-trucker-review-2.jpg" align="right" alt="Start Card render" width="200" style = "border-radius: 20px; float:right; padding: 5px"> <center>Our features</center>
 
 <center>
 
@@ -34,7 +34,7 @@
 
 </center>
 
-# <img src="https://whatsericplaying.com/wp-content/uploads/2022/07/in-progress-2.jpg" align="right" alt="Start Card render" width="200" style = "border-radius: 20px; float:right; padding: 5px"> <center>How to run the game</center>
+# <img src="https://unfilteredgamer.com/wp-content/uploads/2022/02/galaxy-trucker-review-3.jpg" align="right" alt="Start Card render" width="200" style = "border-radius: 20px; float:right; padding: 5px"> <center>How to run the game</center>
 
 **❗Dependencies❗** In order to run our application you need to have installed a Java version >= 23, we suggest to use [this version](https://www.oracle.com/it/java/technologies/downloads/#java23).
 
@@ -69,7 +69,7 @@ By running the client you will be asked to choose the type of interface you want
 
 When the client is running you will be asked to insert the `ip address` of the server, you can find it in the server logs.
 
-# <img src="https://whatsericplaying.com/wp-content/uploads/2022/07/box-2.jpg" align="right" alt="Start Card render" width="200" style = "border-radius: 20px; float:right; padding: 5px"> <center>Documentation</center>
+# <img src="https://unfilteredgamer.com/wp-content/uploads/2022/02/galaxy-trucker-review-6.jpg" align="right" alt="Start Card render" width="200" style = "border-radius: 20px; float:right; padding: 5px"> <center>Documentation</center>
 
 If you are interested in the inner workings of our application you can find the following diagrams:
 
