@@ -89,7 +89,7 @@ public class FlightBoard implements Serializable {
      * Sets their starting position based on their order.
      * @param newPlayer the player to add
      */
-    public void addToTrialFlightBoard(Player newPlayer) {
+    public synchronized void addToTrialFlightBoard(Player newPlayer) {
         if(!podium.contains(newPlayer)){
             System.out.println("Player not found");
             return;
@@ -129,7 +129,7 @@ public class FlightBoard implements Serializable {
      * @param pos the desired ranking position (1-based)
      * @return true if the addition was successful, false otherwise
      */
-    public boolean addToFlightBoard(Player newPlayer, int pos) {
+    public synchronized boolean addToFlightBoard(Player newPlayer, int pos) {
         pos = pos - 1; // offsets to match position to arraylist indexes
         if (!podium.contains(newPlayer)) {
             System.out.println("Player not found");
@@ -286,7 +286,7 @@ public class FlightBoard implements Serializable {
      * Reorders the in-flight player list based on positions and landing status.
      * Updates each player's ranking accordingly.
      */
-    public void rearrange() {
+    public synchronized void rearrange() {
         if(inGamePlayers.size()>1) {
             inGamePlayers.sort((player1, player2) -> {
                 if (player1.isLanded() && !player2.isLanded()) {
