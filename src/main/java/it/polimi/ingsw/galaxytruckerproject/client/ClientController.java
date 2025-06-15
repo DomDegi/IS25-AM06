@@ -1652,7 +1652,7 @@ public class ClientController {
             return false;
         }
         VirtualViewRMI viewRMI = new VirtualViewRMI(this, view);
-        if(ip!=null&& !ip.isEmpty())
+        if(ip == null || ip.isEmpty())
             ip="localhost";
         String url = String.format("rmi://%s:%d/ControllerFactory", ip, port);
         ControllerFactory controllerFactory = (ControllerFactory) Naming.lookup(url);
@@ -1675,7 +1675,7 @@ public class ClientController {
         if(state != ClientState.CHOOSE_CONNECTION_TYPE && state != ClientState.CHOOSE_IP_AND_PORT_SOCKET){
             return false;
         }
-        if(ip==null|| ip.isEmpty())
+        if(ip == null || ip.isEmpty())
             ip="localhost";
         Socket server;
         try {
