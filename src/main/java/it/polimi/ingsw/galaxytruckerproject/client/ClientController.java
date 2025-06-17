@@ -1924,6 +1924,19 @@ public class ClientController {
         return goodsManager;
     }
 
+    /**
+     * Automatically builds the player's ship if it has not been built yet.
+     * <p>
+     * If the {@code built} flag is {@code false}, the method checks the current game mode:
+     * <ul>
+     *   <li>If the mode is {@link GameMode#TRIAL}, it calls {@code buildShipTrial()}.</li>
+     *   <li>Otherwise, it calls {@code buildShiplv2()}.</li>
+     * </ul>
+     * After building the ship, it sets {@code built} to {@code true}.
+     * <p>
+     * If the ship has already been built ({@code built} is {@code true}), the method notifies
+     * the user of an invalid local input by calling {@code view.wrongLocalInput()}.
+     */
     public void buildShip(){
         if(!built) {
             if (getGameMode() == GameMode.TRIAL) {
@@ -1938,6 +1951,19 @@ public class ClientController {
         }
     }
 
+    /**
+     * Automatically builds a predefined ship layout for the player in LEVEL2 game mode.
+     * <p>
+     * This method places a specific set of tiles (e.g., cabins, engines, cannons, batteries, etc.)
+     * at fixed coordinates on the player's {@code ShipBoard}, forming a complete and functional ship design.
+     * Each tile is instantiated with its own connectors, image path, and metadata, and is placed using
+     * {@code positionTile}. After placing each tile, the {@code virtualController} is notified via
+     * {@code notifySetTile} to update the remote view or game state.
+     * <p>
+     * If a {@code RemoteException} occurs during the notification phase, it is rethrown as a {@code RuntimeException}.
+     * <p>
+     * This method is intended to be called only in {@link GameMode#LEVEL2}.
+     */
     public void buildShiplv2(){
         /*
         me.getShipBoard().positionTile(Optional.ofNullable(this.tileInHand), coordinates)
@@ -2110,6 +2136,23 @@ public class ClientController {
 
     }
 
+    /**
+     * Automatically builds a predefined ship layout for the player in TRIAL game mode.
+     * <p>
+     * This method places a fixed and simplified set of tiles (e.g., cabins, engines, cannons,
+     * batteries, cargo holds, shields, etc.) at specific coordinates on the player's
+     * {@code ShipBoard}. This layout is used as a default configuration for testing or trial purposes.
+     * <p>
+     * Each tile is created with specified connectors, image references, and any necessary
+     * configuration (such as crew type), then placed using {@code positionTile}.
+     * After placement, the tile is sent to the {@code virtualController} using {@code notifySetTile}
+     * to synchronize the game state remotely.
+     * <p>
+     * If a {@code RemoteException} occurs during the tile notification, it is caught and rethrown
+     * as a {@code RuntimeException}.
+     * <p>
+     * This method is only intended to be used when the current game mode is {@link GameMode#TRIAL}.
+     */
     public void buildShipTrial(){
                /*
         me.getShipBoard().positionTile(Optional.ofNullable(this.tileInHand), coordinates)
