@@ -205,6 +205,9 @@ public class EquipCabin extends Cabin {
 
     @Override
     public String toString1() {
+        if(crewType == null){
+            return " /  " + getNorth() + " / ";
+        }
         return switch (crewType) {
             case HUMAN -> (crew == 2) ? " H  " + getNorth() + " H " : " H  " + getNorth() + "   ";
             case PURPLE -> " P  " + getNorth() + "   ";

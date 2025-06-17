@@ -908,7 +908,7 @@ public class GameController implements Observer, Serializable {
     public void setTile (ViewInterface playersView, String playerName, Tile tile) {
         Tile settedTile;
         if (!tile.isBooked()) {
-            if (clientsStatesMap.get(playerName) != ClientState.S_MANAGE_DRAWN_TILE) {
+            if (!(clientsStatesMap.get(playerName) == ClientState.S_MANAGE_DRAWN_TILE || clientsStatesMap.get(playerName) == S_END_DRAW_TILE_CARD || clientsStatesMap.get(playerName) == WAIT) ) {
                 try {
                     playersView.showWrongInputMessage();
                 } catch (Exception ignored) {
