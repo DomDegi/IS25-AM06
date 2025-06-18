@@ -64,13 +64,13 @@ public class EquipCabin extends Cabin {
      */
     public ArrayList<Coordinates> adjacentLifeSupport() {
         ArrayList<Coordinates> adjacentLifeSupport = new ArrayList<>();
-        if (coordinates.getX() - 1 >= 0 && shipBoard.getTilesTable()[coordinates.getX() - 1][coordinates.getY()].isPresent())
+        if (coordinates.getX() - 1 >= 0 && shipBoard.getTilesTable()[coordinates.getX() - 1][coordinates.getY()].isPresent() && this.north.getConnectorsType()!=Connectors.SMOOTH)
             adjacentLifeSupport.add(shipBoard.getTilesTable()[coordinates.getX() - 1][coordinates.getY()].get().getCoordinates());
-        if (coordinates.getX() + 1 <= 4 && shipBoard.getTilesTable()[coordinates.getX() + 1][coordinates.getY()].isPresent())
+        if (coordinates.getX() + 1 <= 4 && shipBoard.getTilesTable()[coordinates.getX() + 1][coordinates.getY()].isPresent() && this.south.getConnectorsType()!=Connectors.SMOOTH )
             adjacentLifeSupport.add(shipBoard.getTilesTable()[coordinates.getX() + 1][coordinates.getY()].get().getCoordinates());
-        if (coordinates.getY() - 1 >= 0 && shipBoard.getTilesTable()[coordinates.getX()][coordinates.getY() - 1].isPresent())
+        if (coordinates.getY() - 1 >= 0 && shipBoard.getTilesTable()[coordinates.getX()][coordinates.getY() - 1].isPresent() && this.west.getConnectorsType()!=Connectors.SMOOTH)
             adjacentLifeSupport.add(shipBoard.getTilesTable()[coordinates.getX()][coordinates.getY() - 1].get().getCoordinates());
-        if (coordinates.getY() + 1 <= 6 && shipBoard.getTilesTable()[coordinates.getX()][coordinates.getY() + 1].isPresent())
+        if (coordinates.getY() + 1 <= 6 && shipBoard.getTilesTable()[coordinates.getX()][coordinates.getY() + 1].isPresent() && this.east.getConnectorsType()!=Connectors.SMOOTH)
             adjacentLifeSupport.add(shipBoard.getTilesTable()[coordinates.getX()][coordinates.getY() + 1].get().getCoordinates());
         return adjacentLifeSupport;
     }
@@ -205,6 +205,9 @@ public class EquipCabin extends Cabin {
 
     @Override
     public String toString1() {
+        if(crewType == null){
+            return " /  " + getNorth() + " / ";
+        }
         return switch (crewType) {
             case HUMAN -> (crew == 2) ? " H  " + getNorth() + " H " : " H  " + getNorth() + "   ";
             case PURPLE -> " P  " + getNorth() + "   ";

@@ -23,7 +23,7 @@ public class ClientMain implements Client {
     /**
      * The main method that starts the client application. It prompts the user to choose
      * between a Text User Interface (TUI) or a Graphical User Interface (GUI) to interact
-     * with the game. Based on the user's choice, it initializes the game client accordingly.
+        * with the game. Based on the user's choice, it initializes the game client accordingly.
      *
      * @param args Command-line arguments (not used in this application).
      */
