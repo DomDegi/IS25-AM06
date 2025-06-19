@@ -125,17 +125,14 @@ public class EquipCabin extends Cabin {
                     this.crewType = CrewType.PURPLE;
                     this.crew = 1;
                     shipBoard.addBreakPurpleAliens(true);
-                } else {
-                    System.out.println("CAN'T FILL THIS CABIN WITH A PURPLE ALIEN");
                 }
+
             }
             case BROWN -> {
                 if (alienability == AlienOptions.BROWN || alienability == AlienOptions.BOTH) {
                     this.crewType = CrewType.BROWN;
                     this.crew = 1;
                     shipBoard.addBreakBrownAliens(true);
-                } else {
-                    System.out.println("CAN'T FILL THIS CABIN WITH A BROWN ALIEN");
                 }
             }
         }
@@ -176,7 +173,7 @@ public class EquipCabin extends Cabin {
                 shipBoard.getCabinsCoordinates().remove(this.coordinates);
             return true;
         }
-        System.out.println("THIS CABIN IS EMPTY");
+
         return false;
     }
 
