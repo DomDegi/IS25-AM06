@@ -906,7 +906,7 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
             }
 
 
-        System.out.println("sono nel client" + numHumanCrew);
+
     }
 
     /**

@@ -458,6 +458,7 @@ public class Player implements PlayerInterface , Serializable {
     public boolean verifyAndSetupCrew(ArrayList<Tile>  cabins) {
         for (Tile cabin: cabins) {
             if (cabin.getCrewType().equals(CrewType.PURPLE) &&
+                    //!(playerShip.getTile(cabin.getCoordinates()).getAlienability().equals(AlienOptions.PURPLE) || playerShip.getTile(cabin.getCoordinates()).getAlienability().equals(AlienOptions.BOTH)))
                     !(playerShip.getTile(cabin.getCoordinates()).getAlienability().equals(AlienOptions.PURPLE) || playerShip.getTile(cabin.getCoordinates()).getAlienability().equals(AlienOptions.BOTH)))
                 return false;
             if (cabin.getCrewType().equals(CrewType.BROWN) &&
