@@ -1973,7 +1973,7 @@ public class ClientController {
                 throw new RuntimeException(e);
             }
          */
-        Tile tile4=new CargoBlue(2, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web19.jpg",0,0);
+        Tile tile4=new CargoBlue(2, new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web26.jpg",2,0);
         me.getShipBoard().positionTile(Optional.ofNullable(tile4), new Coordinates(1,3));
         try {
             virtualController.notifySetTile(tile4.send());
@@ -2169,7 +2169,7 @@ public class ClientController {
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
-        Tile tile2=new CargoBlue(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),"/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web26.jpg",2,0);
+        Tile tile2=new CargoBlue(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web20.jpg",2,0);
         me.getShipBoard().positionTile(Optional.of(tile2), new Coordinates(2,2));
         try {
             virtualController.notifySetTile(tile2.send());
@@ -2191,7 +2191,7 @@ public class ClientController {
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
-        Tile tile5=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),"/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web5.jpg",3,0,3);
+        Tile tile5=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),"/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web16.jpg",3,0,3);
         me.getShipBoard().positionTile(Optional.of(tile5), new Coordinates(3,2));
         try {
             virtualController.notifySetTile(tile5.send());
