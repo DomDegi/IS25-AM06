@@ -126,7 +126,7 @@ public class EquipCabin extends Cabin {
                     this.crew = 1;
                     shipBoard.addBreakPurpleAliens(true);
                 } else {
-                    System.out.println("CAN'T FILL THIS CABIN WITH A PURPLE ALIEN");
+                    System.out.println("Can't fill this cabin with a purple alien");
                 }
             }
             case BROWN -> {
@@ -135,7 +135,7 @@ public class EquipCabin extends Cabin {
                     this.crew = 1;
                     shipBoard.addBreakBrownAliens(true);
                 } else {
-                    System.out.println("CAN'T FILL THIS CABIN WITH A BROWN ALIEN");
+                    System.out.println("Can't fill this cabin with a brown alien");
                 }
             }
         }
@@ -249,7 +249,7 @@ public class EquipCabin extends Cabin {
     public String toStringData() {
         String image;
         image = Objects.requireNonNullElse(imagePath, "N");
-        return "EC " + key + " "+ image + " " + north + " " + east + " " + south + " " + west + " " + crew + " " +
+        return "EC " + key + " " + image + " " + north + " " + east + " " + south + " " + west + " " + crew + " " +
                 (crewType != null ? crewType : "N");
     }
 

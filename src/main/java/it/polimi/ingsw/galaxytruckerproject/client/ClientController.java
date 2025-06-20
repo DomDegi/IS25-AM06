@@ -1418,7 +1418,7 @@ public class ClientController {
         if (player == null)
             return;
         for (Tile modTiles : tiles) {
-            player.getShipBoard().positionTile(Optional.of(modTiles), modTiles.getCoordinates());
+            player.getShipBoard().swapTile(Optional.of(modTiles));
         }
     }
 

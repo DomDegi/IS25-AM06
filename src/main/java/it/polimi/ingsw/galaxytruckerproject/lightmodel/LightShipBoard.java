@@ -5,6 +5,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 
+import javax.swing.text.html.Option;
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.util.ArrayList;
@@ -215,6 +216,7 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         this.tilesTable = tilesTable;
     }
 
+
     /**
      * Initializes the shipboard for the "Level 2" mode by setting up tiles and cabins.
      */
@@ -381,7 +383,7 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
      * @return `true` if the tile was successfully positioned, `false` otherwise
      */
     public boolean positionTile(Optional<Tile> tile, Coordinates coordinates) {
-        if (tile.isPresent() && tilesTable[coordinates.getX()][coordinates.getY()].isEmpty()) {
+        if (tile.isPresent() && tilesTable[coordinates.getX()][coordinates.getY()].isEmpty() ) {
             if (first){
                 tilesTable[coordinates.getX()][coordinates.getY()] = tile;
                 tile.get().setShipBoard(this);
@@ -427,6 +429,18 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
             tilesTable[coordinates.getX()][coordinates.getY()] = Optional.empty();
         }
     }
+
+    /**
+     * Method used to update the tile that get their attributes like crew, batteries and cargo goods modified.
+     * It swaps the old tile with the new one received from the server and sets the parameters.
+     * @param tile modified tile.
+     */
+    public void swapTile(Optional<Tile> tile) {
+        Coordinates coordinates = tile.get().getCoordinates();
+        tilesTable[coordinates.getX()][coordinates.getY()] = tile;
+        tile.get().setShipBoard(this);
+    }
+
 
     /**
      * Retrieves the list of shields installed on the ship.
@@ -1012,5 +1026,6 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
             }
         }
     }
+
 
 }
