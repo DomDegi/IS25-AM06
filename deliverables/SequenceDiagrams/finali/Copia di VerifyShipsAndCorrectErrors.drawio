@@ -1,0 +1,154 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36" version="27.1.6">
+  <diagram name="Page-1" id="2YBvvXClWsGukQMizWep">
+    <mxGraphModel dx="835" dy="614" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="aM9ryv3xv72pqoxQDRHE-1" value="Client" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="1" vertex="1">
+          <mxGeometry x="40" y="40" width="100" height="690" as="geometry" />
+        </mxCell>
+        <mxCell id="aM9ryv3xv72pqoxQDRHE-5" value="Server" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="1" vertex="1">
+          <mxGeometry x="310" y="40" width="100" height="690" as="geometry" />
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-3" value="opt" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=50;height=20;" parent="1" vertex="1">
+          <mxGeometry x="40" y="100" width="360" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-4" value="[if ship verification gives error]" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=9;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="90" y="100" width="140" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-5" value="" style="endArrow=open;endFill=0;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;dashed=1;" parent="1" edge="1">
+          <mxGeometry x="-1" relative="1" as="geometry">
+            <mxPoint x="359.57" y="180" as="sourcePoint" />
+            <mxPoint x="89.99857142857144" y="180" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="260.07" y="180" />
+              <mxPoint x="260.07" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-7" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;ShipsErrorsMessage (coordinates: ArrayList&amp;lt;Coordinates&amp;gt;)&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="80" y="150" width="290" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-8" value="" style="endArrow=open;endSize=12;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="90.19393939393937" y="220" as="sourcePoint" />
+            <mxPoint x="359.8" y="220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-10" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;RemoveTileRequest (coordinates: Coordinates)&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="110" y="190" width="230" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-15" value="loop" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=50;height=25;" parent="1" vertex="1">
+          <mxGeometry x="60" y="135" width="330" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-16" value="[until there are errors]" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=9;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="110" y="135" width="110" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-18" value="" style="endArrow=open;endFill=0;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;dashed=1;" parent="1" edge="1">
+          <mxGeometry x="-1" relative="1" as="geometry">
+            <mxPoint x="359.57" y="410" as="sourcePoint" />
+            <mxPoint x="89.99857142857144" y="410" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="260.07" y="410" />
+              <mxPoint x="260.07" y="410" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-19" value="ShipIsVerifiedMessage ()" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;" parent="1" vertex="1">
+          <mxGeometry x="150" y="380" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-20" value="" style="endArrow=open;endFill=0;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;dashed=1;" parent="1" edge="1">
+          <mxGeometry x="-1" relative="1" as="geometry">
+            <mxPoint x="359.57" y="460" as="sourcePoint" />
+            <mxPoint x="89.99857142857144" y="460" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="260.07" y="460" />
+              <mxPoint x="260.07" y="460" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-22" value="WaitRequestMessage ()" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;" parent="1" vertex="1">
+          <mxGeometry x="150" y="430" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-23" value="opt" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=40;height=20;" parent="1" vertex="1">
+          <mxGeometry x="45" y="620" width="350" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-24" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 9px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 700; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: nowrap; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;[when all player have chosen starting position]&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="90" y="620" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-25" value="" style="endArrow=open;endFill=0;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;dashed=1;" parent="1" edge="1">
+          <mxGeometry x="-1" relative="1" as="geometry">
+            <mxPoint x="359.79" y="680" as="sourcePoint" />
+            <mxPoint x="90.21857142857144" y="680" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="260.29" y="680" />
+              <mxPoint x="260.29" y="680" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-26" value="StartingCardPhaseMessage ()" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;" parent="1" vertex="1">
+          <mxGeometry x="135" y="655" width="170" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-27" value="opt" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=50;height=20;" parent="1" vertex="1">
+          <mxGeometry x="40" y="265" width="360" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-28" value="&lt;b&gt;&lt;font style=&quot;font-size: 9px;&quot;&gt;[anytime during this phase]&lt;/font&gt;&lt;/b&gt;" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="90" y="260" width="170" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-29" value="" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;" parent="1" edge="1">
+          <mxGeometry x="-1" y="-70" relative="1" as="geometry">
+            <mxPoint x="90.25925925925924" y="315" as="sourcePoint" />
+            <mxPoint x="360" y="315" as="targetPoint" />
+            <Array as="points" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-30" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;ShowPlayersBoardRequest (playerName: String)&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="120" y="285" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-31" value="" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="359.5" y="355" as="sourcePoint" />
+            <mxPoint x="89.75925925925924" y="355" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-32" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;ShowPlayersBoardResponse ()&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="150" y="330" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-33" value="opt" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=50;height=20;" parent="1" vertex="1">
+          <mxGeometry x="40" y="480" width="360" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-34" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 9px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 700; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: nowrap; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;[if ship is verified]&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="90" y="470" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-36" value="" style="endArrow=open;endFill=0;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;dashed=1;" parent="1" edge="1">
+          <mxGeometry x="-1" relative="1" as="geometry">
+            <mxPoint x="359.57" y="520" as="sourcePoint" />
+            <mxPoint x="89.99857142857144" y="520" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="260.07" y="520" />
+              <mxPoint x="260.07" y="520" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-37" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;ChooseStartingPositionMessage (availablePositions)&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="85" y="498" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-38" value="" style="endArrow=block;endFill=1;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;" parent="1" edge="1">
+          <mxGeometry x="-1" y="-70" relative="1" as="geometry">
+            <mxPoint x="89.99925925925923" y="590" as="sourcePoint" />
+            <mxPoint x="359.74" y="590" as="targetPoint" />
+            <Array as="points" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-39" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;ChooseStartingPositionResponse (position: int)&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="95" y="560" width="250" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="GWDhxGoM-sYFTYQ4cH2p-44" value="&lt;font style=&quot;font-size: 9px;&quot;&gt;verifies the input is one of the available ones&lt;/font&gt;" style="shape=note2;boundedLbl=1;whiteSpace=wrap;html=1;size=6;verticalAlign=top;align=center;" parent="1" vertex="1">
+          <mxGeometry x="45" y="528" width="100" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
