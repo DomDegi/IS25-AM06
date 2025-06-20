@@ -429,15 +429,6 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
     }
 
     /**
-     * Retrieves the list of cargo hold coordinates.
-     *
-     * @return the list of cargo hold coordinates
-     */
-    public void setCargoHoldCoordinates(ArrayList<Coordinates> cargoHoldCoordinates) {
-        this.cargoHoldCoordinates = cargoHoldCoordinates;
-    }
-
-    /**
      * Retrieves the list of shields installed on the ship.
      *
      * @return the list of shields

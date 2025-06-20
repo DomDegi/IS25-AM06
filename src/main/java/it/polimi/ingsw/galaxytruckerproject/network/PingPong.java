@@ -46,7 +46,10 @@ public class PingPong implements Runnable {
                         // Iterates through each player in the active game
                         for (String playerName : game.getActivePlayers().keySet()) {
                             // Sends a ping to the player
-                            game.pingPong(playerName, game.getViewFromNickname(playerName));
+                            VirtualView view = game.getViewFromNickname(playerName);
+                            if (view != null) {
+                                game.pingPong(playerName, view);
+                            }
                         }
                     }
                 }

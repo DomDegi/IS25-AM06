@@ -248,6 +248,10 @@ public class TextualInputParser {
             }
 
             case S_END_DRAW_TILE_CARD -> {
+                if (words[0].equals("buildship")) {
+                    clientController.buildShip();
+                    return true;
+                }
                 if (words[0].equals("turn") && clientController.secondHourglassTurn())
                     return true;
                 if (clientController.checkShipBoards(words))

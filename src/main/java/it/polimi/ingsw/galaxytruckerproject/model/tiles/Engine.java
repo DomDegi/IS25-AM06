@@ -111,7 +111,11 @@ public abstract class Engine extends Tile {
      */
     @Override
     public void tileLoader(String[] attributes) {
+        int k = 0;
         super.tileLoader(attributes);
-        this.direction = Direction.fromString(attributes[6]);
+        if (imagePath != null) {
+            k++;
+        }
+        this.direction = Direction.fromString(attributes[7 + k]);
     }
 }

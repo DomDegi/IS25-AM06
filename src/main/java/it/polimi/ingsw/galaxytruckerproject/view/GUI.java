@@ -1105,6 +1105,16 @@ public class GUI extends Application implements DisplayableView {
         });
     }
 
+    @Override
+    public void notifyPlayerLeftTheGame(String playerName) {
+
+    }
+
+    @Override
+    public void notifyPlayerDisconnected(String playerName) {
+
+    }
+
     /**
      * Placeholder method for printing a projectile. Currently, this method does nothing.
      *

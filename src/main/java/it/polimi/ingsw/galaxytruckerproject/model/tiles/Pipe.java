@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
+import java.util.Objects;
+
 /**
  * Represents a Pipe tile used to connect components within a ship.
  * Pipes serve as non-functional structural connections, useful to ensure continuity
@@ -92,7 +94,9 @@ public class Pipe extends Tile {
      */
     @Override
     public String toStringData() {
-        return "PP " + key + " " + north.toString() + " " + east.toString()
+        String image;
+        image = Objects.requireNonNullElse(imagePath, "N");
+        return "PP " + key + " " + image + " " + north.toString() + " " + east.toString()
                 + " " + south.toString() + " " + west.toString();
     }
 

@@ -82,7 +82,9 @@ public class Shields extends Tile {
      */
     @Override
     public String toStringData() {
-        return "SH " + key + " " + north.toString() + " " + east.toString() + " "
+        String image;
+        image = Objects.requireNonNullElse(imagePath, "N");
+        return "SH " + key + " " + image + " " + north.toString() + " " + east.toString() + " "
                 + south.toString() + " " + west.toString() + " " + coveredArea.toStringData();
     }
 
@@ -98,9 +100,13 @@ public class Shields extends Tile {
      */
     @Override
     public void tileLoader(String[] attributes) {
+        int k = 0;
         super.tileLoader(attributes);
-        this.coveredArea = Coverage.fromStringData(attributes[6]);
-        if (Objects.equals(attributes[6], "NONE")) {
+        if (imagePath != null) {
+            k++;
+        }
+        this.coveredArea = Coverage.fromStringData(attributes[7 + k]);
+        if (Objects.equals(attributes[7], "NONE")) {
             System.out.println("Why this shield has no coverage?");
             throw new IllegalArgumentException();
         }

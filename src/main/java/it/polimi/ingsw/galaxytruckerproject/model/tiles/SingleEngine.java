@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
+import java.util.Objects;
+
 /**
  * Represents a single engine tile in the game.
  * It contributes 1 engine strength and must be oriented SOUTH to be valid.
@@ -71,7 +73,9 @@ public class SingleEngine extends Engine {
      */
     @Override
     public String toStringData() {
-        return "SE " + key + " " + north.toString() + " " + east.toString() + " "
+        String image;
+        image = Objects.requireNonNullElse(imagePath, "N");
+        return "SE " + key + " " + image + " " + north.toString() + " " + east.toString() + " "
                 + south.toString() + " " + west.toString() + " " + direction.toString();
     }
 

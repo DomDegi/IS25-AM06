@@ -102,6 +102,16 @@ public class MockVirtualView implements VirtualView {
 
     }
 
+    @Override
+    public void notifyPlayerLeft(String playerName) throws RemoteException {
+
+    }
+
+    @Override
+    public void notifyPlayerDisconnected(String playerName) throws RemoteException {
+
+    }
+
     // --- ViewInterface methods ---
 
     @Override

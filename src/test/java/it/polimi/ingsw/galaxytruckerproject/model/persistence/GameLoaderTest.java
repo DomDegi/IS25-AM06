@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameLoaderTest {
 
-    String fileName = "GameSaverTest";
+    String fileName = "f";
     GameController gameController;
     Player player1;
     Player player2;

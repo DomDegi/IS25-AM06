@@ -76,13 +76,13 @@ public class SocketServer implements Server {
                         clientHandler.setController(controller);
                         clientHandler.setVirtualView(virtualView);
 
+                        // Start the PingPong mechanism for managing connections
+                        multiGameController.playPingPong();
+
                     } catch (IOException e) {
                         System.out.println("Connection crashed");
                         throw new RuntimeException(e);
                     }
-
-                    // Start the PingPong mechanism for managing connections
-                    multiGameController.playPingPong();
                 }, "ClientHandlerSetup").start();
             }
         }, "SocketServer thread");

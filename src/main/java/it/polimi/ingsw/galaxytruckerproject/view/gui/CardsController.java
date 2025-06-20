@@ -37,17 +37,17 @@ import static javafx.scene.paint.Color.*;
 /**
  * The CardsController class represents the controller in a JavaFX application responsible
  * for managing card-related functionalities in a game.
- *
+ * <p>
  * This class interacts with the UI elements and handles various card-related actions such
  * as drawing cards, rolling dice, selecting actions, choosing planets, landing, and
  * managing game states. It also provides methods for updating the game interface and
  * displaying relevant game information.
- *
+ * <p>
  * Fields:
  * - Contains various UI elements such as card decks, images, buttons, text areas, and tables
  *   used to interact with the game interface.
  * - Includes variables for tracking visible states, rolled dice, planetary choices, and player actions.
- *
+ * <p>
  * Methods:
  * - Public Methods:
  *   - initialize(): Initializes the controller and prepares the UI for interaction.
@@ -74,7 +74,7 @@ import static javafx.scene.paint.Color.*;
  *   - showRollDice(): Displays the result of a dice roll.
  *   - showPlanetChoice(): Displays the options for planetary selection.
  *   - showManageGoods(): Manages the display and interaction for goods management.
- *
+ * <p>
  * Responsibilities:
  * - This class is responsible for managing all interactions related to cards and game mechanics
  *   involving the cards UI. It coordinates various player actions, updates the game state,

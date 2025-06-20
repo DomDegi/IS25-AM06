@@ -130,14 +130,26 @@ public interface DisplayableView extends ViewInterface {
 
     /**
      * Notifies the player that another player has joined the game.
-     * @param expectedPlayer the expected number of players in the game
-     * @param currentPlayer the current number of players in the game
+     * @param expectedPlayers the expected number of players in the game
+     * @param currentPlayers the current number of players in the game
      * @param reconnected true if the player has reconnected, false if it's a new player
      */
-    void notifyPlayerJoined(int expectedPlayer, int currentPlayer, boolean reconnected);
+    void notifyPlayerJoined(int expectedPlayers, int currentPlayers, boolean reconnected);
 
     /**
      * Displays the list of available decks to the player.
      */
     void showAvailableDecks();
+
+    /**
+     * Displays the name of the player that left the game
+     * @param playerName The name of the player
+     */
+    void notifyPlayerLeftTheGame(String playerName);
+
+    /**
+     * Displays the name of the player that disconnected
+     * @param playerName The name of the player
+     */
+    void notifyPlayerDisconnected(String playerName);
 }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.tiles.CrewType.HUMAN;
 
@@ -63,13 +64,13 @@ public class EquipCabin extends Cabin {
      */
     public ArrayList<Coordinates> adjacentLifeSupport() {
         ArrayList<Coordinates> adjacentLifeSupport = new ArrayList<>();
-        if (coordinates.getX() - 1 >= 0 && shipBoard.getTilesTable()[coordinates.getX() - 1][coordinates.getY()].isPresent())
+        if (coordinates.getX() - 1 >= 0 && shipBoard.getTilesTable()[coordinates.getX() - 1][coordinates.getY()].isPresent() && this.north.getConnectorsType()!=Connectors.SMOOTH)
             adjacentLifeSupport.add(shipBoard.getTilesTable()[coordinates.getX() - 1][coordinates.getY()].get().getCoordinates());
-        if (coordinates.getX() + 1 <= 4 && shipBoard.getTilesTable()[coordinates.getX() + 1][coordinates.getY()].isPresent())
+        if (coordinates.getX() + 1 <= 4 && shipBoard.getTilesTable()[coordinates.getX() + 1][coordinates.getY()].isPresent() && this.south.getConnectorsType()!=Connectors.SMOOTH )
             adjacentLifeSupport.add(shipBoard.getTilesTable()[coordinates.getX() + 1][coordinates.getY()].get().getCoordinates());
-        if (coordinates.getY() - 1 >= 0 && shipBoard.getTilesTable()[coordinates.getX()][coordinates.getY() - 1].isPresent())
+        if (coordinates.getY() - 1 >= 0 && shipBoard.getTilesTable()[coordinates.getX()][coordinates.getY() - 1].isPresent() && this.west.getConnectorsType()!=Connectors.SMOOTH)
             adjacentLifeSupport.add(shipBoard.getTilesTable()[coordinates.getX()][coordinates.getY() - 1].get().getCoordinates());
-        if (coordinates.getY() + 1 <= 6 && shipBoard.getTilesTable()[coordinates.getX()][coordinates.getY() + 1].isPresent())
+        if (coordinates.getY() + 1 <= 6 && shipBoard.getTilesTable()[coordinates.getX()][coordinates.getY() + 1].isPresent() && this.east.getConnectorsType()!=Connectors.SMOOTH)
             adjacentLifeSupport.add(shipBoard.getTilesTable()[coordinates.getX()][coordinates.getY() + 1].get().getCoordinates());
         return adjacentLifeSupport;
     }
@@ -204,6 +205,9 @@ public class EquipCabin extends Cabin {
 
     @Override
     public String toString1() {
+        if(crewType == null){
+            return " /  " + getNorth() + " / ";
+        }
         return switch (crewType) {
             case HUMAN -> (crew == 2) ? " H  " + getNorth() + " H " : " H  " + getNorth() + "   ";
             case PURPLE -> " P  " + getNorth() + "   ";
@@ -243,16 +247,22 @@ public class EquipCabin extends Cabin {
 
     @Override
     public String toStringData() {
-        return "EC " + key + " " + north + " " + east + " " + south + " " + west + " " + crew + " " +
+        String image;
+        image = Objects.requireNonNullElse(imagePath, "N");
+        return "EC " + key + " "+ image + " " + north + " " + east + " " + south + " " + west + " " + crew + " " +
                 (crewType != null ? crewType : "N");
     }
 
     @Override
     public void tileLoader(String[] attributes) {
+        int k = 0;
         super.tileLoader(attributes);
-        this.crewToLoad = Integer.parseInt(attributes[6]);
-        if (!attributes[7].equals("N")) {
-            this.crewType = CrewType.fromString(attributes[7]);
+        if (imagePath != null) {
+            k++;
+        }
+        this.crewToLoad = Integer.parseInt(attributes[7 + k]);
+        if (!attributes[8 + k].equals("N")) {
+            this.crewType = CrewType.fromString(attributes[8 + k]);
         }
         if (crewType != CrewType.HUMAN && crewToLoad > 1) {
             System.out.println("This equip cabin has something wrong going on");

@@ -12,6 +12,7 @@ import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +40,9 @@ public class MultiGameController implements Serializable {
     /**
      * Constructs a new MultiGameController with empty game and view maps.
      */
-    public MultiGameController() {}
+    public MultiGameController() {
+        checkIfThereAreRecentSavedGames();
+    }
 
     /**
      * Attempts to log a player into the system.
@@ -154,10 +157,21 @@ public class MultiGameController implements Serializable {
 
         if (joinerView != null && controller != null) {
             if (gameToJoin == null) {
-                try {
-                    joinerView.showWrongInputMessage();
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
+                ArrayList<GameInfo> savedGames = GameLoader.savedGamesWithPlayersName(joiner);
+                if (savedGames.isEmpty()) {
+                    try {
+                        joinerView.showWrongInputMessage();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                else {
+                    for (GameInfo game:  savedGames) {
+                        if (game.getGameName().equals(gameName)) {
+                            createGame(joiner,gameName,game.getMaxPlayerCount(),controller,game.getGameMode());
+                            break;
+                        }
+                    }
                 }
             }
             else {
@@ -258,6 +272,10 @@ public class MultiGameController implements Serializable {
                 joinableGames.add(currentGame);
             }
         }
+        ArrayList<GameInfo> savedGames = GameLoader.savedGamesWithPlayersName(nickname);
+        if (!savedGames.isEmpty()) {
+            joinableGames.addAll(savedGames);
+        }
         try {
             view.showJoinableGamesList(joinableGames);
         } catch (RemoteException e) {
@@ -288,5 +306,9 @@ public class MultiGameController implements Serializable {
     public void playPingPong(){
        PingPong pingPong = new PingPong(this.gamesMap);
        pingPong.run();
+    }
+
+    public void checkIfThereAreRecentSavedGames() {
+
     }
 }

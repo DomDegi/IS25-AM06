@@ -227,6 +227,11 @@ public class GameController implements Observer, Serializable {
         if (playersViewMap.size() == activePlayers.size()) {
             currentGameStatus = null;
             restarted = false;
+            if (game.getGameState() == GameState.SHIPS_CREATION || game.getGameState() == GameState.VERIFY_SHIP_CORRECTNESS) {
+                if (autoSaveEnabled) {
+                    startAutoSave();
+                }
+            }
             switch (game.getGameState()) {
                 case START_GAME -> {
                     for (VirtualView view : playersViewMap.values()) {
@@ -250,17 +255,9 @@ public class GameController implements Observer, Serializable {
                         hourglassTurns--;
                         startTimer();
                     }
-                    if (autoSaveEnabled) {
-                        stopAutoSave();
-                    }
-                    startAutoSave();
                 }
                 case VERIFY_SHIP_CORRECTNESS -> {
                     verifyShipCorrectness();
-                    if (autoSaveEnabled) {
-                        stopAutoSave();
-                    }
-                    startAutoSave();
                 }
                 case DRAW_CARD -> askFirstPlayerToDraw();
                 case CARD_EVENT,CONCLUDE_GAME -> {
@@ -908,7 +905,7 @@ public class GameController implements Observer, Serializable {
     public void setTile (ViewInterface playersView, String playerName, Tile tile) {
         Tile settedTile;
         if (!tile.isBooked()) {
-            if (clientsStatesMap.get(playerName) != ClientState.S_MANAGE_DRAWN_TILE) {
+            if (!(clientsStatesMap.get(playerName) == ClientState.S_MANAGE_DRAWN_TILE || clientsStatesMap.get(playerName) == S_END_DRAW_TILE_CARD || clientsStatesMap.get(playerName) == WAIT) ) {
                 try {
                     playersView.showWrongInputMessage();
                 } catch (Exception ignored) {
@@ -1656,6 +1653,7 @@ public class GameController implements Observer, Serializable {
             playersViewMap.remove(playerName);
             disconnectedPlayers.put(playerName,player);
             System.out.println(playerName+" disconnected");
+            notifyPlayerDisconnected(playerName);
         } finally {
             pendingPongs.remove(playerName);
         }
@@ -1720,6 +1718,9 @@ public class GameController implements Observer, Serializable {
      * Starts periodic autosave task.
      */
     public void startAutoSave() {
+        if (autoSaveExecutor != null && !autoSaveExecutor.isShutdown()) {
+            autoSaveExecutor.shutdown();
+        }
         autoSaveExecutor = Executors.newSingleThreadScheduledExecutor();
         autoSaveExecutor.scheduleAtFixedRate(() -> {
             if (autoSaveEnabled) {
@@ -1747,6 +1748,7 @@ public class GameController implements Observer, Serializable {
 
     /**
      * Removes a player from the game entirely (disconnect and forget).
+     * This happens only by player's choice.
      * @param playerName player name
      */
     public void playerLeaves(String playerName) {
@@ -1764,6 +1766,7 @@ public class GameController implements Observer, Serializable {
             }
         }
         playersViewMap.remove(playerName);
+        notifyPlayerLeftTheGame(playerName);
     }
     /**
      * Prepares the controller and game model for a player disconnection.
@@ -1789,4 +1792,25 @@ public class GameController implements Observer, Serializable {
         game.getDrawnCard().playerDisconnected(playerName);
     }
 
+
+    public void notifyPlayerDisconnected(String playerName) {
+        for (VirtualView view: playersViewMap.values()) {
+            try{
+                view.notifyPlayerDisconnected(playerName);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void notifyPlayerLeftTheGame(String playerName) {
+        for (VirtualView view: playersViewMap.values()) {
+            try{
+                view.notifyPlayerLeft(playerName);
+            }
+            catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 }

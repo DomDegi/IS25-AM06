@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
+import java.util.Objects;
+
 /**
  * Represents a VoidTile, a special type of tile used as a placeholder
  * for invalid or non-usable areas of the ship grid.
@@ -85,7 +87,9 @@ public class VoidTile extends Tile {
      */
     @Override
     public String toStringData() {
-        return "VT";
+        String image;
+        image = Objects.requireNonNullElse(imagePath, "N");
+        return "VT " + imagePath;
     }
 
     /**
@@ -95,6 +99,12 @@ public class VoidTile extends Tile {
      */
     @Override
     public void tileLoader(String[] attributes) {
-        // no-op
+
+        if (!attributes[1].equals("N")) {
+            this.imagePath = attributes[1];
+        }
+        else {
+            imagePath = null;
+        }
     }
 }

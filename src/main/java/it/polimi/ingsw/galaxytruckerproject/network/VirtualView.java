@@ -162,4 +162,20 @@ public interface VirtualView extends ViewInterface, Serializable {
      * @throws RemoteException If a remote exception occurs.
      */
     void notifyPlayerJoined(int expected, int current, boolean reconnected) throws RemoteException;
+
+    /**
+     * Notifies the clients when a player leaves the game
+     *
+     * @param playerName the name of the player.
+     * @throws RemoteException If a remote exception occurs.
+     */
+    void notifyPlayerLeft(String playerName) throws RemoteException;
+
+    /**
+     * Notifies the clients when a player disconnects from the game.
+     *
+     * @param playerName the name of the player.
+     * @throws RemoteException If a remote exception occurs.
+     */
+    void notifyPlayerDisconnected(String playerName) throws RemoteException;
 }

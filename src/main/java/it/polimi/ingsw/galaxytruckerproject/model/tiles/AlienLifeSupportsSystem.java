@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static it.polimi.ingsw.galaxytruckerproject.model.tiles.CrewType.BROWN;
 import static it.polimi.ingsw.galaxytruckerproject.model.tiles.CrewType.NotSupportSystem;
@@ -150,7 +151,9 @@ public class AlienLifeSupportsSystem extends Tile {
      */
     @Override
     public String toStringData() {
-        return "AL " + key + " " + north.toString() + " " + east.toString() + " " + south.toString() + " " + west.toString() + " " + colorAlienSupported.toString();
+        String image;
+        image = Objects.requireNonNullElse(imagePath, "N");
+        return "AL " + key + " " + image + " " + north.toString() + " " + east.toString() + " " + south.toString() + " " + west.toString() + " " + colorAlienSupported.toString();
     }
 
     /**
@@ -168,6 +171,10 @@ public class AlienLifeSupportsSystem extends Tile {
     @Override
     public void tileLoader(String[] attributes) {
         super.tileLoader(attributes);
-        this.colorAlienSupported = CrewType.fromString(attributes[6]);
+        int k = 0;
+        if (imagePath != null) {
+            k++;
+        }
+        this.colorAlienSupported = CrewType.fromString(attributes[7 + k]);
     }
 }

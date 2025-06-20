@@ -29,8 +29,9 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>1.14.10</version> <!-- o l'ultima disponibile -->
+            <version>1.14.10</version>
         </dependency>
+
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -56,6 +57,16 @@
             <version>2.15.2</version>
         </dependency>
         <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.15.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.15.2</version>
+        </dependency>
+        <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>5.14.2</version>
@@ -67,8 +78,6 @@
             <version>5.14.2</version>
             <scope>test</scope>
         </dependency>
-
-
     </dependencies>
 
 
@@ -105,7 +114,67 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-        </plugins>
+            </plugin>             <!-- Maven Shade Plugin per generare fat jars -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>3.4.1</version>
+                    <executions>
+                        <execution>
+                            <id>shade</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>shade</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
     </build>
+
+    <profiles>
+        <!-- PROFILO CLIENT -->
+        <profile>
+            <id>client</id>
+            <build>
+                <directory>${project.basedir}/target-client</directory>
+                <finalName>GalaxyTruckerAM06_Client</finalName>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>it.polimi.ingsw.galaxytruckerproject.ClientMain</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- PROFILO SERVER -->
+        <profile>
+            <id>server</id>
+            <build>
+                <directory>${project.basedir}/target-server</directory>
+                <finalName>GalaxyTruckerAM06_Server</finalName>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>it.polimi.ingsw.galaxytruckerproject.ServerMain</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

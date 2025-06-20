@@ -1,5 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.model.tiles;
 
+import java.util.Objects;
+
 /**
  * Represents a ship tile that stores and manages battery cells.
  * Batteries can be used to power other components and are tracked during gameplay.
@@ -156,7 +158,9 @@ public class BatteryComponents extends Tile {
      */
     @Override
     public String toStringData() {
-        return "BC " + key + " " + north.toString() + " " + east.toString() + " " + south.toString() + " " + west.toString() + " " + batteryCells;
+        String image;
+        image = Objects.requireNonNullElse(imagePath, "N");
+        return "BC " + key + " " + image + " " + north.toString() + " " + east.toString() + " " + south.toString() + " " + west.toString() + " " + batteryCells;
     }
 
     /**
@@ -166,7 +170,11 @@ public class BatteryComponents extends Tile {
      */
     @Override
     public void tileLoader(String[] attributes) {
+        int k = 0;
         super.tileLoader(attributes);
-        this.batteryCells = Integer.parseInt(attributes[6]);
+        if (imagePath != null) {
+            k++;
+        }
+        this.batteryCells = Integer.parseInt(attributes[7 + k]);
     }
 }

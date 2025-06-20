@@ -46,3 +46,6 @@ Thumbs.db
 /cardsList_output
 /tileList_output
 /serializerTest
+/target-server/
+/target-client/
+/dependency-reduced-pom.xml
