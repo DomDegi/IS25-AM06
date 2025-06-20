@@ -1989,6 +1989,11 @@ public class ClientController {
             }
          */
         LightShipBoard lightShipBoard = flightBoard.getInGamePlayer(me.getPlayerName()).getShipBoard();
+        if(lightShipBoard==null)
+            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAA");
+        else
+            System.out.println("TUTTO APPOSTOOO");
+
         Tile tile4=new CargoBlue(2, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web19.jpg",0,0);
         lightShipBoard.positionTile(Optional.ofNullable(tile4), new Coordinates(1,3));
         try {
@@ -2162,6 +2167,8 @@ public class ClientController {
             }
          */
         LightShipBoard lightShipBoard = flightBoard.getInGamePlayer(me.getPlayerName()).getShipBoard();
+        if(lightShipBoard==null)
+            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         Tile tile4=new CargoBlue(2, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web19.jpg",0,0);
         lightShipBoard.positionTile(Optional.ofNullable(tile4), new Coordinates(1,3));
         try {
