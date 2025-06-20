@@ -112,6 +112,10 @@ public abstract class Cannon extends Tile {
     @Override
     public void tileLoader(String[] attributes) {
         super.tileLoader(attributes);
-        this.direction = Direction.fromString(attributes[7]);
+        int k = 0;
+        if (imagePath != null) {
+            k++;
+        }
+        this.direction = Direction.fromString(attributes[7 + k]);
     }
 }

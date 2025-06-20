@@ -170,7 +170,11 @@ public class BatteryComponents extends Tile {
      */
     @Override
     public void tileLoader(String[] attributes) {
+        int k = 0;
         super.tileLoader(attributes);
-        this.batteryCells = Integer.parseInt(attributes[7]);
+        if (imagePath != null) {
+            k++;
+        }
+        this.batteryCells = Integer.parseInt(attributes[7 + k]);
     }
 }

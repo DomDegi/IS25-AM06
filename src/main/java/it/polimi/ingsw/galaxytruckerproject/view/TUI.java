@@ -580,4 +580,22 @@ public class TUI implements DisplayableView {
     public void showAvailableDecks() {
 
     }
+
+    /**
+     * Displays the name of the player that left the game as a print on the cli
+     * @param playerName The name of the player
+     */
+    @Override
+    public void notifyPlayerLeftTheGame(String playerName) {
+        System.out.println(playerName + " has left the game");
+    }
+
+    /**
+     * Displays the name of the player that disconnected from the game as a print on the cli
+     * @param playerName The name of the player
+     */
+    @Override
+    public void notifyPlayerDisconnected(String playerName) {
+        System.out.println(playerName + " has disconnected from the game");
+    }
 }

@@ -78,8 +78,6 @@
             <version>5.14.2</version>
             <scope>test</scope>
         </dependency>
-
-
     </dependencies>
 
 
@@ -140,7 +138,7 @@
             <id>client</id>
             <build>
                 <directory>${project.basedir}/target-client</directory>
-                <finalName>client</finalName>
+                <finalName>GalaxyTruckerAM06_Client</finalName>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -162,7 +160,7 @@
             <id>server</id>
             <build>
                 <directory>${project.basedir}/target-server</directory>
-                <finalName>server</finalName>
+                <finalName>GalaxyTruckerAM06_Server</finalName>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>

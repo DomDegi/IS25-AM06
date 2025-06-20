@@ -99,6 +99,7 @@ public class VoidTile extends Tile {
      */
     @Override
     public void tileLoader(String[] attributes) {
+
         if (!attributes[1].equals("N")) {
             this.imagePath = attributes[1];
         }

@@ -50,12 +50,12 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
     private int numBatteries;
 
     /**
-     * Total power lost from destroyed single cannons.
+     * Total power from single cannons.
      */
     private float singleCannonPower;
 
     /**
-     * Coordinates of damaged double cannons.
+     * Coordinates of double cannons.
      */
     private final ArrayList<Coordinates> DoubleCannon;
 
