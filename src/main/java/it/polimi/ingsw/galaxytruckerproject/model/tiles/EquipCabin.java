@@ -261,7 +261,7 @@ public class EquipCabin extends Cabin {
             k++;
         }
         this.crewToLoad = Integer.parseInt(attributes[7 + k]);
-        if (!attributes[8].equals("N")) {
+        if (!attributes[8 + k].equals("N")) {
             this.crewType = CrewType.fromString(attributes[8 + k]);
         }
         if (crewType != CrewType.HUMAN && crewToLoad > 1) {
