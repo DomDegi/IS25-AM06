@@ -289,9 +289,11 @@ public class Game implements GameInterface{
      */
     public Tile playerSetTile (String playerName, Tile tile) {
         Player player = identifyPlayerByName(playerName);
-        if (player.getDrawnTile() != null && tile.getKey() == player.getDrawnTile().getKey()) {
+        if (tile.getKey() == 0 || (player.getDrawnTile() != null && tile.getKey() == player.getDrawnTile().getKey())) {
             if (player.getShipBoard().positionTile(Optional.of(tile), tile.getCoordinates())) {
-                player.removeDrawnTile();
+                if (tile.getKey() == 0) {
+                    player.removeDrawnTile();
+                }
                 return tile;
             }
             else
