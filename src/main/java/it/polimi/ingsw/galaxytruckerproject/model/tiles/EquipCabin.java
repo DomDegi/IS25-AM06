@@ -64,13 +64,13 @@ public class EquipCabin extends Cabin {
      */
     public ArrayList<Coordinates> adjacentLifeSupport() {
         ArrayList<Coordinates> adjacentLifeSupport = new ArrayList<>();
-        if (coordinates.getX() - 1 >= 0 && shipBoard.getTilesTable()[coordinates.getX() - 1][coordinates.getY()].isPresent() && this.north.getConnectorsType()!=Connectors.SMOOTH)
+        if (coordinates.getX() - 1 >= 0 && shipBoard.getTilesTable()[coordinates.getX() - 1][coordinates.getY()].isPresent() )
             adjacentLifeSupport.add(shipBoard.getTilesTable()[coordinates.getX() - 1][coordinates.getY()].get().getCoordinates());
-        if (coordinates.getX() + 1 <= 4 && shipBoard.getTilesTable()[coordinates.getX() + 1][coordinates.getY()].isPresent() && this.south.getConnectorsType()!=Connectors.SMOOTH )
+        if (coordinates.getX() + 1 <= 4 && shipBoard.getTilesTable()[coordinates.getX() + 1][coordinates.getY()].isPresent() )
             adjacentLifeSupport.add(shipBoard.getTilesTable()[coordinates.getX() + 1][coordinates.getY()].get().getCoordinates());
-        if (coordinates.getY() - 1 >= 0 && shipBoard.getTilesTable()[coordinates.getX()][coordinates.getY() - 1].isPresent() && this.west.getConnectorsType()!=Connectors.SMOOTH)
+        if (coordinates.getY() - 1 >= 0 && shipBoard.getTilesTable()[coordinates.getX()][coordinates.getY() - 1].isPresent() )
             adjacentLifeSupport.add(shipBoard.getTilesTable()[coordinates.getX()][coordinates.getY() - 1].get().getCoordinates());
-        if (coordinates.getY() + 1 <= 6 && shipBoard.getTilesTable()[coordinates.getX()][coordinates.getY() + 1].isPresent() && this.east.getConnectorsType()!=Connectors.SMOOTH)
+        if (coordinates.getY() + 1 <= 6 && shipBoard.getTilesTable()[coordinates.getX()][coordinates.getY() + 1].isPresent() )
             adjacentLifeSupport.add(shipBoard.getTilesTable()[coordinates.getX()][coordinates.getY() + 1].get().getCoordinates());
         return adjacentLifeSupport;
     }
@@ -125,17 +125,14 @@ public class EquipCabin extends Cabin {
                     this.crewType = CrewType.PURPLE;
                     this.crew = 1;
                     shipBoard.addBreakPurpleAliens(true);
-                } else {
-                    System.out.println("CAN'T FILL THIS CABIN WITH A PURPLE ALIEN");
                 }
+
             }
             case BROWN -> {
                 if (alienability == AlienOptions.BROWN || alienability == AlienOptions.BOTH) {
                     this.crewType = CrewType.BROWN;
                     this.crew = 1;
                     shipBoard.addBreakBrownAliens(true);
-                } else {
-                    System.out.println("CAN'T FILL THIS CABIN WITH A BROWN ALIEN");
                 }
             }
         }
@@ -176,7 +173,7 @@ public class EquipCabin extends Cabin {
                 shipBoard.getCabinsCoordinates().remove(this.coordinates);
             return true;
         }
-        System.out.println("THIS CABIN IS EMPTY");
+
         return false;
     }
 
