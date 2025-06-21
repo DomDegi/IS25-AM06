@@ -25,8 +25,7 @@
             </HBox>
             <HBox alignment="TOP_CENTER" spacing="10.0">
                <children>
-                  <TextField fx:id="ip" prefWidth="300.0" promptText="Server IP" />
-                  <TextField fx:id="port" prefWidth="200.0" promptText="Port" />
+                  <TextField fx:id="ip" prefWidth="500.0" promptText="Server IP" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="117.0" prefWidth="637.0" spacing="100.0">

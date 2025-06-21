@@ -1,6 +1,5 @@
 package it.polimi.ingsw.galaxytruckerproject.view.gui;
 
-import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
@@ -9,6 +8,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.CrewType;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -16,9 +16,9 @@ import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -625,6 +625,12 @@ public class ChooseCrewController {
             }
         }
         for (Tile tile : tiles) {
+            StackPane stackPane=new StackPane();
+            stackPane.setPrefSize(80,80);
+            HBox hBox=new HBox();
+            hBox.setPrefSize(80,80);
+            hBox.setSpacing(5);
+            hBox.setAlignment(Pos.CENTER);
             String imagePath = tile.getImagePath();
             InputStream imageStream = getClass().getResourceAsStream(imagePath);
             if (imageStream == null) {
@@ -636,9 +642,31 @@ public class ChooseCrewController {
                 imageView.setFitWidth(80);
                 imageView.setFitHeight(80);
                 imageView.setDisable(true);
-                tilesTable.add(imageView, tile.getCoordinates().getY(), tile.getCoordinates().getX());
+                for (int i=tile.getCrew();i!=0;i--){
+                    ImageView element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/human.png"))));
+                    switch (tile.getCrewType()) {
+                        case HUMAN -> element= new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/human.png"))));
+                        case BROWN -> element= new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/brown.png"))));
+                        case PURPLE ->element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/purple.png"))));
+                    }
+                    element.setDisable(true);
+                    element.setFitWidth(30);
+                    element.setFitHeight(30);
+                    hBox.getChildren().add(element);
+                }
+                for (int i=tile.getNumBatteries();i!=0;i--){
+                    ImageView element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/battery.png"))));
+                    element.setDisable(true);
+                    element.setFitWidth(30);
+                    element.setFitHeight(60);
+                    hBox.rotateProperty().setValue(tile.getRotation()*90);
+                    hBox.getChildren().add(element);
+                }
+                stackPane.getChildren().addAll(imageView,hBox);
+                tilesTable.add(stackPane, tile.getCoordinates().getY(), tile.getCoordinates().getX());
             }
         }
+
     }
     /**
      * Handles the focus logic for interacting with cabins on the ship board based on the crew type

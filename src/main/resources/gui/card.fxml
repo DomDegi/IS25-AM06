@@ -41,11 +41,11 @@
                   </ImageView>
                </children>
             </VBox>
-            <VBox alignment="CENTER" spacing="30.0">
+            <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="30.0" HBox.hgrow="NEVER">
                <children>
-                  <StackPane>
+                  <StackPane VBox.vgrow="SOMETIMES">
                      <children>
-                        <Group fx:id="flightImage">
+                        <Group fx:id="flightImage" StackPane.alignment="CENTER">
                            <children>
                               <ImageView fitHeight="396.0" fitWidth="610.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -81,7 +81,7 @@
                               <Polygon fx:id="p14" fill="DODGERBLUE" layoutX="369.0" layoutY="296.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-7.1" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
                            </children>
                         </Group>
-                        <Group fx:id="trialFlight">
+                        <Group fx:id="trialFlight" StackPane.alignment="CENTER">
                            <children>
                               <ImageView fitHeight="396.0" fitWidth="610.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -111,7 +111,7 @@
                               <Polygon fx:id="pt10" fill="DODGERBLUE" layoutX="389.0" layoutY="269.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-7.1" scaleX="0.6" scaleY="0.6" stroke="BLACK" strokeType="INSIDE" />
                            </children>
                         </Group>
-                        <AnchorPane>
+                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                            <children>
                               <Button fx:id="landButton" layoutX="75.0" layoutY="79.0" mnemonicParsing="false" onAction="#land" prefHeight="55.0" prefWidth="86.0" text="Land" />
                            </children>
@@ -119,14 +119,17 @@
                      </children>
                   </StackPane>
                   <Label fx:id="text" />
-                  <AnchorPane prefHeight="442.0" prefWidth="652.0">
+                  <AnchorPane VBox.vgrow="SOMETIMES">
                      <children>
-                        <ImageView fx:id="shipImage" fitHeight="442.0" fitWidth="611.0" layoutX="30.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.05303955078125" AnchorPane.topAnchor="0.0">
+                        <ImageView fx:id="shipImage" fitWidth="611.0" layoutX="30.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.05303955078125" AnchorPane.topAnchor="0.0">
                            <image>
                               <Image url="@../images/grafiche/grafiche/cardboard/cardboard-1b.jpg" />
                            </image>
+                           <viewport>
+                              <Rectangle2D />
+                           </viewport>
                         </ImageView>
-                        <GridPane fx:id="tilesTable" alignment="CENTER" layoutX="52.0" layoutY="20.0" prefHeight="402.0" prefWidth="567.0" style="-fx-background-image:url('../images/grafiche/grafiche/cardboard/cardboard-1b.jpg');" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="52.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="20.0">
+                        <GridPane fx:id="tilesTable" alignment="CENTER" layoutX="52.0" layoutY="20.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-image:url('../images/grafiche/grafiche/cardboard/cardboard-1b.jpg');" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="52.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="20.0">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />

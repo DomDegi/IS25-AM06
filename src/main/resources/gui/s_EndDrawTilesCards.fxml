@@ -128,6 +128,7 @@
                                    <RowConstraints maxHeight="80.0" minHeight="80.0" prefHeight="80.0" vgrow="SOMETIMES" />
                                </rowConstraints>
                            </GridPane>
+                        <Button layoutX="29.0" layoutY="32.0" mnemonicParsing="false" onAction="#autoBuild" text="Auto-Build" />
                        </children>
                    </AnchorPane>
                </children>

@@ -12,7 +12,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -23,10 +22,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Polygon;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -60,7 +57,7 @@ import static javafx.scene.paint.Color.*;
  *   - land(): Handles the action of landing on a planet.
  *   - showRoll(int index): Displays information related to a dice roll for a specific player.
  *   - chooseGood(int index): Allows selection of goods by index.
- *
+
  * - Private Methods:
  *   - waitOthers(): Waits for other players' actions to finish.
  *   - showCard(): Displays the card currently interacted with.
@@ -91,7 +88,7 @@ public class CardsController {
      * A Label element initialized with an empty string ("") to display text in the
      * user interface. Typically represents the result or value of an action, such
      * as rolling a dice or similar activity.
-     *
+
      * The @FXML annotation indicates that this variable is associated with an
      * element defined in the FXML file and is*/
     @FXML
@@ -217,7 +214,7 @@ public class CardsController {
      * Initializes the user interface components and updates their state based
      * on the current client state in the game. This method is invoked automatically
      * when the corresponding FXML file is loaded.
-     *
+
      * Responsibilities:
      * - Clears all child elements from the main container.
      * - Sets the initial text indicating the player's waiting status.
@@ -227,7 +224,7 @@ public class CardsController {
      *   the land button and deck based on the client state.
      * - Handles the specific actions or UI updates depending on
      *   the different possible client states through a switch statement.
-     *
+
      * Client states handled:
      * - DRAW_CARD: Displays the draw card interface.
      * - ACTION: Displays the action screen.
@@ -262,13 +259,13 @@ public class CardsController {
 
     /**
      * Executes the logic for the "draw" action within the game.
-     *
+
      * Responsibilities:
      * - Invokes the {@code waitOthers()} method to update the user interface,
      *   clearing specific UI components and notifying the user to wait for other players.
      * - Calls the {@code drawCard()} method from the {@code GUI} utility to handle
      *   the graphical display and mechanics of drawing a card.
-     *
+
      * This method is bound to an FXML element and is executed in response to
      * an associated user interaction or event within the game's interface.
      */
@@ -280,12 +277,12 @@ public class CardsController {
 
     /**
      * Handles the confirmation action triggered by the user and updates the game state accordingly.
-     *
+
      * Responsibilities:
      * - Invokes the {@code waitOthers()} method to update the user interface, clearing specific UI elements
      *   and notifying the user to wait for other players.
      * - Calls {@code GUI.action(true)} to perform the required action logic in the game's graphical user interface.
-     *
+
      * This method is bound to an FXML element and is executed in response to a corresponding user interaction
      * or event within the game's interface.
      */
@@ -297,13 +294,13 @@ public class CardsController {
 
     /**
      * Executes the logic for the "no" action within the game's user interface.
-     *
+
      * Responsibilities:
      * - Invokes the {@code waitOthers()} method to update the interface, clearing specific UI components
      *   and notifying the user to wait for other players.
      * - Calls {@code GUI.action(false)} to execute the corresponding action logic
      *   in the graphical user interface with a parameter indicating a "no" response.
-     *
+
      * This method is connected to an FXML element and is triggered by a related user action
      * or event within the game's interface.
      */
@@ -315,13 +312,13 @@ public class CardsController {
 
     /**
      * Executes the dice roll action within the game.
-     *
+
      * Responsibilities:
      * - Invokes the {@code waitOthers()} method to update the user interface by clearing specific
      *   UI components and notifying the user to wait for other players.
      * - Calls {@code GUI.roll()} to perform the dice roll logic and update the graphical
      *   representation in the game's interface.
-     *
+
      * This method is bound to an FXML element and is executed in response to a user action
      * or event within the game's user interface.
      */
@@ -333,13 +330,13 @@ public class CardsController {
 
     /**
      * Handles the completion of the coordinate request action within the game's interface.
-     *
+
      * Responsibilities:
      * - Invokes the {@code waitOthers()} method to update the user interface,
      *   clearing specific UI elements and notifying the user to wait for other players.
      * - Calls {@code GUI.doneCoord()} to execute the required logic for completing
      *   the coordinate request in the graphical user interface.
-     *
+
      * This method is bound to an FXML element and is executed in response to a user action
      * or event associated with the completion of the coordinate request.
      */
@@ -368,11 +365,11 @@ public class CardsController {
 
     /**
      * Handles the "land" action within the game's user interface.
-     *
+
      * Responsibilities:
      * - Invokes the {@code land()} method from the {@code GUI} utility to perform
      *   the necessary logic and updates for the landing action in the game's graphical interface.
-     *
+
      * This method is bound to an FXML element and is executed in response to
      * a user interaction or event related to landing within the game.
      */
@@ -384,7 +381,7 @@ public class CardsController {
     /**
      * Updates the user interface to indicate that the current player is waiting
      * for other players to complete their actions.
-     *
+
      * Responsibilities:
      * - Clears all child elements from the main container (`mainBox`).
      * - Updates the text component (`text`) to display a message notifying the
@@ -397,11 +394,11 @@ public class CardsController {
 
     /**
      * Displays the top card from a list of displayable cards in the graphical user interface.
-     *
+
      * If the list of displayable cards is not empty, this method retrieves the
      * first card from the list, loads its associated image based on its file
      * path, and sets the image to the card display.
-     *
+
      * Responsibilities:
      * - Checks if there are any cards in the displayable list provided by the
      *   {@code GUI.displayableCards()} method.
@@ -432,10 +429,10 @@ public class CardsController {
 
     /**
      * Updates the graphical user interface elements and resources based on the current game mode.
-     *
+
      * This method checks the current game mode retrieved from the game's controller and adjusts
      * the visibility and appearance of various UI components accordingly.
-     *
+
      * Responsibilities:
      * - For GameMode.LEVEL2:
      *   - Sets the `trialFlight` component to be invisible.
@@ -463,19 +460,19 @@ public class CardsController {
     /**
      * Updates the flight board by setting the visual properties of board segments
      * based on the players' positions and their assigned colors.
-     *
+
      * This method iterates through a predefined array of polygons representing
      * board segments and updates their appearance depending on whether they are
      * occupied by a player. Different sets of polygons and a maximum index value
      * are used depending on the game mode (standard or trial mode).
-     *
+
      * Key functionality:
      * 1. Determines the appropriate polygon array and max index depending on the game mode.
      * 2. Resets the visual properties of all polygons (stroke, fill, stroke width, and effect).
      * 3. For each player's position, assigns a fill color to the corresponding polygon
      *    based on the player's color (e.g., red, yellow, green, blue).
      * 4. Updates the polygon fill only for players' positions that match the current index.
-     *
+
      * Note:
      * Positions exceeding the maximum index value will be wrapped around.
      * Utilizes RGB and Color settings for stroke and fill management to
@@ -514,13 +511,14 @@ public class CardsController {
     }
 
     /**
-     * Renders the ship's board based on the current state and updates the graphical interface.
-     * Based on the provided state, tiles may become interactive and respond to user input actions.
+     * Updates and displays the graphical representation of tiles on the ship's board based on the provided client state.
      *
-     * @param state the current client state, which determines how the board should be rendered
+     * @param state the current state of the client, which determines the interactive behavior and conditions
+     *              of the displayed tiles on the ship's board
      */
     private void shipBoard(ClientState state){
         tilesTable.getChildren().clear();
+
         ArrayList<Tile> tiles=new ArrayList<>();
         for(int i=0;i<=6;i++){
             for(int j=0;j<=4;j++) {
@@ -529,6 +527,20 @@ public class CardsController {
             }
         }
         for(Tile tile:tiles){
+            StackPane stackPane=new StackPane();
+            stackPane.setPrefSize(80,80);
+            HBox hBox=new HBox();
+            hBox.setPrefSize(80,80);
+            hBox.setSpacing(5);
+            hBox.setAlignment(Pos.CENTER);
+            VBox vBox=new VBox();
+            vBox.setPrefSize(80,80);
+            vBox.setSpacing(5);
+            vBox.setAlignment(Pos.CENTER);
+            HBox hBox1=new HBox();
+            hBox1.setPrefSize(80,80);
+            hBox1.setSpacing(5);
+            hBox1.setAlignment(Pos.CENTER);
             String imagePath = tile.getImagePath();
             InputStream imageStream = getClass().getResourceAsStream(imagePath);
             if (imageStream == null) {
@@ -547,51 +559,141 @@ public class CardsController {
                             switch (type){
                                 case CHOOSE_TO_BREAK,CHOOSE_TO_MAINTAIN -> {
                                     imageView.setDisable(false);
-                                    imageView.setOnMouseClicked(event -> {
+                                    imageView.setOnMouseClicked(_ -> {
+                                        GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                        initialize();
+                                    });
+                                    hBox.setDisable(false);
+                                    hBox.setOnMouseClicked(_ -> {
+                                        GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                        initialize();
+                                    });
+                                    hBox1.setDisable(false);
+                                    hBox1.setOnMouseClicked(_ -> {
+                                        GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                        initialize();
+                                    });
+                                    vBox.setDisable(false);
+                                    vBox.setOnMouseClicked(_ -> {
                                         GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
                                         initialize();
                                     });
                                 }
                                 case CHOOSE_BATTERY -> {
-                                    if(tile instanceof BatteryComponents) {
+                                    if(tile instanceof BatteryComponents && tile.getNumBatteries()!=0) {
                                         imageView.setDisable(false);
-                                        imageView.setOnMouseClicked(event -> {
+                                        imageView.setOnMouseClicked(_ -> {
+                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                            initialize();
+                                        });
+                                        hBox.setDisable(false);
+                                        hBox.setOnMouseClicked(_ -> {
+                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                            initialize();
+                                        });
+                                        hBox1.setDisable(false);
+                                        hBox1.setOnMouseClicked(_ -> {
+                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                            initialize();
+                                        });
+                                        vBox.setDisable(false);
+                                        vBox.setOnMouseClicked(_ -> {
                                             GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
                                             initialize();
                                         });
                                     }
                                 }
                                 case CHOOSE_DOUBLE_CANNON ->{
-                                    if(tile instanceof BatteryComponents||tile instanceof DoubleCannon) {
+                                    if(tile instanceof BatteryComponents && tile.getNumBatteries()!=0||tile instanceof DoubleCannon) {
                                         imageView.setDisable(false);
-                                        imageView.setOnMouseClicked(event -> {
+                                        imageView.setOnMouseClicked(_ -> {
+                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                            initialize();
+                                        });
+                                        hBox.setDisable(false);
+                                        hBox.setOnMouseClicked(_ -> {
+                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                            initialize();
+                                        });
+                                        hBox1.setDisable(false);
+                                        hBox1.setOnMouseClicked(_ -> {
+                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                            initialize();
+                                        });
+                                        vBox.setDisable(false);
+                                        vBox.setOnMouseClicked(_ -> {
                                             GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
                                             initialize();
                                         });
                                     }
                                 }
                                 case CHOOSE_DOUBLE_ENGINE -> {
-                                    if (tile instanceof BatteryComponents || tile instanceof DoubleEngine) {
+                                    if (tile instanceof BatteryComponents && tile.getNumBatteries()!=0 || tile instanceof DoubleEngine) {
                                         imageView.setDisable(false);
-                                        imageView.setOnMouseClicked(event -> {
+                                        imageView.setOnMouseClicked(_ -> {
+                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                            initialize();
+                                        });
+                                        hBox.setDisable(false);
+                                        hBox.setOnMouseClicked(_ -> {
+                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                            initialize();
+                                        });
+                                        hBox1.setDisable(false);
+                                        hBox1.setOnMouseClicked(_ -> {
+                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                            initialize();
+                                        });
+                                        vBox.setDisable(false);
+                                        vBox.setOnMouseClicked(_ -> {
                                             GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
                                             initialize();
                                         });
                                     }
                                 }
                                 case CHOOSE_CREW -> {
-                                   if(tile instanceof Cabin){
+                                   if(tile instanceof Cabin && tile.getCrew()!=0){
                                        imageView.setDisable(false);
-                                       imageView.setOnMouseClicked(event -> {
+                                       imageView.setOnMouseClicked(_ -> {
+                                           GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                           initialize();
+                                       });
+                                       hBox.setDisable(false);
+                                       hBox.setOnMouseClicked(_ -> {
+                                           GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                           initialize();
+                                       });
+                                       hBox1.setDisable(false);
+                                       hBox1.setOnMouseClicked(_ -> {
+                                           GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                           initialize();
+                                       });
+                                       vBox.setDisable(false);
+                                       vBox.setOnMouseClicked(_ -> {
                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
                                            initialize();
                                        });
                                    }
                                 }
                                 case REMOVE_GOODS -> {
-                                   if(tile instanceof CargoHold||tile instanceof BatteryComponents){
+                                   if(tile instanceof CargoHold && !tile.getCargo().isEmpty()||tile instanceof BatteryComponents && tile.getNumBatteries()!=0){
                                        imageView.setDisable(false);
-                                       imageView.setOnMouseClicked(event -> {
+                                       imageView.setOnMouseClicked(_ -> {
+                                           GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                           initialize();
+                                       });
+                                       hBox.setDisable(false);
+                                       hBox.setOnMouseClicked(_ -> {
+                                           GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                           initialize();
+                                       });
+                                       hBox1.setDisable(false);
+                                       hBox1.setOnMouseClicked(_ -> {
+                                           GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                           initialize();
+                                       });
+                                       vBox.setDisable(false);
+                                       vBox.setOnMouseClicked(_ -> {
                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
                                            initialize();
                                        });
@@ -603,7 +705,25 @@ public class CardsController {
                     case MANAGE_GOODS -> {
                         if(tile instanceof CargoHold) {
                             imageView.setDisable(false);
-                            imageView.setOnMouseClicked(event -> {
+                            imageView.setOnMouseClicked(_ -> {
+                                GUI.chooseCargo(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                visible=true;
+                                initialize();
+                            });
+                            hBox.setDisable(false);
+                            hBox.setOnMouseClicked(_ -> {
+                                GUI.chooseCargo(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                visible=true;
+                                initialize();
+                            });
+                            hBox1.setDisable(false);
+                            hBox1.setOnMouseClicked(_ -> {
+                                GUI.chooseCargo(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+                                visible=true;
+                                initialize();
+                            });
+                            vBox.setDisable(false);
+                            vBox.setOnMouseClicked(_ -> {
                                 GUI.chooseCargo(tile.getCoordinates().getX(), tile.getCoordinates().getY());
                                 visible=true;
                                 initialize();
@@ -611,7 +731,80 @@ public class CardsController {
                         }
                     }
                 }
-                tilesTable.add(imageView,tile.getCoordinates().getY(),tile.getCoordinates().getX());
+                stackPane.getChildren().add(imageView);
+                for (int i=tile.getCrew();i!=0;i--){
+                    ImageView element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/human.png"))));
+                    switch (tile.getCrewType()) {
+                        case HUMAN -> element= new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/human.png"))));
+                        case BROWN -> element= new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/brown.png"))));
+                        case PURPLE ->element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/purple.png"))));
+                    }
+                    element.setDisable(true);
+                    element.setFitWidth(30);
+                    element.setFitHeight(30);
+                    hBox.getChildren().add(element);
+                }
+                for (int i=tile.getNumBatteries();i!=0;i--){
+                    ImageView element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/battery.png"))));
+                    element.setDisable(true);
+                    element.setFitWidth(30);
+                    element.setFitHeight(60);
+                    hBox.rotateProperty().setValue(tile.getRotation()*90);
+                    hBox.getChildren().add(element);
+                }
+                if(tile.getCargo()!=null&&!tile.getCargo().isEmpty()) {
+                    ArrayList<Goods> cargo = tile.getCargo();
+                    if (tile.getCargo().size()<=2){
+                        for (int i=cargo.size();i!=0;i--){
+                            ImageView element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoRed.png"))));
+                            switch (cargo.get(i-1).getColor()){
+                                case RED -> element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoRed.png"))));
+                                case YELLOW -> element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoYellow.png"))));
+                                case GREEN -> element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoGreen.png"))));
+                                case BLUE -> element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoBlue.png"))));
+                            }
+                            element.setDisable(true);
+                            element.setFitWidth(30);
+                            element.setFitHeight(30);
+                            hBox.getChildren().add(element);
+                        }
+                        stackPane.getChildren().add(hBox);
+                    }else{
+                        for (int i=cargo.size();i>2;i--){
+                            ImageView element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoRed.png"))));
+                            switch (cargo.get(i-1).getColor()){
+                                case RED -> element=new ImageView(new Image(getClass().getResourceAsStream("/images/grafiche/cargoRed.png")));
+                                case YELLOW -> element=new ImageView(new Image(getClass().getResourceAsStream("/images/grafiche/cargoYellow.png")));
+                                case GREEN ->element=new ImageView(new Image(getClass().getResourceAsStream("/images/grafiche/cargoGreen.png")));
+                                case BLUE -> element=new ImageView(new Image(getClass().getResourceAsStream("/images/grafiche/cargoBlue.png")));
+                            }
+                            element.setDisable(true);
+                            element.setFitWidth(30);
+                            element.setFitHeight(30);
+                            hBox1.getChildren().add(element);
+                            hBox1.setPrefSize(40,40);
+                        }for (int i=cargo.size()-2;i!=0;i--){
+                            ImageView element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoRed.png"))));
+                            switch (cargo.get(i-1).getColor()){
+                                case RED -> element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoRed.png"))));
+                                case YELLOW -> element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoYellow.png"))));
+                                case GREEN ->element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoGreen.png"))));
+                                case BLUE -> element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoBlue.png"))));
+                            }
+                            element.setDisable(true);
+                            element.setFitWidth(30);
+                            element.setFitHeight(30);
+                            hBox.getChildren().add(element);
+                            hBox1.setPrefSize(40,40);
+                        }
+                        vBox.rotateProperty().setValue(tile.getRotation()*90);
+                        stackPane.getChildren().add(vBox);
+                        vBox.getChildren().addAll(hBox1,hBox);
+                    }
+                } else {
+                    stackPane.getChildren().add(hBox);
+                }
+                tilesTable.add(stackPane,tile.getCoordinates().getY(),tile.getCoordinates().getX());
             }
         }
     }
@@ -633,7 +826,7 @@ public class CardsController {
      * Displays the coordinate request interface based on the type of request
      * retrieved from the CoordInputManager. This method updates the UI on
      * the JavaFX application thread and modifies the components accordingly.
-     *
+
      * The method performs the following:
      * 1. Retrieves the {@link CoordReqType} from the CoordInputManager.
      * 2. Checks if the `CoordReqType` is one of the predefined types such as
@@ -644,7 +837,7 @@ public class CardsController {
      * 4. Adjusts the visibility of UI elements, such as hiding the landButton
      *    when the type is CHOOSE_TO_BREAK.
      * 5. Updates a displayed text field to reflect the current type as a string.
-     *
+
      * The method uses {@link Platform#runLater(Runnable)} to ensure all UI
      * updates are performed on the JavaFX application thread to avoid thread
      * concurrency issues.
@@ -670,10 +863,10 @@ public class CardsController {
      * Displays a dialog with Yes and No buttons and a prompt text asking for acceptance.
      * This method uses JavaFX's Platform.runLater to ensure that UI updates
      * are performed on the JavaFX Application Thread.
-     *
+
      * The Yes button triggers the {@code yes()} method when clicked, and the No button
      * triggers the {@code no()} method.
-     *
+
      * The size of each button is set to a preferred width of 100 and height of 75.
      * The mainBox UI container is updated by adding the Yes and No buttons to it.
      * Additionally, a text label is updated to display the message "Accept?".
@@ -695,7 +888,7 @@ public class CardsController {
      * Displays a button labeled "Roll" on the user interface that allows the user to roll the dice.
      * This method executes on the JavaFX Application Thread using Platform.runLater to ensure
      * proper updates to the UI components.
-     *
+
      * Within the UI updates:
      * - A new Button is created and configured with a label "Roll" and a preferred size of 100x75.
      * - An action handler is added to the button, which calls the roll() method when the button is clicked.
@@ -708,20 +901,24 @@ public class CardsController {
             rollButton.setPrefSize(100,75);
             rollButton.setOnAction(_->roll());
             mainBox.getChildren().add(rollButton);
+            if(rolled!=null){
+                mainBox.getChildren().add(rolled);
+            }
             text.setText("Roll the Dices");
         });
     }
 
+
     /**
-     * Updates the mainBox UI by showing a roll. Clears the existing children in the mainBox
-     * if there is only one or fewer children, and then displays the provided index value.
+     * Displays the rolled value and updates the UI accordingly.
+     * Clears the mainBox's children if the number of children is less than or equal to two,
+     * sets the text and preferred size of the rolled object, and adds it to mainBox.
      *
-     * @param index the number to be displayed in the rolled UI component
+     * @param index the integer value representing the rolled value to be displayed
      */
     public void showRoll(int index){
-        if(mainBox.getChildren().size()<=1) {
+        if(mainBox.getChildren().size()<=2) {
             mainBox.getChildren().clear();
-            mainBox.getChildren().add(rolled);
         }
         rolled.setPrefSize(100,50);
         rolled.setText(index+"");
@@ -733,7 +930,7 @@ public class CardsController {
      * Each button represents a planet and is labeled with its index (1-based).
      * Disabled buttons indicate that the corresponding planet is already occupied.
      * Updates the UI dynamically using the JavaFX Platform.runLater method to ensure thread safety.
-     *
+
      * The method performs the following steps:
      * 1. Clears the children of the mainBox container.
      * 2. Iterates through the list of planets retrieved from the displayable cards.
@@ -741,7 +938,7 @@ public class CardsController {
      * 4. Disables the button if the planet's occupation status is true.
      * 5. Adds the configured button to the mainBox container.
      * 6. Updates the text displayed to prompt the user to choose a planet.
-     *
+
      * The selection action is handled by invoking the choosePlanet method,
      * passing the index of the selected planet as an argument.
      */
@@ -750,13 +947,15 @@ public class CardsController {
             int index=0;
             mainBox.getChildren().clear();
             for(Planet planet:GUI.displayableCards().getFirst().getListOfPlanets()){
-                Button button= new Button();
-                button.setPrefSize(200,75);
-                button.setText((index+1)+"° Planet");
-                int finalIndex = index;
-                button.setOnAction(_ -> choosePlanet(finalIndex));
-                button.setDisable(planet.getOccupationStatus());
-                mainBox.getChildren().add(button);
+                if(GUI.getController().getAvailablePlanets().get(index)) {
+                    Button button = new Button();
+                    button.setPrefSize(200, 75);
+                    button.setText((index + 1) + "° Planet");
+                    int finalIndex = index;
+                    button.setOnAction(_ -> choosePlanet(finalIndex));
+                    button.setDisable(planet.getOccupationStatus());
+                    mainBox.getChildren().add(button);
+                }
                 index++;
             }
             text.setText("Choose a Planet");
@@ -769,7 +968,7 @@ public class CardsController {
      * depending on whether the user is managing their own cargo or the goods available on the planet.
      * Buttons are generated for each good, allowing the user to interact with individual goods,
      * and a "Done" button is provided for completing the management process.
-     *
+
      * Behavior:
      * - If the user's cargo is not empty, displays a list of goods from the player's inventory.
      * - If the user's cargo is empty, displays a list of goods available on the planet.
@@ -777,18 +976,18 @@ public class CardsController {
      *   RED, or YELLOW). Clicking a button triggers actions to select the good and update the UI.
      * - The "Done" button becomes visible only if the user's cargo is empty and is used to
      *   finalize the process.
-     *
+
      * UI Elements:
      * - Buttons representing each good, dynamically sized and labeled based on the goods' attributes.
      * - A "Done" button to complete goods management, which is conditionally visible.
      * - Labels displaying context-based information ("Your Goods" or "Planet's Goods").
      * - A layout consisting of an HBox for organizing the goods and controls, and a VBox for
      *   grouping individual good buttons.
-     *
+
      * Updates:
      * - The view is updated based on user actions (e.g., selecting a good or finalizing management).
      * - Text description of the current activity is updated to "Manage your Goods."
-     *
+
      * Threading:
      * - Utilizes `Platform.runLater` to ensure updates to the JavaFX UI occur on the JavaFX Application Thread.
      */

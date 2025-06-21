@@ -5,8 +5,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 
-import javax.swing.text.html.Option;
-import java.io.Serializable;
 import java.rmi.Remote;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -210,7 +208,7 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         else if(player.getPlayerColor()== PlayersColor.RED)
             tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),red,0, 0);
         else
-            tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),"/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web157.jpg",0, 0);
+            tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web157.jpg",0, 0);
         positionTile(Optional.of(tile), new Coordinates(2, 3));
 
         this.tilesTable = tilesTable;
@@ -252,7 +250,7 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         else if(player.getPlayerColor()== PlayersColor.RED)
             tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),red,0, 0);
         else
-            tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),"/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web157.jpg",0, 0);
+            tile = new StartingCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web157.jpg",0, 0);
         positionTile(Optional.of(tile), new Coordinates(2, 3));
     }
 
@@ -383,7 +381,7 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
      * @return `true` if the tile was successfully positioned, `false` otherwise
      */
     public boolean positionTile(Optional<Tile> tile, Coordinates coordinates) {
-        if (tile.isPresent() && tilesTable[coordinates.getX()][coordinates.getY()].isEmpty() ) {
+        if (tile.isPresent() && tilesTable[coordinates.getX()][coordinates.getY()].isEmpty()) {
             if (first){
                 tilesTable[coordinates.getX()][coordinates.getY()] = tile;
                 tile.get().setShipBoard(this);
@@ -490,6 +488,52 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         return tilesTable[shieldCoordinates.getX()][shieldCoordinates.getY()].get().getCoveredArea();
     }
 
+    /**
+     * Counts and returns the number of exposed connectors on the ship.
+     *
+     * @return number of exposed connectors.
+     */
+    public int countExposedConnectors() {
+        numExposedConnectors = 0;
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 7; j++) {
+                checkBorderTile(i, j);
+            }
+        return numExposedConnectors;
+    }
+
+    /**
+     * Marks the tile as a border tile and increments exposed connector count if needed.
+     *
+     * @param i row index.
+     * @param j column index.
+     */
+    public void checkBorderTile(int i, int j) {
+
+        //if the tile at its LEFT is either out of bounds, a VoidTile, or empty,
+        //then our Tile is a borderTile and I have to check if it is Exposed
+        if ((j - 1 < 0 || tilesTable[i][j-1].isEmpty() || !tilesTable[i][j-1].get().fillable())&& tilesTable[i][j].isPresent() &&  tilesTable[i][j].get().fillable())
+            if (!tilesTable[i][j].get().getWest().getConnectorsType().equals(Connectors.SMOOTH))
+                numExposedConnectors++;
+
+        //if the tile at its RIGHT is either out of bounds, a VoidTile, or empty,
+        //then our Tile is a borderTile and I have to check if it is Exposed
+        if ((j + 1 > 6 ||  tilesTable[i] [j+1].isEmpty() || !tilesTable[i][j+1].get().fillable()) && tilesTable[i][j].isPresent() &&  tilesTable[i][j].get().fillable())
+            if (!tilesTable[i][j].get().getEast().getConnectorsType().equals(Connectors.SMOOTH))
+                numExposedConnectors++;
+
+        //if the tile UNDER is either out of bounds, a VoidTile, or empty,
+        //then our Tile is a borderTile and I have to check if it is Exposed
+        if ((i + 1 > 4  || tilesTable[i+1][j].isEmpty() || !tilesTable[i+1][j].get().fillable())&& tilesTable[i][j].isPresent() &&  tilesTable[i][j].get().fillable())
+            if (!tilesTable[i][j].get().getSouth().getConnectorsType().equals(Connectors.SMOOTH))
+                numExposedConnectors++;
+
+        //if the tile OVER is either out of bounds, a VoidTile, or empty,
+        //then our Tile is a borderTile and I have to check if it is Exposed
+        if ((i - 1 < 0  || tilesTable[i-1][j].isEmpty() || !tilesTable[i-1][j].get().fillable())&& tilesTable[i][j].isPresent() &&  tilesTable[i][j].get().fillable())
+            if (!tilesTable[i][j].get().getNorth().getConnectorsType().equals(Connectors.SMOOTH))
+                numExposedConnectors++;
+    }
     /**
      * Adds a good to the cargo hold at the specified coordinates, if the tile is a valid cargo holder.
      *
@@ -1027,5 +1071,7 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         }
     }
 
-
+    public int getPenalty() {
+        return penalty;
+    }
 }

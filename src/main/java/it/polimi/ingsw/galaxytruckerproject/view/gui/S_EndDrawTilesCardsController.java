@@ -433,6 +433,10 @@ public class S_EndDrawTilesCardsController {
         GUI.drawDeck(3);
     }
 
+    @FXML
+    public void autoBuild() {
+        GUI.autoCreateShip();
+    }
     /**
      * Ends the current ship operation by invoking the endShip method within the GUI class.
      * This method is triggered in the application's user interface.
