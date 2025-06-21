@@ -938,37 +938,29 @@ public class CardsController {
     }
 
     /**
-     * Displays the "Manage Goods" interface in the application.
-     * This method dynamically creates and updates the UI components for managing goods,
-     * depending on whether the user is managing their own cargo or the goods available on the planet.
-     * Buttons are generated for each good, allowing the user to interact with individual goods,
-     * and a "Done" button is provided for completing the management process.
-
-     * Behavior:
-     * - If the user's cargo is not empty, displays a list of goods from the player's inventory.
-     * - If the user's cargo is empty, displays a list of goods available on the planet.
-     * - Each good is displayed as a button, labeled with its corresponding color (BLUE, GREEN,
-     *   RED, or YELLOW). Clicking a button triggers actions to select the good and update the UI.
-     * - The "Done" button becomes visible only if the user's cargo is empty and is used to
-     *   finalize the process.
-
-     * UI Elements:
-     * - Buttons representing each good, dynamically sized and labeled based on the goods' attributes.
-     * - A "Done" button to complete goods management, which is conditionally visible.
-     * - Labels displaying context-based information ("Your Goods" or "Planet's Goods").
-     * - A layout consisting of an HBox for organizing the goods and controls, and a VBox for
-     *   grouping individual good buttons.
-
-     * Updates:
-     * - The view is updated based on user actions (e.g., selecting a good or finalizing management).
-     * - Text description of the current activity is updated to "Manage your Goods."
-
-     * Threading:
-     * - Utilizes `Platform.runLater` to ensure updates to the JavaFX UI occur on the JavaFX Application Thread.
+     * Displays and manages the goods interface in the application.
+     * This method is responsible for dynamically creating and updating UI components
+     * related to goods, allowing users to view and manage their cargo or goods.
+     * The UI is updated on the JavaFX application thread using {@code Platform.runLater()}.
+     *
+     * The interface includes:
+     * - A "Done" button with an event handler that triggers the completion of goods management.
+     * - A dynamically created list of buttons for interacting with goods, displayed in a horizontal box.
+     * - Logic for differentiating between user-owned goods and the general goods list based on whether
+     *   the cargo is null or empty.
+     *
+     * The main functionality includes:
+     * - Hiding or showing the "Done" button depending on whether the user has cargo.
+     * - Creating buttons for each good, with their behavior contingent on whether the goods are part of
+     *   user-owned cargo or available for selection.
+     * - Adding UI components into hierarchical containers such as {@code HBox} and {@code VBox} for layout management.
+     *
+     * The method concludes by updating the main UI container {@code mainBox} and setting the appropriate text label.
      */
     private void showManageGoods(){
         Platform.runLater(() -> {
             Button doneButton=new Button("Done");
+            doneButton.setMinSize(200,75);
             doneButton.setOnAction(_->GUI.doneGoods());
             HBox box=new HBox();
             box.setAlignment(Pos.CENTER);
@@ -980,14 +972,14 @@ public class CardsController {
                 doneButton.setVisible(false);
                 goodsBox.getChildren().add(new Label("Yours Goods:"));
                 for (Goods goods : GUI.getController().getGoodsManager().getCargo()) {
-                    goodsBox.getChildren().add(goodsButtons(goods,index));
+                    goodsBox.getChildren().add(goodsButtons(goods,index,true));
                     index++;
                 }
             }else{
                 doneButton.setVisible(true);
                 goodsBox.getChildren().add(new Label("Goods:"));
                 for(Goods goods:GUI.getController().getGoodsList()){
-                    goodsBox.getChildren().add(goodsButtons(goods,index));
+                    goodsBox.getChildren().add(goodsButtons(goods,index,false));
                     index++;
                 }
             }
@@ -998,16 +990,18 @@ public class CardsController {
         });
     }
 
+
     /**
-     * Creates and returns a Button representing a specific good. The button is styled
-     * with an appropriate image based on the color of the provided goods and configured
-     * with an action event to handle selections.
+     * Creates and returns a Button with an image corresponding to the color of the given goods.
+     * The button will perform specific actions when clicked, such as selecting the goods
+     * and updating visibility.
      *
-     * @param goods the goods object containing details about the good, including its color
-     * @param index the index of the good, used to determine its selection behavior
-     * @return a Button configured with an image and an action event for the specific good
+     * @param goods       the goods object used to determine the image of the button
+     * @param index       the index associated with the goods, used for further processing
+     * @param thenVisible a boolean flag used to determine visibility after the button action
+     * @return a Button with a corresponding image and action behavior
      */
-    private Button goodsButtons(Goods goods,int index){
+    private Button goodsButtons(Goods goods,int index,boolean thenVisible){
         ImageView imageView=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoRed.png"))));
         imageView.setFitHeight(50);
         imageView.setFitWidth(50);
@@ -1023,7 +1017,7 @@ public class CardsController {
         button.setPrefSize(200,75);
         button.setOnAction(_ -> {
             chooseGood(index);
-            visible = false;
+            visible = thenVisible;
             initialize();
         });
         return button;
