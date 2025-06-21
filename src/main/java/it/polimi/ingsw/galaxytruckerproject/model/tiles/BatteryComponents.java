@@ -103,7 +103,7 @@ public class BatteryComponents extends Tile {
     /**
      * Consumes one battery, updates the shipBoard statistics, and removes the tile from battery list if empty.
      */
-    public void consumeBattery(){
+    public boolean consumeBattery(){
         if(this.batteryCells > 0){
             this.batteryCells--;
             shipBoard.addBreakBatteries(-1);
@@ -112,8 +112,11 @@ public class BatteryComponents extends Tile {
                     shipBoard.getBatteryCoordinates().remove(this.coordinates);
                 }
             }
+            return true;
+        } else {
+            System.out.println("Run out of batteries in this Tile");
+            return false;
         }
-        else{System.out.println("Run out of batteries in this Tile");}
     }
 
     /**

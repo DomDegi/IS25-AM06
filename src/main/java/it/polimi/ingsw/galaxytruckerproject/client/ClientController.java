@@ -365,6 +365,7 @@ public class ClientController {
     public boolean leaveGame() {
         if (gameMode != null) {
             try {
+                me.setPlayerName("");
                 virtualController.leaveGame();
                 positioned=false;
                 this.checking= null;
@@ -773,6 +774,7 @@ public class ClientController {
         Card planet = displayedCard.getFirst();
         if (chose >= 0 && chose <= planet.getListOfPlanets().size()) {
             indexDeckInHandOrPlanet = chose;
+            displayedCard.getFirst().setGoodsList(me.getPlayerName(),chose);
             setState(ClientState.WAIT);
             try {
                 virtualController.planetChoiceRequest(chose);
@@ -1003,7 +1005,18 @@ public class ClientController {
             case WAIT_TO_DRAW ->
                     phase = GamePhases.CARDS;
             case DRAW_CARD -> phase = GamePhases.CARDS;
+            case PLANET_CHOICE ->{
+                if(displayedCard!=null&&!displayedCard.isEmpty()&&displayedCard.getFirst().getListOfPlanets()!=null) {
+                    int p=0;
+                    for(Planet _ : displayedCard.getFirst().getListOfPlanets()){
+                        if(!availablePlanets.containsKey(p))
+                            availablePlanets.put(p,Boolean.TRUE);
+                        p++;
+                    }
+                }
+            }
             case MANAGE_GOODS -> {
+                availablePlanets=new HashMap<>();
                 if (!inManager) {
                     me.getShipBoard().setGetStat();
                     this.goodsList =displayedCard.getFirst().getGoodsList(me.getPlayerName());
@@ -1451,10 +1464,7 @@ public class ClientController {
         if (player == null)
             return;
         for (Tile modTiles : tiles) {
-            player.getShipBoard().swapTile(Optional.of(modTiles));
-        }
-        if(isChecking()!=null){
-            view.checkShipboard(player.getShipBoard());
+            player.getShipBoard().swapTile(Optional.of(modTiles), modTiles.getCoordinates());
         }
     }
 
@@ -2287,12 +2297,11 @@ public class ClientController {
     }
 
     /**
-     * Assigns planets to a specified player and marks them as unavailable.
+     * Sets the number of planets and marks them as unavailable in the system.
      *
-     * @param player the name of the player to whom planets are being assigned
-     * @param planets the number of planets to assign
+     * @param planets the number of planets to be added to the system
      */
-    public void setPlanets(String player, int planets) {
+    public void setPlanets( int planets) {
         availablePlanets.put(planets,Boolean.FALSE);
     }
 

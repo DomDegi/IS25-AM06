@@ -217,7 +217,7 @@ public abstract class Tile implements Serializable, Cloneable {
     // === Overridable methods used by subclasses ===
 
     public void setCrewType(CrewType crewType) {}
-    public void consumeBattery() {}
+    public boolean consumeBattery() {return false;}
     public boolean removeCrew() { return false; }
     public void removeGood(Goods good) {}
     public Coverage getCoveredArea() { return Coverage.NONE; }

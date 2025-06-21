@@ -53,6 +53,12 @@ public class CoordInputManager {
     private final ArrayList<Coordinates> coordinates;
 
     /**
+     * A list of coordinates selected by the player during the current action.
+     * These coordinates are used to identify specific tiles or items in the game (e.g., crew, goods, batteries).
+     */
+    private final ArrayList<Coordinates> coordinatesUsed;
+
+    /**
      * The number of coordinates that need to be selected by the player for the current action.
      * This value is dynamically updated depending on the type of action being performed (e.g., removing goods or selecting crew).
      */
@@ -74,6 +80,7 @@ public class CoordInputManager {
     public CoordInputManager(LightShipBoard lightShipBoard, ClientController clientController) {
         this.lightShipBoard = lightShipBoard;
         this.clientController = clientController;
+        this.coordinatesUsed = new ArrayList<>();
         coordinates = new ArrayList<>();
         needed = 0;
         fireStrength = 0;
@@ -97,12 +104,11 @@ public class CoordInputManager {
                         return;
                     }
                     this.needed = Math.min(lightShipBoard.getNumBatteries(),needed);
+                } else if (lightShipBoard.getAllGoods().size() < needed) {
+                    needed= lightShipBoard.getAllGoods().size();
+                    needed += needed - lightShipBoard.getAllGoods().size();
+                    needed = Math.min(lightShipBoard.getNumBatteries()+lightShipBoard.getAllGoods().size(),needed);
                 }
-                else if (lightShipBoard.getAllGoods().size() < needed) {
-                        needed= lightShipBoard.getAllGoods().size();
-                        needed += needed - lightShipBoard.getAllGoods().size();
-                        needed = Math.min(lightShipBoard.getNumBatteries()+lightShipBoard.getAllGoods().size(),needed);
-                    }
                 return;
             }
             case CHOOSE_TO_MAINTAIN -> needed=1;
@@ -146,14 +152,15 @@ public class CoordInputManager {
             }
             case CHOOSE_BATTERY -> {
                 if(tile.getNumBatteries()>0) {
-                    clientController.getMe().getShipBoard().chooseBatteryUse(coordinate);
-                    coordinates.add(coordinate);
+                    if(clientController.getMe().getShipBoard().chooseBatteryUse(coordinate))
+                        coordinates.add(coordinate);
                 } else {
                     return false;
                 }
             }
             case CHOOSE_DOUBLE_CANNON ->{
-                if(tile.getStrength()>0) {
+                if(tile.getStrength()>0&&!coordinatesUsed.contains(coordinate)) {
+                    coordinatesUsed.add(coordinate);
                     fireStrength += tile.getStrength();
                     needed++;
                 } else if(tile.getNumBatteries()>0 && needed >0) {
@@ -165,7 +172,8 @@ public class CoordInputManager {
                 }
             }
             case CHOOSE_DOUBLE_ENGINE -> {
-                if(tile.getEngineStrength()==2) {
+                if(tile.getEngineStrength()==2&& !coordinatesUsed.contains(coordinate)) {
+                    coordinatesUsed.add(coordinate);
                     numEngine++;
                     needed++;
                 } else if(tile.getNumBatteries()>0 && needed >0) {
@@ -312,5 +320,13 @@ public class CoordInputManager {
      */
     public CoordReqType getCoordReqType() {
         return coordReqType;
+    }
+
+    public ArrayList<Coordinates> getCoordinatesUsed() {
+        return coordinatesUsed;
+    }
+
+    public int getNeeded() {
+        return needed;
     }
 }

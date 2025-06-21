@@ -218,10 +218,7 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
      */
     @Override
     public void notifyPlayerLandedOnPlanet(String playerName, int planet) throws RemoteException {
-        if (playerName.equals(clientController.getName())) {
-            clientController.setPlanets(playerName,planet);
-            clientController.setState(ClientState.MANAGE_GOODS);
-        }
+        clientController.setPlanets(planet);
         view.notifyPlayerLandedOnPlanet(playerName, planet);
     }
 
