@@ -453,8 +453,7 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
      * @return true if the battery was successfully consumed
      */
     public boolean chooseBatteryUse(Coordinates coordinates){
-        tilesTable[coordinates.getX()][coordinates.getY()].get().consumeBattery();
-        return true;
+        return tilesTable[coordinates.getX()][coordinates.getY()].get().consumeBattery();
     }
 
 
@@ -1060,5 +1059,11 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
 
     public int getPenalty() {
         return penalty;
+    }
+
+    public void swapTile(Optional<Tile> tile, Coordinates coordinates) {
+        tilesTable[coordinates.getX()][coordinates.getY()] = tile;
+        tile.get().setShipBoard(this);
+        tile.get().setCoordinates(coordinates);
     }
 }

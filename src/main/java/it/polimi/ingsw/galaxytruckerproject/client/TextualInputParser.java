@@ -248,6 +248,8 @@ public class TextualInputParser {
             }
 
             case S_END_DRAW_TILE_CARD -> {
+                if (words[0].equals("leave"))
+                    return clientController.leaveGame();
                 if (words[0].equals("buildship")) {
                     clientController.buildShip();
                     return true;
@@ -307,12 +309,16 @@ public class TextualInputParser {
             }
 
             case S_MANAGE_CARDS-> {
+                if (words[0].equals("leave"))
+                    return clientController.leaveGame();
                 if(words[0].equals("done")) {
                     clientController.stopLookingAtCards();
                 }
             }
 
             case S_MANAGE_DRAWN_TILE-> {
+                if (words[0].equals("leave"))
+                    return clientController.leaveGame();
                 if (words[0].equals("turn") &&clientController.secondHourglassTurn())
                     return true;
                 if (clientController.checkShipBoards(words))
@@ -334,6 +340,8 @@ public class TextualInputParser {
             }
 
             case S_FINISHED-> {
+                if (words[0].equals("leave"))
+                    return clientController.leaveGame();
                 if (clientController.checkShipBoards(words))
                     return true;
                 if (words[0].equals("turn") &&clientController.thirdHourglassTurn())
@@ -346,11 +354,25 @@ public class TextualInputParser {
                 clientController.positionOnFlightBoard(chose);
             }
 
-            case ROLL_DICE-> clientController.rollDice();
+            case ROLL_DICE-> {
+                if (words[0].equals("leave"))
+                    return clientController.leaveGame();
+                if (clientController.checkShipBoards(words))
+                    return true;
+                clientController.rollDice();
+            }
 
-            case DRAW_CARD -> clientController.drawCard();
+            case DRAW_CARD -> {
+                if (words[0].equals("leave"))
+                    return clientController.leaveGame();
+                if (clientController.checkShipBoards(words))
+                    return true;
+                clientController.drawCard();
+            }
 
             case ACTION-> {
+                if (words[0].equals("leave"))
+                    return clientController.leaveGame();
                 if (clientController.checkShipBoards(words))
                     return true;
                 if (words[0].equals("earlyland"))
@@ -366,6 +388,8 @@ public class TextualInputParser {
             }
 
             case PLANET_CHOICE-> {
+                if (words[0].equals("leave"))
+                    return clientController.leaveGame();
                 if (clientController.checkShipBoards(words))
                     return true;
                 if (words[0].equals("earlyland"))
@@ -379,6 +403,8 @@ public class TextualInputParser {
                 clientController.choosePlanet(chose);
             }
             case MANAGE_GOODS-> {
+                if (words[0].equals("leave"))
+                    return clientController.leaveGame();
                 if (clientController.checkShipBoards(words))
                     return true;
                 if (words[0].equals("earlyland"))
@@ -405,6 +431,8 @@ public class TextualInputParser {
                 }
             }
             case MANAGE_CABINS -> {
+                if (words[0].equals("leave"))
+                    return clientController.leaveGame();
                 CrewType type;
                 switch (words[0]) {
                     case "humans", "h" -> type = CrewType.HUMAN;
@@ -419,6 +447,8 @@ public class TextualInputParser {
                 clientController.manageCabins(type);
             }
             case COORD_REQUEST -> {
+                if (words[0].equals("leave"))
+                    return clientController.leaveGame();
                 if (clientController.checkShipBoards(words))
                     return true;
                 if (clientController.getPhase() == GamePhases.CARDS) {
@@ -444,6 +474,8 @@ public class TextualInputParser {
                         view.showGenericMessage("Wrong input in wait");
                     }
                     case SHIPBOARD -> {
+                        if (words[0].equals("leave"))
+                            return clientController.leaveGame();
                         if (clientController.checkShipBoards(words))
                             return true;
                         if (clientController.getPreviousState()==ClientState.S_FINISHED)
@@ -452,6 +484,8 @@ public class TextualInputParser {
                         view.showGenericMessage("Wrong input in wait");
                     }
                     case CARDS -> {
+                        if (words[0].equals("leave"))
+                            return clientController.leaveGame();
                         if (clientController.checkShipBoards(words))
                             return true;
                         if (words[0].equals("earlyland"))

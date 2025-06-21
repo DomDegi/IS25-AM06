@@ -176,6 +176,7 @@ public abstract class Card implements Serializable {
     public int getGainedCredits() { return 0; }
     public int getCrewNumber() { return 0; }
     public ArrayList<Goods> getGoodsList(String playerName) { return null; }
+    public void setGoodsList(String playerName, int planet) {}
     public int getGoodsPenalty() { return 0; }
     public ArrayList<Projectile> getListOfProjectiles() { return null; }
     public float getEnemiesFirePower() { return 0f; }

@@ -606,12 +606,11 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
                 }
             }
         }
+        ArrayList<Tile> modifiedCabin = new ArrayList<>();
         for(Coordinates coordinates : InfectedCabin){
             tilesTable[coordinates.getX()][coordinates.getY()].get().removeCrew();
-        }
-        ArrayList<Tile> modifiedCabin = new ArrayList<>();
-        for (Coordinates coordinates: InfectedCabin) {
             modifiedCabin.add(this.getTile(coordinates));
+
         }
         return modifiedCabin;
     }
