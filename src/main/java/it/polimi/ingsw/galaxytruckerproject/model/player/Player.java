@@ -458,17 +458,14 @@ public class Player implements PlayerInterface , Serializable {
     public boolean verifyAndSetupCrew(ArrayList<Tile>  cabins) {
         for (Tile cabin: cabins) {
             if (cabin.getCrewType().equals(CrewType.PURPLE) &&
-                    //!(playerShip.getTile(cabin.getCoordinates()).getAlienability().equals(AlienOptions.PURPLE) || playerShip.getTile(cabin.getCoordinates()).getAlienability().equals(AlienOptions.BOTH)))
-                    !(cabin.getAlienability().equals(AlienOptions.PURPLE) || playerShip.getTile(cabin.getCoordinates()).getAlienability().equals(AlienOptions.BOTH)))
+                    !(playerShip.getTile(cabin.getCoordinates()).getAlienability().equals(AlienOptions.PURPLE) || playerShip.getTile(cabin.getCoordinates()).getAlienability().equals(AlienOptions.BOTH)))
                 return false;
             if (cabin.getCrewType().equals(CrewType.BROWN) &&
-                    //!(playerShip.getTile(cabin.getCoordinates()).getAlienability().equals(AlienOptions.BROWN) || playerShip.getTile(cabin.getCoordinates()).getAlienability().equals(AlienOptions.BOTH)))
-                    !(cabin.getAlienability().equals(AlienOptions.BROWN) || playerShip.getTile(cabin.getCoordinates()).getAlienability().equals(AlienOptions.BOTH)))
-
-            return false;
+                    !(playerShip.getTile(cabin.getCoordinates()).getAlienability().equals(AlienOptions.BROWN) || playerShip.getTile(cabin.getCoordinates()).getAlienability().equals(AlienOptions.BOTH)))
+                return false;
         }
         for (Tile cabin: cabins) {
-            cabin.setCrewType(cabin.getCrewType());
+            playerShip.getTile(cabin.getCoordinates()).setCrewType(cabin.getCrewType());
         }
         return true;
     }
