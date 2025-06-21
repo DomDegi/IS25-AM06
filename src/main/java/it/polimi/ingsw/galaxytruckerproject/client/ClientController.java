@@ -366,7 +366,6 @@ public class ClientController {
         if (gameMode != null) {
             try {
                 me.setPlayerName("");
-                virtualController.leaveGame();
                 positioned=false;
                 this.checking= null;
                 this.numPlayer = 0;
@@ -395,6 +394,7 @@ public class ClientController {
                 this.indexDeckInHandOrPlanet = 0;
                 this.hourglassTurns = 0;
                 displayedCard = new ArrayList<>();
+                virtualController.leaveGame();
                 return true;
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
@@ -2295,7 +2295,7 @@ public class ClientController {
      * @param planets the number of planets to be added to the system
      */
     public void setPlanets( int planets) {
-        availablePlanets.put(planets,Boolean.FALSE);
+        availablePlanets.put(planets-1,Boolean.FALSE);
     }
 
     public Map<Integer,Boolean> getAvailablePlanets() {

@@ -652,7 +652,6 @@ public class CardsController {
                             element.setDisable(true);
                             element.setFitWidth(30);
                             element.setFitHeight(30);
-                            hBox.rotateProperty().setValue(tile.getRotation()*90);
                             hBox.getChildren().add(element);
                         }
                         stackPane.getChildren().add(hBox);
@@ -684,7 +683,6 @@ public class CardsController {
                             hBox.getChildren().add(element);
                             hBox1.setPrefSize(40,40);
                         }
-                        vBox.rotateProperty().setValue(tile.getRotation()*90);
                         stackPane.getChildren().add(vBox);
                         vBox.getChildren().addAll(hBox1,hBox);
                     }
@@ -925,7 +923,7 @@ public class CardsController {
                 button.setPrefSize(200, 75);
                 button.setText((index + 1) + "° Planet");
                 int finalIndex = index;
-                button.setOnAction(_ -> choosePlanet(finalIndex));
+                button.setOnAction(_ -> choosePlanet(finalIndex+1));
                 button.setDisable(!GUI.getController().getAvailablePlanets().get(index));
                 mainBox.getChildren().add(button);
                 index++;
@@ -1000,10 +998,19 @@ public class CardsController {
         });
     }
 
+    /**
+     * Creates and returns a Button representing a specific good. The button is styled
+     * with an appropriate image based on the color of the provided goods and configured
+     * with an action event to handle selections.
+     *
+     * @param goods the goods object containing details about the good, including its color
+     * @param index the index of the good, used to determine its selection behavior
+     * @return a Button configured with an image and an action event for the specific good
+     */
     private Button goodsButtons(Goods goods,int index){
-        Button button= new Button();
         ImageView imageView=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoRed.png"))));
-        button.setPrefSize(200,75);
+        imageView.setFitHeight(50);
+        imageView.setFitWidth(50);
         if(goods.getColor()== GoodsColor.BLUE)
             imageView=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoBlue.png"))));
         else if(goods.getColor()== GoodsColor.GREEN)
@@ -1012,10 +1019,10 @@ public class CardsController {
             imageView=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoRed.png"))));
         else if(goods.getColor()== GoodsColor.YELLOW)
             imageView=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoYellow.png"))));
-        button.setBackground(new Background(new BackgroundImage(imageView.getImage(), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
-        int finalIndex = index;
+        Button button= new Button("",imageView);
+        button.setPrefSize(200,75);
         button.setOnAction(_ -> {
-            chooseGood(finalIndex);
+            chooseGood(index);
             visible = false;
             initialize();
         });
