@@ -23,16 +23,6 @@ public class ConnectionController{
     public TextField ip;
 
     /**
-     * The port TextField represents the input field within the user interface
-     * for specifying the connection port. It is used to configure the port
-     * number for establishing connections through RMI or Socket protocols.
-     * The entered value is validated and processed while attempting to set up
-     * a connection.
-     */
-    @FXML
-    public TextField port;
-
-    /**
      * Sets up a connection using the RMI (Remote Method Invocation) protocol.
      *
      * This method retrieves the IP address and port number entered in the
@@ -47,12 +37,8 @@ public class ConnectionController{
      */
     @FXML
     public void setRMI(){
-        int portInt;
+        int portInt=0;
         try {
-            if(port.getText().equals(""))
-                portInt=0;
-            else
-                portInt=Integer.getInteger(port.getText());
             GUI.setConnection("r",ip.getText(),portInt);
         }catch (NumberFormatException _){
             GUI.showMessage("Invalid Port");
@@ -71,12 +57,8 @@ public class ConnectionController{
      */
     @FXML
     public void setSocket(){
-        int portInt;
+        int portInt=0;
         try {
-            if(port.getText().equals(""))
-                portInt=0;
-            else
-                portInt=Integer.getInteger(port.getText());
             GUI.setConnection("s",ip.getText(),portInt);
         }catch (NumberFormatException _){
             GUI.showMessage("Invalid Port");

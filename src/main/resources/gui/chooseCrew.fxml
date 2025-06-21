@@ -145,9 +145,30 @@
                 </VBox>
                 <VBox fx:id="box" alignment="CENTER" prefWidth="195.0" spacing="40.0">
                <children>
-                  <Button fx:id="white" mnemonicParsing="false" onAction="#human" prefHeight="75.0" prefWidth="75.0" style="-fx-background-color: white;" />
-                  <Button fx:id="purple" mnemonicParsing="false" onAction="#pAlien" prefHeight="75.0" prefWidth="75.0" style="-fx-background-color: purple;" />
-                  <Button fx:id="brown" mnemonicParsing="false" onAction="#bAlien" prefHeight="75.0" prefWidth="75.0" style="-fx-background-color: brown;" />
+                  <Button fx:id="white" mnemonicParsing="false" onAction="#human" prefHeight="75.0" prefWidth="75.0">
+                     <graphic>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/grafiche/human.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
+                  <Button fx:id="purple" mnemonicParsing="false" onAction="#pAlien" prefHeight="75.0" prefWidth="75.0">
+                     <graphic>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/grafiche/purple.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
+                  <Button fx:id="brown" mnemonicParsing="false" onAction="#bAlien" prefHeight="75.0" prefWidth="75.0">
+                     <graphic>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/grafiche/brown.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
                </children></VBox>
             </children>
         </HBox>

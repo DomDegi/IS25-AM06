@@ -26,6 +26,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -43,7 +44,7 @@ import java.util.Timer;
  * This class is responsible for rendering different game phases, managing user input,
  * and displaying feedback to the player. It interacts with the client controller to
  * process and reflect updates related to gameplay.
- *
+
  * Fields:
  * - gameName: The name of the game being created or joined.
  * - numberOfPlayers: The number of players in the current game lobby.
@@ -59,7 +60,7 @@ import java.util.Timer;
  * - quit: A flag to denote the quit state of the game.
  * - fullScreen: A flag indicating whether the application is in full-screen mode.
  * - percentage1, percentage2, percentage3: Variables tracking specific percentage values for the game.
- *
+
  * This class contains methods for launching the GUI, managing different game screens,
  * performing game actions (e.g., drawing tiles, placing tiles, setting player details),
  * and providing feedback to the user.
@@ -82,6 +83,13 @@ public class GUI extends Application implements DisplayableView {
     private static GameMode mode;
 
     /**
+     * A static map that stores scores associated with string keys.
+     * The keys are represented as strings, and the values are integers.
+     * This map can be used to store and retrieve scores for specific entities or identifiers.
+     */
+    private static Map<String,Integer> scores;
+
+    /**
      * The CSS stylesheet used for the welcome screen styling.
      */
     private static String css1;
@@ -95,6 +103,22 @@ public class GUI extends Application implements DisplayableView {
      * The CSS stylesheet used for the ship creation and management screens styling.
      */
     private static String css3;
+
+    /**
+     * Represents the primary stage of the application in a JavaFX environment.
+     * This is typically used as the main window of the application, where the
+     * initial scene is set and displayed. It acts as the entry point for managing
+     * the user interface of the application.
+
+     * This variable is declared as static to ensure it is accessible throughout
+     * the application and can provide a centralized point for window handling
+     * operations such as setting scenes, managing properties, or controlling
+     * visibility.
+
+     * Proper initialization of this variable is essential for the application to
+     * function correctly, as it directly impacts the rendering of the primary
+     * user interface window.
+     */
     private static Stage primaryStage;
 
     /**
@@ -136,7 +160,18 @@ public class GUI extends Application implements DisplayableView {
      * A Timer instance used to manage time-dependent events in the game, such as hourglasses or delays.
      */
     private Timer timer;
+
+    /**
+     * Represents a button labeled "quit" that when interacted with
+     * (e.g., clicked), triggers the functionality to exit or terminate
+     * the current session.
+     */
     private static Button quit;
+
+    /**
+     * A static Button instance named fullScreen.
+     * This Button is utilized to toggle the full-screen mode of the application.
+     */
     private static Button fullScreen;
 
     /**
@@ -149,6 +184,12 @@ public class GUI extends Application implements DisplayableView {
      */
     private static double percentage2 = 0;
 
+    /**
+     * Represents a static label used to display or manage the player's name
+     * within the application or game interface.
+     * This variable is initialized as a new {@code Label} instance.
+     */
+    private static Label playerName;
     /**
      * The percentage value representing the progress of the third hourglass or a timed event.
      */
@@ -176,12 +217,14 @@ public class GUI extends Application implements DisplayableView {
     public void start(Stage primaryStage) throws IOException {
         GUI.primaryStage = primaryStage;
         GUI.primaryStage.setTitle("Galaxy Trucker");
+        GUI.primaryStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/icon.png"))));
         css1= Objects.requireNonNull(GUI.class.getResource("/gui/css/WelcomeStyle.css")).toExternalForm();
         css2= Objects.requireNonNull(GUI.class.getResource("/gui/css/LobbyStyle.css")).toExternalForm();
         css3= Objects.requireNonNull(GUI.class.getResource("/gui/css/ShipStyle.css")).toExternalForm();
         showMainView();
         showWelcome();
         GUI.primaryStage.setFullScreen(true);
+        playerName=new Label();
     }
 
     /**
@@ -235,7 +278,7 @@ public class GUI extends Application implements DisplayableView {
                     port=1099;
                 controller.connectRMI(ip,port);
             } catch (NotBoundException | MalformedURLException | RemoteException e) {
-                throw new RuntimeException(e);
+                GUI.showMessage("Server offline");
             }
         } else {
             try {
@@ -243,7 +286,7 @@ public class GUI extends Application implements DisplayableView {
                     port=12345;
                 controller.connectSocket(ip,port);
             } catch (NotBoundException | IOException e) {
-                throw new RuntimeException(e);
+                GUI.showMessage("Server offline");
             }
         }
     }
@@ -255,6 +298,7 @@ public class GUI extends Application implements DisplayableView {
      */
     public static void setName(String name) {
         controller.getMe().setPlayerName(name);
+        playerName.setText(name);
         controller.doneNaming();
     }
 
@@ -452,33 +496,101 @@ public class GUI extends Application implements DisplayableView {
         controller.manageCabins(type);
     }
 
+    /**
+     * Executes an action based on the given boolean parameter.
+     * If the parameter is true, it triggers a positive response.
+     * Otherwise, it triggers a negative response.
+     *
+     * @param action a boolean value that determines the action to be performed;
+     *               true triggers a positive response, and false triggers a negative response.
+     */
     public static void action(boolean action){
         if(action)
             controller.sayYes();
         else
             controller.sayNo();
     }
+    /**
+     * Simulates the action of rolling dice by invoking the rollDice method
+     * from the controller object.
+
+     * This method does not accept any parameters and does not return
+     * anything. It is responsible for delegating the rolling action
+     * to the associated controller.
+     */
     public static void roll(){
         controller.rollDice();
     }
 
+    /**
+     * Automatically creates a ship based on the current game mode.
+
+     * This method evaluates the game mode from the controller and triggers the
+     * corresponding ship creation process. Depending on the game mode, it builds
+     * a Level 2 ship, a trial version ship, or defaults to building a Level 2 ship.
+
+     * Game Modes:
+     * - LEVEL2: Calls the method to build a Level 2 ship.
+     * - TRIAL: Calls the method to build a trial version ship.
+     * - Default: Builds a Level 2 ship if the game mode does not match LEVEL2 or TRIAL.
+     */
+    public static void autoCreateShip(){
+        switch (controller.getGameMode()){
+            case LEVEL2 -> controller.buildShiplv2();
+            case TRIAL -> controller.buildShipTrial();
+            default -> controller.buildShiplv2();
+        }
+    }
+
+    /**
+     * Selects a planet based on the provided index.
+     *
+     * @param index the index of the planet to be selected, where the value corresponds to a specific planet in the list or collection.
+     */
     public static void choosePlanet(int index){
         controller.choosePlanet(index);
     }
 
+    /**
+     * Chooses a cargo based on the given coordinates.
+     *
+     * @param x the x-coordinate used to identify the cargo
+     * @param y the y-coordinate used to identify the cargo
+     */
     public static void chooseCargo(int x, int y){
         Coordinates coordinates = new Coordinates(x,y);
         controller.chooseCargo(coordinates);
     }
 
+    /**
+     * Selects a specific item based on the provided index.
+     * Delegates the selection process to the controller's chooseGoods method.
+     *
+     * @param index the index of the item to be selected
+     */
     public static void chooseGood(int index){
         controller.chooseGoods(index);
     }
 
+    /**
+     * Marks goods as processed or completed by invoking the 'doneGoods' method
+     * on the controller instance. This method serves as a wrapper to ensure that
+     * the appropriate action is taken for finalizing goods operations.
+     */
     public static void doneGoods(){
         controller.doneGoods();
     }
 
+    /**
+     * Initiates the landing process by calling the land method
+     * on the controller instance. This method traditionally
+     * manages the process of safely bringing an object (e.g.,
+     * a drone or aircraft) back to the ground or a stable surface.
+
+     * Note: The controller instance must be properly configured
+     * and initialized before invoking this method to ensure a
+     * successful landing operation.
+     */
     public static void land(){
         controller.land();
     }
@@ -491,6 +603,18 @@ public class GUI extends Application implements DisplayableView {
         showMessage("");
     }
 
+    public static void showReconnect(){
+        Platform.runLater(() -> {
+            loader = new FXMLLoader(GUI.class.getResource("/gui/reconnect.fxml"));
+            BorderPane newLayer;
+            try {
+                newLayer = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            layout.setCenter(newLayer);
+        });
+    }
     /**
      * Displays the connection screen by loading the corresponding FXML and setting it as the center content.
      * The screen provides options for the user to choose the connection type.
@@ -741,11 +865,32 @@ public class GUI extends Application implements DisplayableView {
             stringLabel.setPrefHeight(50);
             stringLabel.setStyle("fx-font-size: 16px;");
             anchorPane.getChildren().add(stringLabel);
-            anchorPane.setPrefHeight(50);
-            anchorPane.setPrefWidth(300);
             AnchorPane.setBottomAnchor(stringLabel, 20.0);
             AnchorPane.setLeftAnchor(stringLabel, 0.0);
             AnchorPane.setRightAnchor(stringLabel, 0.0);
+            showName(anchorPane);
+        });
+    }
+
+    /**
+     * Displays the player's name within the specified AnchorPane and aligns it as per
+     * the defined styles and positions.
+     *
+     * @param anchorPane The AnchorPane where the player's name is displayed. It is repositioned
+     *                   and resized to accommodate the display.
+     */
+    public static void showName(AnchorPane anchorPane) {
+        Platform.runLater(() -> {
+            if (playerName != null) {
+                playerName.setAlignment(Pos.CENTER_RIGHT);
+                playerName.setPrefHeight(50);
+                playerName.setStyle("fx-font-size: 16px;");
+                anchorPane.getChildren().add(playerName);
+                AnchorPane.setBottomAnchor(playerName, 20.0);
+                AnchorPane.setRightAnchor(playerName, 10.0);
+            }
+            anchorPane.setPrefHeight(50);
+            anchorPane.setPrefWidth(300);
             layout.setBottom(anchorPane);
         });
     }
@@ -782,9 +927,16 @@ public class GUI extends Application implements DisplayableView {
             HBox top=new HBox();
             VBox right=new VBox();
             VBox left=new VBox();
+            StackPane p1=new StackPane();
+            StackPane p2=new StackPane();
             top.setSpacing(500);
-            quit=new Button("QUIT");
             fullScreen=new Button("⛶");
+            fullScreen.setOnAction(_ -> primaryStage.setFullScreen(!primaryStage.isFullScreen()));
+            fullScreen.setPrefWidth(100);
+            fullScreen.setBorder(new Border((BorderStroke) null));
+            fullScreen.setFont(new Font("Franklin Gothic Heavy", 10));
+            top.getChildren().add(fullScreen);
+            quit=new Button("QUIT");
             quit.setOnAction(_ -> {
                 top.getChildren().clear();
                 left.getChildren().clear();
@@ -820,17 +972,12 @@ public class GUI extends Application implements DisplayableView {
             quit.setPrefWidth(100);
             quit.setBorder(new Border((BorderStroke) null));
             quit.setFont(new Font("Franklin Gothic Heavy", 10));
-            fullScreen.setOnAction(_ -> primaryStage.setFullScreen(!primaryStage.isFullScreen()));
-            fullScreen.setPrefWidth(100);
-            fullScreen.setBorder(new Border((BorderStroke) null));
-            fullScreen.setFont(new Font("Franklin Gothic Heavy", 10));
-            top.getChildren().add(fullScreen);
             top.setAlignment(Pos.CENTER);
             right.setAlignment(Pos.CENTER);
             left.setAlignment(Pos.CENTER);
-
             if (controller.getFlightBoard().getInGamePlayers().size() == 2) {
                 ship1 = new Button();
+                ship1.setText(GUI.getController().orderedPlayer(1));
                 ship1.setOnAction(_ -> checkShip(1));
                 ship1.setPrefHeight(52);
                 ship1.setPrefWidth(614);
@@ -838,6 +985,10 @@ public class GUI extends Application implements DisplayableView {
                 top.getChildren().add(ship1);
             }
             if (controller.getFlightBoard().getInGamePlayers().size() == 3) {
+                Label s1=new Label(GUI.getController().orderedPlayer(1));
+                Label s2=new Label(GUI.getController().orderedPlayer(2));
+                s1.rotateProperty().set(-90);
+                s2.rotateProperty().set(90);
                 ship1 = new Button();
                 ship2 = new Button();
                 ship1.setOnAction(_ -> checkShip(1));
@@ -848,20 +999,29 @@ public class GUI extends Application implements DisplayableView {
                 ship2.setPrefHeight(614);
                 ship1.setAlignment(Pos.CENTER);
                 ship2.setAlignment(Pos.CENTER);
+                p1.getChildren().add(s1);
+                p1.getChildren().add(ship1);
+                p2.getChildren().add(s2);
+                p2.getChildren().add(ship2);
                 ship3=new Button();
                 ship3.setPrefHeight(52);
                 ship3.setPrefWidth(614);
                 ship3.setVisible(false);
                 top.getChildren().add(ship3);
-                left.getChildren().add(ship1);
-                right.getChildren().add(ship2);
+                left.getChildren().add(p1);
+                right.getChildren().add(p2);
                 layout.setLeft(left);
                 layout.setRight(right);
             }
             if (controller.getFlightBoard().getInGamePlayers().size() == 4) {
+                Label s1=new Label(GUI.getController().orderedPlayer(1));
+                Label s2=new Label(GUI.getController().orderedPlayer(3));
+                s1.rotateProperty().set(-90);
+                s2.rotateProperty().set(90);
                 ship1 = new Button();
                 ship2 = new Button();
                 ship3 = new Button();
+                ship3.setText(GUI.getController().orderedPlayer(3));
                 ship1.setOnAction(_ -> checkShip(1));
                 ship2.setOnAction(_ -> checkShip(2));
                 ship3.setOnAction(_ -> checkShip(3));
@@ -874,15 +1034,28 @@ public class GUI extends Application implements DisplayableView {
                 ship1.setAlignment(Pos.CENTER);
                 ship2.setAlignment(Pos.CENTER);
                 ship3.setAlignment(Pos.CENTER);
+                p1.getChildren().add(s1);
+                p1.getChildren().add(ship1);
+                p2.getChildren().add(s2);
+                p2.getChildren().add(ship3);
                 top.getChildren().add(ship2);
-                left.getChildren().add(ship1);
-                right.getChildren().add(ship3);
+                left.getChildren().add(p1);
+                right.getChildren().add(p2);
                 layout.setLeft(left);
                 layout.setRight(right);
             }
             top.getChildren().add(quit);
             layout.setTop(top);
         });
+    }
+
+    /**
+     * Retrieves a map of scores associated with their respective keys.
+     *
+     * @return a Map where the keys are Strings and the values are Integers representing scores
+     */
+    public static Map<String,Integer> getScores(){
+        return scores;
     }
 
     /**
@@ -893,6 +1066,7 @@ public class GUI extends Application implements DisplayableView {
      */
     public static void displayClientState(ClientState newState) {
         clear();
+        showName(new AnchorPane());
         if(GUI.getController().getPhase()==GamePhases.CARDS){
             showCard();
             layout.getStylesheets().set(0, css3);
@@ -951,6 +1125,7 @@ public class GUI extends Application implements DisplayableView {
                     showWait();
                 }
                 case RECONNECTING -> {
+                    showReconnect();
                 }
             }
         }
@@ -958,6 +1133,7 @@ public class GUI extends Application implements DisplayableView {
 
     /**
      * Sets the client state and updates the view accordingly.
+     * This method ensures that the UI update is performed on the JavaFX Application thread.
      *
      * @param newState The new client state to set.
      */
@@ -1107,12 +1283,12 @@ public class GUI extends Application implements DisplayableView {
 
     @Override
     public void notifyPlayerLeftTheGame(String playerName) {
-
+        showMessage(playerName + " has left the game!");
     }
 
     @Override
     public void notifyPlayerDisconnected(String playerName) {
-
+        showMessage(playerName + " has disconnected!");
     }
 
     /**
@@ -1216,7 +1392,11 @@ public class GUI extends Application implements DisplayableView {
      */
     @Override
     public void notifyPlayerJoined(int expectedPlayer, int currentPlayer, boolean reconnected) {
-
+        if (currentPlayer == expectedPlayer) {
+            showMessage("You joined the game!");
+        } else if (reconnected) {
+            showMessage("You reconnected!");
+        }
     }
 
     /**
@@ -1280,7 +1460,7 @@ public class GUI extends Application implements DisplayableView {
      */
     @Override
     public void asksToRollTheDices() throws RemoteException {
-
+        showMessage("Roll the dices!");
     }
 
     /**
@@ -1294,7 +1474,8 @@ public class GUI extends Application implements DisplayableView {
         if(controller.isChecking()==null){
             if(controller.getPhase()==GamePhases.CARDS){
                 CardsController cardsController = loader.getController();
-                cardsController.showRoll(diceRoll);
+                if(cardsController!=null)
+                    cardsController.showRoll(diceRoll);
             }
         }
     }
@@ -1355,13 +1536,14 @@ public class GUI extends Application implements DisplayableView {
     }
 
     /**
-     * Displays the scores of all players.
+     * Displays the scores by updating the GUI and invoking the showEnd method.
      *
-     * @param scores A map containing the player names as keys and their respective scores as values.
-     * @throws RemoteException If a remote exception occurs.
+     * @param scores a map containing player names as keys and their corresponding scores as values
+     * @throws RemoteException if a communication-related exception occurs during the remote method call
      */
     @Override
     public void showScores(Map<String, Integer> scores) throws RemoteException {
+        GUI.scores =scores;
         showEnd();
     }
 
