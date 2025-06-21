@@ -48,6 +48,7 @@ cd path/to/GalaxyTrucker_ServerAM06.jar
 java -jar GalaxyTrucker_ServerAM06.jar
 ```
 
+
 When the server is running you will see the `ip address` of the server, you will need it to connect the client.
 
 > **❗Warning❗** The server will run on port `1099` for RMI and `12345` Socket, make sure that these ports are available.
@@ -65,9 +66,14 @@ java -jar GalaxyTruckerAM06_Client.jar
 By running the client you will be asked to choose the type of interface you want to use, you can choose between `TUI` and `GUI`.
 
 > **❗Warning❗**
-> The `GUI` has been tested with machines with an `x86` architecture and `Windows 11` OS.
+> The `GUI` has been tested with machines with an `x86` architecture and `Windows 11`.
+>
+> Note: the GUI is optimized for 100% display scaling on Windows. Other scaling settings may cause layout issues.
 
 When the client is running you will be asked to insert the `ip address` of the server, you can find it in the server logs.
+
+#### Alternative methods:
+You can also run the server and client by executing the .exe file or by running the .bat script.
 
 # <img src="https://unfilteredgamer.com/wp-content/uploads/2022/02/galaxy-trucker-review-6.jpg" align="right" alt="Start Card render" width="200" style = "border-radius: 20px; float:right; padding: 5px"> <center>Documentation</center>
 
@@ -76,6 +82,6 @@ If you are interested in the inner workings of our application you can find the 
 - [Model UMLs](deliverables/ClassDiagrams)
 
 - [Sequence Diagrams](deliverables/SequenceDiagrams)
-- [Cards Finite State Machine](deliverables/State_final_macine_Cards.drawio.png)
+- [Cards' Finite State Machine](deliverables/State_final_macine_Cards.drawio.png)
 - [Complete JDoc](deliverables/javadoc)
 
