@@ -664,7 +664,7 @@ public class ClientController {
             if (chose > 0 && chose <= numPlayer) {
                 me.getShipBoard().setGetStat();
                 try {
-                    positioned=true;
+                    //positioned=true;
                     virtualController.notifySetPosition(chose);
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
