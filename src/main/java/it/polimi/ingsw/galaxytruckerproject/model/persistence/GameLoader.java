@@ -24,8 +24,25 @@ public class GameLoader {
     /** The user's home directory path, used as the base for saving/loading. */
     private static final String userHome = System.getProperty("user.home");
 
+    /** What OS is running on the machine. */
+    private static final String OS = System.getProperty("os.name").toLowerCase();
+
     /** Base directory for saved game files. */
-    private static final String BASE_SAVE_PATH = userHome + "/GalaxyTrucker/savedGames";
+    private static final String BASE_SAVE_PATH;
+
+    // To pick the BASE_SAVE_PATH based on the machine's OS.
+    static {
+        if (OS.contains("win")) {
+            // Windows → C:\Users\<user>\GalaxyTrucker\savedGames
+            BASE_SAVE_PATH = userHome + "\\GalaxyTrucker\\savedGames";
+        } else if (OS.contains("mac")) {
+            // macOS → /Users/<user>/Library/Application Support/GalaxyTrucker/savedGames
+            BASE_SAVE_PATH = userHome + "/Library/Application Support/GalaxyTrucker/savedGames";
+        } else {
+            // Linux/somethingElse → /home/<user>/GalaxyTrucker/savedGames
+            BASE_SAVE_PATH = userHome + "/GalaxyTrucker/savedGames";
+        }
+    }
 
     /**
      * Private constructor to prevent instantiation of this utility class.

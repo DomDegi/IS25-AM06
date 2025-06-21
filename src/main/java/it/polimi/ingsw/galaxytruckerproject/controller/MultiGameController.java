@@ -274,6 +274,7 @@ public class MultiGameController implements Serializable {
         }
         ArrayList<GameInfo> savedGames = GameLoader.savedGamesWithPlayersName(nickname);
         if (!savedGames.isEmpty()) {
+            savedGames.removeIf(saved -> gamesMap.containsKey(saved.getGameName()));
             joinableGames.addAll(savedGames);
         }
         try {

@@ -20,9 +20,25 @@ public class GameSaver {
      /** The user's home directory, used as base for save path. */
      private static final String userHome = System.getProperty("user.home");
 
-     /** Base directory for storing saved game files. */
-     private static final String BASE_SAVE_PATH = userHome + "/GalaxyTrucker/savedGames";
+     /** The name of the OS needed to discern between MACOS and Windows */
+     private static final String OS = System.getProperty("os.name").toLowerCase();
 
+     /** Base directory for storing saved game files. */
+     private static final String BASE_SAVE_PATH;
+
+     // This method is used to decide the BASE_SAVE_PATH depending on the OS
+     static {
+         if (OS.contains("win")) {
+             // Windows: C:\Users\<username>\GalaxyTrucker\savedGames
+             BASE_SAVE_PATH = userHome + "\\GalaxyTrucker\\savedGames";
+         } else if (OS.contains("mac")) {
+             // macOS: /Users/<username>/Library/Application Support/GalaxyTrucker/savedGames
+             BASE_SAVE_PATH = userHome + "/Library/Application Support/GalaxyTrucker/savedGames";
+         } else {
+             // Default (Linux or unknown): ~/GalaxyTrucker/savedGames
+             BASE_SAVE_PATH = userHome + "/GalaxyTrucker/savedGames";
+         }
+     }
 
      /**
       * Utility class responsible for saving the current game state to disk.
