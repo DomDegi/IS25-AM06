@@ -518,6 +518,10 @@ public class CardsController {
      *              of the displayed tiles on the ship's board
      */
     private void shipBoard(ClientState state){
+        if (GUI.getController().getMe() == null || GUI.getController().getMe().getShipBoard() == null) {
+            return;
+        }
+
         tilesTable.getChildren().clear();
 
         ArrayList<Tile> tiles=new ArrayList<>();
@@ -527,6 +531,7 @@ public class CardsController {
                     tiles.add(GUI.getController().getMe().getShipBoard().getTilesTable()[j][i].get());
             }
         }
+
         for(Tile tile:tiles){
             StackPane stackPane=new StackPane();
             stackPane.setPrefSize(80,80);

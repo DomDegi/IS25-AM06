@@ -1243,24 +1243,28 @@ public class GUI extends Application implements DisplayableView {
     }
 
     /**
-     * Prints the flight board. If the game is finished or the previous state was finished,
-     * this method updates the UI to display the flight board.
-     *
-     * @param lightFlightboard The light flight board to display.
-     */
-    @Override
-    public void printFlightboard(LightFlightboard lightFlightboard) {
-        Platform.runLater(() -> {
-            if (controller.isChecking() == null)
-                if (controller.getState() == ClientState.S_FINISHED || (controller.getPreviousState() == ClientState.S_FINISHED && controller.getState() == ClientState.WAIT)) {
-                    EndShipController endShipController = loader.getController();
-                    endShipController.update();
-                } else if (controller.getState() == ClientState.S_END_DRAW_TILE_CARD) {
-                    S_EndDrawTilesCardsController sceneController = loader.getController();
-                    sceneController.update();
+         * Prints the flight board. If the game is finished or the previous state was finished,
+         * this method updates the UI to display the flight board.
+         *
+         * @param lightFlightboard The light flight board to display.
+         */
+        @Override
+        public void printFlightboard(LightFlightboard lightFlightboard) {
+            Platform.runLater(() -> {
+                if (controller.isChecking() == null) {
+                    Object sceneController = loader.getController();
+                    if (controller.getState() == ClientState.S_FINISHED || (controller.getPreviousState() == ClientState.S_FINISHED && controller.getState() == ClientState.WAIT)) {
+                        if (sceneController instanceof EndShipController endShipController) {
+                            endShipController.update();
+                        }
+                    } else if (controller.getState() == ClientState.S_END_DRAW_TILE_CARD) {
+                        if (sceneController instanceof S_EndDrawTilesCardsController endDrawController) {
+                            endDrawController.update();
+                        }
+                    }
                 }
-        });
-    }
+            });
+        }
 
     /**
      * Displays the ship board for a particular player. This method loads the FXML for the ship board
@@ -1499,13 +1503,15 @@ public class GUI extends Application implements DisplayableView {
      */
     @Override
     public void showDiceRoll(int diceRoll) throws RemoteException {
-        if(controller.isChecking()==null){
-            if(controller.getPhase()==GamePhases.CARDS){
-                CardsController cardsController = loader.getController();
-                if(cardsController!=null)
-                    cardsController.showRoll(diceRoll);
+        Platform.runLater(() -> {
+            if(controller.isChecking()==null){
+                if(controller.getPhase()==GamePhases.CARDS){
+                    CardsController cardsController = loader.getController();
+                    if(cardsController!=null)
+                        cardsController.showRoll(diceRoll);
+                }
             }
-        }
+        });
     }
 
     /**
