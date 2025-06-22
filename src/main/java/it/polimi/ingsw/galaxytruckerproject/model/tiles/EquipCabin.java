@@ -193,8 +193,8 @@ public class EquipCabin extends Cabin {
                 case BROWN -> shipBoard.addBreakBrownAliens(false);
             }
             this.crew = 0;
-            shipBoard.getCabinsCoordinates().remove(this.coordinates);
         }
+        shipBoard.getCabinsCoordinates().remove(this.coordinates);
     }
 
     @Override
