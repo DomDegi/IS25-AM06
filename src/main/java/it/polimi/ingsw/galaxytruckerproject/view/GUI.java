@@ -602,6 +602,48 @@ public class GUI extends Application implements DisplayableView {
     public static void clear() {
         showMessage("");
     }
+    /**
+     * Clears the contents of the specified HBox, and VBoxes, resets their children, and reconfigures them with specified buttons.
+     * Updates the layout properties accordingly and applies a new stylesheet.
+     *
+     * @param top  the HBox that will be cleared and reconfigured with a specific button.
+     * @param left the VBox that will be cleared and reconfigured with a specific button.
+     * @param right the VBox that will be cleared and reconfigured with a specific button.
+     */
+    public static void clearTot(HBox top,VBox left,VBox right) {
+        Platform.runLater(() -> {
+            top.setSpacing(500);
+            top.getChildren().clear();
+            left.getChildren().clear();
+            right.getChildren().clear();
+            layout.setTop(null);
+            layout.setLeft(null);
+            layout.setRight(null);
+            ship1 = new Button();
+            ship2 = new Button();
+            ship3 = new Button();
+            ship1.setPrefWidth(52);
+            ship1.setPrefHeight(614);
+            ship2.setPrefHeight(52);
+            ship2.setPrefWidth(614);
+            ship3.setPrefWidth(52);
+            ship3.setPrefHeight(614);
+            ship1.setAlignment(Pos.CENTER);
+            ship2.setAlignment(Pos.CENTER);
+            ship3.setAlignment(Pos.CENTER);
+            ship1.setVisible(false);
+            ship2.setVisible(false);
+            ship3.setVisible(false);
+            top.getChildren().add(ship2);
+            left.getChildren().add(ship1);
+            right.getChildren().add(ship3);
+            layout.setTop(top);
+            layout.setLeft(left);
+            layout.setRight(right);
+            layout.getStylesheets().set(0,css2);
+            showMessage("");
+        });
+    }
 
     public static void showReconnect(){
         Platform.runLater(() -> {
@@ -938,35 +980,7 @@ public class GUI extends Application implements DisplayableView {
             top.getChildren().add(fullScreen);
             quit=new Button("QUIT");
             quit.setOnAction(_ -> {
-                top.getChildren().clear();
-                left.getChildren().clear();
-                right.getChildren().clear();
-                layout.setTop(null);
-                layout.setCenter(null);
-                layout.setLeft(null);
-                layout.setRight(null);
-                ship1 = new Button();
-                ship2 = new Button();
-                ship3 = new Button();
-                ship1.setPrefWidth(52);
-                ship1.setPrefHeight(614);
-                ship2.setPrefHeight(52);
-                ship2.setPrefWidth(614);
-                ship3.setPrefWidth(52);
-                ship3.setPrefHeight(614);
-                ship1.setAlignment(Pos.CENTER);
-                ship2.setAlignment(Pos.CENTER);
-                ship3.setAlignment(Pos.CENTER);
-                ship1.setVisible(false);
-                ship2.setVisible(false);
-                ship3.setVisible(false);
-                top.getChildren().add(ship2);
-                left.getChildren().add(ship1);
-                right.getChildren().add(ship3);
-                layout.setTop(top);
-                layout.setLeft(left);
-                layout.setRight(right);
-                layout.getStylesheets().set(0,css2);
+                clearTot(top,right,left);
                 controller.leaveGame();
             });
             quit.setPrefWidth(100);
@@ -1065,70 +1079,80 @@ public class GUI extends Application implements DisplayableView {
      * @param newState The new client state that dictates which screen to display.
      */
     public static void displayClientState(ClientState newState) {
-        clear();
-        showName(new AnchorPane());
-        if(GUI.getController().getPhase()==GamePhases.CARDS){
-            showCard();
-            layout.getStylesheets().set(0, css3);
-        }else {
-            switch (newState) {
-                case CHOOSE_CONNECTION_TYPE -> {
-                    showConnection();
-                    layout.getStylesheets().set(0, css2);
-                }
-                case LOGIN -> {
-                    showLogin();
-                    layout.getStylesheets().set(0, css2);
-                }
-                case LOBBY -> {
-                    showLobby();
-                    layout.getStylesheets().set(0, css2);
-                }
-                case LOBBY0 -> {
-                    showCreateNewGame();
-                    layout.getStylesheets().set(0, css2);
-                }
-                case COLOR_CHOICE, COLOR_CHOICE0 -> {
-                    showChooseColor();
-                    layout.getStylesheets().set(0, css2);
-                }
-                case START_SHIP_CREATION -> {
-                    showStart();
-                    layout.getStylesheets().set(0, css2);
-                }
-                case S_END_DRAW_TILE_CARD -> {
-                    showS_EndDrawTilesCards();
-                    layout.getStylesheets().set(0, css3);
-                    addCheckShip();
-                }
-                case S_MANAGE_DRAWN_TILE -> {
-                    showS_ManageDrawTilesCards();
-                    layout.getStylesheets().set(0, css3);
-                }
-                case S_MANAGE_CARDS -> {
-                    showDeckCheck();
-                    layout.getStylesheets().set(0, css3);
-                }
-                case S_FINISHED -> {
-                    showEndShip();
-                    layout.getStylesheets().set(0, css3);
-                }
-                case MANAGE_CABINS-> {
-                    showChooseCrew();
-                    layout.getStylesheets().set(0, css3);
-                }
-                case COORD_REQUEST -> {
-                    showCard();
-                    layout.getStylesheets().set(0, css3);
-                }
-                case WAIT -> {
-                    showWait();
-                }
-                case RECONNECTING -> {
-                    showReconnect();
+        Platform.runLater(() -> {
+            clear();
+            showName(new AnchorPane());
+            if(GUI.getController().getPhase()==GamePhases.CARDS){
+                showCard();
+                layout.getStylesheets().set(0, css3);
+                addCheckShip();
+            }else {
+                switch (newState) {
+                    case CHOOSE_CONNECTION_TYPE -> {
+                        showConnection();
+                        layout.getStylesheets().set(0, css2);
+                    }
+                    case LOGIN -> {
+                        clearTot(new HBox(), new VBox(), new VBox());
+                        showLogin();
+                        layout.getStylesheets().set(0, css2);
+                    }
+                    case LOBBY -> {
+                        showLobby();
+                        layout.getStylesheets().set(0, css2);
+                    }
+                    case LOBBY0 -> {
+                        showCreateNewGame();
+                        layout.getStylesheets().set(0, css2);
+                    }
+                    case COLOR_CHOICE, COLOR_CHOICE0 -> {
+                        showChooseColor();
+                        layout.getStylesheets().set(0, css2);
+                    }
+                    case START_SHIP_CREATION -> {
+                        showStart();
+                        layout.getStylesheets().set(0, css2);
+                    }
+                    case S_END_DRAW_TILE_CARD -> {
+                        showS_EndDrawTilesCards();
+                        layout.getStylesheets().set(0, css3);
+                        addCheckShip();
+                    }
+                    case S_MANAGE_DRAWN_TILE -> {
+                        showS_ManageDrawTilesCards();
+                        layout.getStylesheets().set(0, css3);
+                        addCheckShip();
+                    }
+                    case S_MANAGE_CARDS -> {
+                        showDeckCheck();
+                        layout.getStylesheets().set(0, css3);
+                        addCheckShip();
+                    }
+                    case S_FINISHED -> {
+                        showEndShip();
+                        layout.getStylesheets().set(0, css3);
+                        addCheckShip();
+                    }
+                    case MANAGE_CABINS-> {
+                        showChooseCrew();
+                        layout.getStylesheets().set(0, css3);
+                        addCheckShip();
+                    }
+                    case COORD_REQUEST -> {
+                        showCard();
+                        layout.getStylesheets().set(0, css3);
+                        addCheckShip();
+                    }
+                    case WAIT -> {
+                        showWait();
+                    }
+                    case RECONNECTING -> {
+                        clearTot(new HBox(), new VBox(), new VBox());
+                        showReconnect();
+                    }
                 }
             }
-        }
+        });
     }
 
     /**
@@ -1615,14 +1639,13 @@ public class GUI extends Application implements DisplayableView {
                 counter++;
                 Platform.runLater(() -> {
                     if (controller.isChecking() == null) {
+                        Object currentSceneController = loader.getController(); // Get the controller safely
                         if (controller.getState() == ClientState.S_END_DRAW_TILE_CARD) {
-                            S_EndDrawTilesCardsController sceneController = loader.getController();
-                            if (sceneController != null) {
+                            if (currentSceneController instanceof S_EndDrawTilesCardsController sceneController) {
                                 sceneController.goProgressBar(counter, 100, controller.getHourglassTurns());
                             }
                         } else if (controller.getState() == ClientState.S_FINISHED || (controller.getPreviousState() == ClientState.S_FINISHED && controller.getState() == ClientState.WAIT && controller.isChecking() == null)) {
-                            EndShipController sceneController = loader.getController();
-                            if (sceneController != null) {
+                            if (currentSceneController instanceof EndShipController sceneController) {
                                 sceneController.goProgressBar(counter, 100, controller.getHourglassTurns());
                             }
                         }
@@ -1636,6 +1659,7 @@ public class GUI extends Application implements DisplayableView {
         };
         timer.scheduleAtFixedRate(task, 0, 1000);
     }
+
 
     /**
      * Notifies the player when the time has ended and updates the progress bar.

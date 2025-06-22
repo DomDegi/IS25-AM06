@@ -497,7 +497,7 @@ public class TextualInputParser {
             }
             case RECONNECTING -> {
                 switch(words[0]) {
-                    case "login","l" -> clientController.setState(ClientState.LOGIN);
+                    case "reconnect","r" -> clientController.reconnect();
                     case "close","c" -> System.exit(0);
                     default -> view.wrongLocalInput();
                 }
