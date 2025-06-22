@@ -27,6 +27,6 @@ public class EarlyLandingMessage extends ServerMessage {
         }
 
         // Set the client's state to WAIT after the early landing notification.
-        serverHandler.getClientController().setState(ClientState.WAIT);
+        serverHandler.getClientController().setState(ClientState.LANDING);
     }
 }

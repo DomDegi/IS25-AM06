@@ -538,4 +538,24 @@ public class CombatZone extends Card {
             nextPlayer();
         }
     }
+
+    /**
+     * Handles the scenario when a player lands on the 'Smugglers' card and resolves
+     * the corresponding sequence of events based on game conditions.
+     *
+     * @param playerName the name of the player who landed on the card
+     */
+    @Override
+    public void playerLanded(String playerName) {
+        if (minPlayer != null && minPlayer.getPlayerName().equals(playerName)) {
+            // if player is disconnected penalty should happen automatically
+            if (!currentPenalty.initializePenalty(game, minPlayerView, minPlayer)) {
+                resetForNextPenalty();
+            }
+            return;
+        }
+        if (currentPlayer != null && currentPlayer.getPlayerName().equals(playerName)) {
+            nextPlayer();
+        }
+    }
 }

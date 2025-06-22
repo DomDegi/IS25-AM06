@@ -641,7 +641,6 @@ public class GUI extends Application implements DisplayableView {
             layout.setLeft(left);
             layout.setRight(right);
             layout.getStylesheets().set(0,css2);
-            showMessage("");
         });
     }
 
@@ -882,6 +881,7 @@ public class GUI extends Application implements DisplayableView {
     }
 
     private static void showEnd(){
+        controller.setEnded(true);
         Platform.runLater(() -> {
             loader = new FXMLLoader(GUI.class.getResource("/gui/end.fxml"));
             BorderPane newLayer;
@@ -1082,6 +1082,10 @@ public class GUI extends Application implements DisplayableView {
         Platform.runLater(() -> {
             clear();
             showName(new AnchorPane());
+            if(controller.isEnded()){
+                showEnd();
+                return;
+            }
             if(GUI.getController().getPhase()==GamePhases.CARDS){
                 showCard();
                 layout.getStylesheets().set(0, css3);
@@ -1695,7 +1699,7 @@ public class GUI extends Application implements DisplayableView {
      */
     @Override
     public void notifyEarlyLanding() throws RemoteException {
-        showEnd();
+        controller.setState(ClientState.LANDING);
     }
 
     /**

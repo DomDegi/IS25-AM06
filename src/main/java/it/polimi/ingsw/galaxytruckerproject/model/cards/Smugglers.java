@@ -366,4 +366,35 @@ public class Smugglers extends Enemies{
             }
         }
     }
+
+    /**
+     * Handles the scenario when a player lands on the 'Smugglers' card and resolves
+     * the corresponding sequence of events based on game conditions.
+     *
+     * @param playerName the name of the player who landed on the card
+     */
+    @Override
+    public void playerLanded(String playerName) {
+        if (currentPlayer != null && currentPlayer.getPlayerName().equals(playerName)) {
+            if (won == 1 && goodsChecker != null) {
+                ArrayList<Tile> updatedTiles = currentPlayer.automaticGoodsPositioner(rewardGoods);
+                notifyModifiedTiles(playerName,updatedTiles);
+                game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
+                notifyMovement(currentPlayer);
+                game.endCardEvent();
+            }
+            else if (won == 1) {
+                choice(playerName, false);
+            }
+            else if (won == -1) {
+                if (lostGoods.initializePenalty(game,playersView,currentPlayer)){
+                    System.out.println("Automatic goods penalty didn't work");
+                }
+                nextPlayer();
+            }
+            else {
+                nextPlayer();
+            }
+        }
+    }
 }

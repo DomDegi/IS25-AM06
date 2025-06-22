@@ -186,9 +186,9 @@ public abstract class Card implements Serializable {
     public void setId(int id) { this.id = id; }
     public Penalty getPenalty() { return null; }
     public String getFilePath() { return filePath; }
-
     @Override
     public String toString() {
         return "id: " + id + " level: " + level + ", required days: " + requiredDays;
     }
+    public void playerLanded(String playerName){}
 }

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.CrewPenalty;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
@@ -233,6 +232,20 @@ public class AbandonedShip extends Card {
     public void playerDisconnected(String playerName) {
         if (playerToPlay != null && playerToPlay.getPlayerName().equals(playerName)) {
             playerIndex--;
+            playerAccepted = false;
+            nextPlayer();
+        }
+    }
+
+    /**
+     * Handles the scenario when a player lands on the 'Smugglers' card and resolves
+     * the corresponding sequence of events based on game conditions.
+     *
+     * @param playerName the name of the player who landed on the card
+     */
+    @Override
+    public void playerLanded(String playerName) {
+        if (playerToPlay != null && playerToPlay.getPlayerName().equals(playerName)) {
             playerAccepted = false;
             nextPlayer();
         }

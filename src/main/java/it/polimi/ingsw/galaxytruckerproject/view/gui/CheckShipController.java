@@ -113,6 +113,7 @@ public class CheckShipController {
                     element.setDisable(true);
                     element.setFitWidth(51);
                     element.setFitHeight(102);
+                    hBox.setSpacing(1);
                     hBox.rotateProperty().setValue(tile.getRotation()*90);
                     hBox.getChildren().add(element);
                 }

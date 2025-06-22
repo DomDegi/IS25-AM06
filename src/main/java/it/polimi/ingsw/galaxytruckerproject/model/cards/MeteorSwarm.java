@@ -297,4 +297,21 @@ public class MeteorSwarm extends Card {
             prepareNextMeteor();
         }
     }
+
+    /**
+     * Handles the scenario when a player lands on the 'Smugglers' card and resolves
+     * the corresponding sequence of events based on game conditions.
+     *
+     * @param playerName the name of the player who landed on the card
+     */
+    @Override
+    public void playerLanded(String playerName) {
+        Player player = game.identifyPlayerByName(playerName);
+        if (player != null && activePenalties.containsKey(player)) {
+            if (activePenalties.get(player).initializePenalty(game, viewsMap.get(playerName), game.identifyPlayerByName(playerName)))
+                System.out.println("Error, player is disconnected but the penalty isn't completed");
+            activePenalties.remove(player);
+            prepareNextMeteor();
+        }
+    }
 }

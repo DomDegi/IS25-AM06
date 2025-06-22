@@ -39,6 +39,12 @@ import java.util.*;
  * </p>
  */
 public class ClientController {
+    /**
+     * A constant boolean flag indicating if a process, task, or state
+     * has ended or completed. The default value is set to {@code false},
+     * representing that the process is not concluded.
+     */
+    private boolean ended=false;
 
     /**
      * Represents the current state of the client (e.g., login, waiting for server, etc.).
@@ -387,6 +393,7 @@ public class ClientController {
 
     public void readyToPlay() {
         Platform.runLater(()->{
+            this.ended=false;
             this.phase = GamePhases.LOGIN;
             positioned=false;
             this.checking= null;
@@ -2339,8 +2346,14 @@ public class ClientController {
                 setConnected(false);
             }
         }
-        if (connected)
-            doneNaming();
+    }
+
+    public boolean isEnded() {
+        return ended;
+    }
+
+    public void setEnded(boolean ended) {
+        this.ended =ended;
     }
 }
 

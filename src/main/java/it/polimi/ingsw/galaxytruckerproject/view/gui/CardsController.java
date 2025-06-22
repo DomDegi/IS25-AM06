@@ -238,14 +238,14 @@ public class CardsController {
     public void initialize() {
         ClientState state = GUI.getController().getState();
         mainBox.getChildren().clear();
-        text.setText("Waiting for other players...");
+        text.setText("Waiting...");
         modeChange();
         flightBoard();
         shipBoard(state);
         showCard();
         deck.setDisable(GUI.getController().getState()!=ClientState.DRAW_CARD);
         landButton.setVisible(true);
-        landButton.setDisable(GUI.getController().getState()==ClientState.DRAW_CARD||GUI.getController().getState()==ClientState.WAIT||GUI.getController().getState()==ClientState.WAIT_TO_DRAW);
+        landButton.setDisable(GUI.getController().getState()==ClientState.DRAW_CARD||GUI.getController().getState()==ClientState.WAIT_TO_DRAW);
         switch (state){
             case DRAW_CARD-> showDrawCard();
             case ACTION -> showAction();
@@ -253,7 +253,8 @@ public class CardsController {
             case MANAGE_GOODS -> showManageGoods();
             case COORD_REQUEST -> showCoordRequest();
             case ROLL_DICE -> showRollDice();
-            case WAIT_TO_DRAW-> text.setText("Waiting for other players...");
+            case WAIT_TO_DRAW-> text.setText("Waiting for other players to Draw......");
+            case LANDING -> text.setText("You have Landed");
         }
     }
 
@@ -389,7 +390,7 @@ public class CardsController {
      */
     private void waitOthers(){
         mainBox.getChildren().clear();
-        text.setText("Waiting for other players...");
+        text.setText("Waiting...");
     }
 
     /**
@@ -635,6 +636,7 @@ public class CardsController {
                     element.setDisable(true);
                     element.setFitWidth(30);
                     element.setFitHeight(60);
+                    hBox.setSpacing(1);
                     hBox.rotateProperty().setValue(tile.getRotation()*90);
                     hBox.getChildren().add(element);
                 }

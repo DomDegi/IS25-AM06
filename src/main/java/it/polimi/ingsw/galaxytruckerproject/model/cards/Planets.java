@@ -301,7 +301,35 @@ public class Planets extends Card {
             }
             playerIndex++;
             if (playerIndex == goodsChecker.size()) {
-                nextPlayer();
+                game.endCardEvent();
+            }
+        }
+    }
+
+    /**
+     * Handles the scenario when a player lands on the 'Smugglers' card and resolves
+     * the corresponding sequence of events based on game conditions.
+     *
+     * @param playerName the name of the player who landed on the card
+     */
+    @Override
+    public void playerLanded(String playerName) {
+        if (currentPlayer != null && currentPlayer.getPlayerName().equals(playerName)) {
+            planetChoice(playerName,0);
+        }
+        else if (playerChosenPlanets.containsKey(playerName)) {
+            // Phase: managing goods — apply auto-assignment
+            Player player = game.identifyPlayerByName(playerName);
+            Planet chosenPlanet = playerChosenPlanets.get(playerName);
+            if (chosenPlanet != null) {
+                ArrayList<Tile> updatedTiles = player.automaticGoodsPositioner(chosenPlanet.getListOfGoods());
+                game.getFlightBoard().moveBackward(player, requiredDays);
+                notifyMovement(player);
+                notifyModifiedTiles(playerName, updatedTiles);
+            }
+            playerIndex++;
+            if (playerIndex == goodsChecker.size()) {
+                game.endCardEvent();
             }
         }
     }

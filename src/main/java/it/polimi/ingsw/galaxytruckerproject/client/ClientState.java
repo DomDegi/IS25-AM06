@@ -213,7 +213,17 @@ public enum ClientState implements Serializable {
      * This phase is used when a disconnection occurs and the client needs to
      * re-establish a connection to the server and resume the game state.
      */
-    RECONNECTING;
+    RECONNECTING,
+
+    /**
+     * Represents the phase where the player is landing their ship.
+     * <p>
+     * This phase occurs toward the conclusion of a player's journey, where the ship
+     * returns to the planet, and the final outcomes of the mission are determined.
+     * Actions during this phase may involve resolving any final events or determining
+     * the ship's final status and resources.
+     */
+    LANDING;
 
     @Override
     public String toString() {
@@ -242,6 +252,7 @@ public enum ClientState implements Serializable {
             case MANAGE_CABINS -> {return "Select the crew type in yours equip cabins [humans] [purpleAlien] [brownAlien]";}
             case ROLL_DICE -> {return"Roll the dice [roll]";}
             case RECONNECTING ->  {return "Server disconnected: repeat the login or close the game? [login] [close]";}
+            case LANDING -> {return "You Landed";}
         }
         return "Error in client state to string";
     }
