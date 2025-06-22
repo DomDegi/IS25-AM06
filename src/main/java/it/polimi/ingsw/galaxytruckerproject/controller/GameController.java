@@ -8,8 +8,8 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
-import it.polimi.ingsw.galaxytruckerproject.model.persistence.ClientUpdater;
-import it.polimi.ingsw.galaxytruckerproject.model.persistence.GameSaver;
+import it.polimi.ingsw.galaxytruckerproject.persistence.ClientUpdater;
+import it.polimi.ingsw.galaxytruckerproject.persistence.GameSaver;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
@@ -88,7 +88,7 @@ public class GameController implements Observer, Serializable {
     private ScheduledExecutorService autoSaveExecutor;
 
     /** Flag to enable or disable autosaving. */
-    private volatile boolean autoSaveEnabled = true;
+    private volatile boolean autoSaveEnabled = false;
 
 
     public String toString(){
@@ -476,7 +476,7 @@ public class GameController implements Observer, Serializable {
      * @return true if color is available, false otherwise
      */
     public boolean checkColorAvailable (String playerName, ViewInterface view, PlayersColor playersColor)  {
-        if (! playersViewMap.containsKey(playerName)) {
+        if (!playersViewMap.containsKey(playerName)) {
             try {
                 view.showWrongInputMessage();
             } catch (RemoteException e) {

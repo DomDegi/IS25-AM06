@@ -1,4 +1,4 @@
-package it.polimi.ingsw.galaxytruckerproject.model.persistence;
+package it.polimi.ingsw.galaxytruckerproject.persistence;
 
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;

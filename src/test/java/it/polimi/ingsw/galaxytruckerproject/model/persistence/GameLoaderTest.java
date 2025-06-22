@@ -1,9 +1,9 @@
 package it.polimi.ingsw.galaxytruckerproject.model.persistence;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
-import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightShipBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.network.MockVirtualView;
+import it.polimi.ingsw.galaxytruckerproject.persistence.GameLoader;
 import it.polimi.ingsw.galaxytruckerproject.view.TUI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
