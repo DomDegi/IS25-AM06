@@ -19,36 +19,37 @@ public class EndController {
 
     @FXML
     public void initialize() {
+        ArrayList<LightPlayer> coolestPlayers = new ArrayList<>();
+        coolestPlayers.add(GUI.getController().getFlightBoard().getInGamePlayers().getFirst());
+        for(LightPlayer p : GUI.getController().getFlightBoard().getInGamePlayers()){
+            if (p.getShipBoard().countExposedConnectors() < coolestPlayers.getFirst().getShipBoard().countExposedConnectors()){
+                coolestPlayers.clear();
+                coolestPlayers.add(p);
+            }
+            if (p.getShipBoard().countExposedConnectors() == coolestPlayers.getFirst().getShipBoard().countExposedConnectors()){
+                coolestPlayers.add(p);
+            }
+        }
         for(LightPlayer player: GUI.getController().getFlightBoard().getInGamePlayers()){
             ListView listView = new ListView();
+            listView.setPrefWidth(500);
             ArrayList<String> credits = new ArrayList<>();
+            credits.add(player.getPlayerName());
+            credits.add("");
             credits.add("Rank:\t\t"+player.getRank());
             credits.add("Cargo Values:\t"+player.getShipBoard().convertGoodsToCredit());
-            ArrayList<LightPlayer> coolestPlayers = new ArrayList<>();
-            coolestPlayers.add(GUI.getController().getFlightBoard().getInGamePlayers().getFirst());
-            for(LightPlayer p : GUI.getController().getFlightBoard().getInGamePlayers()){
-                if (p.getShipBoard().countExposedConnectors() > coolestPlayers.getFirst().getShipBoard().countExposedConnectors()){
-                    coolestPlayers.clear();
-                    coolestPlayers.add(player);
-                }
-                if (player.getShipBoard().countExposedConnectors() == coolestPlayers.getFirst().getShipBoard().countExposedConnectors()){
-                    coolestPlayers.add(player);
-                }
-            }
-            for(LightPlayer p : coolestPlayers){
-                credits.add("Exposed Connectors:\t"+player.getShipBoard().countExposedConnectors());
-                if(player.getRank()== p.getRank())
-                    credits.add("\t\tCOOLEST");
-            }
+            credits.add("Exposed Connectors:\t"+player.getShipBoard().countExposedConnectors());
+            if(coolestPlayers.contains(player))
+                credits.add("\t\tCOOLEST");
             credits.add("Penalties:\t"+player.getShipBoard().getPenalty());
             credits.add("");
-            credits.add("Final Score"+GUI.getScores().get(player.getPlayerName()));
+            credits.add("Final Score: "+GUI.getScores().get(player.getPlayerName()));
             int max=0;
             ArrayList<Integer> scores = new ArrayList<>(GUI.getScores().values());
             scores.sort(Comparator.naturalOrder());
             max=scores.getLast();
             if (GUI.getScores().get(player.getPlayerName()) == max)
-                credits.add("\t\tYOU HAVE WON THE MOST");
+                credits.add("\t\tWINNER!");
             ObservableList<String> score = FXCollections.observableArrayList(credits);
             listView.setItems(score);
             columns.getChildren().add(listView);

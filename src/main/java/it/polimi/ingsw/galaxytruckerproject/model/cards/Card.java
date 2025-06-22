@@ -176,6 +176,7 @@ public abstract class Card implements Serializable {
     public int getGainedCredits() { return 0; }
     public int getCrewNumber() { return 0; }
     public ArrayList<Goods> getGoodsList(String playerName) { return null; }
+    public void setGoodsList(String playerName, int planet) {}
     public int getGoodsPenalty() { return 0; }
     public ArrayList<Projectile> getListOfProjectiles() { return null; }
     public float getEnemiesFirePower() { return 0f; }
@@ -185,9 +186,9 @@ public abstract class Card implements Serializable {
     public void setId(int id) { this.id = id; }
     public Penalty getPenalty() { return null; }
     public String getFilePath() { return filePath; }
-
     @Override
     public String toString() {
         return "id: " + id + " level: " + level + ", required days: " + requiredDays;
     }
+    public void playerLanded(String playerName){}
 }

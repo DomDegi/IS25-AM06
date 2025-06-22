@@ -103,7 +103,7 @@ public class GoodsManager {
         this.possibleGoodsGain=possibleGoodsGain;
         this.state=0;
         this.goodsToGet=0;
-        this.coordinatesToPut=new Coordinates(0,0);
+        this.coordinatesToPut=null;
     }
     /**
      * Stops the positioning of cargo and finalizes any necessary changes
@@ -132,7 +132,7 @@ public class GoodsManager {
     public void chooseGoods(int chose) {
         if (state == 0) {
             this.goodsToGet = chose;
-        }else {
+        } else {
             swapGoods(chose);
         }
     }
@@ -157,7 +157,9 @@ public class GoodsManager {
     public void pickGoods() {
         if (currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut).isEmpty()) {
             view.showGenericMessage("\nCargo Hold is empty");
+            return;
         }
+        cargo=new ArrayList<>(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
         view.goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
         view.showGenericMessage("Input witch good to pick:");
         changes.add((CargoHold)currentPlayer.getShipBoard().getTile(coordinatesToPut).send());
@@ -235,8 +237,9 @@ public class GoodsManager {
                         return;
                     }
                     view.goodsPrinter(possibleGoodsGain);
-                        view.showGenericMessage("Chose for each good where to put it, input 'no' to stop:\n");
-                        goodsToGet=0;
+                    view.showGenericMessage("Chose for each good where to put it, input 'no' to stop:\n");
+                    goodsToGet = 0;
+                    coordinatesToPut=null;
                     return;
                 } else if (positioned == 1) {
                     if(possibleGoodsGain.get(goodsToGet - 1).getColor()==GoodsColor.BLUE){
@@ -256,6 +259,7 @@ public class GoodsManager {
                 } else if (positioned == -1) {
                     view.wrongLocalInput();
                     goodsToGet=0;
+                    coordinatesToPut=null;
                     return;
                 }
             } else {
@@ -284,14 +288,13 @@ public class GoodsManager {
      */
     public void swapGoods(int chose) {
         cargo =new ArrayList<>(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
-        if(cargo.isEmpty())
-        {
-            state =0;
+        if(cargo.isEmpty()) {
+            state = 0;
+            cargo=null;
+            coordinatesToPut=null;
             getReward();
             return;
         }
-        view.showGenericMessage("you're trying to swap the goods\n");
-
         Goods goodToSwap;
         switch (chose){
             case 0:
@@ -300,7 +303,7 @@ public class GoodsManager {
                 return;
             case 1:
                 if(cargo.isEmpty()) {
-                    view.goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
+                    view.goodsPrinter(cargo);
                     view.showGenericMessage("Non dovrei essere qui\n");
                     return;
                 }
@@ -310,7 +313,7 @@ public class GoodsManager {
             case 2:
                 if(cargo.size()<2) {
                     view.wrongLocalInput();
-                    view.goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
+                    view.goodsPrinter(cargo);
                     view.showGenericMessage("Chose what good to swap, input 'no' to stop\n");
                     return;
                 }
@@ -320,16 +323,26 @@ public class GoodsManager {
             case 3:
                 if(cargo.size()<3) {
                     view.wrongLocalInput();
-                    view.goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
+                    view.goodsPrinter(cargo);
                     view.showGenericMessage("Chose what good to swap, input 'no' to stop\n");
                     return;
                 }
                 goodToSwap= cargo.get(2);
                 currentPlayer.getShipBoard().removeGood(cargo.get(2), coordinatesToPut);
                 break;
+            case 4:
+                if(cargo.size()<4) {
+                    view.wrongLocalInput();
+                    view.goodsPrinter(cargo);
+                    view.showGenericMessage("Chose what good to swap, input 'no' to stop\n");
+                    return;
+                }
+                goodToSwap= cargo.get(3);
+                currentPlayer.getShipBoard().removeGood(cargo.get(3), coordinatesToPut);
+                break;
             default:
                 view.wrongLocalInput();
-                view.goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
+                view.goodsPrinter(cargo);
                 view.showGenericMessage("Chose what good to swap, input 'no' to stop\n");
                 return;
         }
@@ -343,8 +356,9 @@ public class GoodsManager {
         view.showGenericMessage("Planet:\n");
         view.goodsPrinter(possibleGoodsGain);
         cargo=null;
+        coordinatesToPut=null;
         view.showGenericMessage("Chose for each good where to put it[first the good, then x y], input 'done' to stop,'x y' to pick one good from your cargo:\n\n");
-        state =0;
+        state = 0;
     }
 
     /**

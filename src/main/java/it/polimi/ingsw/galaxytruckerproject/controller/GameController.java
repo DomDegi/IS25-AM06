@@ -1251,6 +1251,10 @@ public class GameController implements Observer, Serializable {
             }
         }
         playersToEarlyLand.clear();
+        if (game.getListOfInFlightPlayers().isEmpty()) {
+            concludeGame();
+            return;
+        }
         if(game.getFlightBoard().concludeMovement() &&game.getListOfInFlightPlayers()!=null&& !game.getListOfInFlightPlayers().isEmpty() ) {
             int i = 0;
             Player currentPlayer =  game.getListOfInFlightPlayers().getFirst();
@@ -1258,6 +1262,7 @@ public class GameController implements Observer, Serializable {
                 i++;
                 if (i > game.getListOfInFlightPlayers().size() - 1) {
                     concludeGame();
+                    return;
                 }
                 currentPlayer = game.getListOfInFlightPlayers().get(i);
             }
@@ -1341,8 +1346,9 @@ public class GameController implements Observer, Serializable {
         }
         else if (game.getGameState() == GameState.CARD_EVENT) {
             playersToEarlyLand.add(player);
+        //    game.getDrawnCard().playerLanded(playerName);
         }
-        updatePlayerView(ClientState.WAIT, playerName);
+        // updatePlayerView(WAIT, playerName);
     }
 
 
@@ -1494,7 +1500,7 @@ public class GameController implements Observer, Serializable {
         ArrayList<Player> coolestPlayers = new ArrayList<>();
         coolestPlayers.add(game.getFlightBoard().getAllPlayers().getFirst());
         for(Player player : game.getFlightBoard().getAllPlayers()){
-            if (player.getShipBoard().countExposedConnectors() > coolestPlayers.getFirst().getShipBoard().countExposedConnectors()){
+            if (player.getShipBoard().countExposedConnectors() < coolestPlayers.getFirst().getShipBoard().countExposedConnectors()){
                 coolestPlayers.clear();
                 coolestPlayers.add(player);
             }

@@ -238,14 +238,14 @@ public class CardsController {
     public void initialize() {
         ClientState state = GUI.getController().getState();
         mainBox.getChildren().clear();
-        text.setText("Waiting for other players...");
+        text.setText("Waiting...");
         modeChange();
         flightBoard();
         shipBoard(state);
         showCard();
         deck.setDisable(GUI.getController().getState()!=ClientState.DRAW_CARD);
         landButton.setVisible(true);
-        landButton.setDisable(GUI.getController().getState()==ClientState.DRAW_CARD||GUI.getController().getState()==ClientState.WAIT||GUI.getController().getState()==ClientState.WAIT_TO_DRAW);
+        landButton.setDisable(GUI.getController().getState()==ClientState.DRAW_CARD||GUI.getController().getState()==ClientState.WAIT_TO_DRAW);
         switch (state){
             case DRAW_CARD-> showDrawCard();
             case ACTION -> showAction();
@@ -253,7 +253,8 @@ public class CardsController {
             case MANAGE_GOODS -> showManageGoods();
             case COORD_REQUEST -> showCoordRequest();
             case ROLL_DICE -> showRollDice();
-            case WAIT_TO_DRAW-> text.setText("Waiting for other players...");
+            case WAIT_TO_DRAW-> text.setText("Waiting for other players to Draw......");
+            case LANDING -> text.setText("You have Landed");
         }
     }
 
@@ -389,7 +390,7 @@ public class CardsController {
      */
     private void waitOthers(){
         mainBox.getChildren().clear();
-        text.setText("Waiting for other players...");
+        text.setText("Waiting...");
     }
 
     /**
@@ -558,145 +559,31 @@ public class CardsController {
                         if(type!=null)
                             switch (type){
                                 case CHOOSE_TO_BREAK,CHOOSE_TO_MAINTAIN -> {
-                                    imageView.setDisable(false);
-                                    imageView.setOnMouseClicked(_ -> {
-                                        GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                                        initialize();
-                                    });
-                                    hBox.setDisable(false);
-                                    hBox.setOnMouseClicked(_ -> {
-                                        GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                                        initialize();
-                                    });
-                                    hBox1.setDisable(false);
-                                    hBox1.setOnMouseClicked(_ -> {
-                                        GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                                        initialize();
-                                    });
-                                    vBox.setDisable(false);
-                                    vBox.setOnMouseClicked(_ -> {
-                                        GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                                        initialize();
-                                    });
+                                    setupCoordsChoice(imageView,hBox,vBox,hBox1,tile);
                                 }
                                 case CHOOSE_BATTERY -> {
                                     if(tile instanceof BatteryComponents && tile.getNumBatteries()!=0) {
-                                        imageView.setDisable(false);
-                                        imageView.setOnMouseClicked(_ -> {
-                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                                            initialize();
-                                        });
-                                        hBox.setDisable(false);
-                                        hBox.setOnMouseClicked(_ -> {
-                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                                            initialize();
-                                        });
-                                        hBox1.setDisable(false);
-                                        hBox1.setOnMouseClicked(_ -> {
-                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                                            initialize();
-                                        });
-                                        vBox.setDisable(false);
-                                        vBox.setOnMouseClicked(_ -> {
-                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                                            initialize();
-                                        });
+                                        setupCoordsChoice(imageView,hBox,vBox,hBox1,tile);
                                     }
                                 }
                                 case CHOOSE_DOUBLE_CANNON ->{
-                                    if(tile instanceof BatteryComponents && tile.getNumBatteries()!=0||tile instanceof DoubleCannon) {
-                                        imageView.setDisable(false);
-                                        imageView.setOnMouseClicked(_ -> {
-                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                                            initialize();
-                                        });
-                                        hBox.setDisable(false);
-                                        hBox.setOnMouseClicked(_ -> {
-                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                                            initialize();
-                                        });
-                                        hBox1.setDisable(false);
-                                        hBox1.setOnMouseClicked(_ -> {
-                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                                            initialize();
-                                        });
-                                        vBox.setDisable(false);
-                                        vBox.setOnMouseClicked(_ -> {
-                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                                            initialize();
-                                        });
+                                    if((tile instanceof BatteryComponents && tile.getNumBatteries()!=0 &&GUI.getController().getCoordInputManager().getNeeded()!=0||tile instanceof DoubleCannon)&&!GUI.getController().getCoordInputManager().getCoordinatesUsed().contains(tile.getCoordinates())) {
+                                        setupCoordsChoice(imageView,hBox,vBox,hBox1,tile);
                                     }
                                 }
                                 case CHOOSE_DOUBLE_ENGINE -> {
-                                    if (tile instanceof BatteryComponents && tile.getNumBatteries()!=0 || tile instanceof DoubleEngine) {
-                                        imageView.setDisable(false);
-                                        imageView.setOnMouseClicked(_ -> {
-                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                                            initialize();
-                                        });
-                                        hBox.setDisable(false);
-                                        hBox.setOnMouseClicked(_ -> {
-                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                                            initialize();
-                                        });
-                                        hBox1.setDisable(false);
-                                        hBox1.setOnMouseClicked(_ -> {
-                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                                            initialize();
-                                        });
-                                        vBox.setDisable(false);
-                                        vBox.setOnMouseClicked(_ -> {
-                                            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                                            initialize();
-                                        });
+                                    if ((tile instanceof BatteryComponents && tile.getNumBatteries()!=0 &&GUI.getController().getCoordInputManager().getNeeded()!=0|| tile instanceof DoubleEngine)&&!GUI.getController().getCoordInputManager().getCoordinatesUsed().contains(tile.getCoordinates())) {
+                                        setupCoordsChoice(imageView,hBox,vBox,hBox1,tile);
                                     }
                                 }
                                 case CHOOSE_CREW -> {
                                    if(tile instanceof Cabin && tile.getCrew()!=0){
-                                       imageView.setDisable(false);
-                                       imageView.setOnMouseClicked(_ -> {
-                                           GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                                           initialize();
-                                       });
-                                       hBox.setDisable(false);
-                                       hBox.setOnMouseClicked(_ -> {
-                                           GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                                           initialize();
-                                       });
-                                       hBox1.setDisable(false);
-                                       hBox1.setOnMouseClicked(_ -> {
-                                           GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                                           initialize();
-                                       });
-                                       vBox.setDisable(false);
-                                       vBox.setOnMouseClicked(_ -> {
-                                           GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                                           initialize();
-                                       });
+                                       setupCoordsChoice(imageView,hBox,vBox,hBox1,tile);
                                    }
                                 }
                                 case REMOVE_GOODS -> {
                                    if(tile instanceof CargoHold && !tile.getCargo().isEmpty()||tile instanceof BatteryComponents && tile.getNumBatteries()!=0){
-                                       imageView.setDisable(false);
-                                       imageView.setOnMouseClicked(_ -> {
-                                           GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                                           initialize();
-                                       });
-                                       hBox.setDisable(false);
-                                       hBox.setOnMouseClicked(_ -> {
-                                           GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                                           initialize();
-                                       });
-                                       hBox1.setDisable(false);
-                                       hBox1.setOnMouseClicked(_ -> {
-                                           GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                                           initialize();
-                                       });
-                                       vBox.setDisable(false);
-                                       vBox.setOnMouseClicked(_ -> {
-                                           GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
-                                           initialize();
-                                       });
+                                       mageGoodRemoval(imageView,hBox,vBox,hBox1,tile);
                                    }
                                 }
                             }
@@ -749,6 +636,7 @@ public class CardsController {
                     element.setDisable(true);
                     element.setFitWidth(30);
                     element.setFitHeight(60);
+                    hBox.setSpacing(1);
                     hBox.rotateProperty().setValue(tile.getRotation()*90);
                     hBox.getChildren().add(element);
                 }
@@ -773,10 +661,10 @@ public class CardsController {
                         for (int i=cargo.size();i>2;i--){
                             ImageView element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoRed.png"))));
                             switch (cargo.get(i-1).getColor()){
-                                case RED -> element=new ImageView(new Image(getClass().getResourceAsStream("/images/grafiche/cargoRed.png")));
-                                case YELLOW -> element=new ImageView(new Image(getClass().getResourceAsStream("/images/grafiche/cargoYellow.png")));
-                                case GREEN ->element=new ImageView(new Image(getClass().getResourceAsStream("/images/grafiche/cargoGreen.png")));
-                                case BLUE -> element=new ImageView(new Image(getClass().getResourceAsStream("/images/grafiche/cargoBlue.png")));
+                                case RED -> element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoRed.png"))));
+                                case YELLOW -> element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoYellow.png"))));
+                                case GREEN ->element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoGreen.png"))));
+                                case BLUE -> element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoBlue.png"))));
                             }
                             element.setDisable(true);
                             element.setFitWidth(30);
@@ -797,7 +685,6 @@ public class CardsController {
                             hBox.getChildren().add(element);
                             hBox1.setPrefSize(40,40);
                         }
-                        vBox.rotateProperty().setValue(tile.getRotation()*90);
                         stackPane.getChildren().add(vBox);
                         vBox.getChildren().addAll(hBox1,hBox);
                     }
@@ -805,6 +692,76 @@ public class CardsController {
                     stackPane.getChildren().add(hBox);
                 }
                 tilesTable.add(stackPane,tile.getCoordinates().getY(),tile.getCoordinates().getX());
+            }
+        }
+    }
+
+    /**
+     * Configures the given UI components (ImageView, HBox, VBox, and another HBox)
+     * to enable user interaction by setting their disable state to false and
+     * assigning click event handlers. Each click event handler triggers the
+     * selection of the specified tile's coordinates and re-initializes the GUI.
+     *
+     * @param imageView the ImageView to be configured for user interaction
+     * @param hBox the first HBox to be configured for user interaction
+     * @param vBox the VBox to be configured for user interaction
+     * @param hBox1 the second HBox to be configured for user interaction
+     * @param tile the Tile object whose coordinates will be selected upon interaction
+     */
+    private void setupCoordsChoice(ImageView imageView, HBox hBox, VBox vBox, HBox hBox1, Tile tile){
+        imageView.setDisable(false);
+        imageView.setOnMouseClicked(_ -> {
+            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+            initialize();
+        });
+        hBox.setDisable(false);
+        hBox.setOnMouseClicked(_ -> {
+            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+            initialize();
+        });
+        hBox1.setDisable(false);
+        hBox1.setOnMouseClicked(_ -> {
+            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+            initialize();
+        });
+        vBox.setDisable(false);
+        vBox.setOnMouseClicked(_ -> {
+            GUI.selectTile(tile.getCoordinates().getX(), tile.getCoordinates().getY());
+            initialize();
+        });
+    }
+
+    /**
+     * Handles the removal of goods from the light ship’s cargo hold, based on the goods present in the ship's cargo and the tile's coordinates.
+     * The method prioritizes removal of goods based on their colors in the following order: RED, YELLOW, GREEN, BLUE.
+     * If no goods remain in the cargo hold, it checks if the tile contains any batteries for further action.
+     *
+     * @param imageView the ImageView that is part of the graphical user interface and is involved in the setup process.
+     * @param hBox the HBox layout representing a horizontal box used to hold visual components during the setup process.
+     * @param vBox the VBox layout representing a vertical box used to hold visual components during the setup process.
+     * @param hBox1 an additional HBox layout used for another section of the graphical interface during the setup process.
+     * @param tile the Tile instance representing the current tile being processed, which includes its coordinates and battery count.
+     */
+    private void mageGoodRemoval(ImageView imageView,HBox hBox, VBox vBox, HBox hBox1, Tile tile){
+        if(!GUI.getController().getLightShipBoard().cargoHoldContainsGood(new Goods(GoodsColor.RED)).isEmpty()){
+            if(GUI.getController().getLightShipBoard().cargoHoldContainsGood(new Goods(GoodsColor.RED)).contains(tile.getCoordinates())) {
+                setupCoordsChoice(imageView,hBox,vBox,hBox1,tile);
+            }
+        } else if(!GUI.getController().getLightShipBoard().cargoHoldContainsGood(new Goods(GoodsColor.YELLOW)).isEmpty()&&GUI.getController().getLightShipBoard().cargoHoldContainsGood(new Goods(GoodsColor.RED)).isEmpty()){
+            if(GUI.getController().getLightShipBoard().cargoHoldContainsGood(new Goods(GoodsColor.YELLOW)).contains(tile.getCoordinates())) {
+                setupCoordsChoice(imageView,hBox,vBox,hBox1,tile);
+            }
+        } else if(!GUI.getController().getLightShipBoard().cargoHoldContainsGood(new Goods(GoodsColor.GREEN)).isEmpty()&&GUI.getController().getLightShipBoard().cargoHoldContainsGood(new Goods(GoodsColor.RED)).isEmpty()&&GUI.getController().getLightShipBoard().cargoHoldContainsGood(new Goods(GoodsColor.YELLOW)).isEmpty()){
+            if(GUI.getController().getLightShipBoard().cargoHoldContainsGood(new Goods(GoodsColor.GREEN)).contains(tile.getCoordinates())) {
+                setupCoordsChoice(imageView,hBox,vBox,hBox1,tile);
+            }
+        } else if(!GUI.getController().getLightShipBoard().cargoHoldContainsGood(new Goods(GoodsColor.BLUE)).isEmpty()&&GUI.getController().getLightShipBoard().cargoHoldContainsGood(new Goods(GoodsColor.RED)).isEmpty()&&GUI.getController().getLightShipBoard().cargoHoldContainsGood(new Goods(GoodsColor.YELLOW)).isEmpty()&&GUI.getController().getLightShipBoard().cargoHoldContainsGood(new Goods(GoodsColor.GREEN)).isEmpty()) {
+            if (GUI.getController().getLightShipBoard().cargoHoldContainsGood(new Goods(GoodsColor.BLUE)).contains(tile.getCoordinates())) {
+                setupCoordsChoice(imageView,hBox,vBox,hBox1,tile);
+            }
+        } else if(GUI.getController().getLightShipBoard().cargoHoldContainsGood(new Goods(GoodsColor.RED)).isEmpty()&&GUI.getController().getLightShipBoard().cargoHoldContainsGood(new Goods(GoodsColor.YELLOW)).isEmpty()&&GUI.getController().getLightShipBoard().cargoHoldContainsGood(new Goods(GoodsColor.GREEN)).isEmpty()&&GUI.getController().getLightShipBoard().cargoHoldContainsGood(new Goods(GoodsColor.BLUE)).isEmpty()){
+            if(tile.getNumBatteries()>0) {
+                setupCoordsChoice(imageView,hBox,vBox,hBox1,tile);
             }
         }
     }
@@ -846,14 +803,31 @@ public class CardsController {
         Platform.runLater(() -> {
             CoordReqType type = GUI.getController().getCoordInputManager().getCoordReqType();
             if(GUI.getController().getCoordInputManager().getCoordReqType()!=null) {
-                if (type == CHOOSE_TO_BREAK || type == CHOOSE_BATTERY || type == CHOOSE_DOUBLE_CANNON || type == CHOOSE_DOUBLE_ENGINE) {
-                    Button doneButton = new Button("Done");
-                    doneButton.setPrefSize(100, 75);
-                    doneButton.setOnAction(_ -> doneCoord());
-                    mainBox.getChildren().add(doneButton);
+                switch (type) {
+                    case CHOOSE_DOUBLE_CANNON,CHOOSE_DOUBLE_ENGINE->{
+                        if(GUI.getController().getCoordInputManager().getNeeded()==0) {
+                            Button doneButton = new Button("Done");
+                            doneButton.setPrefSize(100, 75);
+                            doneButton.setOnAction(_ -> doneCoord());
+                            mainBox.getChildren().add(doneButton);
+                        }
+                    }
+                    case CHOOSE_TO_BREAK->{
+                        if(GUI.getController().getCoordInputManager().getNeeded()!=0) {
+                            Button doneButton = new Button("Done");
+                            doneButton.setPrefSize(100, 75);
+                            doneButton.setOnAction(_ -> doneCoord());
+                            mainBox.getChildren().add(doneButton);
+                        }
+                        landButton.setVisible(false);
+                    }
+                    case CHOOSE_BATTERY-> {
+                        Button doneButton = new Button("Done");
+                        doneButton.setPrefSize(100, 75);
+                        doneButton.setOnAction(_ -> doneCoord());
+                        mainBox.getChildren().add(doneButton);
+                    }
                 }
-                if(type==CHOOSE_TO_BREAK)
-                    landButton.setVisible(false);
                 text.setText(type.toString());
             }
         });
@@ -876,7 +850,7 @@ public class CardsController {
             Button yesButton=new Button("Yes");
             yesButton.setPrefSize(100,75);
             yesButton.setOnAction(_->yes());
-            Button noButton=new Button("no");
+            Button noButton=new Button("No");
             noButton.setPrefSize(100,75);
             noButton.setOnAction(_->no());
             mainBox.getChildren().addAll(yesButton,noButton);
@@ -946,55 +920,49 @@ public class CardsController {
         Platform.runLater(() -> {
             int index=0;
             mainBox.getChildren().clear();
-            for(Planet planet:GUI.displayableCards().getFirst().getListOfPlanets()){
-                if(GUI.getController().getAvailablePlanets().get(index)) {
-                    Button button = new Button();
-                    button.setPrefSize(200, 75);
-                    button.setText((index + 1) + "° Planet");
-                    int finalIndex = index;
-                    button.setOnAction(_ -> choosePlanet(finalIndex));
-                    button.setDisable(planet.getOccupationStatus());
-                    mainBox.getChildren().add(button);
-                }
+            for(Planet _:GUI.displayableCards().getFirst().getListOfPlanets()){
+                Button button = new Button();
+                button.setPrefSize(200, 75);
+                button.setText((index + 1) + "° Planet");
+                int finalIndex = index;
+                button.setOnAction(_ -> choosePlanet(finalIndex+1));
+                button.setDisable(!GUI.getController().getAvailablePlanets().get(index));
+                mainBox.getChildren().add(button);
                 index++;
             }
+            Button button = new Button();
+            button.setPrefSize(200, 75);
+            button.setText("Refuse");
+            button.setOnAction(_ -> choosePlanet(0));
+            mainBox.getChildren().add(button);
             text.setText("Choose a Planet");
         });
     }
 
     /**
-     * Displays the "Manage Goods" interface in the application.
-     * This method dynamically creates and updates the UI components for managing goods,
-     * depending on whether the user is managing their own cargo or the goods available on the planet.
-     * Buttons are generated for each good, allowing the user to interact with individual goods,
-     * and a "Done" button is provided for completing the management process.
-
-     * Behavior:
-     * - If the user's cargo is not empty, displays a list of goods from the player's inventory.
-     * - If the user's cargo is empty, displays a list of goods available on the planet.
-     * - Each good is displayed as a button, labeled with its corresponding color (BLUE, GREEN,
-     *   RED, or YELLOW). Clicking a button triggers actions to select the good and update the UI.
-     * - The "Done" button becomes visible only if the user's cargo is empty and is used to
-     *   finalize the process.
-
-     * UI Elements:
-     * - Buttons representing each good, dynamically sized and labeled based on the goods' attributes.
-     * - A "Done" button to complete goods management, which is conditionally visible.
-     * - Labels displaying context-based information ("Your Goods" or "Planet's Goods").
-     * - A layout consisting of an HBox for organizing the goods and controls, and a VBox for
-     *   grouping individual good buttons.
-
-     * Updates:
-     * - The view is updated based on user actions (e.g., selecting a good or finalizing management).
-     * - Text description of the current activity is updated to "Manage your Goods."
-
-     * Threading:
-     * - Utilizes `Platform.runLater` to ensure updates to the JavaFX UI occur on the JavaFX Application Thread.
+     * Displays and manages the goods interface in the application.
+     * This method is responsible for dynamically creating and updating UI components
+     * related to goods, allowing users to view and manage their cargo or goods.
+     * The UI is updated on the JavaFX application thread using {@code Platform.runLater()}.
+     *
+     * The interface includes:
+     * - A "Done" button with an event handler that triggers the completion of goods management.
+     * - A dynamically created list of buttons for interacting with goods, displayed in a horizontal box.
+     * - Logic for differentiating between user-owned goods and the general goods list based on whether
+     *   the cargo is null or empty.
+     *
+     * The main functionality includes:
+     * - Hiding or showing the "Done" button depending on whether the user has cargo.
+     * - Creating buttons for each good, with their behavior contingent on whether the goods are part of
+     *   user-owned cargo or available for selection.
+     * - Adding UI components into hierarchical containers such as {@code HBox} and {@code VBox} for layout management.
+     *
+     * The method concludes by updating the main UI container {@code mainBox} and setting the appropriate text label.
      */
     private void showManageGoods(){
         Platform.runLater(() -> {
             Button doneButton=new Button("Done");
-            doneButton.setPrefSize(100,75);
+            doneButton.setMinSize(200,75);
             doneButton.setOnAction(_->GUI.doneGoods());
             HBox box=new HBox();
             box.setAlignment(Pos.CENTER);
@@ -1006,45 +974,14 @@ public class CardsController {
                 doneButton.setVisible(false);
                 goodsBox.getChildren().add(new Label("Yours Goods:"));
                 for (Goods goods : GUI.getController().getGoodsManager().getCargo()) {
-                    Button button = new Button();
-                    button.setPrefSize(200, 75);
-                    if (goods.getColor() == GoodsColor.BLUE)
-                        button.setText("BLUE");
-                    else if (goods.getColor() == GoodsColor.GREEN)
-                        button.setText("GREEN");
-                    else if (goods.getColor() == GoodsColor.RED)
-                        button.setText("RED");
-                    else if (goods.getColor() == GoodsColor.YELLOW)
-                        button.setText("YELLOW");
-                    int finalIndex1 = index;
-                    button.setOnAction(_ -> {
-                        chooseGood(finalIndex1);
-                        initialize();
-                    });
-                    goodsBox.getChildren().add(button);
+                    goodsBox.getChildren().add(goodsButtons(goods,index,true));
                     index++;
                 }
             }else{
                 doneButton.setVisible(true);
-                goodsBox.getChildren().add(new Label("Planet's Goods:"));
+                goodsBox.getChildren().add(new Label("Goods:"));
                 for(Goods goods:GUI.getController().getGoodsList()){
-                    Button button= new Button();
-                    button.setPrefSize(200,75);
-                    if(goods.getColor()== GoodsColor.BLUE)
-                        button.setText("BLUE");
-                    else if(goods.getColor()== GoodsColor.GREEN)
-                        button.setText("GREEN");
-                    else if(goods.getColor()== GoodsColor.RED)
-                        button.setText("RED");
-                    else if(goods.getColor()== GoodsColor.YELLOW)
-                        button.setText("YELLOW");
-                    int finalIndex = index;
-                    button.setOnAction(_ -> {
-                        chooseGood(finalIndex);
-                        visible = false;
-                        initialize();
-                    });
-                    goodsBox.getChildren().add(button);
+                    goodsBox.getChildren().add(goodsButtons(goods,index,false));
                     index++;
                 }
             }
@@ -1053,6 +990,39 @@ public class CardsController {
             mainBox.setVisible(visible);
             text.setText("Manage your Goods");
         });
+    }
+
+
+    /**
+     * Creates and returns a Button with an image corresponding to the color of the given goods.
+     * The button will perform specific actions when clicked, such as selecting the goods
+     * and updating visibility.
+     *
+     * @param goods       the goods object used to determine the image of the button
+     * @param index       the index associated with the goods, used for further processing
+     * @param thenVisible a boolean flag used to determine visibility after the button action
+     * @return a Button with a corresponding image and action behavior
+     */
+    private Button goodsButtons(Goods goods,int index,boolean thenVisible){
+        ImageView imageView=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoRed.png"))));
+        imageView.setFitHeight(50);
+        imageView.setFitWidth(50);
+        if(goods.getColor()== GoodsColor.BLUE)
+            imageView=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoBlue.png"))));
+        else if(goods.getColor()== GoodsColor.GREEN)
+            imageView=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoGreen.png"))));
+        else if(goods.getColor()== GoodsColor.RED)
+            imageView=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoRed.png"))));
+        else if(goods.getColor()== GoodsColor.YELLOW)
+            imageView=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoYellow.png"))));
+        Button button= new Button("",imageView);
+        button.setPrefSize(200,75);
+        button.setOnAction(_ -> {
+            chooseGood(index);
+            visible = thenVisible;
+            initialize();
+        });
+        return button;
     }
 
     /**

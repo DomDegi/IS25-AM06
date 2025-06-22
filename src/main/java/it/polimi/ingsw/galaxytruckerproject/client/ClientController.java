@@ -9,7 +9,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Planet;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.Planets;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
@@ -20,6 +19,7 @@ import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import it.polimi.ingsw.galaxytruckerproject.view.TUI;
+import javafx.application.Platform;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -39,6 +39,12 @@ import java.util.*;
  * </p>
  */
 public class ClientController {
+    /**
+     * A constant boolean flag indicating if a process, task, or state
+     * has ended or completed. The default value is set to {@code false},
+     * representing that the process is not concluded.
+     */
+    private boolean ended=false;
 
     /**
      * Represents the current state of the client (e.g., login, waiting for server, etc.).
@@ -200,6 +206,8 @@ public class ClientController {
      * a flag to use the buildShip comand only one time
      */
     private boolean built=false;
+    private String ipR=null;
+    private String ipS=null;
 
     /**
      * Default constructor, initializing the client controller with default values.
@@ -365,35 +373,12 @@ public class ClientController {
     public boolean leaveGame() {
         if (gameMode != null) {
             try {
-                virtualController.leaveGame();
-                positioned=false;
-                this.checking= null;
-                this.numPlayer = 0;
-                this.gameInfo = new ArrayList<>();
-                this.view = new TUI();
-                this.deck = new HashMap<>();
-                this.me = new LightPlayer("", null);
-                this.goodsList = new ArrayList<>();
-                this.flightBoard = new LightFlightboard(new FlightBoard(null));
-                this.inManager = false;
-                this.connected = false;
-                this.turnedTiles = new HashMap<>();
-                this.turnedTilesDisplayer=new ArrayList<>();
+                readyToPlay();
                 this.previousState = ClientState.CHOOSE_UI;
                 this.state = ClientState.LOGIN;
-                this.phase = GamePhases.LOGIN;
-                this.availableDeck = new HashMap<>(3);
-                availableDeck.put(1, Boolean.TRUE);
-                availableDeck.put(2, Boolean.TRUE);
-                availableDeck.put(3, Boolean.TRUE);
-                this.availableColors = new HashMap<>(4);
-                availableColors.put(PlayersColor.RED, Boolean.TRUE);
-                availableColors.put(PlayersColor.YELLOW, Boolean.TRUE);
-                availableColors.put(PlayersColor.GREEN, Boolean.TRUE);
-                availableColors.put(PlayersColor.BLUE, Boolean.TRUE);
-                this.indexDeckInHandOrPlanet = 0;
-                this.hourglassTurns = 0;
-                displayedCard = new ArrayList<>();
+                this.connected = false;
+                me.setPlayerName("");
+                virtualController.leaveGame();
                 return true;
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
@@ -404,6 +389,36 @@ public class ClientController {
             rollBackState();
         }
         return false;
+    }
+
+    public void readyToPlay() {
+        Platform.runLater(()->{
+            this.ended=false;
+            this.phase = GamePhases.LOGIN;
+            positioned=false;
+            this.checking= null;
+            this.numPlayer = 0;
+            this.gameInfo = new ArrayList<>();
+            this.deck = new HashMap<>();
+            this.me = new LightPlayer("", null);
+            this.goodsList = new ArrayList<>();
+            this.flightBoard = new LightFlightboard(new FlightBoard(null));
+            this.inManager = false;
+            this.turnedTiles = new HashMap<>();
+            this.turnedTilesDisplayer=new ArrayList<>();
+            this.availableDeck = new HashMap<>(3);
+            availableDeck.put(1, Boolean.TRUE);
+            availableDeck.put(2, Boolean.TRUE);
+            availableDeck.put(3, Boolean.TRUE);
+            this.availableColors = new HashMap<>(4);
+            availableColors.put(PlayersColor.RED, Boolean.TRUE);
+            availableColors.put(PlayersColor.YELLOW, Boolean.TRUE);
+            availableColors.put(PlayersColor.GREEN, Boolean.TRUE);
+            availableColors.put(PlayersColor.BLUE, Boolean.TRUE);
+            this.indexDeckInHandOrPlanet = 0;
+            this.hourglassTurns = 0;
+            displayedCard = new ArrayList<>();
+        });
     }
     /**
      * Allows the player to choose their color for the game.
@@ -773,6 +788,7 @@ public class ClientController {
         Card planet = displayedCard.getFirst();
         if (chose >= 0 && chose <= planet.getListOfPlanets().size()) {
             indexDeckInHandOrPlanet = chose;
+            displayedCard.getFirst().setGoodsList(me.getPlayerName(),chose);
             setState(ClientState.WAIT);
             try {
                 virtualController.planetChoiceRequest(chose);
@@ -1003,7 +1019,18 @@ public class ClientController {
             case WAIT_TO_DRAW ->
                     phase = GamePhases.CARDS;
             case DRAW_CARD -> phase = GamePhases.CARDS;
+            case PLANET_CHOICE ->{
+                if(displayedCard!=null&&!displayedCard.isEmpty()&&displayedCard.getFirst().getListOfPlanets()!=null) {
+                    int p=0;
+                    for(Planet _ : displayedCard.getFirst().getListOfPlanets()){
+                        if(!availablePlanets.containsKey(p))
+                            availablePlanets.put(p,Boolean.TRUE);
+                        p++;
+                    }
+                }
+            }
             case MANAGE_GOODS -> {
+                availablePlanets=new HashMap<>();
                 if (!inManager) {
                     me.getShipBoard().setGetStat();
                     this.goodsList =displayedCard.getFirst().getGoodsList(me.getPlayerName());
@@ -1013,18 +1040,13 @@ public class ClientController {
                 view.goodsPrinter(goodsList);
                 view.showGenericMessage("Chose for each good where to put it, input 'no' to stop:\n");
             }
+            case RECONNECTING ->
+                previousState=state;
         }
         try {
             view.setClientState(state);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
-        }
-        availablePlanets=new HashMap<>();
-        if(phase==GamePhases.CARDS&&displayedCard!=null&&!displayedCard.isEmpty()&&displayedCard.getFirst().getListOfPlanets()!=null) {
-            int p=1;
-            for(Planet _ : displayedCard.getFirst().getListOfPlanets()){
-                availablePlanets.put(p,Boolean.TRUE);
-            }
         }
     }
     /**
@@ -1451,10 +1473,7 @@ public class ClientController {
         if (player == null)
             return;
         for (Tile modTiles : tiles) {
-            player.getShipBoard().swapTile(Optional.of(modTiles));
-        }
-        if(isChecking()!=null){
-            view.checkShipboard(player.getShipBoard());
+            player.getShipBoard().swapTile(Optional.of(modTiles), modTiles.getCoordinates());
         }
     }
 
@@ -1694,16 +1713,20 @@ public class ClientController {
      * @throws RemoteException if a remote exception occurs during connection
      */
     public boolean connectRMI(String ip, int port) throws MalformedURLException, NotBoundException, RemoteException {
-        if(state != ClientState.CHOOSE_CONNECTION_TYPE && state != ClientState.CHOOSE_IP_AND_PORT_RMI){
+        if(state != ClientState.CHOOSE_CONNECTION_TYPE && state != ClientState.CHOOSE_IP_AND_PORT_RMI&& state != ClientState.RECONNECTING){
             return false;
         }
         VirtualViewRMI viewRMI = new VirtualViewRMI(this, view);
         if(ip == null || ip.isEmpty())
             ip="localhost";
+        if (port == 0)
+            port=1099;
+        this.ipR=ip;
         String url = String.format("rmi://%s:%d/ControllerFactory", ip, port);
         ControllerFactory controllerFactory = (ControllerFactory) Naming.lookup(url);
         this.virtualController = controllerFactory.createController();
         virtualController.setView(viewRMI);
+        setConnected(true);
         setState(ClientState.LOGIN);
         return true;
     }
@@ -1718,11 +1741,14 @@ public class ClientController {
      * @throws NotBoundException if the socket cannot be bound
      */
     public boolean connectSocket(String ip, int port) throws IOException, NotBoundException {
-        if(state != ClientState.CHOOSE_CONNECTION_TYPE && state != ClientState.CHOOSE_IP_AND_PORT_SOCKET){
+        if(state != ClientState.CHOOSE_CONNECTION_TYPE && state != ClientState.CHOOSE_IP_AND_PORT_SOCKET&& state != ClientState.RECONNECTING){
             return false;
         }
         if(ip == null || ip.isEmpty())
             ip="localhost";
+        if (port == 0)
+            port=12345;
+        this.ipS=ip;
         Socket server;
         try {
             server = new Socket(ip, port);
@@ -1744,6 +1770,7 @@ public class ClientController {
         serverHandler.setVirtualController(virtualController);
         serverHandler.setView(view);
         serverHandler.setClientController(this);
+        setConnected(true);
         setState(ClientState.LOGIN);
         return true;
     }
@@ -1756,6 +1783,8 @@ public class ClientController {
             virtualController.ping();  // Pings the server
             restartServerWatchdog();  // Restarts the watchdog timer
         } catch (RemoteException e) {
+            connected=false;
+            readyToPlay();
             this.setState(ClientState.RECONNECTING);
         }
     }
@@ -1772,6 +1801,8 @@ public class ClientController {
         serverWatchdogThread = new Thread(() -> {
             try {
                 Thread.sleep(30000);
+                readyToPlay();
+                connected=false;
                 this.setState(ClientState.RECONNECTING);
             } catch (InterruptedException ignored) {
             }
@@ -2287,17 +2318,42 @@ public class ClientController {
     }
 
     /**
-     * Assigns planets to a specified player and marks them as unavailable.
+     * Sets the number of planets and marks them as unavailable in the system.
      *
-     * @param player the name of the player to whom planets are being assigned
-     * @param planets the number of planets to assign
+     * @param planets the number of planets to be added to the system
      */
-    public void setPlanets(String player, int planets) {
-        availablePlanets.put(planets,Boolean.FALSE);
+    public void setPlanets( int planets) {
+        availablePlanets.put(planets-1,Boolean.FALSE);
     }
 
     public Map<Integer,Boolean> getAvailablePlanets() {
         return availablePlanets;
+    }
+
+    public void reconnect() {
+        if(ipR!=null) {
+            try {
+                connectRMI(ipR, 0);
+            } catch (MalformedURLException | NotBoundException | RemoteException e) {
+                view.showGenericMessage("Server offline");
+                setConnected(false);
+            }
+        }else if(ipS!=null){
+            try {
+                connectSocket(ipS,0);
+            } catch (IOException | NotBoundException e) {
+                view.showGenericMessage("Server offline");
+                setConnected(false);
+            }
+        }
+    }
+
+    public boolean isEnded() {
+        return ended;
+    }
+
+    public void setEnded(boolean ended) {
+        this.ended =ended;
     }
 }
 

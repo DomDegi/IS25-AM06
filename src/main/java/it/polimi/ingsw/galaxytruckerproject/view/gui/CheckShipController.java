@@ -51,7 +51,6 @@ public class CheckShipController {
      */
     public void setPlayer(LightShipBoard shipBoard) {
         // Set the ship image based on the game mode
-        shipBoard.setGetStat();
         if (GUI.getController().getGameMode() == GameMode.LEVEL2) {
             shipImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/grafiche/cardboard/cardboard-1b.jpg"))));
         } else if (GUI.getController().getGameMode() == GameMode.TRIAL) {
@@ -114,6 +113,7 @@ public class CheckShipController {
                     element.setDisable(true);
                     element.setFitWidth(51);
                     element.setFitHeight(102);
+                    hBox.setSpacing(1);
                     hBox.rotateProperty().setValue(tile.getRotation()*90);
                     hBox.getChildren().add(element);
                 }
@@ -129,8 +129,9 @@ public class CheckShipController {
                                 case BLUE -> element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoBlue.png"))));
                             }
                             element.setDisable(true);
-                            element.setFitWidth(34);
-                            element.setFitHeight(34);
+                            element.setFitWidth(51);
+                            element.setFitHeight(51);
+                            hBox.rotateProperty().setValue(tile.getRotation()*90);
                             hBox.getChildren().add(element);
                         }
                         stackPane.getChildren().add(hBox);
@@ -144,8 +145,8 @@ public class CheckShipController {
                                 case BLUE -> element=new ImageView(new Image(getClass().getResourceAsStream("/images/grafiche/cargoBlue.png")));
                             }
                             element.setDisable(true);
-                            element.setFitWidth(34);
-                            element.setFitHeight(34);
+                            element.setFitWidth(51);
+                            element.setFitHeight(51);
                             hBox1.getChildren().add(element);
                             hBox1.setPrefSize(68,68);
                         }for (int i=cargo.size()-2;i!=0;i--){

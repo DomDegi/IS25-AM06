@@ -274,4 +274,26 @@ public class AbandonedStation extends Card {
             won = false;
         }
     }
+
+    /**
+     * Handles the scenario when a player lands on the 'Smugglers' card and resolves
+     * the corresponding sequence of events based on game conditions.
+     *
+     * @param playerName the name of the player who landed on the card
+     */
+    @Override
+    public void playerLanded(String playerName) {
+        if (currentPlayer != null && playerName.equals(currentPlayer.getPlayerName())) {
+            if (removedCrew && won) {
+                ArrayList<Tile> updatedTile = currentPlayer.automaticGoodsPositioner(possibleGoodsGain);
+                notifyModifiedTiles(playerName, updatedTile);
+                game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
+                notifyMovement(currentPlayer);
+                game.endCardEvent();
+                return;
+            }
+            nextPlayer();
+            won = false;
+        }
+    }
 }

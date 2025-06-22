@@ -28,7 +28,7 @@
                      <children>
                          <Group fx:id="trialFlight">
                            <children>
-                              <ImageView fitHeight="223.0" fitWidth="326.0" layoutX="5.0" layoutY="53.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="313.0" fitWidth="493.0" layoutX="5.0" layoutY="53.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/grafiche/grafiche/cardboard/cardboard-3.png" />
                                  </image>
@@ -36,14 +36,14 @@
                                     <Rectangle2D />
                                  </viewport>
                               </ImageView>
-                              <Button layoutX="5.0" layoutY="9.0" mnemonicParsing="false" onAction="#endShip" prefHeight="46.0" prefWidth="85.0" text="End" />
-                               <Polygon fx:id="fourthTrial" fill="DODGERBLUE" layoutX="99.0" layoutY="80.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="153.4" scaleX="0.3" scaleY="0.3" stroke="BLACK" strokeType="INSIDE" />
-                               <Polygon fx:id="thirdTrial" fill="DODGERBLUE" layoutX="129.0" layoutY="71.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="168.7" scaleX="0.3" scaleY="0.3" stroke="BLACK" strokeType="INSIDE" />
-                               <Polygon fx:id="secondTrial" fill="DODGERBLUE" layoutX="160.0" layoutY="68.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="180.0" scaleX="0.3" scaleY="0.3" stroke="BLACK" strokeType="INSIDE" />
-                               <Polygon fx:id="firstTrial" accessibleRole="TEXT" fill="DODGERBLUE" layoutX="221.0" layoutY="73.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-162.5" scaleX="0.3" scaleY="0.3" stroke="BLACK" strokeType="INSIDE" />
+                              <Button layoutX="16.0" layoutY="71.0" mnemonicParsing="false" onAction="#endShip" prefHeight="46.0" prefWidth="85.0" text="End" />
+                               <Polygon fx:id="fourthTrial" fill="DODGERBLUE" layoutX="145.0" layoutY="100.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="153.4" scaleX="0.5" scaleY="0.5" stroke="BLACK" strokeType="INSIDE" />
+                               <Polygon fx:id="thirdTrial" fill="DODGERBLUE" layoutX="190.0" layoutY="87.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="168.7" scaleX="0.5" scaleY="0.5" stroke="BLACK" strokeType="INSIDE" />
+                               <Polygon fx:id="secondTrial" fill="DODGERBLUE" layoutX="237.0" layoutY="81.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="180.0" scaleX="0.5" scaleY="0.5" stroke="BLACK" strokeType="INSIDE" />
+                               <Polygon fx:id="firstTrial" accessibleRole="TEXT" fill="DODGERBLUE" layoutX="330.0" layoutY="90.0" points="-24.5, 12.5, 12.5, 37.5, 12.5, -12.5" rotate="-162.5" scaleX="0.5" scaleY="0.5" stroke="BLACK" strokeType="INSIDE" />
                            </children>
                         </Group>
-                        <Group fx:id="flightImage">
+                        <Group fx:id="flightImage" visible="false">
                            <children>
                               <ImageView fitHeight="223.0" fitWidth="326.0" layoutX="5.0" layoutY="53.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                                  <image>

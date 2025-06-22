@@ -104,7 +104,8 @@ public class Planets extends Card {
             ArrayList<Tile> updatedTiles = new ArrayList<>(updatedCargos);
             notifyModifiedTiles(playerName, updatedTiles);
             if (playerIndex == goodsChecker.size()) {
-                nextPlayer();
+                game.endCardEvent();
+                return;
             }
         } else {
             try {
@@ -125,24 +126,22 @@ public class Planets extends Card {
             } catch (Exception ignored) {}
             return;
         }
-        if (planet <= 0) {
-            nextPlayer();
-            return;
-        }
-        if (listOfPlanets.get(planet - 1).getOccupationStatus()) {
-            try {
-                currentPlayerView.showWrongInputMessage();
-            } catch (Exception ignored) {}
-            return;
-        }
+        if (planet > 0) {
+            if (listOfPlanets.get(planet - 1).getOccupationStatus()) {
+                try {
+                    currentPlayerView.showWrongInputMessage();
+                } catch (Exception ignored) {}
+                return;
+            }
+            listOfPlanets.get(planet - 1).setOccupationStatus();
+            playerChosenPlanets.put(playerName, listOfPlanets.get(planet - 1));
+            notifyPlayerLanded(playerName, planet);
+            goodsChecker.put(playerName, new GoodsChecker(currentPlayer, listOfPlanets.get(planet - 1).getListOfGoods()));
 
-        listOfPlanets.get(planet - 1).setOccupationStatus();
-        playerChosenPlanets.put(playerName, listOfPlanets.get(planet - 1));
-        notifyPlayerLanded(playerName, planet);
-        goodsChecker.put(playerName, new GoodsChecker(currentPlayer, listOfPlanets.get(planet - 1).getListOfGoods()));
-
-        if (playerIndex == game.getListOfInFlightPlayers().size() - 1) {
+        }
+        if (!goodsChecker.isEmpty()&& playerIndex >= game.getListOfInFlightPlayers().size() - 1) {
             chosen = true;
+            playerIndex = 0;
             for (Player player : game.getListOfInFlightPlayers()) {
                 try {
                     viewsMap.get(player.getPlayerName()).setClientState(
@@ -152,7 +151,6 @@ public class Planets extends Card {
                     );
                 } catch (Exception ignored) {}
             }
-            playerIndex = 0;
             return;
         }
 
@@ -174,25 +172,15 @@ public class Planets extends Card {
      * Advances to the next player in the list.
      */
     public void nextPlayer() {
-        playerIndex++;
-        if (playerIndex > game.getNumberOfPlayers() - 1) {
-            game.endCardEvent();
-            return;
-        }
 
-        chosen = false;
-        AtomicInteger occupied = new AtomicInteger();
-        listOfPlanets.forEach(p -> {
-            if (p.getOccupationStatus()) occupied.getAndIncrement();
-        });
-        if (occupied.get() == listOfPlanets.size()) {
+        playerIndex++;
+        if (playerIndex > game.getNumberOfPlayers() - 1&&!chosen) {
             game.endCardEvent();
             return;
         }
 
         currentPlayer = game.getListOfInFlightPlayers().get(playerIndex);
         currentPlayerView = viewsMap.get(currentPlayer.getPlayerName());
-        goodsChecker.clear();
 
         if (currentPlayer.IsDisconnected()) {
             nextPlayer();
@@ -210,6 +198,17 @@ public class Planets extends Card {
     @Override
     public ArrayList<Goods> getGoodsList(String playerName) {
         return playerChosenPlanets.get(playerName).getListOfGoods();
+    }
+
+    /**
+     * Sets the planet chosen by the player for managing goods.
+     *
+     * @param playerName the name of the player selecting the planet
+     * @param planet the index of the chosen planet (starting from 1)
+     */
+    @Override
+    public void setGoodsList(String playerName, int planet) {
+        playerChosenPlanets.put(playerName, listOfPlanets.get(planet - 1));
     }
 
     /**
@@ -302,7 +301,35 @@ public class Planets extends Card {
             }
             playerIndex++;
             if (playerIndex == goodsChecker.size()) {
-                nextPlayer();
+                game.endCardEvent();
+            }
+        }
+    }
+
+    /**
+     * Handles the scenario when a player lands on the 'Smugglers' card and resolves
+     * the corresponding sequence of events based on game conditions.
+     *
+     * @param playerName the name of the player who landed on the card
+     */
+    @Override
+    public void playerLanded(String playerName) {
+        if (currentPlayer != null && currentPlayer.getPlayerName().equals(playerName)) {
+            planetChoice(playerName,0);
+        }
+        else if (playerChosenPlanets.containsKey(playerName)) {
+            // Phase: managing goods — apply auto-assignment
+            Player player = game.identifyPlayerByName(playerName);
+            Planet chosenPlanet = playerChosenPlanets.get(playerName);
+            if (chosenPlanet != null) {
+                ArrayList<Tile> updatedTiles = player.automaticGoodsPositioner(chosenPlanet.getListOfGoods());
+                game.getFlightBoard().moveBackward(player, requiredDays);
+                notifyMovement(player);
+                notifyModifiedTiles(playerName, updatedTiles);
+            }
+            playerIndex++;
+            if (playerIndex == goodsChecker.size()) {
+                game.endCardEvent();
             }
         }
     }

@@ -684,6 +684,7 @@ public class ChooseCrewController {
      * - Loading and rendering tile images for the ship board in the GUI.
      */
     public void focus(){
+        GUI.getController().getMe().getShipBoard().setGetStat();
         shipBoard();
         index=GUI.getController().getCabinsManager().getIndex();
         if(index<cabins.size()) {
