@@ -753,7 +753,7 @@ public class GameController implements Observer, Serializable {
             return;
         }
         if (player.verifyAndSetupCrew(cabins)) {
-            player.getPlayerShip().setCompleted(true);
+            player.getShipBoard().setCompleted(true);
             notifyModifiedTiles(playerName, cabins);
             updatePlayerView(ClientState.WAIT, player.getPlayerName());
         }

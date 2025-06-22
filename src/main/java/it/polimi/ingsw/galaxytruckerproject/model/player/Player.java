@@ -633,9 +633,6 @@ public class Player implements PlayerInterface , Serializable {
         return isDisconnected;
     }
 
-    public ShipBoard getPlayerShip() {
-        return playerShip;
-    }
 
     public void setPlayerColor(PlayersColor playerColor) {
         this.playerColor = playerColor;

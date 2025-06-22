@@ -380,4 +380,11 @@ public class Controller implements ControllerInterface, Serializable {
         gameController.pong(nickname);
     }
 
+    //For testing purposes
+    public Controller(String playerName, GameController game,VirtualView view) {
+        this.nickname = playerName;
+        this.gameController = game;
+        this.view = view;
+        this.multiGameController = null;
+    }
 }
