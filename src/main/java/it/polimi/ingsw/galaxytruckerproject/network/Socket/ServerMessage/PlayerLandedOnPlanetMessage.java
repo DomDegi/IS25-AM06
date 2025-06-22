@@ -41,9 +41,7 @@ public class PlayerLandedOnPlanetMessage extends ServerMessage {
     @Override
     public void processMessage(ServerHandler serverHandler) {
         // If the current player has landed on a planet, change their state to "MANAGE_GOODS"
-        if (playerName.equals(serverHandler.getClientController().getName())) {
-            serverHandler.getClientController().setState(ClientState.MANAGE_GOODS);
-        }
+        serverHandler.getClientController().setPlanets(planet);
         try {
             // Notify the client about the player landing on the planet
             serverHandler.getView().notifyPlayerLandedOnPlanet(playerName, planet);
