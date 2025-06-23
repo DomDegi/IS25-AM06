@@ -2246,7 +2246,7 @@ public class ClientController {
         } catch (RemoteException e) {
             setOffline();
         }
-        Tile tile2=new CargoBlue(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web20.jpg",2,0);
+        Tile tile2=new CargoBlue(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web19.jpg",2,0);
         me.getShipBoard().positionTile(Optional.of(tile2), new Coordinates(2,2));
         try {
             virtualController.notifySetTile(tile2.send());
