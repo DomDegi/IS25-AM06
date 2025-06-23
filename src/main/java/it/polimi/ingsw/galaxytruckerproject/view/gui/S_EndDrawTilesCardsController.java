@@ -29,7 +29,7 @@ import static javafx.scene.paint.Color.rgb;
  * the progress bars (hourglasses), the ship image, the tiles and their placement, and the deck status.
  * </p>
  */
-public class S_EndDrawTilesCardsController {
+public class S_EndDrawTilesCardsController extends GUIControllers{
 
     /**
      * The ProgressBar UI control representing the first hourglass in the game.
@@ -480,7 +480,7 @@ public class S_EndDrawTilesCardsController {
      * - Refreshes the UI for drawn tiles, assigning appropriate images, rotation,
      *   and click event handlers for further interactions.
      */
-    public void update() {
+    public void updateEDTC() {
         drawnTiles1.getChildren().clear();
         drawnTiles2.getChildren().clear();
         int index = 1;

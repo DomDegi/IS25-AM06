@@ -14,7 +14,7 @@ import java.io.InputStream;
  * allowing the player to check the cards before proceeding with the game.
  * </p>
  */
-public class DeckCheckController {
+public class DeckCheckController extends GUIControllers{
 
     @FXML
     public ImageView imageView1;

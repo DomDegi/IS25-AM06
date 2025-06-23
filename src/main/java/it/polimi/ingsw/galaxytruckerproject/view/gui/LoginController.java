@@ -13,7 +13,7 @@ import javafx.scene.input.KeyEvent;
  * specifically the ENTER key, to submit the username and set it in the game.
  * </p>
  */
-public class LoginController {
+public class LoginController extends GUIControllers{
 
     @FXML
     public TextField username;

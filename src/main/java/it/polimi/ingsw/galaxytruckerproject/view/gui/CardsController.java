@@ -77,7 +77,7 @@ import static javafx.scene.paint.Color.*;
  *   involving the cards UI. It coordinates various player actions, updates the game state,
  *   and manages the visibility of UI elements.
  */
-public class CardsController {
+public class CardsController extends GUIControllers {
 
     /**
      * Indicates whether a certain element or component is visible.
@@ -258,6 +258,9 @@ public class CardsController {
         }
     }
 
+    public void updateCards(){
+        initialize();
+    }
     /**
      * Executes the logic for the "draw" action within the game.
 

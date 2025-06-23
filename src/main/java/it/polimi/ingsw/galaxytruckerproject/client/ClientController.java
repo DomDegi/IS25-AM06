@@ -294,7 +294,7 @@ public class ClientController {
             try {
                 virtualController.login(me.getPlayerName());
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                setOffline();
             }
         } else {
             view.wrongLocalInput();
@@ -374,17 +374,15 @@ public class ClientController {
         if (gameMode != null) {
             try {
                 readyToPlay();
-                this.previousState = ClientState.CHOOSE_UI;
-                this.state = ClientState.LOGIN;
-                this.connected = false;
                 me.setPlayerName("");
+                this.connected = false;
                 virtualController.leaveGame();
+                this.previousState = ClientState.CHOOSE_UI;
                 return true;
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                setOffline();
             }
-        }
-        else {
+        } else {
             view.wrongLocalInput();
             rollBackState();
         }
@@ -436,7 +434,7 @@ public class ClientController {
             try {
                 virtualController.chooseColor(color);
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                setOffline();
             }
         } else {
             view.wrongLocalInput();
@@ -612,7 +610,7 @@ public class ClientController {
             try {
                 virtualController.notifySetTile(this.tileInHand.send());
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                setOffline();
             }
             built=true;
             return true;
@@ -673,7 +671,7 @@ public class ClientController {
             try {
                 virtualController.notifyTileBooking();
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                setOffline();
             }
         }
         return true;
@@ -691,6 +689,7 @@ public class ClientController {
         if (gameMode == GameMode.LEVEL2) {
             if (chose > 0 && chose <= numPlayer) {
                 me.getShipBoard().setGetStat();
+                setState(ClientState.WAIT);
                 try {
                     positioned=true;
                     virtualController.notifySetPosition(chose);
@@ -793,7 +792,7 @@ public class ClientController {
             try {
                 virtualController.planetChoiceRequest(chose);
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                setOffline();
             }
         } else {
             view.wrongLocalInput();
@@ -825,7 +824,7 @@ public class ClientController {
                 try {
                     virtualController.notifyNewGoodsArrangement(goodsVal, newTiles);
                 } catch (RemoteException e) {
-                    throw new RuntimeException(e);
+                    setOffline();
                 }
                 inManager = false;
             }
@@ -900,7 +899,7 @@ public class ClientController {
                         me.getShipBoard().setGetStat();
                         virtualController.notifyNewCrewArrangement(newTiles);
                     } catch (RemoteException e) {
-                        throw new RuntimeException(e);
+                        setOffline();
                     }
                 }
             }
@@ -975,7 +974,7 @@ public class ClientController {
                         try {
                             virtualController.notifyNewCrewArrangement(new ArrayList<>());
                         } catch (RemoteException e) {
-                            throw new RuntimeException(e);
+                            setOffline();
                         }
                         inManager = false;
                     } else {
@@ -994,7 +993,7 @@ public class ClientController {
                     try {
                         virtualController.notifyNewCrewArrangement(newTiles);
                     } catch (RemoteException e) {
-                        throw new RuntimeException(e);
+                        setOffline();
                     }
                     inManager = false;
                 }
@@ -1008,7 +1007,7 @@ public class ClientController {
                         me.setAllCrewToHuman();
                         virtualController.notifySetPosition(0);
                     } catch (RemoteException e) {
-                        throw new RuntimeException(e);
+                        setOffline();
                     }
                 }
             }
@@ -1173,7 +1172,7 @@ public class ClientController {
             try {
                 virtualController.sendTurnHourGlass();
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                setOffline();
             }
             return true;
         } else {
@@ -1195,7 +1194,7 @@ public class ClientController {
             try {
                 virtualController.sendTurnHourGlass();
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                setOffline();
             }
             return true;
         }
@@ -1215,7 +1214,7 @@ public class ClientController {
             try {
                 virtualController.sendTurnHourGlass();
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                setOffline();
             }
             return true;
         }
@@ -1277,7 +1276,7 @@ public class ClientController {
             try {
                 virtualController.notifyEarlyLanding();
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                setOffline();
             }
             return true;
         }
@@ -2040,7 +2039,7 @@ public class ClientController {
         try {
                 virtualController.notifySetTile(tile.send());
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                                setOffline();
             }
          */
         Tile tile4=new CargoBlue(2, new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web26.jpg",2,0);
@@ -2229,7 +2228,7 @@ public class ClientController {
         try {
                 virtualController.notifySetTile(tile.send());
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                setOffline();
             }
          */
         Tile tile1=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web126.jpg",0,0);

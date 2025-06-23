@@ -17,7 +17,7 @@ import javafx.scene.control.TextField;
  * to the next phase based on the selected settings.
  * </p>
  */
-public class CreateNewGameController {
+public class CreateNewGameController extends GUIControllers{
 
     ObservableList<String> gameModes = FXCollections.observableArrayList("Trial", "Level1", "Level2", "Level3");
 

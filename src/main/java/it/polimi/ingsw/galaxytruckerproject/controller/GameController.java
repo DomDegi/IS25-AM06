@@ -1523,7 +1523,8 @@ public class GameController implements Observer, Serializable {
             player.removeCredit(player.getShipBoard().getPenalty());
         }
         for (String playerName: playersViewMap.keySet()) {
-            notifyPlayerCredits(playerName, activePlayers.get(playerName).getCredit());
+            if(activePlayers!=null && !activePlayers.isEmpty())
+                notifyPlayerCredits(playerName, activePlayers.get(playerName).getCredit());
         }
         // Sort players based on their credits in descending order
         game.setPodium();
@@ -1784,7 +1785,8 @@ public class GameController implements Observer, Serializable {
             case VERIFY_SHIP_CORRECTNESS -> verifyShipCorrectness();
             case DRAW_CARD -> {
                 if (!game.getListOfInFlightPlayers().isEmpty()&&playerName.equals(game.getListOfInFlightPlayers().getFirst().getPlayerName())) {
-                    this.askFirstPlayerToDraw();
+                    if(activePlayers!=null && !activePlayers.isEmpty())
+                        this.askFirstPlayerToDraw();
                 }
             }
             case CARD_EVENT -> skipPlayersTurn(playerName);
