@@ -66,7 +66,7 @@ java -jar GalaxyTruckerAM06_Client.jar
 By running the client you will be asked to choose the type of interface you want to use, you can choose between `TUI` and `GUI`.
 
 > **❗Warning❗**
-> The `GUI` has been tested with machines with an `x86` architecture and `Windows 11`.
+> The Client has been tested exclusively on machines with an `x64` architecture and `Windows 11` O.S..
 >
 > Note: the GUI is optimized for 100% display scaling on Windows. Other scaling settings may cause layout issues.
 

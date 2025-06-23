@@ -384,6 +384,9 @@ public class GameController implements Observer, Serializable {
                 else if (!player.getShipBoard().isCompleted()) {
                     updatePlayerView(ClientState.MANAGE_CABINS,playerName);
                 }
+                else {
+                    checkIfPlayersPickedCrew();
+                }
             }
             case DRAW_CARD,CARD_EVENT -> {
                 updatePlayerView(ClientState.WAIT,playerName);
@@ -737,7 +740,6 @@ public class GameController implements Observer, Serializable {
      */
     public void setCrewForDisconnectedPlayer(Player player) {
         notifyModifiedTiles(player.getPlayerName(), player.setAllCrewToHuman());
-        updatePlayerView(ClientState.WAIT, player.getPlayerName());
     }
     /**
      * Allows a player to assign crew members to their cabins.
@@ -782,6 +784,9 @@ public class GameController implements Observer, Serializable {
             }
         }
         for (Player p2: disconnectedPlayers.values()) {
+            if (p2.getShipBoard().isCompleted()) {
+                continue;
+            }
             shipBoard = p2.getShipBoard();
             cabinsToCheck = shipBoard.getCabinsCoordinates();
             for (Coordinates coord: cabinsToCheck) {
@@ -1689,10 +1694,7 @@ public class GameController implements Observer, Serializable {
      */
     public String toStringData() {
         //First gameName and hourglassTurns, second clientStates, third playersWithErrors
-        StringBuilder sb = new  StringBuilder();
-        sb.append(gameName).append(" ").append(hourglassTurns).append(" ");
-
-        return sb.toString();
+        return gameName + " " + hourglassTurns + " ";
     }
     /**
      * Loads specific data (like hourglass state) from a saved state.
