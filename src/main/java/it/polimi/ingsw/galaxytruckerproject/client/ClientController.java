@@ -687,7 +687,6 @@ public class ClientController {
         if (gameMode == GameMode.LEVEL2) {
             if (chose > 0 && chose <= numPlayer) {
                 me.getShipBoard().setGetStat();
-                setState(ClientState.WAIT);
                 try {
                     positioned=true;
                     virtualController.notifySetPosition(chose);
