@@ -692,7 +692,7 @@ public class ClientController {
             if (chose > 0 && chose <= numPlayer) {
                 me.getShipBoard().setGetStat();
                 try {
-                    positioned=true;
+                    //positioned=true;
                     virtualController.notifySetPosition(chose);
                 } catch (RemoteException e) {
                     setOffline();
@@ -1047,6 +1047,13 @@ public class ClientController {
             view.setClientState(state);
         } catch (RemoteException e) {
             setOffline();
+        }
+        availablePlanets=new HashMap<>();
+        if(phase==GamePhases.CARDS&&displayedCard!=null&&!displayedCard.isEmpty()&&displayedCard.getFirst().getListOfPlanets()!=null) {
+            int p=1;
+            for(Planet _ : displayedCard.getFirst().getListOfPlanets()){
+                availablePlanets.put(p,Boolean.TRUE);
+            }
         }
     }
     /**
