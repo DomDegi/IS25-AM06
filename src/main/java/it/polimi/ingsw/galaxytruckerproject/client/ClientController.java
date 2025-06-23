@@ -390,7 +390,6 @@ public class ClientController {
     }
 
     public void readyToPlay() {
-        Platform.runLater(()->{
             this.ended=false;
             this.phase = GamePhases.LOGIN;
             positioned=false;
@@ -416,7 +415,6 @@ public class ClientController {
             this.indexDeckInHandOrPlanet = 0;
             this.hourglassTurns = 0;
             displayedCard = new ArrayList<>();
-        });
     }
     /**
      * Allows the player to choose their color for the game.

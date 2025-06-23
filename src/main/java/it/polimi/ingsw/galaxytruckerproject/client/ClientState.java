@@ -246,12 +246,12 @@ public enum ClientState implements Serializable {
             case S_MANAGE_DRAWN_TILE -> {return "You can rotate, position, book or refuse this tile [rotate] [put] [book] [refuse] [check playerNum] [turn]";}
             case S_FINISHED -> {return "You've finished the ship creation, wait to know if your ship is correct [flightBoardPosition] [check playerNum] [turn]";}
             case WAIT -> {return "Waiting for server";}
-            case START_SHIP_CREATION -> {return "TrialFlight: Start the ship creation [start] Level2Flight: Start the ship creation by turning the hourglass [Turn|Start]";}
+            case START_SHIP_CREATION -> {return "Start the ship creation [start]";}
             case DRAW_CARD -> {return "Draw a card [draw]";}
             case WAIT_TO_DRAW -> {return "Waiting other players";}
             case MANAGE_CABINS -> {return "Select the crew type in yours equip cabins [humans] [purpleAlien] [brownAlien]";}
             case ROLL_DICE -> {return"Roll the dice [roll]";}
-            case RECONNECTING ->  {return "Server disconnected: repeat the login or close the game? [login] [close]";}
+            case RECONNECTING ->  {return "Server disconnected: repeat the login or close the game? [reconnect] [close]";}
             case LANDING -> {return "You Landed";}
         }
         return "Error in client state to string";
