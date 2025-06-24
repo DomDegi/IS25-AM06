@@ -176,8 +176,8 @@ public class BatteryComponents extends Tile {
         int k = 0;
         super.tileLoader(attributes);
         if (imagePath != null) {
-            k++;
+            k = 2;
         }
-        this.batteryCells = Integer.parseInt(attributes[8 + k]);
+        this.batteryCells = Integer.parseInt(attributes[7 + k]);
     }
 }

@@ -52,13 +52,13 @@ public enum Direction implements Serializable {
      */
     public static Direction fromString(String value) {
         switch (value.toUpperCase()) {
-            case "N","0":
+            case "N":
                 return Direction.NORTH;
-            case "E","1":
+            case "E":
                 return Direction.EAST;
-            case "S","2":
+            case "S":
                 return Direction.SOUTH;
-            case "W","3":
+            case "W":
                 return Direction.WEST;
             default:
                 throw new IllegalArgumentException("Unknown direction: " + value);
