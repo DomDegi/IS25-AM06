@@ -26,7 +26,7 @@ import static javafx.scene.paint.Color.rgb;
  * It also provides functionality for rotating tiles and interacting with the shipboard based on the game mode (LEVEL2 or TRIAL).
  * </p>
  */
-public class S_ManageDrawTileController {
+public class S_ManageDrawTileController extends GUIControllers{
 
     @FXML
     public ImageView shipImage;
@@ -234,7 +234,7 @@ public class S_ManageDrawTileController {
      * Updates the drawn tiles displayed in the UI.
      * Refreshes the tiles displayed in the drawn tiles panes.
      */
-    public void update() {
+    public void updateMDT() {
         drawnTiles1.getChildren().clear();
         drawnTiles2.getChildren().clear();
         int index = 0;

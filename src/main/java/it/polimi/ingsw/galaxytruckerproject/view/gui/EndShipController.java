@@ -8,11 +8,7 @@ import javafx.scene.Group;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.LinearGradient;
 import javafx.scene.shape.Polygon;
 
 import static javafx.scene.paint.Color.rgb;
@@ -25,7 +21,7 @@ import static javafx.scene.paint.Color.rgb;
  * It also handles updating the game state based on player actions, such as positioning and turning the hourglass.
  * </p>
  */
-public class EndShipController {
+public class EndShipController extends GUIControllers{
 
     @FXML
     public ProgressBar hourglass1;
@@ -112,7 +108,7 @@ public class EndShipController {
     public void pos1() {
         if (GUI.getController().getAvailablePosition().get(1) == null && !GUI.getController().isPositioned()) {
             GUI.position(1);
-            update();
+            updateFlightBoard();
         }
     }
 
@@ -123,7 +119,7 @@ public class EndShipController {
     public void pos2() {
         if (GUI.getController().getAvailablePosition().get(2) == null && !GUI.getController().isPositioned()) {
             GUI.position(2);
-            update();
+            updateFlightBoard();
         }
     }
 
@@ -134,7 +130,7 @@ public class EndShipController {
     public void pos3() {
         if (GUI.getController().getAvailablePosition().get(3) == null && !GUI.getController().isPositioned()) {
             GUI.position(3);
-            update();
+            updateFlightBoard();
         }
     }
 
@@ -145,7 +141,7 @@ public class EndShipController {
     public void pos4() {
         if (GUI.getController().getAvailablePosition().get(4) == null && !GUI.getController().isPositioned()) {
             GUI.position(4);
-            update();
+            updateFlightBoard();
         }
     }
 
@@ -186,7 +182,7 @@ public class EndShipController {
     /**
      * Updates the UI after a player has been positioned or the state has changed.
      */
-    public void update() {
+    public void updateFlightBoard() {
         initialize();
     }
 }

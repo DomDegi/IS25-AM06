@@ -18,7 +18,7 @@ import java.io.IOException;
  * transitions based on the selected color and notifies the `GUI` to update the game state.
  * </p>
  */
-public class ChooseColorController {
+public class ChooseColorController extends GUIControllers{
 
     @FXML
     public Button r;

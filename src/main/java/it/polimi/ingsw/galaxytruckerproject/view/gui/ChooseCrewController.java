@@ -29,7 +29,7 @@ import java.util.Objects;
 
 import static javafx.scene.paint.Color.rgb;
 
-public class ChooseCrewController {
+public class ChooseCrewController extends GUIControllers {
     /**
      * Represents a Polygon shape used in the user interface of the ChooseCrewController class.
      * It is defined as a FXML element, likely linked to a corresponding element in the FXML layout file.

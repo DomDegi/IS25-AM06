@@ -77,7 +77,7 @@ import static javafx.scene.paint.Color.*;
  *   involving the cards UI. It coordinates various player actions, updates the game state,
  *   and manages the visibility of UI elements.
  */
-public class CardsController {
+public class CardsController extends GUIControllers {
 
     /**
      * Indicates whether a certain element or component is visible.
@@ -258,6 +258,9 @@ public class CardsController {
         }
     }
 
+    public void updateCards(){
+        initialize();
+    }
     /**
      * Executes the logic for the "draw" action within the game.
 
@@ -967,7 +970,7 @@ public class CardsController {
     private void showManageGoods(){
         Platform.runLater(() -> {
             Button doneButton=new Button("Done");
-            doneButton.setMinSize(200,75);
+            doneButton.setPrefSize(200,75);
             doneButton.setOnAction(_->GUI.doneGoods());
             HBox box=new HBox();
             box.setAlignment(Pos.CENTER);
@@ -1010,8 +1013,6 @@ public class CardsController {
      */
     private Button goodsButtons(Goods goods,int index,boolean thenVisible){
         ImageView imageView=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoRed.png"))));
-        imageView.setFitHeight(50);
-        imageView.setFitWidth(50);
         if(goods.getColor()== GoodsColor.BLUE)
             imageView=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoBlue.png"))));
         else if(goods.getColor()== GoodsColor.GREEN)
@@ -1020,6 +1021,8 @@ public class CardsController {
             imageView=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoRed.png"))));
         else if(goods.getColor()== GoodsColor.YELLOW)
             imageView=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoYellow.png"))));
+        imageView.setFitHeight(50);
+        imageView.setFitWidth(50);
         Button button= new Button("",imageView);
         button.setPrefSize(200,75);
         button.setOnAction(_ -> {

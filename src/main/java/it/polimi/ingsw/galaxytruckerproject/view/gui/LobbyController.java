@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * or create a new game. It also listens for key events to perform actions such as joining or creating a game.
  * </p>
  */
-public class LobbyController {
+public class LobbyController extends GUIControllers{
 
     ObservableList<String> gamesList;
 

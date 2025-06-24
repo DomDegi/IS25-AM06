@@ -12,7 +12,7 @@ import javafx.scene.input.KeyEvent;
  * when the user clicks a button or presses the ENTER key.
  * </p>
  */
-public class StartController {
+public class StartController extends GUIControllers{
 
     /**
      * Starts the game when triggered.

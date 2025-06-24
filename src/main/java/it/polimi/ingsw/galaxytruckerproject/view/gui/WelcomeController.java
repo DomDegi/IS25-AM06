@@ -14,7 +14,7 @@ import java.io.IOException;
  * when the user clicks a button or presses the ENTER key.
  * </p>
  */
-public class WelcomeController {
+public class WelcomeController extends GUIControllers {
 
     /**
      * Starts a new game when triggered.

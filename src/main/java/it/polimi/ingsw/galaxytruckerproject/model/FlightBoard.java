@@ -187,6 +187,7 @@ public class FlightBoard implements Serializable {
         inGamePlayers.remove(player);
         podium.remove(player);
         freePodiumPosition--;
+        rearrange();
     }
 
     /**
