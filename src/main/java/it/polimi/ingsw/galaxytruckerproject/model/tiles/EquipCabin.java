@@ -258,11 +258,11 @@ public class EquipCabin extends Cabin {
         int k = 0;
         super.tileLoader(attributes);
         if (imagePath != null) {
-            k = 2;
+            k++;
         }
-        this.crewToLoad = Integer.parseInt(attributes[7 + k]);
-        if (!attributes[8 + k].equals("N")) {
-            this.crewType = CrewType.fromString(attributes[8 + k]);
+        this.crewToLoad = Integer.parseInt(attributes[8 + k]);
+        if (!attributes[9 + k].equals("N")) {
+            this.crewType = CrewType.fromString(attributes[9 + k]);
         }
         if (crewType != CrewType.HUMAN && crewToLoad > 1) {
             System.out.println("This equip cabin has something wrong going on");

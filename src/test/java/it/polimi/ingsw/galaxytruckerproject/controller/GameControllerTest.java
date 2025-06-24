@@ -451,14 +451,11 @@ class GameControllerTest {
         multiGameController.removeGame(gameController);
         setMultiGameController();
         controller1.login("p1");
-        controller1.joinGame("test");
+            controller1.joinGame("test");
         controller2.login("p2");
         controller3.login("p3");
         controller4.login("p4");
         gameController = multiGameController.gameFromNickname("p1");
-        for (Player player: gameController.getActivePlayers().values()) {
-            System.out.println(player.getPlayerName() + ": " + player.getShipBoard().getNumHumanCrew());
-        }
         assertEquals(GameState.DRAW_CARD, gameController.getGameState());
     }
 
