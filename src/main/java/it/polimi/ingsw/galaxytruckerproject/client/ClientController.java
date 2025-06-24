@@ -682,7 +682,7 @@ public class ClientController {
      * @return true if the operation is successful, false otherwise
      */
     public boolean positionOnFlightBoard(int chose) {
-        if(state!=ClientState.S_FINISHED&&positioned){
+        if(state!=ClientState.S_FINISHED||positioned){
             return false;
         }
         if (gameMode == GameMode.LEVEL2) {
