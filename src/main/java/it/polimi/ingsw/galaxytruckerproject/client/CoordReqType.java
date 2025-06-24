@@ -65,7 +65,7 @@ public enum CoordReqType {
             case CHOOSE_CREW:
                 return "Choose the crew you want to remove";
             case REMOVE_GOODS:
-                return "Choose your goods to remove";
+                return "Choose your goods to remove (if you don't have any, remove the batteries)";
             default:
                 return "error in coord request toString";
         }

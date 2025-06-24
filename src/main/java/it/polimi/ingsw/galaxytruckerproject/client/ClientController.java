@@ -688,7 +688,7 @@ public class ClientController {
             if (chose > 0 && chose <= numPlayer) {
                 me.getShipBoard().setGetStat();
                 try {
-                    positioned=true;
+                    //positioned=true;
                     virtualController.notifySetPosition(chose);
                 } catch (RemoteException e) {
                     setOffline();
@@ -1043,6 +1043,13 @@ public class ClientController {
             view.setClientState(state);
         } catch (RemoteException e) {
             setOffline();
+        }
+        availablePlanets=new HashMap<>();
+        if(phase==GamePhases.CARDS&&displayedCard!=null&&!displayedCard.isEmpty()&&displayedCard.getFirst().getListOfPlanets()!=null) {
+            int p=1;
+            for(Planet _ : displayedCard.getFirst().getListOfPlanets()){
+                availablePlanets.put(p,Boolean.TRUE);
+            }
         }
     }
     /**
@@ -2235,7 +2242,7 @@ public class ClientController {
         } catch (RemoteException e) {
             setOffline();
         }
-        Tile tile2=new CargoBlue(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web20.jpg",2,0);
+        Tile tile2=new CargoBlue(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web19.jpg",2,0);
         me.getShipBoard().positionTile(Optional.of(tile2), new Coordinates(2,2));
         try {
             virtualController.notifySetTile(tile2.send());

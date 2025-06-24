@@ -124,6 +124,9 @@ public abstract class Tile implements Serializable, Cloneable {
     /** @param shipBoard Set the ship board this tile belongs to */
     public void setShipBoard(ShipBoardInterface shipBoard) {
         this.shipBoard = shipBoard;
+        if(shipBoard!=null)
+            this.shipBoard = shipBoard;
+
     }
 
     /** @return True if the tile is booked */
