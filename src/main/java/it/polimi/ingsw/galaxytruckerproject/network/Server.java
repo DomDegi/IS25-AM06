@@ -17,5 +17,5 @@ public interface Server {
      *
      * @param multiGameController The controller that manages multiple games on the server.
      */
-    void connect(MultiGameController multiGameController);
+    void connect(String ip,MultiGameController multiGameController);
 }

@@ -36,7 +36,7 @@ public class RMIServer implements Server {
      *
      * @param multiGameController The controller that manages multiple game sessions.
      */
-    public void connect(MultiGameController multiGameController) {
+    public void connect(String ip,MultiGameController multiGameController) {
         // Set up the filter for object deserialization
         ObjectInputFilter.Config.setSerialFilter(info -> ObjectInputFilter.Status.ALLOWED);
 
@@ -46,7 +46,6 @@ public class RMIServer implements Server {
 
             // Start the RMI registry on a specified port (1099 by default)
             int port = 1099;
-            String ip = InetAddress.getLocalHost().getHostAddress();
             LocateRegistry.createRegistry(port); // Creates the RMI registry on the default port
 
             // Bind the controller factory to the RMI registry

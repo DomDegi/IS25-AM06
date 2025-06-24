@@ -23,10 +23,11 @@ public class ServerMain {
      * @param args Command-line arguments (not used in this application).
      */
     public static void main(String[] args) {
+        String ip = null;
         try (Socket socket = new Socket()) {
             // Connect to an external address (Google) to retrieve the local machine's IP address
-            socket.connect(new InetSocketAddress("google.com",80));
-            String ip = socket.getLocalAddress().getHostAddress();
+            socket.connect(new InetSocketAddress("8.8.8.8", 53)); // Google DNS, lightweight
+            ip = socket.getLocalAddress().getHostAddress();
             // Set the local IP as the system property for the RMI server
             System.setProperty("java.rmi.server.hostname", ip);
         } catch(IOException e) {
@@ -39,10 +40,10 @@ public class ServerMain {
 
         // Start the Socket server and connect it to the MultiGameController
         SocketServer socketServer = new SocketServer();
-        socketServer.connect(multiGameController);
+        socketServer.connect(ip,multiGameController);
 
         // Start the RMI server and connect it to the MultiGameController
         RMIServer rmi = new RMIServer();
-        rmi.connect(multiGameController);
+        rmi.connect(ip,multiGameController);
     }
 }
