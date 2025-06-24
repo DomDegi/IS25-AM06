@@ -213,8 +213,9 @@ public class CombatZone extends Card {
         }
         minPlayerView = viewsMap.get(minPlayer.getPlayerName());
         notifyVictim(minPlayer.getPlayerName());
-        currentPenalty.initializePenalty(game,minPlayerView, minPlayer);
-        resetForNextPenalty();
+        if (!currentPenalty.initializePenalty(game,minPlayerView, minPlayer)) {
+            resetForNextPenalty();
+        }
     }
 
     /**
@@ -334,7 +335,7 @@ public class CombatZone extends Card {
     @Override
     public void removeGoods(String playerName, ArrayList<Coordinates> goodsToRemove) {
         Player player = game.identifyPlayerByName(playerName);
-        if (!player.getPlayerName().equals(minPlayer.getPlayerName())) {
+        if (minPlayer == null || !player.getPlayerName().equals(minPlayer.getPlayerName())) {
             try {
                 viewsMap.get(playerName).showWrongInputMessage();
             } catch(Exception ignored) {}

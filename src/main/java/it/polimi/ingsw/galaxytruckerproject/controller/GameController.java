@@ -1348,6 +1348,9 @@ public class GameController implements Observer, Serializable {
         Player player = game.identifyPlayerByName(playerName);
         if (game.getGameState() == GameState.DRAW_CARD) {
             game.getFlightBoard().earlyLanding(player);
+            if (game.getListOfInFlightPlayers().isEmpty()) {
+                game.endCardPhase();
+            }
         }
         else if (game.getGameState() == GameState.CARD_EVENT) {
             playersToEarlyLand.add(player);
