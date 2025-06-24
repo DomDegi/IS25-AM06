@@ -84,7 +84,7 @@ public class Shields extends Tile {
     public String toStringData() {
         String image;
         image = Objects.requireNonNullElse(imagePath, "N");
-        return "SH " + key + " " + image + " " + north.toString() + " " + east.toString() + " "
+        return "SH " + key + " " + image + " " + rotation + " " + north.toString() + " " + east.toString() + " "
                 + south.toString() + " " + west.toString() + " " + coveredArea.toStringData();
     }
 
@@ -103,7 +103,7 @@ public class Shields extends Tile {
         int k = 0;
         super.tileLoader(attributes);
         if (imagePath != null) {
-            k++;
+            k = 2;
         }
         this.coveredArea = Coverage.fromStringData(attributes[7 + k]);
         if (Objects.equals(attributes[7], "NONE")) {

@@ -75,7 +75,7 @@ public class SingleEngine extends Engine {
     public String toStringData() {
         String image;
         image = Objects.requireNonNullElse(imagePath, "N");
-        return "SE " + key + " " + image + " " + north.toString() + " " + east.toString() + " "
+        return "SE " + key + " " + image + " " + rotation + " " + north.toString() + " " + east.toString() + " "
                 + south.toString() + " " + west.toString() + " " + direction.toString();
     }
 

@@ -261,8 +261,9 @@ public abstract class Tile implements Serializable, Cloneable {
             this.imagePath = null;
         }
         else {
-            k++;
+            k = 2;
             this.imagePath = attributes[2] + " " + attributes[3];
+            this.rotation = Integer.parseInt(attributes[4]);
         }
         north = new Link(Connectors.fromValue(Integer.parseInt(attributes[3 + k])));
         east = new Link(Connectors.fromValue(Integer.parseInt(attributes[4 + k])));

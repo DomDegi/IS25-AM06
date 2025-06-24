@@ -3,6 +3,8 @@ package it.polimi.ingsw.galaxytruckerproject.persistence;
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.GameState;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -77,6 +79,14 @@ public class GameLoader {
             }
 
             restartedGame.getGame().getFlightBoard().loadFlightBoard(restartedGame.getAllPlayers());
+
+            if (restartedGame.getGameState() == GameState.DRAW_CARD) {
+                for (Player player: restartedGame.getActivePlayers().values()) {
+                    if (!player.getShipBoard().verifyCorrectness()) {
+                        System.out.println("This should not happen: the ships in draw card state should be correct");
+                    }
+                }
+            }
 
             return restartedGame;
 

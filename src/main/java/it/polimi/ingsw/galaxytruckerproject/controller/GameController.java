@@ -158,7 +158,7 @@ public class GameController implements Observer, Serializable {
             if (activePlayers.containsKey(playerName)) {
                 playersViewMap.put(playerName, view);
                 notifyPlayerJoined(false);
-                updateReconnectedPlayer(view);
+                updateReconnectedPlayer(playerName,view);
                 checkIfAllJoinedAgain();
                 return;
             }
@@ -355,7 +355,7 @@ public class GameController implements Observer, Serializable {
      * @param view the VirtualView associated with the reconnecting player
      */
     public void prepareForReconnection (String playerName,  VirtualView view)  {
-        updateReconnectedPlayer(view);
+        updateReconnectedPlayer(playerName,view);
         switch(this.getGameState()) {
             case START_GAME -> {
                 updatePlayerView(ClientState.START_SHIP_CREATION, playerName);
@@ -399,12 +399,12 @@ public class GameController implements Observer, Serializable {
      *
      * @param view the VirtualView of the reconnected player
      */
-    public void updateReconnectedPlayer(VirtualView view) {
+    public void updateReconnectedPlayer(String playerName, VirtualView view) {
         if (currentGameStatus == null) {
             currentGameStatus = ClientUpdater.currentGameStatus(this);
         }
         try {
-            view.notifyChangesWhileGone(currentGameStatus);
+            view.notifyChangesWhileGone(playerName, currentGameStatus);
         } catch(Exception ignored) {}
     }
 
@@ -1245,6 +1245,7 @@ public class GameController implements Observer, Serializable {
      */
     public void askFirstPlayerToDraw() {
         stopAutoSave();
+        GameSaver.save(this);
         //updatePlayerView(DRAW_CARD,game.getListOfInFlightPlayers().getFirst().getPlayerName())
         // ;
         for(Player player : game.getListOfInFlightPlayers()) {
@@ -1261,6 +1262,7 @@ public class GameController implements Observer, Serializable {
         }
         playersToEarlyLand.clear();
         if (game.getListOfInFlightPlayers().isEmpty()) {
+            System.out.println("Game ends because everyone earlyLanded");
             concludeGame();
             return;
         }
@@ -1270,6 +1272,7 @@ public class GameController implements Observer, Serializable {
             while (currentPlayer.IsDisconnected()) {
                 i++;
                 if (i > game.getListOfInFlightPlayers().size() - 1) {
+                    System.out.println("Game ends because everyone is disconnected");
                     concludeGame();
                     return;
                 }
@@ -1283,6 +1286,7 @@ public class GameController implements Observer, Serializable {
             updatePlayerView(DRAW_CARD, currentPlayer.getPlayerName());
         }
         else{
+            System.out.println("Game ends because flightboard empty");
             concludeGame();
         }
     }
@@ -1320,7 +1324,6 @@ public class GameController implements Observer, Serializable {
             } catch(Exception ignored) {}
         }
         else {
-            GameSaver.save(this);
             game.drawCard();
             notifyDrawnCard(game.getDrawnCard());
             game.setGameState(CARD_EVENT);

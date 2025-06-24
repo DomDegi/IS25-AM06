@@ -39,7 +39,7 @@ public class UpdateDeserializer {
      * @param currentGameStatus  the serialized game state string received from the server
      * @throws RuntimeException if any parsing or I/O error occurs during deserialization
      */
-    public static void unpack(ClientController controller, String currentGameStatus) {
+    public static void unpack(ClientController controller,String playerName, String currentGameStatus) {
 
         try (BufferedReader writer = new BufferedReader(new StringReader(currentGameStatus))) {
 
@@ -82,7 +82,6 @@ public class UpdateDeserializer {
                 controller.setTurnedTiles(turnedTiles);
             }
 
-            String myName = controller.getName();
             ArrayList<LightPlayer> otherPlayers = new ArrayList<>();
 
             for (int i = 0; i < playerCount; i++) {
@@ -90,7 +89,7 @@ public class UpdateDeserializer {
                 String[] playerData = writer.readLine().split(" ");
                 String currentName = playerData[0];
                 LightShipBoard lightShipBoard;
-                if (currentName.equals(myName)) {
+                if (currentName.equals(playerName)) {
                     lightShipBoard = new LightShipBoard(controller.getMe());
                     controller.getMe().loadFromData(playerData);
                 } else {

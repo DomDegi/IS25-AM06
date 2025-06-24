@@ -249,7 +249,7 @@ public class EquipCabin extends Cabin {
     public String toStringData() {
         String image;
         image = Objects.requireNonNullElse(imagePath, "N");
-        return "EC " + key + " " + image + " " + north + " " + east + " " + south + " " + west + " " + crew + " " +
+        return "EC " + key + " " + image + " " + rotation + " " + north + " " + east + " " + south + " " + west + " " + crew + " " +
                 (crewType != null ? crewType : "N");
     }
 
@@ -258,7 +258,7 @@ public class EquipCabin extends Cabin {
         int k = 0;
         super.tileLoader(attributes);
         if (imagePath != null) {
-            k++;
+            k = 2;
         }
         this.crewToLoad = Integer.parseInt(attributes[7 + k]);
         if (!attributes[8 + k].equals("N")) {

@@ -10,6 +10,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Planet;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import it.polimi.ingsw.galaxytruckerproject.network.RMI.Client.VirtualViewRMI;
@@ -1540,8 +1541,8 @@ public class ClientController {
      *
      * @param currentGameStatus the serialized game status to unpack
      */
-    public void updateModel(String currentGameStatus) {
-        UpdateDeserializer.unpack(this,currentGameStatus);
+    public void updateModel(String playerName, String currentGameStatus) {
+        UpdateDeserializer.unpack(this,playerName,currentGameStatus);
     }
     /**
      * Updates the availability of the decks based on the given list of unavailable decks.

@@ -3,12 +3,15 @@ package it.polimi.ingsw.galaxytruckerproject.controller;
 import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.AbandonedStation;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.ChallengeType;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.CombatZone;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.CrewPenalty;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.FlightDaysPenalty;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.GoodsPenalty;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.Penalty;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import it.polimi.ingsw.galaxytruckerproject.network.MockVirtualView;
@@ -24,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 class GameControllerTest {
-    MultiGameController newMultiGameController = new MultiGameController();
+    MultiGameController multiGameController = new MultiGameController();
     GameController gameController;
     GameController trialController;
     Game game;
@@ -56,6 +59,7 @@ class GameControllerTest {
         player2 = new Player("p2", YELLOW);
         player3 = new Player("p3", GREEN);
         player4 = new Player("p4", BLUE);
+        this.multiGameController.addGame(gameController);
     }
 
     @Test
@@ -406,6 +410,56 @@ class GameControllerTest {
         controller3.earlyLanding();
         controller4.earlyLanding();
         assertEquals(GameState.CONCLUDE_GAME, gameController.getGameState());
+    }
+
+    @Test
+    void playerTriesCardsFunctions2() {
+        ArrayList<Goods> listOfGoods = new ArrayList<>();
+        listOfGoods.add(new Goods(GoodsColor.RED));
+        listOfGoods.add(new Goods(GoodsColor.GREEN));
+        listOfGoods.add(new Goods(GoodsColor.YELLOW));
+        listOfGoods.add(new Goods(GoodsColor.GREEN));
+        playersPickCrewMembers();
+
+        game.setDrawnCard(new AbandonedStation(2,1,1,listOfGoods));
+        gameController.initializeDrawnCard();
+        controller1.makeAChoice(false);
+        controller2.makeAChoice(true);
+        ArrayList<Coordinates> toUse = new ArrayList<>();
+        toUse.add(new Coordinates(2,3));
+        controller2.removeCrew(toUse);
+        CargoRed newCargo =new CargoRed(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE));
+        newCargo.addGood(new Goods(GoodsColor.RED)); newCargo.addGood(new Goods(GoodsColor.YELLOW));
+        newCargo.setCoordinates(new Coordinates(2,2));
+        ArrayList<CargoHold> modifiedCargo = new ArrayList<>();
+        modifiedCargo.add(newCargo);
+        controller2.manageGoods(7, modifiedCargo);
+        assertSame(GameState.DRAW_CARD, gameController.getGameState());
+    }
+
+    @Test
+    void setMultiGameController() {
+        controller1.setMultiGameController(multiGameController);
+        controller2.setMultiGameController(multiGameController);
+        controller3.setMultiGameController(multiGameController);
+        controller4.setMultiGameController(multiGameController);
+    }
+
+    @Test
+    void reStartFromSavedGame() {
+        playersPickCrewMembers();
+        multiGameController.removeGame(gameController);
+        setMultiGameController();
+        controller1.login("p1");
+        controller1.joinGame("test");
+        controller2.login("p2");
+        controller3.login("p3");
+        controller4.login("p4");
+        gameController = multiGameController.gameFromNickname("p1");
+        for (Player player: gameController.getActivePlayers().values()) {
+            System.out.println(player.getPlayerName() + ": " + player.getShipBoard().getNumHumanCrew());
+        }
+        assertEquals(GameState.DRAW_CARD, gameController.getGameState());
     }
 
 }

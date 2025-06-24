@@ -162,7 +162,7 @@ public abstract class CargoHold extends Tile {
         int k = 0;
         super.tileLoader(attributes);
         if (imagePath != null) {
-            k++;
+            k = 2;
         }
         this.totSpaces = Integer.parseInt(attributes[7 + k]);
         if (attributes.length < 8 + k + totSpaces) {
