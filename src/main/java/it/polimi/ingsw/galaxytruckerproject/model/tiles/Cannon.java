@@ -114,8 +114,8 @@ public abstract class Cannon extends Tile {
         super.tileLoader(attributes);
         int k = 0;
         if (imagePath != null) {
-            k = 2;
+            k++;
         }
-        this.direction = Direction.fromString(attributes[7 + k]);
+        this.direction = Direction.fromString(attributes[8 + k]);
     }
 }

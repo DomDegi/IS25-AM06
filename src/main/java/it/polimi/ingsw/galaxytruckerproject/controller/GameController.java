@@ -1262,6 +1262,12 @@ public class GameController implements Observer, Serializable {
         }
         playersToEarlyLand.clear();
         if (game.getListOfInFlightPlayers().isEmpty()) {
+            for (Player player: game.getListOfInFlightPlayers()) {
+                System.out.println(player.getPlayerName());
+            }
+            for (Player player: game.getListOfAllPlayer()) {
+                System.out.println(player.getPlayerName() + " " + player.getShipBoard().getNumHumanCrew() + " " + player.getShipBoard().getDoubleEngine().size());
+            }
             System.out.println("Game ends because everyone earlyLanded");
             concludeGame();
             return;

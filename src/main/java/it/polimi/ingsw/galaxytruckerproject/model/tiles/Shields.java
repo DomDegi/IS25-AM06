@@ -103,10 +103,10 @@ public class Shields extends Tile {
         int k = 0;
         super.tileLoader(attributes);
         if (imagePath != null) {
-            k = 2;
+            k++;
         }
-        this.coveredArea = Coverage.fromStringData(attributes[7 + k]);
-        if (Objects.equals(attributes[7], "NONE")) {
+        this.coveredArea = Coverage.fromStringData(attributes[8 + k]);
+        if (Objects.equals(attributes[9], "NONE")) {
             System.out.println("Why this shield has no coverage?");
             throw new IllegalArgumentException();
         }

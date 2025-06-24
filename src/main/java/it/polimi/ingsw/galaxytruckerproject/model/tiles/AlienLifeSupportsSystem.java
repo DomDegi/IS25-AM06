@@ -173,8 +173,8 @@ public class AlienLifeSupportsSystem extends Tile {
         super.tileLoader(attributes);
         int k = 0;
         if (imagePath != null) {
-            k = 2;
+            k++;
         }
-        this.colorAlienSupported = CrewType.fromString(attributes[7 + k]);
+        this.colorAlienSupported = CrewType.fromString(attributes[8 + k]);
     }
 }
