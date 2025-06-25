@@ -26,6 +26,8 @@ import javafx.scene.shape.Polygon;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static it.polimi.ingsw.galaxytruckerproject.client.CoordReqType.*;
@@ -92,7 +94,7 @@ public class CardsController extends GUIControllers {
      * The @FXML annotation indicates that this variable is associated with an
      * element defined in the FXML file and is*/
     @FXML
-    public Label rolled=new Label("");
+    public Button rolled=new Button("");
 
 
     /**
@@ -598,7 +600,7 @@ public class CardsController extends GUIControllers {
 
                         }
                     case MANAGE_GOODS -> {
-                        if(tile instanceof CargoHold) {
+                        if(tile instanceof CargoHold && (!tile.getCargo().isEmpty() || !visible)) {
                             imageView.setDisable(false);
                             imageView.setOnMouseClicked(_ -> {
                                 GUI.chooseCargo(tile.getCoordinates().getX(), tile.getCoordinates().getY());
@@ -879,6 +881,7 @@ public class CardsController extends GUIControllers {
      */
     private void showRollDice(){
         Platform.runLater(() -> {
+            rolled.setPrefSize(100,50);
             Button rollButton=new Button("Roll");
             rollButton.setPrefSize(100,75);
             rollButton.setOnAction(_->roll());
@@ -899,12 +902,8 @@ public class CardsController extends GUIControllers {
      * @param index the integer value representing the rolled value to be displayed
      */
     public void showRoll(int index){
-        if(mainBox.getChildren().size()<=2) {
-            mainBox.getChildren().clear();
-        }
-        rolled.setPrefSize(100,50);
-        rolled.setText(index+"");
-        mainBox.getChildren().add(rolled);
+        rolled.setText(""+index);
+        initialize();
     }
 
     /**
@@ -928,13 +927,18 @@ public class CardsController extends GUIControllers {
         Platform.runLater(() -> {
             int index=0;
             mainBox.getChildren().clear();
-            for(Planet _:GUI.displayableCards().getFirst().getListOfPlanets()){
+            for(Planet planet:GUI.displayableCards().getFirst().getListOfPlanets()){
                 Button button = new Button();
                 button.setPrefSize(200, 75);
                 button.setText((index + 1) + "° Planet");
                 int finalIndex = index;
                 button.setOnAction(_ -> choosePlanet(finalIndex+1));
-                button.setDisable(!GUI.getController().getAvailablePlanets().get(index));
+                Map<String,Planet> takenPlanets=GUI.displayableCards().getFirst().getPlayerChosenPlanets();
+                for(LightPlayer p:GUI.getController().getFlightBoard().getInGamePlayers()){
+                    if(takenPlanets.get(p.getPlayerName())!=null&&takenPlanets.get(p.getPlayerName()).equals(planet)){
+                        button.setDisable(true);
+                    }
+                }
                 mainBox.getChildren().add(button);
                 index++;
             }

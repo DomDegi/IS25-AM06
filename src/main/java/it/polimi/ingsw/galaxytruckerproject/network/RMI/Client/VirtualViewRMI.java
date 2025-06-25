@@ -6,6 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.Planet;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
@@ -218,7 +219,10 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
      */
     @Override
     public void notifyPlayerLandedOnPlanet(String playerName, int planet) throws RemoteException {
-        clientController.setPlanets(planet);
+        Map<String, Planet> takenPlanets=clientController.getDisplayedCard().getFirst().getPlayerChosenPlanets();
+        if(takenPlanets!=null){
+            takenPlanets.put(playerName,clientController.getDisplayedCard().getFirst().getListOfPlanets().get(planet-1));
+        }
         view.notifyPlayerLandedOnPlanet(playerName, planet);
     }
 

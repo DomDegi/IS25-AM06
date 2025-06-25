@@ -191,4 +191,5 @@ public abstract class Card implements Serializable {
         return "id: " + id + " level: " + level + ", required days: " + requiredDays;
     }
     public void playerLanded(String playerName){}
+    public Map<String, Planet> getPlayerChosenPlanets() {return null;}
 }

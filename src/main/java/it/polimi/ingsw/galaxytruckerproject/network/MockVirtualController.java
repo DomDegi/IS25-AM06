@@ -6,7 +6,6 @@ import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
@@ -20,7 +19,8 @@ import java.util.ArrayList;
  * player actions, tile manipulations, and interaction with game elements like cargo holds, crew, and dice rolls.
  * </p>
  */
-public interface VirtualController extends Remote {
+public class MockVirtualController implements VirtualController{
+    ArrayList<Object> results = new ArrayList<>();
 
     // ------------------------------ PHASE OF LOGIN/CREATION OF MATCHES METHODS ------------------------------
 
@@ -30,17 +30,24 @@ public interface VirtualController extends Remote {
      * @param playerName The name of the player to log in.
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void login(String playerName) throws RemoteException;
+    @Override
+    public void login(String playerName) throws RemoteException{}
 
     /**
      * Creates a new game with the given parameters.
      *
-     * @param gameName   The name of the game.
+     * @param gameName    The name of the game.
      * @param playerCount The number of players in the game.
-     * @param chooseMode The chosen game mode (e.g., Level1, Level2, etc.).
+     * @param chooseMode  The chosen game mode (e.g., Level1, Level2, etc.).
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void createGame(String gameName, int playerCount, GameMode chooseMode) throws RemoteException;
+    @Override
+    public void createGame(String gameName, int playerCount, GameMode chooseMode) throws RemoteException{
+        results.clear();
+        results.add(gameName);
+        results.add(playerCount);
+        results.add(chooseMode);
+    }
 
     /**
      * Joins an existing game with the specified game name.
@@ -48,14 +55,19 @@ public interface VirtualController extends Remote {
      * @param gameName The name of the game to join.
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void joinGame(String gameName) throws RemoteException;
+    @Override
+    public void joinGame(String gameName) throws RemoteException{
+        results.clear();
+        results.add(gameName);
+    }
 
     /**
      * Leaves the current game.
      *
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void leaveGame() throws RemoteException;
+    @Override
+    public void leaveGame() throws RemoteException{}
 
     /**
      * Chooses the player's color for the game.
@@ -63,7 +75,11 @@ public interface VirtualController extends Remote {
      * @param color The chosen color for the player.
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void chooseColor(PlayersColor color) throws RemoteException;
+    @Override
+    public void chooseColor(PlayersColor color) throws RemoteException{
+        results.clear();
+        results.add(color);
+    }
 
     // ------------------------------ TILE RELATED METHODS ------------------------------
 
@@ -73,14 +89,19 @@ public interface VirtualController extends Remote {
      * @param tile The tile that has been placed.
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void notifySetTile(Tile tile) throws RemoteException;
+    @Override
+    public void notifySetTile(Tile tile) throws RemoteException{
+        results.clear();
+        results.add(tile);
+    }
 
     /**
      * Notifies that a tile has been refused.
      *
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void notifyRefusedTile() throws RemoteException;
+    @Override
+    public void notifyRefusedTile() throws RemoteException{}
 
     /**
      * Requests to draw a tile from the turned tiles stack.
@@ -88,21 +109,27 @@ public interface VirtualController extends Remote {
      * @param index The index of the tile to draw.
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void reqDrawTileFromTurned(int index) throws RemoteException;
+    @Override
+    public void reqDrawTileFromTurned(int index) throws RemoteException{
+        results.clear();
+        results.add(index);
+    }
 
     /**
      * Requests to draw a tile from the regular tile stack.
      *
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void reqDrawTileFromStack() throws RemoteException;
+    @Override
+    public void reqDrawTileFromStack() throws RemoteException{}
 
     /**
      * Notifies that a tile has been booked.
      *
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void notifyTileBooking() throws RemoteException;
+    @Override
+    public void notifyTileBooking() throws RemoteException{}
 
     // ------------------------------ CARDS RELATED METHODS ------------------------------
 
@@ -112,21 +139,27 @@ public interface VirtualController extends Remote {
      * @param deckToLookAt The index of the deck to look at.
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void lookCardsRequest(int deckToLookAt) throws RemoteException;
+    @Override
+    public void lookCardsRequest(int deckToLookAt) throws RemoteException{
+        results.clear();
+        results.add(deckToLookAt);
+    }
 
     /**
      * Requests to stop looking at the current card deck.
      *
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void stopLookingAtCardsRequest() throws RemoteException;
+    @Override
+    public  void stopLookingAtCardsRequest() throws RemoteException{}
 
     /**
      * Requests to draw a card.
      *
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void drawCards() throws RemoteException;
+    @Override
+    public void drawCards() throws RemoteException{}
 
     // ------------------------------ COORDINATES RELATED METHODS ------------------------------
 
@@ -137,7 +170,12 @@ public interface VirtualController extends Remote {
      * @param coordinates The coordinates where the cannon was used.
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void sendDoubleCannonUsed(float Strength, ArrayList<Coordinates> coordinates) throws RemoteException;
+    @Override
+    public void sendDoubleCannonUsed(float Strength, ArrayList<Coordinates> coordinates) throws RemoteException{
+        results.clear();
+        results.add(Strength);
+        results.add(coordinates);
+    }
 
     /**
      * Sends a signal that a double engine has been used with the given number of engines at specified coordinates.
@@ -146,7 +184,12 @@ public interface VirtualController extends Remote {
      * @param coordinates The coordinates where the engines were used.
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void sendNumDoubleEngineUsed(int NumEngine, ArrayList<Coordinates> coordinates) throws RemoteException;
+    @Override
+    public void sendNumDoubleEngineUsed(int NumEngine, ArrayList<Coordinates> coordinates) throws RemoteException{
+        results.clear();
+        results.add(NumEngine);
+        results.add(coordinates);
+    }
 
     // ------------------------------ YES/NO METHODS ------------------------------
 
@@ -155,14 +198,16 @@ public interface VirtualController extends Remote {
      *
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void sendYes() throws RemoteException;
+    @Override
+    public  void sendYes() throws RemoteException{}
 
     /**
      * Sends a "No" response.
      *
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void sendNo() throws RemoteException;
+    @Override
+    public void sendNo() throws RemoteException{}
 
     // ------------------------------ MISCELLANEOUS METHODS ------------------------------
 
@@ -171,14 +216,16 @@ public interface VirtualController extends Remote {
      *
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void sendTurnHourGlass() throws RemoteException;
+    @Override
+    public void sendTurnHourGlass() throws RemoteException{}
 
     /**
      * Rolls the dice for the game.
      *
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void rollTheDices() throws RemoteException;
+    @Override
+    public  void rollTheDices() throws RemoteException{}
 
     /**
      * Requests a planet choice from the player.
@@ -186,21 +233,27 @@ public interface VirtualController extends Remote {
      * @param choice The choice for the planet.
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void planetChoiceRequest(int choice) throws RemoteException;
+    @Override
+    public void planetChoiceRequest(int choice) throws RemoteException{
+        results.clear();
+        results.add(choice);
+    }
 
     /**
      * Notifies early landing event.
      *
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void notifyEarlyLanding() throws RemoteException;
+    @Override
+    public void notifyEarlyLanding() throws RemoteException{}
 
     /**
      * Notifies that the ship creation is completed.
      *
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void notifyCompleted() throws RemoteException;
+    @Override
+    public void notifyCompleted() throws RemoteException{}
 
     /**
      * Notifies that a position has been set.
@@ -208,7 +261,11 @@ public interface VirtualController extends Remote {
      * @param position The position that has been set.
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void notifySetPosition(int position) throws RemoteException;
+    @Override
+    public void notifySetPosition(int position) throws RemoteException{
+        results.clear();
+        results.add(position);
+    }
 
     /**
      * Notifies the updated arrangement of goods.
@@ -217,7 +274,12 @@ public interface VirtualController extends Remote {
      * @param updatedCargos    The updated cargo hold.
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void notifyNewGoodsArrangement(int clientGoodsValue, ArrayList<CargoHold> updatedCargos) throws RemoteException;
+    @Override
+    public void notifyNewGoodsArrangement(int clientGoodsValue, ArrayList<CargoHold> updatedCargos) throws RemoteException{
+        results.clear();
+        results.add(clientGoodsValue);
+        results.add(updatedCargos);
+    }
 
     /**
      * Notifies the updated arrangement of crew members.
@@ -225,7 +287,11 @@ public interface VirtualController extends Remote {
      * @param updatedCabin The updated cabin arrangement.
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void notifyNewCrewArrangement(ArrayList<Tile> updatedCabin) throws RemoteException;
+    @Override
+    public void notifyNewCrewArrangement(ArrayList<Tile> updatedCabin) throws RemoteException{
+        results.clear();
+        results.add(updatedCabin);
+    }
 
     /**
      * Sets the view for the controller.
@@ -233,7 +299,11 @@ public interface VirtualController extends Remote {
      * @param virtualView The view to be set for the controller.
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void setView(VirtualView virtualView) throws RemoteException;
+    @Override
+    public  void setView(VirtualView virtualView) throws RemoteException{
+        results.clear();
+        results.add(virtualView);
+    }
 
     /**
      * Manages ship error by removing the specified tiles.
@@ -241,14 +311,19 @@ public interface VirtualController extends Remote {
      * @param toRemove The list of coordinates to be removed.
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void shipErrorManagement(ArrayList<Coordinates> toRemove) throws RemoteException;
+    @Override
+    public  void shipErrorManagement(ArrayList<Coordinates> toRemove) throws RemoteException{
+        results.clear();
+        results.add(toRemove);
+    }
 
     /**
      * Sends a ping signal to check the connection.
      *
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void ping() throws RemoteException;
+    @Override
+    public void ping() throws RemoteException{}
 
     /**
      * Removes goods from the specified coordinates.
@@ -256,7 +331,11 @@ public interface VirtualController extends Remote {
      * @param fromHere The coordinates from which to remove the goods.
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void removeGoods(ArrayList<Coordinates> fromHere) throws RemoteException;
+    @Override
+    public void removeGoods(ArrayList<Coordinates> fromHere) throws RemoteException{
+        results.clear();
+        results.add(fromHere);
+    }
 
     /**
      * Chooses a branch to be maintained.
@@ -264,7 +343,11 @@ public interface VirtualController extends Remote {
      * @param thisOne The branch to be maintained.
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void chooseBranch(ArrayList<Coordinates> thisOne) throws RemoteException;
+    @Override
+    public void chooseBranch(ArrayList<Coordinates> thisOne) throws RemoteException{
+        results.clear();
+        results.add(thisOne);
+    }
 
     /**
      * Uses the specified batteries.
@@ -272,7 +355,11 @@ public interface VirtualController extends Remote {
      * @param batteries The list of batteries to be used.
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void useBattery(ArrayList<Coordinates> batteries) throws RemoteException;
+    @Override
+    public void useBattery(ArrayList<Coordinates> batteries) throws RemoteException{
+        results.clear();
+        results.add(batteries);
+    }
 
     /**
      * Removes crew members from the specified coordinates.
@@ -280,7 +367,14 @@ public interface VirtualController extends Remote {
      * @param toRemoveFrom The coordinates to remove crew members from.
      * @throws RemoteException If there is an error during the remote method invocation.
      */
-    void removeCrew(ArrayList<Coordinates> toRemoveFrom) throws RemoteException;
+    @Override
+    public void removeCrew(ArrayList<Coordinates> toRemoveFrom) throws RemoteException{
+        results.clear();
+        results.add(toRemoveFrom);
+    }
 
-    ArrayList<Object> getResults() throws RemoteException;
+    @Override
+    public ArrayList<Object> getResults() throws RemoteException {
+        return null;
+    }
 }

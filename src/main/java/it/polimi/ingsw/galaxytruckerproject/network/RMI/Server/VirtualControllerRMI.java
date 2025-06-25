@@ -354,6 +354,11 @@ public class VirtualControllerRMI extends UnicastRemoteObject implements Virtual
         controller.removeCrew(toRemoveFrom);
     }
 
+    @Override
+    public ArrayList<Object> getResults() throws RemoteException {
+        return null;
+    }
+
     /**
      * Rolls the dice as part of the game mechanics.
      * This method triggers the roll of the dice through the controller,

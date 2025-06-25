@@ -152,17 +152,6 @@ public class ClientController {
     private Map<PlayersColor, Boolean> availableColors;
 
     /**
-     * A mapping of planet identifiers to their availability status.
-     *
-     * The key is an integer representing the unique identifier of a planet.
-     * The value is a boolean indicating the availability status of the planet:
-     * true if the planet is available, false otherwise.
-     *
-     * This map is used to track and manage the availability of planets in the system.
-     */
-    private HashMap<Integer, Boolean> availablePlanets = new HashMap<>();
-
-    /**
      * A list of goods available for the player to manage.
      */
     private ArrayList<Goods> goodsList;
@@ -250,6 +239,15 @@ public class ClientController {
      */
     public VirtualController getVirtualController() {
         return virtualController;
+    }
+
+    /**
+     * Set the virtual controller for server communication.
+     *
+     * @return the virtual controller
+     */
+    public void setVirtualController(VirtualController virtualController) {
+        this.virtualController=virtualController;
     }
     /**
      * Handles the user's choice of user interface (GUI or TUI).
@@ -1015,18 +1013,7 @@ public class ClientController {
             case WAIT_TO_DRAW ->
                     phase = GamePhases.CARDS;
             case DRAW_CARD -> phase = GamePhases.CARDS;
-            case PLANET_CHOICE ->{
-                if(displayedCard!=null&&!displayedCard.isEmpty()&&displayedCard.getFirst().getListOfPlanets()!=null) {
-                    int p=0;
-                    for(Planet _ : displayedCard.getFirst().getListOfPlanets()){
-                        if(!availablePlanets.containsKey(p))
-                            availablePlanets.put(p,Boolean.TRUE);
-                        p++;
-                    }
-                }
-            }
             case MANAGE_GOODS -> {
-                availablePlanets=new HashMap<>();
                 if (!inManager) {
                     me.getShipBoard().setGetStat();
                     this.goodsList =displayedCard.getFirst().getGoodsList(me.getPlayerName());
@@ -2314,19 +2301,6 @@ public class ClientController {
             setOffline();
         }
         return;
-    }
-
-    /**
-     * Sets the number of planets and marks them as unavailable in the system.
-     *
-     * @param planets the number of planets to be added to the system
-     */
-    public void setPlanets( int planets) {
-        availablePlanets.put(planets-1,Boolean.FALSE);
-    }
-
-    public Map<Integer,Boolean> getAvailablePlanets() {
-        return availablePlanets;
     }
 
     public void reconnect() {

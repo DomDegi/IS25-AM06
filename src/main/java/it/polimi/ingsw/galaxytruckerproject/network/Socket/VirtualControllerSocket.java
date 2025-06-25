@@ -401,4 +401,9 @@ public class VirtualControllerSocket implements VirtualController {
     public void removeCrew(ArrayList<Coordinates> toRemoveFrom) throws RemoteException {
         serverHandler.sendClientMessage(new RemoveCrewMessage(toRemoveFrom));
     }
+
+    @Override
+    public ArrayList<Object> getResults() throws RemoteException {
+        return null;
+    }
 }

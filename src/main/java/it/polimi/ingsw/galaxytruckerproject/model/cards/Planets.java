@@ -333,4 +333,8 @@ public class Planets extends Card {
             }
         }
     }
+
+    public Map<String, Planet> getPlayerChosenPlanets() {
+        return playerChosenPlanets;
+    }
 }
