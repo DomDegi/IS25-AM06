@@ -62,10 +62,12 @@ public class UpdateDeserializer {
 
             ArrayList<Card> deckCards = new CardDeck("cards.json").deckFromIDs(new ArrayList<>(cardIDs));
 
-            for (int i = 0; i < 3; i++) {
-                int deckNumber = i + 1;
-                List<Card> subDeck = deckCards.subList(i * 3, (i + 1) * 3);
-                deck.put(deckNumber, new ArrayList<>(subDeck));
+            if (controller.getGameMode() == GameMode.LEVEL2) {
+                for (int i = 0; i < 3; i++) {
+                    int deckNumber = i + 1;
+                    List<Card> subDeck = deckCards.subList(i * 3, (i + 1) * 3);
+                    deck.put(deckNumber, new ArrayList<>(subDeck));
+                }
             }
 
             controller.setDeck(deck);
