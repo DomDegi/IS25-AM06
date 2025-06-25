@@ -8,10 +8,8 @@ import it.polimi.ingsw.galaxytruckerproject.model.FlightBoard;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
-import it.polimi.ingsw.galaxytruckerproject.model.cards.Planet;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.Penalty;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
-import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import it.polimi.ingsw.galaxytruckerproject.network.RMI.Client.VirtualViewRMI;
@@ -21,7 +19,6 @@ import it.polimi.ingsw.galaxytruckerproject.network.VirtualController;
 import it.polimi.ingsw.galaxytruckerproject.view.DisplayableView;
 import it.polimi.ingsw.galaxytruckerproject.view.GUI;
 import it.polimi.ingsw.galaxytruckerproject.view.TUI;
-import javafx.application.Platform;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -688,7 +685,7 @@ public class ClientController {
             if (chose > 0 && chose <= numPlayer) {
                 me.getShipBoard().setGetStat();
                 try {
-                    //positioned=true;
+                    positioned=true;
                     virtualController.notifySetPosition(chose);
                 } catch (RemoteException e) {
                     setOffline();
@@ -1034,13 +1031,6 @@ public class ClientController {
             view.setClientState(state);
         } catch (RemoteException e) {
             setOffline();
-        }
-        availablePlanets=new HashMap<>();
-        if(phase==GamePhases.CARDS&&displayedCard!=null&&!displayedCard.isEmpty()&&displayedCard.getFirst().getListOfPlanets()!=null) {
-            int p=1;
-            for(Planet _ : displayedCard.getFirst().getListOfPlanets()){
-                availablePlanets.put(p,Boolean.TRUE);
-            }
         }
     }
     /**

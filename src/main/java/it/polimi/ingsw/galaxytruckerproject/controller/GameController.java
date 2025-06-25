@@ -1031,20 +1031,22 @@ public class GameController implements Observer, Serializable {
         }
         FlightBoard flightBoard = game.getFlightBoard();
         Player player = game.identifyPlayerByName(playerName);
-
-        if (flightBoard.addToFlightBoard(player, position)) {
+        if(game.getMode() == TRIAL) {
+            game.getFlightBoard().addToTrialFlightBoard(player);
             notifyPlayerMovement(playerName, player.getPlayerColor(), player.getPlayerPosition(), player.getPlayerRanking());
             checkIfAllPlayersReady();
-
-        } else {
-            try {
-                playersView.showWrongInputMessage();
-                updatePlayerView(S_FINISHED, playerName);
-
-            } catch (Exception ignored) {
+        }else{
+            if (flightBoard.addToFlightBoard(player, position)) {
+                notifyPlayerMovement(playerName, player.getPlayerColor(), player.getPlayerPosition(), player.getPlayerRanking());
+                checkIfAllPlayersReady();
+            } else {
+                try {
+                    playersView.showWrongInputMessage();
+                    updatePlayerView(S_FINISHED, playerName);
+                } catch (Exception ignored) {
+                }
             }
         }
-
     }
     /**
      * Notifies all players of the updated flight board position and ranking of a player.

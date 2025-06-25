@@ -98,29 +98,25 @@ public class FlightBoard implements Serializable {
             occupiedPos.clear();
             occupiedPos.add(0);
         }
-        inGamePlayers.remove(newPlayer);
-        while (inGamePlayers.size() <= occupiedPos.getFirst()) {
-            inGamePlayers.add(null);  // adds null positions
-        }
-        inGamePlayers.set(occupiedPos.getFirst(),newPlayer);
+        if(inGamePlayers.remove(newPlayer))
+            occupiedPos.set(0,occupiedPos.getFirst()-1);
         switch (occupiedPos.getFirst()) {
-            case 0:
-                inGamePlayers.get(occupiedPos.getFirst()).setPlayerPosition(4);
-                break;
-            case 1:
-                inGamePlayers.get(occupiedPos.getFirst()).setPlayerPosition(2);
-                break;
-            case 2:
-                inGamePlayers.get(occupiedPos.getFirst()).setPlayerPosition(1);
-                break;
-            case 3:
-                inGamePlayers.get(occupiedPos.getFirst()).setPlayerPosition(0);
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid position: " + occupiedPos.getFirst());
+            case 0->
+                newPlayer.setPlayerPosition(4);
+            case 1->
+                newPlayer.setPlayerPosition(2);
+            case 2->
+                newPlayer.setPlayerPosition(1);
+            case 3->
+                newPlayer.setPlayerPosition(0);
+            default-> {
+                return;
+            }
         }
-        inGamePlayers.get(occupiedPos.getFirst()).setPlayerRanking(occupiedPos.getFirst()+1);
+        newPlayer.setPlayerRanking(occupiedPos.getFirst()+1);
+        inGamePlayers.add(occupiedPos.getFirst(),newPlayer);
         occupiedPos.set(0,occupiedPos.getFirst()+1);
+        rearrange();
     }
 
     /**
@@ -145,28 +141,21 @@ public class FlightBoard implements Serializable {
         }
         if(newPlayer.getPlayerRanking()!=0)
             occupiedPos.set(newPlayer.getPlayerRanking()-1,-1);
-        if (newPlayer.getPlayerRanking() != 0) {
-            occupiedPos.set(newPlayer.getPlayerRanking() - 1, -1);
-        }
         //removes only if the player is already present in inGamePlayers
         inGamePlayers.remove(newPlayer);
         //makes sure that the position chosen is from 0 to 3 (after the offset) and sets the right value for starting pos
         switch (pos) {
-            case 0:
+            case 0->
                 newPlayer.setPlayerPosition(6);
-                break;
-            case 1:
+            case 1->
                 newPlayer.setPlayerPosition(3);
-                break;
-            case 2:
+            case 2->
                 newPlayer.setPlayerPosition(1);
-                break;
-            case 3:
+            case 3->
                 newPlayer.setPlayerPosition(0);
-                break;
-            default:
-                //throw new IllegalArgumentException("Invalid position: " + occupiedPos.getFirst());
+            default -> {
                 return false;
+            }
         }
         // gives player a ranking
         newPlayer.setPlayerRanking(pos + 1);
