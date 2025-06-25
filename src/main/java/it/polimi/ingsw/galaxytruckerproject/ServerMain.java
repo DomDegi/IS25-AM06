@@ -28,7 +28,7 @@ public class ServerMain {
         String ip = null;
         try (Socket socket = new Socket()) {
             // Connect to an external address (Google) to retrieve the local machine's IP address
-            socket.connect(new InetSocketAddress("8.8.8.8", 53)); // Google DNS, lightweight
+            socket.connect(new InetSocketAddress("8.8.8.8", 53),2000); // Google DNS, lightweight
             ip = socket.getLocalAddress().getHostAddress();
             // Set the local IP as the system property for the RMI server
             System.setProperty("java.rmi.server.hostname", ip);
