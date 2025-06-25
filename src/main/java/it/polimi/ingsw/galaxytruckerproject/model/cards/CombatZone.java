@@ -296,7 +296,7 @@ public class CombatZone extends Card {
         notifyEngine(currentPlayer.getPlayerName(),strength);
         savedValues.put(currentPlayer, (float) strength);
         if (!updatedTiles.isEmpty()) {
-            notifyModifiedTiles(playerName, valueMap.values().iterator().next());
+            notifyModifiedTiles(playerName, updatedTiles);
         }
         nextPlayer();
     }
@@ -564,7 +564,7 @@ public class CombatZone extends Card {
     public int getCrewNumber() {
         for (Penalty penalty: listOfChallenges.sequencedValues()) {
             int crewToLose = penalty.getNumberOfCrew();
-            if (penalty.getNumberOfCrew() > 0) {
+            if (crewToLose > 0) {
                 return crewToLose;
             }
         }

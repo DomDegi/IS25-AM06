@@ -149,6 +149,6 @@ public class CrewPenalty extends Penalty {
 
     @Override
     public int getNumberOfCrew() {
-        return numberOfCrew;
+        return numberOfLostCrew;
     }
 }
