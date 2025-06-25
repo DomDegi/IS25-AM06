@@ -549,6 +549,12 @@ class ShipBoardTest {
         tile22.rotate();
         tile22.rotate();
         shipBoard1.positionTile(Optional.of(tile22), new Coordinates(4,4));
+
+        //BOOKING TILE
+        Tile tile23=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
+        shipBoard1.addBookedTile(tile23);
+        shipBoard1.removeBookedTile(0);
+
         boolean result=shipBoard1.verifyCorrectness();
         //verifyCorrectness is needed for the shipboard stats setting
         ArrayList<Set<Coordinates>> set = shipBoard1.destroyTile(new Coordinates(2, 2));
