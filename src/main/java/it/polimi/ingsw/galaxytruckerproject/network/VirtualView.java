@@ -120,7 +120,7 @@ public interface VirtualView extends ViewInterface, Serializable {
      * @param currentGameStatus The current status of the game.
      * @throws RemoteException If a remote exception occurs.
      */
-    void notifyChangesWhileGone(String currentGameStatus) throws RemoteException;
+    void notifyChangesWhileGone(String playerName, String currentGameStatus) throws RemoteException;
 
     /**
      * Notifies the clients about the current flight board cards.

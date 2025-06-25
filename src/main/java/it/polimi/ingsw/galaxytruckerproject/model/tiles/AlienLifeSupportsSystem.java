@@ -153,7 +153,7 @@ public class AlienLifeSupportsSystem extends Tile {
     public String toStringData() {
         String image;
         image = Objects.requireNonNullElse(imagePath, "N");
-        return "AL " + key + " " + image + " " + north.toString() + " " + east.toString() + " " + south.toString() + " " + west.toString() + " " + colorAlienSupported.toString();
+        return "AL " + key + " " + image + " " + rotation + " " + north.toString() + " " + east.toString() + " " + south.toString() + " " + west.toString() + " " + colorAlienSupported.toString();
     }
 
     /**
@@ -175,6 +175,6 @@ public class AlienLifeSupportsSystem extends Tile {
         if (imagePath != null) {
             k++;
         }
-        this.colorAlienSupported = CrewType.fromString(attributes[7 + k]);
+        this.colorAlienSupported = CrewType.fromString(attributes[8 + k]);
     }
 }

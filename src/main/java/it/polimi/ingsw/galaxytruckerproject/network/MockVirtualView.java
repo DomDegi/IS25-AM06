@@ -73,7 +73,7 @@ public class MockVirtualView implements VirtualView {
     }
 
     @Override
-    public void notifyChangesWhileGone(String currentGameStatus) throws RemoteException {
+    public void notifyChangesWhileGone(String playerName,String currentGameStatus) throws RemoteException {
         // Implement mock behavior or leave empty
     }
 

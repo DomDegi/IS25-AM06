@@ -39,7 +39,7 @@ public class UpdateDeserializer {
      * @param currentGameStatus  the serialized game state string received from the server
      * @throws RuntimeException if any parsing or I/O error occurs during deserialization
      */
-    public static void unpack(ClientController controller, String currentGameStatus) {
+    public static void unpack(ClientController controller,String playerName, String currentGameStatus) {
 
         try (BufferedReader writer = new BufferedReader(new StringReader(currentGameStatus))) {
 
@@ -62,10 +62,12 @@ public class UpdateDeserializer {
 
             ArrayList<Card> deckCards = new CardDeck("cards.json").deckFromIDs(new ArrayList<>(cardIDs));
 
-            for (int i = 0; i < 3; i++) {
-                int deckNumber = i + 1;
-                List<Card> subDeck = deckCards.subList(i * 3, (i + 1) * 3);
-                deck.put(deckNumber, new ArrayList<>(subDeck));
+            if (controller.getGameMode() == GameMode.LEVEL2) {
+                for (int i = 0; i < 3; i++) {
+                    int deckNumber = i + 1;
+                    List<Card> subDeck = deckCards.subList(i * 3, (i + 1) * 3);
+                    deck.put(deckNumber, new ArrayList<>(subDeck));
+                }
             }
 
             controller.setDeck(deck);
@@ -82,7 +84,6 @@ public class UpdateDeserializer {
                 controller.setTurnedTiles(turnedTiles);
             }
 
-            String myName = controller.getName();
             ArrayList<LightPlayer> otherPlayers = new ArrayList<>();
 
             for (int i = 0; i < playerCount; i++) {
@@ -90,7 +91,7 @@ public class UpdateDeserializer {
                 String[] playerData = writer.readLine().split(" ");
                 String currentName = playerData[0];
                 LightShipBoard lightShipBoard;
-                if (currentName.equals(myName)) {
+                if (currentName.equals(playerName)) {
                     lightShipBoard = new LightShipBoard(controller.getMe());
                     controller.getMe().loadFromData(playerData);
                 } else {

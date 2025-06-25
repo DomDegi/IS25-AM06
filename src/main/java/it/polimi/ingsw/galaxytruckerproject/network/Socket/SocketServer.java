@@ -5,7 +5,6 @@ import it.polimi.ingsw.galaxytruckerproject.controller.MultiGameController;
 import it.polimi.ingsw.galaxytruckerproject.network.Server;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -27,13 +26,12 @@ public class SocketServer implements Server {
      * @param multiGameController The controller that manages the overall game logic and state.
      */
     @Override
-    public void connect(MultiGameController multiGameController) {
+    public void connect(String ip,MultiGameController multiGameController) {
         ServerSocket server;
         try {
             // The server listens on port 12345
             int port = 12345;
             server = new ServerSocket(port);
-            String ip = InetAddress.getLocalHost().getHostAddress();
             System.out.println("SocketServer is on at " + ip + ":" + port);
         } catch (IOException e) {
             System.out.println("Cannot open server");

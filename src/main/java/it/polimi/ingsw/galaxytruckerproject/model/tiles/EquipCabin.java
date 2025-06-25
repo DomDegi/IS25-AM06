@@ -249,7 +249,7 @@ public class EquipCabin extends Cabin {
     public String toStringData() {
         String image;
         image = Objects.requireNonNullElse(imagePath, "N");
-        return "EC " + key + " " + image + " " + north + " " + east + " " + south + " " + west + " " + crew + " " +
+        return "EC " + key + " " + image + " " + rotation + " " + north + " " + east + " " + south + " " + west + " " + crew + " " +
                 (crewType != null ? crewType : "N");
     }
 
@@ -260,9 +260,9 @@ public class EquipCabin extends Cabin {
         if (imagePath != null) {
             k++;
         }
-        this.crewToLoad = Integer.parseInt(attributes[7 + k]);
-        if (!attributes[8 + k].equals("N")) {
-            this.crewType = CrewType.fromString(attributes[8 + k]);
+        this.crewToLoad = Integer.parseInt(attributes[8 + k]);
+        if (!attributes[9 + k].equals("N")) {
+            this.crewType = CrewType.fromString(attributes[9 + k]);
         }
         if (crewType != CrewType.HUMAN && crewToLoad > 1) {
             System.out.println("This equip cabin has something wrong going on");

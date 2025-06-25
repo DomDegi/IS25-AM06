@@ -25,7 +25,7 @@ import java.util.Objects;
  * It also handles updating the displayed ship image and tiles based on the game mode (LEVEL2 or TRIAL).
  * </p>
  */
-public class CheckShipController {
+public class CheckShipController extends GUIControllers {
 
     @FXML
     public ImageView shipImage;

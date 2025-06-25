@@ -1189,18 +1189,9 @@ public class GUI extends Application implements DisplayableView {
     @Override
     public void showTurnedTiles(Map<Integer, Tile> turnedTiles) {
         Platform.runLater(() -> {
-            try {
-                if (controller.getState() == ClientState.S_END_DRAW_TILE_CARD) {
-                    S_EndDrawTilesCardsController sceneController = loader.getController();
-                    if (sceneController != null)
-                        sceneController.update();
-                } else if (controller.getState() == ClientState.S_MANAGE_DRAWN_TILE) {
-                    S_ManageDrawTileController sceneController = loader.getController();
-                    if (sceneController != null)
-                        sceneController.update();
-                }
-            } catch (Exception _) {
-            }
+            GUIControllers sceneController= loader.getController();
+            sceneController.updateEDTC();
+            sceneController.updateMDT();
         });
     }
 
@@ -1251,18 +1242,9 @@ public class GUI extends Application implements DisplayableView {
         @Override
         public void printFlightboard(LightFlightboard lightFlightboard) {
             Platform.runLater(() -> {
-                if (controller.isChecking() == null) {
-                    Object sceneController = loader.getController();
-                    if (controller.getState() == ClientState.S_FINISHED || (controller.getPreviousState() == ClientState.S_FINISHED && controller.getState() == ClientState.WAIT)) {
-                        if (sceneController instanceof EndShipController endShipController) {
-                            endShipController.update();
-                        }
-                    } else if (controller.getState() == ClientState.S_END_DRAW_TILE_CARD) {
-                        if (sceneController instanceof S_EndDrawTilesCardsController endDrawController) {
-                            endDrawController.update();
-                        }
-                    }
-                }
+                GUIControllers endShipController=loader.getController();
+                endShipController.updateFlightBoard();
+                endShipController.updateEDTC();
             });
         }
 
@@ -1305,11 +1287,8 @@ public class GUI extends Application implements DisplayableView {
     @Override
     public void showAvailableDecks() {
         Platform.runLater(() -> {
-            if (controller.isChecking() == null)
-                if (controller.getState() == ClientState.S_END_DRAW_TILE_CARD) {
-                    S_EndDrawTilesCardsController sEndDrawTilesCardsController = loader.getController();
-                    sEndDrawTilesCardsController.update();
-                }
+            GUIControllers sEndDrawTilesCardsController = loader.getController();
+            sEndDrawTilesCardsController.updateEDTC();
         });
     }
 
@@ -1504,13 +1483,8 @@ public class GUI extends Application implements DisplayableView {
     @Override
     public void showDiceRoll(int diceRoll) throws RemoteException {
         Platform.runLater(() -> {
-            if(controller.isChecking()==null){
-                if(controller.getPhase()==GamePhases.CARDS){
-                    CardsController cardsController = loader.getController();
-                    if(cardsController!=null)
-                        cardsController.showRoll(diceRoll);
-                }
-            }
+            GUIControllers cardsController = loader.getController();
+            cardsController.showRoll(diceRoll);
         });
     }
 
@@ -1604,10 +1578,8 @@ public class GUI extends Application implements DisplayableView {
     @Override
     public void notifyPlayerLandedOnPlanet(String playerName, int planet) throws RemoteException {
         Platform.runLater(() -> {
-            if (controller.isChecking()==null) {
-                CardsController cardController = loader.getController();
-                cardController.initialize();
-            }
+            GUIControllers cardController = loader.getController();
+            cardController.updateCards();
         });
     }
 
@@ -1648,18 +1620,8 @@ public class GUI extends Application implements DisplayableView {
             public void run() {
                 counter++;
                 Platform.runLater(() -> {
-                    if (controller.isChecking() == null) {
-                        Object currentSceneController = loader.getController(); // Get the controller safely
-                        if (controller.getState() == ClientState.S_END_DRAW_TILE_CARD) {
-                            if (currentSceneController instanceof S_EndDrawTilesCardsController sceneController) {
-                                sceneController.goProgressBar(counter, 100, controller.getHourglassTurns());
-                            }
-                        } else if (controller.getState() == ClientState.S_FINISHED || (controller.getPreviousState() == ClientState.S_FINISHED && controller.getState() == ClientState.WAIT && controller.isChecking() == null)) {
-                            if (currentSceneController instanceof EndShipController sceneController) {
-                                sceneController.goProgressBar(counter, 100, controller.getHourglassTurns());
-                            }
-                        }
-                    }
+                    GUIControllers sceneController = loader.getController();
+                    sceneController.goProgressBar(counter, 100, controller.getHourglassTurns());
                 });
                 if (counter == 100) {
                     timer.cancel();
@@ -1680,19 +1642,8 @@ public class GUI extends Application implements DisplayableView {
     public void notifyEndOfTime() throws RemoteException {
         counter = 100;
         Platform.runLater(() -> {
-            if (controller.isChecking() == null) {
-                if (controller.getState() == ClientState.S_END_DRAW_TILE_CARD) {
-                    S_EndDrawTilesCardsController sceneController = loader.getController();
-                    if (sceneController != null) {
-                        sceneController.goProgressBar(counter, 100, controller.getHourglassTurns());
-                    }
-                } else if (controller.getState() == ClientState.S_FINISHED || (controller.getPreviousState() == ClientState.S_FINISHED && controller.getState() == ClientState.WAIT)) {
-                    EndShipController sceneController = loader.getController();
-                    if (sceneController != null) {
-                        sceneController.goProgressBar(counter, 100, controller.getHourglassTurns());
-                    }
-                }
-            }
+            GUIControllers sceneController = loader.getController();
+            sceneController.goProgressBar(counter, 100, controller.getHourglassTurns());
         });
         timer.cancel();
         timer.purge();

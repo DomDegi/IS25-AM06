@@ -305,4 +305,13 @@ public class MultiGameController implements Serializable {
        PingPong pingPong = new PingPong(this.gamesMap);
        pingPong.run();
     }
+
+    //For test purposes
+    public void addGame(GameController game){
+        gamesMap.put(game.getGameName(), game);
+    }
+
+    public void removeGame(GameController game){
+        gamesMap.remove(game.getGameName());
+    }
 }

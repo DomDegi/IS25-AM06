@@ -11,7 +11,7 @@ import java.io.IOException;
  * of connection settings in the GUI. It provides functionality to set up connections
  * using either RMI or Socket protocols.
  */
-public class ConnectionController{
+public class ConnectionController extends GUIControllers{
 
     /**
      * Represents the input field for the IP address in the GUI.

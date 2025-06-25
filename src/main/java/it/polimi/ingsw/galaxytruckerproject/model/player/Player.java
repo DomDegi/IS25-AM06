@@ -512,7 +512,6 @@ public class Player implements PlayerInterface , Serializable {
      */
     public void playerDisconnects() {
         this.isDisconnected = true;
-        System.out.println("Player disconnected");
     }
 
     /**

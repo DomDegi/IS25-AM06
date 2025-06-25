@@ -430,9 +430,6 @@ public class ShipBoard implements ShipBoardInterface, Serializable {
      * @return true if ship is valid.
      */
     public boolean verifyCorrectness() {
-        if (completed) {
-            return true;
-        }
         Set<Coordinates> set = new HashSet<Coordinates>();
         set=this.connectedSet( new Coordinates(2,3), set);
         // da controllare che tutte le caselle non vuote siano nel set per la correttezza (no caso delle due navi separate)

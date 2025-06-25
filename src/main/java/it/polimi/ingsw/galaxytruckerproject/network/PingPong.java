@@ -56,7 +56,7 @@ public class PingPong implements Runnable {
             }
 
             try {
-                // Sleep for 15 seconds before the next round of pings
+                // Sleep for 1.5 seconds before the next round of pings
                 Thread.sleep(15000);
             } catch (InterruptedException e) {
                 // If the thread is interrupted, break the loop and stop the task

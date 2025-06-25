@@ -13,7 +13,7 @@ import javafx.scene.layout.HBox;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class EndController {
+public class EndController extends GUIControllers{
     @FXML
     public HBox columns;
 

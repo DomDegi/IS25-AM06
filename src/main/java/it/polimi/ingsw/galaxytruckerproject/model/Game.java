@@ -74,7 +74,7 @@ public class Game implements GameInterface{
         }
         else {
             //this.inGameCards = new TrialCardDeck("trialFlightCards.json").getTrialDeck(); quello corretto
-            this.inGameCards = new TrialCardDeck("trialFlightCards.json").getTrialDeck();
+            this.inGameCards = new TrialCardDeck("trialFlightCardsTest.json").getTrialDeck();
         }
         this.playerCount = playerCount;
         this.drawnCard = null;
@@ -325,7 +325,7 @@ public class Game implements GameInterface{
 
     /** Ends the ship creation phase and proceeds to verification. */
     public void endShipCreation() {
-        Collections.shuffle(inGameCards);
+        //Collections.shuffle(inGameCards);
         setGameState(VERIFY_SHIP_CORRECTNESS);
     }
 
@@ -341,7 +341,7 @@ public class Game implements GameInterface{
 
     /** Ends the current card phase and transitions to game conclusion. */
     public void endCardPhase() {
-        this.gameState = CONCLUDE_GAME;
+        setGameState(CONCLUDE_GAME);
     }
 
     /** Ends the current card event and moves back to the drawing phase. */
@@ -515,7 +515,7 @@ public class Game implements GameInterface{
         }
         else {
             //this.inGameCards = new TrialCardDeck("trialFlightCards.json").deckFromIDs(cardsLeftID);
-            this.inGameCards = new TrialCardDeck("trialFLightCards.json").deckFromIDs(cardsLeftID);
+            this.inGameCards = new TrialCardDeck("trialFLightCardsTest.json").deckFromIDs(cardsLeftID);
         }
     }
 

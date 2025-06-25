@@ -36,6 +36,11 @@ public class ServerHandler implements Runnable {
     private ObjectInputStream input;
 
     /**
+     * Flag indicating whether the server handler is active and processing messages.
+     */
+    public volatile boolean isOn = true;
+
+    /**
      * Output stream to send messages to the server.
      */
     private ObjectOutputStream output;
@@ -59,11 +64,6 @@ public class ServerHandler implements Runnable {
      * Executor service used for processing incoming messages asynchronously.
      */
     private final ExecutorService messageProcesser = Executors.newSingleThreadExecutor();
-
-    /**
-     * Flag indicating whether the server handler is active and processing messages.
-     */
-    public boolean isOn = true;
 
     /**
      * Flag indicating whether the setup is complete and the handler is ready.
@@ -153,11 +153,20 @@ public class ServerHandler implements Runnable {
      * @param clientMessage The message to be sent to the server.
      */
     public synchronized void sendClientMessage(ClientMessage clientMessage) {
+        if (!isOn) {
+            System.out.println("Connection is closed. Cannot send message to server.");
+            return;
+        }
         try {
             output.writeObject(clientMessage);
+            output.flush();
         } catch (IOException e) {
+            System.out.println("Connection lost while sending message.");
             e.printStackTrace();
-            System.out.println("Could not send message to server");
+            if (isOn) {
+                clientController.setOffline();
+                stopReceivingMessages();
+            }
         }
     }
 
@@ -174,10 +183,17 @@ public class ServerHandler implements Runnable {
                 }
             } catch (EOFException | SocketException e) {
                 System.out.println("Client disconnected: " + server.getInetAddress());
-                isOn = false;
+                if(isOn) {
+                    clientController.setOffline();
+                    stopReceivingMessages();
+                }
                 break;
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println("Error handling inputStream from server");
+                if (isOn) {
+                    clientController.setOffline();
+                    stopReceivingMessages();
+                }
                 e.printStackTrace();
                 break;
             } catch (Exception e) {
@@ -205,12 +221,16 @@ public class ServerHandler implements Runnable {
      * Stops receiving messages from the server and closes the connection.
      */
     public void stopReceivingMessages() {
-        this.isOn = false;
-        try {
-            server.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Could not close server");
+        if (this.isOn) {
+            this.isOn = false;
+            try {
+                if (!server.isClosed()) {
+                    server.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Could not close server");
+            }
         }
     }
 

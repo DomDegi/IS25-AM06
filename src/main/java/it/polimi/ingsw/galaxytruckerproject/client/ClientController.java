@@ -9,7 +9,9 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Planet;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.Penalty;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import it.polimi.ingsw.galaxytruckerproject.network.RMI.Client.VirtualViewRMI;
@@ -294,7 +296,7 @@ public class ClientController {
             try {
                 virtualController.login(me.getPlayerName());
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                setOffline();
             }
         } else {
             view.wrongLocalInput();
@@ -374,17 +376,15 @@ public class ClientController {
         if (gameMode != null) {
             try {
                 readyToPlay();
-                this.previousState = ClientState.CHOOSE_UI;
-                this.state = ClientState.LOGIN;
-                this.connected = false;
                 me.setPlayerName("");
+                this.connected = false;
                 virtualController.leaveGame();
+                this.previousState = ClientState.CHOOSE_UI;
                 return true;
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                setOffline();
             }
-        }
-        else {
+        } else {
             view.wrongLocalInput();
             rollBackState();
         }
@@ -392,7 +392,6 @@ public class ClientController {
     }
 
     public void readyToPlay() {
-        Platform.runLater(()->{
             this.ended=false;
             this.phase = GamePhases.LOGIN;
             positioned=false;
@@ -418,7 +417,6 @@ public class ClientController {
             this.indexDeckInHandOrPlanet = 0;
             this.hourglassTurns = 0;
             displayedCard = new ArrayList<>();
-        });
     }
     /**
      * Allows the player to choose their color for the game.
@@ -436,7 +434,7 @@ public class ClientController {
             try {
                 virtualController.chooseColor(color);
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                setOffline();
             }
         } else {
             view.wrongLocalInput();
@@ -612,7 +610,7 @@ public class ClientController {
             try {
                 virtualController.notifySetTile(this.tileInHand.send());
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                setOffline();
             }
             built=true;
             return true;
@@ -673,7 +671,7 @@ public class ClientController {
             try {
                 virtualController.notifyTileBooking();
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                setOffline();
             }
         }
         return true;
@@ -685,7 +683,7 @@ public class ClientController {
      * @return true if the operation is successful, false otherwise
      */
     public boolean positionOnFlightBoard(int chose) {
-        if(state!=ClientState.S_FINISHED&&positioned){
+        if(state!=ClientState.S_FINISHED||positioned){
             return false;
         }
         if (gameMode == GameMode.LEVEL2) {
@@ -793,7 +791,7 @@ public class ClientController {
             try {
                 virtualController.planetChoiceRequest(chose);
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                setOffline();
             }
         } else {
             view.wrongLocalInput();
@@ -825,7 +823,7 @@ public class ClientController {
                 try {
                     virtualController.notifyNewGoodsArrangement(goodsVal, newTiles);
                 } catch (RemoteException e) {
-                    throw new RuntimeException(e);
+                    setOffline();
                 }
                 inManager = false;
             }
@@ -900,7 +898,7 @@ public class ClientController {
                         me.getShipBoard().setGetStat();
                         virtualController.notifyNewCrewArrangement(newTiles);
                     } catch (RemoteException e) {
-                        throw new RuntimeException(e);
+                        setOffline();
                     }
                 }
             }
@@ -960,8 +958,10 @@ public class ClientController {
                     previousState = state;
                 }
             }
-            case COORD_REQUEST ->
+            case COORD_REQUEST ->{
                     this.coordInputManager = new CoordInputManager(me.getShipBoard(), this);
+                    view.printShipboard(me.getShipBoard());
+            }
 
             case MANAGE_CABINS -> {
                 if (!inManager) {
@@ -975,7 +975,7 @@ public class ClientController {
                         try {
                             virtualController.notifyNewCrewArrangement(new ArrayList<>());
                         } catch (RemoteException e) {
-                            throw new RuntimeException(e);
+                            setOffline();
                         }
                         inManager = false;
                     } else {
@@ -994,7 +994,7 @@ public class ClientController {
                     try {
                         virtualController.notifyNewCrewArrangement(newTiles);
                     } catch (RemoteException e) {
-                        throw new RuntimeException(e);
+                        setOffline();
                     }
                     inManager = false;
                 }
@@ -1008,7 +1008,7 @@ public class ClientController {
                         me.setAllCrewToHuman();
                         virtualController.notifySetPosition(0);
                     } catch (RemoteException e) {
-                        throw new RuntimeException(e);
+                        setOffline();
                     }
                 }
             }
@@ -1180,7 +1180,7 @@ public class ClientController {
             try {
                 virtualController.sendTurnHourGlass();
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                setOffline();
             }
             return true;
         } else {
@@ -1202,7 +1202,7 @@ public class ClientController {
             try {
                 virtualController.sendTurnHourGlass();
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                setOffline();
             }
             return true;
         }
@@ -1222,7 +1222,7 @@ public class ClientController {
             try {
                 virtualController.sendTurnHourGlass();
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                setOffline();
             }
             return true;
         }
@@ -1284,7 +1284,7 @@ public class ClientController {
             try {
                 virtualController.notifyEarlyLanding();
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                setOffline();
             }
             return true;
         }
@@ -1544,8 +1544,8 @@ public class ClientController {
      *
      * @param currentGameStatus the serialized game status to unpack
      */
-    public void updateModel(String currentGameStatus) {
-        UpdateDeserializer.unpack(this,currentGameStatus);
+    public void updateModel(String playerName, String currentGameStatus) {
+        UpdateDeserializer.unpack(this,playerName,currentGameStatus);
     }
     /**
      * Updates the availability of the decks based on the given list of unavailable decks.
@@ -1812,7 +1812,7 @@ public class ClientController {
 
         serverWatchdogThread = new Thread(() -> {
             try {
-                Thread.sleep(30000);
+                Thread.sleep(20000);
                 setOffline();
             } catch (InterruptedException ignored) {
             }
@@ -1908,7 +1908,10 @@ public class ClientController {
      * @param playerName the name of the player who is the victim of the penalty
      */
     public void victimOfThePenalty(String playerName) {
-        view.victimOfThePenalty(playerName, this.displayedCard.getFirst().getPenalty());
+        Penalty currentPenalty = this.displayedCard.getFirst().getPenalty();
+        if (currentPenalty != null) {
+            view.victimOfThePenalty(playerName, currentPenalty);
+        }
     }
 
     /**
@@ -2074,7 +2077,7 @@ public class ClientController {
         try {
                 virtualController.notifySetTile(tile.send());
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                                setOffline();
             }
          */
         Tile tile4=new CargoBlue(2, new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web26.jpg",2,0);
@@ -2459,7 +2462,7 @@ public class ClientController {
         try {
                 virtualController.notifySetTile(tile.send());
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                setOffline();
             }
          */
         Tile tile1=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web126.jpg",0,0);

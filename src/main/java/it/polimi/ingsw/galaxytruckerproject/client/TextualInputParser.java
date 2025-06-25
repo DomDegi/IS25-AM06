@@ -103,8 +103,13 @@ public class TextualInputParser {
                         clientController.connectRMI("localhost",1099);
                     }
                     else {
-                        if (words.length==2) {
-                            clientController.connectRMI(words[0], Integer.parseInt(words[1]));
+                        if (words.length >= 1) {
+                            if (words.length == 1) {
+                                clientController.connectRMI(words[0], 1099);
+                            }
+                            else  {
+                                clientController.connectRMI(words[0], Integer.parseInt(words[1]));
+                            }
                         }
                         else {
                             view.wrongLocalInput();
@@ -122,8 +127,14 @@ public class TextualInputParser {
                         clientController.connectSocket("localhost",12345);
                     }
                     else {
-                        if(words.length==2)
-                            clientController.connectSocket(words[0], Integer.parseInt(words[1]));
+                        if(words.length >= 1) {
+                            if (words.length == 1) {
+                                clientController.connectSocket(words[0], 12345);
+                            }
+                            else {
+                                clientController.connectSocket(words[0], Integer.parseInt(words[1]));
+                            }
+                        }
                         else {
                             view.wrongLocalInput();
                             return false;

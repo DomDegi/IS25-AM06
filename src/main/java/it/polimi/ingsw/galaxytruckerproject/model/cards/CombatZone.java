@@ -125,12 +125,16 @@ public class CombatZone extends Card {
      * If all players have been evaluated, the weakest is identified.
      */
     public void nextPlayer() {
+        if (listOfChallenges.isEmpty()) {
+            game.endCardEvent();
+            return;
+        }
         playerIndex++;
         if (playerIndex < game.getNumberOfPlayers()) {
             this.initializeCurrentPlayer();
         }
         else{
-            findMinPlayer();
+            //findMinPlayer();
         }
         nextChallenge();
     }
@@ -213,8 +217,9 @@ public class CombatZone extends Card {
         }
         minPlayerView = viewsMap.get(minPlayer.getPlayerName());
         notifyVictim(minPlayer.getPlayerName());
-        currentPenalty.initializePenalty(game,minPlayerView, minPlayer);
-        resetForNextPenalty();
+        if (!currentPenalty.initializePenalty(game,minPlayerView, minPlayer)) {
+            resetForNextPenalty();
+        }
     }
 
     /**
@@ -295,7 +300,7 @@ public class CombatZone extends Card {
         notifyEngine(currentPlayer.getPlayerName(),strength);
         savedValues.put(currentPlayer, (float) strength);
         if (!updatedTiles.isEmpty()) {
-            notifyModifiedTiles(playerName, valueMap.values().iterator().next());
+            notifyModifiedTiles(playerName, updatedTiles);
         }
         nextPlayer();
     }
@@ -334,7 +339,7 @@ public class CombatZone extends Card {
     @Override
     public void removeGoods(String playerName, ArrayList<Coordinates> goodsToRemove) {
         Player player = game.identifyPlayerByName(playerName);
-        if (!player.getPlayerName().equals(minPlayer.getPlayerName())) {
+        if (minPlayer == null || !player.getPlayerName().equals(minPlayer.getPlayerName())) {
             try {
                 viewsMap.get(playerName).showWrongInputMessage();
             } catch(Exception ignored) {}
@@ -557,5 +562,18 @@ public class CombatZone extends Card {
         if (currentPlayer != null && currentPlayer.getPlayerName().equals(playerName)) {
             nextPlayer();
         }
+    }
+
+    @Override
+    public int getCrewNumber() {
+        /*
+        for (Penalty penalty: listOfChallenges.sequencedValues()) {
+            int crewToLose = penalty.getNumberOfCrew();
+            if (crewToLose > 0) {
+                return crewToLose;
+            }
+        }
+        return 0;*/
+        return 2;
     }
 }

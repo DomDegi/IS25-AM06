@@ -31,7 +31,6 @@ public class ClientMain implements Client {
         Scanner scanner = new Scanner(System.in);
         ClientController clientController;
         clientController = new ClientController();
-
         // Prompt the user to choose the UI type (TUI or GUI)
         System.out.println("You want to use TUI or GUI? [tui] [gui]");
 

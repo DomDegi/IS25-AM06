@@ -9,17 +9,23 @@ import it.polimi.ingsw.galaxytruckerproject.network.Socket.ServerHandler;
 public class CurrentGameStatusMessage extends ServerMessage {
 
     /**
-     * The current status of the game.
+     * The current status of the game in the server.
      */
     private final String currentGameStatus;
+
+    /**
+     * The name of the player to update.
+     */
+    private final String playerName;
 
     /**
      * Constructs a new CurrentGameStatusMessage with the specified current game status.
      *
      * @param currentStatus The current status of the game.
      */
-    public CurrentGameStatusMessage(String currentStatus) {
+    public CurrentGameStatusMessage(String playerName,String currentStatus) {
         this.currentGameStatus = currentStatus;
+        this.playerName = playerName;
     }
 
     /**
@@ -30,6 +36,6 @@ public class CurrentGameStatusMessage extends ServerMessage {
      */
     @Override
     public void processMessage(ServerHandler serverHandler) {
-        serverHandler.getClientController().updateModel(currentGameStatus);
+        serverHandler.getClientController().updateModel(playerName,currentGameStatus);
     }
 }
