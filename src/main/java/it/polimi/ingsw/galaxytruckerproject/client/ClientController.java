@@ -9,6 +9,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Planet;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.Penalty;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
@@ -1905,7 +1906,10 @@ public class ClientController {
      * @param playerName the name of the player who is the victim of the penalty
      */
     public void victimOfThePenalty(String playerName) {
-        view.victimOfThePenalty(playerName, this.displayedCard.getFirst().getPenalty());
+        Penalty currentPenalty = this.displayedCard.getFirst().getPenalty();
+        if (currentPenalty != null) {
+            view.victimOfThePenalty(playerName, currentPenalty);
+        }
     }
 
     /**
