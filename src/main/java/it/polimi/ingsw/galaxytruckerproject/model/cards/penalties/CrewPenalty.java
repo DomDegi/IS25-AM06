@@ -3,6 +3,7 @@ package it.polimi.ingsw.galaxytruckerproject.model.cards.penalties;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
+import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
@@ -124,9 +125,15 @@ public class CrewPenalty extends Penalty {
             return false;
         }
         numberOfCrew = Math.min(player.getTotalCrew(), numberOfLostCrew);
+
         if (player.IsDisconnected()) {
             game.getDrawnCard().notifyModifiedTiles(player.getPlayerName(), automaticCrewPenalty(player, view));
             return false;
+        }
+        try {
+            view.asksToInputCoordinates(CoordReqType.CHOOSE_CREW);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
         }
         return true;
     }
