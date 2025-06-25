@@ -1809,7 +1809,7 @@ public class ClientController {
 
         serverWatchdogThread = new Thread(() -> {
             try {
-                Thread.sleep(3000);
+                Thread.sleep(5000);
                 setOffline();
             } catch (InterruptedException ignored) {
             }
