@@ -118,7 +118,7 @@ public class CombatZone extends Card {
                 enginePowerCheck();
             }
         }
-        findMinPlayer();
+        //findMinPlayer();
     }
     /**
      * Advances to the next player in the evaluation sequence.
