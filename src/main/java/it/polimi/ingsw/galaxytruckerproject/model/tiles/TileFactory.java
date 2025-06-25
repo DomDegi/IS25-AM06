@@ -96,7 +96,7 @@ public class TileFactory {
      * @return a {@link ConcurrentLinkedDeque} representing the stack of tiles.
      */
     public ConcurrentLinkedDeque<Tile> getStack(ArrayList<Tile> tiles) {
-        Collections.shuffle(tiles);
+        //Collections.shuffle(tiles);
         return new ConcurrentLinkedDeque<>(tiles);
     }
 
