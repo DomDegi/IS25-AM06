@@ -562,12 +562,14 @@ public class CombatZone extends Card {
 
     @Override
     public int getCrewNumber() {
+        /*
         for (Penalty penalty: listOfChallenges.sequencedValues()) {
             int crewToLose = penalty.getNumberOfCrew();
             if (crewToLose > 0) {
                 return crewToLose;
             }
         }
-        return 0;
+        return 0;*/
+        return 2;
     }
 }

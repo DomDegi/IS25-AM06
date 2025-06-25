@@ -958,8 +958,10 @@ public class ClientController {
                     previousState = state;
                 }
             }
-            case COORD_REQUEST ->
+            case COORD_REQUEST ->{
                     this.coordInputManager = new CoordInputManager(me.getShipBoard(), this);
+                    view.printShipboard(me.getShipBoard());
+            }
 
             case MANAGE_CABINS -> {
                 if (!inManager) {
