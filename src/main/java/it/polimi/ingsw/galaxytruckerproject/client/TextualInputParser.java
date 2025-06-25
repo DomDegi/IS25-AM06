@@ -255,7 +255,7 @@ public class TextualInputParser {
                     return true;
                 }
                 if (words[0].equals("buildship2")) {
-                    clientController.buildShip();
+                    clientController.buildShip2();
                     return true;
                 }
                 if (words[0].equals("turn") && clientController.secondHourglassTurn())
