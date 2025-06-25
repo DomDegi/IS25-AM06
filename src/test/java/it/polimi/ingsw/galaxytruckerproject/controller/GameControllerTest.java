@@ -15,6 +15,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import it.polimi.ingsw.galaxytruckerproject.network.MockVirtualView;
+import it.polimi.ingsw.galaxytruckerproject.persistence.GameSaver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -308,8 +309,7 @@ class GameControllerTest {
         assertEquals(4, game.getFlightBoard().getInGamePlayers().size());
     }
 
-
-
+    // This test will fail depending on the card drawn
     @Test
     void drawCard() {
         completed_ship_test_level2_and_position();
@@ -458,5 +458,277 @@ class GameControllerTest {
         gameController = multiGameController.gameFromNickname("p1");
         assertEquals(GameState.DRAW_CARD, gameController.getGameState());
     }
+    @Test
+    void everyoneLands() {
+        playerTriesCardsFunctions2();
+        controller1.earlyLanding();
+        controller2.earlyLanding();
+        controller3.earlyLanding();
+        controller4.earlyLanding();
+        assertEquals(GameState.CONCLUDE_GAME, gameController.getGameState());
+    }
+
+    // This test will fail depending on the card drawn
+    @Test
+    void playerLeaves() {
+        playerTriesCardsFunctions2();
+        setMultiGameController();
+        controller1.leaveGame();
+        assertEquals(3,gameController.getGame().getListOfAllPlayer().size());
+        assertEquals(3,gameController.getGame().getListOfInFlightPlayers().size());
+        controller2.drawCard();
+        assertEquals(GameState.CARD_EVENT, gameController.getGameState());
+    }
+
+    @Test
+    void playerTurnsHourglassAgain() {
+        player_draws_tile_test();
+        controller2.refuseTile();
+        gameController.emptyHourglass();
+        controller3.turnHourglass();
+        assertEquals(2,gameController.getHourglassTurns());
+        gameController.emptyHourglass();
+        controller1.completedShip();
+        controller1.turnHourglass();
+        assertEquals(3,gameController.getHourglassTurns());
+        gameController.emptyHourglass();
+    }
+
+    @Test
+    void playerPickCrewWithDisconnectedPlayers() {
+        shipErrorManagement_just_one_tile();
+        player3.setDisconnected(true);
+        player4.setDisconnected(true);
+        gameController.getActivePlayers().remove(player3.getPlayerName());
+        gameController.getActivePlayers().remove(player4.getPlayerName());
+        gameController.getDisconnectedPlayers().put(player3.getPlayerName(),player3);
+        gameController.getDisconnectedPlayers().put(player4.getPlayerName(),player4);
+        ArrayList<Tile> tiles = new ArrayList<>();
+        EquipCabin newCabin0 = new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE));
+        newCabin0.setCoordinates(new Coordinates(1,1));
+        newCabin0.setCrewTypeOfTestTile(CrewType.BROWN);
+        EquipCabin newCabin1 =new EquipCabin( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE));
+        newCabin1.setCoordinates(new Coordinates(2,1));
+        newCabin1.setCrewTypeOfTestTile(CrewType.HUMAN);
+        EquipCabin newCabin2 = new EquipCabin( new Link(Connectors.UNIVERSAL),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH));
+        newCabin2.setCoordinates(new Coordinates(2,2));
+        newCabin2.setCrewTypeOfTestTile(CrewType.BROWN);
+        EquipCabin newCabin3 = new EquipCabin(new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH));
+        newCabin3.setCoordinates(new Coordinates(3,2));
+        newCabin3.setCrewTypeOfTestTile(CrewType.HUMAN);
+        EquipCabin newCabin4 =new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.UNIVERSAL));
+        newCabin4.setCoordinates(new Coordinates(2,5));
+        newCabin4.setCrewTypeOfTestTile(CrewType.HUMAN);
+        tiles.add(newCabin0); tiles.add(newCabin1); tiles.add(newCabin2);  tiles.add(newCabin3); tiles.add(newCabin4);
+        controller1.pickCrewMembers(tiles);
+        tiles.clear();
+        EquipCabin newCabin5 = new EquipCabin( new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE));
+        newCabin5.setCoordinates(new Coordinates(2,4));
+        newCabin5.setCrewTypeOfTestTile(CrewType.HUMAN);
+        tiles.add(newCabin5);
+        controller2.pickCrewMembers(tiles);
+        assertEquals(GameState.DRAW_CARD, gameController.getGameState());
+        assertEquals(2,player3.getTotalCrew());
+        assertEquals(4,player4.getTotalCrew());
+    }
+
+    @Test
+    void playerDisconnectsWhilePickingCrew() {
+        completed_ship_test_level2_and_position();
+        player1.setDisconnected(true);
+        gameController.getActivePlayers().remove(player1.getPlayerName());
+        gameController.getDisconnectedPlayers().put(player1.getPlayerName(),player1);
+        ArrayList<Tile> tiles = new ArrayList<>();
+        EquipCabin newCabin5 = new EquipCabin( new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE));
+        newCabin5.setCoordinates(new Coordinates(2,4));
+        newCabin5.setCrewTypeOfTestTile(CrewType.HUMAN);
+        tiles.add(newCabin5);
+        controller2.pickCrewMembers(tiles);
+        controller3.pickCrewMembers(new ArrayList<>());
+        controller4.pickCrewMembers(tiles);
+        assertEquals(GameState.DRAW_CARD, gameController.getGameState());
+        assertEquals(3,gameController.getGame().getListOfInFlightPlayers().size());
+        assertEquals(3,gameController.getGame().getListOfAllPlayer().size());
+    }
+
+    @Test
+    void gameGetsRestartedInStartGame() {
+        set_player_pointers();
+        gameController.startGame();
+        GameSaver.save(gameController);
+        multiGameController.removeGame(gameController);
+        setMultiGameController();
+        controller1.login("p1");
+        controller1.joinGame("test");
+        controller2.login("p2");
+        controller3.login("p3");
+        controller4.login("p4");
+        gameController = multiGameController.gameFromNickname("p1");
+        assertEquals(GameState.START_GAME, gameController.getGameState());
+    }
+
+    @Test
+    void gameGetsRestartedInShipsCreation() {
+        setupShips();
+        controller1.turnHourglass();
+        GameSaver.save(gameController);
+        multiGameController.removeGame(gameController);
+        setMultiGameController();
+        controller1.login("p1");
+        controller1.joinGame("test");
+        controller2.login("p2");
+        controller3.login("p3");
+        controller4.login("p4");
+        gameController = multiGameController.gameFromNickname("p1");
+        assertEquals(GameState.SHIPS_CREATION, gameController.getGameState());
+    }
+
+    @Test
+    void gameGetsRestartedAfterSomePlayersPositioned() {
+        setupShips();
+        controller1.turnHourglass();
+        controller1.completedShip();
+        controller1.setPosition(1);
+        controller4.completedShip();
+        controller4.setPosition(4);
+        GameSaver.save(gameController);
+        multiGameController.removeGame(gameController);
+        setMultiGameController();
+        controller1.login("p1");
+        controller1.joinGame("test");
+        controller2.login("p2");
+        controller3.login("p3");
+        gameController = multiGameController.gameFromNickname("p1");
+        gameController.setHourglassTurns(3);
+        controller4.login("p4");
+        assertNotEquals(0, player1.getPlayerRanking());
+        assertNotEquals(0,player4.getPlayerRanking());
+        assertEquals(0,player2.getPlayerRanking());
+        assertEquals(0,player3.getPlayerRanking());
+        assertEquals(GameState.SHIPS_CREATION, gameController.getGameState());
+        assertEquals(2,gameController.getGame().getListOfInFlightPlayers().size());
+    }
+
+
+
+    @Test
+    void playerReconnectsInShipsCreation() {
+        setupShips();
+        controller1.turnHourglass();
+        setMultiGameController();
+        controller1.completedShip();
+        controller1.setPosition(1);
+        player1.setDisconnected(true);
+        gameController.getActivePlayers().remove(player1.getPlayerName());
+        gameController.getDisconnectedPlayers().put(player1.getPlayerName(),player1);
+        gameController.getPlayersViewMap().remove(player1.getPlayerName());
+        player2.setDisconnected(true);
+        gameController.getActivePlayers().remove(player2.getPlayerName());
+        gameController.getDisconnectedPlayers().put(player2.getPlayerName(),player2);
+        gameController.getPlayersViewMap().remove(player2.getPlayerName());
+        controller1.login(player1.getPlayerName());
+        controller2.login(player2.getPlayerName());
+        assertEquals(6,player1.getPlayerPosition());
+        controller3.completedShip();
+        controller3.setPosition(3);
+        assertNotEquals(3,player3.getPlayerPosition());
+        assertEquals(1,player3.getPlayerPosition());
+        controller2.completedShip();
+        controller2.setPosition(2);
+        assertEquals(3,player2.getPlayerPosition());
+        controller4.completedShip();
+        controller4.setPosition(4);
+        assertEquals(0,player4.getPlayerPosition());
+        assertEquals(GameState.VERIFY_SHIP_CORRECTNESS, gameController.getGameState());
+    }
+
+    @Test
+    void playerSaysCompletedShip2timesIn2DifferentSpots() {
+        setupShips();
+        setMultiGameController();
+        controller1.turnHourglass();
+        controller1.turnHourglass();
+        controller1.completedShip();
+        controller1.setPosition(1);
+        controller1.completedShip();
+        controller2.setPosition(2);
+        System.out.println("p1 ranking position: " + player1.getPlayerRanking() + " " +  player1.getPlayerPosition());
+        controller2.completedShip();
+        controller2.setPosition(2);
+        assertEquals(3, player2.getPlayerPosition());
+    }
+
+    @Test
+    void playeDisconnectsInShipsCreationAndGetsAutomaticallyPlaced() {
+        setupShips();
+        controller1.turnHourglass();
+        setMultiGameController();
+        player1.setDisconnected(true);
+        gameController.getActivePlayers().remove(player1.getPlayerName());
+        gameController.getDisconnectedPlayers().put(player1.getPlayerName(),player1);
+        gameController.getPlayersViewMap().remove(player1.getPlayerName());
+        player2.setDisconnected(true);
+        gameController.getActivePlayers().remove(player2.getPlayerName());
+        gameController.getDisconnectedPlayers().put(player2.getPlayerName(),player2);
+        gameController.getPlayersViewMap().remove(player2.getPlayerName());
+        controller3.completedShip();
+        controller3.setPosition(3);
+        gameController.setHourglassTurns(3);
+        gameController.emptyHourglass();
+        controller4.completedShip();
+        controller4.setPosition(4);
+        assertEquals(4,game.getListOfInFlightPlayers().size());
+        assertEquals(GameState.VERIFY_SHIP_CORRECTNESS, gameController.getGameState());
+    }
+
+    @Test
+    void multiplePlayersChooseSameColor() {
+        setMultiGameController();
+        controller1.chooseColor(RED); // no view
+        gameController.getPlayersViewMap().put(player1.getPlayerName(),view1);
+        controller1.chooseColor(RED);
+        gameController.getPlayersViewMap().put(player2.getPlayerName(),view2);
+        assertFalse(gameController.checkColorAvailable(player2.getPlayerName(), view2, RED));
+    }
+
+    @Test
+    void playerTriesReconnectingAndUnknownPlayerAlsoTries() {
+        setupShips();
+        setMultiGameController();
+        controller2.turnHourglass();
+        player1.setDisconnected(true);
+        gameController.getActivePlayers().remove(player1.getPlayerName());
+        gameController.getDisconnectedPlayers().put(player1.getPlayerName(),player1);
+        gameController.getPlayersViewMap().remove(player1.getPlayerName());
+        gameController.addToPlayersViewMap(player1.getPlayerName(),view1,true);
+        gameController.addToPlayersViewMap("p5",new MockVirtualView(),true);
+        assertTrue(gameController.getActivePlayers().containsKey(player1.getPlayerName()));
+        assertFalse(gameController.getActivePlayers().containsKey("p5"));
+    }
+
+    @Test
+    void gameGetsRestartedButUnknownPlayerTriesEntering() {
+        setupShips();
+        controller1.turnHourglass();
+        player1.setDisconnected(true);
+        gameController.getActivePlayers().remove(player1.getPlayerName());
+        gameController.getDisconnectedPlayers().put(player1.getPlayerName(),player1);
+        gameController.getPlayersViewMap().remove(player1.getPlayerName());
+        GameSaver.save(gameController);
+        multiGameController.removeGame(gameController);
+        setMultiGameController();
+        controller2.login("p2");
+        controller2.joinGame("test");
+        gameController = multiGameController.gameFromNickname("p2");
+        controller1.login("p1");
+        controller3.login("p3");
+        assertTrue(gameController.isRestarted());
+        gameController.addToPlayersViewMap("p5",new MockVirtualView(),true);
+        controller3.login("p4");
+        assertFalse(gameController.isRestarted());
+        gameController = multiGameController.gameFromNickname("p1");
+        assertEquals(GameState.SHIPS_CREATION, gameController.getGameState());
+    }
+
 
 }

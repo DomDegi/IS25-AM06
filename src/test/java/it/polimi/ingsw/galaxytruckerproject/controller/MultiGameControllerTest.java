@@ -119,7 +119,7 @@ class MultiGameControllerTest {
         pingThread.start();
 
         // Attendi al massimo 15 secondi che il giocatore venga disconnesso
-        int maxWaitMillis = 15000;
+        int maxWaitMillis = 5000;
         int waited = 0;
         while (!game.getActivePlayers().isEmpty() && waited < maxWaitMillis) {
             Thread.sleep(100);
@@ -139,7 +139,7 @@ class MultiGameControllerTest {
         pingThread.start();
 
         // Attendi al massimo 15 secondi che il giocatore venga disconnesso
-        int maxWaitMillis = 15000;
+        int maxWaitMillis = 5000;
         int waited = 0;
         while (!game.getActivePlayers().isEmpty() && waited < maxWaitMillis) {
             Thread.sleep(100);

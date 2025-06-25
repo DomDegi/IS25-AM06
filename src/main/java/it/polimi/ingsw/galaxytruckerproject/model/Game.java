@@ -341,7 +341,7 @@ public class Game implements GameInterface{
 
     /** Ends the current card phase and transitions to game conclusion. */
     public void endCardPhase() {
-        this.gameState = CONCLUDE_GAME;
+        setGameState(CONCLUDE_GAME);
     }
 
     /** Ends the current card event and moves back to the drawing phase. */

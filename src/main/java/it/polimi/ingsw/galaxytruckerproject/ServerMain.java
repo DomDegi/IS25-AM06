@@ -5,8 +5,10 @@ import it.polimi.ingsw.galaxytruckerproject.network.RMI.Server.RMIServer;
 import it.polimi.ingsw.galaxytruckerproject.network.Socket.SocketServer;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 /**
  * The main entry point for starting the server for the Galaxy Trucker game.
@@ -30,9 +32,15 @@ public class ServerMain {
             ip = socket.getLocalAddress().getHostAddress();
             // Set the local IP as the system property for the RMI server
             System.setProperty("java.rmi.server.hostname", ip);
-        } catch(IOException e) {
-            // If an error occurs while connecting to the external address, print an error message
-            System.out.println("Error connecting to server via socket");
+        } catch (IOException e) {
+            System.out.println("Could not connect to external server, falling back to localhost.");
+            try {
+                ip = InetAddress.getLocalHost().getHostAddress();
+                System.out.println("Local IP detected: " + ip);
+            } catch (UnknownHostException ex) {
+                System.out.println("Could not determine local IP, defaulting to 127.0.0.1");
+                ip = "127.0.0.1";
+            }
         }
 
         // Create an instance of the MultiGameController to manage multiple games
