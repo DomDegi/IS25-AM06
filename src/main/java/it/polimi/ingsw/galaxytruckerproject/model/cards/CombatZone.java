@@ -559,4 +559,9 @@ public class CombatZone extends Card {
             nextPlayer();
         }
     }
+
+    @Override
+    public int getCrewNumber() {
+        return currentPenalty.getNumberOfCrew();
+    }
 }

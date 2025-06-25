@@ -125,7 +125,6 @@ public class CrewPenalty extends Penalty {
             return false;
         }
         numberOfCrew = Math.min(player.getTotalCrew(), numberOfLostCrew);
-
         if (player.IsDisconnected()) {
             game.getDrawnCard().notifyModifiedTiles(player.getPlayerName(), automaticCrewPenalty(player, view));
             return false;
@@ -146,5 +145,10 @@ public class CrewPenalty extends Penalty {
     @Override
     public String toString() {
         return "CrewPenalty: " + numberOfLostCrew;
+    }
+
+    @Override
+    public int getNumberOfCrew() {
+        return numberOfCrew;
     }
 }
