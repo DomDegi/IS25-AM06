@@ -114,7 +114,9 @@ public class CoordInputManager {
             case CHOOSE_TO_MAINTAIN -> needed=1;
             case CHOOSE_CREW -> {
                 needed = clientController.getDisplayedCard().getFirst().getCrewNumber();
+                System.out.println("needed: "+needed);
                 needed = Math.min (lightShipBoard.getNumTotalCrew(),needed);
+                System.out.println("needed: "+needed + " lightShipBoard.getNumTotalCrew()"+ lightShipBoard.getNumTotalCrew());
             }
         }
     }

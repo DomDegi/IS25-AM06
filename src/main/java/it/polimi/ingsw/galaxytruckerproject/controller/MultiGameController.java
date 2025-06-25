@@ -5,14 +5,12 @@ import it.polimi.ingsw.galaxytruckerproject.model.Game;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.GameState;
-import it.polimi.ingsw.galaxytruckerproject.model.persistence.GameLoader;
-import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
+import it.polimi.ingsw.galaxytruckerproject.persistence.GameLoader;
 import it.polimi.ingsw.galaxytruckerproject.network.PingPong;
 import it.polimi.ingsw.galaxytruckerproject.network.VirtualView;
 import it.polimi.ingsw.galaxytruckerproject.view.ViewInterface;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +39,6 @@ public class MultiGameController implements Serializable {
      * Constructs a new MultiGameController with empty game and view maps.
      */
     public MultiGameController() {
-        checkIfThereAreRecentSavedGames();
     }
 
     /**
@@ -58,7 +55,7 @@ public class MultiGameController implements Serializable {
         boolean wasSuccessful;
         if (view != null && controller != null) {
             //check if the nickname is unique
-            if (allConnectedPlayers().containsKey(nickname)) {
+            if (allConnectedPlayers().containsKey(nickname) || isLookingToJoinAGame(nickname)) {
                 wasSuccessful = false;
                 try {
                     view.showLoginResponse(false);
@@ -274,6 +271,7 @@ public class MultiGameController implements Serializable {
         }
         ArrayList<GameInfo> savedGames = GameLoader.savedGamesWithPlayersName(nickname);
         if (!savedGames.isEmpty()) {
+            savedGames.removeIf(saved -> gamesMap.containsKey(saved.getGameName()));
             joinableGames.addAll(savedGames);
         }
         try {
@@ -308,7 +306,12 @@ public class MultiGameController implements Serializable {
        pingPong.run();
     }
 
-    public void checkIfThereAreRecentSavedGames() {
+    //For test purposes
+    public void addGame(GameController game){
+        gamesMap.put(game.getGameName(), game);
+    }
 
+    public void removeGame(GameController game){
+        gamesMap.remove(game.getGameName());
     }
 }

@@ -163,7 +163,7 @@ public class BatteryComponents extends Tile {
     public String toStringData() {
         String image;
         image = Objects.requireNonNullElse(imagePath, "N");
-        return "BC " + key + " " + image + " " + north.toString() + " " + east.toString() + " " + south.toString() + " " + west.toString() + " " + batteryCells;
+        return "BC " + key + " " + image + " " + rotation + " " + north.toString() + " " + east.toString() + " " + south.toString() + " " + west.toString() + " " + batteryCells;
     }
 
     /**
@@ -178,6 +178,6 @@ public class BatteryComponents extends Tile {
         if (imagePath != null) {
             k++;
         }
-        this.batteryCells = Integer.parseInt(attributes[7 + k]);
+        this.batteryCells = Integer.parseInt(attributes[8 + k]);
     }
 }

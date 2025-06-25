@@ -188,8 +188,8 @@ public class VirtualViewSocket implements VirtualView {
      * @throws RemoteException If there is an error during the remote communication.
      */
     @Override
-    public void notifyChangesWhileGone(String currentGameStatus) throws RemoteException {
-        clientHandler.sendServerMessageToClient(new CurrentGameStatusMessage(currentGameStatus));
+    public void notifyChangesWhileGone(String playerName,String currentGameStatus) throws RemoteException {
+        clientHandler.sendServerMessageToClient(new CurrentGameStatusMessage(playerName,currentGameStatus));
     }
 
     /**

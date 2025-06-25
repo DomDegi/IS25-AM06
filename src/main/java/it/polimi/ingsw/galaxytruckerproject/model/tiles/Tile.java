@@ -124,6 +124,9 @@ public abstract class Tile implements Serializable, Cloneable {
     /** @param shipBoard Set the ship board this tile belongs to */
     public void setShipBoard(ShipBoardInterface shipBoard) {
         this.shipBoard = shipBoard;
+        if(shipBoard!=null)
+            this.shipBoard = shipBoard;
+
     }
 
     /** @return True if the tile is booked */
@@ -261,10 +264,11 @@ public abstract class Tile implements Serializable, Cloneable {
             k++;
             this.imagePath = attributes[2] + " " + attributes[3];
         }
-        north = new Link(Connectors.fromValue(Integer.parseInt(attributes[3 + k])));
-        east = new Link(Connectors.fromValue(Integer.parseInt(attributes[4 + k])));
-        south = new Link(Connectors.fromValue(Integer.parseInt(attributes[5 + k])));
-        west = new Link(Connectors.fromValue(Integer.parseInt(attributes[6 + k])));
+        this.rotation = Integer.parseInt(attributes[3 + k]);
+        north = new Link(Connectors.fromValue(Integer.parseInt(attributes[4 + k])));
+        east = new Link(Connectors.fromValue(Integer.parseInt(attributes[5+ k])));
+        south = new Link(Connectors.fromValue(Integer.parseInt(attributes[6 + k])));
+        west = new Link(Connectors.fromValue(Integer.parseInt(attributes[7 + k])));
     }
 }
 

@@ -256,6 +256,8 @@ public class LightPlayer implements PlayerInterface, Serializable {
      * @throws RemoteException if a remote exception occurs
      */
     public void loadFromData(String[] data) throws RemoteException {
+        this.playerName =  data[0];
+        this.color = PlayersColor.fromString(data[1]);
         this.position = Integer.parseInt(data[2]);
         this.rank = Integer.parseInt(data[3]);
         this.credits = Integer.parseInt(data[4]);

@@ -160,4 +160,6 @@ public abstract class Penalty implements Serializable {
      * @return Coordinates of the destroyed tile.
      */
     public Coordinates getDestroyedTile() { return null; }
+
+    public int getNumberOfCrew() { return 0; }
 }

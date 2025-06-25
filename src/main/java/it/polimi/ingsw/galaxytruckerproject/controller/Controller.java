@@ -33,7 +33,7 @@ public class Controller implements ControllerInterface, Serializable {
     /**
      * Reference to the shared controller that manages multiple game instances.
      */
-    private final MultiGameController multiGameController;
+    private MultiGameController multiGameController;
 
     /**
      * Reference to the virtual view of the player, used to communicate updates to the client.
@@ -380,4 +380,15 @@ public class Controller implements ControllerInterface, Serializable {
         gameController.pong(nickname);
     }
 
+    //For testing purposes
+    public Controller(String playerName, GameController game,VirtualView view) {
+        this.nickname = playerName;
+        this.gameController = game;
+        this.view = view;
+        this.multiGameController = null;
+    }
+
+    public void setMultiGameController(MultiGameController multiGameController) {
+        this.multiGameController = multiGameController;
+    }
 }

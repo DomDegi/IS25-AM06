@@ -126,7 +126,7 @@ public class EquipCabin extends Cabin {
                     this.crew = 1;
                     shipBoard.addBreakPurpleAliens(true);
                 } else {
-                    System.out.println("CAN'T FILL THIS CABIN WITH A PURPLE ALIEN");
+                    System.out.println("Can't fill this cabin with a purple alien");
                 }
             }
             case BROWN -> {
@@ -135,7 +135,7 @@ public class EquipCabin extends Cabin {
                     this.crew = 1;
                     shipBoard.addBreakBrownAliens(true);
                 } else {
-                    System.out.println("CAN'T FILL THIS CABIN WITH A BROWN ALIEN");
+                    System.out.println("Can't fill this cabin with a brown alien");
                 }
             }
         }
@@ -193,8 +193,8 @@ public class EquipCabin extends Cabin {
                 case BROWN -> shipBoard.addBreakBrownAliens(false);
             }
             this.crew = 0;
-            shipBoard.getCabinsCoordinates().remove(this.coordinates);
         }
+        shipBoard.getCabinsCoordinates().remove(this.coordinates);
     }
 
     @Override
@@ -249,7 +249,7 @@ public class EquipCabin extends Cabin {
     public String toStringData() {
         String image;
         image = Objects.requireNonNullElse(imagePath, "N");
-        return "EC " + key + " "+ image + " " + north + " " + east + " " + south + " " + west + " " + crew + " " +
+        return "EC " + key + " " + image + " " + rotation + " " + north + " " + east + " " + south + " " + west + " " + crew + " " +
                 (crewType != null ? crewType : "N");
     }
 
@@ -260,9 +260,9 @@ public class EquipCabin extends Cabin {
         if (imagePath != null) {
             k++;
         }
-        this.crewToLoad = Integer.parseInt(attributes[7 + k]);
-        if (!attributes[8 + k].equals("N")) {
-            this.crewType = CrewType.fromString(attributes[8 + k]);
+        this.crewToLoad = Integer.parseInt(attributes[8 + k]);
+        if (!attributes[9 + k].equals("N")) {
+            this.crewType = CrewType.fromString(attributes[9 + k]);
         }
         if (crewType != CrewType.HUMAN && crewToLoad > 1) {
             System.out.println("This equip cabin has something wrong going on");

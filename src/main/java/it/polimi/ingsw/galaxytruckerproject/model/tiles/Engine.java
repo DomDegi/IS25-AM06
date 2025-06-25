@@ -116,6 +116,6 @@ public abstract class Engine extends Tile {
         if (imagePath != null) {
             k++;
         }
-        this.direction = Direction.fromString(attributes[7 + k]);
+        this.direction = Direction.fromString(attributes[8 + k]);
     }
 }

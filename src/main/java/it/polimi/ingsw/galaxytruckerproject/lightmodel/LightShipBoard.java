@@ -214,6 +214,7 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
         this.tilesTable = tilesTable;
     }
 
+
     /**
      * Initializes the shipboard for the "Level 2" mode by setting up tiles and cabins.
      */
@@ -426,6 +427,18 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
             tilesTable[coordinates.getX()][coordinates.getY()] = Optional.empty();
         }
     }
+
+    /**
+     * Method used to update the tile that get their attributes like crew, batteries and cargo goods modified.
+     * It swaps the old tile with the new one received from the server and sets the parameters.
+     * @param tile modified tile.
+     */
+    public void swapTile(Optional<Tile> tile) {
+        Coordinates coordinates = tile.get().getCoordinates();
+        tilesTable[coordinates.getX()][coordinates.getY()] = tile;
+        tile.get().setShipBoard(this);
+    }
+
 
     /**
      * Retrieves the list of shields installed on the ship.
@@ -941,7 +954,7 @@ public class LightShipBoard implements ShipBoardInterface , Remote {
             }
 
 
-        System.out.println("sono nel client" + numHumanCrew);
+
     }
 
     /**

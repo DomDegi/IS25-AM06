@@ -124,7 +124,7 @@ public class CargoRed extends CargoHold {
         StringBuilder sb = new StringBuilder();
         String image;
         image = Objects.requireNonNullElse(imagePath, "N");
-        sb.append("CR ").append(key).append(" ").append(image).append(" ").append(north.toString())
+        sb.append("CR ").append(key).append(" ").append(image).append(" ").append(rotation).append(" ").append(north.toString())
                 .append(" ").append(east.toString()).append(" ").append(south.toString())
                 .append(" ").append(west.toString()).append(" ").append(totSpaces).append(" ");
         for (int i = 0; i < totSpaces; i++) {

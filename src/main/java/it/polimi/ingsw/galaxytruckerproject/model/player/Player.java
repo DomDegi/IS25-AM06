@@ -512,7 +512,6 @@ public class Player implements PlayerInterface , Serializable {
      */
     public void playerDisconnects() {
         this.isDisconnected = true;
-        System.out.println("Player disconnected");
     }
 
     /**
@@ -633,9 +632,6 @@ public class Player implements PlayerInterface , Serializable {
         return isDisconnected;
     }
 
-    public ShipBoard getPlayerShip() {
-        return playerShip;
-    }
 
     public void setPlayerColor(PlayersColor playerColor) {
         this.playerColor = playerColor;

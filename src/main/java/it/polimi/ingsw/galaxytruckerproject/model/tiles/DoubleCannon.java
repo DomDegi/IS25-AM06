@@ -91,7 +91,7 @@ public class DoubleCannon extends Cannon {
     public String toStringData() {
         String image;
         image = Objects.requireNonNullElse(imagePath, "N");
-        return "DC " + key + " " + image + " " + north.toString() + " " + east.toString() + " " +
+        return "DC " + key + " " + image + " " + rotation + " " + north.toString() + " " + east.toString() + " " +
                 south.toString() + " " + west.toString() + " " + direction.toString();
     }
 

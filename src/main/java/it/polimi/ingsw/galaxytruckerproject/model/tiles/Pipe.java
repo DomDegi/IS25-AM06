@@ -96,7 +96,7 @@ public class Pipe extends Tile {
     public String toStringData() {
         String image;
         image = Objects.requireNonNullElse(imagePath, "N");
-        return "PP " + key + " " + image + " " + north.toString() + " " + east.toString()
+        return "PP " + key + " " + image + " " + rotation + " " + north.toString() + " " + east.toString()
                 + " " + south.toString() + " " + west.toString();
     }
 

@@ -145,6 +145,9 @@ public class FlightBoard implements Serializable {
         }
         if(newPlayer.getPlayerRanking()!=0)
             occupiedPos.set(newPlayer.getPlayerRanking()-1,-1);
+        if (newPlayer.getPlayerRanking() != 0) {
+            occupiedPos.set(newPlayer.getPlayerRanking() - 1, -1);
+        }
         //removes only if the player is already present in inGamePlayers
         inGamePlayers.remove(newPlayer);
         //makes sure that the position chosen is from 0 to 3 (after the offset) and sets the right value for starting pos

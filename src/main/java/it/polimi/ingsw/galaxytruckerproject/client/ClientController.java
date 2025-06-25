@@ -9,7 +9,9 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Card;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Planet;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.Penalty;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
+import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import it.polimi.ingsw.galaxytruckerproject.network.RMI.Client.VirtualViewRMI;
@@ -686,7 +688,7 @@ public class ClientController {
             if (chose > 0 && chose <= numPlayer) {
                 me.getShipBoard().setGetStat();
                 try {
-                    positioned=true;
+                    //positioned=true;
                     virtualController.notifySetPosition(chose);
                 } catch (RemoteException e) {
                     setOffline();
@@ -954,8 +956,10 @@ public class ClientController {
                     previousState = state;
                 }
             }
-            case COORD_REQUEST ->
+            case COORD_REQUEST ->{
                     this.coordInputManager = new CoordInputManager(me.getShipBoard(), this);
+                    view.printShipboard(me.getShipBoard());
+            }
 
             case MANAGE_CABINS -> {
                 if (!inManager) {
@@ -1030,6 +1034,13 @@ public class ClientController {
             view.setClientState(state);
         } catch (RemoteException e) {
             setOffline();
+        }
+        availablePlanets=new HashMap<>();
+        if(phase==GamePhases.CARDS&&displayedCard!=null&&!displayedCard.isEmpty()&&displayedCard.getFirst().getListOfPlanets()!=null) {
+            int p=1;
+            for(Planet _ : displayedCard.getFirst().getListOfPlanets()){
+                availablePlanets.put(p,Boolean.TRUE);
+            }
         }
     }
     /**
@@ -1520,8 +1531,8 @@ public class ClientController {
      *
      * @param currentGameStatus the serialized game status to unpack
      */
-    public void updateModel(String currentGameStatus) {
-        UpdateDeserializer.unpack(this,currentGameStatus);
+    public void updateModel(String playerName, String currentGameStatus) {
+        UpdateDeserializer.unpack(this,playerName,currentGameStatus);
     }
     /**
      * Updates the availability of the decks based on the given list of unavailable decks.
@@ -1788,7 +1799,7 @@ public class ClientController {
 
         serverWatchdogThread = new Thread(() -> {
             try {
-                Thread.sleep(30000);
+                Thread.sleep(20000);
                 setOffline();
             } catch (InterruptedException ignored) {
             }
@@ -1884,7 +1895,10 @@ public class ClientController {
      * @param playerName the name of the player who is the victim of the penalty
      */
     public void victimOfThePenalty(String playerName) {
-        view.victimOfThePenalty(playerName, this.displayedCard.getFirst().getPenalty());
+        Penalty currentPenalty = this.displayedCard.getFirst().getPenalty();
+        if (currentPenalty != null) {
+            view.victimOfThePenalty(playerName, currentPenalty);
+        }
     }
 
     /**
@@ -2222,7 +2236,7 @@ public class ClientController {
         } catch (RemoteException e) {
             setOffline();
         }
-        Tile tile2=new CargoBlue(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web20.jpg",2,0);
+        Tile tile2=new CargoBlue(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web19.jpg",2,0);
         me.getShipBoard().positionTile(Optional.of(tile2), new Coordinates(2,2));
         try {
             virtualController.notifySetTile(tile2.send());

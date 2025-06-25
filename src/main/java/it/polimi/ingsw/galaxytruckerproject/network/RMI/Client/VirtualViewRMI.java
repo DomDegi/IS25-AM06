@@ -490,8 +490,8 @@ public class VirtualViewRMI extends UnicastRemoteObject implements VirtualView, 
      * @throws RemoteException If there is a remote communication issue.
      */
     @Override
-    public void notifyChangesWhileGone(String currentGameStatus) throws RemoteException {
-        clientController.updateModel(currentGameStatus);
+    public void notifyChangesWhileGone(String playerName,String currentGameStatus) throws RemoteException {
+        clientController.updateModel(playerName,currentGameStatus);
     }
 
     /**

@@ -184,7 +184,7 @@ public class Slavers extends Enemies {
         }
         Map<Float, ArrayList<Tile>> returned = player.useCannons(doubleCannonPower, batteriesToUse);
         if (returned == null) {
-            float power = player.getPlayerShip().getSingleCannonPower();
+            float power = player.getShipBoard().getSingleCannonPower();
             if (power > cannonStrength) {
                 won = 1;
                 cannonChoice(playerName, 0, new ArrayList<>());
