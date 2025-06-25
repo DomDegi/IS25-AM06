@@ -125,6 +125,10 @@ public class CombatZone extends Card {
      * If all players have been evaluated, the weakest is identified.
      */
     public void nextPlayer() {
+        if (listOfChallenges.isEmpty()) {
+            game.endCardEvent();
+            return;
+        }
         playerIndex++;
         if (playerIndex < game.getNumberOfPlayers()) {
             this.initializeCurrentPlayer();
