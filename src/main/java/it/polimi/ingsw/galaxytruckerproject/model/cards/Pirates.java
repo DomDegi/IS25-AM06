@@ -40,6 +40,8 @@ public class Pirates extends Enemies {
     /** Penalty object to handle projectile damage if the player loses. */
     private ProjectilePenalty penaltyIfLose;
 
+    private int i=1;
+
     /** Status of the encounter: 0 = undecided, 1 = win, -1 = lose. */
     private int won = 0;
 
@@ -123,7 +125,7 @@ public class Pirates extends Enemies {
         if (singleCannonPower > 0) {
             singleCannonPower += currentPlayer.getShipBoard().getNumPurpleAliens() * 2;
         }
-        penaltyIfLose = new ProjectilePenalty(listOfCannonShots);
+        penaltyIfLose = new ProjectilePenalty(new ArrayList<>(listOfCannonShots));
         won = 0;
         if (currentPlayer.IsDisconnected()) {
             if (singleCannonPower > cannonStrength) {
@@ -252,8 +254,10 @@ public class Pirates extends Enemies {
             broken.add(firstBrokenTile);
             notifyBrokenTiles(playerName, broken);
         }
-        if (!penaltyIfLose.initializePenalty(game, currentView, currentPlayer)) {
-            nextPlayer();
+        else if (penaltyIfLose.getBranch() == null) {
+            if (!penaltyIfLose.initializePenalty(game,currentView, currentPlayer)) {
+                nextPlayer();
+            }
         }
     }
 

@@ -100,7 +100,6 @@ public class OpenSpace extends Card {
             try {
                 currentPlayerView.notifyEarlyLanding();
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
             }
         } else {
             game.getFlightBoard().moveForward(currentPlayer, engineStrength);
