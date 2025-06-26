@@ -104,7 +104,12 @@ public abstract class CargoHold extends Tile {
         if (cargo.isEmpty()) {
             System.out.println("CargoHold is already empty");
         } else {
-            cargo.removeIf(g -> g.getColor().equals(good.getColor()));
+            for(Goods g : cargo){
+                if(g.getColor().equals(good.getColor())){
+                    cargo.remove(g);
+                    return;
+                }
+            }
         }
     }
 

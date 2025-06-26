@@ -386,32 +386,47 @@ public class ClientController {
         return false;
     }
 
+    /**
+     * Resets the state of the game and initializes various fields to their default values,
+     * effectively preparing the game to be ready for a new play session.
+     *
+     * Functionalities of the method include:
+     * - Resetting the game's built and ended flags to false.
+     * - Setting the current game phase to LOGIN.
+     * - Reinitializing player-related data such as position and player count.
+     * - Clearing and reinitializing game-related collections such as game information, deck, and goods list.
+     * - Configuring the initial state of the flight board and tiles.
+     * - Resetting information about the in-game manager and available resources, including player colors and decks.
+     * - Initializing indexes for player actions and turns counter.
+     * - Reinitializing the list of displayed cards.
+     */
     public void readyToPlay() {
-            this.ended=false;
-            this.phase = GamePhases.LOGIN;
-            positioned=false;
-            this.checking= null;
-            this.numPlayer = 0;
-            this.gameInfo = new ArrayList<>();
-            this.deck = new HashMap<>();
-            this.me = new LightPlayer("", null);
-            this.goodsList = new ArrayList<>();
-            this.flightBoard = new LightFlightboard(new FlightBoard(null));
-            this.inManager = false;
-            this.turnedTiles = new HashMap<>();
-            this.turnedTilesDisplayer=new ArrayList<>();
-            this.availableDeck = new HashMap<>(3);
-            availableDeck.put(1, Boolean.TRUE);
-            availableDeck.put(2, Boolean.TRUE);
-            availableDeck.put(3, Boolean.TRUE);
-            this.availableColors = new HashMap<>(4);
-            availableColors.put(PlayersColor.RED, Boolean.TRUE);
-            availableColors.put(PlayersColor.YELLOW, Boolean.TRUE);
-            availableColors.put(PlayersColor.GREEN, Boolean.TRUE);
-            availableColors.put(PlayersColor.BLUE, Boolean.TRUE);
-            this.indexDeckInHandOrPlanet = 0;
-            this.hourglassTurns = 0;
-            displayedCard = new ArrayList<>();
+        this.built=false;
+        this.ended=false;
+        this.phase = GamePhases.LOGIN;
+        positioned=false;
+        this.checking= null;
+        this.numPlayer = 0;
+        this.gameInfo = new ArrayList<>();
+        this.deck = new HashMap<>();
+        this.me = new LightPlayer("", null);
+        this.goodsList = new ArrayList<>();
+        this.flightBoard = new LightFlightboard(new FlightBoard(null));
+        this.inManager = false;
+        this.turnedTiles = new HashMap<>();
+        this.turnedTilesDisplayer=new ArrayList<>();
+        this.availableDeck = new HashMap<>(3);
+        availableDeck.put(1, Boolean.TRUE);
+        availableDeck.put(2, Boolean.TRUE);
+        availableDeck.put(3, Boolean.TRUE);
+        this.availableColors = new HashMap<>(4);
+        availableColors.put(PlayersColor.RED, Boolean.TRUE);
+        availableColors.put(PlayersColor.YELLOW, Boolean.TRUE);
+        availableColors.put(PlayersColor.GREEN, Boolean.TRUE);
+        availableColors.put(PlayersColor.BLUE, Boolean.TRUE);
+        this.indexDeckInHandOrPlanet = 0;
+        this.hourglassTurns = 0;
+        displayedCard = new ArrayList<>();
     }
     /**
      * Allows the player to choose their color for the game.
@@ -2474,124 +2489,6 @@ public class ClientController {
         } catch (RemoteException e) {
             setOffline();
         }
-        Tile tile7=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web4.jpg",0,0,2);
-        me.getShipBoard().positionTile(Optional.of(tile7), new Coordinates(3,3));
-        try {
-            virtualController.notifySetTile(tile7.send());
-        } catch (RemoteException e) {
-            setOffline();
-        }
-        Tile tile6=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web96.jpg",0,0);
-        me.getShipBoard().positionTile(Optional.of(tile6), new Coordinates(3,4));
-        try {
-            virtualController.notifySetTile(tile6.send());
-        } catch (RemoteException e) {
-            setOffline();
-        }
-        Tile tile8= new SingleCannon ( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web102.jpg",0,0);
-        me.getShipBoard().positionTile(Optional.of(tile8), new Coordinates(1,2));
-        try {
-            virtualController.notifySetTile(tile8.send());
-        } catch (RemoteException e) {
-            setOffline();
-        }
-        Tile tile9=new BatteryComponents( new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web11.jpg",2,0,2);
-        me.getShipBoard().positionTile(Optional.of(tile9), new Coordinates(2,1));
-        try {
-            virtualController.notifySetTile(tile9.send());
-        } catch (RemoteException e) {
-            setOffline();
-        }
-        Tile tile10= new SingleCannon ( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web102.jpg",0,0);
-        me.getShipBoard().positionTile(Optional.of(tile10), new Coordinates(1,4));
-        try {
-            virtualController.notifySetTile(tile10.send());
-        } catch (RemoteException e) {
-            setOffline();
-        }
-        Tile tile11=new SingleEngine( new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web72.jpg",0,0);
-        me.getShipBoard().positionTile(Optional.of(tile11), new Coordinates(3,1));
-        try {
-            virtualController.notifySetTile(tile11.send());
-        } catch (RemoteException e) {
-            setOffline();
-        }
-        Tile tile12=new SingleEngine( new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web82.jpg",0,0);
-        me.getShipBoard().positionTile(Optional.of(tile12), new Coordinates(3,5));
-        try {
-            virtualController.notifySetTile(tile12.send());
-        } catch (RemoteException e) {
-            setOffline();
-        }
-        return;
-    }
-
-    public void buildShipTrial2(){
-        /*
-        me.getShipBoard().positionTile(Optional.ofNullable(this.tileInHand), coordinates)
-        try {
-                virtualController.notifySetTile(tile.send());
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
-         */
-        Tile tile1=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web126.jpg",0,0);
-        me.getShipBoard().positionTile(Optional.of(tile1), new Coordinates(1,3));
-        try {
-            virtualController.notifySetTile(tile1.send());
-        } catch (RemoteException e) {
-            setOffline();
-        }
-        Tile tile2=new CargoBlue(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web19.jpg",2,0);
-        me.getShipBoard().positionTile(Optional.of(tile2), new Coordinates(2,2));
-        try {
-            virtualController.notifySetTile(tile2.send());
-        } catch (RemoteException e) {
-            setOffline();
-        }
-        Tile tile3=new EquipCabin( new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web36.jpg",0,0);
-        me.getShipBoard().positionTile(Optional.of(tile3), new Coordinates(2,4));
-        tile3.setCrewType(CrewType.HUMAN);
-        try {
-            virtualController.notifySetTile(tile3.send());
-        } catch (RemoteException e) {
-            setOffline();
-        }
-        Tile tile4=new Shields( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web156.jpg",0,0);
-        me.getShipBoard().positionTile(Optional.of(tile4), new Coordinates(2,5));
-        try {
-            virtualController.notifySetTile(tile4.send());
-        } catch (RemoteException e) {
-            setOffline();
-        }
-        Tile tile5=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web16.jpg",3,0,3);
-        me.getShipBoard().positionTile(Optional.of(tile5), new Coordinates(3,2));
-        try {
-            virtualController.notifySetTile(tile5.send());
-        } catch (RemoteException e) {
-            setOffline();
-        }
-        Tile tile7=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web4.jpg",0,0,2);
-        me.getShipBoard().positionTile(Optional.of(tile7), new Coordinates(3,3));
-        try {
-            virtualController.notifySetTile(tile7.send());
-        } catch (RemoteException e) {
-            setOffline();
-        }
-        Tile tile6=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web96.jpg",0,0);
-        me.getShipBoard().positionTile(Optional.of(tile6), new Coordinates(3,4));
-        try {
-            virtualController.notifySetTile(tile6.send());
-        } catch (RemoteException e) {
-            setOffline();
-        }
-        Tile tile8= new SingleCannon ( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web102.jpg",0,0);
-        me.getShipBoard().positionTile(Optional.of(tile8), new Coordinates(1,2));
-        try {
-            virtualController.notifySetTile(tile8.send());
-        } catch (RemoteException e) {
-            setOffline();
-        }
         Tile tile9=new CargoRed(1, new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web63.jpg",0,0);
         me.getShipBoard().positionTile(Optional.of(tile9), new Coordinates(2,1));
         try {
@@ -2599,6 +2496,27 @@ public class ClientController {
         } catch (RemoteException e) {
             setOffline();
         }
+        Tile tile7=new BatteryComponents( new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web4.jpg",0,0,2);
+        me.getShipBoard().positionTile(Optional.of(tile7), new Coordinates(3,3));
+        try {
+            virtualController.notifySetTile(tile7.send());
+        } catch (RemoteException e) {
+            setOffline();
+        }
+        Tile tile6=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web96.jpg",0,0);
+        me.getShipBoard().positionTile(Optional.of(tile6), new Coordinates(3,4));
+        try {
+            virtualController.notifySetTile(tile6.send());
+        } catch (RemoteException e) {
+            setOffline();
+        }
+        Tile tile8= new SingleCannon ( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web102.jpg",0,0);
+        me.getShipBoard().positionTile(Optional.of(tile8), new Coordinates(1,2));
+        try {
+            virtualController.notifySetTile(tile8.send());
+        } catch (RemoteException e) {
+            setOffline();
+        }
         Tile tile10= new SingleCannon ( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web102.jpg",0,0);
         me.getShipBoard().positionTile(Optional.of(tile10), new Coordinates(1,4));
         try {
@@ -2623,6 +2541,25 @@ public class ClientController {
         return;
     }
 
+    /**
+     * Attempts to re-establish a connection to a server using the previously
+     * provided IP addresses for either RMI or Socket connections. If the RMI
+     * connection fails, it will display a "Server offline" message and set the
+     * connection status to false. Similarly, if the Socket connection fails, it
+     * will also display a "Server offline" message and set the connection status
+     * to false.
+     *
+     * The method first checks if an RMI IP address is available (`ipR`). If so,
+     * it tries to connect using the `connectRMI` method. If the RMI connection
+     * fails due to reasons including `MalformedURLException`, `NotBoundException`,
+     * or `RemoteException`, an error message is displayed and the connection status
+     * is updated.
+     *
+     * If the RMI connection is not attempted or fails (and `ipS` is available), the
+     * method then attempts a Socket connection using the `connectSocket` method.
+     * Failures in this attempt due to `IOException` or `NotBoundException` trigger
+     * the same generic message and status update.
+     */
     public void reconnect() {
         if(ipR!=null) {
             try {

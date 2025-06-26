@@ -20,8 +20,13 @@ public class EndController extends GUIControllers{
     @FXML
     public void initialize() {
         ArrayList<LightPlayer> coolestPlayers = new ArrayList<>();
-        coolestPlayers.add(GUI.getController().getFlightBoard().getInGamePlayers().getFirst());
-        for(LightPlayer p : GUI.getController().getFlightBoard().getInGamePlayers()){
+        ArrayList<LightPlayer> players = GUI.getController().getFlightBoard().getInGamePlayers();
+        if (players.isEmpty()) {
+            // Gestione del caso in cui non ci sono giocatori
+            return;
+        }
+        coolestPlayers.add(players.getFirst());
+        for(LightPlayer p : players){
             if (p.getShipBoard().countExposedConnectors() < coolestPlayers.getFirst().getShipBoard().countExposedConnectors()){
                 coolestPlayers.clear();
                 coolestPlayers.add(p);
@@ -30,8 +35,8 @@ public class EndController extends GUIControllers{
                 coolestPlayers.add(p);
             }
         }
-        for(LightPlayer player: GUI.getController().getFlightBoard().getInGamePlayers()){
-            ListView listView = new ListView();
+        for(LightPlayer player: players){
+            ListView<String> listView = new ListView<>();
             listView.setPrefWidth(500);
             ArrayList<String> credits = new ArrayList<>();
             credits.add(player.getPlayerName());
@@ -46,14 +51,15 @@ public class EndController extends GUIControllers{
             credits.add("Final Score: "+GUI.getScores().get(player.getPlayerName()));
             int max=0;
             ArrayList<Integer> scores = new ArrayList<>(GUI.getScores().values());
-            scores.sort(Comparator.naturalOrder());
-            max=scores.getLast();
-            if (GUI.getScores().get(player.getPlayerName()) == max)
-                credits.add("\t\tWINNER!");
+            if (!scores.isEmpty()) {
+                scores.sort(Comparator.naturalOrder());
+                max=scores.get(scores.size() - 1);
+                if (GUI.getScores().get(player.getPlayerName()) == max)
+                    credits.add("\t\tWINNER!");
+            }
             ObservableList<String> score = FXCollections.observableArrayList(credits);
             listView.setItems(score);
             columns.getChildren().add(listView);
         }
-
     }
 }
