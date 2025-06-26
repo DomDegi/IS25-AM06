@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.Penalty;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
+import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
@@ -48,6 +50,11 @@ public class CombatZone extends Card {
     /** The penalty associated with the current challenge. */
     private Penalty currentPenalty = null;
 
+    private int numberOfLostGoods = 0;
+    private int numberOfLostCrew = 0;
+    private ArrayList<Projectile> listOfCannonShots = new ArrayList<>();
+
+
     /**
      * Creates a CombatZone card with an image.
      *
@@ -64,6 +71,7 @@ public class CombatZone extends Card {
         super(level, 0, filePath);
         this.listOfChallenges = listOfChallenges;
         this.savedValues = new LinkedHashMap<>();
+        updatePenaltyValues();
     }
 
     /**
@@ -79,6 +87,7 @@ public class CombatZone extends Card {
         super(level, 0, null);
         this.listOfChallenges = listOfChallenges;
         this.savedValues = new LinkedHashMap<>();
+        updatePenaltyValues();
     }
     /**
      * Initializes the card with the current game context and virtual views.
@@ -432,7 +441,6 @@ public class CombatZone extends Card {
         if (batteries.isEmpty() && batteryComponent == null) {
             currentPenalty.hitOrMiss(currentView, player);
             Coordinates destroyedTile = currentPenalty.getDestroyedTile();
-            if (currentPenalty.getBranch() == null && destroyedTile != null) {
                 ArrayList<Coordinates> toRemove = new ArrayList<>();
                 toRemove.add(destroyedTile);
                 notifyBrokenTiles(playerName, toRemove);
@@ -569,14 +577,32 @@ public class CombatZone extends Card {
 
     @Override
     public int getCrewNumber() {
-        /*
+        return numberOfLostCrew;
+    }
+
+    @Override
+    public int getGoodsPenalty() {
+        return numberOfLostGoods;
+    }
+
+    private void updatePenaltyValues() {
         for (Penalty penalty: listOfChallenges.sequencedValues()) {
-            int crewToLose = penalty.getNumberOfCrew();
-            if (crewToLose > 0) {
-                return crewToLose;
+            if (penalty.getNumberOfLostGoods() > 0) {
+                this.numberOfLostGoods = penalty.getNumberOfLostGoods();
+                continue;
+            }
+            if (penalty.getNumberOfCrew() > 0) {
+                this.numberOfLostCrew = penalty.getNumberOfCrew();
+                continue;
+            }
+            if (penalty.getListOfProjectiles() != null) {
+                this.listOfCannonShots = penalty.getListOfProjectiles();
             }
         }
-        return 0;*/
-        return 2;
+    }
+
+    @Override
+    public ArrayList<Projectile> getListOfProjectiles() {
+        return listOfCannonShots;
     }
 }
