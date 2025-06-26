@@ -808,10 +808,11 @@ public class CardsController extends GUIControllers {
                         }
                         if(GUI.getController().getDisplayedCard().getFirst() instanceof CombatZone) {
                             if (GUI.getController().getMaxCombP() != -1)
-                                text.setText(type.toString() + ", You need to beat: " + GUI.getController().getMaxCombP());
+                                text.setText(type.toString() + ", Beat: " + GUI.getController().getMaxCombP());
                             else
                                 text.setText(type.toString());
-                        }}
+                        }
+                    }
                     case CHOOSE_DOUBLE_ENGINE->{
                         if(GUI.getController().getCoordInputManager().getNeeded()==0) {
                             Button doneButton = new Button("Done");
@@ -821,7 +822,7 @@ public class CardsController extends GUIControllers {
                         }
                         if(GUI.getController().getDisplayedCard().getFirst() instanceof CombatZone) {
                             if (GUI.getController().getMaxCombE() != -1)
-                                text.setText(type.toString() + ", You need to beat: " + GUI.getController().getMaxCombE());
+                                text.setText(type.toString() + ", Beat: " + GUI.getController().getMaxCombE());
                             else
                                 text.setText(type.toString());
                         }
