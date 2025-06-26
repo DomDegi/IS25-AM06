@@ -205,6 +205,7 @@ public class Smugglers extends Enemies{
             won = -1;
             if (!lostGoods.initializePenalty(game,playersView, currentPlayer)) {
                 nextPlayer();
+                return;
             }
             try {
                 playersView.asksToInputCoordinates(CoordReqType.REMOVE_GOODS);

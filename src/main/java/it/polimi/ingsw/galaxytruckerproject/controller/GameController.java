@@ -173,7 +173,7 @@ public class GameController implements Observer, Serializable {
                     System.out.println("Player "+playerName+" can't reconnect because they were never inGame");
                     view.showWrongInputMessage();
                 }catch (RemoteException e){
-                    throw new RuntimeException(e);
+                    disconnectPlayer(playerName);
                 }
             }
         }
@@ -184,7 +184,7 @@ public class GameController implements Observer, Serializable {
             try {
                 view.setGameMode(this.game.getMode());
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                disconnectPlayer(playerName);
             }
             if (this.getGameState().equals(GameState.LOBBY_PHASE)){
                 playersViewMap.put(playerName, view);
@@ -198,13 +198,13 @@ public class GameController implements Observer, Serializable {
                 try {
                     playersViewMap.get(playerName).notifyNotAvailableColor(notAvailableColors);
                 } catch (RemoteException e) {
-                    throw new RuntimeException(e);
+                    disconnectPlayer(playerName);
                 }
                 if(playersViewMap.size()!=1){
                 try {
                     view.setClientState(ClientState.COLOR_CHOICE);
                 } catch (RemoteException e) {
-                    throw new RuntimeException(e);
+                    disconnectPlayer(playerName);
                 }
                 }
             }
@@ -212,7 +212,7 @@ public class GameController implements Observer, Serializable {
                 try {
                     view.showWrongInputMessage();
                 } catch (RemoteException e) {
-                    throw new RuntimeException(e);
+                    disconnectPlayer(playerName);
                 }
             }
         }
@@ -234,11 +234,11 @@ public class GameController implements Observer, Serializable {
             }
             switch (game.getGameState()) {
                 case START_GAME -> {
-                    for (VirtualView view : playersViewMap.values()) {
+                    for (String playerName: playersViewMap.keySet()) {
                         try {
-                            view.setGameMode(game.getMode());
+                            playersViewMap.get(playerName).setGameMode(game.getMode());
                         } catch (RemoteException e) {
-                            throw new RuntimeException(e);
+                            disconnectPlayer(playerName);
                         }
                     }
                     startGame();
@@ -273,11 +273,11 @@ public class GameController implements Observer, Serializable {
      * @param reconnected true if the player is reconnecting, false if joining for the first time
      */
     public void notifyPlayerJoined(boolean reconnected) {
-        for (VirtualView view : playersViewMap.values()) {
+        for (String playerName: playersViewMap.keySet()) {
             try{
-                view.notifyPlayerJoined(game.getPlayerCount(),playersViewMap.size(),reconnected);
+                playersViewMap.get(playerName).notifyPlayerJoined(game.getPlayerCount(),playersViewMap.size(),reconnected);
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                disconnectPlayer(playerName);
             }
         }
     }
@@ -375,7 +375,7 @@ public class GameController implements Observer, Serializable {
                     try {
                         view.asksToInputCoordinates(CoordReqType.CHOOSE_TO_BREAK);
                     } catch (RemoteException e) {
-                        throw new RuntimeException(e);
+                        disconnectPlayer(playerName);
                     }
                 }
                 else if (!player.getShipBoard().isCompleted()) {
@@ -422,14 +422,14 @@ public class GameController implements Observer, Serializable {
                         color.add(playersColor);
                         playersViewMap.get(player.getPlayerName()).notifyNotAvailableColor(color);
                     } catch (RemoteException e) {
-                        throw new RuntimeException(e);
+                        disconnectPlayer(playerName);
                     }
                 }
             } else { //player count already reached
                 try {
                     playersViewMap.get(playerName).showWrongInputMessage();
                 } catch (RemoteException e) {
-                    throw new RuntimeException(e);
+                    disconnectPlayer(playerName);
                 }
             }
             //if game is already out of lobby phase
@@ -446,9 +446,8 @@ public class GameController implements Observer, Serializable {
      * Also removes the player from the FlightBoard if present.
      *
      * @param playerName the name of the player to remove
-     * @return the VirtualView associated with the removed player, or null if none
      */
-    public VirtualView removePlayer (String playerName) {
+    public void removePlayer (String playerName) {
         if (disconnectedPlayers.containsKey(playerName)) {
             Player removedPlayer = disconnectedPlayers.get(playerName);
             activePlayers.remove(playerName);
@@ -465,7 +464,7 @@ public class GameController implements Observer, Serializable {
             }
             disconnectedPlayers.remove(playerName);
         }
-        return playersViewMap.remove(playerName);
+        playersViewMap.remove(playerName);
     }
 
     /**
@@ -480,7 +479,7 @@ public class GameController implements Observer, Serializable {
             try {
                 view.showWrongInputMessage();
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                disconnectPlayer(playerName);
             }
             return false;
         }
@@ -489,7 +488,7 @@ public class GameController implements Observer, Serializable {
                 try {
                 view.showWrongInputMessage();
                 } catch(RemoteException e) {
-                    throw new RuntimeException(e);
+                    disconnectPlayer(playerName);
                 }
                 return false;
             }
@@ -566,14 +565,14 @@ public class GameController implements Observer, Serializable {
                 try {
                     playersView.showWrongInputMessage();
                 } catch (RemoteException e) {
-                    throw new RuntimeException(e);
+                    disconnectPlayer(playerName);
                 }
                 return;
             }
             try {
                 playersView.showDrawnTile(drawnTile.send());
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                disconnectPlayer(playerName);
             }
         } else {
             drawnTile = game.drawTurnedTile(playerName, index);
@@ -581,7 +580,7 @@ public class GameController implements Observer, Serializable {
                 try {
                     playersView.showWrongInputMessage();
                 } catch (RemoteException e) {
-                    throw new RuntimeException(e);
+                    disconnectPlayer(playerName);
                 }
                 return;
             }
@@ -651,7 +650,7 @@ public class GameController implements Observer, Serializable {
                         try {
                             playersView.setClientState(ClientState.MANAGE_CABINS);
                         } catch (Exception e) {
-                            throw new RuntimeException(e);
+                            disconnectPlayer(player.getPlayerName());
                         }
                     }
                     else {
@@ -665,7 +664,7 @@ public class GameController implements Observer, Serializable {
                     playersView.asksToInputCoordinates(CoordReqType.CHOOSE_TO_BREAK);
                 }
                 } catch(Exception e) {
-                    throw new RuntimeException(e);
+                    disconnectPlayer(player.getPlayerName());
                 }
                 playersWithErrors.add(player.getPlayerName());
             }
@@ -726,7 +725,7 @@ public class GameController implements Observer, Serializable {
             try {
                 view.notifyBrokenTile(playerName,removed);
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                disconnectPlayer(playerName);
             }
         }
     }
@@ -847,7 +846,7 @@ public class GameController implements Observer, Serializable {
             try {
                 playersView.notifyYouCanDrawThisCardDeck();
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                disconnectPlayer(playerName);
             }
             updatePlayerView(ClientState.S_MANAGE_CARDS, playerName);
             notifyNotAvailableCardDeck();
@@ -856,7 +855,7 @@ public class GameController implements Observer, Serializable {
             try {
                 playersView.showWrongInputMessage();
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                disconnectPlayer(playerName);
             }
         }
     }
@@ -1142,7 +1141,7 @@ public class GameController implements Observer, Serializable {
             try {
                 playersView.showErrorMessage("hourglass is already trickling");
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                disconnectPlayer(playerName);
             }
             return;
         }
@@ -1213,11 +1212,11 @@ public class GameController implements Observer, Serializable {
      * Notifies all players that the hourglass has been turned.
      */
     public void notifyTurnedHourglass() {
-        for (VirtualView view: playersViewMap.values()) {
+        for (String playerName: playersViewMap.keySet()) {
             try {
-                view.notifyTurnedHourglass(hourglassTurns);
+                playersViewMap.get(playerName).notifyTurnedHourglass(hourglassTurns);
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                disconnectPlayer(playerName);
             }
         }
     }
@@ -1225,11 +1224,11 @@ public class GameController implements Observer, Serializable {
      * Notifies all players that the hourglass timer has expired.
      */
     public void notifyEndOfTime() {
-        for (VirtualView view: playersViewMap.values()) {
+        for (String playerName: playersViewMap.keySet()) {
             try {
-                view.notifyEndOfTime();
+                playersViewMap.get(playerName).notifyEndOfTime();
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                disconnectPlayer(playerName);
             }
         }
     }
@@ -1290,7 +1289,7 @@ public class GameController implements Observer, Serializable {
         for (Player player: playersToEarlyLand) {
             game.getFlightBoard().earlyLanding(player);
             try {
-                VirtualView viewToLand = playersViewMap.get(player);
+                VirtualView viewToLand = playersViewMap.get(player.getPlayerName());
                 if (viewToLand != null) {
                     playersViewMap.get(player.getPlayerName()).notifyEarlyLanding();
                 }
@@ -1298,7 +1297,7 @@ public class GameController implements Observer, Serializable {
                     disconnectedPlayersToEarlyLand.add(player);
                 }
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                disconnectPlayer(player.getPlayerName());
             }
         }
         return disconnectedPlayersToEarlyLand;
@@ -1566,11 +1565,11 @@ public class GameController implements Observer, Serializable {
         Map<String,Integer> scores = new HashMap<>();
         for (Player player: game.getListOfAllPlayer())
             scores.put(player.getPlayerName(), player.getCredit());
-        for (VirtualView view: playersViewMap.values()) {
+        for (String playerName: playersViewMap.keySet()) {
             try {
-                view.showScores(scores);
+                playersViewMap.get(playerName).showScores(scores);
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                disconnectPlayer(playerName);
             }
         }
     }
@@ -1652,7 +1651,8 @@ public class GameController implements Observer, Serializable {
         try {
             playersViewMap.get(playerName).setClientState(newState);
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            disconnectPlayer(playerName);
+            return;
         }
         clientsStatesMap.put(playerName, newState);
     }
@@ -1683,13 +1683,7 @@ public class GameController implements Observer, Serializable {
             view.ping();
             future.get(15000, TimeUnit.MILLISECONDS);
         } catch (InterruptedException | RemoteException | ExecutionException | TimeoutException e) {
-            player.playerDisconnects();
-            prepareForDisconnection(playerName);
-            activePlayers.remove(playerName);
-            playersViewMap.remove(playerName);
-            disconnectedPlayers.put(playerName,player);
-            System.out.println(playerName+" disconnected");
-            notifyPlayerDisconnected(playerName);
+            disconnectPlayer(playerName);
         } finally {
             pendingPongs.remove(playerName);
         }
@@ -1699,6 +1693,18 @@ public class GameController implements Observer, Serializable {
         if (future != null) {
             future.complete(null);
         }
+    }
+
+    public void disconnectPlayer(String playerName) {
+        Player player = activePlayers.get(playerName);
+        player.playerDisconnects();
+        prepareForDisconnection(playerName);
+        activePlayers.remove(playerName);
+        playersViewMap.remove(playerName);
+        disconnectedPlayers.put(playerName,player);
+        System.out.println(playerName+" disconnected");
+        notifyPlayerDisconnected(playerName);
+        pendingPongs.remove(playerName);
     }
 
     public ConcurrentHashMap<String, Integer> getLockedSmallDecks() {
@@ -1786,6 +1792,7 @@ public class GameController implements Observer, Serializable {
      */
     public void playerLeaves(String playerName) {
         if (activePlayers.containsKey(playerName)) {
+            playersViewMap.remove(playerName);
             Player removedPlayer = activePlayers.remove(playerName);
             removedPlayer.playerDisconnects();
             prepareForDisconnection(playerName);
@@ -1798,7 +1805,6 @@ public class GameController implements Observer, Serializable {
                 game.setPlayerCount(game.getPlayerCount() - 1);
             }
         }
-        playersViewMap.remove(playerName);
         notifyPlayerLeftTheGame(playerName);
     }
     /**
@@ -1832,7 +1838,7 @@ public class GameController implements Observer, Serializable {
             try{
                 view.notifyPlayerDisconnected(playerName);
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                disconnectPlayer(playerName);
             }
         }
     }
@@ -1843,7 +1849,7 @@ public class GameController implements Observer, Serializable {
                 view.notifyPlayerLeft(playerName);
             }
             catch (RemoteException e) {
-                throw new RuntimeException(e);
+                disconnectPlayer(playerName);
             }
         }
     }

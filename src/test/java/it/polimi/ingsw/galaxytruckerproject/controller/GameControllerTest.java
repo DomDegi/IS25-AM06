@@ -6,6 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.model.GameState;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.AbandonedStation;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.ChallengeType;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.CombatZone;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.OpenSpace;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.CrewPenalty;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.FlightDaysPenalty;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.GoodsPenalty;
@@ -730,5 +731,56 @@ class GameControllerTest {
         assertEquals(GameState.SHIPS_CREATION, gameController.getGameState());
     }
 
+    @Test
+    void notifyTests() {
+        player_positions_tile();
+        gameController.notifyDrawnCard(new OpenSpace(2));
+        gameController.notifyPlayerJoined(true);
+        gameController.notifyPlayerJoined(false);
+        gameController.notifyTurnedHourglass();
+        gameController.notifyEndOfTime();
+        gameController.notifyBookedTile("p1",new Pipe(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL), new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL)));
+        gameController.notifyRemoveTurnedTile(new Pipe(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL), new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL)));
+        gameController.notifyNewTurnedTile(new Pipe(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL), new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL)));
+        gameController.notifyFlightBoardCards();
+        gameController.notifyPlayerDisconnected("p1");
+        gameController.notifyPlayerLeftTheGame("p2");
+        gameController.notifyPlayerCredits("p1",5);
+    }
 
+    @Test
+    void playerLandsBeforeCards() {
+        playerTryCardFunctions();
+        controller1.earlyLanding();
+        controller2.earlyLanding();
+        assertEquals(2,gameController.getGame().getListOfInFlightPlayers().size());
+    }
+
+    @Test
+    void playerEarlyLandsDuringCardAndGetsLandedBeforeNextCard() {
+        ArrayList<Goods> listOfGoods = new ArrayList<>();
+        listOfGoods.add(new Goods(GoodsColor.RED));
+        listOfGoods.add(new Goods(GoodsColor.GREEN));
+        listOfGoods.add(new Goods(GoodsColor.YELLOW));
+        listOfGoods.add(new Goods(GoodsColor.GREEN));
+        playersPickCrewMembers();
+
+        game.setDrawnCard(new AbandonedStation(2,1,1,listOfGoods));
+        gameController.initializeDrawnCard();
+        controller1.makeAChoice(false);
+        controller2.makeAChoice(true);
+        ArrayList<Coordinates> toUse = new ArrayList<>();
+        toUse.add(new Coordinates(2,3));
+        controller2.removeCrew(toUse);
+        CargoRed newCargo =new CargoRed(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE));
+        newCargo.addGood(new Goods(GoodsColor.RED)); newCargo.addGood(new Goods(GoodsColor.YELLOW));
+        newCargo.setCoordinates(new Coordinates(2,2));
+        ArrayList<CargoHold> modifiedCargo = new ArrayList<>();
+        modifiedCargo.add(newCargo);
+        controller3.earlyLanding();
+        controller4.earlyLanding();
+        controller2.manageGoods(7, modifiedCargo);
+        assertSame(GameState.DRAW_CARD, gameController.getGameState());
+        assertEquals(2,gameController.getGame().getListOfInFlightPlayers().size());
+    }
 }
