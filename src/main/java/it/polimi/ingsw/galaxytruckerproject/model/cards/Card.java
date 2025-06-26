@@ -163,7 +163,6 @@ public abstract class Card implements Serializable {
             try {
                 view.victimOfThePenalty(playerName);
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
             }
         }
     }

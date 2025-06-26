@@ -120,7 +120,6 @@ public class CrewPenalty extends Penalty {
             try {
                 view.setClientState(ClientState.WAIT);
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
             }
             return false;
         }
@@ -132,7 +131,6 @@ public class CrewPenalty extends Penalty {
         try {
             view.asksToInputCoordinates(CoordReqType.CHOOSE_CREW);
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
         }
         return true;
     }

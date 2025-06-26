@@ -1,6 +1,28 @@
 {
   "cards": [
     {
+      "type": "Pirates",
+      "level": 1,
+      "requiredDays": 1,
+      "cannonStrength": 3,
+      "rewardCredits": 4,
+      "listOfShots": [
+        {
+          "type": "SmallCannonShot",
+          "direction": "NORTH"
+        },
+        {
+          "type": "LargeCannonShot",
+          "direction": "NORTH"
+        },
+        {
+          "type": "SmallCannonShot",
+          "direction": "NORTH"
+        }
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_013.jpg"
+    },
+    {
       "type": "Planets",
       "level": 1,
       "requiredDays": 2,
@@ -27,12 +49,15 @@
       "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0113.jpg"
     },
     {
-      "type": "AbandonedShip",
+      "type": "AbandonedStation",
       "level": 1,
       "requiredDays": 1,
-      "crewNumberRequired": 3,
-      "possibleCreditGains": 4,
-      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0118.jpg"
+      "crewNumberRequired": 5,
+      "possibleGoodsGain": [
+        { "color": "YELLOW"},
+        { "color": "GREEN"}
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0119.jpg"
     },
     {
       "type": "Smugglers",
@@ -52,6 +77,14 @@
         }
       ],
       "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_012.jpg"
+    },
+    {
+      "type": "AbandonedShip",
+      "level": 1,
+      "requiredDays": 1,
+      "crewNumberRequired": 3,
+      "possibleCreditGains": 4,
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0118.jpg"
     },
     {
       "type": "CombatZone",
@@ -135,17 +168,6 @@
         }
       ],
       "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0113.jpg"
-    },
-    {
-      "type": "AbandonedStation",
-      "level": 1,
-      "requiredDays": 1,
-      "crewNumberRequired": 5,
-      "possibleGoodsGain": [
-        { "color": "YELLOW"},
-        { "color": "GREEN"}
-      ],
-      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0119.jpg"
     }
   ]
 }

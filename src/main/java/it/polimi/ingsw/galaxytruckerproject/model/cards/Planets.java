@@ -101,10 +101,10 @@ public class Planets extends Card {
         if(player == null)
             return;
         if (goodsChecker.get(playerName).check(clientCredits, updatedCargos)) {
-            game.getFlightBoard().moveBackward(player, requiredDays);
-            notifyMovement(player);
             ArrayList<Tile> updatedTiles = new ArrayList<>(updatedCargos);
             notifyModifiedTiles(playerName, updatedTiles);
+            game.getFlightBoard().moveBackward(player, requiredDays);
+            notifyMovement(player);
             playerIndex++;
             if (playerIndex >= goodsChecker.size()) {
                 game.endCardEvent();
@@ -139,7 +139,6 @@ public class Planets extends Card {
             playerChosenPlanets.put(playerName, listOfPlanets.get(planet - 1));
             notifyPlayerLanded(playerName, planet);
             goodsChecker.put(playerName, new GoodsChecker(currentPlayer, listOfPlanets.get(planet - 1).getListOfGoods()));
-
         }
 
         if (!goodsChecker.isEmpty()&& playerIndex >= game.getListOfInFlightPlayers().size() - 1) {

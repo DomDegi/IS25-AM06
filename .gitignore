@@ -1,6 +1,8 @@
 ### Build e dipendenze ###
 target/
 build/
+target-client/
+target-server/
 !src/main/**/target/
 !src/test/**/target/
 !src/main/**/build/

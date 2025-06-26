@@ -117,7 +117,6 @@ public class TextualInputParser {
                         }
                     }
                 } catch (MalformedURLException | NotBoundException | RemoteException e) {
-                    throw new RuntimeException(e);
                 }
             }
 

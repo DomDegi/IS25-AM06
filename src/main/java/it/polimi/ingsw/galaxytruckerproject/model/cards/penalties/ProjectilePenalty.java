@@ -81,7 +81,6 @@ public class ProjectilePenalty extends Penalty {
                     try {
                         view.notifyBrokenTile(player.getPlayerName(), toRemove);
                     } catch (java.rmi.RemoteException e) {
-                        throw new RuntimeException(e);
                     }
                     if (branch == null) {
                         resetForNextProjectile();
@@ -174,7 +173,6 @@ public class ProjectilePenalty extends Penalty {
             try {
                 view.notifyEarlyLanding();
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
             }
             game.getFlightBoard().earlyLanding(player);
         }
