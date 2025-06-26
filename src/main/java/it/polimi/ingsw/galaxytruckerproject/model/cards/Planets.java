@@ -91,16 +91,19 @@ public class Planets extends Card {
      */
     @Override
     public void manageGoods(String playerName, int clientCredits, ArrayList<CargoHold> updatedCargos) {
-        if (!playerName.equals(currentPlayer.getPlayerName()) || !chosen) {
+        if (!chosen) {
             try {
                 viewsMap.get(playerName).showWrongInputMessage();
             } catch (Exception ignored) {}
             return;
         }
+        Player player = game.identifyPlayerByName(playerName);
+        if(player == null)
+            return;
         if (goodsChecker.get(playerName).check(clientCredits, updatedCargos)) {
-            game.getFlightBoard().moveBackward(currentPlayer, requiredDays);
+            game.getFlightBoard().moveBackward(player, requiredDays);
             playerIndex++;
-            notifyMovement(currentPlayer);
+            notifyMovement(player);
             ArrayList<Tile> updatedTiles = new ArrayList<>(updatedCargos);
             notifyModifiedTiles(playerName, updatedTiles);
             if (playerIndex == goodsChecker.size()) {
@@ -109,7 +112,7 @@ public class Planets extends Card {
             }
         } else {
             try {
-                currentPlayerView.showWrongInputMessage();
+                viewsMap.get(playerName).showWrongInputMessage();
             } catch (Exception ignored) {}
         }
     }

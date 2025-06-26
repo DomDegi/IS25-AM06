@@ -118,7 +118,8 @@ public class EquipCabin extends Cabin {
             case HUMAN -> {
                 this.crewType = HUMAN;
                 this.crew = 2;
-                shipBoard.addBreakHumanCrew(2);
+                if(shipBoard!=null)
+                    shipBoard.addBreakHumanCrew(2);
             }
             case PURPLE -> {
                 if (alienability == AlienOptions.PURPLE || alienability == AlienOptions.BOTH) {

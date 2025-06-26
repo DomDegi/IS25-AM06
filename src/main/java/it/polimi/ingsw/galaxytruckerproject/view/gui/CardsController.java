@@ -268,7 +268,7 @@ public class CardsController extends GUIControllers {
 
      * Responsibilities:
      * - Invokes the {@code waitOthers()} method to update the user interface,
-     *   clearing specific UI components and notifying the user to wait for other players.
+     *   clearing specific UI components, and notifying the user to wait for other players.
      * - Calls the {@code drawCard()} method from the {@code GUI} utility to handle
      *   the graphical display and mechanics of drawing a card.
 
@@ -285,7 +285,7 @@ public class CardsController extends GUIControllers {
      * Handles the confirmation action triggered by the user and updates the game state accordingly.
 
      * Responsibilities:
-     * - Invokes the {@code waitOthers()} method to update the user interface, clearing specific UI elements
+     * - Invokes the {@code waitOthers()} method to update the user interface, clearing specific UI elements,
      *   and notifying the user to wait for other players.
      * - Calls {@code GUI.action(true)} to perform the required action logic in the game's graphical user interface.
 
@@ -302,7 +302,7 @@ public class CardsController extends GUIControllers {
      * Executes the logic for the "no" action within the game's user interface.
 
      * Responsibilities:
-     * - Invokes the {@code waitOthers()} method to update the interface, clearing specific UI components
+     * - Invokes the {@code waitOthers()} method to update the interface, clearing specific UI components,
      *   and notifying the user to wait for other players.
      * - Calls {@code GUI.action(false)} to execute the corresponding action logic
      *   in the graphical user interface with a parameter indicating a "no" response.
@@ -339,7 +339,7 @@ public class CardsController extends GUIControllers {
 
      * Responsibilities:
      * - Invokes the {@code waitOthers()} method to update the user interface,
-     *   clearing specific UI elements and notifying the user to wait for other players.
+     *   clearing specific UI elements, and notifying the user to wait for other players.
      * - Calls {@code GUI.doneCoord()} to execute the required logic for completing
      *   the coordinate request in the graphical user interface.
 
@@ -356,7 +356,7 @@ public class CardsController extends GUIControllers {
      * Handles the user's selection of a planet to proceed in the game's interface.
      * <br>
      * Responsibilities:
-     * - Invokes {@code waitOthers()} to update the user interface, clearing specific UI components and
+     * - Invokes {@code waitOthers()} to update the user interface, clearing specific UI components, and
      *   notifying the user to wait for other players.
      * - Calls {@code GUI.choosePlanet(index)} to process the logic of planet selection in the
      *   graphical user interface.
@@ -499,6 +499,9 @@ public class CardsController extends GUIControllers {
             p.setEffect(new DropShadow(BlurType.GAUSSIAN,rgb(255, 169, 19), 30, 0.4, 0, 0));
             for (LightPlayer player : GUI.getController().getFlightBoard().getInGamePlayers()) {
                 int position=player.getPosition();
+                while (position<0) {
+                  position+=max;
+                }
                 while (position>max)
                     position-=max;
                 if (index==player.getPosition()) {
@@ -644,7 +647,7 @@ public class CardsController extends GUIControllers {
                 for (int i=tile.getNumBatteries();i!=0;i--){
                     ImageView element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/battery.png"))));
                     element.setDisable(true);
-                    element.setFitWidth(5);
+                    element.setFitWidth(10);
                     element.setFitHeight(60);
                     hBox.setSpacing(1);
                     hBox.rotateProperty().setValue(tile.getRotation()*90);

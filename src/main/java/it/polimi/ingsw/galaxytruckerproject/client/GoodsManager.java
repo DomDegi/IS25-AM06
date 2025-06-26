@@ -1,6 +1,7 @@
 package it.polimi.ingsw.galaxytruckerproject.client;
 
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.Planet;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.CargoHold;
@@ -137,6 +138,10 @@ public class GoodsManager {
         }
     }
 
+    public Goods getGoodToGet() {
+        return possibleGoodsGain.get(goodsToGet - 1);
+    }
+
     /**
      * Allows the current player to select and pick goods from a specific cargo hold
      * on their shipboard at a predefined location specified by the coordinatesToPut field.
@@ -162,6 +167,7 @@ public class GoodsManager {
         cargo=new ArrayList<>(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
         view.goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
         view.showGenericMessage("Input witch good to pick:");
+        changes.remove((CargoHold)currentPlayer.getShipBoard().getTile(coordinatesToPut).send());
         changes.add((CargoHold)currentPlayer.getShipBoard().getTile(coordinatesToPut).send());
         state = -1;
     }
@@ -229,6 +235,7 @@ public class GoodsManager {
                     }else if(possibleGoodsGain.get(goodsToGet - 1).getColor()==GoodsColor.RED){
                         view.showGenericMessage("\nYou've successfully put the "+ ANSI_RED +possibleGoodsGain.get(goodsToGet - 1).getColor()+ ANSI_RESET+" good in the "+coordinatesToPut.getX()+","+coordinatesToPut.getY()+" cargo\n\n");
                     }
+                    changes.remove((CargoHold)currentPlayer.getShipBoard().getTile(coordinatesToPut).send());
                     changes.add((CargoHold)currentPlayer.getShipBoard().getTile(coordinatesToPut).send());
                     possibleGoodsGain.remove(goodsToGet - 1);
                     if(possibleGoodsGain.isEmpty()) {
@@ -252,6 +259,7 @@ public class GoodsManager {
                         view.showGenericMessage("\nSorry, you can't put the "+ ANSI_RED +possibleGoodsGain.get(goodsToGet - 1).getColor()+ ANSI_RESET+" good in the "+coordinatesToPut.getX()+","+coordinatesToPut.getY()+" cargo, it is full, chose what good to remove (input 'no' to select an other good and cargo coordinates)\n");
                     }
                     view.goodsPrinter(currentPlayer.getShipBoard().getSingleCargoGoods(coordinatesToPut));
+                    changes.remove((CargoHold)currentPlayer.getShipBoard().getTile(coordinatesToPut).send());
                     changes.add((CargoHold)currentPlayer.getShipBoard().getTile(coordinatesToPut).send());
                     state = 1;
                     goodsToGet=0;

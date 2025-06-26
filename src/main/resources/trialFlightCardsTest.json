@@ -1,6 +1,59 @@
 {
   "cards": [
     {
+      "type": "Planets",
+      "level": 1,
+      "requiredDays": 2,
+      "listOfPlanets": [
+        {
+          "listOfGoods": [
+            { "color": "RED"},
+            { "color": "RED"}
+          ]
+        },
+        {
+          "listOfGoods": [
+            { "color": "RED"},
+            { "color": "BLUE"},
+            { "color": "BLUE"}
+          ]
+        },
+        {
+          "listOfGoods": [
+            { "color": "YELLOW"}
+          ]
+        }
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0113.jpg"
+    },
+    {
+      "type": "AbandonedShip",
+      "level": 1,
+      "requiredDays": 1,
+      "crewNumberRequired": 3,
+      "possibleCreditGains": 4,
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0118.jpg"
+    },
+    {
+      "type": "Smugglers",
+      "level": 1,
+      "requiredDays": 1,
+      "cannonStrength": 4,
+      "lostGoods": 2,
+      "rewardGoods": [
+        {
+          "color" : "YELLOW"
+        },
+        {
+          "color" : "GREEN"
+        },
+        {
+          "color" : "BLUE"
+        }
+      ],
+      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_012.jpg"
+    },
+    {
       "type": "CombatZone",
       "level": 1,
       "listOfChallenges": {
@@ -27,25 +80,6 @@
         }
       },
       "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0116.jpg"
-    },
-    {
-      "type": "Smugglers",
-      "level": 1,
-      "requiredDays": 1,
-      "cannonStrength": 4,
-      "lostGoods": 2,
-      "rewardGoods": [
-        {
-          "color" : "YELLOW"
-        },
-        {
-          "color" : "GREEN"
-        },
-        {
-          "color" : "BLUE"
-        }
-      ],
-      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_012.jpg"
     },
     {
       "type": "StarDust",
@@ -101,15 +135,6 @@
         }
       ],
       "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0113.jpg"
-    },
-
-    {
-      "type": "AbandonedShip",
-      "level": 1,
-      "requiredDays": 1,
-      "crewNumberRequired": 3,
-      "possibleCreditGains": 4,
-      "imagePath": "/images/grafiche/grafiche/cards/GT-cards_I_IT_0118.jpg"
     },
     {
       "type": "AbandonedStation",
