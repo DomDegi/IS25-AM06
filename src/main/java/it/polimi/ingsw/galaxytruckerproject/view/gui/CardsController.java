@@ -4,6 +4,7 @@ import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.lightmodel.LightPlayer;
 import it.polimi.ingsw.galaxytruckerproject.model.GameMode;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.CombatZone;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.Planet;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.Goods;
 import it.polimi.ingsw.galaxytruckerproject.model.goods.GoodsColor;
@@ -798,13 +799,33 @@ public class CardsController extends GUIControllers {
             CoordReqType type = GUI.getController().getCoordInputManager().getCoordReqType();
             if(GUI.getController().getCoordInputManager().getCoordReqType()!=null) {
                 switch (type) {
-                    case CHOOSE_DOUBLE_CANNON,CHOOSE_DOUBLE_ENGINE->{
+                    case CHOOSE_DOUBLE_CANNON->{
                         if(GUI.getController().getCoordInputManager().getNeeded()==0) {
                             Button doneButton = new Button("Done");
                             doneButton.setPrefSize(100, 75);
                             doneButton.setOnAction(_ -> doneCoord());
                             mainBox.getChildren().add(doneButton);
                         }
+                        if(GUI.getController().getDisplayedCard().getFirst() instanceof CombatZone) {
+                            if (GUI.getController().getMaxCombP() != -1)
+                                text.setText(type.toString() + ", You need to beat: " + GUI.getController().getMaxCombP());
+                            else
+                                text.setText(type.toString());
+                        }}
+                    case CHOOSE_DOUBLE_ENGINE->{
+                        if(GUI.getController().getCoordInputManager().getNeeded()==0) {
+                            Button doneButton = new Button("Done");
+                            doneButton.setPrefSize(100, 75);
+                            doneButton.setOnAction(_ -> doneCoord());
+                            mainBox.getChildren().add(doneButton);
+                        }
+                        if(GUI.getController().getDisplayedCard().getFirst() instanceof CombatZone) {
+                            if (GUI.getController().getMaxCombE() != -1)
+                                text.setText(type.toString() + ", You need to beat: " + GUI.getController().getMaxCombE());
+                            else
+                                text.setText(type.toString());
+                        }
+
                     }
                     case CHOOSE_TO_BREAK->{
                         if(GUI.getController().getCoordInputManager().getNeeded()!=0) {
@@ -826,7 +847,8 @@ public class CardsController extends GUIControllers {
                         showDice();
                     }
                 }
-                text.setText(type.toString());
+                if(!(GUI.getController().getDisplayedCard().getFirst() instanceof CombatZone))
+                    text.setText(type.toString());
             }
         });
     }

@@ -46,6 +46,7 @@ public class ProjectilePenalty extends Penalty {
      *
      * @return the list of projectiles
      */
+    @Override
     public ArrayList<Projectile> getListOfProjectiles() {
         return listOfProjectiles;
     }
@@ -134,7 +135,6 @@ public class ProjectilePenalty extends Penalty {
             return false;
         }
         if (this.diceRoll != -1) {
-            System.out.println("Per qualche motivo sono qua!");
             Coordinates destroyed = hitOrMiss(view, player);
             if (destroyed != null) {
                 return false;

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Defense;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
@@ -162,4 +163,8 @@ public abstract class Penalty implements Serializable {
     public Coordinates getDestroyedTile() { return null; }
 
     public int getNumberOfCrew() { return 0; }
+
+    public int getNumberOfLostGoods() { return 0; }
+
+    public ArrayList<Projectile> getListOfProjectiles() { return null; }
 }

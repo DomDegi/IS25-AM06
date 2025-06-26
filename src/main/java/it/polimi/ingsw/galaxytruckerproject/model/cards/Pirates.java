@@ -307,10 +307,13 @@ public class Pirates extends Enemies {
         if (batteries.isEmpty() && batteryComponent == null) {
             penaltyIfLose.hitOrMiss(currentView, player);
             Coordinates destroyedTile = penaltyIfLose.getDestroyedTile();
-            if (penaltyIfLose.getBranch() == null && destroyedTile != null) {
+            if ((penaltyIfLose.getBranch() == null || penaltyIfLose.getBranch().size() < 2) && destroyedTile != null) {
                 ArrayList<Coordinates> toRemove = new ArrayList<>();
                 toRemove.add(destroyedTile);
                 notifyBrokenTiles(playerName, toRemove);
+                if (!penaltyIfLose.initializePenalty(game, currentView, currentPlayer)) {
+                    nextPlayer();
+                }
             }
             return;
         }
