@@ -494,7 +494,7 @@ public class CardsController extends GUIControllers {
                 }
                 while (position>max)
                     position-=max;
-                if (index==player.getPosition()) {
+                if (index==position) {
                     if (player.getPlayerColor().equals(PlayersColor.RED))
                         p.setFill(Color.RED);
                     if (player.getPlayerColor().equals(PlayersColor.YELLOW))
@@ -561,7 +561,10 @@ public class CardsController extends GUIControllers {
                         CoordReqType type=GUI.getController().getCoordInputManager().getCoordReqType();
                         if(type!=null)
                             switch (type){
-                                case CHOOSE_TO_BREAK,CHOOSE_TO_MAINTAIN -> {
+                                case CHOOSE_TO_BREAK -> {
+                                    setupCoordsChoice(imageView,hBox,vBox,hBox1,tile);
+                                }
+                                case CHOOSE_TO_MAINTAIN->{
                                     setupCoordsChoice(imageView,hBox,vBox,hBox1,tile);
                                 }
                                 case CHOOSE_BATTERY -> {
@@ -817,6 +820,10 @@ public class CardsController extends GUIControllers {
                         doneButton.setPrefSize(100, 75);
                         doneButton.setOnAction(_ -> doneCoord());
                         mainBox.getChildren().add(doneButton);
+                        showDice();
+                    }
+                    case CHOOSE_TO_MAINTAIN->{
+                        showDice();
                     }
                 }
                 text.setText(type.toString());
@@ -866,13 +873,26 @@ public class CardsController extends GUIControllers {
             rollButton.setPrefSize(100,75);
             rollButton.setOnAction(_->roll());
             mainBox.getChildren().add(rollButton);
-            if(GUI.getRolled()!=-1){
-                Button rolled=new Button(GUI.getRolled()+"");
-                rolled.setPrefSize(100,75);
-                mainBox.getChildren().add(rolled);
-            }
+            showDice();
             text.setText("Roll the Dices");
         });
+    }
+
+    /**
+     * Displays the result of a dice roll on the GUI. If a roll has been made
+     * (i.e., the rolled value is not -1), a button displaying the rolled number
+     * is created, resized, and added to the main container.
+     *
+     * This method retrieves the rolled value using the GUI static method
+     * getRolled(), checks if it is a valid value, and updates the user
+     * interface accordingly.
+     */
+    private void showDice(){
+        if(GUI.getRolled()!=-1){
+            Button rolled=new Button(GUI.getRolled()+"");
+            rolled.setPrefSize(100,75);
+            mainBox.getChildren().add(rolled);
+        }
     }
 
 

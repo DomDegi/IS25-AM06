@@ -29,6 +29,7 @@ public class ProjectilePenalty extends Penalty {
     private Defense defenseStatus = null;
     private ArrayList<Set<Coordinates>> branch;
     private Coordinates destroyedTile = null;
+    private int previousDiceRoll = 0;
 
     /**
      * Constructs a ProjectilePenalty with the given list of projectiles.
@@ -133,6 +134,7 @@ public class ProjectilePenalty extends Penalty {
             return false;
         }
         if (this.diceRoll != -1) {
+            System.out.println("Per qualche motivo sono qua!");
             Coordinates destroyed = hitOrMiss(view, player);
             if (destroyed != null) {
                 return false;
@@ -209,6 +211,7 @@ public class ProjectilePenalty extends Penalty {
     public Coordinates randomRollForOne (VirtualView view, Player player) {
         Random rand = new Random();
         this.diceRoll = 2 + rand.nextInt(11);
+        this.previousDiceRoll = diceRoll;
         return hitOrMiss(view, player);
     }
 
@@ -221,24 +224,20 @@ public class ProjectilePenalty extends Penalty {
      */
     @Override
     public ArrayList<Coordinates> chooseToMaintain(Player player, ArrayList<Coordinates> received) {
-        int i = 0;
+        boolean foundBranch = false;
         ArrayList<Coordinates> toRemove = new ArrayList<>();
         ArrayList <Set<Coordinates>> b2 = new ArrayList<Set<Coordinates>>();
-        int j= branch.size();
-        while (j>1 && i==0) {
-            for (Set<Coordinates> set : branch) {
-                if (set.contains(received.getFirst())) {
-                    player.getShipBoard().SetNewShip(set);
-                    i=1;
-                    j--;
-                    b2.add(set);
-                }
+        for (Set<Coordinates> set : branch) {
+            if (set.contains(received.getFirst())) {
+                player.getShipBoard().SetNewShip(set);
+                foundBranch = true;
+                b2.add(set);
             }
         }
         for (Set<Coordinates> set : b2) {
             branch.remove(set);
         }
-        if (i == 1) {
+        if (foundBranch) {
             for (Set<Coordinates> set : branch) {
                 toRemove.addAll(set);
             }
@@ -247,7 +246,7 @@ public class ProjectilePenalty extends Penalty {
             return toRemove;
         }
         else {
-            return new ArrayList<>();
+            return null;
         }
     }
 
@@ -291,7 +290,7 @@ public class ProjectilePenalty extends Penalty {
      */
     @Override
     public int getDiceRoll(){
-        return diceRoll;
+        return previousDiceRoll;
     }
 
     /**

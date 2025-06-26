@@ -68,13 +68,6 @@ import java.util.Timer;
 public class GUI extends Application implements DisplayableView {
 
     /**
-     * Represents the number of times a specific action or event,
-     * such as rolling a dice or similar mechanism, has occurred.
-     * This variable is a static field, meaning it is shared across all instances
-     * of the class. It is maintained as an integer value.
-     */
-    private static int rolled=-1;
-    /**
      * The name of the current game.
      */
     private static String gameName;
@@ -1489,7 +1482,7 @@ public class GUI extends Application implements DisplayableView {
      */
     @Override
     public void showDiceRoll(int diceRoll) throws RemoteException {
-        rolled=diceRoll;
+        controller.setRolled(diceRoll);
         Platform.runLater(() -> {
             GUIControllers cardsController = loader.getController();
             cardsController.showRoll();
@@ -1843,6 +1836,6 @@ public class GUI extends Application implements DisplayableView {
     }
 
     public static int getRolled() {
-        return rolled;
+        return controller.getRolled();
     }
 }

@@ -1478,7 +1478,7 @@ public class GameController implements Observer, Serializable {
      * Triggers the end-game logic, scoring and podium.
      */
     public synchronized void concludeGame() {
-        for (Player player : game.getFlightBoard().getAllPlayers()) {
+        for (Player player : new ArrayList<>(game.getFlightBoard().getAllPlayers())) {
             if (player != null) {
                 game.getFlightBoard().earlyLanding(player);
                 switch (player.getPlayerRanking()){
