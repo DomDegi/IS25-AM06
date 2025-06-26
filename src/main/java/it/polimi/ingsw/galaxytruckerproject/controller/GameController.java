@@ -1250,15 +1250,11 @@ public class GameController implements Observer, Serializable {
             if(player.getShipBoard().getNumHumanCrew()<=0)
                 playersToEarlyLand.add(player);
         }
-        for (Player player: playersToEarlyLand) {
-            game.getFlightBoard().earlyLanding(player);
-            try {
-                playersViewMap.get(player.getPlayerName()).notifyEarlyLanding();
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        ArrayList<Player> disconnectedPlayersToEarlyLand = landPlayers();
         playersToEarlyLand.clear();
+        if (!disconnectedPlayersToEarlyLand.isEmpty()) {
+            playersToEarlyLand.addAll(disconnectedPlayersToEarlyLand);
+        }
         if (game.getListOfInFlightPlayers().isEmpty()) {
             System.out.println("Game ends because everyone earlyLanded");
             concludeGame();
@@ -1288,6 +1284,26 @@ public class GameController implements Observer, Serializable {
             concludeGame();
         }
     }
+
+    public ArrayList<Player> landPlayers() {
+        ArrayList<Player> disconnectedPlayersToEarlyLand = new ArrayList<>();
+        for (Player player: playersToEarlyLand) {
+            game.getFlightBoard().earlyLanding(player);
+            try {
+                VirtualView viewToLand = playersViewMap.get(player);
+                if (viewToLand != null) {
+                    playersViewMap.get(player.getPlayerName()).notifyEarlyLanding();
+                }
+                else {
+                    disconnectedPlayersToEarlyLand.add(player);
+                }
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return disconnectedPlayersToEarlyLand;
+    }
+
     /**
      * Initializes the currently drawn card by applying its effects.
      * This method delegates the initialization logic to the drawn card,
