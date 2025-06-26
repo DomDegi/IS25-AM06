@@ -40,8 +40,6 @@ public class Pirates extends Enemies {
     /** Penalty object to handle projectile damage if the player loses. */
     private ProjectilePenalty penaltyIfLose;
 
-    private int i=1;
-
     /** Status of the encounter: 0 = undecided, 1 = win, -1 = lose. */
     private int won = 0;
 
@@ -66,6 +64,7 @@ public class Pirates extends Enemies {
         super(level, requiredDays, cannonStrength, filePath);
         this.rewardCredits = rewardCredits;
         this.listOfCannonShots = listOfShots;
+        this.penaltyIfLose = new ProjectilePenalty(new ArrayList<>(listOfCannonShots));
     }
 
     /**
@@ -80,6 +79,7 @@ public class Pirates extends Enemies {
         super(level, requiredDays, cannonStrength);
         this.rewardCredits = rewardCredits;
         this.listOfCannonShots = listOfShots;
+        this.penaltyIfLose = new ProjectilePenalty(new ArrayList<>(listOfCannonShots));
     }
 
     /**

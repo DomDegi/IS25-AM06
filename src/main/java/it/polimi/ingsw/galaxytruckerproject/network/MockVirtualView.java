@@ -169,6 +169,7 @@ public class MockVirtualView implements VirtualView {
 
     @Override
     public void showDiceRoll(int diceRoll) {
+        System.out.println("the dice roll is" + diceRoll);
         // Implement mock behavior or leave empty
     }
 

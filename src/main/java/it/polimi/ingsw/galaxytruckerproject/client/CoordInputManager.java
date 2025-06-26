@@ -106,8 +106,6 @@ public class CoordInputManager {
                     }
                     this.needed = Math.min(lightShipBoard.getNumBatteries(),needed);
                 } else if (lightShipBoard.getAllGoods().size() < needed) {
-                    needed= lightShipBoard.getAllGoods().size();
-                    needed += needed - lightShipBoard.getAllGoods().size();
                     needed = Math.min(lightShipBoard.getNumBatteries()+lightShipBoard.getAllGoods().size(),needed);
                 }
             }
