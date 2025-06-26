@@ -39,10 +39,12 @@ class PlanetsTest {
     void setUp() {
         game = new Game(GameMode.LEVEL2, 4);
         flightBoard = game.getFlightBoard();
+
         player1 = new Player("MimmoPericoloso", PlayersColor.BLUE);
         player2 = new Player("FedeGalattico", PlayersColor.RED);
         player3 = new Player("EnnioVolante", PlayersColor.YELLOW);
         player4 = new Player("pipo", PlayersColor.GREEN);
+
         viewMap.put("MimmoPericoloso", mockView1);
         viewMap.put("FedeGalattico", mockView2);
         viewMap.put("EnnioVolante", mockView3);
@@ -197,14 +199,20 @@ class PlanetsTest {
     void successfully_initialize_card_first_player_land_on_first_planet() {
         successfully_initialize_card();
         int player3_initialGoodsCredit = player3.getShipBoard().convertGoodsToCredit();
+
         game.getDrawnCard().planetChoice("EnnioVolante",1);
+        System.out.println(game.getDrawnCard().getListOfPlanets());
+
         CargoHold cargo1 = new CargoBlue(3, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
         cargo1.setCoordinates(new Coordinates(1,3));
         cargo1.addGood(new Goods(BLUE));
         ArrayList<CargoHold> modifiedTiles = new ArrayList<>();
         modifiedTiles.add(cargo1);
-        game.getDrawnCard().manageGoods("EnnioVolante", player3_initialGoodsCredit + 7, modifiedTiles);
+
+        game.getDrawnCard().manageGoods("EnnioVolante", player3_initialGoodsCredit+7, modifiedTiles);
+
         assertEquals(1,player3.getShipBoard().getAllGoods().size());
+
     }
 
     @Test
