@@ -146,6 +146,10 @@ public class ClientController {
      */
     private Map<Integer, ArrayList<Card>> deck;
 
+    private float MaxCombE=-1;
+
+    private float MaxCombP=-1;
+
     /**
      * A map indicating the availability of each deck category (1, 2, 3).
      */
@@ -407,6 +411,9 @@ public class ClientController {
      * - Reinitializing the list of displayed cards.
      */
     public void readyToPlay() {
+        MaxCombE=-1;
+        MaxCombP=-1;
+        rolled=-1;
         this.built=false;
         this.ended=false;
         this.phase = GamePhases.LOGIN;
@@ -1030,6 +1037,8 @@ public class ClientController {
                 displayedCard.getFirst().getListOfProjectiles().removeFirst();
             }
             case WAIT_TO_DRAW, DRAW_CARD -> {
+                MaxCombE=-1;
+                MaxCombP=-1;
                 rolled=-1;
                 phase = GamePhases.CARDS;
             }
@@ -2430,7 +2439,21 @@ public class ClientController {
         return;
 
     }
+    public float getMaxCombE() {
+        return MaxCombE;
+    }
 
+    public void setMaxCombE(float maxCombE) {
+        MaxCombE = maxCombE;
+    }
+
+    public float getMaxCombP() {
+        return MaxCombP;
+    }
+
+    public void setMaxCombP(float maxCombP) {
+        MaxCombP = maxCombP;
+    }
     /**
      * Automatically builds a predefined ship layout for the player in TRIAL game mode.
      * <p>
