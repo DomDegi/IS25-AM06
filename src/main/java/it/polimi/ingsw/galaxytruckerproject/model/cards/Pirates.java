@@ -292,7 +292,7 @@ public class Pirates extends Enemies {
     }
 
     /**
-     * Allows the player to use batteries to defend against a projectile.
+     * Allows the player to use batteries to defend against a projectile when using the Shields.
      */
     @Override
     public void useBatteries(String playerName, ArrayList<Coordinates> batteries) {

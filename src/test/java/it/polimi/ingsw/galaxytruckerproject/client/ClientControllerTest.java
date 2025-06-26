@@ -108,8 +108,8 @@ class ClientControllerTest {
         clientController.setState(ClientState.COLOR_CHOICE);
         String input="red";
         assertTrue(clientController.input(input));
-      //  verify(mockVirtualController,times(1)).chooseColor(playersColorArgumentCaptor.capture());
-       // assertEquals(PlayersColor.RED,playersColorArgumentCaptor.getValue());
+        //  verify(mockVirtualController,times(1)).chooseColor(playersColorArgumentCaptor.capture());
+        // assertEquals(PlayersColor.RED,playersColorArgumentCaptor.getValue());
     }
 
     @Test

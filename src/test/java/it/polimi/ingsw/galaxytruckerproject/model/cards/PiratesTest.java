@@ -199,24 +199,30 @@ class PiratesTest {
     }
 
     @Test
-    void successfully_initialised_executed_loss_but_player_is_disconnected(){
-        SmallCannonShot first= new SmallCannonShot(Direction.SOUTH);
-        SmallCannonShot second= new SmallCannonShot(Direction.SOUTH);
-        LargeCannonShot third= new LargeCannonShot(Direction.SOUTH);
+    void successfully_initialised_executed_loss_but_player_is_disconnected() {
+        SmallCannonShot first = new SmallCannonShot(Direction.SOUTH);
+        SmallCannonShot second = new SmallCannonShot(Direction.SOUTH);
+        LargeCannonShot third = new LargeCannonShot(Direction.SOUTH);
         ArrayList<Projectile> projectiles = new ArrayList<>();
         projectiles.add(first);
         projectiles.add(second);
         projectiles.add(third);
-        player3.playerDisconnects();
-        System.out.println(player3.getShipBoard().toString());
-        pirates = new Pirates(1,2,4,6, projectiles);
+
+        pirates = new Pirates(1, 2, 4, 6, projectiles);
         game.setDrawnCard(pirates);
         game.getDrawnCard().initializeCard(game, viewMap);
+
+        player3.playerDisconnects();
+        pirates.playerDisconnected(player3.getPlayerName());
+
+
         ArrayList<Coordinates> coord = new ArrayList<>();
-        coord.add(new Coordinates(3,0));
-        game.getDrawnCard().cannonChoice("MimmoPericoloso", 2, coord);
+        coord.add(new Coordinates(3, 0));
+
         game.getDrawnCard().choice("MimmoPericoloso", true);
-        System.out.println(player3.getShipBoard().toString());
+        game.getDrawnCard().cannonChoice("MimmoPericoloso", 2, coord);
+
+
         assertEquals(6, player1.getCredit());
         assertEquals(GameState.DRAW_CARD, game.getGameState());
     }
@@ -261,4 +267,29 @@ class PiratesTest {
         assertEquals(6, player1.getCredit());
         assertEquals(GameState.DRAW_CARD, game.getGameState());
     }
+
+    @Test
+    void useBatteries(){
+        SmallCannonShot first= new SmallCannonShot(Direction.SOUTH);
+        SmallCannonShot second= new SmallCannonShot(Direction.SOUTH);
+        LargeCannonShot third= new LargeCannonShot(Direction.SOUTH);
+
+        ArrayList<Projectile> projectiles = new ArrayList<>();
+        projectiles.add(first);
+        projectiles.add(second);
+        projectiles.add(third);
+        pirates = new Pirates(1,2,10,6, projectiles);
+        game.setDrawnCard(pirates);
+        game.getDrawnCard().initializeCard(game, viewMap);
+        assertEquals(6, pirates.getGainedCredits());
+        assertEquals(projectiles,pirates.getListOfProjectiles());
+        ArrayList<Coordinates> coord = new ArrayList<>();
+        coord.add(new Coordinates(3,0));
+        System.out.println(player1.getShipBoard().getNumBatteries());
+        game.getDrawnCard().useBatteries(player1.getPlayerName(),coord);
+        assertEquals(6,player1.getShipBoard().getNumBatteries());
+
+    }
+
+
 }

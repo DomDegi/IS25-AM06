@@ -452,7 +452,7 @@ class GameControllerTest {
         multiGameController.removeGame(gameController);
         setMultiGameController();
         controller1.login("p1");
-            controller1.joinGame("test");
+        controller1.joinGame("test");
         controller2.login("p2");
         controller3.login("p3");
         controller4.login("p4");
@@ -479,6 +479,26 @@ class GameControllerTest {
         assertEquals(3,gameController.getGame().getListOfInFlightPlayers().size());
         controller2.drawCard();
         assertEquals(GameState.CARD_EVENT, gameController.getGameState());
+    }
+
+    @Test
+    void playerLeaves1() {
+        setupShips();
+        controller1.turnHourglass();
+        controller1.completedShip();
+        controller1.setPosition(1);
+        controller2.completedShip();
+        controller2.setPosition(2);
+        controller3.completedShip();
+        controller3.setPosition(3);
+        controller4.completedShip();
+        controller4.setPosition(4);
+
+        setMultiGameController();
+        controller1.leaveGame();
+
+        assertEquals(3, gameController.getGame().getListOfAllPlayer().size());
+        assertEquals(3, gameController.getGame().getListOfInFlightPlayers().size());
     }
 
     @Test

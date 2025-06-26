@@ -98,16 +98,22 @@ class CrewPenaltyTest {
     }
 
     @Test
-    void applyPenalty_disconnected() {
-        player1.setAllCrewToHuman();
-        player1.playerDisconnects();
-        assertFalse(penalty.initializePenalty(game,mockView1,player1));
-        assertEquals(9,player1.getTotalCrew());
+    void getNumberOfCrew(){
+        assertEquals(3,penalty.getNumberOfLostCrew());
     }
 
     @Test
-    void getNumberOfCrew(){
-        assertEquals(3,penalty.getNumberOfLostCrew());
+    void automaticCrewPenalty(){
+        player1.setAllCrewToHuman();
+        penalty.initializePenalty(game,mockView1,player1);
+        player1.setDisconnected(true);
+        ArrayList<Tile> tilesExpected = new ArrayList<>();
+        Tile tileTest=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE));
+        tilesExpected.add(tileTest);
+        Tile tileTest1=new EquipCabin( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE));
+        tilesExpected.add(tileTest1);
+        ArrayList<Tile> tiles = penalty.automaticCrewPenalty(player1, mockView1);
+        assertEquals(tilesExpected.size(),tiles.size());
     }
 
 }
