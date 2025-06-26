@@ -441,9 +441,13 @@ public class CombatZone extends Card {
         if (batteries.isEmpty() && batteryComponent == null) {
             currentPenalty.hitOrMiss(currentView, player);
             Coordinates destroyedTile = currentPenalty.getDestroyedTile();
+            if ((currentPenalty.getBranch() == null || currentPenalty.getBranch().size() < 2) && destroyedTile != null) {
                 ArrayList<Coordinates> toRemove = new ArrayList<>();
                 toRemove.add(destroyedTile);
                 notifyBrokenTiles(playerName, toRemove);
+                if (!currentPenalty.initializePenalty(game,minPlayerView, minPlayer)) {
+                    resetForNextPenalty();
+                }
             }
             return;
         }
