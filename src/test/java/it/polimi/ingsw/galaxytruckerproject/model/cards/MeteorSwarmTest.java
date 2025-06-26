@@ -192,4 +192,15 @@ class MeteorSwarmTest {
         meteorSwarm.setDiceRoll(5);
         assertEquals(GameState.DRAW_CARD, game.getGameState());
     }
+
+    @Test
+    void testNotifyDiceRoll() {
+        game.setDrawnCard(meteorSwarm);
+        game.getDrawnCard().initializeCard(game, viewMap);
+
+        meteorSwarm.setDiceRoll(6);
+        System.out.println(meteorSwarm.getDiceRoll());
+        meteorSwarm.notifyDiceRoll();
+        assertEquals(6, meteorSwarm.getDiceRoll());
+    }
 }
