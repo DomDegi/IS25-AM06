@@ -223,13 +223,23 @@ class EquipCabinTest {
         ShipBoard shipBoard1 = new ShipBoard(player1);
         shipBoard1.initializeLevel2();
         Tile equipCabin = new EquipCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL));
-        shipBoard1.positionTile(Optional.of(equipCabin), new Coordinates(0,4));
+        shipBoard1.positionTile(Optional.of(equipCabin), new Coordinates(2,4));
 
-        equipCabin.setCrewType(CrewType.BROWN);
+        Tile alien = new AlienLifeSupportsSystem(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),CrewType.PURPLE);
+        shipBoard1.positionTile(Optional.of(alien), new Coordinates(2,5));
+        shipBoard1.verifyCorrectness();
+
         equipCabin.setCrewType(CrewType.PURPLE);
-
         assertEquals(CrewType.PURPLE, equipCabin.getCrewType());
 
+        equipCabin.removeCrew();
+        assertFalse(equipCabin.removeCrew());
+
+        equipCabin.destroy();
+        assertEquals(0, shipBoard1.getNumPurpleAliens());
+
+
+        ;
 
     }
 
