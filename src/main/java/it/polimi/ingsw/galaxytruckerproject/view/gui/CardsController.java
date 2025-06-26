@@ -494,7 +494,7 @@ public class CardsController extends GUIControllers {
                 }
                 while (position>max)
                     position-=max;
-                if (index==player.getPosition()) {
+                if (index==position) {
                     if (player.getPlayerColor().equals(PlayersColor.RED))
                         p.setFill(Color.RED);
                     if (player.getPlayerColor().equals(PlayersColor.YELLOW))
