@@ -18,6 +18,7 @@ class CargoHoldTest {
         Goods good4 = new Goods(GoodsColor.RED);
         Goods good5 = new Goods(GoodsColor.YELLOW);
         Goods good6 = new Goods(GoodsColor.GREEN);
+        assertEquals("RED", good1.getColor().getColorName());
         assertEquals(blue.addGood(good1), -1);
         assertEquals(red.addGood(good1), 1);
         assertEquals(red.addGood(good2), 1);
@@ -26,5 +27,7 @@ class CargoHoldTest {
         assertEquals(red.addGood(good1), 1);
 
     }
+
+
 
 }

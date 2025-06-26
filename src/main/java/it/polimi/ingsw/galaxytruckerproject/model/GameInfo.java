@@ -111,4 +111,5 @@ public class GameInfo implements Serializable {
     public void setRestarted() {
         this.restarted = true;
     }
+
 }
