@@ -1034,8 +1034,8 @@ public class GUI extends Application implements DisplayableView {
                 s2.rotateProperty().set(90);
                 ship1 = new Button();
                 ship2 = new Button();
+                ship2.setText(GUI.getController().orderedPlayer(2));
                 ship3 = new Button();
-                ship3.setText(GUI.getController().orderedPlayer(3));
                 ship1.setOnAction(_ -> checkShip(1));
                 ship2.setOnAction(_ -> checkShip(2));
                 ship3.setOnAction(_ -> checkShip(3));
