@@ -561,12 +561,17 @@ public class CardsController extends GUIControllers {
                         CoordReqType type=GUI.getController().getCoordInputManager().getCoordReqType();
                         if(type!=null)
                             switch (type){
-                                case CHOOSE_TO_BREAK,CHOOSE_TO_MAINTAIN -> {
+                                case CHOOSE_TO_BREAK -> {
                                     setupCoordsChoice(imageView,hBox,vBox,hBox1,tile);
+                                }
+                                case CHOOSE_TO_MAINTAIN->{
+                                    setupCoordsChoice(imageView,hBox,vBox,hBox1,tile);
+                                    showDice();
                                 }
                                 case CHOOSE_BATTERY -> {
                                     if(tile instanceof BatteryComponents && tile.getNumBatteries()!=0) {
                                         setupCoordsChoice(imageView,hBox,vBox,hBox1,tile);
+                                        showDice();
                                     }
                                 }
                                 case CHOOSE_DOUBLE_CANNON ->{
@@ -866,13 +871,17 @@ public class CardsController extends GUIControllers {
             rollButton.setPrefSize(100,75);
             rollButton.setOnAction(_->roll());
             mainBox.getChildren().add(rollButton);
-            if(GUI.getRolled()!=-1){
-                Button rolled=new Button(GUI.getRolled()+"");
-                rolled.setPrefSize(100,75);
-                mainBox.getChildren().add(rolled);
-            }
+            showDice();
             text.setText("Roll the Dices");
         });
+    }
+
+    private void showDice(){
+        if(GUI.getRolled()!=-1){
+            Button rolled=new Button(GUI.getRolled()+"");
+            rolled.setPrefSize(100,75);
+            mainBox.getChildren().add(rolled);
+        }
     }
 
 

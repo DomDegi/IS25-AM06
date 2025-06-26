@@ -38,6 +38,12 @@ import java.util.*;
  * </p>
  */
 public class ClientController {
+
+    /**
+     * Represents the number rolled in a game or simulation.
+     * The value is initialized to -1, indicating that no roll has been made.
+     */
+    private int rolled=-1;
     /**
      * A constant boolean flag indicating if a process, task, or state
      * has ended or completed. The default value is set to {@code false},
@@ -1023,9 +1029,10 @@ public class ClientController {
                 view.printProjectile(displayedCard.getFirst().getListOfProjectiles().getFirst());
                 displayedCard.getFirst().getListOfProjectiles().removeFirst();
             }
-            case WAIT_TO_DRAW ->
-                    phase = GamePhases.CARDS;
-            case DRAW_CARD -> phase = GamePhases.CARDS;
+            case WAIT_TO_DRAW, DRAW_CARD -> {
+                rolled=-1;
+                phase = GamePhases.CARDS;
+            }
             case MANAGE_GOODS -> {
                 if (!inManager) {
                     me.getShipBoard().setGetStat();
@@ -2584,6 +2591,14 @@ public class ClientController {
 
     public void setEnded(boolean ended) {
         this.ended =ended;
+    }
+
+    public int getRolled() {
+        return rolled;
+    }
+
+    public void setRolled(int rolled) {
+        this.rolled = rolled;
     }
 }
 
