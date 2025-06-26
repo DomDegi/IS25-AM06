@@ -5,6 +5,8 @@ import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class FlightBoardTest {
@@ -312,5 +314,45 @@ class FlightBoardTest {
         assertEquals(player2, flightBoard.getAllPlayers().get(3));
         assertFalse(flightBoard.getInGamePlayers().contains(player2));
 
+    }
+
+    @Test
+    void addedToTrialFlight(){
+        flightBoard.addToTrialFlightBoard(player1);
+        flightBoard.addToTrialFlightBoard(player2);
+        flightBoard.addToTrialFlightBoard(player3);
+        flightBoard.addToTrialFlightBoard(player4);
+        flightBoard.addToTrialFlightBoard(player4);
+        assertEquals(1, player1.getPlayerRanking());
+        assertEquals(2, player2.getPlayerRanking());
+        assertEquals(3, player3.getPlayerRanking());
+        assertEquals(4, player4.getPlayerRanking());
+        assertEquals(4,player1.getPlayerPosition());
+        assertEquals(2,player2.getPlayerPosition());
+        assertEquals(1,player3.getPlayerPosition());
+        assertEquals(0,player4.getPlayerPosition());
+    }
+
+    @Test
+    void removed(){
+        addedToTrialFlight();
+        flightBoard.removePlayer(player3);
+        assertEquals(1, player1.getPlayerRanking());
+        assertEquals(2, player2.getPlayerRanking());
+        assertEquals(3, player4.getPlayerRanking());
+    }
+
+    @Test
+    void loadedBack(){
+        addedToTrialFlight();
+        flightBoard.loadFlightBoard(flightBoard.getAllPlayers());
+        assertEquals(1, player1.getPlayerRanking());
+        assertEquals(2, player2.getPlayerRanking());
+        assertEquals(3, player3.getPlayerRanking());
+        assertEquals(4, player4.getPlayerRanking());
+        assertEquals(4,player1.getPlayerPosition());
+        assertEquals(2,player2.getPlayerPosition());
+        assertEquals(1,player3.getPlayerPosition());
+        assertEquals(0,player4.getPlayerPosition());
     }
 }

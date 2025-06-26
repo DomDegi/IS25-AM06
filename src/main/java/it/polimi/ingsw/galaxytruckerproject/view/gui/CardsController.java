@@ -880,11 +880,9 @@ public class CardsController extends GUIControllers {
      * Displays the rolled value and updates the UI accordingly.
      * Clears the mainBox's children if the number of children is less than or equal to two,
      * sets the text and preferred size of the rolled object, and adds it to mainBox.
-     *
-     * @param index the integer value representing the rolled value to be displayed
      */
-    public void showRoll(int index){
-        initialize();
+    public void showRoll(){
+        Platform.runLater(this::initialize);
     }
 
     /**

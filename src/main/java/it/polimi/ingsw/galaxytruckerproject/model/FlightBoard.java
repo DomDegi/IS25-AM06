@@ -367,8 +367,7 @@ public class FlightBoard implements Serializable {
                     return;
                 }
             }
-        }
-        else {
+        } else {
             addToTrialFlightBoard(player);
             setPlayerToLast(player);
         }
