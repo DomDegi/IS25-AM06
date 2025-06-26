@@ -314,4 +314,8 @@ public class MeteorSwarm extends Card {
             prepareNextMeteor();
         }
     }
+
+    public int getDiceRoll() {
+       return this.currentDiceRoll;
+    }
 }

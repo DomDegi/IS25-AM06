@@ -221,4 +221,18 @@ class PlayerTest {
         assertTrue(player1.getShipBoard().getTile(new Coordinates(3,4)).getCargo().isEmpty());
         assertEquals(GoodsColor.BLUE, player1.getShipBoard().getAllGoods().getFirst().getColor());
     }
+
+    @Test
+    void addCredit(){
+        player1.addCredit(10);
+        assertEquals(10, player1.getCredit());
+        player1.removeCredit(5);
+        assertEquals(5, player1.getCredit());
+    }
+
+    @Test
+    void playerReconnects() {
+        player1.playerReconnects();
+        assertEquals(false,player1.isDisconnected());
+    }
 }

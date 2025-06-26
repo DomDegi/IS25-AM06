@@ -98,6 +98,7 @@ class ShipBoardTest {
         shipBoard1.initializeLevel2();
         Tile tile1=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
         shipBoard1.positionTile(Optional.of(tile1), new Coordinates(1,3));
+
         Tile tile2=new CargoBlue(2, new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE));
         shipBoard1.positionTile(Optional.of(tile2), new Coordinates(2,2));
         Tile tile3=new EquipCabin( new Link(Connectors.SINGLE),new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE));
@@ -549,6 +550,12 @@ class ShipBoardTest {
         tile22.rotate();
         tile22.rotate();
         shipBoard1.positionTile(Optional.of(tile22), new Coordinates(4,4));
+
+        //BOOKING TILE
+        Tile tile23=new DoubleEngine( new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE));
+        shipBoard1.addBookedTile(tile23);
+        shipBoard1.removeBookedTile(0);
+
         boolean result=shipBoard1.verifyCorrectness();
         //verifyCorrectness is needed for the shipboard stats setting
         ArrayList<Set<Coordinates>> set = shipBoard1.destroyTile(new Coordinates(2, 2));
