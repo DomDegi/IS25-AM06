@@ -105,4 +105,9 @@ class CrewPenaltyTest {
         assertEquals(9,player1.getTotalCrew());
     }
 
+    @Test
+    void getNumberOfCrew(){
+        assertEquals(3,penalty.getNumberOfLostCrew());
+    }
+
 }

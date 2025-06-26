@@ -141,6 +141,7 @@ public class Planets extends Card {
             goodsChecker.put(playerName, new GoodsChecker(currentPlayer, listOfPlanets.get(planet - 1).getListOfGoods()));
 
         }
+
         if (!goodsChecker.isEmpty()&& playerIndex >= game.getListOfInFlightPlayers().size() - 1) {
             chosen = true;
             playerIndex = 0;
@@ -155,7 +156,6 @@ public class Planets extends Card {
             }
             return;
         }
-
         nextPlayer();
     }
 
