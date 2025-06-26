@@ -566,12 +566,10 @@ public class CardsController extends GUIControllers {
                                 }
                                 case CHOOSE_TO_MAINTAIN->{
                                     setupCoordsChoice(imageView,hBox,vBox,hBox1,tile);
-                                    showDice();
                                 }
                                 case CHOOSE_BATTERY -> {
                                     if(tile instanceof BatteryComponents && tile.getNumBatteries()!=0) {
                                         setupCoordsChoice(imageView,hBox,vBox,hBox1,tile);
-                                        showDice();
                                     }
                                 }
                                 case CHOOSE_DOUBLE_CANNON ->{
@@ -822,6 +820,10 @@ public class CardsController extends GUIControllers {
                         doneButton.setPrefSize(100, 75);
                         doneButton.setOnAction(_ -> doneCoord());
                         mainBox.getChildren().add(doneButton);
+                        showDice();
+                    }
+                    case CHOOSE_TO_MAINTAIN->{
+                        showDice();
                     }
                 }
                 text.setText(type.toString());
