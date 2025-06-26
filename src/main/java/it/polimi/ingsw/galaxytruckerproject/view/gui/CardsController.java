@@ -88,17 +88,6 @@ public class CardsController extends GUIControllers {
     public boolean visible= true;
 
     /**
-     * A Label element initialized with an empty string ("") to display text in the
-     * user interface. Typically represents the result or value of an action, such
-     * as rolling a dice or similar activity.
-
-     * The @FXML annotation indicates that this variable is associated with an
-     * element defined in the FXML file and is*/
-    @FXML
-    public Button rolled=new Button("");
-
-
-    /**
      * Polygons for the flight board
      */
     @FXML
@@ -824,7 +813,7 @@ public class CardsController extends GUIControllers {
                         landButton.setVisible(false);
                     }
                     case CHOOSE_BATTERY-> {
-                        Button doneButton = new Button("Done");
+                        Button doneButton = new Button("No");
                         doneButton.setPrefSize(100, 75);
                         doneButton.setOnAction(_ -> doneCoord());
                         mainBox.getChildren().add(doneButton);
@@ -877,8 +866,9 @@ public class CardsController extends GUIControllers {
             rollButton.setPrefSize(100,75);
             rollButton.setOnAction(_->roll());
             mainBox.getChildren().add(rollButton);
-            rolled.setPrefSize(100,50);
-            if(rolled!=null){
+            if(GUI.getRolled()!=-1){
+                Button rolled=new Button(GUI.getRolled()+"");
+                rolled.setPrefSize(100,75);
                 mainBox.getChildren().add(rolled);
             }
             text.setText("Roll the Dices");
@@ -894,14 +884,6 @@ public class CardsController extends GUIControllers {
      * @param index the integer value representing the rolled value to be displayed
      */
     public void showRoll(int index){
-        mainBox.getChildren().clear();
-        Button rollButton=new Button("Roll");
-        rollButton.setPrefSize(100,75);
-        rollButton.setOnAction(_->roll());
-        mainBox.getChildren().add(rollButton);
-        rolled=new Button(index+"");
-        rolled.setPrefSize(100,50);
-        mainBox.getChildren().add(rolled);
         initialize();
     }
 

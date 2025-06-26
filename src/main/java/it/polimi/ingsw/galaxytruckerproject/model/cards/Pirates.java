@@ -66,6 +66,7 @@ public class Pirates extends Enemies {
         super(level, requiredDays, cannonStrength, filePath);
         this.rewardCredits = rewardCredits;
         this.listOfCannonShots = listOfShots;
+        this.penaltyIfLose = new ProjectilePenalty(new ArrayList<>(listOfCannonShots));
     }
 
     /**
