@@ -2316,7 +2316,9 @@ public class ClientController {
             setOffline();
         }
 
-        Tile tile2=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web49.jpg",3,0);
+        Tile tile2=new EquipCabin( new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web44.jpg",0,0);
+        tile2.rotate();
+        tile2.rotate();
         me.getShipBoard().positionTile(Optional.of(tile2), new Coordinates(1,1));
         try {
             virtualController.notifySetTile(tile2.send());
@@ -2358,7 +2360,8 @@ public class ClientController {
         } catch (RemoteException e) {
             setOffline();
         }
-        Tile tile14=new EquipCabin( new Link(Connectors.DOUBLE),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web47.jpg",3,0);
+        Tile tile14=new AlienLifeSupportsSystem(new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web147.jpg",0,0,CrewType.PURPLE);
+        tile14.rotate();
         me.getShipBoard().positionTile(Optional.of(tile14), new Coordinates(3,2));
         try {
             virtualController.notifySetTile(tile14.send());
@@ -2372,13 +2375,23 @@ public class ClientController {
         } catch (RemoteException e) {
             setOffline();
         }
-        Tile tile17=new DoubleEngine( new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web98.jpg",0,0);
+
+        Tile tile17=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web49.jpg",0,0);
         me.getShipBoard().positionTile(Optional.of(tile17), new Coordinates(3,5));
         try {
             virtualController.notifySetTile(tile17.send());
         } catch (RemoteException e) {
             setOffline();
         }
+
+        Tile tile30 = new DoubleEngine( new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web98.jpg",0,0);
+        me.getShipBoard().positionTile(Optional.of(tile30), new Coordinates(4,5));
+        try {
+            virtualController.notifySetTile(tile30.send());
+        } catch (RemoteException e) {
+            setOffline();
+        }
+
         Tile tile18=new BatteryComponents( new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web8.jpg",1,0,2);
         me.getShipBoard().positionTile(Optional.of(tile18), new Coordinates(3,6));
         try {
