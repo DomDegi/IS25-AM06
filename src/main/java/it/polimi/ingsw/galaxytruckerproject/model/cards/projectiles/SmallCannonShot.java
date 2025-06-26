@@ -43,7 +43,6 @@ public class SmallCannonShot extends Projectile {
         }
 
         if (direction.equals(Direction.NORTH)) {
-            System.out.println("Ain't no luck baby 2.0");
             return checkNorth(player, diceRoll);
         }
         if (direction.equals(Direction.SOUTH)) {

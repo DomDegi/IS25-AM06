@@ -96,7 +96,6 @@ public class OpenSpace extends Card {
      */
     private void moveOrEarlyLand(int engineStrength) {
         if (engineStrength == 0) {
-            System.out.println("sono qui");
             playersToEarlyLand.add(currentPlayer);
             try {
                 currentPlayerView.notifyEarlyLanding();

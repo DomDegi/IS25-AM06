@@ -133,7 +133,6 @@ public abstract class Projectile implements Serializable {
                 }
                 Temp = tileTable[i][diceRoll];
             }
-            System.out.println("Ain't no luck baby");
             coordinatesToDestroy = Temp.get().getCoordinates();
             System.out.println(coordinatesToDestroy);
             return;
