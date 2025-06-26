@@ -54,7 +54,10 @@ public class GoodsPenalty extends Penalty {
     @Override
     public ArrayList<Tile> removeGoods(Player player, VirtualView playersView, ArrayList<Coordinates> toRemove){
         ArrayList<Tile> updatedTiles;
-        if (toRemove.size() != numberOfLostGoods && toRemove.size() != numberOfBatteries + numberOfGoods) {
+        if (toRemove.size() != numberOfLostGoods && toRemove.size() != (numberOfBatteries + numberOfGoods)) {
+            System.out.println("toRemove size: " + toRemove.size());
+            System.out.println("toLose size: " + numberOfLostGoods);
+            System.out.println("summation of available batteries and goods: " + numberOfBatteries + numberOfGoods);
             try {
                 playersView.showWrongInputMessage();
             }catch(Exception ignored) {}
@@ -195,9 +198,10 @@ public class GoodsPenalty extends Penalty {
         else {
             if (player.getShipBoard().getAllGoods().size() < numberOfLostGoods) {
                 this.numberOfGoods = player.getShipBoard().getAllGoods().size();
-                this.numberOfBatteries = numberOfLostGoods - player.getShipBoard().getAllGoods().size();
-                if (numberOfBatteries > player.getShipBoard().getNumBatteries()) {
-                    numberOfBatteries = player.getShipBoard().getNumBatteries();
+                this.numberOfBatteries = numberOfLostGoods - numberOfGoods;
+                int playersBatteries = player.getShipBoard().getNumBatteries();
+                if (numberOfBatteries > playersBatteries) {
+                    numberOfBatteries = playersBatteries;
                 }
             }
             else {

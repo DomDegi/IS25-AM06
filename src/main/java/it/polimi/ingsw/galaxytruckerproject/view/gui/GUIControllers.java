@@ -23,7 +23,7 @@ public abstract class GUIControllers {
      *
      * @param diceRoll the numerical result of the dice roll to be displayed
      */
-    public void showRoll(int diceRoll){}
+    public void showRoll(){}
 
     /**
      * Updates the display or state of all visible cards in the graphical interface.

@@ -95,7 +95,7 @@ public class CoordInputManager {
         this.coordinates.clear();
         this.coordReqType = coordReqType;
         switch (coordReqType) {
-            case CHOOSE_DOUBLE_CANNON, CHOOSE_DOUBLE_ENGINE, CHOOSE_TO_BREAK, CHOOSE_BATTERY -> needed=0;
+            case CHOOSE_DOUBLE_CANNON, CHOOSE_DOUBLE_ENGINE, CHOOSE_TO_BREAK -> needed=0;
             case REMOVE_GOODS ->{
                 needed= clientController.getDisplayedCard().getFirst().getGoodsPenalty();
                 if (lightShipBoard.isCargoEmpty()) {
@@ -106,13 +106,11 @@ public class CoordInputManager {
                     }
                     this.needed = Math.min(lightShipBoard.getNumBatteries(),needed);
                 } else if (lightShipBoard.getAllGoods().size() < needed) {
-                    needed= lightShipBoard.getAllGoods().size();
-                    needed += needed - lightShipBoard.getAllGoods().size();
                     needed = Math.min(lightShipBoard.getNumBatteries()+lightShipBoard.getAllGoods().size(),needed);
                 }
             }
-            case CHOOSE_TO_MAINTAIN -> needed=1;
-            case CHOOSE_CREW -> {
+            case CHOOSE_TO_MAINTAIN, CHOOSE_BATTERY -> needed=1;
+            case CHOOSE_CREW-> {
                 needed = clientController.getDisplayedCard().getFirst().getCrewNumber();
                 System.out.println("needed: "+needed);
                 needed = Math.min (lightShipBoard.getNumTotalCrew(),needed);
@@ -153,7 +151,7 @@ public class CoordInputManager {
                 }
             }
             case CHOOSE_BATTERY -> {
-                if(tile.getNumBatteries()>0) {
+                if(tile.getNumBatteries()>0&&coordinates.size()<=needed) {
                     if(clientController.getMe().getShipBoard().chooseBatteryUse(coordinate))
                         coordinates.add(coordinate);
                 } else {
@@ -244,7 +242,7 @@ public class CoordInputManager {
             }
         }
         clientController.getView().coordinateSelected();
-        if(coordinates.size()==needed && (coordReqType != CoordReqType.CHOOSE_DOUBLE_ENGINE && coordReqType != CoordReqType.CHOOSE_DOUBLE_CANNON && coordReqType != CoordReqType.CHOOSE_TO_BREAK && coordReqType != CoordReqType.CHOOSE_BATTERY )) {
+        if(coordinates.size()==needed && (coordReqType != CoordReqType.CHOOSE_DOUBLE_ENGINE && coordReqType != CoordReqType.CHOOSE_DOUBLE_CANNON && coordReqType != CoordReqType.CHOOSE_TO_BREAK)) {
             endCheckingFase();
         }
         return true;
@@ -284,7 +282,7 @@ public class CoordInputManager {
             } catch (RemoteException e) {
                 clientController.setOffline();
             }
-        } else if (coordReqType == CoordReqType.CHOOSE_BATTERY ) {
+        } else if (coordReqType == CoordReqType.CHOOSE_BATTERY) {
             clientController.setState(ClientState.WAIT);
             try {
                 clientController.getVirtualController().useBattery(coordinates);

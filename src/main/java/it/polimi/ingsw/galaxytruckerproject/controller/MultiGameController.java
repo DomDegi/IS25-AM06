@@ -283,7 +283,6 @@ public class MultiGameController implements Serializable {
         try {
             view.showJoinableGamesList(joinableGames);
         } catch (RemoteException e) {
-            gameFromNickname(nickname).disconnectPlayer(nickname);
         }
         viewsMap.put(nickname, view);
     }
