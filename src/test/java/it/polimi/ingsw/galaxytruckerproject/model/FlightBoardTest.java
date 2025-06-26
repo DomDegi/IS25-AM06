@@ -55,6 +55,7 @@ class FlightBoardTest {
         flightBoard.addToFlightBoard(player2, 2);
         flightBoard.addToFlightBoard(player3, 3);
         flightBoard.addToFlightBoard(player4, 4);
+        flightBoard.addToFlightBoard(player4, 4);
 
         flightBoard.setPlayerToLast(player1);
         assertEquals(player1, flightBoard.getInGamePlayers().get(3));
@@ -354,5 +355,18 @@ class FlightBoardTest {
         assertEquals(2,player2.getPlayerPosition());
         assertEquals(1,player3.getPlayerPosition());
         assertEquals(0,player4.getPlayerPosition());
+    }
+
+    @Test
+    void autoSetInFreeLast(){
+        flightBoard.addToFlightBoard(player1, 1);
+        flightBoard.addToFlightBoard(player2, 2);
+        flightBoard.addToFlightBoard(player3, 3);
+        flightBoard.addToFlightBoard(player4, 4);
+        flightBoard.autoSetInFreeLastPosition(player1,4);
+        assertEquals(1, player1.getPlayerRanking());
+        assertEquals(2, player2.getPlayerRanking());
+        assertEquals(3, player3.getPlayerRanking());
+        assertEquals(4, player4.getPlayerRanking());
     }
 }
