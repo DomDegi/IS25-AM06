@@ -40,6 +40,10 @@ public class Pirates extends Enemies {
     /** Penalty object to handle projectile damage if the player loses. */
     private ProjectilePenalty penaltyIfLose;
 
+    private ProjectilePenalty penaltySaved;
+
+    private int i=1;
+
     /** Status of the encounter: 0 = undecided, 1 = win, -1 = lose. */
     private int won = 0;
 
@@ -78,6 +82,8 @@ public class Pirates extends Enemies {
         super(level, requiredDays, cannonStrength);
         this.rewardCredits = rewardCredits;
         this.listOfCannonShots = listOfShots;
+        this.penaltySaved=penaltyIfLose;
+
     }
 
     /**
@@ -252,8 +258,10 @@ public class Pirates extends Enemies {
             broken.add(firstBrokenTile);
             notifyBrokenTiles(playerName, broken);
         }
-        if (!penaltyIfLose.initializePenalty(game, currentView, currentPlayer)) {
-            nextPlayer();
+        else if (penaltyIfLose.getBranch() == null) {
+            if (!penaltyIfLose.initializePenalty(game,currentView, currentPlayer)) {
+                nextPlayer();
+            }
         }
     }
 
