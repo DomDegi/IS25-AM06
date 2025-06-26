@@ -217,6 +217,22 @@ class EquipCabinTest {
 
     }
 
+    @Test
+    void setCrewTypeTest(){
+        Player player1 = new Player("MCS", PlayersColor.BLUE);
+        ShipBoard shipBoard1 = new ShipBoard(player1);
+        shipBoard1.initializeLevel2();
+        Tile equipCabin = new EquipCabin(new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL));
+        shipBoard1.positionTile(Optional.of(equipCabin), new Coordinates(0,4));
+
+        equipCabin.setCrewType(CrewType.BROWN);
+        equipCabin.setCrewType(CrewType.PURPLE);
+
+        assertEquals(CrewType.PURPLE, equipCabin.getCrewType());
+
+
+    }
+
 
 
 }

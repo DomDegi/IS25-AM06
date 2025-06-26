@@ -68,7 +68,6 @@ public abstract class Projectile implements Serializable {
      * @return the result of the defense (e.g., HIT, PROTECTED)
      */
     public Defense throwProjectile(Player player, int DiceRoll, GameInterface game) {
-        System.out.println("You shouldn't be here ninja");
         return Defense.PROTECTED;
     }
 

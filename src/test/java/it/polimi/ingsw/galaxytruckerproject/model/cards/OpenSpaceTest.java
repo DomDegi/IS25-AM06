@@ -203,4 +203,21 @@ class OpenSpaceTest {
         assertEquals(player3_initial_pos + 1, player3.getPlayerPosition());
         assertEquals(GameState.DRAW_CARD,game.getGameState());
     }
+
+    @Test
+    void playerLanded()
+    {
+
+        game.setDrawnCard(openSpace);
+        int player1_initial_pos = player1.getPlayerPosition();
+        int player2_initial_pos = player2.getPlayerPosition();
+        int player3_initial_pos = player3.getPlayerPosition();
+        game.getDrawnCard().initializeCard(game, viewMap);
+
+        game.getDrawnCard().engineChoice("MimmoPericoloso", 0, new ArrayList<>());
+        openSpace.playerLanded(player2.getPlayerName());
+        assertTrue(openSpace.playersToEarlyLand.contains(player2));
+    }
+
+
 }
