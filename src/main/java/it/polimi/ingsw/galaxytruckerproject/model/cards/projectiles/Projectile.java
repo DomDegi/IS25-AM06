@@ -23,7 +23,7 @@ import java.util.Optional;
         @JsonSubTypes.Type(value = SmallMeteor.class, name = "SmallMeteor"),
         @JsonSubTypes.Type(value = SmallCannonShot.class, name = "SmallCannonShot")
 })
-public abstract class Projectile implements Serializable, Cloneable {
+public abstract class Projectile implements Serializable {
 
     /**
      * The direction the projectile travels in.
