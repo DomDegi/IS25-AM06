@@ -1669,7 +1669,7 @@ public class GUI extends Application implements DisplayableView {
      */
     @Override
     public void notifyCombatZoneStrength(String playerName, float strength) throws RemoteException {
-        if(strength>controller.getMaxCombP())
+        if(strength<controller.getMaxCombP())
             controller.setMaxCombP(strength);
     }
 
@@ -1682,7 +1682,7 @@ public class GUI extends Application implements DisplayableView {
      */
     @Override
     public void notifyCombatZoneEngine(String playerName, float strength) throws RemoteException {
-        if(strength>controller.getMaxCombE())
+        if(strength<controller.getMaxCombE())
             controller.setMaxCombE(strength);
     }
 
