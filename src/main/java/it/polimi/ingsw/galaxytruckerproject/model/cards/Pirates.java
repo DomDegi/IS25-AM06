@@ -6,6 +6,7 @@ import it.polimi.ingsw.galaxytruckerproject.client.ClientState;
 import it.polimi.ingsw.galaxytruckerproject.client.CoordReqType;
 import it.polimi.ingsw.galaxytruckerproject.model.GameInterface;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.penalties.ProjectilePenalty;
+import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Defense;
 import it.polimi.ingsw.galaxytruckerproject.model.cards.projectiles.Projectile;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.tiles.Coordinates;
@@ -135,8 +136,8 @@ public class Pirates extends Enemies {
                 nextPlayer();
             } else {
                 won = -1;
-                if (penaltyIfLose.initializePenalty(game, currentView, currentPlayer)) return;
-                nextPlayer();
+                if (penaltyIfLose.initializePenalty(game, currentView, currentPlayer))
+                    nextPlayer();
             }
         } else {
             if (singleCannonPower > cannonStrength) {
@@ -239,7 +240,7 @@ public class Pirates extends Enemies {
      */
     @Override
     public void rollTheDices(String playerName) {
-        if (!playerName.equals(currentPlayer.getPlayerName()) || penaltyIfLose.getDiceRoll() != -1) {
+        if (!playerName.equals(currentPlayer.getPlayerName())) {
             try {
                 viewsMap.get(playerName).showWrongInputMessage();
             } catch (Exception ignored) {}
@@ -256,6 +257,8 @@ public class Pirates extends Enemies {
         }
         else if (penaltyIfLose.getBranch() == null) {
             if (!penaltyIfLose.initializePenalty(game,currentView, currentPlayer)) {
+                try {
+                } catch (Exception ignored) {}
                 nextPlayer();
             }
         }
@@ -279,7 +282,9 @@ public class Pirates extends Enemies {
                 currentView.showWrongInputMessage();
             } catch (Exception ignored) {}
         } else {
-            notifyBrokenTiles(playerName, removedTiles);
+            if (!removedTiles.isEmpty()) {
+                notifyBrokenTiles(playerName, removedTiles);
+            }
             if (!penaltyIfLose.initializePenalty(game, currentView, currentPlayer)) {
                 nextPlayer();
             }
