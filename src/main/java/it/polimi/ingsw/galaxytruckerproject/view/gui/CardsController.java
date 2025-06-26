@@ -23,6 +23,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import org.w3c.dom.Text;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -872,11 +873,11 @@ public class CardsController extends GUIControllers {
      */
     private void showRollDice(){
         Platform.runLater(() -> {
-            rolled.setPrefSize(100,50);
             Button rollButton=new Button("Roll");
             rollButton.setPrefSize(100,75);
             rollButton.setOnAction(_->roll());
             mainBox.getChildren().add(rollButton);
+            rolled.setPrefSize(100,50);
             if(rolled!=null){
                 mainBox.getChildren().add(rolled);
             }
@@ -893,7 +894,14 @@ public class CardsController extends GUIControllers {
      * @param index the integer value representing the rolled value to be displayed
      */
     public void showRoll(int index){
-        rolled.setText(""+index);
+        mainBox.getChildren().clear();
+        Button rollButton=new Button("Roll");
+        rollButton.setPrefSize(100,75);
+        rollButton.setOnAction(_->roll());
+        mainBox.getChildren().add(rollButton);
+        rolled=new Button(index+"");
+        rolled.setPrefSize(100,50);
+        mainBox.getChildren().add(rolled);
         initialize();
     }
 
@@ -965,7 +973,7 @@ public class CardsController extends GUIControllers {
     private void showManageGoods(){
         Platform.runLater(() -> {
             Button doneButton=new Button("Done");
-            doneButton.setPrefSize(200,75);
+            doneButton.setMinSize(200,75);
             doneButton.setOnAction(_->GUI.doneGoods());
             HBox box=new HBox();
             box.setAlignment(Pos.CENTER);
@@ -975,7 +983,7 @@ public class CardsController extends GUIControllers {
             int index=1;
             if(GUI.getController().getGoodsManager().getCargo()!=null&&!GUI.getController().getGoodsManager().getCargo().isEmpty()) {
                 doneButton.setVisible(false);
-                goodsBox.getChildren().add(new Label("Yours Goods:"));
+                goodsBox.getChildren().add(new Label("Yours:"));
                 for (Goods goods : GUI.getController().getGoodsManager().getCargo()) {
                     goodsBox.getChildren().add(goodsButtons(goods,index,true));
                     index++;

@@ -117,6 +117,7 @@ public class TextualInputParser {
                         }
                     }
                 } catch (MalformedURLException | NotBoundException | RemoteException e) {
+                    clientController.setState(ClientState.CHOOSE_CONNECTION_TYPE);
                 }
             }
 
@@ -140,7 +141,7 @@ public class TextualInputParser {
                         }
                     }
                 } catch (IOException | NotBoundException e) {
-                    throw new RuntimeException(e);
+                    clientController.setState(ClientState.CHOOSE_CONNECTION_TYPE);
                 }
             }
 
