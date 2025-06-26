@@ -79,7 +79,6 @@ public class SocketServer implements Server {
 
                     } catch (IOException e) {
                         System.out.println("Connection crashed");
-                        throw new RuntimeException(e);
                     }
                 }, "ClientHandlerSetup").start();
             }

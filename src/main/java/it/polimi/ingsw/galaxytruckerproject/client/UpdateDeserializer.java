@@ -128,7 +128,6 @@ public class UpdateDeserializer {
 
         } catch (IOException e) {
             System.out.println("Error in unpacking currentGameStatus");
-            throw new RuntimeException(e);
         }
     }
 }
