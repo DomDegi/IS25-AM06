@@ -39,6 +39,7 @@ public class GoodsPenalty extends Penalty {
      *
      * @return number of lost goods
      */
+    @Override
     public int getNumberOfLostGoods() {
         return numberOfLostGoods;
     }
@@ -170,15 +171,6 @@ public class GoodsPenalty extends Penalty {
     }
 
     /**
-     * Returns the number of goods to remove.
-     *
-     * @return the number of goods
-     */
-    public int getNumber(){
-        return numberOfLostGoods;
-    }
-
-    /**
      * Initializes the penalty, determining how many goods and/or batteries will be removed,
      * and prompts the player to select them if connected.
      *
@@ -223,4 +215,5 @@ public class GoodsPenalty extends Penalty {
         }
         return true;
     }
+
 }

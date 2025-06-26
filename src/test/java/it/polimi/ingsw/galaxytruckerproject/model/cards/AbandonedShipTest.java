@@ -166,7 +166,7 @@ class AbandonedShipTest {
     }
 
     @Test
-    void playerLanded(){
+    void choiceFalse(){
         player1.setAllCrewToHuman();
         int player1_initialDays = player1.getPlayerPosition();
         int player1_initial_crew = player1.getTotalCrew();
@@ -174,11 +174,24 @@ class AbandonedShipTest {
         game.getDrawnCard().initializeCard(game, viewMap);
         game.setGameState(GameState.CARD_EVENT);
         abandonedShip.choice(player1.getPlayerName(), false);
-        abandonedShip.playerLanded(player1.getPlayerName());
         assertEquals(0, player1.getCredit());
         assertEquals(player1.getPlayerPosition(), player1_initialDays);
         assertEquals(player1.getTotalCrew(), player1_initial_crew);
         assertEquals(GameState.DRAW_CARD, game.getGameState());
     }
+
+    @Test
+    void playerLanded(){
+        player1.setAllCrewToHuman();
+        game.setDrawnCard(abandonedShip);
+        game.getDrawnCard().initializeCard(game, viewMap);
+        game.setGameState(GameState.CARD_EVENT);
+        abandonedShip.choice(player1.getPlayerName(), true);
+        abandonedShip.playerLanded(player1.getPlayerName());
+        assertEquals(player4, abandonedShip.getPlayerToPlay());
+
+
+    }
+
 
 }

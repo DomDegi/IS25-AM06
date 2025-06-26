@@ -314,15 +314,32 @@ class AbandonedStationTest {
         int player1_initialdays = player1.getPlayerPosition();
         int player1_initialgoods = player1.getShipBoard().getAllGoods().size();
         abandonedStation.choice(player1.getPlayerName(), true);
-        ArrayList<Coordinates> toRemove = new ArrayList<>();
-        toRemove.add(new Coordinates(1,1));
-        toRemove.add(new Coordinates(1,1));
-        toRemove.add(new Coordinates(2,0));
-        abandonedStation.removeCrew(player1.getPlayerName(), toRemove);
+        System.out.println("hello");
         abandonedStation.playerLanded(player1.getPlayerName());
         assertEquals(player1_initialdays, player1.getPlayerPosition());
         assertEquals(player1_initialgoods, player1.getShipBoard().getAllGoods().size());
         assertEquals(GameState.CARD_EVENT, game.getGameState());
+    }
 
+    @Test
+    void playerLanded2(){
+        successfully_execute_card_and_accepted();
+        int player1_initialdays = player1.getPlayerPosition();
+        int player1_initialgoods = player1.getShipBoard().getAllGoods().size();
+        abandonedStation.choice(player1.getPlayerName(), true);
+        ArrayList<Coordinates> toRemove = new ArrayList<>();
+        toRemove.add(new Coordinates(1,1));
+        toRemove.add(new Coordinates(2,1));
+        toRemove.add(new Coordinates(2,2));
+        abandonedStation.removeCrew(player1.getPlayerName(), toRemove);
+        System.out.println("hello");
+        abandonedStation.playerLanded(player1.getPlayerName());
+        assertEquals(GameState.DRAW_CARD, game.getGameState());
+    }
+
+    @Test
+    void getCrewNumber(){
+        successfully_execute_card_and_accepted();
+        assertEquals(3, abandonedStation.getCrewNumber());
     }
 }
