@@ -20,17 +20,17 @@
 
 <center>
 
-| Features                     | Base | Advanced |
-|------------------------------| ---- | -------- |
-| Complete ruleset             | ✅   |          |
-| Socket                       | ✅   |          |
-| RMI                          | ✅   |          |
-| TUI                          | ✅   |          |
-| GUI                          | ✅   |          |
-| Multiple Games               |      | ✅       |
-| Persistence                  |      | ✅       |
-| Resilience to disconnections |      | ✅       |
-| Trial flight                 |      | ✅       |
+| Features                     | Base | Advanced              |
+|------------------------------| ---- |-----------------------|
+| Complete ruleset             | ✅   |                       |
+| Socket                       | ✅   |                       |
+| RMI                          | ✅   |                       |
+| TUI                          | ✅   |                       |
+| GUI                          | ✅   |                       |
+| Multiple Games               |      | ✅                     |
+| Persistence                  |      | ✅                     |
+| Resilience to disconnections |      | Partially implemented |
+| Trial flight                 |      | ✅                     |
 
 </center>
 
