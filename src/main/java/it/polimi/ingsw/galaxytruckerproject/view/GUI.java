@@ -1482,7 +1482,7 @@ public class GUI extends Application implements DisplayableView {
      */
     @Override
     public void showDiceRoll(int diceRoll) throws RemoteException {
-        rolled=diceRoll;
+        controller.setRolled(diceRoll);
         Platform.runLater(() -> {
             GUIControllers cardsController = loader.getController();
             cardsController.showRoll();

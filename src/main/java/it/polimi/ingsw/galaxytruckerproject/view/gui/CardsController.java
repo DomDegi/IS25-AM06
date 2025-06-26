@@ -876,6 +876,15 @@ public class CardsController extends GUIControllers {
         });
     }
 
+    /**
+     * Displays the result of a dice roll on the GUI. If a roll has been made
+     * (i.e., the rolled value is not -1), a button displaying the rolled number
+     * is created, resized, and added to the main container.
+     *
+     * This method retrieves the rolled value using the GUI static method
+     * getRolled(), checks if it is a valid value, and updates the user
+     * interface accordingly.
+     */
     private void showDice(){
         if(GUI.getRolled()!=-1){
             Button rolled=new Button(GUI.getRolled()+"");
