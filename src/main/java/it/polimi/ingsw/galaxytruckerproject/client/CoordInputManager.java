@@ -101,6 +101,7 @@ public class CoordInputManager {
                 if (lightShipBoard.isCargoEmpty()) {
                     if (lightShipBoard.getNumBatteries() == 0) {
                         needed = 0;
+                        clientController.setState(ClientState.WAIT);
                         return;
                     }
                     this.needed = Math.min(lightShipBoard.getNumBatteries(),needed);
@@ -109,7 +110,6 @@ public class CoordInputManager {
                     needed += needed - lightShipBoard.getAllGoods().size();
                     needed = Math.min(lightShipBoard.getNumBatteries()+lightShipBoard.getAllGoods().size(),needed);
                 }
-                return;
             }
             case CHOOSE_TO_MAINTAIN -> needed=1;
             case CHOOSE_CREW -> {
