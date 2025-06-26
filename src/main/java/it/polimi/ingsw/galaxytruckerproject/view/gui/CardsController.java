@@ -647,8 +647,9 @@ public class CardsController extends GUIControllers {
                 for (int i=tile.getNumBatteries();i!=0;i--){
                     ImageView element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/battery.png"))));
                     element.setDisable(true);
-                    element.setFitWidth(10);
+                    element.setFitWidth(30);
                     element.setFitHeight(60);
+                    element.setPreserveRatio(true);
                     hBox.setSpacing(1);
                     hBox.rotateProperty().setValue(tile.getRotation()*90);
                     hBox.getChildren().add(element);
