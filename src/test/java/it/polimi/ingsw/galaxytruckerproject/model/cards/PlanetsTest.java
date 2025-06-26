@@ -201,6 +201,10 @@ class PlanetsTest {
         int player3_initialGoodsCredit = player3.getShipBoard().convertGoodsToCredit();
 
         game.getDrawnCard().planetChoice("EnnioVolante",1);
+        game.getDrawnCard().planetChoice("MimmoPericoloso",0);
+        game.getDrawnCard().planetChoice("FedeGalattico",0);
+        game.getDrawnCard().planetChoice("pipo",0);
+
         System.out.println(game.getDrawnCard().getListOfPlanets());
 
         CargoHold cargo1 = new CargoBlue(3, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
