@@ -128,6 +128,7 @@ public class UpdateDeserializer {
 
         } catch (IOException e) {
             System.out.println("Error in unpacking currentGameStatus");
+            controller.setOffline();
         }
     }
 }

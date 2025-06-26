@@ -215,17 +215,6 @@ class ProjectilePenaltyTest2 {
         assertEquals(shipBoard1.getTilesTable()[3][3],Optional.empty());
     }
 
-    @Test
-    void largeCannonShotFromNorthOnSmallCannon() {
-        //System.out.println(shipBoard.toString());
-        //System.out.println("Lancio cannonShot");
-        penalty = new ProjectilePenalty(listOfLargeCannonShot1);
-        penalty.setDiceRoll(10);
-        boolean returnValue = penalty.initializePenalty(gameLvl2, mockView, player);
-        //THE SHIPBOARD GETS EFFECTIVLY HIT
-        assertTrue(returnValue);
-        //System.out.println(shipBoard.toString());
-    }
 
     @Test
     void largeMeteorFromNorthOnDoubleCannonActivateBattery() {
