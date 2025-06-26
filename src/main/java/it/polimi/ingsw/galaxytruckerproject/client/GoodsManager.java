@@ -65,7 +65,7 @@ public class GoodsManager {
      * during the current game phase or operation in the GoodsManager.
      * This set is typically updated when cargo holds are altered or interacted with.
      */
-    private final HashSet<CargoHold> changes;
+    private final ArrayList<CargoHold> changes;
     /**
      * Represents the view associated with the GoodsManager, allowing interaction with
      * the display of game-related elements for the current player. The DisplayableView
@@ -100,7 +100,7 @@ public class GoodsManager {
     public GoodsManager(LightPlayer currentPlayer, ArrayList<Goods> possibleGoodsGain, DisplayableView view) {
         this.view=view;
         this.currentPlayer=currentPlayer;
-        this.changes=new HashSet<>();
+        this.changes=new ArrayList<>();
         this.possibleGoodsGain=possibleGoodsGain;
         this.state=0;
         this.goodsToGet=0;
@@ -113,11 +113,8 @@ public class GoodsManager {
      *
      * @return the set of finalized or modified cargo holds
      */
-    public HashSet<CargoHold> doneGoods(){
+    public ArrayList<CargoHold> doneGoods(){
         view.showGenericMessage("\nYou stopped positioning your cargo\n");
-        if (changes.isEmpty()) {
-            changes.add(new CargoRed(-1,null,null,null,null).send());
-        }
         return changes;
     }
 

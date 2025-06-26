@@ -805,14 +805,9 @@ public class ClientController {
             return false;
         }
         if (inManager) {
-            HashSet<CargoHold> newTilesGoods;
-            newTilesGoods = goodsManager.doneGoods();
             ArrayList<CargoHold> newTiles;
-            if (newTilesGoods != null) {
-                newTiles = new ArrayList<>(newTilesGoods);
-                if (newTiles.getFirst().getTotSpaces() == -1) {
-                    newTiles.clear();
-                }
+            newTiles= goodsManager.doneGoods();
+            if (newTiles != null) {
                 int goodsVal = me.getShipBoard().convertGoodsToCredit();
                 setState(ClientState.WAIT);
                 try {
@@ -821,6 +816,8 @@ public class ClientController {
                     setOffline();
                 }
                 inManager = false;
+            } else {
+                System.out.println("newTiles is null");
             }
         }
         return true;
