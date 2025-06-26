@@ -644,7 +644,7 @@ public class CardsController extends GUIControllers {
                 for (int i=tile.getNumBatteries();i!=0;i--){
                     ImageView element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/battery.png"))));
                     element.setDisable(true);
-                    element.setFitWidth(30);
+                    element.setFitWidth(5);
                     element.setFitHeight(60);
                     hBox.setSpacing(1);
                     hBox.rotateProperty().setValue(tile.getRotation()*90);
@@ -654,49 +654,22 @@ public class CardsController extends GUIControllers {
                     ArrayList<Goods> cargo = tile.getCargo();
                     if (tile.getCargo().size()<=2){
                         for (int i=cargo.size();i!=0;i--){
-                            ImageView element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoRed.png"))));
-                            switch (cargo.get(i-1).getColor()){
-                                case RED -> element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoRed.png"))));
-                                case YELLOW -> element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoYellow.png"))));
-                                case GREEN -> element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoGreen.png"))));
-                                case BLUE -> element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoBlue.png"))));
-                            }
-                            element.setDisable(true);
-                            element.setFitWidth(30);
-                            element.setFitHeight(30);
-                            hBox.getChildren().add(element);
+                            hBox.getChildren().add(setUpGoods(cargo,i));
                         }
                         stackPane.getChildren().add(hBox);
                     }else{
-                        for (int i=cargo.size();i>2;i--){
-                            ImageView element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoRed.png"))));
-                            switch (cargo.get(i-1).getColor()){
-                                case RED -> element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoRed.png"))));
-                                case YELLOW -> element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoYellow.png"))));
-                                case GREEN ->element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoGreen.png"))));
-                                case BLUE -> element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoBlue.png"))));
+                        int i;
+                        for (i=cargo.size();i!=0;i--){
+                            if(i>2) {
+                                hBox1.getChildren().add(setUpGoods(cargo, i));
+                                hBox1.setPrefSize(40, 40);
+                            }else{
+                                hBox.getChildren().add(setUpGoods(cargo,i));
+                                hBox.setPrefSize(40,40);
                             }
-                            element.setDisable(true);
-                            element.setFitWidth(30);
-                            element.setFitHeight(30);
-                            hBox1.getChildren().add(element);
-                            hBox1.setPrefSize(40,40);
-                        }for (int i=cargo.size()-2;i!=0;i--){
-                            ImageView element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoRed.png"))));
-                            switch (cargo.get(i-1).getColor()){
-                                case RED -> element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoRed.png"))));
-                                case YELLOW -> element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoYellow.png"))));
-                                case GREEN ->element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoGreen.png"))));
-                                case BLUE -> element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoBlue.png"))));
-                            }
-                            element.setDisable(true);
-                            element.setFitWidth(30);
-                            element.setFitHeight(30);
-                            hBox.getChildren().add(element);
-                            hBox1.setPrefSize(40,40);
                         }
-                        stackPane.getChildren().add(vBox);
                         vBox.getChildren().addAll(hBox1,hBox);
+                        stackPane.getChildren().add(vBox);
                     }
                 } else {
                     stackPane.getChildren().add(hBox);
@@ -704,6 +677,20 @@ public class CardsController extends GUIControllers {
                 tilesTable.add(stackPane,tile.getCoordinates().getY(),tile.getCoordinates().getX());
             }
         }
+    }
+
+    private ImageView setUpGoods(ArrayList<Goods> cargo,int i){
+        ImageView element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoRed.png"))));
+        switch (cargo.get(i-1).getColor()){
+            case RED -> element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoRed.png"))));
+            case YELLOW -> element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoYellow.png"))));
+            case GREEN ->element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoGreen.png"))));
+            case BLUE -> element=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/grafiche/cargoBlue.png"))));
+        }
+        element.setDisable(true);
+        element.setFitWidth(30);
+        element.setFitHeight(30);
+        return element;
     }
 
     /**
