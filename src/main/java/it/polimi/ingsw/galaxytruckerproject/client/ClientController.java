@@ -2067,14 +2067,6 @@ public class ClientController {
      * This method is intended to be called only in {@link GameMode#LEVEL2}.
      */
     public void buildShiplv2(){
-        /*
-        me.getShipBoard().positionTile(Optional.ofNullable(this.tileInHand), coordinates)
-        try {
-                virtualController.notifySetTile(tile.send());
-            } catch (RemoteException e) {
-                                setOffline();
-            }
-         */
         Tile tile4=new CargoBlue(2, new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web26.jpg",2,0);
         me.getShipBoard().positionTile(Optional.ofNullable(tile4), new Coordinates(1,3));
         try {
@@ -2252,14 +2244,6 @@ public class ClientController {
      * This method is intended to be called only in {@link GameMode#LEVEL2}.
      */
     public void buildShiplv2_2(){
-        /*
-        me.getShipBoard().positionTile(Optional.ofNullable(this.tileInHand), coordinates)
-        try {
-                virtualController.notifySetTile(tile.send());
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
-         */
         Tile tile4=new CargoBlue(2, new Link(Connectors.SMOOTH),new Link(Connectors.UNIVERSAL),new Link(Connectors.UNIVERSAL),new Link(Connectors.SMOOTH), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web26.jpg",2,0);
         me.getShipBoard().positionTile(Optional.ofNullable(tile4), new Coordinates(1,3));
         try {
@@ -2383,7 +2367,7 @@ public class ClientController {
             setOffline();
         }
 
-        Tile tile17=new EquipCabin( new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL),new Link(Connectors.SINGLE), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web49.jpg",0,0);
+        Tile tile17=new EquipCabin( new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH),new Link(Connectors.DOUBLE),new Link(Connectors.UNIVERSAL), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web49.jpg",0,0);
         me.getShipBoard().positionTile(Optional.of(tile17), new Coordinates(3,5));
         try {
             virtualController.notifySetTile(tile17.send());
@@ -2465,14 +2449,7 @@ public class ClientController {
      * This method is only intended to be used when the current game mode is {@link GameMode#TRIAL}.
      */
     public void buildShipTrial(){
-        /*
-        me.getShipBoard().positionTile(Optional.ofNullable(this.tileInHand), coordinates)
-        try {
-                virtualController.notifySetTile(tile.send());
-            } catch (RemoteException e) {
-                setOffline();
-            }
-         */
+
         Tile tile1=new DoubleCannon( new Link(Connectors.SMOOTH),new Link(Connectors.SMOOTH),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH), "/images/grafiche/grafiche/tiles/GT-new_tiles_16_for web126.jpg",0,0);
         me.getShipBoard().positionTile(Optional.of(tile1), new Coordinates(1,3));
         try {

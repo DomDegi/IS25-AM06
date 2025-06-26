@@ -235,4 +235,13 @@ class PlayerTest {
         player1.playerReconnects();
         assertEquals(false,player1.isDisconnected());
     }
+
+    @Test
+    void removeGoodsBlue(){
+        player1.getShipBoard().gainGoods(new Goods(GoodsColor.BLUE), new Coordinates(1,3));
+        ArrayList<Coordinates> coordinates = new ArrayList<>();
+        coordinates.add(new  Coordinates(1,3));
+        player1.removeGoods(coordinates);
+        assertEquals(0,player1.getShipBoard().getAllGoods().size());
+    }
 }
