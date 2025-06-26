@@ -110,6 +110,12 @@ class AbandonedShipTest {
     }
 
     @Test
+    void getters(){
+        assertEquals(10, abandonedShip.getGainedCredits());
+        assertEquals(3, abandonedShip.getCrewNumber());
+    }
+
+    @Test
     void the_only_player_that_can_pass_is_player1_in_position_2_and_accepts_the_trade() {
         player1.setAllCrewToHuman();
         int player1_initialDays = player1.getPlayerPosition();
@@ -153,6 +159,22 @@ class AbandonedShipTest {
         player1.setDisconnected(true);
         abandonedShip.playerDisconnected(player1.getPlayerName());
         //now player 1 has to choose crew to remove
+        assertEquals(0, player1.getCredit());
+        assertEquals(player1.getPlayerPosition(), player1_initialDays);
+        assertEquals(player1.getTotalCrew(), player1_initial_crew);
+        assertEquals(GameState.DRAW_CARD, game.getGameState());
+    }
+
+    @Test
+    void playerLanded(){
+        player1.setAllCrewToHuman();
+        int player1_initialDays = player1.getPlayerPosition();
+        int player1_initial_crew = player1.getTotalCrew();
+        game.setDrawnCard(abandonedShip);
+        game.getDrawnCard().initializeCard(game, viewMap);
+        game.setGameState(GameState.CARD_EVENT);
+        abandonedShip.choice(player1.getPlayerName(), false);
+        abandonedShip.playerLanded(player1.getPlayerName());
         assertEquals(0, player1.getCredit());
         assertEquals(player1.getPlayerPosition(), player1_initialDays);
         assertEquals(player1.getTotalCrew(), player1_initial_crew);

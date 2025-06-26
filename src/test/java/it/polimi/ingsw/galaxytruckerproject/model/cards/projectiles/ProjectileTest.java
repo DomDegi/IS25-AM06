@@ -217,6 +217,8 @@ class ProjectileTest {
         LargeMeteor met= new LargeMeteor(Direction.WEST);
         assertTrue(met.throwProjectile(player2,8,gameLvl2)==Defense.HIT);
         System.out.println(met.getCoordinatesToDestroy());
+
+
     }
 
     @Test
@@ -275,6 +277,23 @@ class ProjectileTest {
         assertTrue(met3.throwProjectile(player2,8,gameLvl2)==Defense.HIT);
         System.out.println(met3.getCoordinatesToDestroy());
     }
+
+    @Test
+    void getDirection(){
+        SmallCannonShot met= new SmallCannonShot(Direction.NORTH);
+        assertEquals(Direction.NORTH,met.getDirection());
+
+        LargeCannonShot met1= new LargeCannonShot(Direction.WEST);
+        assertEquals(Direction.WEST,met1.getDirection());
+
+        SmallMeteor met2= new SmallMeteor(Direction.SOUTH);
+        assertEquals(Direction.SOUTH,met2.getDirection());
+
+        LargeMeteor met3= new LargeMeteor(Direction.EAST);
+        assertEquals(Direction.EAST,met3.getDirection());
+
+    }
+
 
 
 }
