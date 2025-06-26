@@ -375,10 +375,12 @@ public class CombatZone extends Card {
         try {
             minPlayerView.showDiceRoll(currentPenalty.getDiceRoll());
         } catch(Exception ignored) {}
-        if (firstBrokenTile != null) {
+        if (firstBrokenTile != null ) {
             broken.add(firstBrokenTile);
             notifyBrokenTiles(playerName, broken);
-            if (!currentPenalty.initializePenalty(game,minPlayerView, minPlayer)) {
+        }
+        else if (currentPenalty.getBranch() == null) {
+            if (!currentPenalty.initializePenalty(game, minPlayerView, minPlayer)) {
                 resetForNextPenalty();
             }
         }
