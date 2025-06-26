@@ -80,7 +80,6 @@ public class MultiGameController implements Serializable {
                     try {
                         view.setClientState(ClientState.LOBBY);
                     } catch (RemoteException e) {
-                        throw new RuntimeException(e);
                     }
                 }
             }
@@ -109,14 +108,12 @@ public class MultiGameController implements Serializable {
                 try {
                     creatorView.showWrongInputMessage();
                 } catch (RemoteException e) {
-                    throw new RuntimeException(e);
                 }
             }
             else if (playerCount < 2 || playerCount > 4) {
                 try {
                     creatorView.showWrongInputMessage();
                 } catch (RemoteException e) {
-                    throw new RuntimeException(e);
                 }
             }
             else {
@@ -159,7 +156,6 @@ public class MultiGameController implements Serializable {
                     try {
                         joinerView.showWrongInputMessage();
                     } catch (RemoteException e) {
-                        throw new RuntimeException(e);
                     }
                 }
                 else {
@@ -199,7 +195,6 @@ public class MultiGameController implements Serializable {
             try {
                 leaverView.setClientState(ClientState.LOGIN);
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
             }
             joinableGamesList(leaver, leaverView);
         }
@@ -277,7 +272,6 @@ public class MultiGameController implements Serializable {
         try {
             view.showJoinableGamesList(joinableGames);
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
         }
         viewsMap.put(nickname, view);
     }
