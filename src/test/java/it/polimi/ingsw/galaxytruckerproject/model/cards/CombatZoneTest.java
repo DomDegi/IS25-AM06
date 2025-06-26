@@ -206,7 +206,7 @@ class CombatZoneTest {
         combatZone.engineChoice(player1.getPlayerName(), 0, new ArrayList<>());
         combatZone.engineChoice(player2.getPlayerName(), 1, batteries);
         combatZone.engineChoice(player3.getPlayerName(), 2, new ArrayList<>());
-        assertEquals(player1_initialDays - 3, player1.getPlayerPosition());
+        assertEquals(player1_initialDays - 4, player1.getPlayerPosition());
         assertEquals(player2_initialDays, player2.getPlayerPosition());
         assertEquals(player3_initialDays, player3.getPlayerPosition());
     }

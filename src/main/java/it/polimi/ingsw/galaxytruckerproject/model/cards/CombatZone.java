@@ -134,7 +134,8 @@ public class CombatZone extends Card {
             this.initializeCurrentPlayer();
         }
         else{
-            //findMinPlayer();
+            findMinPlayer();
+            return;
         }
         nextChallenge();
     }
