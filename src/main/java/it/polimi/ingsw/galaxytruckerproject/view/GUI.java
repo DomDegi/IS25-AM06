@@ -534,11 +534,11 @@ public class GUI extends Application implements DisplayableView {
      * - TRIAL: Calls the method to build a trial version ship.
      * - Default: Builds a Level 2 ship if the game mode does not match LEVEL2 or TRIAL.
      */
-    public static void autoCreateShip(){
-        switch (controller.getGameMode()){
-            case LEVEL2 -> controller.buildShiplv2();
-            case TRIAL -> controller.buildShipTrial();
-            default -> controller.buildShiplv2();
+    public static void autoCreateShip(int i){
+        if(i==1){
+            controller.buildShip();
+        }else {
+            controller.buildShip2();
         }
     }
 

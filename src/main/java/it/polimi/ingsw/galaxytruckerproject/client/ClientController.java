@@ -1999,8 +1999,7 @@ public class ClientController {
                 buildShiplv2();
             }
             built = true;
-        }
-        if (built){
+        }else {
             view.wrongLocalInput();
         }
     }
