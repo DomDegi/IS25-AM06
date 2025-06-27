@@ -1697,6 +1697,9 @@ public class GameController implements Observer, Serializable {
 
     public void disconnectPlayer(String playerName) {
         Player player = activePlayers.get(playerName);
+        if (player == null) {
+            player = disconnectedPlayers.get(playerName);
+        }
         player.playerDisconnects();
         prepareForDisconnection(playerName);
         activePlayers.remove(playerName);
