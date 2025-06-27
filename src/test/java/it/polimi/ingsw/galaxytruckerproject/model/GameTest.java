@@ -2,10 +2,11 @@ package it.polimi.ingsw.galaxytruckerproject.model;
 
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
 import it.polimi.ingsw.galaxytruckerproject.model.player.PlayersColor;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.ShipBoard;
-import it.polimi.ingsw.galaxytruckerproject.model.tiles.Tile;
+import it.polimi.ingsw.galaxytruckerproject.model.tiles.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -73,6 +74,35 @@ class GameTest {
         game.playerBookTile("Andrea");
         assertEquals(tile,game.getListOfAllPlayer().getFirst().getShipBoard().getBookedTiles().getFirst());
 
+    }
+
+    @Test
+    void getPlayerShipBoard() {
+        game.setPlayerCount(4);
+        game.addPlayer("Andrea", PlayersColor.RED);
+        game.addPlayer("Giacomo", PlayersColor.BLUE);
+        game.addPlayer("Silvio", PlayersColor.GREEN);
+        game.addPlayer("Pietro", PlayersColor.YELLOW);
+
+        // Recupero il vero player dentro al Game
+        Player playerInGame = game.identifyPlayerByName("Andrea");
+        ShipBoard shipBoard = playerInGame.getShipBoard();
+
+        // Posiziono qualche tile a caso
+        Tile tile1 = new SingleCannon(new Link(Connectors.SMOOTH), new Link(Connectors.SMOOTH),
+                new Link(Connectors.DOUBLE), new Link(Connectors.SMOOTH));
+        shipBoard.positionTile(Optional.of(tile1), new Coordinates(0, 4));
+
+        Tile tile2 = new EquipCabin(new Link(Connectors.SMOOTH), new Link(Connectors.DOUBLE),
+                new Link(Connectors.UNIVERSAL), new Link(Connectors.SINGLE));
+        shipBoard.positionTile(Optional.of(tile2), new Coordinates(1, 1));
+        tile2.setCrewType(CrewType.HUMAN);
+
+        shipBoard.verifyCorrectness();
+
+
+        ShipBoard returned = game.getPlayerShipBoard("Andrea");
+        assertEquals(shipBoard, returned);
     }
 
 
