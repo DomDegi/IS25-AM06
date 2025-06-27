@@ -203,7 +203,7 @@ class PlanetsTest {
         game.getDrawnCard().planetChoice("EnnioVolante",1);
         game.getDrawnCard().planetChoice("MimmoPericoloso",0);
         game.getDrawnCard().planetChoice("FedeGalattico",0);
-        game.getDrawnCard().planetChoice("pipo",0);
+        game.getDrawnCard().planetChoice("pippo",0);
 
         System.out.println(game.getDrawnCard().getListOfPlanets());
 
