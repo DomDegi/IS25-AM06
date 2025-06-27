@@ -215,6 +215,8 @@ class OpenSpaceTest {
         game.getDrawnCard().initializeCard(game, viewMap);
 
         game.getDrawnCard().engineChoice("MimmoPericoloso", 0, new ArrayList<>());
+        game.getDrawnCard().engineChoice("EnnioVolante", 0, new ArrayList<>());
+        game.getDrawnCard().engineChoice("FedeGalattico", 0, new ArrayList<>());
         openSpace.playerLanded(player2.getPlayerName());
         assertTrue(openSpace.playersToEarlyLand.contains(player2));
     }

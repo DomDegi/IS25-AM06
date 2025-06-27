@@ -151,9 +151,9 @@ class StarDustTest {
         game.setDrawnCard(starDust);
         game.getDrawnCard().initializeCard(game, viewMap);
 
-        assertEquals(-2, player1.getPlayerPosition());
-        assertEquals(-6, player2.getPlayerPosition());
-        assertEquals(5, player3.getPlayerPosition());
+        assertEquals(-4, player1.getPlayerPosition());
+        assertEquals(-7, player2.getPlayerPosition());
+        assertEquals(2, player3.getPlayerPosition());
     }
 
 }

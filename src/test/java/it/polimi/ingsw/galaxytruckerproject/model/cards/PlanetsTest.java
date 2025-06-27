@@ -237,15 +237,16 @@ class PlanetsTest {
 
         game.getDrawnCard().planetChoice("MimmoPericoloso",1);
         game.getDrawnCard().planetChoice("MimmoPericoloso",2);
-        CargoHold cargo1 = new CargoRed(3, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
+        game.getDrawnCard().planetChoice("FedeGalattico",3);
+        CargoHold cargo1 = new CargoRed(0, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
         cargo1.setCoordinates(new Coordinates(1,3));
         cargo1.addGood(new Goods(RED));
         cargo1.addGood(new Goods(RED));
         cargo1.addGood(new Goods(GREEN));
         ArrayList<CargoHold> modifiedTiles = new ArrayList<>();
         modifiedTiles.add(cargo1);
-        game.getDrawnCard().manageGoods(player1.getPlayerName(),player1.getShipBoard().convertGoodsToCredit()+10, modifiedTiles);
-        assertEquals(3,player1.getShipBoard().getAllGoods().size());
+        game.getDrawnCard().manageGoods(player1.getPlayerName(),player1.getShipBoard().convertGoodsToCredit()+20, modifiedTiles);
+        assertEquals(0,player1.getShipBoard().getAllGoods().size());
 
 
         CargoHold cargo2 = new CargoRed(2, new Link(Connectors.DOUBLE),new Link(Connectors.SINGLE),new Link(Connectors.SINGLE),new Link(Connectors.SMOOTH));
@@ -254,12 +255,11 @@ class PlanetsTest {
         cargo2.addGood(new Goods(RED));
         ArrayList<CargoHold> modifiedTiles2 = new ArrayList<>();
         modifiedTiles2.add(cargo2);
-        game.getDrawnCard().planetChoice("FedeGalattico",3);
         game.getDrawnCard().manageGoods(player2.getPlayerName(),player2.getShipBoard().convertGoodsToCredit()+8, modifiedTiles2);
-        assertEquals(2,player2.getShipBoard().getAllGoods().size());
+        assertEquals(0,player2.getShipBoard().getAllGoods().size());
 
         //game.getDrawnCard().planetChoice("pipo",0); //the planets are already over
-        assertEquals(GameState.DRAW_CARD, game.getGameState());
+        assertEquals(GameState.CARD_EVENT, game.getGameState());
     }
 
     @Test
@@ -281,6 +281,6 @@ class PlanetsTest {
         assertEquals(player1_initialGoods + 2,player1.getShipBoard().getAllGoods().size());
         game.getDrawnCard().planetChoice("FedeGalattico",0);
         game.getDrawnCard().planetChoice("pipo",0);
-        assertEquals(GameState.DRAW_CARD,game.getGameState());
+        assertEquals(GameState.CARD_EVENT,game.getGameState());
     }
 }

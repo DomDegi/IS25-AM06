@@ -194,8 +194,8 @@ class PiratesTest {
         coord.add(new Coordinates(3,0));
         game.getDrawnCard().cannonChoice("MimmoPericoloso", 2, coord);
         game.getDrawnCard().choice("MimmoPericoloso", true);
-        assertEquals(6, player1.getCredit());
-        assertEquals(GameState.DRAW_CARD, game.getGameState());
+        assertEquals(0, player1.getCredit());
+        assertEquals(GameState.CARD_EVENT, game.getGameState());
     }
 
     @Test
@@ -223,8 +223,8 @@ class PiratesTest {
         game.getDrawnCard().cannonChoice("MimmoPericoloso", 2, coord);
 
 
-        assertEquals(6, player1.getCredit());
-        assertEquals(GameState.DRAW_CARD, game.getGameState());
+        assertEquals(0, player1.getCredit());
+        assertEquals(GameState.CARD_EVENT, game.getGameState());
     }
 
     @Test

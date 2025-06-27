@@ -1,4 +1,4 @@
-package it.polimi.ingsw.galaxytruckerproject.model.persistence;
+package persistence;
 
 import it.polimi.ingsw.galaxytruckerproject.controller.GameController;
 import it.polimi.ingsw.galaxytruckerproject.model.player.Player;
