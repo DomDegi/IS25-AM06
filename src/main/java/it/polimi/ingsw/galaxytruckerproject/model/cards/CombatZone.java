@@ -388,7 +388,7 @@ public class CombatZone extends Card {
             broken.add(firstBrokenTile);
             notifyBrokenTiles(playerName, broken);
         }
-        else if (currentPenalty.getBranch() == null) {
+        else if (currentPenalty.getBranch() == null || currentPenalty.getBranch().size() < 2) {
             if (!currentPenalty.initializePenalty(game, minPlayerView, minPlayer)) {
                 resetForNextPenalty();
             }

@@ -255,7 +255,7 @@ public class Pirates extends Enemies {
             broken.add(firstBrokenTile);
             notifyBrokenTiles(playerName, broken);
         }
-        else if (penaltyIfLose.getBranch() == null) {
+        else if (penaltyIfLose.getBranch() == null || penaltyIfLose.getBranch().size() < 2) {
             if (!penaltyIfLose.initializePenalty(game,currentView, currentPlayer)) {
                 try {
                 } catch (Exception ignored) {}

@@ -31,7 +31,7 @@ public class TileFactory {
                 throw new IllegalArgumentException("Errore: file " + fileName + " non trovato nelle risorse!");
             }
 
-            // Deserializza il JSON in una lista di oggetti generici (JsonTile)
+            //Deserializes a list of generic objects
             List<JsonTile> jsonTiles = objectMapper.readValue(inputStream,
                     objectMapper.getTypeFactory().constructCollectionType(List.class, JsonTile.class));
 

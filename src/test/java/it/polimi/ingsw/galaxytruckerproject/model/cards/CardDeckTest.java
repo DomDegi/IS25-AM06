@@ -21,7 +21,7 @@ class CardDeckTest {
         cardsLvl1 = cardDeck.getDeckLvl1();
         cardsLvl2 = cardDeck.getDeckLvl2();
         trialCards = new TrialCardDeck("trialFlightCards.json").getTrialDeck();
-        //Collections.shuffle(trialCards);
+        Collections.shuffle(trialCards);
     }
 
     @Test

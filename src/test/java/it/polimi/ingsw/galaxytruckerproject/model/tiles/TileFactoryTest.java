@@ -17,7 +17,7 @@ class TileFactoryTest {
 
     @BeforeEach
     void setUp() {
-        tiles = loadTilesFromJson("TilesLikeGraphics.json");
+        tiles = loadTilesFromJson("Tiles.json");
     }
 
     @Test
