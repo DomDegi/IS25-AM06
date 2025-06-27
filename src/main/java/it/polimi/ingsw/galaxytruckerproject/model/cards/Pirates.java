@@ -257,8 +257,6 @@ public class Pirates extends Enemies {
         }
         else if (penaltyIfLose.getBranch() == null || penaltyIfLose.getBranch().size() < 2) {
             if (!penaltyIfLose.initializePenalty(game,currentView, currentPlayer)) {
-                try {
-                } catch (Exception ignored) {}
                 nextPlayer();
             }
         }

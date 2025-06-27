@@ -120,7 +120,7 @@ public class MeteorSwarm extends Card {
             } else {
                 ArrayList<Coordinates> toDestroy = new ArrayList<>();
                 Coordinates destroyedTile = newPenalty.getDestroyedTile();
-                if (destroyedTile != null && newPenalty.getBranch() == null) {
+                if (destroyedTile != null && (newPenalty.getBranch() == null || newPenalty.getBranch().size() < 2)) {
                     toDestroy.add(destroyedTile);
                     notifyBrokenTiles(player.getPlayerName(), toDestroy);
                 }
@@ -177,10 +177,13 @@ public class MeteorSwarm extends Card {
         if (batteries.isEmpty() && batteryComponent == null) {
             activePenalties.get(player).hitOrMiss(viewsMap.get(playerName), player);
             Coordinates destroyedTile = activePenalties.get(player).getDestroyedTile();
-            if (activePenalties.get(player).getBranch() == null && destroyedTile != null) {
+            if ((activePenalties.get(player).getBranch() == null || activePenalties.get(player).getBranch().size() < 2) && destroyedTile != null) {
                 ArrayList<Coordinates> toRemove = new ArrayList<>();
                 toRemove.add(destroyedTile);
                 notifyBrokenTiles(playerName, toRemove);
+                if (!activePenalties.get(player).initializePenalty(game, viewsMap.get(playerName), player)) {
+                    playerCompletedMeteor(player);
+                }
             }
             return;
         }
