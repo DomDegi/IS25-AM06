@@ -209,6 +209,9 @@ public class Planets extends Card {
      */
     @Override
     public void setGoodsList(String playerName, int planet) {
+        if (planet < 1) {
+            return;
+        }
         playerChosenPlanets.put(playerName, listOfPlanets.get(planet - 1));
     }
 
