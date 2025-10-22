@@ -34,6 +34,11 @@
 
 </center>
 
+<h3>
+Final grade: 30L
+<h3>
+
+
 # <img src="https://unfilteredgamer.com/wp-content/uploads/2022/02/galaxy-trucker-review-3.jpg" align="right" alt="Start Card render" width="200" style = "border-radius: 20px; float:right; padding: 5px"> <center>How to run the game</center>
 
 **❗Dependencies❗** In order to run our application you need to have installed a Java version >= 23, we suggest to use [this version](https://www.oracle.com/it/java/technologies/downloads/#java23).
